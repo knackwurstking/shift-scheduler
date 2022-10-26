@@ -14,6 +14,7 @@ MainView {
 
     PageStack {
         id: stack
+        // TODO: handle keyboard (anchors) Qt.inputMethod
 
         Component.onCompleted: {
             theme.name = ctxo.theme
