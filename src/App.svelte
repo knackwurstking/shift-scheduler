@@ -54,7 +54,7 @@
 
 <style>
   header {
-    height: calc(1em + var(--spacing));
+    height: 64px;
     display: flex;
     flex-direction: row;
     align-items: center;
