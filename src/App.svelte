@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="/themes/{currentTheme}.css" />
 </svelte:head>
 
-<header>
+<header class="container-fluid" style="font-size: 1rem;">
   <!-- Top app bar -->
 
   {#if utils.isAndroid() && view !== viewStack[0]}
@@ -44,17 +44,21 @@
   <!-- TODO: Date picker for selecting the current month and year -->
 </header>
 
-<main>
+<main class="container-fluid">
   <!-- TODO: Month view (infinite swipe) -->
 </main>
 
-<footer>
+<footer class="container-fluid">
   <!-- TODO: Toolbar for the edit shifts mode -->
 </footer>
 
 <style>
-  :global(*) {
-    border: 1px solid red;
+  header {
+    height: calc(1em + var(--spacing));
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid;
   }
 
   footer:not(.visible) {
@@ -64,5 +68,6 @@
     right: 0;
     bottom: 0;
     left: 0;
+    border-top: 1px solid;
   }
 </style>
