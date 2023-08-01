@@ -1,6 +1,10 @@
 <script>
   import Dialog from "./Dialog.svelte";
 
+  export let style = "";
+  let _class = "";
+  export { _class as class }
+
   /** @type {DatePickerCurrent} */
   export let current;
 
@@ -23,7 +27,9 @@
 {/if}
 
 <button
-  class="date-picker--preview outline"
+  class={"date-picker--preview outline " + _class}
+  {style}
+  {...$$restProps}
   on:click={() => {
     // TODO: open dialog for changing the current year and month in use
   }}

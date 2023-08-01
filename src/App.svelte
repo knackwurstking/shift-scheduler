@@ -14,6 +14,7 @@
   import * as utils from "./lib/js/utils";
 
   import DatePicker from "./lib/components/date-picker";
+  import IconButton from "./lib/components/icon-button";
 
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page
@@ -57,16 +58,31 @@
   {/if}
 
   <DatePicker
+    style="margin: 0;"
     bind:current={datePickerCurrent}
   />
 
   <span class="spacer"></span>
 
-  <span class="actions">
-    <span class="icon-button" role="button" tabindex="0"><MdModeEdit /></span>
-    <span class="icon-button" role="button" tabindex="0"><MdToday /></span>
-    <span class="icon-button" role="button" tabindex="0"><TiSpanner /></span>
-  </span>
+  <div class="actions">
+    <IconButton
+      on:click={() => {
+        // TODO: enable (footer) edit mode
+      }}
+    ><MdModeEdit /></IconButton>
+
+    <IconButton
+      on:click={() => {
+        // TODO: goto today's date (year, month), update datePickerCurrent
+      }}
+    ><MdToday /></IconButton>
+
+    <IconButton
+      on:click={() => {
+        // TODO: goto settings view (add to stack, use goto function)
+      }}
+    ><TiSpanner /></IconButton>
+  </div>
 </header>
 
 <main class="container-fluid">
@@ -80,7 +96,7 @@
 <style>
   header {
     position: relative;
-    height: 64px;
+    height: 80px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -95,6 +111,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 100%;
   }
 
   footer:not(.visible) {
