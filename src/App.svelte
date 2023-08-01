@@ -31,6 +31,9 @@
   /** @type {Views[]}*/
   let viewStack = [view];
 
+  /** @type {"edit" | null} */
+  let footerMode = null;
+
   function goBackInHistory() {
     const v = viewStack.pop();
     viewStack = viewStack;
@@ -89,12 +92,12 @@
   </div>
 </header>
 
-<main class="container-fluid">
+<main class="container-fluid" style={`bottom: ${!!footerMode ? "80px" : "0"}`}>
   <!-- TODO: Month view (infinite swipe) -->
   <InfiniteScrollView />
 </main>
 
-<footer class="container-fluid">
+<footer class="container-fluid" class:visible={!footerMode}>
   <!-- TODO: Toolbar for the edit shifts mode -->
 </footer>
 
@@ -117,6 +120,13 @@
     flex-direction: row;
     align-items: center;
     height: 100%;
+  }
+
+  main {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    left: 0;
   }
 
   footer:not(.visible) {
