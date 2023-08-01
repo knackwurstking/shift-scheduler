@@ -53,6 +53,12 @@
   <DatePicker
     bind:current={datePickerCurrent}
   />
+
+  <span class="spacer"></span>
+
+  <span class="actions">
+    <!-- TODO: icon buttons: "edit-shifts", "today", "settings" -->
+  </span>
 </header>
 
 <main class="container-fluid">
@@ -70,6 +76,16 @@
     flex-direction: row;
     align-items: center;
     border-bottom: 1px solid;
+  }
+
+  header > .spacer {
+    width: 100%;
+  }
+
+  header > .actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   footer:not(.visible) {
