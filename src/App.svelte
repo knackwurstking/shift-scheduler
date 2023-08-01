@@ -3,6 +3,12 @@
 
   // @ts-ignore
   import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
+  // @ts-ignore
+  import TiSpanner from 'svelte-icons/ti/TiSpanner.svelte'
+  // @ts-ignore
+  import MdToday from 'svelte-icons/md/MdToday.svelte'
+  // @ts-ignore
+  import MdModeEdit from 'svelte-icons/md/MdModeEdit.svelte'
 
   import * as ripple from "./lib/js/ripple";
   import * as utils from "./lib/js/utils";
@@ -57,7 +63,9 @@
   <span class="spacer"></span>
 
   <span class="actions">
-    <!-- TODO: icon buttons: "edit-shifts", "today", "settings" -->
+    <span class="icon-button" role="button" tabindex="0"><MdModeEdit /></span>
+    <span class="icon-button" role="button" tabindex="0"><MdToday /></span>
+    <span class="icon-button" role="button" tabindex="0"><TiSpanner /></span>
   </span>
 </header>
 
@@ -71,6 +79,7 @@
 
 <style>
   header {
+    position: relative;
     height: 64px;
     display: flex;
     flex-direction: row;
