@@ -27,11 +27,6 @@
   const slotsOrder = [0, 1, 2];
 </script>
 
-<!-- TODO: initial positioning: second slot should be first
-      case rect.height + sectionMargin - borderWidth:
-        console.debug("scroll position: current");
-        break;
--->
 <div
   bind:this={container}
   on:scroll={(ev) => {
