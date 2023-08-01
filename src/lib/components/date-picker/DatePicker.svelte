@@ -34,11 +34,3 @@
       .padStart(2, "0")}</span
   >
 </button>
-
-<style>
-  div.date-picker--preview {
-  }
-
-  div.date-picker--preview span {
-  }
-</style>
