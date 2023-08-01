@@ -2,21 +2,23 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    let _class = "";
+    export { _class as class };
+
     import * as ripple from "../../js/ripple";
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-    class="contrast outline icon-button"
-    role="button"
-    tabindex="0"
+<button
+    class={"contrast outline icon-button " + _class}
+    {...$$restProps}
     on:click={(ev) => {
         ripple.add(ev, ev.currentTarget);
         dispatch("click");
     }}
 >
     <slot></slot>
-</div>
+</button>
 
 <style>
     .icon-button {

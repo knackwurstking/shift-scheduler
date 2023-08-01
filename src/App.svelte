@@ -66,18 +66,21 @@
 
   <div class="actions">
     <IconButton
+      disabled
       on:click={() => {
         // TODO: enable (footer) edit mode
       }}
     ><MdModeEdit /></IconButton>
 
     <IconButton
+      disabled
       on:click={() => {
         // TODO: goto today's date (year, month), update datePickerCurrent
       }}
     ><MdToday /></IconButton>
 
     <IconButton
+      disabled
       on:click={() => {
         // TODO: goto settings view (add to stack, use goto function)
       }}
