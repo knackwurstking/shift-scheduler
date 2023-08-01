@@ -1,4 +1,6 @@
 <script>
+  import * as ripple from "../../js/ripple";
+
   import Dialog from "./Dialog.svelte";
 
   export let style = "";
@@ -30,7 +32,8 @@
   class={"date-picker--preview outline " + _class}
   {style}
   {...$$restProps}
-  on:click={() => {
+  on:click={(ev) => {
+    ripple.add(ev, ev.currentTarget, { mode: "primary" });
     // TODO: open dialog for changing the current year and month in use
   }}
 >
@@ -40,3 +43,10 @@
       .padStart(2, "0")}</span
   >
 </button>
+
+<style>
+  button {
+    position: relative;
+    overflow: hidden;
+  }
+</style>
