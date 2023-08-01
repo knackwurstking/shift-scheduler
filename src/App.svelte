@@ -1,6 +1,7 @@
 <script>
   import "./lib/css/pico.min.css";
 
+  // @ts-ignore
   import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
 
   import * as ripple from "./lib/js/ripple";
