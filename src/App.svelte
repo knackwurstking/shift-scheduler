@@ -4,32 +4,37 @@
   // @ts-ignore
   import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
   // @ts-ignore
-  import TiSpanner from 'svelte-icons/ti/TiSpanner.svelte'
+  import TiSpanner from "svelte-icons/ti/TiSpanner.svelte";
   // @ts-ignore
-  import MdToday from 'svelte-icons/md/MdToday.svelte'
+  import MdToday from "svelte-icons/md/MdToday.svelte";
   // @ts-ignore
-  import MdModeEdit from 'svelte-icons/md/MdModeEdit.svelte'
+  import MdModeEdit from "svelte-icons/md/MdModeEdit.svelte";
 
   import * as ripple from "./lib/js/ripple";
   import * as utils from "./lib/js/utils";
 
   import DatePicker from "./lib/components/date-picker";
   import IconButton from "./lib/components/icon-button";
-  import InfiniteScrollView from "./lib/components/infinite-scroll-view";
+  import InfiniteScrollView, {
+    InfiniteScrollViewItem,
+  } from "./lib/components/infinite-scroll-view";
+  import Item from "./lib/components/infinite-scroll-view/Item.svelte";
 
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page
 
   /** @type {DatePickerCurrent} */
   let datePickerCurrent = {
-    year: (new Date()).getFullYear(),
-    month: (new Date()).getMonth()
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
   };
 
   /** @type {Views} */
   let view = "calendar";
   /** @type {Views[]}*/
   let viewStack = [view];
+
+  let itemsData = [{ count: 1 }, { count: 2 }, { count: 3 }];
 
   /** @type {"edit" | null} */
   let footerMode = null;
@@ -61,40 +66,46 @@
     </dev>
   {/if}
 
-  <DatePicker
-    style="margin: 0;"
-    bind:current={datePickerCurrent}
-  />
+  <DatePicker style="margin: 0;" bind:current={datePickerCurrent} />
 
-  <span class="spacer"></span>
+  <span class="spacer" />
 
   <div class="actions">
     <IconButton
       disabled
       on:click={() => {
         // TODO: enable (footer) edit mode
-      }}
-    ><MdModeEdit /></IconButton>
+      }}><MdModeEdit /></IconButton
+    >
 
     <IconButton
       disabled
       on:click={() => {
         // TODO: goto today's date (year, month), update datePickerCurrent
-      }}
-    ><MdToday /></IconButton>
+      }}><MdToday /></IconButton
+    >
 
     <IconButton
       disabled
       on:click={() => {
         // TODO: goto settings view (add to stack, use goto function)
-      }}
-    ><TiSpanner /></IconButton>
+      }}><TiSpanner /></IconButton
+    >
   </div>
 </header>
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "80px" : "0"}`}>
   <!-- TODO: Month view (infinite swipe) -->
-  <InfiniteScrollView />
+  <InfiniteScrollView
+    on:scrolldown={(ev) => {
+      itemsData[ev.detail.order[2]].count += 3;
+      itemsData = itemsData;
+    }}
+  >
+    <InfiniteScrollViewItem>{itemsData[0].count}</InfiniteScrollViewItem>
+    <InfiniteScrollViewItem>{itemsData[1].count}</InfiniteScrollViewItem>
+    <InfiniteScrollViewItem>{itemsData[2].count}</InfiniteScrollViewItem>
+  </InfiniteScrollView>
 </main>
 
 <footer class="container-fluid" class:visible={!footerMode}>

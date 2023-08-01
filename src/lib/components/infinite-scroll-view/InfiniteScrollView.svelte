@@ -1,10 +1,8 @@
 <script>
-  /** @type {HTMLElement} */
-  let beforeSection;
-  /** @type {HTMLElement} */
-  let currentSection;
-  /** @type {HTMLElement} */
-  let afterSection;
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
+  let order = [0, 1, 2];
 </script>
 
 <!-- TODO: tree containers (divs), visible view will always be the second one, on scroll(end) reorder divs -->
@@ -33,13 +31,13 @@
         ev.currentTarget.appendChild(
           ev.currentTarget.removeChild(ev.currentTarget.children[0])
         );
+        order = [order[1], order[2], order[0]];
+        dispatch("scrolldown", { order: order });
         break;
     }
   }}
 >
-  <section bind:this={beforeSection} class="before">before</section>
-  <section bind:this={currentSection} class="current">current</section>
-  <section bind:this={afterSection} class="after">after</section>
+  <slot />
 </div>
 
 <style>
@@ -57,27 +55,5 @@
     /*
     border: 1px solid red;
     */
-  }
-
-  div > section {
-    width: 100%;
-
-    min-height: 100%;
-    height: 100%;
-    max-height: 100%;
-
-    border: 1px solid yellow;
-  }
-
-  div > section:nth-child(1) {
-    scroll-snap-align: start;
-  }
-
-  div > section:nth-child(2) {
-    scroll-snap-align: center;
-  }
-
-  div > section:nth-child(3) {
-    scroll-snap-align: end;
   }
 </style>
