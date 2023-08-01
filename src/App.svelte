@@ -6,6 +6,8 @@
   import * as ripple from "./lib/js/ripple";
   import * as utils from "./lib/js/utils";
 
+  import DatePicker from "./lib/components/date-picker";
+
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page
 
@@ -42,6 +44,8 @@
   {/if}
 
   <!-- TODO: Date picker for selecting the current month and year -->
+  <DatePicker
+  />
 </header>
 
 <main class="container-fluid">

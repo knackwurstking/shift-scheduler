@@ -1,0 +1,8 @@
+{
+	"appId": "com.knackwurstking.shiftscheduler",
+	"appName": "shiftscheduler",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https"
+	}
+}
