@@ -15,6 +15,7 @@
 
   import DatePicker from "./lib/components/date-picker";
   import IconButton from "./lib/components/icon-button";
+  import InfiniteScrollView from "./lib/components/infinite-scroll-view";
 
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page
@@ -90,6 +91,7 @@
 
 <main class="container-fluid">
   <!-- TODO: Month view (infinite swipe) -->
+  <InfiniteScrollView />
 </main>
 
 <footer class="container-fluid">
