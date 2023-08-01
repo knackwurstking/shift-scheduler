@@ -10,17 +10,19 @@
   let container;
   $: {
     if (container) {
-        rect = container.getBoundingClientRect();
+      rect = container.getBoundingClientRect();
 
-        let cs = window.getComputedStyle(container);
-        const borderWidth = parseInt(cs.borderTopWidth, 10) + parseInt(cs.borderBottomWidth, 10);
+      let cs = window.getComputedStyle(container);
+      const borderWidth =
+        parseInt(cs.borderTopWidth, 10) + parseInt(cs.borderBottomWidth, 10);
 
-        cs = window.getComputedStyle(container.children[0]);
-        const sectionMargin = parseInt(cs.marginTop, 10) + parseInt(cs.marginBottom, 10);
+      cs = window.getComputedStyle(container.children[0]);
+      const sectionMargin =
+        parseInt(cs.marginTop, 10) + parseInt(cs.marginBottom, 10);
 
-        container.scrollTop = rect.height + sectionMargin - borderWidth;
+      container.scrollTop = rect.height + sectionMargin - borderWidth;
     }
-  };
+  }
 
   const slotsOrder = [0, 1, 2];
 </script>
@@ -31,7 +33,7 @@
         break;
 -->
 <div
-    bind:this={container}
+  bind:this={container}
   on:scroll={(ev) => {
     // NOTE: This won't work if a border is set for this div
     let cs = window.getComputedStyle(ev.currentTarget);
