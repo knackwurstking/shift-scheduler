@@ -1,20 +1,39 @@
 <script>
+  import Dialog from "./Dialog.svelte";
+
   /** @type {DatePickerCurrent} */
   export let current;
+
+  let picker = false;
 </script>
 
-<!-- TODO: Date picker for selecting the current month and year -->
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-  class="date-picker--preview"
-  role="button"
-  tabindex="0"
+{#if picker}
+  <Dialog
+    open={true}
+    month={current.month}
+    year={current.year}
+    on:submit={(ev) => {
+      current = {
+        year: ev.detail?.year || current.year,
+        month: ev.detail?.month || current.month,
+      };
+      picker = false;
+    }}
+  />
+{/if}
+
+<button
+  class="date-picker--preview outline"
   on:click={() => {
     // TODO: open dialog for changing the current year and month in use
   }}
 >
-  <span>{current.year || "YYYY"} / {(current.month || "MM").toString().padStart(2, "0")}</span>
-</div>
+  <span
+    >{current.year || "YYYY"} / {(current.month || "MM")
+      .toString()
+      .padStart(2, "0")}</span
+  >
+</button>
 
 <style>
   div.date-picker--preview {
