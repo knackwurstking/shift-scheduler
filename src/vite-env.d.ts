@@ -4,3 +4,8 @@
 declare type Views = "calendar";
 
 declare type Themes = "default" | "custom" | "green";
+
+declare interface DatePickerCurrent {
+  year: number;
+  month: number;
+}
