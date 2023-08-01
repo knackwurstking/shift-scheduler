@@ -15,10 +15,7 @@
 
   import DatePicker from "./lib/components/date-picker";
   import IconButton from "./lib/components/icon-button";
-  import InfiniteScrollView, {
-    InfiniteScrollViewItem,
-  } from "./lib/components/infinite-scroll-view";
-  import Item from "./lib/components/infinite-scroll-view/Item.svelte";
+  import InfiniteScrollView from "./lib/components/infinite-scroll-view";
 
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page
@@ -98,13 +95,13 @@
   <!-- TODO: Month view (infinite swipe) -->
   <InfiniteScrollView
     on:scrolldown={(ev) => {
-      itemsData[ev.detail.order[2]].count += 3;
+      itemsData[ev.detail.slotsOrder[2]].count += 3;
       itemsData = itemsData;
     }}
   >
-    <InfiniteScrollViewItem>{itemsData[0].count}</InfiniteScrollViewItem>
-    <InfiniteScrollViewItem>{itemsData[1].count}</InfiniteScrollViewItem>
-    <InfiniteScrollViewItem>{itemsData[2].count}</InfiniteScrollViewItem>
+    <div slot="0">{itemsData[0].count}</div>
+    <div slot="1">{itemsData[1].count}</div>
+    <div slot="2">{itemsData[2].count}</div>
   </InfiniteScrollView>
 </main>
 

@@ -2,7 +2,9 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
-  let order = [0, 1, 2];
+  import Item from "./Item.svelte";
+
+  const slotsOrder = [0, 1, 2];
 </script>
 
 <!-- TODO: tree containers (divs), visible view will always be the second one, on scroll(end) reorder divs -->
@@ -31,13 +33,15 @@
         ev.currentTarget.appendChild(
           ev.currentTarget.removeChild(ev.currentTarget.children[0])
         );
-        order = [order[1], order[2], order[0]];
-        dispatch("scrolldown", { order: order });
+        slotsOrder.push(slotsOrder.shift());
+        dispatch("scrolldown", { slotsOrder: slotsOrder });
         break;
     }
   }}
 >
-  <slot />
+  <Item><slot name="0"></slot></Item>
+  <Item><slot name="1"></slot></Item>
+  <Item><slot name="2"></slot></Item>
 </div>
 
 <style>
