@@ -4,11 +4,34 @@
 
   import Item from "./Item.svelte";
 
+  let rect;
+
+  /** @type {HTMLElement} */
+  let container;
+  $: {
+    if (container) {
+        rect = container.getBoundingClientRect();
+
+        let cs = window.getComputedStyle(container);
+        const borderWidth = parseInt(cs.borderTopWidth, 10) + parseInt(cs.borderBottomWidth, 10);
+
+        cs = window.getComputedStyle(container.children[0]);
+        const sectionMargin = parseInt(cs.marginTop, 10) + parseInt(cs.marginBottom, 10);
+
+        container.scrollTop = rect.height + sectionMargin - borderWidth;
+    }
+  };
+
   const slotsOrder = [0, 1, 2];
 </script>
 
-<!-- TODO: tree containers (divs), visible view will always be the second one, on scroll(end) reorder divs -->
+<!-- TODO: initial positioning: second slot should be first
+      case rect.height + sectionMargin - borderWidth:
+        console.debug("scroll position: current");
+        break;
+-->
 <div
+    bind:this={container}
   on:scroll={(ev) => {
     // NOTE: This won't work if a border is set for this div
     let cs = window.getComputedStyle(ev.currentTarget);
@@ -19,14 +42,10 @@
     const sectionMargin =
       parseInt(cs.marginTop, 10) + parseInt(cs.marginBottom, 10);
 
-    const rect = ev.currentTarget.getBoundingClientRect();
-
     switch (ev.currentTarget.scrollTop) {
       case 0:
         console.debug("scroll position: before");
-        break;
-      case rect.height + sectionMargin - borderWidth:
-        console.debug("scroll position: current");
+        // TODO: last child becomes the first child ("scrollup" event)
         break;
       case (rect.height + sectionMargin - borderWidth) * 2:
         console.debug("scroll position: after");
@@ -39,9 +58,9 @@
     }
   }}
 >
-  <Item><slot name="0"></slot></Item>
-  <Item><slot name="1"></slot></Item>
-  <Item><slot name="2"></slot></Item>
+  <Item><slot name="0" /></Item>
+  <Item><slot name="1" /></Item>
+  <Item><slot name="2" /></Item>
 </div>
 
 <style>
