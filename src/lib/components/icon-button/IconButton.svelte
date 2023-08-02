@@ -28,10 +28,10 @@
         --ripple-color: var(--color);
         color: var(--color);
 
-        height: 56px;
-        width: 56px;
+        height: 32px;
+        width: 32px;
 
-        padding: 8px 8px;
+        padding: 2px 4px;
         margin: 8px;
 
         border-radius: 50%;

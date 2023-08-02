@@ -50,20 +50,19 @@
 <header class="container-fluid" style="font-size: 1rem;">
   <!-- Top app bar -->
 
-  {#if utils.isAndroid() && view !== viewStack[0]}
+  {#if !utils.isAndroid() && view !== viewStack[0]}
     <!-- Back Button (only if not on android) -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <dev
-      class="icon"
-      role="button"
-      tabindex="0"
-      on:click={() => goBackInHistory()}
-    >
-      <TiArrowBackOutline />
-    </dev>
+    <div class="actions">
+      <IconButton
+        on:click={() => goBackInHistory()}
+      >
+        <TiArrowBackOutline />
+      </IconButton>
+    </div>
   {/if}
 
-  <DatePicker style="margin: 0;" bind:current={datePickerCurrent} />
+  <DatePicker style="margin: 0; width: 30rem;" bind:current={datePickerCurrent} />
 
   <span class="spacer" />
 
@@ -94,7 +93,7 @@
   </div>
 </header>
 
-<main class="container-fluid" style={`bottom: ${!!footerMode ? "80px" : "0"}`}>
+<main class="container-fluid" style={`bottom: ${!!footerMode ? "60px" : "0"}`}>
   <!-- Month view (infinite swipe) -->
   <InfiniteScrollView
     on:scrollup={(ev) => {
@@ -120,7 +119,7 @@
 <style>
   header {
     position: relative;
-    height: 80px;
+    height: 60px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -129,6 +128,7 @@
 
   header > .spacer {
     width: 100%;
+    border: none;
   }
 
   header > .actions {
@@ -140,7 +140,7 @@
 
   main {
     position: fixed;
-    top: 80px;
+    top: 60px;
     right: 0;
     left: 0;
   }
@@ -148,7 +148,7 @@
   footer:not(.visible) {
     margin-top: 100%;
     position: absolute;
-    height: 64px;
+    height: 60px;
     right: 0;
     bottom: 0;
     left: 0;
