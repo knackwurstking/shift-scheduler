@@ -92,8 +92,12 @@
 </header>
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "80px" : "0"}`}>
-  <!-- TODO: Month view (infinite swipe) -->
+  <!-- Month view (infinite swipe) -->
   <InfiniteScrollView
+    on:scrollup={(ev) => {
+      itemsData[ev.detail.slotsOrder[0]].count += 3;
+      itemsData = itemsData;
+    }}
     on:scrolldown={(ev) => {
       itemsData[ev.detail.slotsOrder[2]].count += 3;
       itemsData = itemsData;

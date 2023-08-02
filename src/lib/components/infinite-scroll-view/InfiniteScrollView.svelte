@@ -41,11 +41,16 @@
 
     switch (ev.currentTarget.scrollTop) {
       case 0:
-        console.debug("scroll position: before");
-        // TODO: last child becomes the first child ("scrollup" event)
+        console.debug("event: scrollup");
+        ev.currentTarget.insertBefore(
+          ev.currentTarget,
+          ev.currentTarget.removeChild(ev.currentTarget.children[2])
+        );
+        slotsOrder.unshift(slotsOrder.pop());
+        dispatch("scrollup", { slotsOrder: slotsOrder });
         break;
       case (rect.height + sectionMargin - borderWidth) * 2:
-        console.debug("scroll position: after");
+        console.debug("event: scrolldown");
         ev.currentTarget.appendChild(
           ev.currentTarget.removeChild(ev.currentTarget.children[0])
         );
