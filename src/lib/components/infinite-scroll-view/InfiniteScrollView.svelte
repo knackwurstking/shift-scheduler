@@ -61,6 +61,9 @@
           ev.currentTarget.removeChild(ev.currentTarget.children[0])
         );
 
+        // NOTE: is there a better way to do this?
+        container.scrollTop = rect.height + sectionMargin - borderWidth;
+
         slotsOrder.push(slotsOrder.shift());
         dispatch("scrolldown", { slotsOrder: slotsOrder });
         break;
