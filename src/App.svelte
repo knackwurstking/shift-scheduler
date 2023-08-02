@@ -106,6 +106,7 @@
       itemsData = itemsData;
     }}
   >
+    <!-- TODO: Build the month grid -->
     <div slot="0">{itemsData[0].monthCount}</div>
     <div slot="1">{itemsData[1].monthCount}</div>
     <div slot="2">{itemsData[2].monthCount}</div>
