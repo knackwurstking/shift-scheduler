@@ -9,3 +9,6 @@ declare interface DatePickerCurrent {
   year: number;
   month: number;
 }
+
+declare interface GridItemData {
+}

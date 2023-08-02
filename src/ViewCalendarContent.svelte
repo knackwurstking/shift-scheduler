@@ -1,6 +1,37 @@
 <script>
+    /** @type {Date} */
+    let date;
+    $: {
+        if (!!date) {
+            updateData();
+        }
+    }
+
     /** @type {number} */
     export let monthCount;
+    $: {
+        if (typeof monthCount === "number") {
+            const today = new Date();
+            date = new Date(
+                today.getFullYear(),
+                today.getMonth() + monthCount,
+                1
+            );
+        }
+    }
+
+    /** @type {GridItemData[]} */
+    let data = [];
+
+    function updateData() {
+        // TODO: get data for the year and month
+        // TODO: build the data grid
+        for (let y = 0; y < 7; y++) {
+            for (let x = 0; x < 7; x++) {
+                // ...
+            }
+        }
+    }
 </script>
 
 <div class="grid">
@@ -12,53 +43,53 @@
     <div class="header">Fri</div>
     <div class="header">Sat</div>
 
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
 
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
 
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
 
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
 
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
 
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
 </div>
 
 <style>
