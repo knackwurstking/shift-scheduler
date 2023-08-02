@@ -132,7 +132,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid var(--muted-border-color);
   }
 
   header > .spacer {
@@ -152,6 +152,7 @@
     top: 60px;
     right: 0;
     left: 0;
+    padding: 0;
   }
 
   footer:not(.visible) {
