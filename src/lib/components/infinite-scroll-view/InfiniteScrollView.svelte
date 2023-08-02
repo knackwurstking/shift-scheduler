@@ -93,8 +93,15 @@
 
     scroll-snap-type: y mandatory;
 
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
     /*
     border: 1px solid red;
     */
+  }
+
+  div::-webkit-scrollbar {
+    display: none;
   }
 </style>

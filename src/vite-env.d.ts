@@ -12,4 +12,5 @@ declare interface DatePickerCurrent {
 
 declare interface GridItemData {
   title: string;
+  disabled?: boolean;
 }
