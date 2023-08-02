@@ -20,11 +20,15 @@
       const sectionMargin =
         parseInt(cs.marginTop, 10) + parseInt(cs.marginBottom, 10);
 
-      container.scrollTop = rect.height + sectionMargin - borderWidth;
+      resetScrollTop(sectionMargin, borderWidth);
     }
   }
 
   const slotsOrder = [0, 1, 2];
+
+  function resetScrollTop(sectionMargin, borderWidth) {
+    container.scrollTop = rect.height + sectionMargin - borderWidth;
+  }
 </script>
 
 <div
@@ -48,7 +52,7 @@
         );
 
         // NOTE: is there a better way to do this?
-        container.scrollTop = rect.height + sectionMargin - borderWidth;
+        resetScrollTop(sectionMargin, borderWidth);
 
         slotsOrder.unshift(slotsOrder.pop());
         dispatch("scrollup", { slotsOrder: slotsOrder });
@@ -62,7 +66,7 @@
         );
 
         // NOTE: is there a better way to do this?
-        container.scrollTop = rect.height + sectionMargin - borderWidth;
+        resetScrollTop(sectionMargin, borderWidth);
 
         slotsOrder.push(slotsOrder.shift());
         dispatch("scrolldown", { slotsOrder: slotsOrder });
