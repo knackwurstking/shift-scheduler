@@ -67,8 +67,8 @@
         height: 100%;
 
         /* TODO: grid item sizing evenly */
-        grid-template-columns: auto auto auto auto auto auto auto;
-        grid-template-rows: 1.5rem auto auto auto auto auto auto;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1.5rem 1fr 1fr 1fr 1fr 1fr 1fr;
 
         grid-column-gap: 4px;
         grid-row-gap: 4px;
