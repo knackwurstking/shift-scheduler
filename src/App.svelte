@@ -98,7 +98,7 @@
   <!-- Month view (infinite swipe) -->
   <InfiniteScrollView
     on:scrollup={(ev) => {
-      itemsData[ev.detail.slotsOrder[0]].count += 3;
+      itemsData[ev.detail.slotsOrder[0]].count -= 3;
       itemsData = itemsData;
     }}
     on:scrolldown={(ev) => {

@@ -30,7 +30,6 @@
 <div
   bind:this={container}
   on:scroll={(ev) => {
-    // NOTE: This won't work if a border is set for this div
     let cs = window.getComputedStyle(ev.currentTarget);
     const borderWidth =
       parseInt(cs.borderTopWidth, 10) + parseInt(cs.borderBottomWidth, 10);
@@ -42,18 +41,26 @@
     switch (ev.currentTarget.scrollTop) {
       case 0:
         console.debug("event: scrollup");
+
         ev.currentTarget.insertBefore(
-          ev.currentTarget,
-          ev.currentTarget.removeChild(ev.currentTarget.children[2])
+          ev.currentTarget.removeChild(ev.currentTarget.children[2]),
+          ev.currentTarget.firstChild
         );
+
+        // NOTE: is there a better way to do this?
+        container.scrollTop = rect.height + sectionMargin - borderWidth;
+
         slotsOrder.unshift(slotsOrder.pop());
         dispatch("scrollup", { slotsOrder: slotsOrder });
         break;
+
       case (rect.height + sectionMargin - borderWidth) * 2:
         console.debug("event: scrolldown");
+
         ev.currentTarget.appendChild(
           ev.currentTarget.removeChild(ev.currentTarget.children[0])
         );
+
         slotsOrder.push(slotsOrder.shift());
         dispatch("scrolldown", { slotsOrder: slotsOrder });
         break;
