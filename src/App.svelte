@@ -52,7 +52,6 @@
 
   {#if !utils.isAndroid() && view !== viewStack[0]}
     <!-- Back Button (only if not on android) -->
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="actions">
       <IconButton
         on:click={() => goBackInHistory()}
