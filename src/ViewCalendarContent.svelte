@@ -26,11 +26,15 @@
     function updateData() {
         // TODO: get data for the year and month
         // TODO: build the data grid
-        for (let y = 0; y < 7; y++) {
-            for (let x = 0; x < 7; x++) {
-                // ...
-            }
+        /** @type {GridItemData[]} */
+        const nextData = [];
+        for (let x = 0; x < 42; x++) {
+            const d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + (x - date.getDay()));
+            nextData.push({
+                title: `${d.getDate()}`,
+            });
         }
+        data = nextData;
     }
 </script>
 
@@ -43,53 +47,11 @@
     <div class="header">Fri</div>
     <div class="header">Sat</div>
 
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
-    <div />
+    {#each data as itemData}
+        <div>
+            <span>{itemData.title}</span>
+        </div>
+    {/each}
 </div>
 
 <style>
