@@ -31,7 +31,7 @@
   /** @type {Views[]}*/
   let viewStack = [view];
 
-  let itemsData = [{ count: 1 }, { count: 2 }, { count: 3 }];
+  let itemsData = [{ monthCount: -1 }, { monthCount: 0 }, { monthCount: 1 }];
 
   /** @type {"edit" | null} */
   let footerMode = null;
@@ -98,17 +98,17 @@
   <!-- Month view (infinite swipe) -->
   <InfiniteScrollView
     on:scrollup={(ev) => {
-      itemsData[ev.detail.slotsOrder[0]].count -= 3;
+      itemsData[ev.detail.slotsOrder[0]].monthCount -= 3;
       itemsData = itemsData;
     }}
     on:scrolldown={(ev) => {
-      itemsData[ev.detail.slotsOrder[2]].count += 3;
+      itemsData[ev.detail.slotsOrder[2]].monthCount += 3;
       itemsData = itemsData;
     }}
   >
-    <div slot="0">{itemsData[0].count}</div>
-    <div slot="1">{itemsData[1].count}</div>
-    <div slot="2">{itemsData[2].count}</div>
+    <div slot="0">{itemsData[0].monthCount}</div>
+    <div slot="1">{itemsData[1].monthCount}</div>
+    <div slot="2">{itemsData[2].monthCount}</div>
   </InfiniteScrollView>
 </main>
 
