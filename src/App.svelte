@@ -16,6 +16,7 @@
   import DatePicker from "./lib/components/date-picker";
   import IconButton from "./lib/components/icon-button";
   import InfiniteScrollView from "./lib/components/infinite-scroll-view";
+  import ViewCalendarContent from "./ViewCalendarContent.svelte";
 
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page
@@ -53,15 +54,16 @@
   {#if !utils.isAndroid() && view !== viewStack[0]}
     <!-- Back Button (only if not on android) -->
     <div class="actions">
-      <IconButton
-        on:click={() => goBackInHistory()}
-      >
+      <IconButton on:click={() => goBackInHistory()}>
         <TiArrowBackOutline />
       </IconButton>
     </div>
   {/if}
 
-  <DatePicker style="margin: 0; width: 30rem;" bind:current={datePickerCurrent} />
+  <DatePicker
+    style="margin: 0; width: 30rem;"
+    bind:current={datePickerCurrent}
+  />
 
   <span class="spacer" />
 
@@ -105,9 +107,17 @@
     }}
   >
     <!-- TODO: Build the month grid -->
-    <div slot="0">{itemsData[0].monthCount}</div>
-    <div slot="1">{itemsData[1].monthCount}</div>
-    <div slot="2">{itemsData[2].monthCount}</div>
+    <div style="width: 100%; height: 100%;" slot="0">
+      {itemsData[0].monthCount}
+    </div>
+
+    <div style="width: 100%; height: 100%;" slot="1">
+      <ViewCalendarContent monthCount={itemsData[1].monthCount} />
+    </div>
+
+    <div style="width: 100%; height: 100%;" slot="2">
+      {itemsData[2].monthCount}
+    </div>
   </InfiniteScrollView>
 </main>
 

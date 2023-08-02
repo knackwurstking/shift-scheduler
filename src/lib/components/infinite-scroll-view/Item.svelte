@@ -11,8 +11,6 @@
     min-height: 100%;
     height: 100%;
     max-height: 100%;
-
-    border: 1px solid yellow;
   }
 
   section:nth-child(1) {
