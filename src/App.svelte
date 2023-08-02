@@ -68,6 +68,7 @@
   <span class="spacer" />
 
   <div class="actions">
+    <!-- Edit Shifts -->
     <IconButton
       disabled
       on:click={() => {
@@ -75,6 +76,7 @@
       }}><MdModeEdit /></IconButton
     >
 
+    <!-- GoTo Today -->
     <IconButton
       disabled
       on:click={() => {
@@ -82,6 +84,7 @@
       }}><MdToday /></IconButton
     >
 
+    <!-- Settings -->
     <IconButton
       disabled
       on:click={() => {
