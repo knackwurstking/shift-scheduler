@@ -4,13 +4,13 @@
 </script>
 
 <div class="grid">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div class="header">Sun</div>
+    <div class="header">Mon</div>
+    <div class="header">Tue</div>
+    <div class="header">Wen</div>
+    <div class="header">Thu</div>
+    <div class="header">Fri</div>
+    <div class="header">Sat</div>
 
     <div></div>
     <div></div>
@@ -66,20 +66,26 @@
         width: 100%;
         height: 100%;
 
+        /* TODO: grid item sizing evenly */
         grid-template-columns: auto auto auto auto auto auto auto;
-        /* NOTE: 1.25rem === --font-size for a h3 tag */
-        grid-template-rows: calc(1.25rem + (var(--spacing) * 2)) auto auto auto auto auto auto;
+        grid-template-rows: 1.5rem auto auto auto auto auto auto;
 
-        grid-column-gap: 1px;
-        grid-row-gap: 1px;
+        grid-column-gap: 4px;
+        grid-row-gap: 4px;
 
-        background: var(--muted-border-color);
-        padding: 1px;
+        padding: var(--spacing) 0;
     }
 
     div.grid > div {
-        /* TODO: Fix double borders (set grid background to white? and the items background to black?) */
+        border: 1px solid var(--muted-border-color);
         border-radius: var(--border-radius);
-        background: var(--background-color);
+    }
+
+    div.grid > div.header {
+        display: flex;
+        font-size: 1.25rem;
+        font-weight: bold;
+        justify-content: center;
+        align-items: center;
     }
 </style>
