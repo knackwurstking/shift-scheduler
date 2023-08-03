@@ -10,13 +10,13 @@
   // @ts-ignore
   import MdModeEdit from "svelte-icons/md/MdModeEdit.svelte";
 
-  import * as ripple from "./lib/js/ripple";
+  //import * as ripple from "./lib/js/ripple";
   import * as utils from "./lib/js/utils";
 
   import DatePicker from "./lib/components/date-picker";
   import IconButton from "./lib/components/icon-button";
   import InfiniteScrollView from "./lib/components/infinite-scroll-view";
-  import ViewCalendarContent from "./ViewCalendarContent.svelte";
+  import { Content as ViewCalendarContent } from "./lib/components/calendar";
 
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page

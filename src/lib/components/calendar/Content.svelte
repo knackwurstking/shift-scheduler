@@ -21,7 +21,6 @@
 
   function updateData() {
     // TODO: get data for the year and month
-    // TODO: build the data grid
     /** @type {GridItemData[]} */
     const nextData = [];
     for (let x = 0; x < 42; x++) {
