@@ -106,9 +106,8 @@
       itemsData = itemsData;
     }}
   >
-    <!-- TODO: Build the month grid -->
     <div style="width: 100%; height: 100%;" slot="0">
-      {itemsData[0].monthCount}
+      <ViewCalendarContent monthCount={itemsData[0].monthCount} />
     </div>
 
     <div style="width: 100%; height: 100%;" slot="1">
@@ -116,7 +115,7 @@
     </div>
 
     <div style="width: 100%; height: 100%;" slot="2">
-      {itemsData[2].monthCount}
+      <ViewCalendarContent monthCount={itemsData[2].monthCount} />
     </div>
   </InfiniteScrollView>
 </main>
