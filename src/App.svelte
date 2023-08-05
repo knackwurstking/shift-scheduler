@@ -98,10 +98,12 @@
   <!-- Month view (infinite swipe) -->
   <InfiniteScrollView
     on:scrollup={(ev) => {
+      // TODO: Update the current date (date picker)
       itemsData[ev.detail.slotsOrder[0]].monthCount -= 3;
       itemsData = itemsData;
     }}
     on:scrolldown={(ev) => {
+      // TODO: Update the current date (date picker)
       itemsData[ev.detail.slotsOrder[2]].monthCount += 3;
       itemsData = itemsData;
     }}
