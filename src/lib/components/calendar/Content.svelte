@@ -20,7 +20,6 @@
   let data = [];
 
   function updateData() {
-    // TODO: get data for the year and month
     /** @type {GridItemData[]} */
     const nextData = [];
     for (let x = 0; x < 42; x++) {
@@ -59,7 +58,6 @@
     width: 100%;
     height: 100%;
 
-    /* TODO: grid item sizing evenly */
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1.5rem 1fr 1fr 1fr 1fr 1fr 1fr;
 
