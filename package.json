@@ -1,7 +1,7 @@
 {
   "name": "shift-scheduler",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -14,6 +14,10 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
+    "@capacitor/android": "^5.2.2",
+    "@capacitor/cli": "^5.2.2",
+    "@capacitor/core": "^5.2.2",
+    "@capacitor/ios": "^5.2.2",
     "svelte-icons": "^2.1.0"
   }
 }
