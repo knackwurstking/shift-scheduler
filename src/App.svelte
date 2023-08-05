@@ -98,13 +98,27 @@
   <!-- Month view (infinite swipe) -->
   <InfiniteScrollView
     on:scrollup={(ev) => {
-      // TODO: Update the current date (date picker)
       itemsData[ev.detail.slotsOrder[0]].monthCount -= 3;
+
+      const today = new Date();
+      const date = new Date(today.getFullYear(), today.getMonth() + itemsData[ev.detail.slotsOrder[1]].monthCount, 1);
+      datePickerCurrent = {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+      };
+
       itemsData = itemsData;
     }}
     on:scrolldown={(ev) => {
-      // TODO: Update the current date (date picker)
       itemsData[ev.detail.slotsOrder[2]].monthCount += 3;
+
+      const today = new Date();
+      const date = new Date(today.getFullYear(), today.getMonth() + itemsData[ev.detail.slotsOrder[1]].monthCount, 1);
+      datePickerCurrent = {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+      };
+
       itemsData = itemsData;
     }}
   >

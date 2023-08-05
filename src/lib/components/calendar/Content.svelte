@@ -20,8 +20,11 @@
   let data = [];
 
   function updateData() {
+    console.debug("update date:", date);
+
     /** @type {GridItemData[]} */
     const nextData = [];
+
     for (let x = 0; x < 42; x++) {
       const d = new Date(
         date.getFullYear(),
@@ -33,6 +36,7 @@
         disabled: d.getMonth() !== date.getMonth(),
       });
     }
+
     data = nextData;
   }
 </script>
