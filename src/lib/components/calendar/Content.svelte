@@ -48,13 +48,13 @@
 
   {#each data as itemData}
     <div class="item" class:disabled={itemData.disabled}>
-      <span>{itemData.title}</span>
+      <span class="date">{itemData.title}</span>
     </div>
   {/each}
 </div>
 
 <style>
-  div.grid {
+  .grid {
     width: 100%;
     height: 100%;
 
@@ -67,18 +67,22 @@
     padding: var(--spacing) 0;
   }
 
-  div.grid > div {
+  .grid > div {
     border: 1px solid var(--muted-border-color);
     border-radius: var(--border-radius);
   }
 
-  div.grid > div.header {
+  .grid > .header {
     display: flex;
     font-size: 1.25rem;
     font-weight: bold;
     justify-content: center;
     align-items: flex-end;
     border: none;
+  }
+
+  .grid .item .date {
+    margin-left: calc(var(--spacing) / 2);
   }
 
   .item.disabled {
