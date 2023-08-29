@@ -10,8 +10,8 @@ declare interface DatePickerCurrent {
   month: number;
 }
 
-// TODO: Adding todayHighlighting bool
 declare interface GridItemData {
   title: string;
   disabled?: boolean;
+  today?: boolean;
 }

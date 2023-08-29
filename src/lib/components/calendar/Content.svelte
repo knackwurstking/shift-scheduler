@@ -1,5 +1,8 @@
 <script>
   /** @type {Date} */
+  let today;
+
+  /** @type {Date} */
   let date;
   $: {
     if (!!date) {
@@ -11,7 +14,7 @@
   export let monthCount;
   $: {
     if (typeof monthCount === "number") {
-      const today = new Date();
+      today = new Date();
       date = new Date(today.getFullYear(), today.getMonth() + monthCount, 1);
     }
   }
@@ -34,6 +37,11 @@
       nextData.push({
         title: `${d.getDate()}`,
         disabled: d.getMonth() !== date.getMonth(),
+        today: !!(
+          today.getFullYear() === d.getFullYear() &&
+          today.getMonth() === d.getMonth() &&
+          today.getDate() === d.getDate()
+        ),
       });
     }
 
@@ -51,7 +59,11 @@
   <div class="header">Sat</div>
 
   {#each data as itemData}
-    <div class="item" class:disabled={itemData.disabled}>
+    <div
+      class="item"
+      class:disabled={!!itemData.disabled}
+      class:today={!!itemData.today}
+    >
       <span class="date">{itemData.title}</span>
     </div>
   {/each}
@@ -89,7 +101,11 @@
     margin-left: calc(var(--spacing) / 2);
   }
 
-  .item.disabled {
+  .grid .item.today {
+    color: orange;
+  }
+
+  .grid .item.disabled {
     opacity: 0.7;
     filter: blur(1px);
   }
