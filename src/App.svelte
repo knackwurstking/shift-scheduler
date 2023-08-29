@@ -42,6 +42,8 @@
     viewStack = viewStack;
     view = v;
   }
+
+  // TODO: Need some handler (setTimeout) to update the today highlighting if its 12:00 AM
 </script>
 
 <svelte:head>
