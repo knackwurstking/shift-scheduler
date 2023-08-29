@@ -1,11 +1,11 @@
 <script>
-  import * as ripple from "../../js/ripple";
+  import * as ripple from "../../ripple";
 
   import Dialog from "./Dialog.svelte";
 
   export let style = "";
   let _class = "";
-  export { _class as class }
+  export { _class as class };
 
   /** @type {DatePickerCurrent} */
   export let current;
@@ -37,10 +37,7 @@
     // TODO: open dialog for changing the current year and month in use
   }}
 >
-  <span
-    >{current.year} / {(current.month + 1)
-      .toString()
-      .padStart(2, "0")}</span
+  <span>{current.year} / {(current.month + 1).toString().padStart(2, "0")}</span
   >
 </button>
 
