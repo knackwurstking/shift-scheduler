@@ -32,6 +32,8 @@
   /** @type {Views[]}*/
   let viewStack = [view];
 
+  /** @type {[number, number, number]} */
+  let slotsOrder;
   let itemsData = [{ monthCount: -1 }, { monthCount: 0 }, { monthCount: 1 }];
 
   /** @type {"edit" | null} */
@@ -72,17 +74,27 @@
   <div class="actions">
     <!-- Edit Shifts -->
     <IconButton
-      disabled
       on:click={() => {
-        // TODO: enable (footer) edit mode
+        footerMode = footerMode === "edit" ? null : "edit";
       }}><MdModeEdit /></IconButton
     >
 
     <!-- GoTo Today -->
     <IconButton
-      disabled
+      disabled={
+        datePickerCurrent.year === new Date().getFullYear() &&
+        datePickerCurrent.month === new Date().getMonth()
+      }
       on:click={() => {
-        // TODO: goto today's date (year, month), update datePickerCurrent
+        const today = new Date();
+        datePickerCurrent = {
+          year: today.getFullYear(),
+          month: today.getMonth(),
+        };
+        itemsData[slotsOrder[0]].monthCount = -1;
+        itemsData[slotsOrder[1]].monthCount = 0;
+        itemsData[slotsOrder[2]].monthCount = 1;
+        itemsData = itemsData;
       }}><MdToday /></IconButton
     >
 
@@ -99,11 +111,16 @@
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "60px" : "0"}`}>
   <!-- Month view (infinite swipe) -->
   <InfiniteScrollView
-    on:scrollup={(ev) => {
-      itemsData[ev.detail.slotsOrder[0]].monthCount -= 3;
+    bind:slotsOrder
+    on:scrollup={() => {
+      itemsData[slotsOrder[0]].monthCount -= 3;
 
       const today = new Date();
-      const date = new Date(today.getFullYear(), today.getMonth() + itemsData[ev.detail.slotsOrder[1]].monthCount, 1);
+      const date = new Date(
+        today.getFullYear(),
+        today.getMonth() + itemsData[slotsOrder[1]].monthCount,
+        1
+      );
       datePickerCurrent = {
         year: date.getFullYear(),
         month: date.getMonth(),
@@ -111,11 +128,15 @@
 
       itemsData = itemsData;
     }}
-    on:scrolldown={(ev) => {
-      itemsData[ev.detail.slotsOrder[2]].monthCount += 3;
+    on:scrolldown={() => {
+      itemsData[slotsOrder[2]].monthCount += 3;
 
       const today = new Date();
-      const date = new Date(today.getFullYear(), today.getMonth() + itemsData[ev.detail.slotsOrder[1]].monthCount, 1);
+      const date = new Date(
+        today.getFullYear(),
+        today.getMonth() + itemsData[slotsOrder[1]].monthCount,
+        1
+      );
       datePickerCurrent = {
         year: date.getFullYear(),
         month: date.getMonth(),
@@ -138,11 +159,15 @@
   </InfiniteScrollView>
 </main>
 
-<footer class="container-fluid" class:visible={!footerMode}>
+<footer class="container-fluid" class:visible={footerMode === "edit"}>
   <!-- TODO: Toolbar for the edit shifts mode -->
 </footer>
 
 <style>
+  :global(html, body) {
+    overflow: hidden;
+  }
+
   header {
     position: relative;
     height: 60px;
@@ -171,13 +196,17 @@
     left: 0;
   }
 
-  footer:not(.visible) {
-    margin-top: 100%;
-    position: absolute;
+  footer {
+    transform: none;
     height: 60px;
     right: 0;
     bottom: 0;
     left: 0;
-    border-top: 1px solid;
+    position: absolute;
+    border-top: 1px solid var(--muted-border-color);
+  }
+
+  footer:not(.visible) {
+    transform: translateY(100%);
   }
 </style>

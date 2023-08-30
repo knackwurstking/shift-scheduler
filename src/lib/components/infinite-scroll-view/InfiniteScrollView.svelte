@@ -24,7 +24,7 @@
     }
   }
 
-  const slotsOrder = [0, 1, 2];
+  export let slotsOrder = [0, 1, 2];
 
   function resetScrollTop(sectionMargin, borderWidth) {
     container.scrollTop = rect.height + sectionMargin - borderWidth;
@@ -55,6 +55,7 @@
         resetScrollTop(sectionMargin, borderWidth);
 
         slotsOrder.unshift(slotsOrder.pop());
+        slotsOrder = slotsOrder;
         dispatch("scrollup", { slotsOrder: slotsOrder });
         break;
 
@@ -69,6 +70,7 @@
         resetScrollTop(sectionMargin, borderWidth);
 
         slotsOrder.push(slotsOrder.shift());
+        slotsOrder = slotsOrder;
         dispatch("scrolldown", { slotsOrder: slotsOrder });
         break;
     }
