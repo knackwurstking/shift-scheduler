@@ -1,19 +1,21 @@
 <script>
   import EditModeItem from "./EditModeItem.svelte";
 
-  let { shiftItems, startDate, shiftRhythm } = getSettings();
+  let { shiftEditItems, startDate, shiftRhythm } = getSettings();
   $: console.debug("Start Date:", startDate);
 
   /**
    * @returns {{
-   *  shiftItems: ShiftItem[],
+   *  shiftEditItems: ShiftItem[],
    *  startDate: Date,
    *  shiftRhythm: ShiftName[],
    * }}
    */
   function getSettings() {
     const settings = JSON.parse(localStorage.getItem("settings") || "{}");
-    settings.startDate = new Date(settings.date);
+    settings.shiftEditItems = [];
+    settings.startDate = new Date(settings.date || null);
+    settings.shiftRhythm = [];
     return settings;
   }
 </script>
@@ -33,7 +35,7 @@
 <section class="shift-list-edit-mode">
   <form action="#">
     <ul class="shift-edit-mode">
-      {#each shiftItems as item}
+      {#each shiftEditItems as item}
         <EditModeItem {...item} />
       {/each}
     </ul>
