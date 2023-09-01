@@ -17,6 +17,7 @@
   import IconButton from "./lib/components/icon-button";
   import InfiniteScrollView from "./lib/components/infinite-scroll-view";
   import { Content as ViewCalendarContent } from "./lib/components/calendar";
+  import SettingsView from "./lib/components/settings";
 
   /** @type {Themes} */
   let currentTheme = "default"; // TODO: Add a theme picker to the settings page
@@ -42,6 +43,15 @@
   function goBackInHistory() {
     const v = viewStack.pop();
     viewStack = viewStack;
+    view = v;
+  }
+
+  /**
+   * 
+   * @param {Views} v
+   */
+  function goTo(v) {
+    viewStack = [...viewStack, v];
     view = v;
   }
 
@@ -101,62 +111,64 @@
     <!-- Settings -->
     <IconButton
       disabled
-      on:click={() => {
-        // TODO: goto settings view (add to stack, use goto function)
-      }}><TiSpanner /></IconButton
+      on:click={() => goTo("settings")}><TiSpanner /></IconButton
     >
   </div>
 </header>
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "60px" : "0"}`}>
-  <!-- Month view (infinite swipe) -->
-  <InfiniteScrollView
-    bind:slotsOrder
-    on:scrollup={() => {
-      itemsData[slotsOrder[0]].monthCount -= 3;
+  {#if view === "calendar"}
+    <!-- Month view (infinite swipe) -->
+    <InfiniteScrollView
+      bind:slotsOrder
+      on:scrollup={() => {
+        itemsData[slotsOrder[0]].monthCount -= 3;
 
-      const today = new Date();
-      const date = new Date(
-        today.getFullYear(),
-        today.getMonth() + itemsData[slotsOrder[1]].monthCount,
-        1
-      );
-      datePickerCurrent = {
-        year: date.getFullYear(),
-        month: date.getMonth(),
-      };
+        const today = new Date();
+        const date = new Date(
+          today.getFullYear(),
+          today.getMonth() + itemsData[slotsOrder[1]].monthCount,
+          1
+        );
+        datePickerCurrent = {
+          year: date.getFullYear(),
+          month: date.getMonth(),
+        };
 
-      itemsData = itemsData;
-    }}
-    on:scrolldown={() => {
-      itemsData[slotsOrder[2]].monthCount += 3;
+        itemsData = itemsData;
+      }}
+      on:scrolldown={() => {
+        itemsData[slotsOrder[2]].monthCount += 3;
 
-      const today = new Date();
-      const date = new Date(
-        today.getFullYear(),
-        today.getMonth() + itemsData[slotsOrder[1]].monthCount,
-        1
-      );
-      datePickerCurrent = {
-        year: date.getFullYear(),
-        month: date.getMonth(),
-      };
+        const today = new Date();
+        const date = new Date(
+          today.getFullYear(),
+          today.getMonth() + itemsData[slotsOrder[1]].monthCount,
+          1
+        );
+        datePickerCurrent = {
+          year: date.getFullYear(),
+          month: date.getMonth(),
+        };
 
-      itemsData = itemsData;
-    }}
-  >
-    <div style="width: 100%; height: 100%;" slot="0">
-      <ViewCalendarContent monthCount={itemsData[0].monthCount} />
-    </div>
+        itemsData = itemsData;
+      }}
+    >
+      <div style="width: 100%; height: 100%;" slot="0">
+        <ViewCalendarContent monthCount={itemsData[0].monthCount} />
+      </div>
 
-    <div style="width: 100%; height: 100%;" slot="1">
-      <ViewCalendarContent monthCount={itemsData[1].monthCount} />
-    </div>
+      <div style="width: 100%; height: 100%;" slot="1">
+        <ViewCalendarContent monthCount={itemsData[1].monthCount} />
+      </div>
 
-    <div style="width: 100%; height: 100%;" slot="2">
-      <ViewCalendarContent monthCount={itemsData[2].monthCount} />
-    </div>
-  </InfiniteScrollView>
+      <div style="width: 100%; height: 100%;" slot="2">
+        <ViewCalendarContent monthCount={itemsData[2].monthCount} />
+      </div>
+    </InfiniteScrollView>
+  {:else if view === "settings"}
+    <SettingsView />
+  {/if}
 </main>
 
 <footer class="container-fluid" class:visible={footerMode === "edit"}>
