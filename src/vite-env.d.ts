@@ -16,7 +16,9 @@ declare interface GridItemData {
   today?: boolean;
 }
 
+declare type ShiftName = string;
+
 declare interface ShiftItem {
-  name: string;
+  name: ShiftName;
   visible: boolean;
 }
