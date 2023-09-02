@@ -23,7 +23,7 @@
       { name: "-", visible: false },
     ];
     settings.startDate = settings.startDate || "";
-    settings.shiftRhythm = settings.shiftRhythm || ["Early", "Early", "Late", "Late", "Night", "Night", "-", "-", "-"];
+    settings.shiftRhythm = settings.shiftRhythm || [];
 
     return settings;
   }
@@ -36,9 +36,28 @@
       <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
     </label>
 
+    <div class="shifts">
+      <!-- svelte-ignore a11y-label-has-associated-control -->
+      <label>Shifts (Edit)</label>
+
+      <ul class="shifts-available">
+        {#each shiftEditItems as item}
+          <Shift {...item} on:click={() => {
+            shiftRhythm = [
+              ...shiftRhythm,
+              item.name,
+            ];
+          }} />
+        {/each}
+        <AddShift on:click={() => {
+          // TODO: add a new shift (open dialog)
+        }} />
+      </ul>
+    </div>
+
     <div class="rhythm">
       <!-- svelte-ignore a11y-label-has-associated-control -->
-      <label>Rhythm</label>
+      <label>Rhythm (click a item from <i>"Shifts (Edit)"</i> to add)</label>
 
       <ul>
         {#each shiftRhythm as shift, index}
@@ -49,25 +68,6 @@
             ];
           }} />
         {/each}
-        <AddShift on:click={() => {
-          // TODO: add a new shift (open dialog, pick a shift to add from ".shifts")
-        }} />
-      </ul>
-    </div>
-
-    <div class="shifts">
-      <!-- svelte-ignore a11y-label-has-associated-control -->
-      <label>Shifts (Edit)</label>
-
-      <ul class="shifts-available">
-        {#each shiftEditItems as item}
-          <Shift {...item} on:click={() => {
-            // TODO: Open edit dialog (remove shift from list, change name or short name, toggle visibility)
-          }} />
-        {/each}
-        <AddShift on:click={() => {
-          // TODO: add a new shift (open dialog)
-        }} />
       </ul>
     </div>
   </form>
