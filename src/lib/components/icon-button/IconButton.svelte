@@ -25,6 +25,10 @@
     position: relative;
     overflow: hidden;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     --ripple-color: var(--color);
     color: var(--color);
 
