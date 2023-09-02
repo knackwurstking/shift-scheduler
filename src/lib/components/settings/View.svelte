@@ -34,6 +34,7 @@
 
 <section class="shift-list-edit-mode">
   <form action="#">
+    <!-- TODO: add action buttons: "add", "edit", "remove" -->
     <ul class="shift-edit-mode">
       {#each shiftEditItems as item}
         <EditModeItem {...item} />
