@@ -20,5 +20,6 @@ declare type ShiftName = string;
 
 declare interface ShiftItem {
   name: ShiftName;
+  shortName?: ShiftName;
   visible: boolean;
 }
