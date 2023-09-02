@@ -66,6 +66,7 @@
 {#if dialogEditShift}
     <DialogEditShift
         open={dialogEditShift}
+        shiftsToEdit={shifts}
         on:submit={({ detail }) => {
             shifts = shifts;
             dialogEditShift = false;
