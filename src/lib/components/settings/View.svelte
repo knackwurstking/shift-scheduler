@@ -37,7 +37,6 @@
     </label>
 
     <div class="rhythm">
-      <!-- TODO: add some action button (to the right) for adding? a shift? -->
       <!-- svelte-ignore a11y-label-has-associated-control -->
       <label>Rhythm</label>
 
@@ -60,7 +59,6 @@
       <!-- svelte-ignore a11y-label-has-associated-control -->
       <label>Shifts (Edit)</label>
 
-      <!-- TODO: add some separate `Shift` item for "Add +" a new shift -->
       <ul class="shifts-available">
         {#each shiftEditItems as item}
           <Shift {...item} on:click={() => {
