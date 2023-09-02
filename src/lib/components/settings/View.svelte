@@ -8,8 +8,8 @@
     import DialogEditShift from './DialogEditShift.svelte';
     import IconButton from "../icon-button/IconButton.svelte";
 
-    let { shiftEditItems, startDate, shiftRhythm } = getSettings();
-    $: !!shiftEditItems && (save());
+    let { shifts, startDate, shiftRhythm } = getSettings();
+    $: !!shifts && (save());
     $: !!startDate && (save());
     $: !!shiftRhythm && (save());
 
@@ -18,7 +18,7 @@
 
     /**
      * @returns {{
-     *  shiftEditItems: ShiftItem[],
+     *  shifts: ShiftItem[],
      *  startDate: string,
      *  shiftRhythm: ShiftName[],
      * }}
@@ -27,7 +27,7 @@
         const settings = JSON.parse(localStorage.getItem("settings") || "{}");
 
         // NOTE: default values for testing
-        settings.shiftEditItems = settings.shiftEditItems || [];
+        settings.shifts = settings.shiftEditItems || [];
         settings.startDate = settings.startDate || "";
         settings.shiftRhythm = settings.shiftRhythm || [];
 
@@ -38,7 +38,7 @@
         console.debug("save...");
 
         localStorage.setItem("settings", JSON.stringify({
-            shiftEditItems,
+            shifts,
             startDate,
             shiftRhythm,
         }))
@@ -49,8 +49,14 @@
     <DialogAddShift
         open={dialogAddShift}
         on:submit={({ detail }) => {
-            console.debug("DialogAddShift (submit):", detail);
-            // TODO: add shift (detail: ShiftName)
+            if (shifts.find(s => s.name === detail.name)) {
+                return;
+            }
+
+            shifts = [
+                ...shifts,
+                detail,
+            ];
 
             dialogAddShift = false;
         }}
@@ -61,9 +67,7 @@
     <DialogEditShift
         open={dialogEditShift}
         on:submit={({ detail }) => {
-            console.debug("DialogEditShift (submit):", detail);
-            // TODO: new shifts list (detail: ShiftName[])
-
+            shifts = shifts;
             dialogEditShift = false;
         }}
     />
@@ -85,7 +89,7 @@
             </div>
 
             <ul class="shifts-available">
-                {#each shiftEditItems as item}
+                {#each shifts as item}
                     <Shift {...item} on:click={() => {
                         shiftRhythm = [
                             ...shiftRhythm,
@@ -105,7 +109,7 @@
             <ul>
                 {#each shiftRhythm as shift, index}
                     <Shift
-                        {...(shiftEditItems.find(s => s.name === shift) || { name: shift, visible: true })}
+                        {...(shifts.find(s => s.name === shift) || { name: shift, visible: true })}
                         on:click={() => {
                             shiftRhythm = [
                                 ...shiftRhythm.slice(0, index),
