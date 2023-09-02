@@ -1,5 +1,6 @@
 <script>
   import Shift from "./Shift.svelte";
+  import AddShift from "./AddShift.svelte";
 
   let { shiftEditItems, startDate, shiftRhythm } = getSettings();
   $: console.debug({ shiftEditItems, startDate, shiftRhythm });
@@ -41,11 +42,17 @@
       <label>Rhythm</label>
 
       <ul>
-        {#each shiftRhythm as shift}
+        {#each shiftRhythm as shift, index}
           <Shift {...(shiftEditItems.find(s => s.name === shift) || { name: shift, visible: true })} on:click={() => {
-            // TODO: remove this shift from the shift rhythm
+            shiftRhythm = [
+              ...shiftRhythm.slice(0, index),
+              ...shiftRhythm.slice(index+1),
+            ];
           }} />
         {/each}
+        <AddShift on:click={() => {
+          // TODO: add a new shift (open dialog, pick a shift to add from ".shifts")
+        }} />
       </ul>
     </div>
 
@@ -60,6 +67,9 @@
             // TODO: Open edit dialog (remove shift from list, change name or short name, toggle visibility)
           }} />
         {/each}
+        <AddShift on:click={() => {
+          // TODO: add a new shift (open dialog)
+        }} />
       </ul>
     </div>
   </form>
