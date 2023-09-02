@@ -32,6 +32,8 @@
     width: calc(6em + 16px);
     padding: 8px;
     margin: 4px;
+
+    user-select: none;
   }
 
   div.card.active {
