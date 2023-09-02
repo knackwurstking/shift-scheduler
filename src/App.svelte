@@ -41,13 +41,13 @@
   let footerMode = null;
 
   function goBackInHistory() {
-    const v = viewStack.pop();
+    viewStack.pop();
     viewStack = viewStack;
-    view = v;
+    view = viewStack[viewStack.length-1];
   }
 
   /**
-   * 
+   *
    * @param {Views} v
    */
   function goTo(v) {
@@ -82,37 +82,34 @@
   <span class="spacer" />
 
   <div class="actions">
-    <!-- Edit Shifts -->
-    <IconButton
-      on:click={() => {
-        footerMode = footerMode === "edit" ? null : "edit";
-      }}><MdModeEdit /></IconButton
-    >
+    {#if view === "calendar"}
+      <!-- Edit Shifts -->
+      <IconButton
+        on:click={() => {
+          footerMode = footerMode === "edit" ? null : "edit";
+        }}><MdModeEdit /></IconButton
+      >
 
-    <!-- GoTo Today -->
-    <IconButton
-      disabled={
-        datePickerCurrent.year === new Date().getFullYear() &&
-        datePickerCurrent.month === new Date().getMonth()
-      }
-      on:click={() => {
-        const today = new Date();
-        datePickerCurrent = {
-          year: today.getFullYear(),
-          month: today.getMonth(),
-        };
-        itemsData[slotsOrder[0]].monthCount = -1;
-        itemsData[slotsOrder[1]].monthCount = 0;
-        itemsData[slotsOrder[2]].monthCount = 1;
-        itemsData = itemsData;
-      }}><MdToday /></IconButton
-    >
+      <!-- GoTo Today -->
+      <IconButton
+        disabled={datePickerCurrent.year === new Date().getFullYear() &&
+          datePickerCurrent.month === new Date().getMonth()}
+        on:click={() => {
+          const today = new Date();
+          datePickerCurrent = {
+            year: today.getFullYear(),
+            month: today.getMonth(),
+          };
+          itemsData[slotsOrder[0]].monthCount = -1;
+          itemsData[slotsOrder[1]].monthCount = 0;
+          itemsData[slotsOrder[2]].monthCount = 1;
+          itemsData = itemsData;
+        }}><MdToday /></IconButton
+      >
 
-    <!-- Settings -->
-    <IconButton
-      disabled
-      on:click={() => goTo("settings")}><TiSpanner /></IconButton
-    >
+      <!-- Settings -->
+      <IconButton on:click={() => goTo("settings")}><TiSpanner /></IconButton>
+    {/if}
   </div>
 </header>
 
