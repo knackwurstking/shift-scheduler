@@ -17,11 +17,7 @@
     let dialogEditShift = false;
 
     /**
-     * @returns {{
-     *  shifts: ShiftItem[],
-     *  startDate: string,
-     *  shiftRhythm: ShiftName[],
-     * }}
+     * @returns {Settings}
      */
     function getSettings() {
         const settings = JSON.parse(localStorage.getItem("settings") || "{}");

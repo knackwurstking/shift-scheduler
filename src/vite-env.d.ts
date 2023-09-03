@@ -11,9 +11,16 @@ declare interface DatePickerCurrent {
 }
 
 declare interface GridItemData {
+    default: ShiftItem | null;
+    shift: ShiftItem | null;
+    note: string | null;
+}
+
+declare interface GridItem {
     title: string;
     disabled?: boolean;
     today?: boolean;
+    data: GridItemData | null;
 }
 
 declare type ShiftName = string;
@@ -22,4 +29,10 @@ declare interface ShiftItem {
     name: ShiftName;
     shortName?: ShiftName;
     visible: boolean;
+}
+
+declare interface Settings {
+    shifts: ShiftItem[];
+    startDate: string | Date;
+    shiftRhythm: ShiftName[];
 }
