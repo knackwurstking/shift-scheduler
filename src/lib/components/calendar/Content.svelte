@@ -1,4 +1,6 @@
 <script>
+    import * as utils from "../../js/utils";
+
     /** @type {Date} */
     let today;
 
@@ -67,13 +69,12 @@
     /**
      * 
      * @param {Date} date
+     * @returns {Promise<ShiftItem | null>}
      */
     async function getDefault(date) {
-        if (!settings.startDate) return;
+        if (!settings.startDate) return null;
 
-        // TODO: calculate the default shift for this day based on the user settings
-
-        return null;
+        return utils.calcShiftStep(settings, date);
     }
 
 
@@ -108,6 +109,12 @@
     {#each data as itemData}
         <div class="item" class:disabled={!!itemData.disabled} class:today={!!itemData.today}>
             <span class="date">{itemData.title}</span>
+
+            {#if itemData.data?.default}
+                <span class="shift" class:visible={itemData.data.default.visible}>{itemData.data.default.shortName}</span>
+            {:else if itemData.data?.shift}
+                <span class="shift" class:visible={itemData.data.shift.visible}>{itemData.data.shift.shortName}</span>
+            {/if}
         </div>
     {/each}
 </div>
@@ -141,6 +148,7 @@
     }
 
     .grid .item {
+        position: relative;
         user-select: none;
     }
 
@@ -155,5 +163,31 @@
 
     .grid .item .date {
         margin-left: calc(var(--spacing) / 2);
+
+        text-decoration: underline;
+
+        font-size: 0.9em;
+    }
+
+    .grid .item .shift {
+        position: absolute;
+
+        font-size: 1em;
+
+        top: calc(50% - 0.5em);
+        left: 4px;
+        width: calc(100% - 8px);
+
+        text-align: center;
+        text-overflow: ellipsis;
+
+        font-weight: bold;
+
+        border: none;
+        border-radius: var(--border-radius);
+    }
+
+    .grid .item .shift:not(.visible) {
+        display: none;
     }
 </style>
