@@ -46,7 +46,7 @@
 <style>
     article {
         height: 90%;
-        width: calc(100% - var(--spacing));
+        width: 100%;
 
         overflow: hidden;
     }
