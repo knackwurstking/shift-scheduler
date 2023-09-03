@@ -133,6 +133,10 @@
         position: relative;
     }
 
+    section .shifts > label {
+        margin-bottom: 16px;
+    }
+
     section .shifts .actions {
         position: absolute;
         right: 0;
