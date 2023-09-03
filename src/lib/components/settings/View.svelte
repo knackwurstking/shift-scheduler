@@ -1,12 +1,8 @@
 <script>
-    // @ts-ignore
-    import FaEdit from "svelte-icons/fa/FaEdit.svelte";
-
     import Shift from "./Shift.svelte";
     import ShiftAdd from "./ShiftAdd.svelte";
     import DialogAddShift from "./DialogAddShift.svelte";
     import DialogEditShift from "./DialogEditShift.svelte";
-    import IconButton from "../icon-button/IconButton.svelte";
     import DialogEditShiftRhythm from "./DialogEditShiftRhythm.svelte";
 
     let { shifts, startDate, shiftRhythm } = getSettings();
@@ -15,8 +11,11 @@
     $: !!shiftRhythm && save();
 
     let dialogAddShift = false;
-    let dialogEditShift = false;
     let dialogEditShiftRhythm = false;
+
+    let editShiftDialogOpen = false;
+    /** @type {string} */
+    let editShiftDialogSelected;
 
     /**
      * @returns {Settings}
@@ -62,13 +61,13 @@
         />
     {/if}
 
-    {#if dialogEditShift}
+    {#if editShiftDialogOpen}
         <DialogEditShift
-            bind:open={dialogEditShift}
+            bind:open={editShiftDialogOpen}
             {shifts}
+            selected={editShiftDialogSelected}
             on:submit={({ detail }) => {
-                dialogEditShift = false;
-
+                editShiftDialogOpen = false;
                 shifts = detail;
             }}
         />
@@ -81,7 +80,6 @@
             rhythm={shiftRhythm}
             on:submit={({ detail }) => {
                 dialogEditShiftRhythm = false;
-
                 shiftRhythm = detail;
             }}
         />
@@ -97,16 +95,13 @@
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>Shifts (Edit)</label>
 
-            <div class="actions">
-                <IconButton on:click={() => (dialogEditShift = true)}><FaEdit /></IconButton>
-            </div>
-
             <ul class="shifts-available">
-                {#each shifts as item}
+                {#each shifts as item, index}
                     <Shift
                         {...item}
                         on:click={() => {
-                            shiftRhythm = [...shiftRhythm, item.name];
+                            editShiftDialogSelected = index.toString();
+                            editShiftDialogOpen = true;
                         }}
                     />
                 {/each}
@@ -146,12 +141,6 @@
 
     section .shifts > label {
         margin-bottom: 16px;
-    }
-
-    section .shifts .actions {
-        position: absolute;
-        right: 0;
-        top: 0;
     }
 
     section .rhythm {

@@ -1,5 +1,5 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+    import { afterUpdate, createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
     /** @type {boolean} */
@@ -8,89 +8,47 @@
     /** @type {ShiftItem[]} */
     export let shifts = [];
 
-    let currentShift = shifts[0].name;
-
-    let name = shifts[0].name || "";
-    let shortName = shifts[0].shortName || "";
-    let visible = !!shifts[0].visible;
-
-    $: {
-        if (!!name && !!currentShift) {
-            const shift = shifts.find(s => s.name === currentShift);
-            if (shift) {
-                shift.name = name;
-            }
-        }
-
-        if (typeof shortName === "string" && !!currentShift) {
-            const shift = shifts.find(s => s.name === currentShift);
-            if (shift) {
-                shift.shortName = shortName;
-            }
-        };
-
-        if (typeof visible === "boolean" && !!currentShift) {
-            const shift = shifts.find(s => s.name === currentShift);
-            if (shift) {
-                shift.visible = visible;
-            }
-        };
-    }
+    /** @type {string} */
+    export let selected = "0";
 </script>
 
 <dialog {open}>
     <article>
-        <select name="shiftsToEdit" bind:value={currentShift} on:change={() => {
-            const shift = shifts.find(s => s.name === currentShift);
-            if (shift) {
-                name = shift.name;
-                shortName = shift.shortName;
-                visible = shift.visible;
-            }
-        }}>
-            {#each shifts as shift}
-                <option value={shift.name} selected={currentShift === shift.name}>{shift.name}</option>
+        <select
+            name="shiftsToEdit"
+            bind:value={selected}
+        >
+            {#each shifts as shift, index}
+                <option value={index.toString()} selected={parseInt(selected) === index}>{shift.name}</option>
             {/each}
         </select>
 
         <label for="name">
             Name
-            <input type="text" name="name" bind:value={name} />
+            <input type="text" name="name" bind:value={shifts[parseInt(selected)].name} />
         </label>
 
         <label for="shortName">
             ShortName
-            <input type="text" name="shortName" bind:value={shortName} />
+            <input type="text" name="shortName" bind:value={shifts[parseInt(selected)].shortName} />
         </label>
 
         <label for="visible">
             Visible
-            <input type="checkbox" name="visible" bind:checked={visible} />
+            <input type="checkbox" name="visible" bind:checked={shifts[parseInt(selected)].visible} />
         </label>
 
-        <button class="secondary" on:click={() => {
-            if (window.confirm(`Delete ${currentShift}?`)) {
-                /** @type {number} */
-                let idx;
-                shifts.find((s, i) => {
-                    if (s.name === currentShift) {
-                        idx = i;
-                        return true;
-                    }
-
-                    return false;
-                });
-                shifts = [
-                    ...shifts.slice(0, idx),
-                    ...shifts.slice(idx+1),
-                ];
-                name = ""; shortName = ""; visible = false;
-                currentShift = undefined;
-            }
-        }}>Delete</button>
-
         <button
-            on:click={() => dispatch("submit", shifts)}
-        >OK</button>
+            class="secondary"
+            on:click={() => {
+                if (window.confirm(`Delete "${shifts[parseInt(selected)].name}"?`)) {
+                    shifts = [...shifts.slice(0, parseInt(selected)), ...shifts.slice(parseInt(selected) + 1)];
+                    if (!shifts.length) open = !open;
+                    else selected = "0";
+                }
+            }}>Delete</button
+        >
+
+        <button on:click={() => dispatch("submit", shifts)}>OK</button>
     </article>
 </dialog>
