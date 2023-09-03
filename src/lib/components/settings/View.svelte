@@ -5,6 +5,8 @@
     import DialogEditShift from "./DialogEditShift.svelte";
     import DialogEditShiftRhythm from "./DialogEditShiftRhythm.svelte";
 
+    import * as ripple from "../../ripple";
+
     let { shifts, startDate, shiftRhythm } = getSettings();
     $: !!shifts && save();
     $: typeof startDate === "string" && save();
@@ -117,7 +119,8 @@
             </label>
             <button
                 class="secondary"
-                on:click={() => {
+                on:click={(ev) => {
+                    ripple.add(ev, ev.currentTarget, { mode: "secondary" });
                     dialogEditShiftRhythm = true;
                 }}
             >

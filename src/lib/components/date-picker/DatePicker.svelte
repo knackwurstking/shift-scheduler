@@ -43,8 +43,6 @@
 
 <style>
   button {
-    position: relative;
-    overflow: hidden;
     padding: calc(var(--spacing) / 2);
   }
 </style>

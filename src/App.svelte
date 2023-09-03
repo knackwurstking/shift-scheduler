@@ -180,6 +180,11 @@
         overflow: hidden;
     }
 
+    :global(button) {
+        position: relative;
+        overflow: hidden;
+    }
+
     header {
         position: relative;
         height: 60px;
