@@ -37,8 +37,6 @@
             {/each}
         </ul>
 
-        <button class="secondary" on:click={() => (open = false)}>Cancel</button>
-
         <button type="submit" on:click={() => dispatch("submit", rhythm)}>OK</button>
     </article>
 </dialog>
