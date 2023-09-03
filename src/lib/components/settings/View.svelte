@@ -1,20 +1,22 @@
 <script>
     // @ts-ignore
-    import FaEdit from 'svelte-icons/fa/FaEdit.svelte'
+    import FaEdit from "svelte-icons/fa/FaEdit.svelte";
 
     import Shift from "./Shift.svelte";
     import ShiftAdd from "./ShiftAdd.svelte";
-    import DialogAddShift from './DialogAddShift.svelte';
-    import DialogEditShift from './DialogEditShift.svelte';
+    import DialogAddShift from "./DialogAddShift.svelte";
+    import DialogEditShift from "./DialogEditShift.svelte";
     import IconButton from "../icon-button/IconButton.svelte";
+    import DialogEditShiftRhythm from "./DialogEditShiftRhythm.svelte";
 
     let { shifts, startDate, shiftRhythm } = getSettings();
-    $: !!shifts && (save());
-    $: (typeof startDate === "string") && (save());
-    $: !!shiftRhythm && (save());
+    $: !!shifts && save();
+    $: typeof startDate === "string" && save();
+    $: !!shiftRhythm && save();
 
     let dialogAddShift = false;
     let dialogEditShift = false;
+    let dialogEditShiftRhythm = false;
 
     /**
      * @returns {Settings}
@@ -33,69 +35,63 @@
     function save() {
         console.debug("saving data...");
 
-        localStorage.setItem("settings", JSON.stringify({
-            shifts,
-            startDate,
-            shiftRhythm,
-        }))
+        localStorage.setItem(
+            "settings",
+            JSON.stringify({
+                shifts,
+                startDate,
+                shiftRhythm,
+            })
+        );
     }
 </script>
 
-{#if dialogAddShift}
-    <DialogAddShift
-        bind:open={dialogAddShift}
-        on:submit={({ detail }) => {
-            dialogAddShift = false;
-
-            if (shifts.find(s => s.name === detail.name) || !detail.name) {
-                return;
-            }
-
-            shifts = [
-                ...shifts,
-                detail,
-            ];
-        }}
-    />
-{/if}
-
-{#if dialogEditShift}
-    <DialogEditShift
-        bind:open={dialogEditShift}
-        shifts={shifts}
-        on:submit={({ detail }) => {
-            dialogEditShift = false;
-
-            shifts = detail;
-        }}
-    />
-{/if}
-
 <section class="shifts">
+    {#if dialogAddShift}
+        <DialogAddShift
+            bind:open={dialogAddShift}
+            on:submit={({ detail }) => {
+                dialogAddShift = false;
+
+                if (shifts.find((s) => s.name === detail.name) || !detail.name) {
+                    return;
+                }
+
+                shifts = [...shifts, detail];
+            }}
+        />
+    {/if}
+
+    {#if dialogEditShift}
+        <DialogEditShift
+            bind:open={dialogEditShift}
+            {shifts}
+            on:submit={({ detail }) => {
+                dialogEditShift = false;
+
+                shifts = detail;
+            }}
+        />
+    {/if}
+
+    {#if dialogEditShiftRhythm}
+        <DialogEditShiftRhythm
+            bind:open={dialogEditShiftRhythm}
+            {shifts}
+            rhythm={shiftRhythm}
+            on:submit={({ detail }) => {
+                dialogEditShiftRhythm = false;
+
+                shiftRhythm = detail;
+            }}
+        />
+    {/if}
+
     <article>
         <label for="start-date">
             Start Date
             <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
         </label>
-
-        <div class="rhythm">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Rhythm (click a item from <i>"Shifts (Edit)"</i> to add)</label>
-
-            <ul>
-                {#each shiftRhythm as shift, index}
-                    <Shift
-                        {...(shifts.find(s => s.name === shift) || { name: shift, visible: true })}
-                        on:click={() => {
-                            shiftRhythm = [
-                                ...shiftRhythm.slice(0, index),
-                                ...shiftRhythm.slice(index+1),
-                            ];
-                        }}
-                    />
-                {/each}
-            </ul>
-        </div>
 
         <div class="shifts">
             <!-- svelte-ignore a11y-label-has-associated-control -->
@@ -107,16 +103,31 @@
 
             <ul class="shifts-available">
                 {#each shifts as item}
-                    <Shift {...item} on:click={() => {
-                        shiftRhythm = [
-                            ...shiftRhythm,
-                            item.name,
-                        ];
-                    }} />
+                    <Shift
+                        {...item}
+                        on:click={() => {
+                            shiftRhythm = [...shiftRhythm, item.name];
+                        }}
+                    />
                 {/each}
 
                 <ShiftAdd on:click={() => (dialogAddShift = true)} />
             </ul>
+        </div>
+
+        <div class="rhythm">
+            <!-- svelte-ignore a11y-label-has-associated-control -->
+            <label>
+                Rhythm (click a item from <i>"Shifts (Edit)"</i> to add)
+            </label>
+            <button
+                class="secondary"
+                on:click={() => {
+                    dialogEditShiftRhythm = true;
+                }}
+            >
+                Edit
+            </button>
         </div>
     </article>
 </section>
@@ -141,5 +152,14 @@
         position: absolute;
         right: 0;
         top: 0;
+    }
+
+    section .rhythm {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    section .rhythm button {
+        width: fit-content;
     }
 </style>
