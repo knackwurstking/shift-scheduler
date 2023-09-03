@@ -49,7 +49,7 @@
             }
         }}>
             {#each shifts as shift}
-                <option value={shift.name}>{shift.name}</option>
+                <option value={shift.name} selected={currentShift === shift.name}>{shift.name}</option>
             {/each}
         </select>
 

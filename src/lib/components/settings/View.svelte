@@ -78,6 +78,25 @@
             <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
         </label>
 
+        <div class="rhythm">
+            <!-- svelte-ignore a11y-label-has-associated-control -->
+            <label>Rhythm (click a item from <i>"Shifts (Edit)"</i> to add)</label>
+
+            <ul>
+                {#each shiftRhythm as shift, index}
+                    <Shift
+                        {...(shifts.find(s => s.name === shift) || { name: shift, visible: true })}
+                        on:click={() => {
+                            shiftRhythm = [
+                                ...shiftRhythm.slice(0, index),
+                                ...shiftRhythm.slice(index+1),
+                            ];
+                        }}
+                    />
+                {/each}
+            </ul>
+        </div>
+
         <div class="shifts">
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>Shifts (Edit)</label>
@@ -99,27 +118,14 @@
                 <ShiftAdd on:click={() => (dialogAddShift = true)} />
             </ul>
         </div>
-
-        <div class="rhythm">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Rhythm (click a item from <i>"Shifts (Edit)"</i> to add)</label>
-
-            <ul>
-                {#each shiftRhythm as shift, index}
-                    <Shift
-                        {...(shifts.find(s => s.name === shift) || { name: shift, visible: true })}
-                        on:click={() => {
-                            shiftRhythm = [
-                                ...shiftRhythm.slice(0, index),
-                                ...shiftRhythm.slice(index+1),
-                            ];
-                        }}
-                    />
-                {/each}
-            </ul>
-        </div>
     </article>
 </section>
 
 <style>
+    section {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        overflow-y: auto;
+    }
 </style>

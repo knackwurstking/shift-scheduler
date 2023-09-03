@@ -3,7 +3,7 @@
  * @returns {boolean}
  */
 export function isAndroid() {
-    return (/Android/i).test(navigator.userAgent);
+    return (/(android)/i).test(navigator.userAgent);
 }
 
 /**
