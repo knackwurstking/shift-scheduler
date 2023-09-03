@@ -6,11 +6,13 @@
     import IoIosAdd from 'svelte-icons/io/IoIosAdd.svelte';
 </script>
 
-<button class="card outline secondary" on:click={() => dispatch("click")}>
-    <span>
-        <IoIosAdd />
-    </span>
-</button>
+<div class="card">
+    <button class="outline secondary" on:click={() => dispatch("click")}>
+        <span>
+            <IoIosAdd />
+        </span>
+    </button>
+</div>
 
 <style>
     .card {
@@ -18,16 +20,21 @@
 
         overflow: hidden;
 
-        border: 1px solid var(--muted-border-color);
-        border-radius: var(--border-radius);
-
         height: calc(3em + 16px);
         width: calc(6em + 16px);
-        padding: 8px;
+        padding: 4px;
         margin: 4px;
     }
 
-    .card span {
+    .card button {
+        width: calc(100%);
+        height: calc(100%);
+
+        border: 1px solid;
+        border-radius: var(--border-radius);
+    }
+
+    .card button span {
         filter: opacity(0.45);
     }
 </style>

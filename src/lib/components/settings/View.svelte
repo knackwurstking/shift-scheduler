@@ -10,7 +10,7 @@
 
     let { shifts, startDate, shiftRhythm } = getSettings();
     $: !!shifts && (save());
-    $: !!startDate && (save());
+    $: (typeof startDate === "string") && (save());
     $: !!shiftRhythm && (save());
 
     let dialogAddShift = false;
@@ -27,7 +27,7 @@
         const settings = JSON.parse(localStorage.getItem("settings") || "{}");
 
         // NOTE: default values for testing
-        settings.shifts = settings.shiftEditItems || [];
+        settings.shifts = settings.shifts || [];
         settings.startDate = settings.startDate || "";
         settings.shiftRhythm = settings.shiftRhythm || [];
 
@@ -35,7 +35,7 @@
     }
 
     function save() {
-        console.debug("save...");
+        console.debug("saving data...");
 
         localStorage.setItem("settings", JSON.stringify({
             shifts,
@@ -47,9 +47,11 @@
 
 {#if dialogAddShift}
     <DialogAddShift
-        open={dialogAddShift}
+        bind:open={dialogAddShift}
         on:submit={({ detail }) => {
-            if (shifts.find(s => s.name === detail.name)) {
+            dialogAddShift = false;
+
+            if (shifts.find(s => s.name === detail.name) || !detail.name) {
                 return;
             }
 
@@ -57,25 +59,24 @@
                 ...shifts,
                 detail,
             ];
-
-            dialogAddShift = false;
         }}
     />
 {/if}
 
 {#if dialogEditShift}
     <DialogEditShift
-        open={dialogEditShift}
-        shiftsToEdit={shifts}
+        bind:open={dialogEditShift}
+        shifts={shifts}
         on:submit={({ detail }) => {
-            shifts = shifts;
             dialogEditShift = false;
+
+            shifts = detail;
         }}
     />
 {/if}
 
 <section class="shifts">
-    <form action="#">
+    <article>
         <label for="start-date">
             Start Date
             <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
@@ -121,11 +122,8 @@
                 {/each}
             </ul>
         </div>
-    </form>
+    </article>
 </section>
 
 <style>
-    section:first-child {
-        margin-top: var(--spacing);
-    }
 </style>

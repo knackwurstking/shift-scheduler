@@ -11,7 +11,7 @@
 </script>
 
 <dialog {open}>
-    <form action="#">
+    <article>
         <label for="name">
             Name
             <input type="text" name="name" bind:value={name} />
@@ -24,14 +24,13 @@
 
         <label for="visible">
             Visible
-            <input type="checkbox" name="visible" bind:value={visible} />
+            <input type="checkbox" name="visible" bind:checked={visible} />
         </label>
 
+        <button class="secondary" on:click={() => (open = false)}>Cancel</button>
+
         <button
-            type="submit"
             on:click={() => dispatch("submit", { name, shortName, visible })}
-        >
-            OK
-        </button>
-    </form>
+        >OK</button>
+    </article>
 </dialog>
