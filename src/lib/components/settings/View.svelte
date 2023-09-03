@@ -101,7 +101,7 @@
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>Shifts (Edit)</label>
 
-            <div class="actions" style="float: right;">
+            <div class="actions">
                 <IconButton on:click={() => (dialogEditShift = true)}><FaEdit /></IconButton>
             </div>
 
@@ -127,5 +127,15 @@
         height: 100%;
         overflow: hidden;
         overflow-y: auto;
+    }
+
+    section .shifts {
+        position: relative;
+    }
+
+    section .shifts .actions {
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 </style>

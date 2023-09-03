@@ -29,9 +29,9 @@
         border-radius: var(--border-radius);
 
         height: calc(3em + 16px);
-        width: calc(6em + 16px);
+        width: calc(4.5em + 16px);
         padding: 8px;
-        margin: 4px;
+        margin: 2px;
 
         user-select: none;
     }
