@@ -2,15 +2,12 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import * as ripple from "../../ripple";
-
     // @ts-ignore
     import IoIosAdd from 'svelte-icons/io/IoIosAdd.svelte';
 </script>
 
 <div class="card">
-    <button class="outline secondary" on:click={(ev) => {
-        ripple.add(ev, ev.currentTarget, { mode: "secondary" });
+    <button class="outline secondary" on:click={() => {
         dispatch("click")
     }}>
         <span>
