@@ -97,8 +97,8 @@
     border: none;
   }
 
-  .grid .item .date {
-    margin-left: calc(var(--spacing) / 2);
+  .grid .item {
+    user-select: none;
   }
 
   .grid .item.today {
@@ -108,5 +108,9 @@
   .grid .item.disabled {
     opacity: 0.7;
     filter: blur(1px);
+  }
+
+  .grid .item .date {
+    margin-left: calc(var(--spacing) / 2);
   }
 </style>
