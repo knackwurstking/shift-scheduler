@@ -93,7 +93,7 @@
 
         <div class="shifts">
             <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Shifts (Edit)</label>
+            <label>Shifts</label>
 
             <ul class="shifts-available">
                 {#each shifts as item, index}
@@ -113,7 +113,7 @@
         <div class="rhythm">
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>
-                Rhythm (click a item from <i>"Shifts (Edit)"</i> to add)
+                Rhythm
             </label>
             <button
                 class="secondary"
