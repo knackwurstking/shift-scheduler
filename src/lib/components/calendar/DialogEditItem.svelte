@@ -14,6 +14,8 @@
 
 <dialog {open}>
     <article>
+        <!-- TODO: display year/month/date as title -->
+
         <!-- TODO: custom shift select with a reset button? -->
 
         <!-- TODO: multiline note entry -->
