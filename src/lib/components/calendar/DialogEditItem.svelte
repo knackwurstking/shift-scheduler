@@ -40,7 +40,7 @@
             on:click={() =>
                 dispatch("submit", {
                     default: item.data.default || null,
-                    shift: settings.shifts.find((s, i) => i.toString() === current) || null,
+                    shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
                     note: item.data.note || null,
                 })}
         >
