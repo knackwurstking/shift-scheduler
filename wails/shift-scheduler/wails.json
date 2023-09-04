@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Shift Scheduler",
+  "outputfilename": "shift-scheduler",
+  "wailsjsdir": "./frontend",
+  "author": {
+    "name": "Udo Bauer",
+    "email": "knackwurstking.tux@gmail.com"
+  },
+  "info": {
+    "productVersion": "0.1.0"
+  }
+}
