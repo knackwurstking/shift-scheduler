@@ -112,9 +112,9 @@
             <span class="date">{item.title}</span>
 
             {#if item.data?.note}
-                <span class="note-marker">
+                <div class="node-marker">
                     <!-- TODO: add some red? node marker on some of the edges -->
-                </span>
+                </div>
             {/if}
 
             {#if item.data?.default}
@@ -157,6 +157,7 @@
     .grid .item {
         position: relative;
         user-select: none;
+        overflow: hidden;
     }
 
     .grid .item.today {
@@ -174,6 +175,16 @@
         text-decoration: underline;
 
         font-size: 0.9em;
+    }
+
+    .grid .item .node-marker {
+        position: absolute;
+        right: -0.8rem;
+        bottom: -0.8rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        background-color: red;
+        transform: rotate(45deg);
     }
 
     .grid .item .shift {
