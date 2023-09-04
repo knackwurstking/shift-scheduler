@@ -10,6 +10,8 @@
     export let item;
     /** @type {Settings} */
     export let settings;
+
+    let current = settings.shifts.findIndex((v) => (v.name === (item.data.shift?.name || item.data.default?.name))).toString();
 </script>
 
 <dialog {open}>
@@ -21,9 +23,18 @@
                 .padStart(2, "0")}
         </h2>
 
-        <!-- TODO: custom shift select with a reset button? -->
+        <select bind:value={current}>
+            <option value="-1" selected={current === "-1"}></option>
 
-        <!-- TODO: multiline note entry -->
+            {#each settings.shifts as shift, index}
+                <option value={index.toString()} selected={current === index.toString()}>{shift.name}</option>
+            {/each}
+        </select>
+
+        <label for="note">
+            Note
+            <textarea name="note" cols="30" rows="10"></textarea>
+        </label>
 
         <button
             on:click={() =>
@@ -39,4 +50,7 @@
 </dialog>
 
 <style>
+    label textarea[name=note] {
+        resize: none;
+    }
 </style>
