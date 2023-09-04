@@ -111,6 +111,7 @@
         item={editItemDialogItem}
         {settings}
         on:submit={({ detail }) => {
+            console.debug(detail);
             editItemDialogOpen = false;
             for (let i = 0; i < items.length; i++) {
                 if (!items[i].disabled && parseInt(items[i].title, 10) === editItemDialogDate.getDate()) {

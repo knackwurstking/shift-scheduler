@@ -24,7 +24,7 @@
         </h2>
 
         <select bind:value={current}>
-            <option value="-1" selected={current === "-1"}></option>
+            <option value="-1" selected={current === "-1"}>(Default) {item.data.default?.name || ""}</option>
 
             {#each settings.shifts as shift, index}
                 <option value={index.toString()} selected={current === index.toString()}>{shift.name}</option>
@@ -33,14 +33,14 @@
 
         <label for="note">
             Note
-            <textarea name="note" cols="30" rows="10"></textarea>
+            <textarea name="note" cols="30" rows="10" bind:value={item.data.note}></textarea>
         </label>
 
         <button
             on:click={() =>
                 dispatch("submit", {
                     default: item.data.default || null,
-                    shift: item.data.shift || null,
+                    shift: settings.shifts.find((s, i) => i.toString() === current) || null,
                     note: item.data.note || null,
                 })}
         >
