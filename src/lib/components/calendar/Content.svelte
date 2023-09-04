@@ -114,8 +114,7 @@
             editItemDialogOpen = false;
             for (let i = 0; i < items.length; i++) {
                 if (!items[i].disabled && parseInt(items[i].title, 10) === editItemDialogDate.getDate()) {
-                    items[i].data.shift = detail.shift;
-                    items[i].data.note = detail.note;
+                    items[i].data = detail
                     return;
                 }
             }
