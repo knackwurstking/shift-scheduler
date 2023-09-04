@@ -21,7 +21,7 @@
     import SettingsView from "./lib/components/settings";
 
     /** @type {Themes} */
-    let currentTheme = "default"; // TODO: Add a theme picker to the settings page
+    let currentTheme = "custom"; // TODO: Add a theme picker to the settings page
 
     /** @type {DatePickerCurrent} */
     let datePickerCurrent = {
@@ -67,7 +67,7 @@
 </script>
 
 <svelte:head>
-    <link rel="stylesheet" href="/themes/{currentTheme}.css" />
+    <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
 
 <header class="container-fluid" style="font-size: 1rem;">
