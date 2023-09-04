@@ -76,7 +76,6 @@
     <!-- Top app bar -->
 
     {#if view !== viewStack[0]}
-        <!-- Back Button (only if not on android) -->
         <div class="actions">
             <IconButton on:click={() => goBackInHistory()}>
                 <TiArrowBackOutline />
