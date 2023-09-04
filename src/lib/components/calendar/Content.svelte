@@ -150,7 +150,7 @@
             <span class="date">{item.title}</span>
 
             {#if item.data?.note}
-                <div class="node-marker" />
+                <div class="note-marker" />
             {/if}
 
             {#if item.data?.shift}
@@ -213,7 +213,7 @@
         font-size: 0.9em;
     }
 
-    .grid .item .node-marker {
+    .grid .item .note-marker {
         position: absolute;
         right: -0.8rem;
         bottom: -0.8rem;
