@@ -1,4 +1,6 @@
 <script>
+    import DialogEditItem from "./DialogEditItem.svelte";
+
     import * as utils from "../../js/utils";
 
     /** @type {Date} */
@@ -29,6 +31,10 @@
 
     /** @type {GridItem[]} */
     let items = [];
+
+    let editItemDialogOpen = false;
+    /** @type {Date} */
+    let editItemDialogDate;
 
     async function updateData() {
         /** @type {GridItem[]} */
@@ -97,6 +103,17 @@
     }
 </script>
 
+{#if editItemDialogOpen}
+    <DialogEditItem
+        bind:open={editItemDialogOpen}
+        date={editItemDialogDate}
+        on:submit={({ detail }) => {
+            editItemDialogOpen = false;
+            // TODO: get event data (detail: GridItemData)
+        }}
+    />
+{/if}
+
 <div class="grid">
     <div class="header">Sun</div>
     <div class="header">Mon</div>
@@ -106,9 +123,19 @@
     <div class="header">Fri</div>
     <div class="header">Sat</div>
 
-    <!-- TODO: catch on:click and open dialog for adding notes and set a custom shift -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     {#each items as item}
-        <div class="item" class:disabled={!!item.disabled} class:today={!!item.today}>
+        <div
+            class="item"
+            class:disabled={!!item.disabled}
+            class:today={!!item.today}
+            on:click={!item.disabled ? (() => {
+                editItemDialogOpen = true;
+                // NOTE: item.title will be the current date
+                eidtItemDialogDate = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
+            }) : null}
+        >
             <span class="date">{item.title}</span>
 
             {#if item.data?.note}
