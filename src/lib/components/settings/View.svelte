@@ -10,8 +10,8 @@
     $: typeof startDate === "string" && save();
     $: !!shiftRhythm && save();
 
-    let dialogAddShift = false;
-    let dialogEditShiftRhythm = false;
+    let addShiftDialogOpen = false;
+    let editShiftRhythmDialogOpen = false;
 
     let editShiftDialogOpen = false;
     /** @type {string} */
@@ -46,11 +46,11 @@
 </script>
 
 <section class="shifts">
-    {#if dialogAddShift}
+    {#if addShiftDialogOpen}
         <DialogAddShift
-            bind:open={dialogAddShift}
+            bind:open={addShiftDialogOpen}
             on:submit={({ detail }) => {
-                dialogAddShift = false;
+                addShiftDialogOpen = false;
 
                 if (shifts.find((s) => s.name === detail.name) || !detail.name) {
                     return;
@@ -73,13 +73,13 @@
         />
     {/if}
 
-    {#if dialogEditShiftRhythm}
+    {#if editShiftRhythmDialogOpen}
         <DialogEditShiftRhythm
-            bind:open={dialogEditShiftRhythm}
+            bind:open={editShiftRhythmDialogOpen}
             {shifts}
             rhythm={shiftRhythm}
             on:submit={({ detail }) => {
-                dialogEditShiftRhythm = false;
+                editShiftRhythmDialogOpen = false;
                 shiftRhythm = detail;
             }}
         />
@@ -106,7 +106,7 @@
                     />
                 {/each}
 
-                <ShiftAdd on:click={() => (dialogAddShift = true)} />
+                <ShiftAdd on:click={() => (addShiftDialogOpen = true)} />
             </ul>
         </div>
 
@@ -118,7 +118,7 @@
             <button
                 class="secondary"
                 on:click={() => {
-                    dialogEditShiftRhythm = true;
+                    editShiftRhythmDialogOpen = true;
                 }}
             >
                 Edit
