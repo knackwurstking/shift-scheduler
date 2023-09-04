@@ -14,7 +14,12 @@
 
 <dialog {open}>
     <article>
-        <!-- TODO: display year/month/date as title -->
+        <h2 class="title">
+            {date.getFullYear()} / {date.getMonth().toString().padStart(2, "0")} / {date
+                .getDate()
+                .toString()
+                .padStart(2, "0")}
+        </h2>
 
         <!-- TODO: custom shift select with a reset button? -->
 
@@ -32,3 +37,6 @@
         </button>
     </article>
 </dialog>
+
+<style>
+</style>
