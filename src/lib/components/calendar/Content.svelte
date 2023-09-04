@@ -28,16 +28,16 @@
     }
 
     /** @type {GridItem[]} */
-    let data = [];
+    let items = [];
 
     async function updateData() {
         /** @type {GridItem[]} */
-        const nextData = [];
+        const nextItems = [];
 
         for (let x = 0; x < 42; x++) {
             const d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + (x - date.getDay()));
 
-            nextData.push({
+            nextItems.push({
                 title: `${d.getDate()}`,
                 disabled: d.getMonth() !== date.getMonth(),
                 today: !!(
@@ -49,7 +49,7 @@
             });
         }
 
-        data = nextData;
+        items = nextItems;
     }
 
     /**
@@ -107,14 +107,20 @@
     <div class="header">Sat</div>
 
     <!-- TODO: catch on:click and open dialog for adding notes and set a custom shift -->
-    {#each data as itemData}
-        <div class="item" class:disabled={!!itemData.disabled} class:today={!!itemData.today}>
-            <span class="date">{itemData.title}</span>
+    {#each items as item}
+        <div class="item" class:disabled={!!item.disabled} class:today={!!item.today}>
+            <span class="date">{item.title}</span>
 
-            {#if itemData.data?.default}
-                <span class="shift" class:visible={itemData.data.default.visible}>{itemData.data.default.shortName}</span>
-            {:else if itemData.data?.shift}
-                <span class="shift" class:visible={itemData.data.shift.visible}>{itemData.data.shift.shortName}</span>
+            {#if item.data?.note}
+                <span class="note-marker">
+                    <!-- TODO: add some red? node marker on some of the edges -->
+                </span>
+            {/if}
+
+            {#if item.data?.default}
+                <span class="shift" class:visible={item.data.default.visible}>{item.data.default.shortName}</span>
+            {:else if item.data?.shift}
+                <span class="shift" class:visible={item.data.shift.visible}>{item.data.shift.shortName}</span>
             {/if}
         </div>
     {/each}
