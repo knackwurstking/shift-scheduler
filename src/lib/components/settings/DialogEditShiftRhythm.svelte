@@ -23,7 +23,6 @@
         </ul>
 
         <div class="shifts-container">
-            <!-- TODO: this needs some different styling -->
             {#each shifts as shift, index}
                 <div class="container">
                     <Shift

@@ -82,8 +82,6 @@
 </div>
 
 <style>
-  /* TODO: hide the scrollbar */
-
   div {
     width: 100%;
     height: 100%;
