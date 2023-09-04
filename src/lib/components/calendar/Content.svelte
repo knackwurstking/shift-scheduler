@@ -33,6 +33,8 @@
     let items = [];
 
     let editItemDialogOpen = false;
+    /** @type {GridItem} */
+    let editItemDialogItem;
     /** @type {Date} */
     let editItemDialogDate;
 
@@ -59,7 +61,7 @@
     }
 
     /**
-     * 
+     *
      * @param {Date} date
      * @returns {Promise<GridItemData>}
      */
@@ -71,9 +73,8 @@
         };
     }
 
-
     /**
-     * 
+     *
      * @param {Date} date
      * @returns {Promise<ShiftItem | null>}
      */
@@ -83,23 +84,23 @@
         return utils.calcShiftStep(settings, date);
     }
 
-
     /**
-     * 
+     *
      * @param {Date} date
+     * @returns {Promise<ShiftItem | null>}
      */
     async function getShift(date) {
-        // TODO: get custom shift from the local storage (if exists)
-        return null;
+        const shift = localStorage.getItem(`data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`);
+        return !!shift ? JSON.parse(shift) : null;
     }
 
     /**
-     * 
+     *
      * @param {Date} date
+     * @returns {Promise<string | null>}
      */
     async function getNote(date) {
-        // TODO: get user note from the local storage (if exists)
-        return null;
+        return localStorage.getItem(`data-note-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`) || null;
     }
 </script>
 
@@ -107,9 +108,17 @@
     <DialogEditItem
         bind:open={editItemDialogOpen}
         date={editItemDialogDate}
+        item={editItemDialogItem}
+        {settings}
         on:submit={({ detail }) => {
             editItemDialogOpen = false;
-            // TODO: get event data (detail: GridItemData)
+            for (let i = 0; i < items.length; i++) {
+                if (!items[i].disabled && parseInt(items[i].title, 10) === editItemDialogDate.getDate()) {
+                    items[i].data.shift = detail.shift;
+                    items[i].data.note = detail.note;
+                    return;
+                }
+            }
         }}
     />
 {/if}
@@ -130,22 +139,25 @@
             class="item"
             class:disabled={!!item.disabled}
             class:today={!!item.today}
-            on:click={!item.disabled ? (() => {
-                editItemDialogOpen = true;
-                // NOTE: item.title will be the current date
-                eidtItemDialogDate = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
-            }) : null}
+            on:click={!item.disabled
+                ? () => {
+                      editItemDialogOpen = true;
+                      editItemDialogItem = item;
+                      // NOTE: item.title will be the current date
+                      editItemDialogDate = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
+                  }
+                : null}
         >
             <span class="date">{item.title}</span>
 
             {#if item.data?.note}
-                <div class="node-marker"></div>
+                <div class="node-marker" />
             {/if}
 
-            {#if item.data?.default}
-                <span class="shift" class:visible={item.data.default.visible}>{item.data.default.shortName}</span>
-            {:else if item.data?.shift}
+            {#if item.data?.shift}
                 <span class="shift" class:visible={item.data.shift.visible}>{item.data.shift.shortName}</span>
+            {:else if item.data?.default}
+                <span class="shift" class:visible={item.data.default.visible}>{item.data.default.shortName}</span>
             {/if}
         </div>
     {/each}
