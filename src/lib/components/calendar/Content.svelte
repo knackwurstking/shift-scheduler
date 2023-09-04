@@ -106,6 +106,7 @@
     <div class="header">Fri</div>
     <div class="header">Sat</div>
 
+    <!-- TODO: catch on:click and open dialog for adding notes and set a custom shift -->
     {#each data as itemData}
         <div class="item" class:disabled={!!itemData.disabled} class:today={!!itemData.today}>
             <span class="date">{itemData.title}</span>
