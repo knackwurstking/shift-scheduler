@@ -111,11 +111,25 @@
         item={editItemDialogItem}
         {settings}
         on:submit={({ detail }) => {
-            console.debug(detail);
             editItemDialogOpen = false;
+
             for (let i = 0; i < items.length; i++) {
                 if (!items[i].disabled && parseInt(items[i].title, 10) === editItemDialogDate.getDate()) {
-                    items[i].data = detail
+                    items[i].data = detail;
+
+                    let key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${items[i].title}`;
+                    if (items[i].data.shift) {
+                        localStorage.setItem(key, JSON.stringify(items[i].data.shift));
+                    } else {
+                        localStorage.removeItem(key);
+                    }
+
+                    key = `data-note-${date.getFullYear()}-${date.getMonth()}-${items[i].title}`;
+                    if (items[i].data.note) {
+                        localStorage.setItem(key, JSON.stringify(items[i].data.note));
+                    } else {
+                        localStorage.removeItem(key);
+                    }
                     return;
                 }
             }
