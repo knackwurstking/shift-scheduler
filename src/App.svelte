@@ -1,6 +1,4 @@
 <script>
-    import "./lib/css/pico.min.css";
-
     import { onMount } from "svelte";
     import { App } from "@capacitor/app";
 

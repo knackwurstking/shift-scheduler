@@ -17,7 +17,7 @@
 <dialog {open}>
     <article>
         <h2 class="title">
-            {date.getFullYear()} / {date.getMonth().toString().padStart(2, "0")} / {date
+            {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")} / {date
                 .getDate()
                 .toString()
                 .padStart(2, "0")}
