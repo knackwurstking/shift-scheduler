@@ -112,9 +112,7 @@
             <span class="date">{item.title}</span>
 
             {#if item.data?.note}
-                <div class="node-marker">
-                    <!-- TODO: add some red? node marker on some of the edges -->
-                </div>
+                <div class="node-marker"></div>
             {/if}
 
             {#if item.data?.default}
