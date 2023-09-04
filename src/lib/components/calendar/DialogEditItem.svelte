@@ -2,22 +2,31 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    // TODO: notes and custom shift for the current grid item (date: "YYYY:MM:DD")
     export let open = false;
 
     /** @type {Date} */
     export let date;
-
-    /** @type {ShiftItem | null} */
-    export let shift = null;
-    /** @type {string | null} */
-    export let note = null;
+    /** @type {GridItem} */
+    export let item;
+    /** @type {Settings} */
+    export let settings;
 </script>
 
 <dialog {open}>
     <article>
-        <!-- TODO: ... -->
+        <!-- TODO: custom shift select with a reset button? -->
 
-        <button on:click={() => dispatch("submit", { default: null, shift, note })}>OK</button>
+        <!-- TODO: multiline note entry -->
+
+        <button
+            on:click={() =>
+                dispatch("submit", {
+                    default: item.data.default || null,
+                    shift: item.data.shift || null,
+                    note: item.data.note || null,
+                })}
+        >
+            OK
+        </button>
     </article>
 </dialog>
