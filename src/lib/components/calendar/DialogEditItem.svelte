@@ -11,7 +11,7 @@
     /** @type {Settings} */
     export let settings;
 
-    let current = settings.shifts.findIndex((v) => (v.name === (item.data.shift?.name || item.data.default?.name))).toString();
+    let current = settings.shifts.findIndex((v) => (v.name === (item.data.shift?.name))).toString();
 </script>
 
 <dialog {open}>
