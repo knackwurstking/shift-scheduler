@@ -19,7 +19,6 @@
     import InfiniteScrollView from "./lib/components/infinite-scroll-view";
     import { Content as ViewCalendarContent } from "./lib/components/calendar";
     import SettingsView from "./lib/components/settings";
-    import datePicker from "./lib/components/date-picker";
 
     /** @type {Themes} */
     let currentTheme = "custom"; // TODO: Add a theme picker to the settings page
