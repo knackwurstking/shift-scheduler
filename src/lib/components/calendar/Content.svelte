@@ -186,7 +186,7 @@
                       const d = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
                       if (editMode) {
                           setShift(d, editMode);
-                          items[index].data.shift = editMode;
+                          items[index].data.shift = !!editMode.name ? editMode : null;
                       } else {
                           editItemDialogOpen = true;
                           editItemDialogItem = item;
