@@ -65,7 +65,7 @@
         view = v;
     }
 
-    /** @param {Date} */
+    /** @param {Date} date */
     function goToMonth(date) {
         const today = new Date();
         datePickerCurrent = {
