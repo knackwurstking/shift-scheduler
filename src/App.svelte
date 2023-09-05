@@ -18,7 +18,7 @@
     import IconButton from "./lib/components/icon-button";
     import InfiniteScrollView from "./lib/components/infinite-scroll-view";
     import { Content as ViewCalendarContent } from "./lib/components/calendar";
-    import SettingsView from "./lib/components/settings";
+    import SettingsView, { Shift } from "./lib/components/settings";
 
     /** @type {Themes} */
     let currentTheme = "custom"; // TODO: Add a theme picker to the settings page
@@ -33,15 +33,30 @@
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
     };
-    $: console.debug("datePickerCurrent", datePickerCurrent);
     /** @type {[number, number, number]} */
     let slotsOrder = [0, 1, 2];
-    $: console.debug("slotsOrder", ...slotsOrder);
     let itemsData = [{ monthCount: -1 }, { monthCount: 0 }, { monthCount: 1 }];
-    $: console.debug("itemsData", ...itemsData);
 
+    /** @type {Settings | undefined} */
+    let settings;
     /** @type {"edit" | null} */
     let footerMode = null;
+
+    let editModeActiveIndex = -1;
+
+    $: {
+        if (view === "calendar") {
+            settings = JSON.parse(
+                localStorage.getItem("settings") || '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
+            );
+        }
+    }
+
+    $: {
+        if (footerMode !== "edit") {
+            editModeActiveIndex = -1;
+        }
+    }
 
     function goBackInHistory() {
         if (viewStack.length === 1) return;
@@ -60,6 +75,7 @@
      * @param {Views} v
      */
     function goTo(v) {
+        footerMode = null;
         viewStack = [...viewStack, v];
         view = v;
     }
@@ -71,7 +87,8 @@
             year: date.getFullYear(),
             month: date.getMonth(),
         };
-        itemsData[slotsOrder[1]].monthCount = ((date.getFullYear() - today.getFullYear()) * 12) + (date.getMonth() - today.getMonth());
+        itemsData[slotsOrder[1]].monthCount =
+            (date.getFullYear() - today.getFullYear()) * 12 + (date.getMonth() - today.getMonth());
         itemsData[slotsOrder[0]].monthCount = itemsData[slotsOrder[1]].monthCount - 1;
         itemsData[slotsOrder[2]].monthCount = itemsData[slotsOrder[1]].monthCount + 1;
         itemsData = itemsData;
@@ -142,15 +159,24 @@
             on:scrolldown={() => goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month + 1))}
         >
             <div style="width: 100%; height: 100%;" slot="0">
-                <ViewCalendarContent monthCount={itemsData[0].monthCount} />
+                <ViewCalendarContent
+                    editMode={settings.shifts[editModeActiveIndex] || null}
+                    monthCount={itemsData[0].monthCount}
+                />
             </div>
 
             <div style="width: 100%; height: 100%;" slot="1">
-                <ViewCalendarContent monthCount={itemsData[1].monthCount} />
+                <ViewCalendarContent
+                    editMode={settings.shifts[editModeActiveIndex] || null}
+                    monthCount={itemsData[1].monthCount}
+                />
             </div>
 
             <div style="width: 100%; height: 100%;" slot="2">
-                <ViewCalendarContent monthCount={itemsData[2].monthCount} />
+                <ViewCalendarContent
+                    editMode={settings.shifts[editModeActiveIndex] || null}
+                    monthCount={itemsData[2].monthCount}
+                />
             </div>
         </InfiniteScrollView>
     {:else if view === "settings"}
@@ -159,7 +185,15 @@
 </main>
 
 <footer class="container-fluid" class:visible={footerMode === "edit"}>
-    <!-- TODO: Toolbar for the edit shifts mode -->
+    {#if footerMode === "edit" && !!settings}
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        {#each settings.shifts as shift, index}
+            <span on:click={() => (editModeActiveIndex = editModeActiveIndex === index ? -1 : index)}>
+                <Shift {...shift} active={editModeActiveIndex == index} />
+            </span>
+        {/each}
+    {/if}
 </footer>
 
 <style>
@@ -202,12 +236,15 @@
 
     footer {
         transform: none;
-        height: 60px;
+        height: calc(3em + 22px);
         right: 0;
         bottom: 0;
         left: 0;
         position: absolute;
         border-top: 1px solid var(--muted-border-color);
+        display: flex;
+        overflow: hidden;
+        overflow-x: auto;
     }
 
     footer:not(.visible) {

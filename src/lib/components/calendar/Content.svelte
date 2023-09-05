@@ -3,6 +3,18 @@
 
     import * as utils from "../../js/utils";
 
+    /** @type {ShiftItem | null} */
+    export let editMode = null;
+
+    /** @type {number} */
+    export let monthCount;
+    $: {
+        if (typeof monthCount === "number") {
+            today = new Date();
+            date = new Date(today.getFullYear(), today.getMonth() + monthCount, 1);
+        }
+    }
+
     /** @type {Date} */
     let today;
 
@@ -17,15 +29,6 @@
             if (typeof settings.startDate === "string") {
                 settings.startDate = new Date(settings.startDate);
             }
-        }
-    }
-
-    /** @type {number} */
-    export let monthCount;
-    $: {
-        if (typeof monthCount === "number") {
-            today = new Date();
-            date = new Date(today.getFullYear(), today.getMonth() + monthCount, 1);
         }
     }
 
@@ -95,6 +98,25 @@
     }
 
     /**
+     * 
+     * @param {Date} date
+     * @param {ShiftItem} shift
+     */
+    async function setShift(date, shift) {
+        let key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        localStorage.setItem(key, JSON.stringify(shift));
+    }
+
+    /**
+     * 
+     * @param {Date} date
+     */
+    async function removeShift(date) {
+        let key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        localStorage.removeItem(key);
+    }
+
+    /**
      *
      * @param {Date} date
      * @returns {Promise<string | null>}
@@ -117,14 +139,15 @@
                 if (!items[i].disabled && parseInt(items[i].title, 10) === editItemDialogDate.getDate()) {
                     items[i].data = detail;
 
-                    let key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${items[i].title}`;
+                    const d = new Date(date.getFullYear(), date.getMonth(), parseInt(items[i].title, 10));
                     if (items[i].data.shift) {
-                        localStorage.setItem(key, JSON.stringify(items[i].data.shift));
+                        setShift(d, items[i].data.shift);
                     } else {
-                        localStorage.removeItem(key);
+                        removeShift(d);
                     }
 
-                    key = `data-note-${date.getFullYear()}-${date.getMonth()}-${items[i].title}`;
+                    // TODO: using function like setShift and removeShift
+                    let key = `data-note-${date.getFullYear()}-${date.getMonth()}-${items[i].title}`;
                     if (items[i].data.note) {
                         localStorage.setItem(key, JSON.stringify(items[i].data.note));
                     } else {
@@ -148,17 +171,22 @@
 
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    {#each items as item}
+    {#each items as item, index}
         <div
             class="item"
             class:disabled={!!item.disabled}
             class:today={!!item.today}
             on:click={!item.disabled
                 ? () => {
-                      editItemDialogOpen = true;
-                      editItemDialogItem = item;
-                      // NOTE: item.title will be the current date
-                      editItemDialogDate = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
+                      if (editMode) {
+                        setShift(new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10)), editMode);
+                        items[index].data.shift = editMode
+                      } else {
+                        editItemDialogOpen = true;
+                        editItemDialogItem = item;
+                        // NOTE: item.title will be the current date
+                        editItemDialogDate = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
+                      }
                   }
                 : null}
         >
