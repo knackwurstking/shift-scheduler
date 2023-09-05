@@ -51,7 +51,6 @@
           ev.currentTarget.firstChild
         );
 
-        // NOTE: is there a better way to do this?
         resetScrollTop(sectionMargin, borderWidth);
 
         slotsOrder.unshift(slotsOrder.pop());
@@ -90,7 +89,6 @@
     flex-direction: column;
 
     overflow-y: scroll;
-
     scroll-snap-type: y mandatory;
 
     -ms-overflow-style: none;
