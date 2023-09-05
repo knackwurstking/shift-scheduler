@@ -4,10 +4,11 @@
 
     /** @type {string} */
     export let name;
-    /** @type {boolean} */
-    export let visible;
     /** @type {string} */
     export let shortName = "";
+
+    /** @type {boolean} */
+    export let visible = true;
 
     export let active = false;
 </script>

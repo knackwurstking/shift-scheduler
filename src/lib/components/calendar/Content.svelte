@@ -98,17 +98,22 @@
     }
 
     /**
-     * 
+     *
      * @param {Date} date
      * @param {ShiftItem} shift
      */
     async function setShift(date, shift) {
+        if (shift.name === "") {
+            removeShift(date);
+            return;
+        }
+
         let key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
         localStorage.setItem(key, JSON.stringify(shift));
     }
 
     /**
-     * 
+     *
      * @param {Date} date
      */
     async function removeShift(date) {
@@ -178,14 +183,15 @@
             class:today={!!item.today}
             on:click={!item.disabled
                 ? () => {
+                      const d = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
                       if (editMode) {
-                        setShift(new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10)), editMode);
-                        items[index].data.shift = editMode
+                          setShift(d, editMode);
+                          items[index].data.shift = editMode;
                       } else {
-                        editItemDialogOpen = true;
-                        editItemDialogItem = item;
-                        // NOTE: item.title will be the current date
-                        editItemDialogDate = new Date(date.getFullYear(), date.getMonth(), parseInt(item.title, 10));
+                          editItemDialogOpen = true;
+                          editItemDialogItem = item;
+                          // NOTE: item.title will be the current date
+                          editItemDialogDate = d;
                       }
                   }
                 : null}
@@ -197,9 +203,9 @@
             {/if}
 
             {#if item.data?.shift}
-                <span class="shift" class:visible={item.data.shift.visible}>{item.data.shift.shortName}</span>
+                <span class="shift" class:visible={!!item.data.shift.visible}>{item.data.shift.shortName}</span>
             {:else if item.data?.default}
-                <span class="shift" class:visible={item.data.default.visible}>{item.data.default.shortName}</span>
+                <span class="shift" class:visible={!!item.data.default.visible}>{item.data.default.shortName}</span>
             {/if}
         </div>
     {/each}
