@@ -24,7 +24,7 @@
     }
   }
 
-  export let slotsOrder = [0, 1, 2];
+  export let slotsOrder;
 
   function resetScrollTop(sectionMargin, borderWidth) {
     container.scrollTop = rect.height + sectionMargin - borderWidth;
@@ -95,10 +95,6 @@
 
     -ms-overflow-style: none;
     scrollbar-width: none;
-
-    /*
-    border: 1px solid red;
-    */
   }
 
   div::-webkit-scrollbar {

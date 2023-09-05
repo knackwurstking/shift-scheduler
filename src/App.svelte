@@ -19,24 +19,27 @@
     import InfiniteScrollView from "./lib/components/infinite-scroll-view";
     import { Content as ViewCalendarContent } from "./lib/components/calendar";
     import SettingsView from "./lib/components/settings";
+    import datePicker from "./lib/components/date-picker";
 
     /** @type {Themes} */
     let currentTheme = "custom"; // TODO: Add a theme picker to the settings page
-
-    /** @type {DatePickerCurrent} */
-    let datePickerCurrent = {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-    };
 
     /** @type {Views} */
     let view = "calendar";
     /** @type {Views[]}*/
     let viewStack = [view];
 
+    /** @type {DatePickerCurrent} */
+    let datePickerCurrent = {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+    };
+    $: console.debug("datePickerCurrent", datePickerCurrent);
     /** @type {[number, number, number]} */
-    let slotsOrder;
+    let slotsOrder = [0, 1, 2];
+    $: console.debug("slotsOrder", ...slotsOrder);
     let itemsData = [{ monthCount: -1 }, { monthCount: 0 }, { monthCount: 1 }];
+    $: console.debug("itemsData", ...itemsData);
 
     /** @type {"edit" | null} */
     let footerMode = null;
@@ -46,6 +49,11 @@
         viewStack.pop();
         viewStack = viewStack;
         view = viewStack[viewStack.length - 1];
+
+        if (viewStack.length === 1) {
+            slotsOrder = [0, 1, 2];
+            goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month));
+        }
     }
 
     /**
@@ -55,6 +63,19 @@
     function goTo(v) {
         viewStack = [...viewStack, v];
         view = v;
+    }
+
+    /** @param {Date} */
+    function goToMonth(date) {
+        const today = new Date();
+        datePickerCurrent = {
+            year: date.getFullYear(),
+            month: date.getMonth(),
+        };
+        itemsData[slotsOrder[1]].monthCount = ((date.getFullYear() - today.getFullYear()) * 12) + (date.getMonth() - today.getMonth());
+        itemsData[slotsOrder[0]].monthCount = itemsData[slotsOrder[1]].monthCount - 1;
+        itemsData[slotsOrder[2]].monthCount = itemsData[slotsOrder[1]].monthCount + 1;
+        itemsData = itemsData;
     }
 
     // TODO: Need some handler (setTimeout) to update the today highlighting if its 12:00 AM
@@ -102,18 +123,10 @@
             <IconButton
                 disabled={datePickerCurrent.year === new Date().getFullYear() &&
                     datePickerCurrent.month === new Date().getMonth()}
-                on:click={() => {
-                    const today = new Date();
-                    datePickerCurrent = {
-                        year: today.getFullYear(),
-                        month: today.getMonth(),
-                    };
-                    itemsData[slotsOrder[0]].monthCount = -1;
-                    itemsData[slotsOrder[1]].monthCount = 0;
-                    itemsData[slotsOrder[2]].monthCount = 1;
-                    itemsData = itemsData;
-                }}><MdToday /></IconButton
+                on:click={() => goToMonth(new Date())}
             >
+                <MdToday />
+            </IconButton>
 
             <!-- Settings -->
             <IconButton on:click={() => goTo("settings")}><TiSpanner /></IconButton>
@@ -126,30 +139,8 @@
         <!-- Month view (infinite swipe) -->
         <InfiniteScrollView
             bind:slotsOrder
-            on:scrollup={() => {
-                itemsData[slotsOrder[0]].monthCount -= 3;
-
-                const today = new Date();
-                const date = new Date(today.getFullYear(), today.getMonth() + itemsData[slotsOrder[1]].monthCount, 1);
-                datePickerCurrent = {
-                    year: date.getFullYear(),
-                    month: date.getMonth(),
-                };
-
-                itemsData = itemsData;
-            }}
-            on:scrolldown={() => {
-                itemsData[slotsOrder[2]].monthCount += 3;
-
-                const today = new Date();
-                const date = new Date(today.getFullYear(), today.getMonth() + itemsData[slotsOrder[1]].monthCount, 1);
-                datePickerCurrent = {
-                    year: date.getFullYear(),
-                    month: date.getMonth(),
-                };
-
-                itemsData = itemsData;
-            }}
+            on:scrollup={() => goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month - 1))}
+            on:scrolldown={() => goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month + 1))}
         >
             <div style="width: 100%; height: 100%;" slot="0">
                 <ViewCalendarContent monthCount={itemsData[0].monthCount} />
