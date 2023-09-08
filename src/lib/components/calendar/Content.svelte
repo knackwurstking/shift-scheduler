@@ -108,7 +108,7 @@
             return;
         }
 
-        let key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
         localStorage.setItem(key, JSON.stringify(shift));
     }
 
@@ -117,7 +117,7 @@
      * @param {Date} date
      */
     async function removeShift(date) {
-        let key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const key = `data-shift-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
         localStorage.removeItem(key);
     }
 
@@ -128,6 +128,25 @@
      */
     async function getNote(date) {
         return localStorage.getItem(`data-note-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`) || null;
+    }
+
+    /**
+     *
+     * @param {Date} date
+     * @param {string} note
+     */
+    async function setNote(date, note) {
+        const key = `data-note-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        localStorage.setItem(key, note);
+    }
+
+    /**
+     *
+     * @param {Date} date
+     */
+    async function removeNote(date) {
+        const key = `data-note-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        localStorage.removeItem(key);
     }
 </script>
 
@@ -151,12 +170,10 @@
                         removeShift(d);
                     }
 
-                    // TODO: using function like setShift and removeShift
-                    let key = `data-note-${date.getFullYear()}-${date.getMonth()}-${items[i].title}`;
                     if (items[i].data.note) {
-                        localStorage.setItem(key, JSON.stringify(items[i].data.note));
+                        setNote(d, items[i].data.note);
                     } else {
-                        localStorage.removeItem(key);
+                        removeNote(date);
                     }
                     return;
                 }
