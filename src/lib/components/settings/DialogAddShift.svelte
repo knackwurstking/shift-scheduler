@@ -29,8 +29,7 @@
 
         <button class="secondary" on:click={() => (open = false)}>Cancel</button>
 
-        <button
-            on:click={() => dispatch("submit", { name, shortName, visible })}
-        >OK</button>
+        <button on:click={() => dispatch("submit", { name, shortName: shortName || name[0] || "", visible })}>OK</button
+        >
     </article>
 </dialog>
