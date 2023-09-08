@@ -1,5 +1,5 @@
 <script>
-    import { afterUpdate, createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
     /** @type {boolean} */
@@ -10,6 +10,9 @@
 
     /** @type {string} */
     export let selected = "0";
+
+    let hidden = !shifts[selected].visible; 
+    $: (hidden !== shifts[parseInt(selected)].visible) && (shifts[parseInt(selected)].visible = !hidden);
 </script>
 
 <dialog {open}>
@@ -33,9 +36,9 @@
             <input type="text" name="shortName" bind:value={shifts[parseInt(selected)].shortName} />
         </label>
 
-        <label for="visible">
-            Visible
-            <input type="checkbox" name="visible" bind:checked={shifts[parseInt(selected)].visible} />
+        <label for="hidden">
+            <input type="checkbox" name="hidden" bind:checked={hidden} />
+            Hidden Shift (Not visible in calendar)
         </label>
 
         <button

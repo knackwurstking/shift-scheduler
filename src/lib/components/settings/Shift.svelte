@@ -2,6 +2,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    import * as ripple from "../../ripple";
+
     /** @type {string} */
     export let name;
     /** @type {string} */
@@ -15,22 +17,26 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="card" class:active on:click={() => dispatch("click")}>
+<div class="card" class:active on:click={(ev) => {
+    ripple.add(ev, ev.currentTarget, { mode: "primary" });
+    dispatch("click");
+}}>
     <span class="name">{name}</span><br />
     <span class="short-name" class:visible>{shortName || name[0]}</span>
 </div>
 
 <style>
     div.card {
-        display: inline-block;
-
+        position: relative;
         overflow: hidden;
+
+        display: inline-block;
 
         border: 1px solid var(--muted-border-color);
         border-radius: var(--border-radius);
 
         height: calc(3em + 16px);
-        width: calc(4.5em + 16px);
+        width: calc(4.75em + 16px);
         padding: 8px;
         margin: 2px;
 

@@ -160,21 +160,21 @@
         >
             <div style="width: 100%; height: 100%;" slot="0">
                 <ViewCalendarContent
-                    editMode={editModeActiveIndex === -2 ? { name: "" } :(settings.shifts[editModeActiveIndex] || null)}
+                    editMode={editModeActiveIndex === -2 ? { name: "" } : settings.shifts[editModeActiveIndex] || null}
                     monthCount={itemsData[0].monthCount}
                 />
             </div>
 
             <div style="width: 100%; height: 100%;" slot="1">
                 <ViewCalendarContent
-                    editMode={editModeActiveIndex === -2 ? { name: "" } :(settings.shifts[editModeActiveIndex] || null)}
+                    editMode={editModeActiveIndex === -2 ? { name: "" } : settings.shifts[editModeActiveIndex] || null}
                     monthCount={itemsData[1].monthCount}
                 />
             </div>
 
             <div style="width: 100%; height: 100%;" slot="2">
                 <ViewCalendarContent
-                    editMode={editModeActiveIndex === -2 ? { name: "" } :(settings.shifts[editModeActiveIndex] || null)}
+                    editMode={editModeActiveIndex === -2 ? { name: "" } : settings.shifts[editModeActiveIndex] || null}
                     monthCount={itemsData[2].monthCount}
                 />
             </div>
@@ -186,17 +186,26 @@
 
 <footer class="container-fluid" class:visible={footerMode === "edit"}>
     {#if footerMode === "edit" && !!settings}
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <span on:click={() => (editModeActiveIndex = editModeActiveIndex === -2 ? -1 : -2)}>
-            <Shift name="Reset" visible={false} active={editModeActiveIndex === -2} />
+        <span>
+            <Shift
+                name="Reset"
+                visible={false}
+                active={editModeActiveIndex === -2}
+                on:click={() => {
+                    editModeActiveIndex = editModeActiveIndex === -2 ? -1 : -2;
+                }}
+            />
         </span>
 
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
         {#each settings.shifts as shift, index}
-            <span on:click={() => (editModeActiveIndex = editModeActiveIndex === index ? -1 : index)}>
-                <Shift {...shift} active={editModeActiveIndex == index} />
+            <span>
+                <Shift
+                    {...shift}
+                    active={editModeActiveIndex == index}
+                    on:click={() => {
+                        editModeActiveIndex = editModeActiveIndex === index ? -1 : index;
+                    }}
+                />
             </span>
         {/each}
     {/if}

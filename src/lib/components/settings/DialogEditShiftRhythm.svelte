@@ -11,6 +11,8 @@
 
 <dialog {open}>
     <article>
+        <h6>Pick a shift from the bottom to add.</h6>
+
         <ul>
             {#each rhythm as name, index}
                 <Shift
@@ -23,7 +25,7 @@
         </ul>
 
         <div class="shifts-container">
-            {#each shifts as shift, index}
+            {#each shifts as shift}
                 <div class="container">
                     <Shift
                         {...shift}
@@ -50,8 +52,12 @@
         overflow: hidden;
     }
 
-    article ul {
-        height: calc(100% - 10rem);
+    article > h6 {
+        height: 2em;
+    }
+
+    article > ul {
+        height: calc(100% - 12rem);
 
         overflow: hidden;
         overflow-y: auto;
@@ -59,6 +65,7 @@
         border-bottom: 1px solid var(--muted-border-color);
 
         margin-bottom: 4px;
+        padding: 0;
     }
 
     article .shifts-container {

@@ -135,6 +135,14 @@
         overflow-y: auto;
     }
 
+    section article {
+        padding: var(--spacing);
+    }
+
+    section article > * {
+        border-bottom: 1px solid var(--muted-border-color);
+    }
+
     section .shifts {
         position: relative;
     }
@@ -146,6 +154,7 @@
     section .rhythm {
         display: flex;
         justify-content: space-between;
+        border-bottom: none;
     }
 
     section .rhythm button {
