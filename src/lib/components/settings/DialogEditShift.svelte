@@ -55,3 +55,14 @@
         <button on:click={() => dispatch("submit", shifts)}>OK</button>
     </article>
 </dialog>
+
+<style>
+    dialog {
+        width: 100%;
+        height: 100%;
+    }
+
+    dialog article button:nth-child(5) {
+        margin-top: var(--spacing);
+    }
+</style>

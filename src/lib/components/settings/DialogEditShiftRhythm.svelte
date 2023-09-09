@@ -45,6 +45,11 @@
 </dialog>
 
 <style>
+    dialog {
+        width: 100%;
+        height: 100%;
+    }
+
     article {
         height: 90%;
         width: 100%;

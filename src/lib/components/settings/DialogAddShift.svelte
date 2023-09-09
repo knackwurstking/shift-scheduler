@@ -43,7 +43,12 @@
 </dialog>
 
 <style>
-    article {
+    dialog {
+        width: 100%;
+        height: 100%;
+    }
+
+    dialog article {
         padding: var(--spacing);
     }
 
