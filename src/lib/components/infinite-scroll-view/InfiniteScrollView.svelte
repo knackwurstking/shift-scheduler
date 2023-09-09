@@ -24,18 +24,13 @@
 
     export let slotsOrder;
 
-    export let lock = false;
-
     function resetScrollTop(sectionMargin, borderWidth) {
         container.scrollTop = rect.height + sectionMargin - borderWidth;
-        lock = false;
     }
 </script>
 
 <div
     bind:this={container}
-    style={lock ? "pointer-events: none" : ""}
-    on:pointerup={() => (lock = true)}
     on:scroll={(ev) => {
         let cs = window.getComputedStyle(ev.currentTarget);
         const borderWidth = parseInt(cs.borderTopWidth, 10) + parseInt(cs.borderBottomWidth, 10);
