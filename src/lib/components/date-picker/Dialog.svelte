@@ -13,7 +13,6 @@
 
 <dialog class="date-picker--dialog" {open}>
     <article>
-        <!-- TODO: input field for "year" and "month" (required) -->
         <label>
             Choose a Year
             <input type="number" bind:value={year} /> 
