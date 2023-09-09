@@ -94,7 +94,7 @@
         itemsData = itemsData;
     }
 
-    // TODO: Need some handler (setTimeout) to update the today highlighting if its 12:00 AM
+    // TODO: need to update today after 12:00 AM
 
     onMount(() => {
         if (utils.isAndroid()) {
