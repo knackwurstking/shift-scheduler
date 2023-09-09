@@ -2,13 +2,8 @@
 /// <reference types="vite/client" />
 
 declare type Views = "calendar" | "settings";
-
 declare type Themes = "default" | "custom" | "green";
-
-declare interface DatePickerCurrent {
-    year: number;
-    month: number;
-}
+declare type ShiftName = string;
 
 declare interface GridItemData {
     default: ShiftItem | null;
@@ -23,7 +18,10 @@ declare interface GridItem {
     data: GridItemData | null;
 }
 
-declare type ShiftName = string;
+declare interface DatePickerCurrent {
+    year: number;
+    month: number;
+}
 
 declare interface ShiftItem {
     name: ShiftName;
@@ -40,4 +38,5 @@ declare interface Settings {
 declare interface StorageItem {
     shift: ShiftItem | null;
     note: string | null;
+    date: Date;
 }
