@@ -14,12 +14,12 @@
 <dialog class="date-picker--dialog" {open}>
     <article>
         <label>
-            Choose a Year
+            Choose a Year...
             <input type="number" bind:value={year} /> 
         </label>
 
         <label>
-            And a Month
+            ...and a Month
             <input type="number" min={1} max={12} bind:value={month} /> 
         </label>
 
