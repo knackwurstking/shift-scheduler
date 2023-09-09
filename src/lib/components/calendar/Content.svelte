@@ -63,6 +63,8 @@
         items = nextItems;
     }
 
+    // TODO: replace localStorage with the new indexedDB storage (only data-shift and data-note)
+
     /**
      *
      * @param {Date} date
