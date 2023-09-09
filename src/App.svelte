@@ -119,7 +119,12 @@
     {/if}
 
     {#if view === "calendar"}
-        <DatePicker style="margin: 0; width: 30rem;" bind:current={datePickerCurrent} />
+        <DatePicker
+            style="margin: 0; width: 30rem;"
+            year={datePickerCurrent.year}
+            month={datePickerCurrent.month}
+            on:datechanged={({ detail }) => goToMonth(new Date(detail.year, detail.month, 1))}
+        />
     {:else if view === "settings"}
         <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
     {/if}
