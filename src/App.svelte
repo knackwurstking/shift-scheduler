@@ -13,6 +13,7 @@
 
     //import * as ripple from "./lib/js/ripple";
     import * as utils from "./lib/js/utils";
+    import * as db from "./lib/js/db";
 
     import DatePicker from "./lib/components/date-picker";
     import IconButton from "./lib/components/icon-button";
@@ -96,7 +97,7 @@
 
     // TODO: need to update today after 12:00 AM
 
-    onMount(() => {
+    onMount(async () => {
         if (utils.isAndroid()) {
             App.addListener("backButton", () => goBackInHistory());
         }

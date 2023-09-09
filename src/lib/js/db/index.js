@@ -1,31 +1,47 @@
 export const dbName = "db";
 export const currentVersion = 1;
 
-const request = indexedDB.open(dbName, currentVersion);
-
 /** @type {IDBDatabase} */
 export let db;
 
-request.onupgradeneeded = (ev) => {
-    switch (ev.oldVersion) {
-        case 0:
+export function open() {
+    return new Promise((resolve, reject) => {
+        if (db) {
+            return db
+        }
+
+        const request = indexedDB.open(dbName, currentVersion);
+
+        request.onupgradeneeded = (ev) => {
+            console.debug("upgrade database");
             const result = request.result;
-            if (!result.objectStoreNames.contains("data")) {
-                const store = result.createObjectStore("data", { keyPath: "date" });
-                store.createIndex("shift", "note", { unique: false })
-                store.createIndex("note", "note", { unique: false })
-                store.createIndex("date", "date", { unique: true })
+
+            switch (ev.oldVersion) {
+                case 0:
+                    const store = result.createObjectStore("data", { keyPath: "date" });
+                    store.createIndex("shift", "note", { unique: false })
+                    store.createIndex("note", "note", { unique: false })
+                    store.createIndex("date", "date", { unique: true })
+                case 1:
+                    if (!result.objectStoreNames.contains("data")) {
+                        const store = result.createObjectStore("data", { keyPath: "date" });
+                        store.createIndex("shift", "note", { unique: false })
+                        store.createIndex("note", "note", { unique: false })
+                        store.createIndex("date", "date", { unique: true })
+                    }
             }
-    }
-}
+        };
 
-request.onerror = () => {
-    console.error("DB Error:", request.error);
-}
+        request.onerror = () => {
+            reject(request.error);
+        };
 
-request.onsuccess = () => {
-    db = request.result;
-    console.debug("DB Ready!");
+        request.onsuccess = () => {
+            db = request.result;
+            console.debug("DB Ready!");
+            resolve(db);
+        };
+    });
 }
 
 /**
@@ -52,17 +68,40 @@ export async function get(date, callback) {
  * @param {ShiftItem} shift 
  * @param {string} note 
  */
-export async function set(date, shift, note) {
-    const store = db.transaction("data", "readwrite").objectStore("data");
-    let key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    const req = store.add({
-        date: key,
-        shift: shift,
-        note: note,
+export function set(date, shift, note) {
+    return new Promise((resolve, reject) => {
+        const store = db.transaction("data", "readwrite").objectStore("data");
+        const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const data = {
+            date: key,
+            shift: shift,
+            note: note,
+        };
+        const req = store.add(data);
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(null);
     });
-    req.onerror = () => {
-        console.error(`set item with key ${key} failed:`, req.error);
-    };
+}
+
+/**
+ * 
+ * @param {Date} date 
+ * @param {ShiftItem} shift 
+ * @param {string} note 
+ */
+export function put(date, shift, note) {
+    return new Promise((resolve, reject) => {
+        const store = db.transaction("data", "readwrite").objectStore("data");
+        const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const data = {
+            date: key,
+            shift: shift,
+            note: note,
+        };
+        const req = store.put(data);
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(null);
+    });
 }
 
 /**
