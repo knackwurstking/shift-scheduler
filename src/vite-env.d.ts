@@ -36,3 +36,8 @@ declare interface Settings {
     startDate: string | Date;
     shiftRhythm: ShiftName[];
 }
+
+declare interface StorageItem {
+    shift: ShiftItem | null;
+    note: string | null;
+}
