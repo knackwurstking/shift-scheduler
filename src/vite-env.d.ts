@@ -16,7 +16,7 @@ declare interface DayData {
 }
 
 declare interface Day { // TODO: `GridItemData` replaced with Day 
-    date: number;
+    date: Date;
     
     today: boolean;
     disable: boolean;

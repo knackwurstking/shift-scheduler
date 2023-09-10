@@ -47,19 +47,24 @@ export function open() {
 /**
  * 
  * @param {Date} date 
- * @param {(item: StorageItem | null) => void} callback 
+ * @returns {Promise<StorageItem | null>}
  */
-export async function get(date, callback) {
-    const store = db.transaction("data", "readwrite").objectStore("data");
-    const req = store.get(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`);
-    req.onsuccess = (ev) => {
-        // @ts-ignore
-        const item = ev.target.result;
-        if (item) {
-            item.date = new Date(item);
-        }
-        callback(item || null);
-    };
+export function get(date) {
+    return new Promise((resolve, reject) => {
+        const store = db.transaction("data", "readwrite").objectStore("data");
+        const req = store.get(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`);
+        req.onsuccess = (ev) => {
+            // @ts-ignore
+            const item = ev.target.result;
+            if (item) {
+                item.date = new Date(item);
+            }
+            resolve(item || null);
+        };
+        req.onerror = (ev) => {
+            reject(req.error);
+        };
+    });
 }
 
 /**

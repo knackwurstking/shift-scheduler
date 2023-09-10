@@ -1,14 +1,15 @@
 <script>
+    import MonthContainer from "./MonthContainer.svelte";
+
     import * as utils from "../../js/utils";
     import * as db from "../../js/db";
 
     /** @type {Month[]} */
-    let months;
-    $: !!months && console.debug("months:", ...months);
+    let months = [];
 
     /** @type {number} */
     export let currentMonthCount;
-    $: typeof currentMonthCount === "number" && getMonths();
+    $: typeof currentMonthCount === "number" && getMonths().then(data => months = data);
 
     /** @type {Settings} */
     let settings = JSON.parse(localStorage.getItem("settings") || "{}");
@@ -21,7 +22,8 @@
     }
 
     async function getMonths() {
-        console.debug("get months...", { currentMonthCount, settings })
+        await db.open();
+
         /** @type {Month[]} */
         const data = [];
         const today = new Date();
@@ -29,6 +31,7 @@
             const monthCount = currentMonthCount + m;
             /** @type {Day[]} */
             const monthData = [];
+
             for (let d = 0; d < 42; d++) {
                 const currentMonth = new Date(
                     today.getFullYear(),
@@ -44,17 +47,18 @@
                 const disable = date.getMonth() !== currentMonth;
 
                 monthData.push({
-                    date: date.getDate(),
+                    date: date,
                     disable: disable,
                     today: !!(
                         today.getFullYear() === date.getFullYear() &&
                         today.getMonth() === date.getMonth() &&
-                        today.getDate() === date.getMonth()
+                        today.getDate() === date.getDate()
                     ),
                     defaultShift: disable ? null : utils.calcShiftStep(settings, date),
-                    data: disable ? null : await getData(date),
+                    data: null,
                 })
             }
+
             data.push({
                 monthCount: monthCount,
                 data: monthData,
@@ -62,31 +66,14 @@
         }
         return data;
     }
-
-    /** @param {Date} date */
-    function getData(date) {
-        return new Promise((resolve) => {
-            db.open().then(() => {
-                db.get(date, (item) => {
-                    resolve({
-                        note: item.note,
-                        shift: item.shift,
-                    })
-                }).catch((err) => {
-                    console.error(err);
-                    resolve(null)
-                })
-            }).catch((err) => {
-                console.error(err);
-                resolve(null)
-            });
-        });
-    }
 </script>
 
 <div class="_container">
     {#each months as month}
         <div class="_month">
+            <MonthContainer
+                data={month.data}
+            />
         </div>
     {/each}
 </div>
