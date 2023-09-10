@@ -19,3 +19,10 @@
 
 <div class="_container">
 </div>
+
+<style>
+    div._container {
+        width: 100%;
+        height: 100%;
+    }
+</style>

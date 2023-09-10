@@ -28,7 +28,9 @@
     /** @type {Views[]}*/
     let viewStack = [view];
 
+    // TODO: bind data-picker with currentMonthCount
     let currentMonthCount = 0;
+    $: console.debug("currentMonthCount:", currentMonthCount)
 
     /** @type {DatePickerCurrent} */
     let datePickerCurrent = {

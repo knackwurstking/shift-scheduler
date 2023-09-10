@@ -82,6 +82,6 @@
     div._container {
     }
 
-    div._month {
+    div._container div._month {
     }
 </style>
