@@ -1,5 +1,6 @@
 <script>
     import * as db from "../../js/db";
+    import Item from "../infinite-scroll-view/Item.svelte";
 
     /** @type {Day} */
     export let day;
@@ -17,7 +18,10 @@
     }
 </script>
 
-<div class="_container">
+<div
+    class="_container"
+    class:today={day.today}
+>
 </div>
 
 <style>
