@@ -10,22 +10,24 @@ declare interface Shift { // TODO: ShiftItem replaced with Shift
     visible: boolean; // TODO: no longer optional (?:)
 }
 
-declare interface Day { // TODO: `GridItemData` replaced with Day 
-    default: Shift | null;
+declare interface DayData {
     shift: Shift | null;
-    note: string; // TODO: note type alway be a `string` instead of `string | null`
+    note: string;
+}
+
+declare interface Day { // TODO: `GridItemData` replaced with Day 
+    date: number;
+    
+    today: boolean;
+    disable: boolean;
+
+    defaultShift: Shift | null;
+    data: DayData;
 }
 
 declare interface Month {
     data: Day[]; // NOTE: length: 42
     monthCount: number;
-}
-
-declare interface GridItem { // TODO: no longer needed (replaced with calendar/View.svelte, type Month)
-    title: string;
-    disabled?: boolean;
-    today?: boolean;
-    data: Day | null;
 }
 
 declare interface DatePickerCurrent {
