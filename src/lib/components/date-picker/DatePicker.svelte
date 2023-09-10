@@ -25,7 +25,7 @@
         year={year}
         on:submit={(ev) => {
             year = ev.detail?.year || year,
-            month = (ev.detail?.month || month) - 1,
+            month = (ev.detail?.month || month + 1) - 1,
             dispatch("datechanged", { year: year, month: month });
             picker = false;
         }}
