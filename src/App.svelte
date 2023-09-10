@@ -13,12 +13,11 @@
 
     //import * as ripple from "./lib/js/ripple";
     import * as utils from "./lib/js/utils";
-    import * as db from "./lib/js/db";
 
     import DatePicker from "./lib/components/date-picker";
     import IconButton from "./lib/components/icon-button";
     import InfiniteScrollView from "./lib/components/infinite-scroll-view";
-    import { Content as ViewCalendarContent } from "./lib/components/calendar";
+    import { View as CalendarView } from "./lib/components/calendar";
     import SettingsView, { Shift } from "./lib/components/settings";
 
     /** @type {Themes} */
@@ -28,6 +27,8 @@
     let view = "calendar";
     /** @type {Views[]}*/
     let viewStack = [view];
+
+    let currentMonthCount = 0;
 
     /** @type {DatePickerCurrent} */
     let datePickerCurrent = {
@@ -158,8 +159,11 @@
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "60px" : "0"}`}>
     {#if view === "calendar"}
+        <CalendarView
+            bind:currentMonthCount
+        />
         <!-- Month view (infinite swipe) -->
-        <InfiniteScrollView
+        <!--InfiniteScrollView
             bind:slotsOrder
             on:scrollup={() => goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month - 1))}
             on:scrolldown={() => goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month + 1))}
@@ -184,7 +188,7 @@
                     monthCount={itemsData[2].monthCount}
                 />
             </div>
-        </InfiniteScrollView>
+        </InfiniteScrollView-->
     {:else if view === "settings"}
         <SettingsView />
     {/if}
