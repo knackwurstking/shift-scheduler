@@ -159,7 +159,7 @@
     </div>
 </header>
 
-<main class="container-fluid" style={`bottom: ${!!footerMode ? "60px" : "0"}`}>
+<main class="container-fluid" style={`bottom: ${!!footerMode ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
         <CalendarView
             bind:currentMonthCount
@@ -231,6 +231,10 @@
     :global(button) {
         position: relative;
         overflow: hidden;
+    }
+
+    :global(*) {
+        box-sizing: border-box;
     }
 
     header {
