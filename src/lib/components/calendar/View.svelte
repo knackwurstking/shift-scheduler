@@ -80,6 +80,8 @@
 
 <style>
     div._container {
+        width: 100%;
+        height: 100%;
     }
 
     div._container div._month {
