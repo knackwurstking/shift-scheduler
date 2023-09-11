@@ -1,6 +1,5 @@
 <script>
     import * as db from "../../js/db";
-    import Item from "../infinite-scroll-view/Item.svelte";
 
     /** @type {Day} */
     export let day;

@@ -16,7 +16,6 @@
 
     import DatePicker from "./lib/components/date-picker";
     import IconButton from "./lib/components/icon-button";
-    import InfiniteScrollView from "./lib/components/infinite-scroll-view";
     import { View as CalendarView } from "./lib/components/calendar";
     import SettingsView, { Shift } from "./lib/components/settings";
 
