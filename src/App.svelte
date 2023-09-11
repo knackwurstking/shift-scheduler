@@ -30,16 +30,6 @@
 
     // TODO: bind data-picker with currentMonthCount
     let currentMonthCount = 0;
-    $: console.debug("currentMonthCount:", currentMonthCount)
-
-    /** @type {DatePickerCurrent} */
-    let datePickerCurrent = {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-    };
-    /** @type {[number, number, number]} */
-    let slotsOrder = [0, 1, 2];
-    let itemsData = [{ monthCount: -1 }, { monthCount: 0 }, { monthCount: 1 }];
 
     /** @type {Settings | undefined} */
     let settings;
@@ -69,8 +59,7 @@
         view = viewStack[viewStack.length - 1];
 
         if (viewStack.length === 1) {
-            slotsOrder = [0, 1, 2];
-            goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month));
+            currentMonthCount = currentMonthCount;
         }
     }
 
@@ -82,20 +71,6 @@
         footerMode = null;
         viewStack = [...viewStack, v];
         view = v;
-    }
-
-    /** @param {Date} date */
-    function goToMonth(date) {
-        const today = new Date();
-        datePickerCurrent = {
-            year: date.getFullYear(),
-            month: date.getMonth(),
-        };
-        itemsData[slotsOrder[1]].monthCount =
-            (date.getFullYear() - today.getFullYear()) * 12 + (date.getMonth() - today.getMonth());
-        itemsData[slotsOrder[0]].monthCount = itemsData[slotsOrder[1]].monthCount - 1;
-        itemsData[slotsOrder[2]].monthCount = itemsData[slotsOrder[1]].monthCount + 1;
-        itemsData = itemsData;
     }
 
     // TODO: need to update today after 12:00 AM
@@ -123,12 +98,7 @@
     {/if}
 
     {#if view === "calendar"}
-        <DatePicker
-            style="margin: 0; width: 30rem;"
-            year={datePickerCurrent.year}
-            month={datePickerCurrent.month}
-            on:datechanged={({ detail }) => goToMonth(new Date(detail.year, detail.month, 1))}
-        />
+        <DatePicker style="margin: 0; width: 30rem;" bind:monthCount={currentMonthCount} />
     {:else if view === "settings"}
         <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
     {/if}
@@ -145,11 +115,7 @@
             >
 
             <!-- GoTo Today -->
-            <IconButton
-                disabled={datePickerCurrent.year === new Date().getFullYear() &&
-                    datePickerCurrent.month === new Date().getMonth()}
-                on:click={() => goToMonth(new Date())}
-            >
+            <IconButton disabled={currentMonthCount === 0} on:click={() => (currentMonthCount = 0)}>
                 <MdToday />
             </IconButton>
 
@@ -161,36 +127,7 @@
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
-        <CalendarView
-            bind:currentMonthCount
-        />
-        <!-- Month view (infinite swipe) -->
-        <!--InfiniteScrollView
-            bind:slotsOrder
-            on:scrollup={() => goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month - 1))}
-            on:scrolldown={() => goToMonth(new Date(datePickerCurrent.year, datePickerCurrent.month + 1))}
-        >
-            <div style="width: 100%; height: 100%;" slot="0">
-                <ViewCalendarContent
-                    editMode={editModeActiveIndex === -2 ? { name: "" } : settings.shifts[editModeActiveIndex] || null}
-                    monthCount={itemsData[0].monthCount}
-                />
-            </div>
-
-            <div style="width: 100%; height: 100%;" slot="1">
-                <ViewCalendarContent
-                    editMode={editModeActiveIndex === -2 ? { name: "" } : settings.shifts[editModeActiveIndex] || null}
-                    monthCount={itemsData[1].monthCount}
-                />
-            </div>
-
-            <div style="width: 100%; height: 100%;" slot="2">
-                <ViewCalendarContent
-                    editMode={editModeActiveIndex === -2 ? { name: "" } : settings.shifts[editModeActiveIndex] || null}
-                    monthCount={itemsData[2].monthCount}
-                />
-            </div>
-        </InfiniteScrollView-->
+        <CalendarView bind:currentMonthCount />
     {:else if view === "settings"}
         <SettingsView />
     {/if}
@@ -276,6 +213,7 @@
         display: flex;
         overflow: hidden;
         overflow-x: auto;
+        background-color: var(--background-color);
     }
 
     footer:not(.visible) {

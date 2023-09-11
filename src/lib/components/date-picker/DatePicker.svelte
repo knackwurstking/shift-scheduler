@@ -1,7 +1,4 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
     import * as ripple from "../../ripple";
 
     import Dialog from "./Dialog.svelte";
@@ -11,22 +8,29 @@
     export { _class as class };
 
     /** @type {number} */
-    export let year;
-    /** @type {number} */
-    export let month;
+    export let monthCount;
+    $: typeof monthCount === "number" && setCurrent();
 
+    /** @type {Date} */
+    let current;
     let picker = false;
+
+    function setCurrent() {
+        const today = new Date();
+        current = new Date(today.getFullYear(), today.getMonth() + monthCount, 1);
+    }
 </script>
 
 {#if picker}
     <Dialog
         open={picker}
-        month={month + 1}
-        year={year}
-        on:submit={(ev) => {
-            year = ev.detail?.year || year,
-            month = (ev.detail?.month || month + 1) - 1,
-            dispatch("datechanged", { year: year, month: month });
+        year={current.getFullYear()}
+        month={current.getMonth() + 1}
+        on:submit={({ detail }) => {
+            // calculate the new monthCount
+            const yearDiff = (detail.year - current.getFullYear()) * 12;
+            const monthDiff = detail.month - (current.getMonth() + 1);
+            monthCount += yearDiff + monthDiff;
             picker = false;
         }}
     />
@@ -41,7 +45,7 @@
         picker = true;
     }}
 >
-    <span>{year} / {(month + 1).toString().padStart(2, "0")}</span>
+    <span>{current.getFullYear()} / {(current.getMonth() + 1).toString().padStart(2, "0")}</span>
 </button>
 
 <style>

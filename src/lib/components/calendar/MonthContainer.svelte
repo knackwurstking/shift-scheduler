@@ -31,15 +31,19 @@
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1.5rem 1fr 1fr 1fr 1fr 1fr 1fr;
 
-        grid-column-gap: 4px;
-        grid-row-gap: 4px;
+        grid-column-gap: 2px;
+        grid-row-gap: 2px;
 
         padding: var(--spacing) 0;
     }
 
     div._container div.header {
+        text-align: center;
     }
 
+    div._container div.header,
     div._container div.item {
+        border: 1px solid var(--muted-border-color);
+        border-radius: var(--border-radius);
     }
 </style>
