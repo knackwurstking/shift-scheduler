@@ -3,6 +3,8 @@
 
     /** @type {Day[]} */
     export let data;
+    /** @type {Shift | null} */
+    export let editModeShift;
 </script>
 
 <div class="_container grid">
@@ -18,6 +20,7 @@
         <div class="item">
             <DayContainer
                 {day}
+                editModeShift={editModeShift}
             />
         </div>
     {/each}

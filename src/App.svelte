@@ -126,7 +126,12 @@
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
-        <CalendarView bind:currentMonthCount />
+        <CalendarView
+            bind:currentMonthCount
+            editModeShift={editModeActiveIndex === -2
+                ? { name: "", shortName: "", visible: false }
+                : settings.shifts[editModeActiveIndex] || null}
+        />
     {:else if view === "settings"}
         <SettingsView />
     {/if}

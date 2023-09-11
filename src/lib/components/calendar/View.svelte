@@ -4,12 +4,15 @@
     import * as utils from "../../js/utils";
     import * as db from "../../js/db";
 
-    /** @type {Month[]} */
-    let months = [];
-
     /** @type {number} */
     export let currentMonthCount;
     $: typeof currentMonthCount === "number" && getMonths().then((data) => (months = data));
+
+    /** @type {Shift | null} */
+    export let editModeShift;
+
+    /** @type {Month[]} */
+    let months = [];
 
     /** @type {Settings} */
     let settings = JSON.parse(localStorage.getItem("settings") || "{}");
@@ -108,7 +111,7 @@
 >
     {#each months as month}
         <div class="_month">
-            <MonthContainer data={month.data} />
+            <MonthContainer data={month.data} editModeShift={editModeShift} />
         </div>
     {/each}
 </div>

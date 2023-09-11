@@ -70,7 +70,7 @@ export function get(date) {
 /**
  * 
  * @param {Date} date 
- * @param {ShiftItem} shift 
+ * @param {Shift} shift 
  * @param {string} note 
  */
 export function set(date, shift, note) {
@@ -91,7 +91,7 @@ export function set(date, shift, note) {
 /**
  * 
  * @param {Date} date 
- * @param {ShiftItem} shift 
+ * @param {Shift} shift 
  * @param {string} note 
  */
 export function put(date, shift, note) {

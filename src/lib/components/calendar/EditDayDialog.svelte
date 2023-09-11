@@ -2,29 +2,31 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    /** @type {Day} */
+    export let day;
     export let open = false;
 
-    /** @type {Date} */
-    export let date;
-    /** @type {GridItem} */
-    export let item;
     /** @type {Settings} */
-    export let settings;
+    let settings;
+    $: !settings &&
+        (settings = JSON.parse(
+            localStorage.getItem("settings") || '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
+        ));
 
-    let current = settings.shifts.findIndex((v) => (v.name === (item.data.shift?.name))).toString();
+    let current = settings.shifts.findIndex((v) => v.name === day.data.shift?.name).toString();
 </script>
 
 <dialog {open}>
     <article>
         <h2 class="title">
-            {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")} / {date
+            {day.date.getFullYear()} / {(day.date.getMonth() + 1).toString().padStart(2, "0")} / {day.date
                 .getDate()
                 .toString()
                 .padStart(2, "0")}
         </h2>
 
         <select bind:value={current}>
-            <option value="-1" selected={current === "-1"}>(Default) {item.data.default?.name || ""}</option>
+            <option value="-1" selected={current === "-1"}>(Default) {day.defaultShift?.name || ""}</option>
 
             {#each settings.shifts as shift, index}
                 <option value={index.toString()} selected={current === index.toString()}>{shift.name}</option>
@@ -33,15 +35,14 @@
 
         <label for="note">
             Note
-            <textarea name="note" cols="30" rows="10" bind:value={item.data.note}></textarea>
+            <textarea name="note" cols="30" rows="10" bind:value={day.data.note} />
         </label>
 
         <button
             on:click={() =>
                 dispatch("submit", {
-                    default: item.data.default || null,
                     shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
-                    note: item.data.note || null,
+                    note: day.data.note,
                 })}
         >
             OK
@@ -54,7 +55,7 @@
         padding: var(--spacing);
     }
 
-    label textarea[name=note] {
+    label textarea[name="note"] {
         resize: none;
     }
 </style>
