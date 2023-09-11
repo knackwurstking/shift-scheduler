@@ -10,7 +10,7 @@ export function isAndroid() {
  * 
  * @param {Settings} settings
  * @param {Date} date 
- * @returns {ShiftItem | null}
+ * @returns {Shift | null}
  */
 export function calcShiftStep(settings, date) {
     if (typeof settings.startDate === "string") settings.startDate = new Date(settings.startDate);

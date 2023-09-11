@@ -5,7 +5,7 @@
     /** @type {boolean} */
     export let open;
 
-    /** @type {ShiftItem[]} */
+    /** @type {Shift[]} */
     export let shifts = [];
 
     /** @type {string} */
