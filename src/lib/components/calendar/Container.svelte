@@ -20,10 +20,22 @@
     let transition = "none";
     /** @type {string} */
     let currentTranslateX = "-100%";
+    /** @type {"left" | "right" | null} */
+    let direction = null;
+    /** @type {boolean} */
+    let pointerlock = false;
+    /** @type {number | null} */
+    let lastClientX = null
     /** @type {Date} */
     let currentDate = new Date();
     /** @type {HTMLDivElement} */
     let _container;
+
+    function resetTransition() {
+        direction = null;
+        pointerlock = false; 
+        lastClientX = null;
+    }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -54,7 +66,24 @@
             {currentTranslateX}
             {transition}
             transitionend={() => {
-                // TODO: ...
+                transition = "none";
+                currentTranslateX = "-100%";
+
+                if (direction === "left") {
+                    items = [items[1], items[2], items[0]];
+                    currentDate = new Date(
+                        currentDate.getFullYear(),
+                        currentDate.getMonth() + 1,
+                    );
+                } else if (direction === "right") {
+                    items = [items[2], items[0], items[1]];
+                    currentDate = new Date(
+                        currentDate.getFullYear(),
+                        currentDate.getMonth() - 1,
+                    );
+                }
+
+                resetTransition();
             }}
         />
     {/each}
