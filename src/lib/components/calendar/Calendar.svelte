@@ -11,6 +11,7 @@
      * @param {Date} date
      */
     export function set(date) {
+        console.debug("set date:", date);
         _container.setCurrentDate(date);
     }
 
