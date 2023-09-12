@@ -5,4 +5,10 @@ export { default } from "./Calendar.svelte";
  * @type {{
  *  date: Date,
  * }}
+ * 
+ * @typedef DayData
+ * @type {{
+ *  shift: import("../settings").Shift,
+ *  note: string,
+ * }}
  */

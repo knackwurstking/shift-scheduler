@@ -1,3 +1,12 @@
+/**
+ * @typedef StorageData
+ * @type {{
+ *  date: Date,
+ *  shift: import("../../components/settings").Shift,
+ *  note: string,
+ * }}
+ */
+
 export const dbName = "db";
 export const currentVersion = 1;
 
@@ -13,7 +22,6 @@ export function open() {
         const request = indexedDB.open(dbName, currentVersion);
 
         request.onupgradeneeded = (ev) => {
-            console.debug("upgrade database");
             const result = request.result;
 
             switch (ev.oldVersion) {
@@ -38,7 +46,6 @@ export function open() {
 
         request.onsuccess = () => {
             db = request.result;
-            console.debug("DB Ready!");
             resolve(db);
         };
     });
@@ -47,17 +54,18 @@ export function open() {
 /**
  * 
  * @param {Date} date 
- * @returns {Promise<StorageItem | null>}
+ * @returns {Promise<StorageData | null>}
  */
 export function get(date) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        if (!db) await open();
         const store = db.transaction("data", "readwrite").objectStore("data");
         const req = store.get(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`);
         req.onsuccess = (ev) => {
             // @ts-ignore
             const item = ev.target.result;
             if (item) {
-                item.date = new Date(item);
+                item.date = new Date(item.date);
             }
             resolve(item || null);
         };
@@ -70,7 +78,7 @@ export function get(date) {
 /**
  * 
  * @param {Date} date 
- * @param {Shift} shift 
+ * @param {import("../../components/settings").Shift} shift 
  * @param {string} note 
  */
 export function set(date, shift, note) {
@@ -91,7 +99,7 @@ export function set(date, shift, note) {
 /**
  * 
  * @param {Date} date 
- * @param {Shift} shift 
+ * @param {import("../../components/settings").Shift} shift 
  * @param {string} note 
  */
 export function put(date, shift, note) {
