@@ -33,7 +33,7 @@
     on:click={(ev) => {
         // @ts-ignore
         for (const el of (ev?.path || ev.composedPath() || [])) {
-            if (el.classList?.contains("item-content-day")) {
+            if (el.classList?.contains("day-content")) {
                 dispatch("click", new Date(
                     currentDate.getFullYear(),
                     currentDate.getMonth(),

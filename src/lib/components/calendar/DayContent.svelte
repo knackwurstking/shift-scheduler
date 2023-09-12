@@ -6,6 +6,7 @@
 </script>
 
 <div
+    class="day-content"
     class:disabled={day.date.getMonth() !== currentMonth}
     class:today={
         day.date.getFullYear() === (new Date().getFullYear()) &&
