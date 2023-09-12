@@ -16,8 +16,9 @@
 
     import DatePicker from "./lib/components/date-picker"
     import IconButton from "./lib/components/icon-button";
-    import { View as CalendarView } from "./lib/components/calendar";
+    import Calendar from "./lib/components/calendar";
     import SettingsView, { Shift } from "./lib/components/settings";
+    import { set } from "./lib/js/db";
 
     /** @type {Themes} */
     let currentTheme = "custom"; // TODO: Add a theme picker to the settings page
@@ -28,6 +29,7 @@
     let viewStack = [view];
 
     let currentMonthCount = 0;
+    let currentDate;
 
     /** @type {Settings | undefined} */
     let settings;
@@ -97,6 +99,7 @@
 
     {#if view === "calendar"}
         <DatePicker style="margin: 0; width: 30rem;" bind:monthCount={currentMonthCount} />
+        <!-- TODO:DatePicker style="margin: 0; width: 30rem;" bind:currentDate /-->
     {:else if view === "settings"}
         <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
     {/if}
@@ -125,12 +128,14 @@
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
-        <!-- TODO: This will change -->
-        <CalendarView
-            bind:currentMonthCount
+        <!-- TODO: handle the edit mode (Calendar: bind:this and run calendar.set(date))
+
             editModeShift={editModeActiveIndex === -2
                 ? { name: "", shortName: "", visible: false }
                 : settings.shifts[editModeActiveIndex] || null}
+        -->
+        <Calendar
+            on:currentdatechange={({ detail }) => (currentDate = detail)}
         />
     {:else if view === "settings"}
         <SettingsView />

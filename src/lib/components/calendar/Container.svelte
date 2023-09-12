@@ -34,11 +34,11 @@
         // @ts-ignore
         for (const el of (ev?.path || ev.composedPath() || [])) {
             if (el.classList?.contains("item-content-day")) {
-                dispatch("click", {
-                    year: currentDate.getFullYear(),
-                    month: currentDate.getMonth(),
-                    date: parseInt(el.getAttribute("data-value"), 10),
-                });
+                dispatch("click", new Date(
+                    currentDate.getFullYear(),
+                    currentDate.getMonth(),
+                    parseInt(el.getAttribute("data-value"), 10),
+                ));
             }
         }
     }}
