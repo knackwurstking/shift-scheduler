@@ -25,7 +25,6 @@
             {/each}
         </div>
 
-        <!-- TODO: slot for ContentItem.svelte component -->
         <slot />
     </div>
 </div>
