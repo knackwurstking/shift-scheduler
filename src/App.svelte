@@ -29,7 +29,10 @@
     let viewStack = [view];
 
     let currentMonthCount = 0;
-    let currentDate;
+
+    /** @type {Date} */
+    let currentDate = new Date();
+    //$: !!currentDate && !!calendar && calendar.set(currentDate)
 
     /** @type {Settings | undefined} */
     let settings;
@@ -37,6 +40,10 @@
     let footerMode = null;
 
     let editModeActiveIndex = -1;
+
+    /** @type {Calendar} */
+    let calendar;
+    $: !!calendar && calendar.set(currentDate);
 
     $: {
         if (view === "calendar") {
@@ -98,8 +105,8 @@
     {/if}
 
     {#if view === "calendar"}
-        <DatePicker style="margin: 0; width: 30rem;" bind:monthCount={currentMonthCount} />
-        <!-- TODO:DatePicker style="margin: 0; width: 30rem;" bind:currentDate /-->
+        <!--DatePicker style="margin: 0; width: 30rem;" bind:monthCount={currentMonthCount} /-->
+        <DatePicker style="margin: 0; width: 30rem;" bind:currentDate />
     {:else if view === "settings"}
         <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
     {/if}
@@ -135,6 +142,7 @@
                 : settings.shifts[editModeActiveIndex] || null}
         -->
         <Calendar
+            bind:this={calendar}
             on:currentdatechange={({ detail }) => (currentDate = detail)}
         />
     {:else if view === "settings"}

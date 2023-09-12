@@ -6,6 +6,14 @@
     import ContainerItem from "./ContainerItem.svelte";
     import Content from "./Content.svelte";
 
+    /**
+     * 
+     * @param {Date} date
+     */
+    export function set(date) {
+        _container.setCurrentDate(date);
+    }
+
     /** @type {Container} */
     let _container;
 </script>
