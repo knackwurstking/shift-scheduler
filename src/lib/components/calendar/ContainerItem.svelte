@@ -16,7 +16,6 @@
     }}
 >
     <div>
-        <!-- TODO: header -->
         <div class="header">
             {#each headerItems as item}
                 <span
