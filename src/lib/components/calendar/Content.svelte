@@ -1,4 +1,7 @@
 <script>
+    import { onMount, createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+
     import DayContent from "./DayContent.svelte";
 
     /** @type {number} */
@@ -15,6 +18,27 @@
         0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0,
     ].map(() => ({ date: currentDate }))
+
+    $: {
+        if (!!currentDate) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const startDay = new Date(year, month, 1).getDay();
+            for (let i = 0; i < days.length; i++) {
+                days[i].date = new Date(year, month, i + 1 - startDay);
+            }
+        }
+
+        //if (index === 1 && !!currentDate) {
+        //    dispatch("currentdatechange", currentDate);
+        //}
+    }
+
+    onMount(() => {
+        //if (index === 1) {
+        //    dispatch("currentdatechange", currentDate);
+        //}
+    });
 </script>
 
 <div class="container">
