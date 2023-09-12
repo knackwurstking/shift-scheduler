@@ -29,10 +29,12 @@
             }
         }
 
+        // TODO: need to change the endless loop in App.svelte (currentDate & calendar.set)
         //if (index === 1 && !!currentDate) {
         //    dispatch("currentdatechange", currentDate);
         //}
     }
+
 
     onMount(() => {
         //if (index === 1) {
