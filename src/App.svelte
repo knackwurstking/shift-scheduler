@@ -17,8 +17,7 @@
     import DatePicker from "./lib/components/date-picker"
     import IconButton from "./lib/components/icon-button";
     import Calendar from "./lib/components/calendar";
-    import SettingsView, { Shift } from "./lib/components/settings";
-    import { set } from "./lib/js/db";
+    import SettingsView, { ShiftCard } from "./lib/components/settings";
 
     /** @type {Themes} */
     let currentTheme = "custom"; // TODO: Add a theme picker to the settings page
@@ -34,7 +33,7 @@
     let currentDate = new Date();
     //$: !!currentDate && !!calendar && calendar.set(currentDate)
 
-    /** @type {Settings | undefined} */
+    /** @type {import("./lib/components/settings").Settings | undefined} */
     let settings;
     /** @type {"edit" | null} */
     let footerMode = null;
@@ -153,7 +152,7 @@
 <footer class="container-fluid" class:visible={footerMode === "edit"}>
     {#if footerMode === "edit" && !!settings}
         <span>
-            <Shift
+            <ShiftCard
                 name="Reset"
                 visible={false}
                 active={editModeActiveIndex === -2}
@@ -165,7 +164,7 @@
 
         {#each settings.shifts as shift, index}
             <span>
-                <Shift
+                <ShiftCard
                     {...shift}
                     active={editModeActiveIndex == index}
                     on:click={() => {

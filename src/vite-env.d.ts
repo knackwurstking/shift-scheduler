@@ -1,16 +1,10 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
 
-/*
 declare type Views = "calendar" | "settings";
 declare type Themes = "default" | "custom" | "green";
 
-declare interface Shift { // TODO: ShiftItem replaced with Shift
-    name: string;
-    shortName: string; // TODO: no longer optional (?:)
-    visible: boolean; // TODO: no longer optional (?:)
-}
-
+/*
 declare interface DayData {
     shift: Shift | null;
     note: string;
@@ -34,12 +28,6 @@ declare interface Month {
 declare interface DatePickerCurrent {
     year: number;
     month: number;
-}
-
-declare interface Settings {
-    shifts: Shift[];
-    startDate: string | Date;
-    shiftRhythm: string[];
 }
 
 declare interface StorageItem {
