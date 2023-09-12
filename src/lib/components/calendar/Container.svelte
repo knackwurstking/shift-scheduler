@@ -88,3 +88,19 @@
         />
     {/each}
 </div>
+
+<style>
+    div {
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        overflow: hidden;
+
+        touch-action: none;
+        user-select: none;
+    }
+</style>
