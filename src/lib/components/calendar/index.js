@@ -1,1 +1,8 @@
-export { default as View } from "./View.svelte";
+export { default } from "./Calendar.svelte";
+
+/**
+ * @typedef Day
+ * @type {{
+ *  date: Date,
+ * }}
+ */

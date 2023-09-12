@@ -14,7 +14,7 @@
     //import * as ripple from "./lib/js/ripple";
     import * as utils from "./lib/js/utils";
 
-    import DatePicker from "./lib/components/date-picker";
+    import DatePicker from "./lib/components/date-picker"
     import IconButton from "./lib/components/icon-button";
     import { View as CalendarView } from "./lib/components/calendar";
     import SettingsView, { Shift } from "./lib/components/settings";
@@ -125,6 +125,7 @@
 
 <main class="container-fluid" style={`bottom: ${!!footerMode ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
+        <!-- TODO: This will change -->
         <CalendarView
             bind:currentMonthCount
             editModeShift={editModeActiveIndex === -2
