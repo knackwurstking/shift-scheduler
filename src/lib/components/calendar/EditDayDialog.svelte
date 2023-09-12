@@ -6,14 +6,13 @@
     export let day;
     export let open = false;
 
+    /** @type {string} */
+    let current;
     /** @type {Settings} */
-    let settings;
-    $: !settings &&
-        (settings = JSON.parse(
-            localStorage.getItem("settings") || '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
-        ));
-
-    let current = settings.shifts.findIndex((v) => v.name === day.data.shift?.name).toString();
+    let settings = JSON.parse(
+        localStorage.getItem("settings") || '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
+    );
+    $: !!settings && (current = settings.shifts.findIndex((v) => v.name === day.data.shift?.name).toString());
 </script>
 
 <dialog {open}>

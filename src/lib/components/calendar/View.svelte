@@ -13,6 +13,7 @@
 
     /** @type {Month[]} */
     let months = [];
+    $: console.debug(months);
 
     /** @type {Settings} */
     let settings = JSON.parse(localStorage.getItem("settings") || "{}");
@@ -45,16 +46,15 @@
             const monthCount = currentMonthCount + m;
             /** @type {Day[]} */
             const monthData = [];
-
+            const current = new Date(today.getFullYear(), today.getMonth() + monthCount, 1);
             for (let d = 0; d < 42; d++) {
-                const currentMonth = new Date(today.getFullYear(), today.getMonth() + monthCount, 1).getMonth();
                 const date = new Date(
-                    today.getFullYear(),
-                    today.getMonth() + monthCount,
-                    today.getDay() + (d - today.getDay())
+                    current.getFullYear(),
+                    current.getMonth() + monthCount,
+                    current.getDate() + (d - current.getDay())
                 );
 
-                const disable = date.getMonth() !== currentMonth;
+                const disable = date.getMonth() !== current.getMonth();
 
                 monthData.push({
                     date: date,
@@ -65,7 +65,10 @@
                         today.getDate() === date.getDate()
                     ),
                     defaultShift: disable ? null : utils.calcShiftStep(settings, date),
-                    data: null,
+                    data: {
+                        shift: null,
+                        note: "",
+                    },
                 });
             }
 
@@ -74,6 +77,7 @@
                 data: monthData,
             });
         }
+        console.debug(currentMonthCount, data)
         return data;
     }
 
@@ -97,21 +101,20 @@
                     ev.currentTarget.removeChild(ev.currentTarget.children[2]),
                     ev.currentTarget.firstChild
                 );
-                resetScroll(ev.currentTarget);
-
                 // NOTE: resetScroll will trigger a new scroll event
                 currentMonthCount -= 2;
+                resetScroll(ev.currentTarget);
             case ev.currentTarget.clientHeight * 2:
                 // scroll down
                 ev.currentTarget.appendChild(ev.currentTarget.removeChild(ev.currentTarget.children[0]));
-                resetScroll(ev.currentTarget);
                 currentMonthCount += 1;
+                resetScroll(ev.currentTarget);
         }
     }}
 >
     {#each months as month}
         <div class="_month">
-            <MonthContainer data={month.data} editModeShift={editModeShift} />
+            <MonthContainer data={month.data} {editModeShift} />
         </div>
     {/each}
 </div>
