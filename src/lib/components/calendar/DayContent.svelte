@@ -1,13 +1,8 @@
 <script>
-    import * as utils from "../../js/utils";
-    import * as db from "../../js/db";
-
     /** @type {number} */
     export let currentMonth;
     /** @type {import(".").Day} */
     export let day;
-    /** @type {import("../settings").Settings} */
-    export let settings;
 
     $: day && setData();
 
@@ -16,12 +11,6 @@
             day.data = { shift: null, note: "" };
             return
         }
-        // TODO: this is too slow, need to update all the data before the transition ends
-        const item = await db.get(day.date);
-        day.data = {
-            shift: item?.shift || utils.calcShiftStep(settings, day.date),
-            note: item?.note || "",
-        };
     }
 </script>
 

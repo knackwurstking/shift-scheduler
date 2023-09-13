@@ -32,6 +32,7 @@
             const startDay = new Date(year, month, 1).getDay();
             for (let i = 0; i < days.length; i++) {
                 days[i].date = new Date(year, month, i + 1 - startDay);
+                // TODO: get custom data (shift & note) (but don't use this slow indexedDB anymore)
                 days[i].data = {
                     shift: utils.calcShiftStep(settings, days[i].date),
                     note: "",
