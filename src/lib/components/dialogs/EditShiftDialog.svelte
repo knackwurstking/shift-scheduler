@@ -9,8 +9,11 @@
   export let selected = "0";
 
   let hidden = !shifts[selected].visible;
-  $: hidden !== shifts[parseInt(selected)].visible &&
-    (shifts[parseInt(selected)].visible = !hidden);
+  $: typeof hidden === "boolean" && updateVisible();
+
+  function updateVisible() {
+    shifts[parseInt(selected)].visible = !hidden
+  }
 </script>
 
 <dialog open>
@@ -59,12 +62,12 @@
       class="secondary"
       on:click={() => {
         if (window.confirm(`Delete "${shifts[parseInt(selected)].name}"?`)) {
+          if (shifts.length <= 1) dispatch("submit", []);
           shifts = [
             ...shifts.slice(0, parseInt(selected)),
             ...shifts.slice(parseInt(selected) + 1),
           ];
-          if (!shifts.length) dispatch("cancel");
-          else selected = "0";
+          selected = "0";
         }
       }}>Delete</button
     >
@@ -81,5 +84,9 @@
 
   dialog article > *:nth-child(6) {
     margin-top: var(--spacing);
+  }
+
+  label {
+    user-select: none;
   }
 </style>
