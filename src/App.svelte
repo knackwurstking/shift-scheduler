@@ -157,6 +157,7 @@
     {#if view === "calendar"}
         <Calendar
             bind:this={calendar}
+            {settings}
             on:click={async ({ detail }) => {
                 if (detail && editMode_open) {
                     let shift = getEditModeShift();

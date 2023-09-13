@@ -28,6 +28,8 @@
         const storageData = await db.get(date);
         defaultShift = utils.calcShiftStep(settings, date);
         shift = storageData?.shift || null;
+        if (shift)
+            current = settings.shifts.findIndex(s => s.name === shift?.name).toString();
         note = storageData?.note || "";
     }
 </script>

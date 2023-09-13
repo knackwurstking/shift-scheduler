@@ -4,6 +4,7 @@ export { default } from "./Calendar.svelte";
  * @typedef Day
  * @type {{
  *  date: Date,
+ *  data: DayData,
  * }}
  * 
  * @typedef DayData

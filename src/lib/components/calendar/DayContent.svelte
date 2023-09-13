@@ -1,22 +1,27 @@
 <script>
+    import * as utils from "../../js/utils";
     import * as db from "../../js/db";
 
     /** @type {number} */
     export let currentMonth;
     /** @type {import(".").Day} */
     export let day;
+    /** @type {import("../settings").Settings} */
+    export let settings;
 
-    /** @type {import(".").DayData} */
-    let data;
+    $: day && setData();
 
-    $: {
-        if (!!day) {
-            if (currentMonth === day.date.getMonth()) {
-                db.get(day.date).then((item) => {
-                    data = { shift: item?.shift || null, note: item?.note || "" };
-                });
-            }
+    async function setData() {
+        if (currentMonth !== day.date.getMonth()) {
+            day.data = { shift: null, note: "" };
+            return
         }
+        // TODO: this is too slow, need to update all the data before the transition ends
+        const item = await db.get(day.date);
+        day.data = {
+            shift: item?.shift || utils.calcShiftStep(settings, day.date),
+            note: item?.note || "",
+        };
     }
 </script>
 
@@ -28,13 +33,16 @@
         day.date.getDate() === new Date().getDate()}
     data-value={`${day.date.getMonth() === currentMonth ? day.date.getDate() : NaN}`}
 >
-    {#if !!data}
-        <span class="shift">{data.shift?.shortName || ""}</span>
+    {#if !!day.data}
+        <span class="shift">{day.data.shift?.shortName || ""}</span>
+        {#if !!day.data.note}
+            <div class="note-marker"></div>
+        {/if}
     {/if}
 
     <span
         class="date"
-        class:has-shift={!!data?.shift}
+        class:has-shift={!!day.data?.shift}
     >
         {day.date.getDate()}
     </span>
@@ -65,19 +73,19 @@
         border-color: var(--primary);
     }
 
-    div.day-content.today .date {
+    div.day-content .date {
         position: absolute;
         font-size: 1em;
     }
 
-    div.day-content.today .date.has-shift {
+    div.day-content .date.has-shift {
         position: absolute;
         font-size: 0.85rem;
         top: 4px;
         left: 4px;
     }
 
-    div.day-content.today .shift {
+    div.day-content .shift {
         display: block;
         position: absolute;
         font-size: 1rem;
@@ -85,5 +93,15 @@
         max-width: calc(100% - 8px);
         padding: 4px;
         overflow: hidden;
+    }
+
+    div.day-content .note-marker {
+        position: absolute;
+        right: -0.75em;
+        bottom: -0.75em;
+        width: 1.5em;
+        height: 1.5em;
+        transform: rotate(45deg);
+        background-color: red;
     }
 </style>

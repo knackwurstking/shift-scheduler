@@ -4,10 +4,14 @@
 
     import DayContent from "./DayContent.svelte";
 
+    import * as utils from "../../js/utils";
+
     /** @type {number} */
     export let index;
     /** @type {Date} */
     export let currentDate;
+    /** @type {import("../settings").Settings} */
+    export let settings;
 
     /** @type {import(".").Day[]} */
     let days = [
@@ -17,21 +21,22 @@
         0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0,
-    ].map(() => ({ date: currentDate }))
+    ].map(() => ({ date: currentDate, data: { shift: null, note: "" } }))
 
-    $: {
-        if (!!currentDate) {
+    $: currentDate && setDays();
+    $: index === 1 && currentDate &&  dispatch("currentdatechange", currentDate);
+
+    async function setDays() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
             const startDay = new Date(year, month, 1).getDay();
             for (let i = 0; i < days.length; i++) {
                 days[i].date = new Date(year, month, i + 1 - startDay);
+                days[i].data = {
+                    shift: utils.calcShiftStep(settings, days[i].date),
+                    note: "",
+                };
             }
-        }
-
-        if (index === 1 && !!currentDate) {
-            dispatch("currentdatechange", currentDate);
-        }
     }
 </script>
 
@@ -40,6 +45,7 @@
         {#each days as day}
             <DayContent
                 currentMonth={currentDate.getMonth()}
+                {settings}
                 {day}
             />
         {/each}

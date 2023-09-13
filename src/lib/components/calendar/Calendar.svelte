@@ -6,6 +6,9 @@
     import ContainerItem from "./ContainerItem.svelte";
     import Content from "./Content.svelte";
 
+    /** @type {import("../settings").Settings} */
+    export let settings;
+
     /**
      * 
      * @param {Date} date
@@ -31,7 +34,7 @@
     <ContainerItem
         slot="container-item"
         style={`
-            transform: translateX(calc(${currentTranslateX}));
+            transform: translateX(${currentTranslateX});
             transition: ${transition};
         `}
         let:index
@@ -44,6 +47,7 @@
         <Content
             {index}
             {currentDate}
+            {settings}
             on:currentdatechange={(ev) => {
                 dispatch("currentdatechange", ev.detail)
             }}

@@ -86,7 +86,7 @@
                     direction = null;
 
                 lastClientX = ev.clientX;
-                currentTranslateX = `-100% - ${startClientX - ev.clientX}px`;
+                currentTranslateX = `calc(-100% - ${startClientX - ev.clientX}px)`;
             };
         }
     }
