@@ -11,7 +11,7 @@
   /** @type {boolean} */
   export let visible = true;
   /** @type {string} */
-  export let color;
+  export let color = "var(--color)";
 
   export let active = false;
 </script>

@@ -17,7 +17,6 @@
 
   let addShiftDialogOpen = false;
   let editShiftRhythmDialogOpen = false;
-
   let editShiftDialogOpen = false;
   /** @type {string} */
   let editShiftDialogSelected;
@@ -68,7 +67,7 @@
 <section class="shifts">
   {#if addShiftDialogOpen}
     <AddShiftDialog
-      bind:open={addShiftDialogOpen}
+      on:cancel={() => (addShiftDialogOpen = false)}
       on:submit={({ detail }) => {
         addShiftDialogOpen = false;
 
@@ -83,7 +82,6 @@
 
   {#if editShiftDialogOpen}
     <EditShiftDialog
-      bind:open={editShiftDialogOpen}
       {shifts}
       selected={editShiftDialogSelected}
       on:submit={({ detail }) => {
@@ -95,7 +93,6 @@
 
   {#if editShiftRhythmDialogOpen}
     <EditRhythmDialog
-      bind:open={editShiftRhythmDialogOpen}
       {shifts}
       rhythm={shiftRhythm}
       on:submit={({ detail }) => {
