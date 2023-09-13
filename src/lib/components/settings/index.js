@@ -2,6 +2,9 @@ export { default } from "./View.svelte";
 export { default as ShiftCard } from "./Shift.svelte";
 
 /**
+ * @typedef Themes
+ * @type {"custom"}
+ *
  * @typedef Shift
  * @type {{
  *  name: string;
@@ -14,5 +17,6 @@ export { default as ShiftCard } from "./Shift.svelte";
  *  shifts: Shift[];
  *  startDate: string | Date;
  *  shiftRhythm: string[];
+ *  currentTheme: Themes;
  * }}
  */

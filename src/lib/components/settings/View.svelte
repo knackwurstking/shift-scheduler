@@ -4,12 +4,12 @@
   import DialogAddShift from "./DialogAddShift.svelte";
   import DialogEditShift from "./DialogEditShift.svelte";
   import DialogEditShiftRhythm from "./DialogEditShiftRhythm.svelte";
-    import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
 
-  let { shifts, startDate, shiftRhythm } = getSettings();
-  $: !!shifts && save();
+  let { shifts, startDate, shiftRhythm, currentTheme } = getSettings();
+  $: shifts && save();
   $: typeof startDate === "string" && save();
-  $: !!shiftRhythm && save();
+  $: shiftRhythm && save();
+  $: currentTheme && save();
 
   let addShiftDialogOpen = false;
   let editShiftRhythmDialogOpen = false;
@@ -18,16 +18,22 @@
   /** @type {string} */
   let editShiftDialogSelected;
 
+  let themes = [
+    "custom",
+    "picocss",
+    "green",
+  ];
+
   /**
    * @returns {import(".").Settings}
    */
   function getSettings() {
     const settings = JSON.parse(localStorage.getItem("settings") || "{}");
 
-    // NOTE: default values for testing
     settings.shifts = settings.shifts || [];
     settings.startDate = settings.startDate || "";
     settings.shiftRhythm = settings.shiftRhythm || [];
+    settings.currentTheme = settings.currentTheme || "custom";
 
     return settings;
   }
@@ -41,10 +47,15 @@
         shifts,
         startDate,
         shiftRhythm,
+        currentTheme,
       })
     );
   }
 </script>
+
+<svelte:head>
+  <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
+</svelte:head>
 
 <section class="shifts">
   {#if addShiftDialogOpen}
@@ -131,7 +142,14 @@
   </article>
 
   <article>
-    <!-- TODO: theme section -->
+    <label>
+      Themes
+      <select bind:value={currentTheme}>
+        {#each themes as theme}
+          <option value={theme}>{theme}</option>
+        {/each}
+      </select>
+    </label>
   </article>
 </section>
 
