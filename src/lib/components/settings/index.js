@@ -2,8 +2,11 @@ export { default } from "./View.svelte";
 export { default as ShiftCard } from "./Shift.svelte";
 
 /**
+ * @typedef Modes
+ * @type {"auto" | "dark" | "light"}
+ *
  * @typedef Themes
- * @type {"custom"}
+ * @type {"custom" | "picocss" | "green"}
  *
  * @typedef Shift
  * @type {{
@@ -18,5 +21,6 @@ export { default as ShiftCard } from "./Shift.svelte";
  *  startDate: string | Date;
  *  shiftRhythm: string[];
  *  currentTheme: Themes;
+ *  mode: Modes;
  * }}
  */

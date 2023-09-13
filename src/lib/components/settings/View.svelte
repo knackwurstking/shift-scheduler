@@ -5,11 +5,12 @@
   import DialogEditShift from "./DialogEditShift.svelte";
   import DialogEditShiftRhythm from "./DialogEditShiftRhythm.svelte";
 
-  let { shifts, startDate, shiftRhythm, currentTheme } = getSettings();
-  $: shifts && save();
+  let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
+  $: !!shifts && save();
   $: typeof startDate === "string" && save();
-  $: shiftRhythm && save();
-  $: currentTheme && save();
+  $: !!shiftRhythm && save();
+  $: !!currentTheme && save();
+  $: !!mode && save();
 
   let addShiftDialogOpen = false;
   let editShiftRhythmDialogOpen = false;
@@ -18,11 +19,7 @@
   /** @type {string} */
   let editShiftDialogSelected;
 
-  let themes = [
-    "custom",
-    "picocss",
-    "green",
-  ];
+  let themes = ["custom", "picocss", "green"];
 
   /**
    * @returns {import(".").Settings}
@@ -34,12 +31,19 @@
     settings.startDate = settings.startDate || "";
     settings.shiftRhythm = settings.shiftRhythm || [];
     settings.currentTheme = settings.currentTheme || "custom";
+    settings.mode = settings.mode || "auto";
 
     return settings;
   }
 
   function save() {
-    console.debug("saving data...");
+    console.warn("saving data...");
+
+    if (mode !== "auto") {
+      document.documentElement.setAttribute("data-theme", mode);
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
 
     localStorage.setItem(
       "settings",
@@ -48,6 +52,7 @@
         startDate,
         shiftRhythm,
         currentTheme,
+        mode,
       })
     );
   }
@@ -150,6 +155,40 @@
         {/each}
       </select>
     </label>
+
+    <fieldset>
+      <legend>Mode</legend>
+
+      <label>
+        <input
+          type="radio"
+          value="auto"
+          checked={mode === "auto"}
+          on:change={() => (mode = "auto")}
+        />
+        Auto
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          value="dark"
+          checked={mode === "dark"}
+          on:change={() => (mode = "dark")}
+        />
+        Dark
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          value="light"
+          checked={mode === "light"}
+          on:change={() => (mode = "light")}
+        />
+        Light
+      </label>
+    </fieldset>
   </article>
 </section>
 
@@ -165,7 +204,7 @@
     padding: var(--spacing);
   }
 
-  section article > * {
+  section article > *:not(:last-child) {
     border-bottom: 1px solid var(--muted-border-color);
   }
 
@@ -187,4 +226,3 @@
     width: fit-content;
   }
 </style>
-

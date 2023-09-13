@@ -47,9 +47,14 @@
     if (view === "calendar") {
       settings = JSON.parse(
         localStorage.getItem("settings") ||
-          '{ "shifts": [], "startDate": "", "shiftRhythm": [], currentTheme: "custom" }'
+          '{ "shifts": [], "startDate": "", "shiftRhythm": [], currentTheme: "custom", mode: "auto" }'
       );
       currentTheme = settings.currentTheme;
+      if (settings.mode !== "auto") {
+        document.documentElement.setAttribute("data-theme", settings.mode);
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
     }
   }
 
@@ -70,6 +75,10 @@
     view = v;
   }
 
+  /**
+   *
+   * @param {Date} date
+   */
   function setCurrentDate(date) {
     if (date) currentDate = date;
     calendar.set(currentDate);
