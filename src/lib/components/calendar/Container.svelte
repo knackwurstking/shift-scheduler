@@ -105,8 +105,6 @@
             }
           }
 
-          console.debug(direction);
-
           lastClientX = ev.clientX;
           currentTranslateX = `calc(-100% - ${startClientX - ev.clientX}px)`;
           return
