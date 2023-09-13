@@ -23,7 +23,9 @@
     data-value={`${day.date.getMonth() === currentMonth ? day.date.getDate() : NaN}`}
 >
     {#if !!day.data}
-        <span class="shift">{day.data.shift?.shortName || ""}</span>
+        {#if day.data.shift}
+          <span class="shift">{day.data.shift.visible ? (day.data.shift.shortName || "") : ""}</span>
+        {/if}
         {#if !!day.data.note}
             <div class="note-marker"></div>
         {/if}
