@@ -1,5 +1,4 @@
 export { default } from "./View.svelte";
-export { default as ShiftCard } from "./Shift.svelte";
 
 /**
  * @typedef Modes
@@ -7,15 +6,10 @@ export { default as ShiftCard } from "./Shift.svelte";
  *
  * @typedef Themes
  * @type {"custom" | "picocss" | "green"}
- *
- * @typedef Shift
- * @type {{
- *  name: string;
- *  shortName: string;
- *  visible: boolean;
- *  color?: string;
- * }}
  * 
+ * @typedef Shift 
+ * @type {import("../shift").Shift}
+ *
  * @typedef Settings
  * @type {{
  *  shifts: Shift[];

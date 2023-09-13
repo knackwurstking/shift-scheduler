@@ -1,6 +1,5 @@
 <script>
-  import Shift from "./Shift.svelte";
-  import ShiftAdd from "./ShiftAdd.svelte";
+  import Shift, { ShiftAdd } from "../shift";
   import {
     EditRhythmDialog,
     AddShiftDialog,

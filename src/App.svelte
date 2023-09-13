@@ -15,7 +15,8 @@
   import DatePicker from "./lib/components/date-picker";
   import IconButton from "./lib/components/icon-button";
   import Calendar from "./lib/components/calendar";
-  import SettingsView, { ShiftCard } from "./lib/components/settings";
+  import SettingsView from "./lib/components/settings";
+  import ShiftCard from "./lib/components/shift";
 
   /** @type {Themes} */
   let currentTheme = "custom";

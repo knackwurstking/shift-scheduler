@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
-  import Shift from "../settings/Shift.svelte";
+  import Shift from "../shift";
 
   export let shifts;
   export let rhythm;
