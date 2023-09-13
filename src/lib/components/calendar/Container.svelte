@@ -3,7 +3,7 @@
     const dispatch = createEventDispatcher();
 
     /**
-     * 
+     *
      * @param {Date} date
      */
     export function setCurrentDate(date) {
@@ -25,15 +25,70 @@
     /** @type {boolean} */
     let pointerlock = false;
     /** @type {number | null} */
-    let lastClientX = null
+    let lastClientX = null;
     /** @type {Date} */
     let currentDate = new Date();
+    /** @type {number} */
+    let visibleChildIndex = 1;
+    /** @type {number} */
+    let startClientX = 0;
+    /** @type {boolean} */
+    let containerMoved = false;
+    /** @type {number} */
+    let minSwipeRange = 50;
     /** @type {HTMLDivElement} */
-    let _container;
+    let container;
+
+    $: container && init();
+
+    function init() {
+        const visibleChild = container.children[visibleChildIndex];
+        if (visibleChild) {
+            container.onpointerdown = (ev) => {
+                if (pointerlock) return;
+                startClientX = ev.clientX;
+                minSwipeRange = container.getBoundingClientRect().width / 4;
+                containerMoved = true;
+            };
+
+            container.onpointerup = () => {
+                if (containerMoved) {
+                    containerMoved = false;
+
+                    pointerlock = true;
+                    transition = "transform 0.35s ease";
+
+                    if (direction === "left") {
+                        currentTranslateX = "-200%";
+                    } else if (direction === "right") {
+                        currentTranslateX = "0";
+                    } else {
+                        currentTranslateX = "-100%";
+                        resetTransition();
+                    }
+                }
+            };
+
+            container.onpointermove = (ev) => {
+                if (ev.buttons !== 1 || !containerMoved) {
+                    container.onpointerup(ev);
+                    return;
+                }
+
+                const startDiff = startClientX - ev.clientX;
+                if (ev.clientX < lastClientX && Math.abs(startDiff) > minSwipeRange) direction = "left";
+                else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange) direction = "right";
+                else direction = null;
+
+                lastClientX = ev.clientX;
+                currentTranslateX = `-100% - ${startClientX - ev.clientX}px`;
+            };
+        }
+    }
 
     function resetTransition() {
         direction = null;
-        pointerlock = false; 
+        pointerlock = false;
         lastClientX = null;
     }
 </script>
@@ -41,19 +96,17 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-    bind:this={_container}
-    on:click={(ev) => {
+    bind:this={container}
+    on:click={containerMoved ? ((ev) => {
         // @ts-ignore
-        for (const el of (ev?.path || ev.composedPath() || [])) {
+        for (const el of ev?.path || ev.composedPath() || []) {
             if (el.classList?.contains("day-content")) {
                 const date = parseInt(el.getAttribute("data-value"), 10);
                 if (isNaN(date)) dispatch("click", null);
-                else dispatch("click", new Date(
-                    currentDate.getFullYear(), currentDate.getMonth(), date
-                ));
+                else dispatch("click", new Date(currentDate.getFullYear(), currentDate.getMonth(), date));
             }
         }
-    }}
+    }) : undefined}
 >
     {#each items as _item, index}
         <slot

@@ -11,7 +11,6 @@
      * @param {Date} date
      */
     export function set(date) {
-        console.debug("set date:", date);
         _container.setCurrentDate(date);
     }
 
@@ -31,8 +30,8 @@
 >
     <ContainerItem
         slot="container-item"
-        style=${`
-            transform: translateX(${currentTranslateX});
+        style={`
+            transform: translateX(calc(${currentTranslateX}));
             transition: ${transition};
         `}
         let:index

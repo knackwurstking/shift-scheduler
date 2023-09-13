@@ -49,6 +49,9 @@
     /** @type {Date} */
     let editDayDialog_date;
 
+    /** @type {Date} */
+    let today = new Date();
+
     $: {
         if (view === "calendar") {
             settings = JSON.parse(
@@ -84,7 +87,8 @@
         view = v;
     }
 
-    function setCurrentDate() {
+    function setCurrentDate(date) {
+        if (date) currentDate = date;
         calendar.set(currentDate);
     }
 
@@ -145,7 +149,11 @@
             >
 
             <!-- GoTo Today -->
-            <IconButton disabled={currentMonthCount === 0} on:click={() => (currentMonthCount = 0)}>
+            <IconButton
+                disabled={today.getFullYear() === currentDate.getFullYear() &&
+                    today.getMonth() === currentDate.getMonth()}
+                on:click={() => setCurrentDate(new Date())}
+            >
                 <MdToday />
             </IconButton>
 

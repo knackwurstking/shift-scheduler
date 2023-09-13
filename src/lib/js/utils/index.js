@@ -8,9 +8,9 @@ export function isAndroid() {
 
 /**
  *
- * @param {Settings} settings
+ * @param {import("../../components/settings").Settings} settings
  * @param {Date} date
- * @returns {Shift | null}
+ * @returns {import("../../components/settings").Shift | null}
  */
 export function calcShiftStep(settings, date) {
     if (!settings.startDate) return;
