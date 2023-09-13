@@ -2,6 +2,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    import * as ripple from "../../ripple";
+
     /**
      *
      * @param {Date} date
@@ -32,10 +34,8 @@
     let visibleChildIndex = 1;
     /** @type {number} */
     let startClientX = 0;
-    /** @type {boolean} */
-    let containerMoved = false;
     /** @type {number} */
-    let minSwipeRange = 50;
+    let minSwipeRange;
     /** @type {HTMLDivElement} */
     let container;
 
@@ -48,14 +48,10 @@
                 if (pointerlock) return;
                 startClientX = ev.clientX;
                 minSwipeRange = container.getBoundingClientRect().width / 4;
-                containerMoved = true;
             };
 
             container.onpointerup = () => {
-                if (containerMoved) {
-                    containerMoved = false;
-
-                    pointerlock = true;
+                if (pointerlock) {
                     transition = "transform 0.35s ease";
 
                     if (direction === "left") {
@@ -70,15 +66,24 @@
             };
 
             container.onpointermove = (ev) => {
-                if (ev.buttons !== 1 || !containerMoved) {
-                    container.onpointerup(ev);
+                if (ev.buttons !== 1) {
+                    if (pointerlock) container.onpointerup(ev);
+                    return;
+                }
+
+                if (!pointerlock) {
+                    if (startClientX - ev.clientX > 10 || startClientX - ev.clientX < -10)
+                        pointerlock = true;
                     return;
                 }
 
                 const startDiff = startClientX - ev.clientX;
-                if (ev.clientX < lastClientX && Math.abs(startDiff) > minSwipeRange) direction = "left";
-                else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange) direction = "right";
-                else direction = null;
+                if (ev.clientX < lastClientX && Math.abs(startDiff) > minSwipeRange)
+                    direction = "left";
+                else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange)
+                    direction = "right";
+                else
+                    direction = null;
 
                 lastClientX = ev.clientX;
                 currentTranslateX = `-100% - ${startClientX - ev.clientX}px`;
@@ -88,7 +93,6 @@
 
     function resetTransition() {
         direction = null;
-        pointerlock = false;
         lastClientX = null;
     }
 </script>
@@ -97,16 +101,20 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
-    on:click={containerMoved ? ((ev) => {
-        // @ts-ignore
-        for (const el of ev?.path || ev.composedPath() || []) {
-            if (el.classList?.contains("day-content")) {
-                const date = parseInt(el.getAttribute("data-value"), 10);
-                if (isNaN(date)) dispatch("click", null);
-                else dispatch("click", new Date(currentDate.getFullYear(), currentDate.getMonth(), date));
+    on:click={!pointerlock &&
+        ((ev) => {
+            // @ts-ignore
+            for (const el of ev?.path || ev.composedPath() || []) {
+                if (el.classList?.contains("day-content")) {
+                    const date = parseInt(el.getAttribute("data-value"), 10);
+                    if (isNaN(date)) dispatch("click", null);
+                    else {
+                        ripple.add(ev, el);
+                        dispatch("click", new Date(currentDate.getFullYear(), currentDate.getMonth(), date));
+                    }
+                }
             }
-        }
-    }) : undefined}
+        })}
 >
     {#each items as _item, index}
         <slot
@@ -128,6 +136,7 @@
                 }
 
                 resetTransition();
+                pointerlock = false;
             }}
         />
     {/each}

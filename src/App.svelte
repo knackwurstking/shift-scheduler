@@ -23,23 +23,18 @@
 
     /** @type {Themes} */
     let currentTheme = "custom"; // TODO: Add a theme picker to the settings page
-
     /** @type {Views} */
     let view = "calendar";
     /** @type {Views[]}*/
     let viewStack = [view];
-
-    let currentMonthCount = 0;
-
     /** @type {Date} */
     let currentDate = new Date();
-
     /** @type {import("./lib/components/settings").Settings | undefined} */
     let settings;
-    /** @type {"edit" | null} */
-    let footerMode = null;
-
-    let editModeActiveIndex = -1;
+    /** @type {boolean} */
+    let editMode_open = false;
+    /** @type {number} - -2 will remove the custom shift from the database */
+    let editMode_index = -1;
 
     /** @type {Calendar} */
     let calendar;
@@ -60,21 +55,11 @@
         }
     }
 
-    $: {
-        if (footerMode !== "edit") {
-            editModeActiveIndex = -1;
-        }
-    }
-
     function goBackInHistory() {
         if (viewStack.length === 1) return;
         viewStack.pop();
         viewStack = viewStack;
         view = viewStack[viewStack.length - 1];
-
-        if (viewStack.length === 1) {
-            currentMonthCount = currentMonthCount;
-        }
     }
 
     /**
@@ -82,7 +67,7 @@
      * @param {Views} v
      */
     function goTo(v) {
-        footerMode = null;
+        editMode_open = false;
         viewStack = [...viewStack, v];
         view = v;
     }
@@ -90,6 +75,14 @@
     function setCurrentDate(date) {
         if (date) currentDate = date;
         calendar.set(currentDate);
+    }
+
+    /**
+     * @returns {import("./lib/components/settings").Shift}
+     */
+    function getEditModeShift() {
+        if (editMode_index === -2) return { name: "", shortName: "", visible: false };
+        return settings.shifts[editMode_index] || null;
     }
 
     // TODO: need to update today after 12:00 AM
@@ -108,12 +101,9 @@
 {#if editDayDialog_open}
     <EditDayDialog
         date={editDayDialog_date}
-        on:submit={({ detail }) => {
+        on:submit={async ({ detail }) => {
             editDayDialog_open = false;
-
-            // TODO: store shift and note in db and force a calendar reload
-            console.debug(`@TODO: store note and shift!`, detail);
-
+            await db.put(editDayDialog_date, detail.shift, detail.note);
             calendar.reload();
         }}
     />
@@ -144,7 +134,7 @@
             <!-- Edit Shifts -->
             <IconButton
                 on:click={() => {
-                    footerMode = footerMode === "edit" ? null : "edit";
+                    editMode_open = !editMode_open;
                 }}><MdModeEdit /></IconButton
             >
 
@@ -163,19 +153,25 @@
     </div>
 </header>
 
-<main class="container-fluid" style={`bottom: ${!!footerMode ? "calc(3em + 22px)" : "1px"}`}>
+<main class="container-fluid" style={`bottom: ${editMode_open ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
-        <!-- TODO: handle the edit mode (Calendar: bind:this and run calendar.set(date))
-
-            editModeShift={editModeActiveIndex === -2
-                ? { name: "", shortName: "", visible: false }
-                : settings.shifts[editModeActiveIndex] || null}
-        -->
         <Calendar
             bind:this={calendar}
             on:click={async ({ detail }) => {
-                if (detail && footerMode === "edit") {
-                    // TODO: get selected shift from edit mode and set for date
+                if (detail && editMode_open) {
+                    let shift = getEditModeShift();
+                    if (!shift) {
+                        return;
+                    }
+
+                    if (!shift.name) shift = null;
+                    const note = (await db.get(detail))?.note || ""
+                    if (shift || note) {
+                        await db.put(detail, shift, note)
+                    } else {
+                        await db.remove(detail)
+                    }
+
                     calendar.reload();
                 } else if (detail) {
                     editDayDialog_date = detail;
@@ -189,15 +185,15 @@
     {/if}
 </main>
 
-<footer class="container-fluid" class:visible={footerMode === "edit"}>
-    {#if footerMode === "edit" && !!settings}
+<footer class="container-fluid" class:visible={editMode_open}>
+    {#if editMode_open && !!settings}
         <span>
             <ShiftCard
                 name="Reset"
                 visible={false}
-                active={editModeActiveIndex === -2}
+                active={editMode_index === -2}
                 on:click={() => {
-                    editModeActiveIndex = editModeActiveIndex === -2 ? -1 : -2;
+                    editMode_index = editMode_index === -2 ? -1 : -2;
                 }}
             />
         </span>
@@ -206,9 +202,9 @@
             <span>
                 <ShiftCard
                     {...shift}
-                    active={editModeActiveIndex == index}
+                    active={editMode_index == index}
                     on:click={() => {
-                        editModeActiveIndex = editModeActiveIndex === index ? -1 : index;
+                        editMode_index = editMode_index === index ? -1 : index;
                     }}
                 />
             </span>
