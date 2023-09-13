@@ -47,7 +47,7 @@
     if (view === "calendar") {
       settings = JSON.parse(
         localStorage.getItem("settings") ||
-          '{ "shifts": [], "startDate": "", "shiftRhythm": [], currentTheme: "custom", mode: "auto" }'
+          '{ "shifts": [], "startDate": "", "shiftRhythm": [], "currentTheme": "custom", "mode": "auto" }'
       );
       currentTheme = settings.currentTheme;
       if (settings.mode !== "auto") {
