@@ -56,7 +56,7 @@
 
       container.onpointerup = () => {
         if (pointerlock) {
-          transition = "transform 0.45s ease";
+          transition = "transform 0.25s ease";
 
           if (direction === "left") {
             currentTranslateX = "-200%";
