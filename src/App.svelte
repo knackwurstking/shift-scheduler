@@ -33,7 +33,6 @@
 
     /** @type {Date} */
     let currentDate = new Date();
-    //$: !!currentDate && !!calendar && calendar.set(currentDate)
 
     /** @type {import("./lib/components/settings").Settings | undefined} */
     let settings;
@@ -49,8 +48,6 @@
     let editDayDialog_open = false;
     /** @type {Date} */
     let editDayDialog_date;
-
-    $: calendar && setCurrentDate();
 
     $: {
         if (view === "calendar") {
@@ -131,7 +128,7 @@
 
     {#if view === "calendar"}
         <!--DatePicker style="margin: 0; width: 30rem;" bind:monthCount={currentMonthCount} /-->
-        <DatePicker style="margin: 0; width: 30rem;" bind:currentDate />
+        <DatePicker style="margin: 0; width: 30rem;" bind:currentDate on:currentdatechanged={() => setCurrentDate()} />
     {:else if view === "settings"}
         <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
     {/if}

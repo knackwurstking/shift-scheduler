@@ -1,4 +1,7 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+
     import * as ripple from "../../ripple";
 
     import Dialog from "./Dialog.svelte";
@@ -21,6 +24,7 @@
         month={currentDate.getMonth() + 1}
         on:submit={({ detail }) => {
             currentDate = new Date(detail.year, detail.month - 1, currentDate.getDate());
+            dispatch("currentdatechanged", currentDate);
             picker = false;
         }}
     />
