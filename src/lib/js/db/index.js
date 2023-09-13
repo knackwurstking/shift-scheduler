@@ -82,6 +82,7 @@ export function get(date) {
  * @param {string} note
  */
 export function set(date, shift, note) {
+    console.warn("set stuff to database...");
     return new Promise(async (resolve, reject) => {
         if (!db) await open();
         const store = db.transaction("data", "readwrite").objectStore("data");
