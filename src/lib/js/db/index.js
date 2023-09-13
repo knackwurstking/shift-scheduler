@@ -18,11 +18,11 @@
  * @returns {DBData}
  */
 export function get(year, month) {
-    const rawData = window.localStorage.getItem(
-        `db-${year}-${month}`
-    );
-    if (!rawData) return {};
-    return JSON.parse(rawData);
+  const rawData = window.localStorage.getItem(
+    `db-${year}-${month}`
+  );
+  if (!rawData) return {};
+  return JSON.parse(rawData);
 }
 
 /**
@@ -32,10 +32,10 @@ export function get(year, month) {
  * @param {DBData} data 
  */
 export function set(year, month, data) {
-    window.localStorage.setItem(
-        `db-${year}-${month}`,
-        JSON.stringify(data)
-    );
+  window.localStorage.setItem(
+    `db-${year}-${month}`,
+    JSON.stringify(data)
+  );
 }
 
 /**
@@ -44,9 +44,9 @@ export function set(year, month, data) {
  * @param {number} month 
  */
 export function remove(year, month) {
-    window.localStorage.removeItem(
-        `db-${year}-${month}`
-    );
+  window.localStorage.removeItem(
+    `db-${year}-${month}`
+  );
 }
 
 /**
@@ -55,7 +55,7 @@ export function remove(year, month) {
  * @returns 
  */
 export function getKeyFromDate(date) {
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
 }
 
 /**
@@ -64,8 +64,8 @@ export function getKeyFromDate(date) {
  * @returns {StorageData | null}
  */
 export function getDataForDay(date) {
-    const data = get(date.getFullYear(), date.getMonth());
-    return data[getKeyFromDate(date)] || { shift: null, note: "" };
+  const data = get(date.getFullYear(), date.getMonth());
+  return data[getKeyFromDate(date)] || { shift: null, note: "" };
 }
 
 /**
@@ -75,9 +75,9 @@ export function getDataForDay(date) {
  * @param {string} note 
  */
 export function setDataForDay(date, shift, note) {
-    const data = get(date.getFullYear(), date.getMonth());
-    data[getKeyFromDate(date)] = { shift: shift, note: note };
-    set(date.getFullYear(), date.getMonth(), data)
+  const data = get(date.getFullYear(), date.getMonth());
+  data[getKeyFromDate(date)] = { shift: shift, note: note };
+  set(date.getFullYear(), date.getMonth(), data)
 }
 
 
@@ -86,7 +86,7 @@ export function setDataForDay(date, shift, note) {
  * @param {Date} date 
  */
 export function removeDataForDay(date) {
-    const data = get(date.getFullYear(), date.getMonth());
-    delete data[getKeyFromDate(date)];
-    set(date.getFullYear(), date.getMonth(), data)
+  const data = get(date.getFullYear(), date.getMonth());
+  delete data[getKeyFromDate(date)];
+  set(date.getFullYear(), date.getMonth(), data)
 }

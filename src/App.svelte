@@ -77,7 +77,7 @@
 
   /**
    *
-   * @param {Date} date
+   * @param {Date | null} date
    */
   function setCurrentDate(date) {
     if (date) currentDate = date;
@@ -133,7 +133,7 @@
     <DatePicker
       style="margin: 0; width: 30rem;"
       bind:currentDate
-      on:currentdatechanged={() => setCurrentDate()}
+      on:currentdatechanged={() => setCurrentDate(null)}
     />
   {:else if view === "settings"}
     <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
@@ -209,6 +209,7 @@
         name="Reset"
         visible={false}
         active={editMode_index === -2}
+        color="var(--color)"
         on:click={() => {
           editMode_index = editMode_index === -2 ? -1 : -2;
         }}

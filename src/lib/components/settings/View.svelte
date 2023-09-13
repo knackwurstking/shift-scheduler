@@ -1,9 +1,12 @@
 <script>
   import Shift from "./Shift.svelte";
   import ShiftAdd from "./ShiftAdd.svelte";
-  import DialogAddShift from "./DialogAddShift.svelte";
-  import DialogEditShift from "./DialogEditShift.svelte";
-  import DialogEditShiftRhythm from "./DialogEditShiftRhythm.svelte";
+  import {
+    EditRhythmDialog,
+    AddShiftDialog,
+    EditShiftDialog,
+  } from "../dialogs";
+
 
   let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
   $: !!shifts && save();
@@ -64,7 +67,7 @@
 
 <section class="shifts">
   {#if addShiftDialogOpen}
-    <DialogAddShift
+    <AddShiftDialog
       bind:open={addShiftDialogOpen}
       on:submit={({ detail }) => {
         addShiftDialogOpen = false;
@@ -79,7 +82,7 @@
   {/if}
 
   {#if editShiftDialogOpen}
-    <DialogEditShift
+    <EditShiftDialog
       bind:open={editShiftDialogOpen}
       {shifts}
       selected={editShiftDialogSelected}
@@ -91,7 +94,7 @@
   {/if}
 
   {#if editShiftRhythmDialogOpen}
-    <DialogEditShiftRhythm
+    <EditRhythmDialog
       bind:open={editShiftRhythmDialogOpen}
       {shifts}
       rhythm={shiftRhythm}

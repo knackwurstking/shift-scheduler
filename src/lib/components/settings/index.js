@@ -13,6 +13,7 @@ export { default as ShiftCard } from "./Shift.svelte";
  *  name: string;
  *  shortName: string;
  *  visible: boolean;
+ *  color?: string;
  * }}
  * 
  * @typedef Settings
