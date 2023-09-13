@@ -225,4 +225,10 @@
   section .rhythm button {
     width: fit-content;
   }
+
+  section article:nth-child(2) fieldset label {
+    display: inline-block;
+    margin: calc(var(--spacing) / 2);
+    user-select: none;
+  }
 </style>
