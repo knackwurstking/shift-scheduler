@@ -47,9 +47,9 @@
     if (view === "calendar") {
       settings = JSON.parse(
         localStorage.getItem("settings") ||
-          '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
+          '{ "shifts": [], "startDate": "", "shiftRhythm": [], currentTheme: "custom" }'
       );
-      // TODO: passing theme to currentTheme (+Light/Dark toggle)
+      currentTheme = settings.currentTheme;
     }
   }
 
