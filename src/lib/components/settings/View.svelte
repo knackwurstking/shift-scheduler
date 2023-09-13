@@ -18,7 +18,7 @@
     let editShiftDialogSelected;
 
     /**
-     * @returns {Settings}
+     * @returns {import(".").Settings}
      */
     function getSettings() {
         const settings = JSON.parse(localStorage.getItem("settings") || "{}");

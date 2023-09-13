@@ -1,4 +1,5 @@
 <script>
+    // TODO: move dialog to ../dialogs/
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
