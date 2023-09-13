@@ -16,7 +16,7 @@ export let db;
 export function open() {
     return new Promise((resolve, reject) => {
         if (db) {
-            return db
+            return db;
         }
 
         const request = indexedDB.open(dbName, currentVersion);
@@ -27,15 +27,15 @@ export function open() {
             switch (ev.oldVersion) {
                 case 0:
                     const store = result.createObjectStore("data", { keyPath: "date" });
-                    store.createIndex("shift", "note", { unique: false })
-                    store.createIndex("note", "note", { unique: false })
-                    store.createIndex("date", "date", { unique: true })
+                    store.createIndex("shift", "note", { unique: false });
+                    store.createIndex("note", "note", { unique: false });
+                    store.createIndex("date", "date", { unique: true });
                 case 1:
                     if (!result.objectStoreNames.contains("data")) {
                         const store = result.createObjectStore("data", { keyPath: "date" });
-                        store.createIndex("shift", "note", { unique: false })
-                        store.createIndex("note", "note", { unique: false })
-                        store.createIndex("date", "date", { unique: true })
+                        store.createIndex("shift", "note", { unique: false });
+                        store.createIndex("note", "note", { unique: false });
+                        store.createIndex("date", "date", { unique: true });
                     }
             }
         };
@@ -52,8 +52,8 @@ export function open() {
 }
 
 /**
- * 
- * @param {Date} date 
+ *
+ * @param {Date} date
  * @returns {Promise<StorageData | null>}
  */
 export function get(date) {
@@ -76,10 +76,10 @@ export function get(date) {
 }
 
 /**
- * 
- * @param {Date} date 
- * @param {import("../../components/settings").Shift} shift 
- * @param {string} note 
+ *
+ * @param {Date} date
+ * @param {import("../../components/settings").Shift} shift
+ * @param {string} note
  */
 export function set(date, shift, note) {
     return new Promise(async (resolve, reject) => {
@@ -98,10 +98,10 @@ export function set(date, shift, note) {
 }
 
 /**
- * 
- * @param {Date} date 
- * @param {import("../../components/settings").Shift} shift 
- * @param {string} note 
+ *
+ * @param {Date} date
+ * @param {import("../../components/settings").Shift} shift
+ * @param {string} note
  */
 export function put(date, shift, note) {
     return new Promise(async (resolve, reject) => {
@@ -120,8 +120,8 @@ export function put(date, shift, note) {
 }
 
 /**
- * 
- * @param {Date} date 
+ *
+ * @param {Date} date
  */
 export async function remove(date) {
     if (!db) await open();
@@ -130,5 +130,5 @@ export async function remove(date) {
     const req = store.delete(key);
     req.onerror = () => {
         console.error(`delete ${key} failed:`, req.error);
-    }
+    };
 }

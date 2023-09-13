@@ -16,7 +16,7 @@
     import * as db from "./lib/js/db";
 
     import { EditDayDialog } from "./lib/components/dialogs";
-    import DatePicker from "./lib/components/date-picker"
+    import DatePicker from "./lib/components/date-picker";
     import IconButton from "./lib/components/icon-button";
     import Calendar from "./lib/components/calendar";
     import SettingsView, { ShiftCard } from "./lib/components/settings";
@@ -91,7 +91,6 @@
         calendar.set(currentDate);
     }
 
-
     // TODO: need to update today after 12:00 AM
 
     onMount(async () => {
@@ -112,9 +111,9 @@
             editDayDialog_open = false;
 
             // TODO: store shift and note in db and force a calendar reload
-            console.debug(`@TODO: store note and shift!`, detail)
+            console.debug(`@TODO: store note and shift!`, detail);
 
-            calendar.reload()
+            calendar.reload();
         }}
     />
 {/if}
