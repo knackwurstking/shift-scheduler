@@ -133,7 +133,7 @@
 
     <div class="rhythm">
       <!-- svelte-ignore a11y-label-has-associated-control -->
-      <label> Rhythm </label>
+      <label>Rhythm</label>
       <button
         class="secondary"
         on:click={() => {
@@ -201,6 +201,10 @@
 
   section article {
     padding: var(--spacing);
+  }
+
+  section article > * {
+    padding-top: 4px;
   }
 
   section article > *:not(:last-child) {
