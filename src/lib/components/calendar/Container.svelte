@@ -47,7 +47,8 @@
       container.onpointerdown = (ev) => {
         if (pointerlock) return;
         startClientX = ev.clientX;
-        minSwipeRange = container.getBoundingClientRect().width / 4;
+        //minSwipeRange = container.getBoundingClientRect().width / 5;
+        minSwipeRange = 50;
       };
 
       container.onpointerup = () => {
