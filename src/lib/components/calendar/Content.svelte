@@ -5,6 +5,7 @@
     import DayContent from "./DayContent.svelte";
 
     import * as utils from "../../js/utils";
+    import * as db from "../../js/db";
 
     /** @type {number} */
     export let index;
@@ -30,12 +31,14 @@
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
             const startDay = new Date(year, month, 1).getDay();
+            const data = db.get(year, month);
             for (let i = 0; i < days.length; i++) {
                 days[i].date = new Date(year, month, i + 1 - startDay);
-                // TODO: get custom data (shift & note) (but don't use this slow indexedDB anymore)
+
+                const key = db.getKeyFromDate(days[i].date);
                 days[i].data = {
-                    shift: utils.calcShiftStep(settings, days[i].date),
-                    note: "",
+                    shift: data[key]?.shift || utils.calcShiftStep(settings, days[i].date),
+                    note: data[key]?.note || "",
                 };
             }
     }
@@ -46,7 +49,6 @@
         {#each days as day}
             <DayContent
                 currentMonth={currentDate.getMonth()}
-                {settings}
                 {day}
             />
         {/each}

@@ -24,13 +24,13 @@
     );
     $: settings, date && load();
 
-    async function load() {
-        const storageData = await db.get(date);
+    function load() {
+        const data = db.get(date.getFullYear(), date.getMonth())[db.getKeyFromDate(date)];
         defaultShift = utils.calcShiftStep(settings, date);
-        shift = storageData?.shift || null;
+        shift = data?.shift || null;
         if (shift)
             current = settings.shifts.findIndex(s => s.name === shift?.name).toString();
-        note = storageData?.note || "";
+        note = data?.note || "";
     }
 </script>
 

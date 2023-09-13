@@ -103,7 +103,7 @@
         date={editDayDialog_date}
         on:submit={async ({ detail }) => {
             editDayDialog_open = false;
-            await db.put(editDayDialog_date, detail.shift, detail.note);
+            db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
             calendar.reload();
         }}
     />
@@ -166,11 +166,12 @@
                     }
 
                     if (!shift.name) shift = null;
-                    const note = (await db.get(detail))?.note || ""
+                    const { note } = db.getDataForDay(detail);
+
                     if (shift || note) {
-                        await db.put(detail, shift, note)
+                        db.setDataForDay(detail, shift, note);
                     } else {
-                        await db.remove(detail)
+                        db.removeDataForDay(detail);
                     }
 
                     calendar.reload();

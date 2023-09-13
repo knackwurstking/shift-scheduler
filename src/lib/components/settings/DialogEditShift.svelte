@@ -1,8 +1,6 @@
 <script>
     // TODO: move dialog to ../dialogs/
     import { createEventDispatcher } from "svelte";
-    import App from "../../../App.svelte";
-    import Calendar from "../calendar/Calendar.svelte";
     const dispatch = createEventDispatcher();
 
     /** @type {boolean} */
