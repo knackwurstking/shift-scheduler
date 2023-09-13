@@ -40,7 +40,6 @@
 </div>
 
 <style>
-    /* TODO: add styles here */
     div.day-content {
         position: relative;
 
