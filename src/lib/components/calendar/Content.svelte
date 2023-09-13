@@ -1,5 +1,5 @@
 <script>
-    import { onMount, createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
     import DayContent from "./DayContent.svelte";
@@ -29,18 +29,10 @@
             }
         }
 
-        // TODO: need to change the endless loop in App.svelte (currentDate & calendar.set)
-        //if (index === 1 && !!currentDate) {
-        //    dispatch("currentdatechange", currentDate);
-        //}
+        if (index === 1 && !!currentDate) {
+            dispatch("currentdatechange", currentDate);
+        }
     }
-
-
-    onMount(() => {
-        //if (index === 1) {
-        //    dispatch("currentdatechange", currentDate);
-        //}
-    });
 </script>
 
 <div class="container">

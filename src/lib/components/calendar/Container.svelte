@@ -46,10 +46,10 @@
         // @ts-ignore
         for (const el of (ev?.path || ev.composedPath() || [])) {
             if (el.classList?.contains("day-content")) {
-                dispatch("click", new Date(
-                    currentDate.getFullYear(),
-                    currentDate.getMonth(),
-                    parseInt(el.getAttribute("data-value"), 10),
+                const date = parseInt(el.getAttribute("data-value"), 10);
+                if (isNaN(date)) dispatch("click", null);
+                else dispatch("click", new Date(
+                    currentDate.getFullYear(), currentDate.getMonth(), date
                 ));
             }
         }
@@ -59,10 +59,7 @@
         <slot
             name="container-item"
             {index}
-            currentDate={new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth() + (index - 1)
-            )}
+            currentDate={new Date(currentDate.getFullYear(), currentDate.getMonth() + (index - 1))}
             {currentTranslateX}
             {transition}
             transitionend={() => {
@@ -71,16 +68,10 @@
 
                 if (direction === "left") {
                     items = [items[1], items[2], items[0]];
-                    currentDate = new Date(
-                        currentDate.getFullYear(),
-                        currentDate.getMonth() + 1,
-                    );
+                    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
                 } else if (direction === "right") {
                     items = [items[2], items[0], items[1]];
-                    currentDate = new Date(
-                        currentDate.getFullYear(),
-                        currentDate.getMonth() - 1,
-                    );
+                    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
                 }
 
                 resetTransition();

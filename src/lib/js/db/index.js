@@ -82,7 +82,8 @@ export function get(date) {
  * @param {string} note 
  */
 export function set(date, shift, note) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        if (!db) await open();
         const store = db.transaction("data", "readwrite").objectStore("data");
         const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
         const data = {
@@ -103,7 +104,8 @@ export function set(date, shift, note) {
  * @param {string} note 
  */
 export function put(date, shift, note) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        if (!db) await open();
         const store = db.transaction("data", "readwrite").objectStore("data");
         const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
         const data = {
@@ -122,6 +124,7 @@ export function put(date, shift, note) {
  * @param {Date} date 
  */
 export async function remove(date) {
+    if (!db) await open();
     const store = db.transaction("data", "readwrite").objectStore("data");
     const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
     const req = store.delete(key);

@@ -13,7 +13,9 @@
 
     //import * as ripple from "./lib/js/ripple";
     import * as utils from "./lib/js/utils";
+    import * as db from "./lib/js/db";
 
+    import { EditDayDialog } from "./lib/components/dialogs";
     import DatePicker from "./lib/components/date-picker"
     import IconButton from "./lib/components/icon-button";
     import Calendar from "./lib/components/calendar";
@@ -42,7 +44,13 @@
 
     /** @type {Calendar} */
     let calendar;
-    $: !!calendar && calendar.set(currentDate);
+
+    /** @type {boolean} */
+    let editDayDialog_open = false;
+    /** @type {Date} */
+    let editDayDialog_date;
+
+    $: calendar && setCurrentDate();
 
     $: {
         if (view === "calendar") {
@@ -79,6 +87,11 @@
         view = v;
     }
 
+    function setCurrentDate() {
+        calendar.set(currentDate);
+    }
+
+
     // TODO: need to update today after 12:00 AM
 
     onMount(async () => {
@@ -91,6 +104,20 @@
 <svelte:head>
     <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
+
+{#if editDayDialog_open}
+    <EditDayDialog
+        date={editDayDialog_date}
+        on:submit={({ detail }) => {
+            editDayDialog_open = false;
+
+            // TODO: store shift and note in db and force a calendar reload
+            console.debug(`@TODO: store note and shift!`, detail)
+
+            calendar.reload()
+        }}
+    />
+{/if}
 
 <header class="container-fluid" style="font-size: 1rem;">
     <!-- Top app bar -->
@@ -142,6 +169,15 @@
         -->
         <Calendar
             bind:this={calendar}
+            on:click={async ({ detail }) => {
+                if (detail && footerMode === "edit") {
+                    // TODO: get selected shift from edit mode and set for date
+                    calendar.reload();
+                } else if (detail) {
+                    editDayDialog_date = detail;
+                    editDayDialog_open = true;
+                }
+            }}
             on:currentdatechange={({ detail }) => (currentDate = detail)}
         />
     {:else if view === "settings"}

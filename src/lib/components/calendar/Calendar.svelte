@@ -15,6 +15,10 @@
         _container.setCurrentDate(date);
     }
 
+    export function reload() {
+        _container.reload();
+    }
+
     /** @type {Container} */
     let _container;
 </script>
