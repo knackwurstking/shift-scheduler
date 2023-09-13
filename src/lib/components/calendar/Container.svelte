@@ -36,6 +36,8 @@
   let startClientX = 0;
   /** @type {number} */
   let minSwipeRange;
+  /** @type {number} */
+  let directionChangeX;
   /** @type {HTMLDivElement} */
   let container;
 
@@ -46,6 +48,7 @@
     if (visibleChild) {
       container.onpointerdown = (ev) => {
         if (pointerlock) return;
+        transition = "none";
         startClientX = ev.clientX;
         //minSwipeRange = container.getBoundingClientRect().width / 5;
         minSwipeRange = 50;
@@ -53,7 +56,7 @@
 
       container.onpointerup = () => {
         if (pointerlock) {
-          transition = "transform 0.35s ease";
+          transition = "transform 0.45s ease";
 
           if (direction === "left") {
             currentTranslateX = "-200%";
@@ -67,29 +70,57 @@
       };
 
       container.onpointermove = (ev) => {
+        if (pointerlock && ev.buttons === 1) {
+          const startDiff = startClientX - ev.clientX;
+
+          if (ev.clientX < lastClientX && Math.abs(startDiff) > minSwipeRange) {
+            // left swipe
+
+            if (direction === "right") {
+              // directon change from a right to a left swipe
+
+              if (!directionChangeX) directionChangeX = lastClientX;
+
+              if (ev.clientX < directionChangeX && Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2) {
+                direction = "left";
+                directionChangeX = undefined;
+              }
+            } else {
+              direction = "left";
+            }
+          } else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange) {
+            // right swipe
+
+            if (direction === "left") {
+              // direction change from a left to a right swipe
+
+              if (!directionChangeX) directionChangeX = lastClientX;
+
+              if (ev.clientX > directionChangeX && Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2) {
+                direction = "right";
+                directionChangeX = undefined;
+              }
+            } else {
+              direction = "right";
+            }
+          }
+
+          console.debug(direction);
+
+          lastClientX = ev.clientX;
+          currentTranslateX = `calc(-100% - ${startClientX - ev.clientX}px)`;
+          return
+        }
+
         if (ev.buttons !== 1) {
           if (pointerlock) container.onpointerup(ev);
           return;
         }
 
         if (!pointerlock) {
-          if (startClientX - ev.clientX > 10 || startClientX - ev.clientX < -10)
-            pointerlock = true;
+          if (startClientX - ev.clientX > 2 || startClientX - ev.clientX < -2) pointerlock = true;
           return;
         }
-
-        const startDiff = startClientX - ev.clientX;
-        if (ev.clientX < lastClientX && Math.abs(startDiff) > minSwipeRange)
-          direction = "left";
-        else if (
-          ev.clientX > lastClientX &&
-          Math.abs(startDiff) > minSwipeRange
-        )
-          direction = "right";
-        else direction = null;
-
-        lastClientX = ev.clientX;
-        currentTranslateX = `calc(-100% - ${startClientX - ev.clientX}px)`;
       };
     }
   }
@@ -97,6 +128,7 @@
   function resetTransition() {
     direction = null;
     lastClientX = null;
+    directionChangeX = undefined;
   }
 </script>
 
@@ -113,10 +145,7 @@
           if (isNaN(date)) dispatch("click", null);
           else {
             ripple.add(ev, el);
-            dispatch(
-              "click",
-              new Date(currentDate.getFullYear(), currentDate.getMonth(), date)
-            );
+            dispatch("click", new Date(currentDate.getFullYear(), currentDate.getMonth(), date));
           }
         }
       }
@@ -126,10 +155,7 @@
     <slot
       name="container-item"
       {index}
-      currentDate={new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + (index - 1)
-      )}
+      currentDate={new Date(currentDate.getFullYear(), currentDate.getMonth() + (index - 1))}
       {currentTranslateX}
       {transition}
       transitionend={() => {
@@ -138,16 +164,10 @@
 
         if (direction === "left") {
           items = [items[1], items[2], items[0]];
-          currentDate = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() + 1
-          );
+          currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
         } else if (direction === "right") {
           items = [items[2], items[0], items[1]];
-          currentDate = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() - 1
-          );
+          currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
         }
 
         resetTransition();
