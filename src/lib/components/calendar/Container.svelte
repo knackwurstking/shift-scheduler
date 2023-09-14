@@ -96,7 +96,10 @@
 
               if (!directionChangeX) directionChangeX = lastClientX;
 
-              if (ev.clientX < directionChangeX && Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2) {
+              if (
+                ev.clientX < directionChangeX &&
+                Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2
+              ) {
                 direction = "left";
                 directionChangeX = undefined;
               }
@@ -111,7 +114,10 @@
 
               if (!directionChangeX) directionChangeX = lastClientX;
 
-              if (ev.clientX > directionChangeX && Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2) {
+              if (
+                ev.clientX > directionChangeX &&
+                Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2
+              ) {
                 direction = "right";
                 directionChangeX = undefined;
               }
@@ -122,7 +128,7 @@
 
           lastClientX = ev.clientX;
           currentTranslateX = `calc(-100% - ${startClientX - ev.clientX}px)`;
-          return
+          return;
         }
 
         if (ev.buttons !== 1) {
@@ -152,20 +158,19 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   bind:this={container}
-  on:click={!pointerlock &&
-    ((ev) => {
-      // @ts-ignore
-      for (const el of ev?.path || ev.composedPath() || []) {
-        if (el.classList?.contains("day-content")) {
-          const date = parseInt(el.getAttribute("data-value"), 10);
-          if (isNaN(date)) dispatch("click", null);
-          else {
-            ripple.add(ev, el);
-            dispatch("click", new Date(currentDate.getFullYear(), currentDate.getMonth(), date));
-          }
+  on:click={(ev) => {
+    // @ts-ignore
+    for (const el of ev?.path || ev.composedPath() || []) {
+      if (el.classList?.contains("day-content")) {
+        const date = parseInt(el.getAttribute("data-value"), 10);
+        if (isNaN(date)) dispatch("click", null);
+        else {
+          ripple.add(ev, el);
+          dispatch("click", new Date(currentDate.getFullYear(), currentDate.getMonth(), date));
         }
       }
-    })}
+    }
+  }}
 >
   {#each items as _item, index}
     <slot
@@ -187,7 +192,6 @@
         currentTranslateX = "-100%";
 
         resetTransition();
-        pointerlock = false;
       }}
     />
   {/each}
