@@ -64,7 +64,7 @@
 
         if (pointerlock) {
           waitForTransition = true;
-          transition = "transform 0.25s ease";
+          transition = "transform 0.15s linear";
 
           if (direction === "left") {
             currentTranslateX = "-200%";
@@ -76,6 +76,8 @@
           }
         }
       };
+
+      container.onpointercancel = container.onpointerup;
 
       container.onpointermove = (ev) => {
         if (waitForTransition) return;
