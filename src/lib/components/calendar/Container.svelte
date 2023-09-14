@@ -72,11 +72,6 @@
             currentTranslateX = "-100%";
             resetTransition();
           }
-
-          setTimeout(() => {
-            waitForTransition = false;
-            pointerlock = false;
-          }, 150);
         }
       };
 
@@ -151,6 +146,8 @@
     direction = null;
     lastClientX = null;
     directionChangeX = undefined;
+    waitForTransition = false;
+    pointerlock = false;
   }
 </script>
 
