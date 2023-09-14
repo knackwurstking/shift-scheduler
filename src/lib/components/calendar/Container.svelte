@@ -49,10 +49,8 @@
     const visibleChild = container.children[visibleChildIndex];
     if (visibleChild) {
       container.onpointerdown = (ev) => {
-        if (waitForTransition) return;
+        if (waitForTransition || pointerlock) return;
 
-        if (pointerlock) return;
-        pointerlock = true;
         transition = "none";
         startClientX = ev.clientX;
         //minSwipeRange = container.getBoundingClientRect().width / 5;
@@ -74,6 +72,11 @@
             currentTranslateX = "-100%";
             resetTransition();
           }
+
+          setTimeout(() => {
+            waitForTransition = false;
+            pointerlock = false;
+          }, 150);
         }
       };
 
@@ -124,6 +127,14 @@
 
         if (ev.buttons !== 1) {
           if (pointerlock) container.onpointerup(ev);
+          return;
+        }
+
+        if (!pointerlock) {
+          if (startClientX - ev.clientX > 2 || startClientX - ev.clientX < -2) {
+            pointerlock = true;
+            console.debug("....");
+          }
           return;
         }
       };
@@ -177,7 +188,6 @@
 
         resetTransition();
         pointerlock = false;
-        waitForTransition = false;
       }}
     />
   {/each}
