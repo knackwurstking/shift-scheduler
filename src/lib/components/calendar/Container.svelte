@@ -77,6 +77,8 @@
 
       container.onpointercancel = container.onpointerup;
 
+      let currentTranslateX_px = 0;
+
       container.onpointermove = (ev) => {
         if (waitForTransition) return;
 
@@ -89,40 +91,32 @@
             if (direction === "right") {
               // directon change from a right to a left swipe
 
-              if (!directionChangeX) directionChangeX = lastClientX;
-
-              if (
-                ev.clientX < directionChangeX &&
-                Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2
-              ) {
+              if (ev.clientX < startClientX) {
                 direction = "left";
-                directionChangeX = undefined;
               }
             } else {
               direction = "left";
             }
+
+            currentTranslateX_px += -5;
           } else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange) {
             // right swipe
 
             if (direction === "left") {
               // direction change from a left to a right swipe
 
-              if (!directionChangeX) directionChangeX = lastClientX;
-
-              if (
-                ev.clientX > directionChangeX &&
-                Math.abs(directionChangeX - ev.clientX) > minSwipeRange * 2
-              ) {
+              if (ev.clientX > startClientX) {
                 direction = "right";
-                directionChangeX = undefined;
               }
             } else {
               direction = "right";
             }
+
+            currentTranslateX_px += 5;
           }
 
+          currentTranslateX = `calc(-100% + ${currentTranslateX_px}px)`;
           lastClientX = ev.clientX;
-          currentTranslateX = `calc(-100% - ${startClientX - ev.clientX}px)`;
           return;
         }
 
@@ -144,7 +138,6 @@
   function resetTransition() {
     direction = null;
     lastClientX = null;
-    directionChangeX = undefined;
     pointerlock = false;
     setTimeout(() => (waitForTransition = false), 100);
   }
