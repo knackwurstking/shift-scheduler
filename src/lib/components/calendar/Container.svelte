@@ -134,7 +134,6 @@
         if (!pointerlock) {
           if (startClientX - ev.clientX > 2 || startClientX - ev.clientX < -2) {
             pointerlock = true;
-            console.debug("....");
           }
           return;
         }
@@ -146,8 +145,8 @@
     direction = null;
     lastClientX = null;
     directionChangeX = undefined;
-    waitForTransition = false;
     pointerlock = false;
+    setTimeout(() => (waitForTransition = false), 100);
   }
 </script>
 
@@ -156,6 +155,7 @@
 <div
   bind:this={container}
   on:click={(ev) => {
+    if (waitForTransition || pointerlock) return;
     // @ts-ignore
     for (const el of ev?.path || ev.composedPath() || []) {
       if (el.classList?.contains("day-content")) {
