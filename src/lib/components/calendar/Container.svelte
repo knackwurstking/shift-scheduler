@@ -26,6 +26,8 @@
   let direction = null;
   /** @type {boolean} */
   let pointerlock = false;
+  /** @type {boolean} */
+  let waitForTransition = false;
   /** @type {number | null} */
   let lastClientX = null;
   /** @type {Date} */
@@ -47,7 +49,10 @@
     const visibleChild = container.children[visibleChildIndex];
     if (visibleChild) {
       container.onpointerdown = (ev) => {
+        if (waitForTransition) return;
+
         if (pointerlock) return;
+        pointerlock = true;
         transition = "none";
         startClientX = ev.clientX;
         //minSwipeRange = container.getBoundingClientRect().width / 5;
@@ -55,7 +60,10 @@
       };
 
       container.onpointerup = () => {
+        if (waitForTransition) return;
+
         if (pointerlock) {
+          waitForTransition = true;
           transition = "transform 0.25s ease";
 
           if (direction === "left") {
@@ -70,6 +78,8 @@
       };
 
       container.onpointermove = (ev) => {
+        if (waitForTransition) return;
+
         if (pointerlock && ev.buttons === 1) {
           const startDiff = startClientX - ev.clientX;
 
@@ -114,11 +124,6 @@
           if (pointerlock) container.onpointerup(ev);
           return;
         }
-
-        if (!pointerlock) {
-          if (startClientX - ev.clientX > 2 || startClientX - ev.clientX < -2) pointerlock = true;
-          return;
-        }
       };
     }
   }
@@ -157,9 +162,6 @@
       {currentTranslateX}
       {transition}
       transitionend={() => {
-        transition = "none";
-        currentTranslateX = "-100%";
-
         if (direction === "left") {
           items = [items[1], items[2], items[0]];
           currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
@@ -168,8 +170,12 @@
           currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
         }
 
+        transition = "none";
+        currentTranslateX = "-100%";
+
         resetTransition();
         pointerlock = false;
+        waitForTransition = false;
       }}
     />
   {/each}
