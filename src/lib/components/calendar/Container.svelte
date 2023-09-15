@@ -42,6 +42,8 @@
   let directionChangeX;
   /** @type {HTMLDivElement} */
   let container;
+  /** @type {number} */
+  let currentTranslateX_px = 0;
 
   $: container && init();
 
@@ -77,8 +79,6 @@
 
       container.onpointercancel = container.onpointerup;
 
-      let currentTranslateX_px = 0;
-
       container.onpointermove = (ev) => {
         if (waitForTransition) return;
 
@@ -98,7 +98,7 @@
               direction = "left";
             }
 
-            currentTranslateX_px += -5;
+            currentTranslateX_px -= 3;
           } else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange) {
             // right swipe
 
@@ -112,7 +112,7 @@
               direction = "right";
             }
 
-            currentTranslateX_px += 5;
+            currentTranslateX_px += 3;
           }
 
           currentTranslateX = `calc(-100% + ${currentTranslateX_px}px)`;
@@ -139,6 +139,7 @@
     direction = null;
     lastClientX = null;
     pointerlock = false;
+    currentTranslateX_px = 0;
     setTimeout(() => (waitForTransition = false), 100);
   }
 </script>

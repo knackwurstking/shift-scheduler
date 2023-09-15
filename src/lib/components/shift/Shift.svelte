@@ -12,6 +12,8 @@
   export let visible = true;
   /** @type {string} */
   export let color = "var(--color)";
+  /** @type {number} */
+  export let id;
 
   export let active = false;
 </script>
@@ -62,7 +64,7 @@
 
     opacity: 0.35;
 
-    filter: blur(5px);
+    filter: blur(10px);
   }
 
   div.card span.name {

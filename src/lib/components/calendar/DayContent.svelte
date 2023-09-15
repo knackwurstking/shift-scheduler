@@ -26,7 +26,8 @@
 >
   {#if !!day.data}
     {#if day.data.shift}
-      <span class="shift" style={`color: ${day.data.shift.color};`}>
+      <div class="background" style={`background-color: ${day.data.shift.color};`}></div>
+      <span class="shift">
         {day.data.shift.visible ? day.data.shift.shortName || "" : ""}
       </span>
     {/if}
@@ -74,6 +75,18 @@
     font-size: 0.85rem;
     top: 4px;
     left: 4px;
+  }
+
+  div.day-content .background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    opacity: 0.35;
+
+    filter: blur(10px);
   }
 
   div.day-content .shift {

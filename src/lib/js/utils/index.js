@@ -14,7 +14,7 @@ export function isAndroid() {
  * @returns {import("../../components/settings").Shift | null}
  */
 export function calcShiftStep(date) {
-  if (!settings.data?.startDate) return;
+  if (!settings.data?.startDate || !settings.data?.shiftRhythm.length) return null;
   if (typeof settings.data.startDate === "string")
     settings.data.startDate = new Date(settings.data.startDate);
 
@@ -26,7 +26,7 @@ export function calcShiftStep(date) {
     if (index === settings.data.shiftRhythm.length) index = 0;
 
     const s = settings.data.shifts.find((shift) => shift.id === settings.data.shiftRhythm[index]);
-    return s;
+    return s || null;
   }
 
   const daysDiff = Math.round(
@@ -36,5 +36,5 @@ export function calcShiftStep(date) {
   const s = settings.data.shifts.find(
     (shift) => shift.id === settings.data.shiftRhythm[daysDiff % settings.data.shiftRhythm.length]
   );
-  return s;
+  return s || null;
 }
