@@ -64,7 +64,7 @@
 
         if (pointerlock) {
           waitForTransition = true;
-          transition = "transform 0.15s linear";
+          transition = "transform 0.25s linear";
 
           if (direction === "left") {
             currentTranslateX = "-200%";
@@ -98,7 +98,7 @@
               direction = "left";
             }
 
-            currentTranslateX_px -= 3;
+            currentTranslateX_px -= 1;
           } else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange) {
             // right swipe
 
@@ -112,10 +112,10 @@
               direction = "right";
             }
 
-            currentTranslateX_px += 3;
+            currentTranslateX_px += 1;
           }
 
-          currentTranslateX = `calc(-100% + ${currentTranslateX_px}px)`;
+          currentTranslateX = `calc(-100% + ${currentTranslateX_px}%)`;
           lastClientX = ev.clientX;
           return;
         }
