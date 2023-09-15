@@ -10,6 +10,7 @@
   //import * as ripple from "./lib/js/ripple";
   import * as utils from "./lib/js/utils";
   import * as db from "./lib/js/db";
+  import * as settings from "./lib/js/settings";
 
   import { EditDayDialog } from "./lib/components/dialogs";
   import DatePicker from "./lib/components/date-picker";
@@ -44,13 +45,10 @@
 
   $: {
     if (view === "calendar") {
-      settings = JSON.parse(
-        localStorage.getItem("settings") ||
-          '{ "shifts": [], "startDate": "", "shiftRhythm": [], "currentTheme": "custom", "mode": "auto" }'
-      );
-      currentTheme = settings.currentTheme;
-      if (settings.mode !== "auto") {
-        document.documentElement.setAttribute("data-theme", settings.mode);
+      settings.load();
+      currentTheme = settings.data.currentTheme;
+      if (settings.data.mode !== "auto") {
+        document.documentElement.setAttribute("data-theme", settings.data.mode);
       } else {
         document.documentElement.removeAttribute("data-theme");
       }
@@ -84,12 +82,12 @@
   }
 
   /**
-   * @returns {import("./lib/components/settings").Shift}
+   * @returns {import("./lib/js/settings").Shift | "reset"}
    */
   function getEditModeShift() {
     if (editMode_index === -2)
-      return { name: "", shortName: "", visible: false };
-    return settings.shifts[editMode_index] || null;
+      return "reset";
+    return settings.data.shifts[editMode_index] || null;
   }
 
   // TODO: need to update today after 12:00 AM
@@ -171,7 +169,6 @@
   {#if view === "calendar"}
     <Calendar
       bind:this={calendar}
-      {settings}
       on:click={async ({ detail }) => {
         if (detail && editMode_open) {
           let shift = getEditModeShift();
@@ -179,13 +176,17 @@
             return;
           }
 
-          if (!shift.name) shift = null;
           const { note } = db.getDataForDay(detail);
 
-          if (shift || note) {
-            db.setDataForDay(detail, shift, note);
+          if (shift === "reset") {
+            shift = null;
+            if (note) {
+              db.setDataForDay(detail, null, note);
+            } else {
+              db.removeDataForDay(detail);
+            }
           } else {
-            db.removeDataForDay(detail);
+            db.setDataForDay(detail, shift, note);
           }
 
           calendar.reload();
@@ -215,17 +216,19 @@
       />
     </span>
 
-    {#each settings.shifts as shift, index}
-      <span>
-        <ShiftCard
-          {...shift}
-          active={editMode_index == index}
-          on:click={() => {
-            editMode_index = editMode_index === index ? -1 : index;
-          }}
-        />
-      </span>
-    {/each}
+    {#key settings.data}
+      {#each settings.data.shifts as shift, index}
+        <span>
+          <ShiftCard
+            {...shift}
+            active={editMode_index == index}
+            on:click={() => {
+              editMode_index = editMode_index === index ? -1 : index;
+            }}
+          />
+        </span>
+      {/each}
+    {/key}
   {/if}
 </footer>
 

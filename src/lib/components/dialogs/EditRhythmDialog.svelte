@@ -22,12 +22,14 @@
 
     <ul>
       {#each rhythm as id, index}
-        <Shift
-          {...settings.getShift(id) || { name: "Removed", shortName: "x", visible: false }}
-          on:click={() => {
-            rhythm = [...rhythm.slice(0, index), ...rhythm.slice(index + 1)];
-          }}
-        />
+        {#if !!settings.getShift(id)}
+          <Shift
+            {...settings.getShift(id)}
+            on:click={() => {
+              rhythm = [...rhythm.slice(0, index), ...rhythm.slice(index + 1)];
+            }}
+          />
+        {/if}
       {/each}
     </ul>
 
