@@ -57,14 +57,12 @@
 
   div.card .background {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    bottom: 5px;
-    left: 5px;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
 
-    opacity: 0.35;
-
-    filter: blur(10px);
+    opacity: 0.25;
   }
 
   div.card span.name {
