@@ -210,6 +210,7 @@
         visible={false}
         active={editMode_index === -2}
         color="var(--color)"
+        id={-2}
         on:click={() => {
           editMode_index = editMode_index === -2 ? -1 : -2;
         }}

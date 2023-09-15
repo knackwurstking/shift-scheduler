@@ -29,7 +29,7 @@
     const data = db.get(date.getFullYear(), date.getMonth())[
       db.getKeyFromDate(date)
     ];
-    defaultShift = utils.calcShiftStep(settings, date);
+    defaultShift = utils.calcShiftStep(date);
     shift = data?.shift || null;
     if (shift)
       current = settings.shifts
