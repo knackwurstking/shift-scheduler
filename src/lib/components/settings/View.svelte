@@ -33,6 +33,12 @@
       document.documentElement.removeAttribute("data-theme");
     }
 
+    settings.data.shifts = shifts;
+    settings.data.startDate = startDate;
+    settings.data.shiftRhythm = shiftRhythm;
+    settings.data.currentTheme = currentTheme;
+    settings.data.mode = mode;
+
     settings.save();
   }
 </script>
