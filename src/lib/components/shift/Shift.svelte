@@ -21,12 +21,12 @@
 <div
   class="card"
   class:active
-  style={`color: ${color};`}
   on:click={(ev) => {
     ripple.add(ev, ev.currentTarget, { mode: "primary" });
     dispatch("click");
   }}
 >
+  <div class="background" style={`background-color: ${color};`} />
   <span class="name">{name}</span><br />
   <span class="short-name" class:visible>{shortName || name[0]}</span>
 </div>
@@ -51,6 +51,18 @@
 
   div.card.active {
     border-color: var(--primary);
+  }
+
+  div.card .background {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    left: 5px;
+
+    opacity: 0.35;
+
+    filter: blur(5px);
   }
 
   div.card span.name {

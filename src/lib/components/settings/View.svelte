@@ -54,8 +54,13 @@
       on:submit={({ detail }) => {
         addShiftDialogOpen = false;
 
-        // return if name not set or shift already exists
-        if (shifts.find((shift) => shift.id === detail.id) || !detail.name) {
+        let id = 0
+        shifts.forEach(shift => {
+          if (shift.id > id) id = shift.id;
+        })
+        detail.id = id+1;
+
+        if (!detail.name) {
           return;
         }
 
