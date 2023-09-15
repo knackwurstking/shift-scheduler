@@ -11,8 +11,6 @@
   export let index;
   /** @type {Date} */
   export let currentDate;
-  /** @type {import("../settings").Settings} */
-  export let settings;
 
   /** @type {import(".").Day[]} */
   let days = [
@@ -33,7 +31,7 @@
 
       const key = db.getKeyFromDate(days[i].date);
       days[i].data = {
-        shift: data[key]?.shift || utils.calcShiftStep(settings, days[i].date),
+        shift: data[key]?.shift || utils.calcShiftStep(days[i].date),
         note: data[key]?.note || "",
       };
     }

@@ -2,20 +2,14 @@ export { default } from "./View.svelte";
 
 /**
  * @typedef Modes
- * @type {"auto" | "dark" | "light"}
+ * @type {import("../../js/settings").Modes}
  *
  * @typedef Themes
- * @type {"custom" | "picocss" | "green"}
+ * @type {import("../../js/settings").Themes}
  * 
  * @typedef Shift 
- * @type {import("../shift").Shift}
+ * @type {import("../../js/settings").Shift}
  *
  * @typedef Settings
- * @type {{
- *  shifts: Shift[];
- *  startDate: string | Date;
- *  shiftRhythm: string[];
- *  currentTheme: Themes;
- *  mode: Modes;
- * }}
+ * @type {import("../../js/settings").Settings}}
  */

@@ -1,3 +1,5 @@
+import * as settings from "../settings";
+
 /**
  *
  * @returns {boolean}
@@ -8,27 +10,31 @@ export function isAndroid() {
 
 /**
  *
- * @param {import("../../components/settings").Settings} settings
  * @param {Date} date
  * @returns {import("../../components/settings").Shift | null}
  */
-export function calcShiftStep(settings, date) {
-  if (!settings.startDate) return;
-  if (typeof settings.startDate === "string") settings.startDate = new Date(settings.startDate);
+export function calcShiftStep(date) {
+  if (!settings.data?.startDate) return;
+  if (typeof settings.data.startDate === "string")
+    settings.data.startDate = new Date(settings.data.startDate);
 
-  if (settings.startDate.getTime() > date.getTime()) {
-    const daysDiff = (settings.startDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24);
-    let index = Math.round(settings.shiftRhythm.length - (daysDiff % settings.shiftRhythm.length));
-    if (index === settings.shiftRhythm.length) index = 0;
+  if (settings.data.startDate.getTime() > date.getTime()) {
+    const daysDiff = (settings.data.startDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24);
+    let index = Math.round(
+      settings.data.shiftRhythm.length - (daysDiff % settings.data.shiftRhythm.length)
+    );
+    if (index === settings.data.shiftRhythm.length) index = 0;
 
-    const s = settings.shifts.find((shift) => shift.name === settings.shiftRhythm[index]);
+    const s = settings.data.shifts.find((shift) => shift.id === settings.data.shiftRhythm[index]);
     return s;
   }
 
-  const daysDiff = Math.round((date.getTime() - settings.startDate.getTime()) / (1000 * 60 * 60 * 24));
+  const daysDiff = Math.round(
+    (date.getTime() - settings.data.startDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
 
-  const s = settings.shifts.find(
-    (shift) => shift.name === settings.shiftRhythm[daysDiff % settings.shiftRhythm.length]
+  const s = settings.data.shifts.find(
+    (shift) => shift.id === settings.data.shiftRhythm[daysDiff % settings.data.shiftRhythm.length]
   );
   return s;
 }

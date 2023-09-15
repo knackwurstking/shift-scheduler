@@ -1,18 +1,12 @@
 <script>
   import Shift, { ShiftAdd } from "../shift";
-  import {
-    EditRhythmDialog,
-    AddShiftDialog,
-    EditShiftDialog,
-  } from "../dialogs";
+  import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
 
+  import * as settings from "../../js/settings";
 
   let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
-  $: !!shifts && save();
-  $: typeof startDate === "string" && save();
-  $: !!shiftRhythm && save();
-  $: !!currentTheme && save();
-  $: !!mode && save();
+  $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&
+    save();
 
   let addShiftDialogOpen = false;
   let editShiftRhythmDialogOpen = false;
@@ -26,15 +20,8 @@
    * @returns {import(".").Settings}
    */
   function getSettings() {
-    const settings = JSON.parse(localStorage.getItem("settings") || "{}");
-
-    settings.shifts = settings.shifts || [];
-    settings.startDate = settings.startDate || "";
-    settings.shiftRhythm = settings.shiftRhythm || [];
-    settings.currentTheme = settings.currentTheme || "custom";
-    settings.mode = settings.mode || "auto";
-
-    return settings;
+    settings.load();
+    return settings.data;
   }
 
   function save() {
@@ -46,16 +33,7 @@
       document.documentElement.removeAttribute("data-theme");
     }
 
-    localStorage.setItem(
-      "settings",
-      JSON.stringify({
-        shifts,
-        startDate,
-        shiftRhythm,
-        currentTheme,
-        mode,
-      })
-    );
+    settings.save();
   }
 </script>
 
@@ -70,7 +48,8 @@
       on:submit={({ detail }) => {
         addShiftDialogOpen = false;
 
-        if (shifts.find((s) => s.name === detail.name) || !detail.name) {
+        // return if name not set or shift already exists
+        if (shifts.find((shift) => shift.id === detail.id) || !detail.name) {
           return;
         }
 
@@ -104,12 +83,7 @@
   <article>
     <label for="start-date">
       Start Date
-      <input
-        type="date"
-        name="start-date"
-        class="shift-start-date"
-        bind:value={startDate}
-      />
+      <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
     </label>
 
     <div class="shifts">

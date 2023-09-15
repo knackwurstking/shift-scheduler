@@ -4,7 +4,15 @@
 
   import Shift from "../shift";
 
+  import * as settings from "../../js/settings";
+
+  /**
+   * @type {import("../settings").Shift[]}
+   */
   export let shifts;
+  /**
+   * @type {number[]}
+   */
   export let rhythm;
 </script>
 
@@ -13,12 +21,9 @@
     <h6>Pick a shift from the bottom to add.</h6>
 
     <ul>
-      {#each rhythm as name, index}
+      {#each rhythm as id, index}
         <Shift
-          {...shifts.find((s) => s.name === name) || {
-            name: name,
-            visible: true,
-          }}
+          {...settings.getShift(id) || { name: "Removed", shortName: "x", visible: false }}
           on:click={() => {
             rhythm = [...rhythm.slice(0, index), ...rhythm.slice(index + 1)];
           }}
@@ -32,7 +37,7 @@
           <Shift
             {...shift}
             on:click={() => {
-              rhythm = [...rhythm, shift.name];
+              rhythm = [...rhythm, shift.id];
             }}
           />
         </div>

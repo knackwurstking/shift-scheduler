@@ -26,8 +26,6 @@
   let viewStack = [view];
   /** @type {Date} */
   let currentDate = new Date();
-  /** @type {import("./lib/components/settings").Settings | undefined} */
-  let settings;
   /** @type {boolean} */
   let editMode_open = false;
   /** @type {number} - -2 will remove the custom shift from the database */
