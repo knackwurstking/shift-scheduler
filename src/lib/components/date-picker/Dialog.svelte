@@ -15,6 +15,8 @@
   let date; 
   /** @type {boolean} */
   let invalid = false;
+
+  // TODO: handle invalid
 </script>
 
 <dialog class="date-picker--dialog" {open}>
