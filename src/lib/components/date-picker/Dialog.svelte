@@ -9,21 +9,45 @@
   export let year;
   /** @type {number} */
   export let month;
+  $: year && month && (date = `${year}-${month}`);
+
+  /** @type {string} */
+  let date; 
+  /** @type {boolean} */
+  let invalid = false;
 </script>
 
 <dialog class="date-picker--dialog" {open}>
   <article>
     <label>
-      Choose a Year...
-      <input type="number" bind:value={year} />
+      Year and Month (format: `YYYY-MM`)
+      <input type="month" bind:value={date} />
     </label>
 
-    <label>
-      ...and a Month
-      <input type="number" min={1} max={12} bind:value={month} />
-    </label>
+    <button type="submit" on:click={() => {
+      let year;
+      let month;
 
-    <button type="submit" on:click={() => dispatch("submit", { year, month })}>
+      try {
+        year = parseInt(date.split("-")[0], 10);
+        month = parseInt(date.split("-")[1], 10);
+
+        if (isNaN(year) || isNaN(month)) {
+          invalid = true;
+          return
+        }
+
+        if (month <= 0 && month >= 11) {
+          invalid = true;
+          return;
+        }
+      } catch {
+        invalid = true;
+        return;
+      }
+
+      dispatch("submit", { year, month });
+    }}>
       OK
     </button>
   </article>
