@@ -21,8 +21,8 @@
 
 <dialog class="date-picker--dialog" {open}>
   <article>
+    <!-- TODO:: works on android but not on desktop (Firefox) -->
     <label>
-      Year and Month (format: `YYYY-MM`)
       <input type="month" bind:value={date} />
     </label>
 
