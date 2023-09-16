@@ -47,7 +47,7 @@
   <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
 
-<section class="shifts">
+<div class="_container">
   {#if addShiftDialogOpen}
     <AddShiftDialog
       on:cancel={() => (addShiftDialogOpen = false)}
@@ -174,47 +174,55 @@
       </label>
     </fieldset>
   </article>
-</section>
+</div>
 
 <style>
-  section {
+  div._container {
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    overflow-y: auto;
-  }
-
-  section article {
+    overflow-y: scroll;
     padding: var(--spacing);
   }
 
-  section article > * {
+  article:first-child {
+    margin-top: 0;
+  }
+
+  article:last-child {
+    margin-bottom: var(--spacing);
+  }
+
+  article {
+    padding: var(--spacing);
+  }
+
+  article > * {
     padding-top: 4px;
   }
 
-  section article > *:not(:last-child) {
+  article > *:not(:last-child) {
     border-bottom: 1px solid var(--muted-border-color);
   }
 
-  section .shifts {
+  .shifts {
     position: relative;
   }
 
-  section .shifts > label {
+  .shifts > label {
     margin-bottom: 16px;
   }
 
-  section .rhythm {
+  .rhythm {
     display: flex;
     justify-content: space-between;
     border-bottom: none;
   }
 
-  section .rhythm button {
+  .rhythm button {
     width: fit-content;
   }
 
-  section article:nth-child(2) fieldset label {
+  article:nth-child(2) fieldset label {
     display: inline-block;
     margin: calc(var(--spacing) / 2);
     user-select: none;
