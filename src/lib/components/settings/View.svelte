@@ -184,6 +184,15 @@
     padding: var(--spacing);
   }
 
+  div._container::-webkit-scrollbar {
+    display: none;
+  }
+
+  div._container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   article:first-child {
     margin-top: 0;
   }
