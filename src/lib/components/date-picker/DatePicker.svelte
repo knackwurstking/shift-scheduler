@@ -22,6 +22,9 @@
     open={picker}
     year={currentDate.getFullYear()}
     month={currentDate.getMonth() + 1}
+    on:cancel={() => {
+      picker = false;
+    }}
     on:submit={({ detail }) => {
       currentDate = new Date(
         detail.year,
