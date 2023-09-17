@@ -174,6 +174,10 @@
       </label>
     </fieldset>
   </article>
+
+  <article>
+    <!-- TODO: clear data table -->
+  </article>
 </div>
 
 <style>
