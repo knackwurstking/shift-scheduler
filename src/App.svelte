@@ -52,6 +52,8 @@
       } else {
         document.documentElement.removeAttribute("data-theme");
       }
+
+      // FIXME: calendar items (0, 1, 3 bzw.: currentDate)
     }
   }
 
