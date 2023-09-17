@@ -19,9 +19,14 @@
   /** @type {boolean} */
   let invalidMonth = false;
 
-  $: date && setDate();
+  $: !date && year && month && setDate();
+  $: date && parseDate();
 
   function setDate() {
+    date = `${year}-${month}`;
+  }
+
+  function parseDate() {
     const [y, m] = date.split("-", 2);
     year = parseInt(y, 10);
     month = parseInt(m, 10);
