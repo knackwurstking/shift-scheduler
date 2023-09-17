@@ -11,7 +11,6 @@
   export let year;
   /** @type {number} */
   export let month;
-  $: year && month && setDate();
 
   /** @type {string} */
   let date; 
@@ -20,8 +19,12 @@
   /** @type {boolean} */
   let invalidMonth = false;
 
+  $: date && setDate();
+
   function setDate() {
-    date = `${year}-${month}`;
+    const [y, m] = date.split("-", 2);
+    year = parseInt(y, 10);
+    month = parseInt(m, 10);
   }
 </script>
 
