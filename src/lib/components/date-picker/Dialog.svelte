@@ -29,6 +29,7 @@
   <article>
     {#if utils.isAndroid()}
       <label>
+        Pick a Date
         <input type="month" bind:value={date} />
       </label>
     {:else}
@@ -86,6 +87,8 @@
   }
 
   dialog article {
+    /* Need to set a width */
     padding: var(--spacing);
+    width: 100%;
   }
 </style>
