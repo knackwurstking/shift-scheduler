@@ -105,8 +105,8 @@ export function listKeys() {
     if (split.length === 3) {
       if (split[0] !== "db") continue;
 
-      const year = parseInt(split[0], 10);
-      const month = parseInt(split[1], 10);
+      const year = parseInt(split[1], 10);
+      const month = parseInt(split[2], 10);
 
       if (isNaN(year) || isNaN(month)) continue;
       if (month < 0 || month > 11) continue;
