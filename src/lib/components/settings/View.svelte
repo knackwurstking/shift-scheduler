@@ -182,12 +182,8 @@
     <figure>
       <section>
         <h2>Data Storage</h2>
-        {#each db.listKeys() as key}
-          <details>
-            <summary>{key} (@ToDo: add remove button)</summary>
-            <p>@ToDo: list all keys with a remove button here...</p>
-          </details>
-          <!-- TODO: some list and with some accordion? and a new list with dates and remove icon buttons -->
+        {#each db.list() as key}
+          <!-- TODO: list year, month and a remove button -->
         {/each}
       </section>
     </figure>
