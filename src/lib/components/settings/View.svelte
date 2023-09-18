@@ -3,6 +3,7 @@
   import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
 
   import * as settings from "../../js/settings";
+  import * as db from "../../js/db";
 
   let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
   $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&
@@ -176,7 +177,14 @@
   </article>
 
   <article>
-    <!-- TODO: clear data table -->
+    <figure>
+      <figcaption>Data Storage Table</figcaption>
+      <tbody>
+        {#each db.listKeys() as key}
+          <td>{key}</td>
+        {/each}
+      </tbody>
+    </figure>
   </article>
 </div>
 

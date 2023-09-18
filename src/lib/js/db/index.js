@@ -90,3 +90,24 @@ export function removeDataForDay(date) {
   delete data[getKeyFromDate(date)];
   set(date.getFullYear(), date.getMonth(), data)
 }
+
+/**
+ * @returns {string[]}
+ */
+export function listKeys() {
+  /** @type {string[]}  */
+  const keys = [];
+
+  for (let x = 0; x < window.localStorage.length; x++) {
+    const key = window.localStorage.key(x);
+    const split = key.split("-", 3);
+    if (split.length === 3) {
+      if (split[0] !== "db") continue;
+      const year = parseInt(split[0], 10);
+      const month = parseInt(split[1], 10);
+      // TODO: validate year, month
+    }
+  }
+
+  return keys;
+}
