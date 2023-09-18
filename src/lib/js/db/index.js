@@ -101,11 +101,17 @@ export function listKeys() {
   for (let x = 0; x < window.localStorage.length; x++) {
     const key = window.localStorage.key(x);
     const split = key.split("-", 3);
+
     if (split.length === 3) {
       if (split[0] !== "db") continue;
+
       const year = parseInt(split[0], 10);
       const month = parseInt(split[1], 10);
-      // TODO: validate year, month
+
+      if (isNaN(year) || isNaN(month)) continue;
+      if (month < 0 || month > 11) continue;
+
+      keys.push(key);
     }
   }
 
