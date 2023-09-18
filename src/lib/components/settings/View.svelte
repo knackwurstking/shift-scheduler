@@ -19,6 +19,8 @@
 
   let themes = ["custom", "picocss", "green"];
 
+  let dataStorage = false;
+
   /**
    * @returns {import(".").Settings}
    */
@@ -94,7 +96,7 @@
     />
   {/if}
 
-  <article>
+  <article class="shift-scheduler">
     <label for="start-date">
       Start Date
       <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
@@ -133,7 +135,7 @@
     </div>
   </article>
 
-  <article>
+  <article class="themes">
     <label>
       Themes
       <select bind:value={currentTheme}>
@@ -178,13 +180,32 @@
     </fieldset>
   </article>
 
-  <article>
+  <article class="data-storage">
     <figure>
       <section>
         <h2>Data Storage</h2>
-        {#each db.list() as key}
-          <!-- TODO: list year, month and a remove button -->
-        {/each}
+        {#if dataStorage}
+          <figure>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Year</th>
+                  <th scope="col">Month</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- TODO: list year, month and a remove button -->
+                {#each db.list() as key}
+                  <tr>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          </figure>
+        {:else}
+          <button>Load Data</button>
+        {/if}
       </section>
     </figure>
   </article>
@@ -227,25 +248,25 @@
     border-bottom: 1px solid var(--muted-border-color);
   }
 
-  .shifts {
+  article.shift-scheduler .shifts {
     position: relative;
   }
 
-  .shifts > label {
+  article.shift-scheduler .shifts > label {
     margin-bottom: 16px;
   }
 
-  .rhythm {
+  article.shift-scheduler .rhythm {
     display: flex;
     justify-content: space-between;
     border-bottom: none;
   }
 
-  .rhythm button {
+  article.shift-scheduler .rhythm button {
     width: fit-content;
   }
 
-  article:nth-child(2) fieldset label {
+  article.data-storage fieldset label {
     display: inline-block;
     margin: calc(var(--spacing) / 2);
     user-select: none;
