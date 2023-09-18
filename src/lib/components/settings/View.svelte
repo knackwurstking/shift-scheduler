@@ -1,11 +1,13 @@
 <script>
+    import IoIosTrash from 'svelte-icons/io/IoIosTrash.svelte'
+    import IoIosOpen from 'svelte-icons/io/IoIosOpen.svelte'
+
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
+    import IconButton from "../icon-button";
 
     import * as settings from "../../js/settings";
     import * as db from "../../js/db";
-    import App from "../../../App.svelte";
-    import Calendar from "../calendar/Calendar.svelte";
 
     let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
     $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&
@@ -201,10 +203,8 @@
                                         <td>{key.getMonth()+1}</td>
                                         <td class="actions">
                                             <div>
-                                                <!-- TODO: Replace the open button with an icon button? (goto button?) -->
-                                                <button class="outline secondary">open</button>
-                                                <!-- TODO: Replace the remove button with an icon button? (trash symbol) -->
-                                                <button class="outline secondary">remove</button>
+                                                <IconButton><IoIosOpen /></IconButton>
+                                                <IconButton><IoIosTrash /></IconButton>
                                             </div>
                                         </td>
                                     </tr>
