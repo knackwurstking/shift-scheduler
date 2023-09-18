@@ -4,6 +4,8 @@
 
   import * as settings from "../../js/settings";
   import * as db from "../../js/db";
+    import App from "../../../App.svelte";
+    import Calendar from "../calendar/Calendar.svelte";
 
   let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
   $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&
@@ -178,12 +180,16 @@
 
   <article>
     <figure>
-      <figcaption>Data Storage Table</figcaption>
-      <tbody>
+      <section>
+        <h2>Data Storage</h2>
         {#each db.listKeys() as key}
-          <td>{key}</td>
+          <details>
+            <summary>{key} (@ToDo: add remove button)</summary>
+            <p>@ToDo: list all keys with a remove button here...</p>
+          </details>
+          <!-- TODO: some list and with some accordion? and a new list with dates and remove icon buttons -->
         {/each}
-      </tbody>
+      </section>
     </figure>
   </article>
 </div>
