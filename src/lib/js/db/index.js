@@ -92,10 +92,10 @@ export function removeDataForDay(date) {
 }
 
 /**
- * @returns {string[]}
+ * @returns {Date[]}
  */
-export function listKeys() {
-  /** @type {string[]}  */
+export function list() {
+  /** @type {Date[]}  */
   const keys = [];
 
   for (let x = 0; x < window.localStorage.length; x++) {
@@ -111,7 +111,7 @@ export function listKeys() {
       if (isNaN(year) || isNaN(month)) continue;
       if (month < 0 || month > 11) continue;
 
-      keys.push(key);
+      keys.push(new Date(year, month));
     }
   }
 
