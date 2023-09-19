@@ -99,11 +99,6 @@
     {/if}
 
     <article class="shift-scheduler">
-        <label for="start-date">
-            Start Date
-            <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
-        </label>
-
         <div class="shifts">
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>Shifts</label>
@@ -122,6 +117,11 @@
                 <ShiftAdd on:click={() => (addShiftDialogOpen = true)} />
             </ul>
         </div>
+
+        <label for="start-date">
+            Start Date
+            <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
+        </label>
 
         <div class="rhythm">
             <!-- svelte-ignore a11y-label-has-associated-control -->
@@ -188,7 +188,7 @@
                 <h2>Data Storage</h2>
                 {#if dataStorage}
                     <figure>
-                        <table>
+                        <table role="grid">
                             <thead>
                                 <tr>
                                     <th scope="col">Year</th>
@@ -243,6 +243,7 @@
         scrollbar-width: none;
     }
 
+    /*
     article:first-child {
         margin-top: 0;
     }
@@ -262,6 +263,7 @@
     article > *:not(:last-child) {
         border-bottom: 1px solid var(--muted-border-color);
     }
+    */
 
     article.shift-scheduler .shifts {
         position: relative;

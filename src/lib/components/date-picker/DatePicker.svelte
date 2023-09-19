@@ -40,8 +40,12 @@
 <button
   class={"date-picker--preview outline " + _class}
   {...$$restProps}
+  on:pointerdown={(ev) => {
+    if (ev.buttons === 1) {
+      ripple.add(ev, ev.currentTarget, { mode: "primary" });
+    }
+  }}
   on:click={(ev) => {
-    ripple.add(ev, ev.currentTarget, { mode: "primary" });
     picker = true;
   }}
 >

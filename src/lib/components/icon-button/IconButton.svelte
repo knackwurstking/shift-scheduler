@@ -12,8 +12,12 @@
 <button
   class={"contrast outline icon-button " + _class}
   {...$$restProps}
+  on:pointerdown={(ev) => {
+    if (ev.buttons === 1) {
+      ripple.add(ev, ev.currentTarget);
+    }
+  }}
   on:click={(ev) => {
-    ripple.add(ev, ev.currentTarget);
     dispatch("click");
   }}
 >
