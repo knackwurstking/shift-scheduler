@@ -53,8 +53,8 @@
 
                 transition = "none";
                 startClientX = ev.clientX;
-                //minSwipeRange = container.getBoundingClientRect().width / 5;
-                minSwipeRange = 50;
+                minSwipeRange = container.getBoundingClientRect().width / 5;
+                //minSwipeRange = 75;
             };
 
             container.onpointerup = () => {
@@ -87,16 +87,14 @@
                         // left swipe
 
                         if (direction === "right") {
-                            // directon change from a right to a left swipe
+                            // direction change from a right to a left swipe
 
                             if (ev.clientX < startClientX) {
-                                direction = "left";
+                                direction = null;
                             }
                         } else {
                             direction = "left";
                         }
-
-                        //currentTranslateX_px -= 2;
                     } else if (ev.clientX > lastClientX && Math.abs(startDiff) > minSwipeRange) {
                         // right swipe
 
@@ -104,13 +102,11 @@
                             // direction change from a left to a right swipe
 
                             if (ev.clientX > startClientX) {
-                                direction = "right";
+                                direction = null;
                             }
                         } else {
                             direction = "right";
                         }
-
-                        //currentTranslateX_px += 2;
                     }
 
                     currentTranslateX = `calc(-100% + ${0 - startDiff}px)`;
