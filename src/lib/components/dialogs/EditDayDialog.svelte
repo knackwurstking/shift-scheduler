@@ -77,10 +77,6 @@
 </dialog>
 
 <style>
-  article {
-    padding: var(--spacing);
-  }
-
   label textarea[name="note"] {
     resize: none;
   }

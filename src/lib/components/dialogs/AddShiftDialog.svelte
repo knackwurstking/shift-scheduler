@@ -47,9 +47,6 @@
 </dialog>
 
 <style>
-  dialog article {
-  }
-
   dialog article > *:nth-child(4) {
     margin-top: var(--spacing);
   }
