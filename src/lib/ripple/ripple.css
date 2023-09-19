@@ -21,7 +21,7 @@
 
 :root {
   --default-ripple: rgba(255, 255, 255, 0.7);
-  --ripple-duration: 500ms;
+  --ripple-duration: 250ms;
 }
 
 .ripple,
