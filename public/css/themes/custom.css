@@ -103,18 +103,18 @@
 }
 
 dialog > article {
-  --block-spacing-vertical: calc(var(--spacing) * 2);
+  --block-spacing-vertical: var(--spacing);
   --block-spacing-horizontal: var(--spacing);
 }
 @media (min-width: 576px) {
   dialog > article {
-    --block-spacing-vertical: calc(var(--spacing) * 2.5);
+    --block-spacing-vertical: calc(var(--spacing) * 1.25);
     --block-spacing-horizontal: calc(var(--spacing) * 1.25);
   }
 }
 @media (min-width: 768px) {
   dialog > article {
-    --block-spacing-vertical: calc(var(--spacing) * 3);
+    --block-spacing-vertical: calc(var(--spacing) * 1.5);
     --block-spacing-horizontal: calc(var(--spacing) * 1.5);
   }
 }
