@@ -2,15 +2,20 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    import * as ripple from "../../ripple";
+
     let _class = "";
     export { _class as class };
-
-    import * as ripple from "../../ripple";
+    /** @type {string | undefined} */
+    export let margin = undefined;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <button
     class={"contrast outline icon-button " + _class}
+    style={`
+        margin: ${margin !== undefined ? margin : "var(--spacing)"};
+    `}
     {...$$restProps}
     on:pointerdown={(ev) => {
         if (ev.buttons === 1) {
@@ -39,7 +44,6 @@
         width: 42px;
 
         padding: 8px;
-        margin: var(--spacing);
 
         border-radius: 50%;
         border: none;
