@@ -189,7 +189,7 @@
             <section>
                 <h2>Data Storage</h2>
                 {#if dataStorage}
-                    <figure style="margin-bottom: none;">
+                    <figure>
                         <table role="grid">
                             <thead>
                                 <tr>
@@ -271,6 +271,10 @@
         display: inline-block;
         margin: calc(var(--spacing) / 2);
         user-select: none;
+    }
+
+    article.data-storage {
+        padding-bottom: 0;
     }
 
     article.data-storage table .actions > div {
