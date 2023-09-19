@@ -187,7 +187,7 @@
             <section>
                 <h2>Data Storage</h2>
                 {#if dataStorage}
-                    <figure>
+                    <figure style="margin-bottom: none;">
                         <table role="grid">
                             <thead>
                                 <tr>
