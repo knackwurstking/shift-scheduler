@@ -118,6 +118,8 @@
             </ul>
         </div>
 
+        <div class="spacer" />
+
         <label for="start-date">
             Start Date
             <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
@@ -227,6 +229,10 @@
 </div>
 
 <style>
+    .spacer {
+        border-bottom: 1px solid var(--muted-border-color);
+    }
+
     div._container {
         width: 100%;
         height: 100%;
