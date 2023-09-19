@@ -52,11 +52,6 @@
 </dialog>
 
 <style>
-  dialog {
-    width: 100%;
-    height: 100%;
-  }
-
   article {
     height: 90%;
     width: 100%;
@@ -76,7 +71,6 @@
 
     border-bottom: 1px solid var(--muted-border-color);
 
-    margin-bottom: 4px;
     padding: 0;
   }
 
@@ -84,16 +78,20 @@
     overflow: hidden;
     overflow-x: auto;
 
-    display: flex;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
-    margin: 4px 0 8px 0;
-    padding: 0 0 8px 0;
+    display: flex;
 
     border-bottom: 1px solid var(--muted-border-color);
   }
 
+  article .shifts-container::-webkit-scrollbar {
+      display: none;
+  }
+
   article .shifts-container .container {
     width: calc(4.5em + 16px);
-    margin: 4px;
+    margin: calc(var(--spacing) / 2);
   }
 </style>

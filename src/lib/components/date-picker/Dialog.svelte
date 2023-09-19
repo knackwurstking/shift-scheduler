@@ -89,11 +89,6 @@
 </dialog>
 
 <style>
-  dialog {
-    width: 100%;
-    height: 100%;
-  }
-
   dialog article {
     /* Need to set a width */
     padding: var(--spacing);

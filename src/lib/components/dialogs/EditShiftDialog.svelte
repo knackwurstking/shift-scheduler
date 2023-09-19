@@ -77,16 +77,11 @@
 </dialog>
 
 <style>
-  dialog {
-    width: 100%;
-    height: 100%;
-  }
-
-  dialog article > *:nth-child(6) {
-    margin-top: var(--spacing);
-  }
-
   label {
     user-select: none;
+  }
+
+  article > *:nth-child(6) {
+    margin-top: var(--spacing);
   }
 </style>

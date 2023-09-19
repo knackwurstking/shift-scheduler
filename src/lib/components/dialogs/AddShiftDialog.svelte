@@ -47,13 +47,7 @@
 </dialog>
 
 <style>
-  dialog {
-    width: 100%;
-    height: 100%;
-  }
-
   dialog article {
-    padding: var(--spacing);
   }
 
   dialog article > *:nth-child(4) {

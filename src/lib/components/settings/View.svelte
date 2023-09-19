@@ -243,28 +243,6 @@
         scrollbar-width: none;
     }
 
-    /*
-    article:first-child {
-        margin-top: 0;
-    }
-
-    article:last-child {
-        margin-bottom: var(--spacing);
-    }
-
-    article {
-        padding: var(--spacing);
-    }
-
-    article > * {
-        padding-top: 4px;
-    }
-
-    article > *:not(:last-child) {
-        border-bottom: 1px solid var(--muted-border-color);
-    }
-    */
-
     article.shift-scheduler .shifts {
         position: relative;
     }

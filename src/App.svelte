@@ -1,4 +1,6 @@
 <script>
+  import "./app.css";
+
   import { onMount } from "svelte";
   import { App } from "@capacitor/app";
 
