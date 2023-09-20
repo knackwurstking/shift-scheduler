@@ -1,6 +1,6 @@
 <script>
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
-    //import IoIosOpen from 'svelte-icons/io/IoIosOpen.svelte'
+    import IoIosOpen from 'svelte-icons/io/IoIosOpen.svelte'
 
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
@@ -207,12 +207,17 @@
                                             <td>{key.getMonth() + 1}</td>
                                             <td class="actions">
                                                 <div>
-                                                    <!--IconButton
-                                                        margin="4px 8px"
+                                                    <button
+                                                        class="outline contrast"
                                                         disabled
+                                                        on:pointerdown={(ev) => {
+                                                            if (ev.buttons === 1) {
+                                                                ripple.add(ev, ev.currentTarget);
+                                                            }
+                                                        }}
                                                     >
                                                         <IoIosOpen />
-                                                    </IconButton-->
+                                                    </button>
 
                                                     <button
                                                         class="outline contrast"
@@ -324,6 +329,7 @@
 
     article.data-storage table .actions button {
         display: inline !important;
+
         margin: 4px 8px;
         width: 32px;
         height: 32px;
