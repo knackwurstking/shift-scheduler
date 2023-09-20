@@ -1,6 +1,6 @@
 <script>
-    import IoIosTrash from 'svelte-icons/io/IoIosTrash.svelte'
-    import IoIosOpen from 'svelte-icons/io/IoIosOpen.svelte'
+    import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
+    //import IoIosOpen from 'svelte-icons/io/IoIosOpen.svelte'
 
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
@@ -202,20 +202,32 @@
                                 {#each db.list() as key}
                                     <tr>
                                         <td>{key.getFullYear()}</td>
-                                        <td>{key.getMonth()+1}</td>
+                                        <td>{key.getMonth() + 1}</td>
                                         <td class="actions">
                                             <div>
-                                                <IconButton
+                                                <!--IconButton
                                                     margin="4px 8px"
                                                     disabled
                                                 >
                                                     <IoIosOpen />
-                                                </IconButton>
+                                                </IconButton-->
 
                                                 <IconButton
                                                     margin="4px 8px"
                                                     on:click={() => {
-                                                        // TODO: remove data from storage and reload data table
+                                                        const yes = window.confirm(
+                                                            `Delete all data for "${key.getFullYear()}/${(
+                                                                key.getMonth() + 1
+                                                            )
+                                                                .toString()
+                                                                .padStart(2, "0")}" ?`
+                                                        );
+                                                        if (yes) {
+                                                            db.remove(
+                                                                key.getFullYear(),
+                                                                key.getMonth()
+                                                            );
+                                                        }
                                                     }}
                                                 >
                                                     <IoIosTrash />
