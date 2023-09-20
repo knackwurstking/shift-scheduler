@@ -22,6 +22,7 @@
     let themes = ["custom", "picocss", "green"];
 
     let dataStorage = false;
+    let reloadDataStorageTable = false;
 
     /**
      * @returns {import(".").Settings}
@@ -199,43 +200,46 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {#each db.list() as key}
-                                    <tr>
-                                        <td>{key.getFullYear()}</td>
-                                        <td>{key.getMonth() + 1}</td>
-                                        <td class="actions">
-                                            <div>
-                                                <!--IconButton
-                                                    margin="4px 8px"
-                                                    disabled
-                                                >
-                                                    <IoIosOpen />
-                                                </IconButton-->
+                                {#key reloadDataStorageTable}
+                                    {#each db.list() as key}
+                                        <tr>
+                                            <td>{key.getFullYear()}</td>
+                                            <td>{key.getMonth() + 1}</td>
+                                            <td class="actions">
+                                                <div>
+                                                    <!--IconButton
+                                                        margin="4px 8px"
+                                                        disabled
+                                                    >
+                                                        <IoIosOpen />
+                                                    </IconButton-->
 
-                                                <IconButton
-                                                    margin="4px 8px"
-                                                    on:click={() => {
-                                                        const yes = window.confirm(
-                                                            `Delete all data for "${key.getFullYear()}/${(
-                                                                key.getMonth() + 1
-                                                            )
-                                                                .toString()
-                                                                .padStart(2, "0")}" ?`
-                                                        );
-                                                        if (yes) {
-                                                            db.remove(
-                                                                key.getFullYear(),
-                                                                key.getMonth()
+                                                    <IconButton
+                                                        margin="4px 8px"
+                                                        on:click={() => {
+                                                            const yes = window.confirm(
+                                                                `Delete all data for "${key.getFullYear()}/${(
+                                                                    key.getMonth() + 1
+                                                                )
+                                                                    .toString()
+                                                                    .padStart(2, "0")}" ?`
                                                             );
-                                                        }
-                                                    }}
-                                                >
-                                                    <IoIosTrash />
-                                                </IconButton>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {/each}
+                                                            if (yes) {
+                                                                db.remove(
+                                                                    key.getFullYear(),
+                                                                    key.getMonth()
+                                                                );
+                                                                reloadDataStorageTable = !reloadDataStorageTable;
+                                                            }
+                                                        }}
+                                                    >
+                                                        <IoIosTrash />
+                                                    </IconButton>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {/each}
+                                {/key}
                             </tbody>
                         </table>
                     </figure>
