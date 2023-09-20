@@ -19,7 +19,7 @@
     /** @type {string} */
     let editShiftDialogSelected;
 
-    let themes = ["custom", "picocss", "green"];
+    let themes = ["custom", "picocss"];
 
     let dataStorage = false;
     let reloadDataStorageTable = false;

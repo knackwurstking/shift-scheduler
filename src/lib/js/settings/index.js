@@ -3,7 +3,7 @@
  * @type {"auto" | "dark" | "light"}
  *
  * @typedef Themes
- * @type {"custom" | "picocss" | "green"}
+ * @type {"custom" | "picocss"}
  * 
  * @typedef ShiftID 
  * @type {number}
