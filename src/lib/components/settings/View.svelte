@@ -3,7 +3,7 @@
     import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
 
     import Shift, { ShiftAdd } from "../shift";
-    import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
+    import { EditRhythmDialog, AddShiftDialog, EditShiftDialog, StorageDialog } from "../dialogs";
 
     import * as settings from "../../js/settings";
     import * as db from "../../js/db";
@@ -23,6 +23,12 @@
 
     let dataStorage = false;
     let reloadDataStorageTable = false;
+
+    let storageDialog_open = false;
+    /** @type {number} */
+    let storageDialog_year;
+    /** @type {number} */
+    let storageDialog_month;
 
     /**
      * @returns {import(".").Settings}
@@ -95,6 +101,16 @@
             on:submit={({ detail }) => {
                 editShiftRhythmDialogOpen = false;
                 shiftRhythm = detail;
+            }}
+        />
+    {/if}
+
+    {#if storageDialog_open}
+        <StorageDialog
+            year={storageDialog_year}
+            month={storageDialog_month}
+            on:click={() => {
+                storageDialog_open = false;
             }}
         />
     {/if}
@@ -209,11 +225,15 @@
                                                 <div>
                                                     <button
                                                         class="outline contrast"
-                                                        disabled
                                                         on:pointerdown={(ev) => {
                                                             if (ev.buttons === 1) {
                                                                 ripple.add(ev, ev.currentTarget);
                                                             }
+                                                        }}
+                                                        on:click={(ev) => {
+                                                            storageDialog_year = key.getFullYear();
+                                                            storageDialog_month = key.getMonth();
+                                                            storageDialog_open = true;
                                                         }}
                                                     >
                                                         <IoIosOpen />
