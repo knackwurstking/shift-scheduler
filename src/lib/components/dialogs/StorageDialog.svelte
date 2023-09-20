@@ -3,6 +3,9 @@
     const dispatch = createEventDispatcher();
 
     import IoIosClose from 'svelte-icons/io/IoIosClose.svelte'
+    import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
+
+    import IconButton from "../icon-button";
 
     import * as db from "../../js/db";
 
@@ -46,36 +49,62 @@
             <IoIosClose />
         </div>
 
-        <h2 class="title">
-            Data: {year}/{month.toString().padStart(2, "0")}
-        </h2>
+        <div class="container-fluid">
+            <h2 class="title">
+                Data: {year}/{month.toString().padStart(2, "0")}
+            </h2>
 
-        <table role="grid">
-            <thead>
-                <tr>
-                    <th scope="col">Key</th>
-                    <th scope="col">Shift</th>
-                    <th scope="col">Note</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#if !!data}
-                    {#each data as item}
-                        <tr>
-                            <td class="key"><code>{item.key}</code></td>
-                            <td class="shift"><code>{item.shift}</code></td>
-                            <td class="note"><code>{item.note}</code></td>
-                        </tr>
-                    {/each}
-                {/if}
-            </tbody>
-        </table>
+            <table role="grid">
+                <thead>
+                    <tr>
+                        <th scope="col">Key</th>
+                        <th scope="col">Shift</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#if !!data}
+                        {#each data as item}
+                            <tr>
+                                <td class="key"><code>{item.key}</code></td>
+                                <td class="shift"><code>{item.shift}</code></td>
+                                <td class="note"><code>{item.note}</code></td>
+                                <td class="delete">
+                                    <IconButton
+                                        on:click={() => {
+                                            // TODO: delete entry
+                                        }}
+                                    >
+                                        <IoIosTrash />
+                                    </IconButton>
+                                </td>
+                            </tr>
+                        {/each}
+                    {/if}
+                </tbody>
+            </table>
+        </div>
     </article>
 </dialog>
 
 <style>
     article {
+        width: 100%;
+        height: 100%;
         position: relative;
+        overflow: hidden;
+    }
+
+    div.container-fluid {
+        position: absolute;
+        top: var(--spacing);
+        right: var(--spacing);
+        bottom: var(--spacing);
+        left: var(--spacing);
+        padding: var(--spacing);
+        overflow: hidden;
+        overflow-y: scroll;
     }
 
     div.icon.close {
@@ -84,10 +113,5 @@
         right: 0;
         width: 32px;
         height: 32px;
-    }
-
-    td.note code {
-        width: 100%;
-        height: 100%;
     }
 </style>
