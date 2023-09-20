@@ -214,6 +214,9 @@
 
                                                 <IconButton
                                                     margin="4px 8px"
+                                                    on:click={() => {
+                                                        // TODO: remove data from storage and reload data table
+                                                    }}
                                                 >
                                                     <IoIosTrash />
                                                 </IconButton>
