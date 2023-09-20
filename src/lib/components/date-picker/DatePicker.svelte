@@ -34,7 +34,7 @@
 {/if}
 
 <button
-    class={"date-picker--preview outline " + _class}
+    class={"date-picker--preview outline primary" + _class}
     {...$$restProps}
     on:pointerdown={(ev) => {
         if (ev.buttons === 1) {

@@ -39,14 +39,6 @@
     animation: ripple var(--ripple-duration) linear, opacity var(--ripple-duration) linear;
 }
 
-.ripple.primary {
-    background-color: var(--ripple-primary);
-}
-
-.ripple.secondary {
-    background-color: var(--ripple-secondary);
-}
-
 .ripple__reverse {
     transform: scale(4);
     animation: ripple-reverse var(--ripple-duration) linear, opacity var(--ripple-duration) linear;

@@ -256,6 +256,7 @@
                     </figure>
                 {:else}
                     <button
+                        class="primary"
                         on:pointerdown={(ev) => {
                             if (ev.buttons === 1) {
                                 ripple.add(ev, ev.currentTarget);
