@@ -44,8 +44,16 @@ export function add(ev, el, options = null) {
     if (options?.reverse) circle.classList.add("ripple__reverse");
     circle.classList.add("ripple");
 
-    const ripple = el.getElementsByClassName("ripple")[0];
-    if (ripple) ripple.remove();
-
+    remove(el);
     el.append(circle);
+}
+
+/**
+ * 
+ * @param {HTMLElement} el 
+ */
+export function remove(el) {
+    for (const r of el.getElementsByClassName("ripple")) {
+        r.remove();
+    }
 }

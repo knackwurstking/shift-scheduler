@@ -21,7 +21,7 @@
 }
 
 :root {
-    --ripple-duration: 250ms;
+    --ripple-duration: 350ms;
 }
 
 .ripple,

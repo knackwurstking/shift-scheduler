@@ -21,7 +21,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-    class="card"
+    class="card primary"
     class:active
     on:pointerdown={(ev) => {
         if (ev.buttons === 1) {
