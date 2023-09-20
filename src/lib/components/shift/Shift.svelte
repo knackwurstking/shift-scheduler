@@ -32,7 +32,7 @@
         dispatch("click");
     }}
 >
-    <div class="background" style={`background-color: ${color};`} />
+    <div class="background" style={`background-color: ${color || "transparent"};`} />
     <span class="name">{name}</span><br />
     <span class="short-name" class:visible>{shortName || name[0]}</span>
 </div>
