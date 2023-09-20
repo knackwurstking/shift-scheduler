@@ -25,7 +25,7 @@
     class:active
     on:pointerdown={(ev) => {
         if (ev.buttons === 1) {
-            ripple.add(ev, ev.currentTarget, { mode: "primary" });
+            ripple.add(ev, ev.currentTarget);
         }
     }}
     on:click={(ev) => {

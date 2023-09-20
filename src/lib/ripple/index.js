@@ -3,7 +3,6 @@ import "./ripple.css";
 /**
  * @typedef RippleAddOptions
  * @type {{
- *  mode?: "primary" | "secondary",
  *  reverse?: boolean,
  *  startFromCenter?: boolean,
  * }}
@@ -34,7 +33,6 @@ export function add(ev, el, options = null) {
   circle.style.left = `${cX - radius}px`;
   circle.style.top = `${cY - radius}px`;
 
-  if (options?.mode) circle.classList.add(options.mode)
   if (options?.reverse) circle.classList.add("ripple__reverse");
   circle.classList.add("ripple");
 

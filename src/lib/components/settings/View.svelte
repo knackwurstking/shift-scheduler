@@ -256,6 +256,11 @@
                     </figure>
                 {:else}
                     <button
+                        on:pointerdown={(ev) => {
+                            if (ev.buttons === 1) {
+                                ripple.add(ev, ev.currentTarget);
+                            }
+                        }}
                         on:click={() => {
                             dataStorage = true;
                         }}

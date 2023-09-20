@@ -2,8 +2,6 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import * as ripple from "../../ripple";
-
     /**
      *
      * @param {Date} date
