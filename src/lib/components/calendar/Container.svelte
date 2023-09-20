@@ -141,19 +141,6 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
-    on:pointerdown={(ev) => {
-        if (ev.buttons === 1) {
-            for (const el of ev?.path || ev.composedPath() || []) {
-                if (el.classList?.contains("day-content")) {
-                    const date = parseInt(el.getAttribute("data-value"), 10);
-                    if (!isNaN(date)) {
-                        ripple.add(ev, el);
-                        return;
-                    }
-                }
-            }
-        }
-    }}
     on:click={(ev) => {
         if (waitForTransition || pointerlock) return;
         // @ts-ignore
