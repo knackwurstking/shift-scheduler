@@ -4,10 +4,10 @@
 
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
-    import IconButton from "../icon-button";
 
     import * as settings from "../../js/settings";
     import * as db from "../../js/db";
+    import * as ripple from "../../ripple";
 
     let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
     $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&
@@ -214,8 +214,13 @@
                                                         <IoIosOpen />
                                                     </IconButton-->
 
-                                                    <IconButton
-                                                        margin="4px 8px"
+                                                    <button
+                                                        class="outline contrast"
+                                                        on:pointerdown={(ev) => {
+                                                            if (ev.buttons === 1) {
+                                                                ripple.add(ev, ev.currentTarget);
+                                                            }
+                                                        }}
                                                         on:click={() => {
                                                             const yes = window.confirm(
                                                                 `Delete all data for "${key.getFullYear()}/${(
@@ -234,7 +239,7 @@
                                                         }}
                                                     >
                                                         <IoIosTrash />
-                                                    </IconButton>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -307,19 +312,21 @@
     }
 
     article.data-storage table .actions > div {
+        position: relative;
         width: 100%;
         height: 100%;
 
-        position: relative;
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
     }
 
     article.data-storage table .actions button {
         display: inline !important;
-        width: 100%;
-        margin: 0;
+        margin: 4px 8px;
+        width: 32px;
+        height: 32px;
+        padding: 0;
     }
 </style>
