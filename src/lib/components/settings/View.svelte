@@ -205,8 +205,18 @@
                                         <td>{key.getMonth()+1}</td>
                                         <td class="actions">
                                             <div>
-                                                <IconButton margin="4px 8px"><IoIosOpen /></IconButton>
-                                                <IconButton margin="4px 8px"><IoIosTrash /></IconButton>
+                                                <IconButton
+                                                    margin="4px 8px"
+                                                    disabled
+                                                >
+                                                    <IoIosOpen />
+                                                </IconButton>
+
+                                                <IconButton
+                                                    margin="4px 8px"
+                                                >
+                                                    <IoIosTrash />
+                                                </IconButton>
                                             </div>
                                         </td>
                                     </tr>
