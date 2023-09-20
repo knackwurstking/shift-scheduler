@@ -1,6 +1,6 @@
 <script>
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
-    import IoIosOpen from 'svelte-icons/io/IoIosOpen.svelte'
+    import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
 
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog } from "../dialogs";
@@ -239,7 +239,8 @@
                                                                     key.getFullYear(),
                                                                     key.getMonth()
                                                                 );
-                                                                reloadDataStorageTable = !reloadDataStorageTable;
+                                                                reloadDataStorageTable =
+                                                                    !reloadDataStorageTable;
                                                             }
                                                         }}
                                                     >
@@ -328,8 +329,6 @@
     }
 
     article.data-storage table .actions button {
-        display: inline !important;
-
         margin: 4px 8px;
         width: 32px;
         height: 32px;
