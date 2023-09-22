@@ -2,7 +2,7 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import * as ripple from "../../ripple";
+    import * as ripple from "../../js/ripple";
 
     let _class = "";
     export { _class as class };

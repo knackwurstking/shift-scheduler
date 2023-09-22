@@ -7,7 +7,7 @@
 
     import * as settings from "../../js/settings";
     import * as db from "../../js/db";
-    import * as ripple from "../../ripple";
+    import * as ripple from "../../js/ripple";
 
     let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
     $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&

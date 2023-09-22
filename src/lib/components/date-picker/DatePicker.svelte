@@ -2,7 +2,7 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import * as ripple from "../../ripple";
+    import * as ripple from "../../js/ripple";
 
     import Dialog from "./Dialog.svelte";
 
