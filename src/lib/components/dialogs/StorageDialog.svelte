@@ -49,11 +49,12 @@
             <IoIosClose />
         </div>
 
-        <div class="container-fluid">
-            <h2 class="title">
-                Data: {year}/{month.toString().padStart(2, "0")}
-            </h2>
+        <h2 class="title">
+            Data: {year}/{month.toString().padStart(2, "0")}
+        </h2>
 
+        <!-- TODO: Make table scrollable -->
+        <figure>
             <table role="grid">
                 <thead>
                     <tr>
@@ -84,7 +85,7 @@
                     {/if}
                 </tbody>
             </table>
-        </div>
+        </figure>
     </article>
 </dialog>
 
@@ -96,22 +97,12 @@
         overflow: hidden;
     }
 
-    div.container-fluid {
-        position: absolute;
-        top: var(--spacing);
-        right: var(--spacing);
-        bottom: var(--spacing);
-        left: var(--spacing);
-        padding: var(--spacing);
-        overflow: hidden;
-        overflow-y: scroll;
-    }
-
     div.icon.close {
+        z-index: 2;
         position: absolute;
         top: 0.6rem;
         right: 0;
-        width: 32px;
-        height: 32px;
+        width: 45px;
+        height: 45px;
     }
 </style>
