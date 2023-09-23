@@ -53,7 +53,6 @@
             Data: {year}/{month.toString().padStart(2, "0")}
         </h2>
 
-        <!-- TODO: Make table scrollable -->
         <figure>
             <table role="grid">
                 <thead>
