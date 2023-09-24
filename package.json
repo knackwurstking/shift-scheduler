@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
+    "build:windows": "npm run build && rm -r wails/shift-scheduler/frontend/src/* && cp -r dist/* wails/shift-scheduler/frontend/src/ && cd wails/shift-scheduler && wails build && wails build -nsis",
+    "build:linux": "npm run build && rm -r wails/shift-scheduler/frontend/src/* && cp -r dist/* wails/shift-scheduler/frontend/src/ && cd wails/shift-scheduler && wails build",
+    "build:android": "npm run build && npx cap sync android && npx cap open android",
     "preview": "vite preview"
   },
   "devDependencies": {

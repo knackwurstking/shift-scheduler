@@ -57,6 +57,7 @@
             <table role="grid">
                 <thead>
                     <tr>
+                        <!-- TODO: Change table data for a better look nad feel? -->
                         <th scope="col">Key</th>
                         <th scope="col">Shift</th>
                         <th scope="col">Note</th>
