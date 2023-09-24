@@ -203,87 +203,98 @@
     </article>
 
     <article class="data-storage">
-        <figure>
-            <section>
-                <h2>Data Storage</h2>
-                {#if dataStorage}
-                    <figure>
-                        <table role="grid">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Year</th>
-                                    <th scope="col">Month</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#key reloadDataStorageTable}
-                                    {#each db.list() as key}
-                                        <tr>
-                                            <td>{key.getFullYear()}</td>
-                                            <td>{key.getMonth() + 1}</td>
-                                            <td class="actions">
-                                                    <IconButton
-                                                        style={`
-                                                            margin: 4px;
-                                                        `}
-                                                        on:click={() => {
-                                                            storageDialog_year = key.getFullYear();
-                                                            storageDialog_month = key.getMonth();
-                                                            storageDialog_open = true;
-                                                        }}
-                                                    >
-                                                        <IoIosOpen />
-                                                    </IconButton>
+        <h2>Data Storage</h2>
 
-                                                    <IconButton
-                                                        style={`
-                                                            margin: 4px;
-                                                        `}
-                                                        on:click={() => {
-                                                            const yes = window.confirm(
-                                                                `Delete all data for "${key.getFullYear()}/${(
-                                                                    key.getMonth() + 1
-                                                                )
-                                                                    .toString()
-                                                                    .padStart(2, "0")}" ?`
-                                                            );
-                                                            if (yes) {
-                                                                db.remove(
-                                                                    key.getFullYear(),
-                                                                    key.getMonth()
-                                                                );
-                                                                reloadDataStorageTable =
-                                                                    !reloadDataStorageTable;
-                                                            }
-                                                        }}
-                                                    >
-                                                        <IoIosTrash />
-                                                    </IconButton>
-                                            </td>
-                                        </tr>
-                                    {/each}
-                                {/key}
-                            </tbody>
-                        </table>
-                    </figure>
-                {:else}
-                    <button
-                        class="primary"
-                        on:pointerdown={(ev) => {
-                            if (ev.buttons === 1) {
-                                ripple.add(ev, ev.currentTarget);
-                            }
-                        }}
-                        on:click={() => {
-                            dataStorage = true;
-                        }}
-                    >
-                        Load Data
-                    </button>
-                {/if}
-            </section>
-        </figure>
+        <div class="button-group">
+            <button
+                class="upload outline primary"
+            >
+                Upload
+            </button>
+
+            <button
+                class="download outline primary"
+            >
+                Download
+            </button>
+        </div>
+
+        {#if dataStorage}
+            <figure>
+                <table role="grid">
+                    <thead>
+                        <tr>
+                            <th scope="col">Year</th>
+                            <th scope="col">Month</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#key reloadDataStorageTable}
+                            {#each db.list() as key}
+                                <tr>
+                                    <td>{key.getFullYear()}</td>
+                                    <td>{key.getMonth() + 1}</td>
+                                    <td class="actions">
+                                            <IconButton
+                                                style={`
+                                                    margin: 4px;
+                                                `}
+                                                on:click={() => {
+                                                    storageDialog_year = key.getFullYear();
+                                                    storageDialog_month = key.getMonth();
+                                                    storageDialog_open = true;
+                                                }}
+                                            >
+                                                <IoIosOpen />
+                                            </IconButton>
+
+                                            <IconButton
+                                                style={`
+                                                    margin: 4px;
+                                                `}
+                                                on:click={() => {
+                                                    const yes = window.confirm(
+                                                        `Delete all data for "${key.getFullYear()}/${(
+                                                            key.getMonth() + 1
+                                                        )
+                                                            .toString()
+                                                            .padStart(2, "0")}" ?`
+                                                    );
+                                                    if (yes) {
+                                                        db.remove(
+                                                            key.getFullYear(),
+                                                            key.getMonth()
+                                                        );
+                                                        reloadDataStorageTable =
+                                                            !reloadDataStorageTable;
+                                                    }
+                                                }}
+                                            >
+                                                <IoIosTrash />
+                                            </IconButton>
+                                    </td>
+                                </tr>
+                            {/each}
+                        {/key}
+                    </tbody>
+                </table>
+            </figure>
+        {:else}
+            <button
+                class="load-data primary"
+                on:pointerdown={(ev) => {
+                    if (ev.buttons === 1) {
+                        ripple.add(ev, ev.currentTarget);
+                    }
+                }}
+                on:click={() => {
+                    dataStorage = true;
+                }}
+            >
+                Load Data
+            </button>
+        {/if}
     </article>
 </div>
 
@@ -332,8 +343,22 @@
         user-select: none;
     }
 
-    article.data-storage {
-        padding-bottom: 0;
+    article.data-storage .button-group {
+        display: flex;
+    }
+
+    article.data-storage .button-group button {
+        border-radius: 0;
+    }
+
+    article.data-storage .button-group button:first-child {
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+    }
+
+    article.data-storage .button-group button:last-child {
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
     }
 
     article.data-storage table .actions {
