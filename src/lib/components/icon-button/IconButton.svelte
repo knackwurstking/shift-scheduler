@@ -1,13 +1,22 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
-    import * as ripple from "../../js/ripple";
+    import { ripple } from "../../js/ripple";
+    let _ripple = ripple({ usePointer: true });
 
     let _class = "";
     export { _class as class };
+
     /** @type {string | undefined} */
     export let margin = undefined;
+    /** @type {number} */
+    export let rippleDuration = 600;
+    /** @type {string} */
+    export let rippleColor = "rgba(255, 255, 255, 0.7)";
+
+    $: {
+        if (!!rippleColor) {
+            _ripple = ripple({ duration: rippleDuration, color: rippleColor, usePointer: true });
+        }
+    }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -17,14 +26,8 @@
         margin: ${margin !== undefined ? margin : "var(--spacing)"};
     `}
     {...$$restProps}
-    on:pointerdown={(ev) => {
-        if (ev.buttons === 1) {
-            ripple.add(ev, ev.currentTarget);
-        }
-    }}
-    on:click={(ev) => {
-        dispatch("click");
-    }}
+    use:_ripple
+    on:click
 >
     <slot />
 </button>

@@ -5,6 +5,8 @@
     import Shift from "../shift";
 
     import * as settings from "../../js/settings";
+    import { ripple } from "../../js/ripple";
+    let _ripple = ripple({ usePointer: true });
 
     /**
      * @type {import("../settings").Shift[]}
@@ -55,6 +57,7 @@
 
             <button
                 type="submit"
+                use:_ripple
                 on:click={() => dispatch("submit", rhythm)}
             >
                 OK

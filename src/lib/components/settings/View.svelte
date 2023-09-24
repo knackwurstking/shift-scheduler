@@ -8,7 +8,8 @@
 
     import * as settings from "../../js/settings";
     import * as db from "../../js/db";
-    import * as ripple from "../../js/ripple";
+    import { ripple } from "../../js/ripple";
+    let _ripple = ripple({ usePointer: true });
 
     let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
     $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&
@@ -148,6 +149,7 @@
             <label>Rhythm</label>
             <button
                 class="secondary"
+                use:_ripple
                 on:click={() => {
                     editShiftRhythmDialogOpen = true;
                 }}
@@ -208,12 +210,14 @@
         <div class="button-group">
             <button
                 class="upload outline primary"
+                use:_ripple
             >
                 Upload
             </button>
 
             <button
                 class="download outline primary"
+                use:_ripple
             >
                 Download
             </button>
@@ -283,11 +287,7 @@
         {:else}
             <button
                 class="load-data primary"
-                on:pointerdown={(ev) => {
-                    if (ev.buttons === 1) {
-                        ripple.add(ev, ev.currentTarget);
-                    }
-                }}
+                use:_ripple
                 on:click={() => {
                     dataStorage = true;
                 }}

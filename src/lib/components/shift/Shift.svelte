@@ -2,7 +2,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import * as ripple from "../../js/ripple";
+    import { ripple } from "../../js/ripple";
+    let _ripple = ripple({ usePointer: true });
 
     /** @type {string} */
     export let name;
@@ -23,11 +24,7 @@
 <div
     class="card primary"
     class:active
-    on:pointerdown={(ev) => {
-        if (ev.buttons === 1) {
-            ripple.add(ev, ev.currentTarget);
-        }
-    }}
+    use:_ripple
     on:click={(ev) => {
         dispatch("click");
     }}

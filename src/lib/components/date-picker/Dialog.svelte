@@ -3,6 +3,8 @@
   const dispatch = createEventDispatcher();
 
   import * as utils from "../../js/utils";
+  import { ripple } from "../../js/ripple";
+  let _ripple = ripple({ usePointer: true });
 
   /** @type {boolean} */
   export let open;
@@ -77,12 +79,22 @@
       </div>
     {/if}
 
-    <button class="secondary" on:click={() => dispatch("cancel")}>Cancel</button>
+    <button
+      class="secondary"
+      use:_ripple
+      on:click={() => dispatch("cancel")}
+    >
+      Cancel
+    </button>
 
-    <button type="submit" on:click={() => {
-      if (invalidMonth || invalidYear) return;
-      dispatch("submit", { year, month });
-    }}>
+    <button
+      type="submit"
+      use:_ripple
+      on:click={() => {
+        if (invalidMonth || invalidYear) return;
+        dispatch("submit", { year, month });
+      }}
+    >
       OK
     </button>
   </article>

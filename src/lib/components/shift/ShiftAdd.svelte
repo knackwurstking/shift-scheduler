@@ -2,6 +2,9 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
+  import { ripple } from "../../js/ripple";
+  let _ripple = ripple({ usePointer: true });
+
   // @ts-ignore
   import IoIosAdd from "svelte-icons/io/IoIosAdd.svelte";
 </script>
@@ -9,6 +12,7 @@
 <div class="card">
   <button
     class="outline secondary"
+    use:_ripple
     on:click={() => {
       dispatch("click");
     }}

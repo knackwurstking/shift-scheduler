@@ -2,6 +2,9 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
+  import { ripple } from "../../js/ripple";
+  let _ripple = ripple({ usePointer: true });
+
   /** @type {import("../settings").Shift[]} */
   export let shifts = [];
 
@@ -60,6 +63,7 @@
 
     <button
       class="secondary"
+      use:_ripple
       on:click={() => {
         if (window.confirm(`Delete "${shifts[parseInt(selected)].name}"?`)) {
           if (shifts.length <= 1) dispatch("submit", []);

@@ -2,6 +2,9 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
+  import { ripple } from "../../js/ripple";
+  let _ripple = ripple({ usePointer: true });
+
   let name = "";
   let shortName = "";
   let hidden = false;
@@ -30,9 +33,16 @@
       <input type="color" name="color" bind:value={color} />
     </label>
 
-    <button class="secondary" on:click={() => dispatch("cancel")}>Cancel</button>
+    <button
+      class="secondary"
+      use:_ripple
+      on:click={() => dispatch("cancel")}
+    >
+      Cancel
+    </button>
 
     <button
+      use:_ripple
       on:click={() =>
         dispatch("submit", {
           name,

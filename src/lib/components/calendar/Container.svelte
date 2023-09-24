@@ -2,6 +2,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    import { createRipple } from "../../js/ripple";
+
     /**
      *
      * @param {Date} date
@@ -36,8 +38,6 @@
     let startClientX = 0;
     /** @type {number} */
     let minSwipeRange;
-    /** @type {number} */
-    let directionChangeX;
     /** @type {HTMLDivElement} */
     let container;
 
@@ -144,6 +144,7 @@
         // @ts-ignore
         for (const el of ev?.path || ev.composedPath() || []) {
             if (el.classList?.contains("day-content")) {
+                createRipple(el, ev);
                 const date = parseInt(el.getAttribute("data-value"), 10);
                 if (isNaN(date)) dispatch("click", null);
                 else {
