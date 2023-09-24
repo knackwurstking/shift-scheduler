@@ -50,7 +50,7 @@
         </div>
 
         <h2 class="title">
-            Data: {year}/{month.toString().padStart(2, "0")}
+            Data: {year}/{(month + 1).toString().padStart(2, "0")}
         </h2>
 
         <figure>
@@ -58,19 +58,19 @@
                 <thead>
                     <tr>
                         <!-- TODO: Change table data for a better look nad feel? -->
-                        <th scope="col">Key</th>
+                        <th scope="col">Day</th>
                         <th scope="col">Shift</th>
                         <th scope="col">Note</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {#if !!data}
                         {#each data as item}
                             <tr>
-                                <td class="key"><code>{item.key}</code></td>
-                                <td class="shift"><code>{item.shift}</code></td>
-                                <td class="note"><code>{item.note}</code></td>
+                                <td class="key"><code>{item.key.split("-", 3)[2]}</code></td>
+                                <td class="shift"><code>{item.shift?.name || null}</code></td>
+                                <td class="note"><code>{item.note || ""}</code></td>
                                 <td class="delete">
                                     <IconButton
                                         on:click={() => {
@@ -90,10 +90,16 @@
 </dialog>
 
 <style>
+    dialog {
+        padding: 0;
+    }
+
     article {
+        position: relative;
         width: 100%;
         height: 100%;
-        position: relative;
+        max-height: 100%;
+        margin: 0;
     }
 
     div.icon.close {
@@ -103,5 +109,22 @@
         right: 0;
         width: 45px;
         height: 45px;
+    }
+
+    table td.key {
+        min-width: 4ch;
+        max-width: 4ch;
+    }
+
+    table td.shift {
+        max-width: 10ch;
+    }
+
+    table td.note {
+        min-width: 25ch;
+    }
+
+    table td.delete {
+        max-width: 6ch;
     }
 </style>
