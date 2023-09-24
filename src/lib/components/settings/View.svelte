@@ -4,6 +4,7 @@
 
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog, StorageDialog } from "../dialogs";
+    import IconButton from "../icon-button";
 
     import * as settings from "../../js/settings";
     import * as db from "../../js/db";
@@ -222,30 +223,23 @@
                                             <td>{key.getFullYear()}</td>
                                             <td>{key.getMonth() + 1}</td>
                                             <td class="actions">
-                                                <div>
-                                                    <button
-                                                        class="outline contrast"
-                                                        on:pointerdown={(ev) => {
-                                                            if (ev.buttons === 1) {
-                                                                ripple.add(ev, ev.currentTarget);
-                                                            }
-                                                        }}
-                                                        on:click={(ev) => {
+                                                    <IconButton
+                                                        style={`
+                                                            margin: 4px;
+                                                        `}
+                                                        on:click={() => {
                                                             storageDialog_year = key.getFullYear();
                                                             storageDialog_month = key.getMonth();
                                                             storageDialog_open = true;
                                                         }}
                                                     >
                                                         <IoIosOpen />
-                                                    </button>
+                                                    </IconButton>
 
-                                                    <button
-                                                        class="outline contrast"
-                                                        on:pointerdown={(ev) => {
-                                                            if (ev.buttons === 1) {
-                                                                ripple.add(ev, ev.currentTarget);
-                                                            }
-                                                        }}
+                                                    <IconButton
+                                                        style={`
+                                                            margin: 4px;
+                                                        `}
                                                         on:click={() => {
                                                             const yes = window.confirm(
                                                                 `Delete all data for "${key.getFullYear()}/${(
@@ -265,8 +259,7 @@
                                                         }}
                                                     >
                                                         <IoIosTrash />
-                                                    </button>
-                                                </div>
+                                                    </IconButton>
                                             </td>
                                         </tr>
                                     {/each}
@@ -343,21 +336,12 @@
         padding-bottom: 0;
     }
 
-    article.data-storage table .actions > div {
+    article.data-storage table .actions {
         position: relative;
         width: 100%;
         height: 100%;
 
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    article.data-storage table .actions button {
-        margin: 4px 8px;
-        width: 32px;
-        height: 32px;
-        padding: 0;
     }
 </style>
