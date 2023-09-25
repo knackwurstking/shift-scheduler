@@ -212,7 +212,6 @@
         <h2>Data Storage</h2>
 
         <div class="button-group">
-            <!-- TODO: upload and download storage data (type json) -->
             <button
                 class="upload secondary outline"
                 use:_ripple
@@ -226,15 +225,24 @@
 
                         r.onload = () => {
                             if (typeof r.result === "string") {
-                                const data = JSON.parse(r.result);
+                                try {
+                                    const data = JSON.parse(r.result);
 
-                                if (!db.validate(data)) {
-                                    console.error("Data Upload: data invalid", data);
+                                    if (!db.validate(data)) {
+                                        console.error("Data Upload: data invalid", data);
+                                        return;
+                                    }
+
+                                    for (const [k, v] of Object.entries(data)) {
+                                        const ks = k.split("-", 3)
+                                        const year = parseInt(ks[1], 10);
+                                        const month = parseInt(ks[2], 10);
+                                        db.set(year, month, v);
+                                    }
+                                } catch (err) {
+                                    console.error("Data Upload: json parser error!");
                                     return;
                                 }
-
-                                // TODO: store data (key, value pairs) in local storage
-                                // ...
                             }
                         }
 
@@ -253,6 +261,7 @@
                 <IoMdCloudUpload />
             </button>
 
+            <!-- TODO: download storage data (type json) -->
             <button
                 class="download secondary outline"
                 use:_ripple
