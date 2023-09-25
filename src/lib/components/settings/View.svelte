@@ -268,6 +268,7 @@
                 use:_ripple
                 on:click={() => {
                     // TODO: Download storage data to "shift-scheduler-storage-data.json"
+                    // iter storage data, regex keys, add to data, save to file using Blob or Filesystem from capacitor
                 }}
             >
                 <IoMdCloudDownload />
