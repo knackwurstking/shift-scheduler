@@ -16,7 +16,7 @@
  * @param {any} data
  * @returns {boolean}
  */
-export function validate(data) {
+export function validateDBData(data) {
     try {
         for (const [k, v] of Object.entries(data)) {
             if (typeof k === "string") {
