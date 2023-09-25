@@ -261,10 +261,12 @@
                 <IoMdCloudUpload />
             </button>
 
-            <!-- TODO: download storage data (type json) -->
             <button
                 class="download secondary outline"
                 use:_ripple
+                on:click={(ev) => {
+                    // TODO: Download storage data to "shift-scheduler-storage-data.json"
+                }}
             >
                 <IoMdCloudDownload />
             </button>
