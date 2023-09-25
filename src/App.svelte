@@ -115,7 +115,13 @@
         date={editDayDialog_date}
         on:submit={async ({ detail }) => {
             editDayDialog_open = false;
-            db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
+
+            if (!detail.shift && !detail.note) {
+                db.removeDataForDay(editDayDialog_date);
+            } else {
+                db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
+            }
+
             calendar.reload();
         }}
     />
