@@ -2,7 +2,7 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import IoIosClose from 'svelte-icons/io/IoIosClose.svelte'
+    import IoIosClose from "svelte-icons/io/IoIosClose.svelte";
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
 
     import IconButton from "../icon-button";
@@ -15,7 +15,7 @@
     export let month;
 
     /**
-     * 
+     *
      * @type {{
      *  key: string;
      *  shift: import("../../components/settings").Shift | null;
@@ -32,7 +32,7 @@
             data.push({
                 key,
                 ...value,
-            })
+            });
         }
         data = data;
     }
@@ -42,10 +42,7 @@
     <article>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div
-            class="icon close"
-            on:click={() => dispatch("click")}
-        >
+        <div class="icon close" on:click={() => dispatch("click")}>
             <IoIosClose />
         </div>
 
@@ -66,7 +63,7 @@
                 </thead>
                 <tbody>
                     {#if !!data}
-                        {#each data as item}
+                        {#each data.sort( (a, b) => (parseInt(a.key.split("-", 3)[2], 10) > parseInt(b.key.split("-", 3)[2], 10) ? 1 : -1) ) as item}
                             <tr>
                                 <td class="key"><code>{item.key.split("-", 3)[2]}</code></td>
                                 <td class="shift"><code>{item.shift?.name || null}</code></td>
