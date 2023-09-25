@@ -5,7 +5,7 @@
   import * as db from "../../js/db";
   import * as utils from "../../js/utils";
   import { ripple } from "../../js/ripple";
-  let _ripple = ripple({ usePointer: true });
+  let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
   /** @type {Date} */
   export let date;
@@ -66,7 +66,7 @@
     </label>
 
     <button
-      use:_ripple
+      use:_primaryRipple
       on:click={() =>
         dispatch("submit", {
           shift:

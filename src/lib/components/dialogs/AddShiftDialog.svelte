@@ -3,7 +3,8 @@
   const dispatch = createEventDispatcher();
 
   import { ripple } from "../../js/ripple";
-  let _ripple = ripple({ usePointer: true });
+  let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
+  let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
   let name = "";
   let shortName = "";
@@ -35,14 +36,14 @@
 
     <button
       class="secondary"
-      use:_ripple
+      use:_secondaryRipple
       on:click={() => dispatch("cancel")}
     >
       Cancel
     </button>
 
     <button
-      use:_ripple
+      use:_primaryRipple
       on:click={() =>
         dispatch("submit", {
           name,

@@ -3,7 +3,8 @@
   const dispatch = createEventDispatcher();
 
   import { ripple } from "../../js/ripple";
-  let _ripple = ripple({ usePointer: true });
+  let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
+  let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
   /** @type {import("../settings").Shift[]} */
   export let shifts = [];
@@ -63,7 +64,7 @@
 
     <button
       class="secondary"
-      use:_ripple
+      use:_secondaryRipple
       on:click={() => {
         if (window.confirm(`Delete "${shifts[parseInt(selected)].name}"?`)) {
           if (shifts.length <= 1) dispatch("submit", []);
@@ -76,7 +77,12 @@
       }}>Delete</button
     >
 
-    <button on:click={() => dispatch("submit", shifts)}>OK</button>
+    <button
+      use:_primaryRipple
+      on:click={() => dispatch("submit", shifts)}
+    >
+      OK
+    </button>
   </article>
 </dialog>
 

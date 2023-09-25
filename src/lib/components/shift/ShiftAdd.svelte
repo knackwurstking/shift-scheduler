@@ -3,7 +3,7 @@
   const dispatch = createEventDispatcher();
 
   import { ripple } from "../../js/ripple";
-  let _ripple = ripple({ usePointer: true });
+  let _secondaryRipple = ripple({ usePointer: true });
 
   // @ts-ignore
   import IoIosAdd from "svelte-icons/io/IoIosAdd.svelte";
@@ -12,7 +12,7 @@
 <div class="card">
   <button
     class="outline secondary"
-    use:_ripple
+    use:_secondaryRipple
     on:click={() => {
       dispatch("click");
     }}

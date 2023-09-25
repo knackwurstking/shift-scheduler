@@ -10,7 +10,7 @@
     /** @type {number} */
     export let rippleDuration = 600;
     /** @type {string} */
-    export let rippleColor = "rgba(255, 255, 255, 0.7)";
+    export let rippleColor = "var(--ripple-color)";
 
     $: {
         if (!!rippleColor) {

@@ -4,7 +4,8 @@
 
   import * as utils from "../../js/utils";
   import { ripple } from "../../js/ripple";
-  let _ripple = ripple({ usePointer: true });
+  let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
+  let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
   /** @type {boolean} */
   export let open;
@@ -81,7 +82,7 @@
 
     <button
       class="secondary"
-      use:_ripple
+      use:_secondaryRipple
       on:click={() => dispatch("cancel")}
     >
       Cancel
@@ -89,7 +90,7 @@
 
     <button
       type="submit"
-      use:_ripple
+      use:_primaryRipple
       on:click={() => {
         if (invalidMonth || invalidYear) return;
         dispatch("submit", { year, month });

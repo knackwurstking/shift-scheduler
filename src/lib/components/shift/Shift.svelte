@@ -3,7 +3,7 @@
     const dispatch = createEventDispatcher();
 
     import { ripple } from "../../js/ripple";
-    let _ripple = ripple({ usePointer: true });
+    let _primaryRipple = ripple({ usePointer: true });
 
     /** @type {string} */
     export let name;
@@ -22,9 +22,9 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-    class="card primary"
+    class="card"
     class:active
-    use:_ripple
+    use:_primaryRipple
     on:click={(ev) => {
         dispatch("click");
     }}
