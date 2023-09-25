@@ -228,13 +228,15 @@
                                 try {
                                     const data = JSON.parse(r.result);
 
-                                    if (!db.validate(data)) {
-                                        console.error("Data Upload: data invalid", data);
-                                        return;
+                                    for (const [k, v] of Object.entries(data)) {
+                                        if (!db.validateDBData(v)) {
+                                            console.error(`Data Upload: data "${k}" invalid`, v);
+                                            return;
+                                        }
                                     }
 
                                     for (const [k, v] of Object.entries(data)) {
-                                        const ks = k.split("-", 3)
+                                        const ks = k.split("-", 3);
                                         const year = parseInt(ks[1], 10);
                                         const month = parseInt(ks[2], 10);
                                         db.set(year, month, v);
@@ -264,7 +266,7 @@
             <button
                 class="download secondary outline"
                 use:_ripple
-                on:click={(ev) => {
+                on:click={() => {
                     // TODO: Download storage data to "shift-scheduler-storage-data.json"
                 }}
             >
