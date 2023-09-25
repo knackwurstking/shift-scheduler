@@ -220,6 +220,7 @@
 
                     input.type = "file";
 
+                    // TODO: display error if upload failed
                     input.onchange = () => {
                         const r = new FileReader();
 
