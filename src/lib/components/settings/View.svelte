@@ -212,11 +212,18 @@
         <h2>Data Storage</h2>
 
         <div class="button-group">
-            <button class="upload secondary outline" use:_ripple>
+            <!-- TODO: upload and download storage data (type json) -->
+            <button
+                class="upload secondary outline"
+                use:_ripple
+            >
                 <IoMdCloudUpload />
             </button>
 
-            <button class="download secondary outline" use:_ripple>
+            <button
+                class="download secondary outline"
+                use:_ripple
+            >
                 <IoMdCloudDownload />
             </button>
         </div>
