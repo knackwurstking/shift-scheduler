@@ -13,6 +13,53 @@
 
 /**
  *
+ * @param {any} data
+ * @returns {boolean}
+ */
+export function validate(data) {
+    try {
+        for (const [k, v] of Object.entries(data)) {
+            if (typeof k === "string") {
+                if (!Object.hasOwn(v, "shift") || !Object.hasOwn(v, "note")) {
+                    return false;
+                }
+
+                // check "shift"
+                if (v.shift !== null) {
+                    if (
+                        !Object.hasOwn(v.shift, "id") ||
+                        !Object.hasOwn(v.shift, "name") ||
+                        !Object.hasOwn(v.shift, "shortName") ||
+                        !Object.hasOwn(v.shift, "visible")
+                    ) {
+                        return false;
+                    }
+
+                    if (
+                        typeof v.shift.id !== "number" ||
+                        typeof v.shift.name !== "string" ||
+                        typeof v.shift.shortName !== "string" ||
+                        typeof v.shift.visible !== "boolean"
+                    ) {
+                        return false;
+                    }
+                }
+
+                // check "note"
+                if (typeof v.note !== "string") {
+                    return false;
+                }
+            }
+        }
+    } catch {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ *
  * @param {number} year
  * @param {number} month
  * @returns {DBData}

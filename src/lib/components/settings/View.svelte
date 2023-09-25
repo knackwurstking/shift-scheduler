@@ -216,6 +216,39 @@
             <button
                 class="upload secondary outline"
                 use:_ripple
+                on:click={() => {
+                    const input = document.createElement("input");
+
+                    input.type = "file";
+
+                    input.onchange = () => {
+                        const r = new FileReader();
+
+                        r.onload = () => {
+                            if (typeof r.result === "string") {
+                                const data = JSON.parse(r.result);
+
+                                if (!db.validate(data)) {
+                                    console.error("Data Upload: data invalid", data);
+                                    return;
+                                }
+
+                                // TODO: store data (key, value pairs) in local storage
+                                // ...
+                            }
+                        }
+
+                        r.onerror = (ev) => {
+                            console.error("Data Upload: Read file failed:", ev);
+                        }
+
+                        r.readAsText(input.files[0]);
+                    }
+
+
+
+                    input.click();
+                }}
             >
                 <IoMdCloudUpload />
             </button>
