@@ -139,12 +139,21 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
-    on:click={(ev) => {
+    on:pointerdown={async (ev) => {
         if (waitForTransition || pointerlock) return;
         // @ts-ignore
         for (const el of ev?.path || ev.composedPath() || []) {
             if (el.classList?.contains("day-content")) {
-                createRipple(el, ev);
+                createRipple(el, ev, { duration: 250 });
+                return;
+            }
+        }
+    }}
+    on:click={async (ev) => {
+        if (waitForTransition || pointerlock) return;
+        // @ts-ignore
+        for (const el of ev?.path || ev.composedPath() || []) {
+            if (el.classList?.contains("day-content")) {
                 const date = parseInt(el.getAttribute("data-value"), 10);
                 if (isNaN(date)) dispatch("click", null);
                 else {
