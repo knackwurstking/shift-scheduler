@@ -54,7 +54,6 @@
             <table role="grid">
                 <thead>
                     <tr>
-                        <!-- TODO: Change table data for a better look nad feel? -->
                         <th scope="col">Day</th>
                         <th scope="col">Shift</th>
                         <th scope="col">Note</th>
@@ -94,6 +93,7 @@
     article {
         position: relative;
         width: 100%;
+        max-width: 100%;
         height: 100%;
         max-height: 100%;
         margin: 0;
@@ -101,7 +101,7 @@
 
     div.icon.close {
         z-index: 2;
-        position: absolute;
+        position: fixed;
         top: 0.6rem;
         right: 0;
         width: 45px;
