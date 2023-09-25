@@ -70,7 +70,7 @@
                                 <td class="delete">
                                     <IconButton
                                         on:click={() => {
-                                            // TODO: delete entry
+                                            // TODO: delete entry and reload table
                                         }}
                                     >
                                         <IoIosTrash />
