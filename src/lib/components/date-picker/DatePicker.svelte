@@ -6,6 +6,7 @@
     let _ripple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     import Dialog from "./Dialog.svelte";
+    import { calcShiftStep } from "../../js/utils";
 
     /** @type {string} */
     let _class = "";
@@ -35,7 +36,7 @@
 {/if}
 
 <button
-    class={"date-picker--preview outline primary" + _class}
+    class={"date-picker--preview outline" + _class}
     {...$$restProps}
     use:_ripple
     on:click={(ev) => {
@@ -46,3 +47,9 @@
         {currentDate.getFullYear()} / {(currentDate.getMonth() + 1).toString().padStart(2, "0")}
     </span>
 </button>
+
+<style>
+    button {
+        padding: calc(var(--spacing) / 2);
+    }
+</style>
