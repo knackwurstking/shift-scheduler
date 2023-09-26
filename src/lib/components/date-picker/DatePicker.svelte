@@ -6,7 +6,6 @@
     let _ripple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     import Dialog from "./Dialog.svelte";
-    import { calcShiftStep } from "../../js/utils";
 
     /** @type {string} */
     let _class = "";

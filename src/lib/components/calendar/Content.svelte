@@ -25,7 +25,7 @@
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const startDay = new Date(year, month, 1).getDay();
-    const data = db.get(year, month);
+    const data = await db.get(year, month);
     for (let i = 0; i < days.length; i++) {
       days[i].date = new Date(year, month, i + 1 - startDay);
 
@@ -69,4 +69,3 @@
     grid-gap: 4px;
   }
 </style>
-

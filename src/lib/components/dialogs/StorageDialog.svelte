@@ -26,9 +26,9 @@
 
     $: year, month && initData();
 
-    function initData() {
+    async function initData() {
         data = [];
-        for (let [key, value] of Object.entries(db.get(year, month))) {
+        for (let [key, value] of Object.entries(await db.get(year, month))) {
             data.push({
                 key,
                 ...value,
@@ -42,7 +42,7 @@
     <article>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="icon close" on:click={() => dispatch("click")}>
+        <div class="icon close" on:click={() => dispatch("close")}>
             <IoIosClose />
         </div>
 

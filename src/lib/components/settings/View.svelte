@@ -44,7 +44,7 @@
         return settings.data;
     }
 
-    function save() {
+    async function save() {
         console.warn("saving data...");
 
         if (mode !== "auto") {
@@ -59,7 +59,7 @@
         settings.data.currentTheme = currentTheme;
         settings.data.mode = mode;
 
-        settings.save();
+        await settings.save();
     }
 </script>
 
@@ -70,8 +70,8 @@
 <div class="_container">
     {#if addShiftDialogOpen}
         <AddShiftDialog
-            on:cancel={() => (addShiftDialogOpen = false)}
-            on:submit={({ detail }) => {
+            on:cancel={async () => (addShiftDialogOpen = false)}
+            on:submit={async ({ detail }) => {
                 addShiftDialogOpen = false;
 
                 let id = 0;
@@ -93,7 +93,7 @@
         <EditShiftDialog
             {shifts}
             selected={editShiftDialogSelected}
-            on:submit={({ detail }) => {
+            on:submit={async ({ detail }) => {
                 editShiftDialogOpen = false;
                 shifts = detail;
             }}
@@ -104,7 +104,7 @@
         <EditRhythmDialog
             {shifts}
             rhythm={shiftRhythm}
-            on:submit={({ detail }) => {
+            on:submit={async ({ detail }) => {
                 editShiftRhythmDialogOpen = false;
                 shiftRhythm = detail;
             }}
@@ -115,7 +115,7 @@
         <StorageDialog
             year={storageDialog_year}
             month={storageDialog_month}
-            on:click={() => {
+            on:close={async () => {
                 storageDialog_open = false;
             }}
         />
@@ -130,14 +130,14 @@
                 {#each shifts as item, index}
                     <Shift
                         {...item}
-                        on:click={() => {
+                        on:click={async () => {
                             editShiftDialogSelected = index.toString();
                             editShiftDialogOpen = true;
                         }}
                     />
                 {/each}
 
-                <ShiftAdd on:click={() => (addShiftDialogOpen = true)} />
+                <ShiftAdd on:click={async () => (addShiftDialogOpen = true)} />
             </ul>
         </div>
 
@@ -154,7 +154,7 @@
             <button
                 class="secondary"
                 use:_secondaryRipple
-                on:click={() => {
+                on:click={async () => {
                     editShiftRhythmDialogOpen = true;
                 }}
             >
@@ -181,7 +181,7 @@
                     type="radio"
                     value="auto"
                     checked={mode === "auto"}
-                    on:change={() => (mode = "auto")}
+                    on:change={async () => (mode = "auto")}
                 />
                 Auto
             </label>
@@ -191,7 +191,7 @@
                     type="radio"
                     value="dark"
                     checked={mode === "dark"}
-                    on:change={() => (mode = "dark")}
+                    on:change={async () => (mode = "dark")}
                 />
                 Dark
             </label>
@@ -201,7 +201,7 @@
                     type="radio"
                     value="light"
                     checked={mode === "light"}
-                    on:change={() => (mode = "light")}
+                    on:change={async () => (mode = "light")}
                 />
                 Light
             </label>
@@ -215,15 +215,15 @@
             <button
                 class="upload secondary outline"
                 use:_ripple
-                on:click={() => {
+                on:click={async () => {
                     const input = document.createElement("input");
 
                     input.type = "file";
 
-                    input.onchange = () => {
+                    input.onchange = async () => {
                         const r = new FileReader();
 
-                        r.onload = () => {
+                        r.onload = async () => {
                             if (typeof r.result === "string") {
                                 try {
                                     const data = JSON.parse(r.result);
@@ -239,7 +239,7 @@
                                         const ks = k.split("-", 3);
                                         const year = parseInt(ks[1], 10);
                                         const month = parseInt(ks[2], 10);
-                                        db.set(year, month, v);
+                                        await db.set(year, month, v);
                                     }
                                 } catch (err) {
                                     console.error("Data Upload: json parser error!\n", err);
@@ -249,7 +249,7 @@
                             }
                         }
 
-                        r.onerror = (ev) => {
+                        r.onerror = async (ev) => {
                             console.error("Data Upload: Read file failed:", ev);
                         }
 
@@ -267,11 +267,9 @@
             <button
                 class="download secondary outline"
                 use:_ripple
-                on:click={() => {
-                    const data = db.getAll();
-
-                    // TODO: Download storage data to "shift-scheduler-storage-data.json"
-                    // TODO: save to file using Blob or Filesystem from capacitor
+                on:click={async () => {
+                    const data = await db.getAll();
+                    await db.exportAllData(data, "browser");
                 }}
             >
                 <IoMdCloudDownload />
@@ -302,7 +300,7 @@
                                             style={`
                                                     margin: 4px;
                                                 `}
-                                            on:click={() => {
+                                            on:click={async () => {
                                                 storageDialog_year = key.getFullYear();
                                                 storageDialog_month = key.getMonth();
                                                 storageDialog_open = true;
@@ -315,7 +313,7 @@
                                             style={`
                                                     margin: 4px;
                                                 `}
-                                            on:click={() => {
+                                            on:click={async () => {
                                                 const yes = window.confirm(
                                                     `Delete all data for "${key.getFullYear()}/${(
                                                         key.getMonth() + 1
@@ -324,7 +322,7 @@
                                                         .padStart(2, "0")}" ?`
                                                 );
                                                 if (yes) {
-                                                    db.remove(key.getFullYear(), key.getMonth());
+                                                    await db.remove(key.getFullYear(), key.getMonth());
                                                     reloadDataStorageTable =
                                                         !reloadDataStorageTable;
                                                 }
@@ -343,7 +341,7 @@
             <button
                 class="load-data"
                 use:_primaryRipple
-                on:click={() => {
+                on:click={async () => {
                     dataStorage = true;
                 }}
             >

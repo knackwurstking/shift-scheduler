@@ -1,7 +1,4 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
     import { ripple } from "../../js/ripple";
     let _primaryRipple = ripple({ usePointer: true });
 
@@ -25,9 +22,7 @@
     class="card"
     class:active
     use:_primaryRipple
-    on:click={(ev) => {
-        dispatch("click");
-    }}
+    on:click
 >
     <div class="background" style={`background-color: ${color || "transparent"};`} />
     <span class="name">{name}</span><br />

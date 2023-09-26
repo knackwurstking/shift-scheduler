@@ -7,6 +7,7 @@
   import { ripple } from "../../js/ripple";
   let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
+  export let open = false;
   /** @type {Date} */
   export let date;
 
@@ -27,8 +28,8 @@
   );
   $: settings, date && load();
 
-  function load() {
-    const data = db.get(date.getFullYear(), date.getMonth())[
+  async function load() {
+    const data = await db.get(date.getFullYear(), date.getMonth())[
       db.getKeyFromDate(date)
     ];
     defaultShift = utils.calcShiftStep(date);
@@ -41,7 +42,7 @@
   }
 </script>
 
-<dialog open>
+<dialog {open}>
   <article>
     <h2 class="title">
       {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}

@@ -1,7 +1,4 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
-
   import { ripple } from "../../js/ripple";
   let _secondaryRipple = ripple({ usePointer: true });
 
@@ -13,9 +10,7 @@
   <button
     class="outline secondary"
     use:_secondaryRipple
-    on:click={() => {
-      dispatch("click");
-    }}
+    on:click
   >
     <span>
       <IoIosAdd />

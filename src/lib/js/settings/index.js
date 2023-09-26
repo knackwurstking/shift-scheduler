@@ -44,7 +44,7 @@ export function load() {
   data = JSON.parse(localStorage.getItem("settings") || defaultSettings);
 }
 
-export function save() {
+export async function save() {
   if (data.shiftRhythm.findIndex(id => typeof id !== "number") !== -1) {
     console.error(`Wrong data type in shift!`);
     data.shiftRhythm = data.shiftRhythm.filter(id => typeof id === "number");

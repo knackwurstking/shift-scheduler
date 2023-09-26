@@ -110,22 +110,21 @@
     <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
 
-{#if editDayDialog_open}
-    <EditDayDialog
-        date={editDayDialog_date}
-        on:submit={async ({ detail }) => {
-            editDayDialog_open = false;
+<EditDayDialog
+    open={editDayDialog_open}
+    date={editDayDialog_date}
+    on:submit={async ({ detail }) => {
+        editDayDialog_open = false;
 
-            if (!detail.shift && !detail.note) {
-                db.removeDataForDay(editDayDialog_date);
-            } else {
-                db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
-            }
+        if (!detail.shift && !detail.note) {
+            await db.removeDataForDay(editDayDialog_date);
+        } else {
+            await db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
+        }
 
-            calendar.reload();
-        }}
-    />
-{/if}
+        calendar.reload();
+    }}
+/>
 
 <header class="container-fluid" style="font-size: 1rem;">
     <!-- Top app bar -->
@@ -190,17 +189,17 @@
                         return;
                     }
 
-                    const { note } = db.getDataForDay(detail);
+                    const { note } = await db.getDataForDay(detail);
 
                     if (shift === "reset") {
                         shift = null;
                         if (note) {
-                            db.setDataForDay(detail, null, note);
+                            await db.setDataForDay(detail, null, note);
                         } else {
-                            db.removeDataForDay(detail);
+                            await db.removeDataForDay(detail);
                         }
                     } else {
-                        db.setDataForDay(detail, shift, note);
+                        await db.setDataForDay(detail, shift, note);
                     }
 
                     calendar.reload();
