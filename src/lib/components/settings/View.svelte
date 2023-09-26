@@ -220,7 +220,6 @@
 
                     input.type = "file";
 
-                    // TODO: display error if upload failed
                     input.onchange = () => {
                         const r = new FileReader();
 
@@ -243,7 +242,8 @@
                                         db.set(year, month, v);
                                     }
                                 } catch (err) {
-                                    console.error("Data Upload: json parser error!");
+                                    console.error("Data Upload: json parser error!\n", err);
+                                    alert(`Data upload failed!\n${err}`);
                                     return;
                                 }
                             }
@@ -268,8 +268,10 @@
                 class="download secondary outline"
                 use:_ripple
                 on:click={() => {
+                    const data = db.getAll();
+
                     // TODO: Download storage data to "shift-scheduler-storage-data.json"
-                    // iter storage data, regex keys, add to data, save to file using Blob or Filesystem from capacitor
+                    // TODO: save to file using Blob or Filesystem from capacitor
                 }}
             >
                 <IoMdCloudDownload />
