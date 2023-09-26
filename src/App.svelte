@@ -47,13 +47,14 @@
 
     $: {
         if (view === "calendar") {
-            settings.load();
-            currentTheme = settings.data.currentTheme;
-            if (settings.data.mode !== "auto") {
-                document.documentElement.setAttribute("data-theme", settings.data.mode);
-            } else {
-                document.documentElement.removeAttribute("data-theme");
-            }
+            settings.load().then(() => {
+                currentTheme = settings.data.currentTheme;
+                if (settings.data.mode !== "auto") {
+                    document.documentElement.setAttribute("data-theme", settings.data.mode);
+                } else {
+                    document.documentElement.removeAttribute("data-theme");
+                }
+            });
         }
     }
 

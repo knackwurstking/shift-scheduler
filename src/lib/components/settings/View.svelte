@@ -15,9 +15,9 @@
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
     let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
-    let { shifts, startDate, shiftRhythm, currentTheme, mode } = getSettings();
-    $: (!!shifts || typeof startDate === "string" || !!shiftRhythm || !!currentTheme || !!mode) &&
-        save();
+    /** @type {import(".").Settings} */
+    let data;
+    $: (!data && initSettings()) || save();
 
     let addShiftDialogOpen = false;
     let editShiftRhythmDialogOpen = false;
@@ -36,35 +36,28 @@
     /** @type {number} */
     let storageDialog_month;
 
-    /**
-     * @returns {import(".").Settings}
-     */
-    function getSettings() {
-        settings.load();
-        return settings.data;
+    async function initSettings() {
+        await settings.load();
+        data = settings.data;
     }
 
     async function save() {
         console.warn("saving data...");
 
-        if (mode !== "auto") {
-            document.documentElement.setAttribute("data-theme", mode);
+        if (data.mode !== "auto") {
+            document.documentElement.setAttribute("data-theme", data.mode);
         } else {
             document.documentElement.removeAttribute("data-theme");
         }
 
-        settings.data.shifts = shifts;
-        settings.data.startDate = startDate;
-        settings.data.shiftRhythm = shiftRhythm;
-        settings.data.currentTheme = currentTheme;
-        settings.data.mode = mode;
-
-        await settings.save();
+        await settings.save(data);
     }
 </script>
 
 <svelte:head>
-    <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
+    {#if !!data}
+        <link rel="stylesheet" href="/css/themes/{data.currentTheme}.min.css" />
+    {/if}
 </svelte:head>
 
 <div class="_container">
@@ -75,7 +68,7 @@
                 addShiftDialogOpen = false;
 
                 let id = 0;
-                shifts.forEach((shift) => {
+                data.shifts.forEach((shift) => {
                     if (shift.id > id) id = shift.id;
                 });
                 detail.id = id + 1;
@@ -84,29 +77,29 @@
                     return;
                 }
 
-                shifts = [...shifts, detail];
+                data.shifts = [...data.shifts, detail];
             }}
         />
     {/if}
 
     {#if editShiftDialogOpen}
         <EditShiftDialog
-            {shifts}
+            shifts={data.shifts}
             selected={editShiftDialogSelected}
             on:submit={async ({ detail }) => {
                 editShiftDialogOpen = false;
-                shifts = detail;
+                data.shifts = detail;
             }}
         />
     {/if}
 
     {#if editShiftRhythmDialogOpen}
         <EditRhythmDialog
-            {shifts}
-            rhythm={shiftRhythm}
+            shifts={data.shifts}
+            rhythm={data.shiftRhythm}
             on:submit={async ({ detail }) => {
                 editShiftRhythmDialogOpen = false;
-                shiftRhythm = detail;
+                data.shiftRhythm = detail;
             }}
         />
     {/if}
@@ -121,234 +114,245 @@
         />
     {/if}
 
-    <article class="shift-scheduler">
-        <div class="shifts">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Shifts</label>
+    {#if !!data}
+        <article class="shift-scheduler">
+            <div class="shifts">
+                <!-- svelte-ignore a11y-label-has-associated-control -->
+                <label>Shifts</label>
 
-            <ul class="shifts-available">
-                {#each shifts as item, index}
-                    <Shift
-                        {...item}
-                        on:click={async () => {
-                            editShiftDialogSelected = index.toString();
-                            editShiftDialogOpen = true;
-                        }}
+                <ul class="shifts-available">
+                    {#each data.shifts as item, index}
+                        <Shift
+                            {...item}
+                            on:click={async () => {
+                                editShiftDialogSelected = index.toString();
+                                editShiftDialogOpen = true;
+                            }}
+                        />
+                    {/each}
+
+                    <ShiftAdd on:click={async () => (addShiftDialogOpen = true)} />
+                </ul>
+            </div>
+
+            <div class="spacer" />
+
+            <label for="start-date">
+                Start Date
+                <input
+                    type="date"
+                    name="start-date"
+                    class="shift-start-date"
+                    bind:value={data.startDate}
+                />
+            </label>
+
+            <div class="rhythm">
+                <!-- svelte-ignore a11y-label-has-associated-control -->
+                <label>Rhythm</label>
+                <button
+                    class="secondary"
+                    use:_secondaryRipple
+                    on:click={async () => {
+                        editShiftRhythmDialogOpen = true;
+                    }}
+                >
+                    Edit
+                </button>
+            </div>
+        </article>
+
+        <article class="themes">
+            <label>
+                Themes
+                <select bind:value={data.currentTheme}>
+                    {#each themes as theme}
+                        <option value={theme}>{theme}</option>
+                    {/each}
+                </select>
+            </label>
+
+            <fieldset>
+                <legend>Mode</legend>
+
+                <label>
+                    <input
+                        type="radio"
+                        value="auto"
+                        checked={data.mode === "auto"}
+                        on:change={async () => (data.mode = "auto")}
                     />
-                {/each}
+                    Auto
+                </label>
 
-                <ShiftAdd on:click={async () => (addShiftDialogOpen = true)} />
-            </ul>
-        </div>
+                <label>
+                    <input
+                        type="radio"
+                        value="dark"
+                        checked={data.mode === "dark"}
+                        on:change={async () => (data.mode = "dark")}
+                    />
+                    Dark
+                </label>
 
-        <div class="spacer" />
+                <label>
+                    <input
+                        type="radio"
+                        value="light"
+                        checked={data.mode === "light"}
+                        on:change={async () => (data.mode = "light")}
+                    />
+                    Light
+                </label>
+            </fieldset>
+        </article>
 
-        <label for="start-date">
-            Start Date
-            <input type="date" name="start-date" class="shift-start-date" bind:value={startDate} />
-        </label>
+        <article class="data-storage">
+            <h2>Data Storage</h2>
 
-        <div class="rhythm">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Rhythm</label>
-            <button
-                class="secondary"
-                use:_secondaryRipple
-                on:click={async () => {
-                    editShiftRhythmDialogOpen = true;
-                }}
-            >
-                Edit
-            </button>
-        </div>
-    </article>
+            <div class="button-group">
+                <button
+                    class="upload secondary outline"
+                    use:_ripple
+                    on:click={async () => {
+                        const input = document.createElement("input");
 
-    <article class="themes">
-        <label>
-            Themes
-            <select bind:value={currentTheme}>
-                {#each themes as theme}
-                    <option value={theme}>{theme}</option>
-                {/each}
-            </select>
-        </label>
+                        input.type = "file";
 
-        <fieldset>
-            <legend>Mode</legend>
+                        input.onchange = async () => {
+                            const r = new FileReader();
 
-            <label>
-                <input
-                    type="radio"
-                    value="auto"
-                    checked={mode === "auto"}
-                    on:change={async () => (mode = "auto")}
-                />
-                Auto
-            </label>
+                            r.onload = async () => {
+                                if (typeof r.result === "string") {
+                                    try {
+                                        const data = JSON.parse(r.result);
 
-            <label>
-                <input
-                    type="radio"
-                    value="dark"
-                    checked={mode === "dark"}
-                    on:change={async () => (mode = "dark")}
-                />
-                Dark
-            </label>
-
-            <label>
-                <input
-                    type="radio"
-                    value="light"
-                    checked={mode === "light"}
-                    on:change={async () => (mode = "light")}
-                />
-                Light
-            </label>
-        </fieldset>
-    </article>
-
-    <article class="data-storage">
-        <h2>Data Storage</h2>
-
-        <div class="button-group">
-            <button
-                class="upload secondary outline"
-                use:_ripple
-                on:click={async () => {
-                    const input = document.createElement("input");
-
-                    input.type = "file";
-
-                    input.onchange = async () => {
-                        const r = new FileReader();
-
-                        r.onload = async () => {
-                            if (typeof r.result === "string") {
-                                try {
-                                    const data = JSON.parse(r.result);
-
-                                    for (const [k, v] of Object.entries(data)) {
-                                        if (!db.validateDBData(v)) {
-                                            console.error(`Data Upload: data "${k}" invalid`, v);
-                                            return;
-                                        }
-                                    }
-
-                                    for (const [k, v] of Object.entries(data)) {
-                                        const ks = k.split("-", 3);
-                                        const year = parseInt(ks[1], 10);
-                                        const month = parseInt(ks[2], 10);
-                                        await db.set(year, month, v);
-                                    }
-                                } catch (err) {
-                                    console.error("Data Upload: json parser error!\n", err);
-                                    alert(`Data upload failed!\n${err}`);
-                                    return;
-                                }
-                            }
-                        }
-
-                        r.onerror = async (ev) => {
-                            console.error("Data Upload: Read file failed:", ev);
-                        }
-
-                        r.readAsText(input.files[0]);
-                    }
-
-
-
-                    input.click();
-                }}
-            >
-                <IoMdCloudUpload />
-            </button>
-
-            <button
-                class="download secondary outline"
-                use:_ripple
-                on:click={async () => {
-                    const data = await db.getAll();
-                    await db.exportAllData(data, "browser");
-                }}
-            >
-                <IoMdCloudDownload />
-            </button>
-        </div>
-
-        {#if dataStorage}
-            <figure>
-                <table role="grid">
-                    <thead>
-                        <tr>
-                            <th scope="col">Year</th>
-                            <th scope="col">Month</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {#key reloadDataStorageTable}
-                            {#each db
-                                .list()
-                                .sort((a, b) => (a.getFullYear() > b.getFullYear() ? 1 : -1))
-                                .sort( (a, b) => (a.getMonth() > b.getMonth() && a.getFullYear() === b.getFullYear() ? 1 : -1) ) as key}
-                                <tr>
-                                    <td>{key.getFullYear()}</td>
-                                    <td>{key.getMonth() + 1}</td>
-                                    <td class="actions">
-                                        <IconButton
-                                            style={`
-                                                    margin: 4px;
-                                                `}
-                                            on:click={async () => {
-                                                storageDialog_year = key.getFullYear();
-                                                storageDialog_month = key.getMonth();
-                                                storageDialog_open = true;
-                                            }}
-                                        >
-                                            <IoIosOpen />
-                                        </IconButton>
-
-                                        <IconButton
-                                            style={`
-                                                    margin: 4px;
-                                                `}
-                                            on:click={async () => {
-                                                const yes = window.confirm(
-                                                    `Delete all data for "${key.getFullYear()}/${(
-                                                        key.getMonth() + 1
-                                                    )
-                                                        .toString()
-                                                        .padStart(2, "0")}" ?`
+                                        for (const [k, v] of Object.entries(data)) {
+                                            if (!db.validateDBData(v)) {
+                                                console.error(
+                                                    `Data Upload: data "${k}" invalid`,
+                                                    v
                                                 );
-                                                if (yes) {
-                                                    await db.remove(key.getFullYear(), key.getMonth());
-                                                    reloadDataStorageTable =
-                                                        !reloadDataStorageTable;
-                                                }
-                                            }}
-                                        >
-                                            <IoIosTrash />
-                                        </IconButton>
-                                    </td>
-                                </tr>
-                            {/each}
-                        {/key}
-                    </tbody>
-                </table>
-            </figure>
-        {:else}
-            <button
-                class="load-data"
-                use:_primaryRipple
-                on:click={async () => {
-                    dataStorage = true;
-                }}
-            >
-                Load Data
-            </button>
-        {/if}
-    </article>
+                                                return;
+                                            }
+                                        }
+
+                                        for (const [k, v] of Object.entries(data)) {
+                                            const ks = k.split("-", 3);
+                                            const year = parseInt(ks[1], 10);
+                                            const month = parseInt(ks[2], 10);
+                                            await db.set(year, month, v);
+                                        }
+                                    } catch (err) {
+                                        console.error("Data Upload: json parser error!\n", err);
+                                        alert(`Data upload failed!\n${err}`);
+                                        return;
+                                    }
+                                }
+                            };
+
+                            r.onerror = async (ev) => {
+                                console.error("Data Upload: Read file failed:", ev);
+                            };
+
+                            r.readAsText(input.files[0]);
+                        };
+
+                        input.click();
+                    }}
+                >
+                    <IoMdCloudUpload />
+                </button>
+
+                <button
+                    class="download secondary outline"
+                    use:_ripple
+                    on:click={async () => {
+                        const data = await db.getAll();
+                        await db.exportAllData(data, "browser");
+                    }}
+                >
+                    <IoMdCloudDownload />
+                </button>
+            </div>
+
+            {#if dataStorage}
+                <figure>
+                    <table role="grid">
+                        <thead>
+                            <tr>
+                                <th scope="col">Year</th>
+                                <th scope="col">Month</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#key reloadDataStorageTable}
+                                {#each db
+                                    .list()
+                                    .sort((a, b) => (a.getFullYear() > b.getFullYear() ? 1 : -1))
+                                    .sort( (a, b) => (a.getMonth() > b.getMonth() && a.getFullYear() === b.getFullYear() ? 1 : -1) ) as key}
+                                    <tr>
+                                        <td>{key.getFullYear()}</td>
+                                        <td>{key.getMonth() + 1}</td>
+                                        <td class="actions">
+                                            <IconButton
+                                                style={`
+                                                    margin: 4px;
+                                                `}
+                                                on:click={async () => {
+                                                    storageDialog_year = key.getFullYear();
+                                                    storageDialog_month = key.getMonth();
+                                                    storageDialog_open = true;
+                                                }}
+                                            >
+                                                <IoIosOpen />
+                                            </IconButton>
+
+                                            <IconButton
+                                                style={`
+                                                    margin: 4px;
+                                                `}
+                                                on:click={async () => {
+                                                    const yes = window.confirm(
+                                                        `Delete all data for "${key.getFullYear()}/${(
+                                                            key.getMonth() + 1
+                                                        )
+                                                            .toString()
+                                                            .padStart(2, "0")}" ?`
+                                                    );
+                                                    if (yes) {
+                                                        await db.remove(
+                                                            key.getFullYear(),
+                                                            key.getMonth()
+                                                        );
+                                                        reloadDataStorageTable =
+                                                            !reloadDataStorageTable;
+                                                    }
+                                                }}
+                                            >
+                                                <IoIosTrash />
+                                            </IconButton>
+                                        </td>
+                                    </tr>
+                                {/each}
+                            {/key}
+                        </tbody>
+                    </table>
+                </figure>
+            {:else}
+                <button
+                    class="load-data"
+                    use:_primaryRipple
+                    on:click={async () => {
+                        dataStorage = true;
+                    }}
+                >
+                    Load Data
+                </button>
+            {/if}
+        </article>
+    {/if}
 </div>
 
 <style>

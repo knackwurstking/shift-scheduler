@@ -4,8 +4,8 @@
  *
  * @typedef Themes
  * @type {"custom" | "picocss"}
- * 
- * @typedef ShiftID 
+ *
+ * @typedef ShiftID
  * @type {number}
  *
  * @typedef Shift
@@ -40,16 +40,23 @@ export const defaultSettings = `{
  */
 export let data;
 
-export function load() {
-  data = JSON.parse(localStorage.getItem("settings") || defaultSettings);
+export async function load() {
+    data = JSON.parse(localStorage.getItem("settings") || defaultSettings);
 }
 
-export async function save() {
-  if (data.shiftRhythm.findIndex(id => typeof id !== "number") !== -1) {
-    console.error(`Wrong data type in shift!`);
-    data.shiftRhythm = data.shiftRhythm.filter(id => typeof id === "number");
-  }
-  localStorage.setItem("settings", JSON.stringify(data));
+/**
+ *
+ * @param {Settings | null} _data
+ */
+export async function save(_data = null) {
+    if (_data) data = _data;
+    else {
+        if (data.shiftRhythm.findIndex((id) => typeof id !== "number") !== -1) {
+            console.error(`Wrong data type in shift!`);
+            data.shiftRhythm = data.shiftRhythm.filter((id) => typeof id === "number");
+        }
+        localStorage.setItem("settings", JSON.stringify(data));
+    }
 }
 
 /**
@@ -58,6 +65,6 @@ export async function save() {
  * @returns {undefined | Shift}
  */
 export function getShift(id) {
-  if (!data) return;
-  return data.shifts.find((shift) => shift.id === id);
+    if (!data) return;
+    return data.shifts.find((shift) => shift.id === id);
 }
