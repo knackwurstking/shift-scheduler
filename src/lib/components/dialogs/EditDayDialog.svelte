@@ -43,41 +43,43 @@
 </script>
 
 <dialog {open}>
-  <article>
-    <h2 class="title">
-      {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
-      / {date.getDate().toString().padStart(2, "0")}
-    </h2>
+  {#if !!date}
+    <article>
+      <h2 class="title">
+        {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
+        / {date.getDate().toString().padStart(2, "0")}
+      </h2>
 
-    <select bind:value={current}>
-      <option value="-1" selected={current === "-1"}
-        >(Default) {defaultShift?.name || ""}</option
-      >
-
-      {#each settings.shifts as shift, index}
-        <option value={index.toString()} selected={current === index.toString()}
-          >{shift.name}</option
+      <select bind:value={current}>
+        <option value="-1" selected={current === "-1"}
+          >(Default) {defaultShift?.name || ""}</option
         >
-      {/each}
-    </select>
 
-    <label for="note">
-      Note
-      <textarea name="note" cols="30" rows="10" bind:value={note} />
-    </label>
+        {#each settings.shifts as shift, index}
+          <option value={index.toString()} selected={current === index.toString()}
+            >{shift.name}</option
+          >
+        {/each}
+      </select>
 
-    <button
-      use:_primaryRipple
-      on:click={() =>
-        dispatch("submit", {
-          shift:
-            settings.shifts.find((_s, i) => i.toString() === current) || null,
-          note: note,
-        })}
-    >
-      OK
-    </button>
-  </article>
+      <label for="note">
+        Note
+        <textarea name="note" cols="30" rows="10" bind:value={note} />
+      </label>
+
+      <button
+        use:_primaryRipple
+        on:click={() =>
+          dispatch("submit", {
+            shift:
+              settings.shifts.find((_s, i) => i.toString() === current) || null,
+            note: note,
+          })}
+      >
+        OK
+      </button>
+    </article>
+  {/if}
 </dialog>
 
 <style>
