@@ -156,3 +156,15 @@ export function list() {
 
     return keys;
 }
+
+export function getAll() {
+    /** @type {{ [key: string]: DBData }} */
+    const data = {};
+    for (const date of list()) {
+        data[`db-${date.getFullYear()}-${date.getMonth()}`] = get(
+            date.getFullYear(),
+            date.getMonth()
+        );
+    }
+    return data;
+}
