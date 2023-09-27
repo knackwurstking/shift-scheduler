@@ -111,21 +111,23 @@
     <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
 
-<EditDayDialog
-    open={editDayDialog_open}
-    date={editDayDialog_date}
-    on:submit={async ({ detail }) => {
-        editDayDialog_open = false;
+{#if editDayDialog_open}
+    <EditDayDialog
+        open={editDayDialog_open}
+        date={editDayDialog_date}
+        on:submit={async ({ detail }) => {
+            editDayDialog_open = false;
 
-        if (!detail.shift && !detail.note) {
-            await db.removeDataForDay(editDayDialog_date);
-        } else {
-            await db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
-        }
+            if (!detail.shift && !detail.note) {
+                await db.removeDataForDay(editDayDialog_date);
+            } else {
+                await db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
+            }
 
-        calendar.reload();
-    }}
-/>
+            calendar.reload();
+        }}
+    />
+{/if}
 
 <header class="container-fluid" style="font-size: 1rem;">
     <!-- Top app bar -->

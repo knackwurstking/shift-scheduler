@@ -25,10 +25,10 @@
     let settings = JSON.parse(
         localStorage.getItem("settings") || '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
     );
-    $: settings, date && load();
+    $: settings && date && load();
 
     async function load() {
-        const data = await db.get(date.getFullYear(), date.getMonth())[db.getKeyFromDate(date)];
+        const data = (await db.get(date.getFullYear(), date.getMonth()))[db.getKeyFromDate(date)];
         defaultShift = utils.calcShiftStep(date);
         shift = data?.shift || null;
         if (shift) current = settings.shifts.findIndex((s) => s.name === shift?.name).toString();
@@ -37,42 +37,40 @@
 </script>
 
 <dialog {open}>
-    {#if !!date}
-        <article>
-            <h2 class="title">
-                {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
-                / {date.getDate().toString().padStart(2, "0")}
-            </h2>
+    <article>
+        <h2 class="title">
+            {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
+            / {date.getDate().toString().padStart(2, "0")}
+        </h2>
 
-            <select bind:value={current}>
-                <option value="-1" selected={current === "-1"}
-                    >(Default) {defaultShift?.name || ""}</option
-                >
-
-                {#each settings.shifts as shift, index}
-                    <option value={index.toString()} selected={current === index.toString()}
-                        >{shift.name}</option
-                    >
-                {/each}
-            </select>
-
-            <label for="note">
-                Note
-                <textarea name="note" cols="30" rows="10" bind:value={note} />
-            </label>
-
-            <button
-                use:_primaryRipple
-                on:click={() =>
-                    dispatch("submit", {
-                        shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
-                        note: note,
-                    })}
+        <select bind:value={current}>
+            <option value="-1" selected={current === "-1"}
+                >(Default) {defaultShift?.name || ""}</option
             >
-                OK
-            </button>
-        </article>
-    {/if}
+
+            {#each settings.shifts as shift, index}
+                <option value={index.toString()} selected={current === index.toString()}
+                    >{shift.name}</option
+                >
+            {/each}
+        </select>
+
+        <label for="note">
+            Note
+            <textarea name="note" cols="30" rows="10" bind:value={note} />
+        </label>
+
+        <button
+            use:_primaryRipple
+            on:click={() =>
+                dispatch("submit", {
+                    shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
+                    note: note,
+                })}
+        >
+            OK
+        </button>
+    </article>
 </dialog>
 
 <style>
