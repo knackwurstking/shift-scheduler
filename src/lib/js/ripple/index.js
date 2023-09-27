@@ -44,7 +44,7 @@ export function createRipple(el, ev, { duration = 600, color = "var(--ripple-col
  */
 export function ripple({ duration = 600, color = "var(--ripple-color, rgba(255, 255, 255, 0.7))", usePointer = false } = {}) {
     return (el) => {
-        const handler = (ev) => createRipple(el, ev, { duration, color });
+        const handler = async (ev) => createRipple(el, ev, { duration, color });
 
         if (usePointer) el.addEventListener("pointerdown", handler);
         else el.addEventListener("click", handler);
