@@ -1,4 +1,6 @@
 <script>
+utils.
+
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
     import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
     import FaUpload from 'svelte-icons/fa/FaUpload.svelte'
@@ -8,6 +10,7 @@
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog, StorageDialog } from "../dialogs";
     import IconButton from "../icon-button";
 
+    import * as utils from "../../js/utils";
     import * as settings from "../../js/settings";
     import * as db from "../../js/db";
     import { ripple } from "../../js/ripple";
@@ -269,7 +272,10 @@
                     on:click={async () => {
                         const data = await db.getAll();
                         try {
-                            await db.exportAllData(data, "browser");
+                            await db.exportAllData(
+                                data,
+                                utils.isAndroid() ? "android" : "browser"
+                            );
                         } catch (err) {
                             alert(`Data download failed!\n${err}`);
                         }
