@@ -1,8 +1,8 @@
 <script>
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
     import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
-    import IoMdCloudDownload from "svelte-icons/io/IoMdCloudDownload.svelte";
-    import IoMdCloudUpload from "svelte-icons/io/IoMdCloudUpload.svelte";
+    import FaUpload from 'svelte-icons/fa/FaUpload.svelte'
+    import FaDownload from 'svelte-icons/fa/FaDownload.svelte'
 
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog, StorageDialog } from "../dialogs";
@@ -244,7 +244,6 @@
                                             await db.set(year, month, v);
                                         }
                                     } catch (err) {
-                                        console.error("Data Upload: json parser error!\n", err);
                                         alert(`Data upload failed!\n${err}`);
                                         return;
                                     }
@@ -261,7 +260,7 @@
                         input.click();
                     }}
                 >
-                    <IoMdCloudUpload />
+                    <FaDownload />
                 </button>
 
                 <button
@@ -269,10 +268,14 @@
                     use:_ripple
                     on:click={async () => {
                         const data = await db.getAll();
-                        await db.exportAllData(data, "browser");
+                        try {
+                            await db.exportAllData(data, "browser");
+                        } catch (err) {
+                            alert(`Data download failed!\n${err}`);
+                        }
                     }}
                 >
-                    <IoMdCloudDownload />
+                    <FaUpload />
                 </button>
             </div>
 
