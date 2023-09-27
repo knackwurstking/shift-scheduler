@@ -1,6 +1,4 @@
 <script>
-utils.
-
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
     import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
     import FaUpload from 'svelte-icons/fa/FaUpload.svelte'

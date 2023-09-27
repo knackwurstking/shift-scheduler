@@ -1,3 +1,7 @@
+
+import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
+
 /**
  * @typedef StorageData
  * @type {{
@@ -179,7 +183,7 @@ export async function exportAllData(data, platform = "browser") {
             await _exportBrowser(data);
             break;
         case "android":
-            throw `Platform "android" is work in progress`;
+            await _exportAndroid(data);
         default:
             throw `Unknown platform "android"`;
     }
@@ -201,4 +205,25 @@ async function _exportBrowser(data) {
     a.setAttribute("download", "shift-scheduler-storage-data.json");
 
     a.click();
+}
+
+/**
+ * 
+ * @param {{ [key: string]: DBData }} data
+ */
+async function _exportAndroid(data) {
+    const file = "shift-scheduler-storage-data.json";
+
+    const result = await Filesystem.writeFile({
+        path: file,
+        data: JSON.stringify(data),
+        encoding: Encoding.UTF8,
+        directory: Directory.Cache,
+    });
+
+    Share.share({
+        title: file,
+        url: result.uri,
+        dialogTitle: "Storage data backup",
+    });
 }
