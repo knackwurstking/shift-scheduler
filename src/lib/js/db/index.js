@@ -184,8 +184,9 @@ export async function exportAllData(data, platform = "browser") {
             break;
         case "android":
             await _exportAndroid(data);
+            break;
         default:
-            throw `Unknown platform "android"`;
+            throw `Unknown platform "${platform}"`;
     }
 }
 
