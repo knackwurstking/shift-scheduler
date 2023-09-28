@@ -246,7 +246,6 @@
                                         }
                                     } catch (err) {
                                         alert(`Data upload failed!\n${err}`);
-                                        return;
                                     }
                                 }
                             };
