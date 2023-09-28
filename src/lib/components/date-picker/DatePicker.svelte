@@ -38,7 +38,7 @@
     class={"date-picker--preview outline" + _class}
     {...$$restProps}
     use:_ripple
-    on:click={(ev) => {
+    on:click={() => {
         picker = true;
     }}
 >
