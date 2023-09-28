@@ -1,3 +1,5 @@
+import * as utils from "../../utils";
+
 /**
  * 
  * @param {number} year 
@@ -14,4 +16,15 @@ export async function create(year, month, props) {
     dialog.open = false;
 
     // TODO: add children ...
+    if (utils.isAndroid()) {
+        dialog.innerHTML = `
+            <article>
+            </article>
+        `;
+    } else {
+        dialog.innerHTML = `
+            <article>
+            </article>
+        `;
+    }
 }
