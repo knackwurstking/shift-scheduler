@@ -11,6 +11,7 @@ export async function create(year, month, props) {
     const dialog = document.createElement("dialog");
 
     dialog.classList.add("date-picker--dialog");
-    dialog.open = true;
+    dialog.open = false;
+
     // TODO: add children ...
 }
