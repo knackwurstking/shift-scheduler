@@ -55,11 +55,13 @@
         calendar.set(currentDate);
     }
 
-    async function goBackInHistory() {
-        if (viewStack.length === 1) return;
-        viewStack.pop();
-        viewStack = viewStack;
-        view = viewStack[viewStack.length - 1];
+    /**
+     *
+     * @param {Date | null} date
+     */
+    async function setCurrentDate(date) {
+        if (date) currentDate = date;
+        calendar.set(currentDate);
     }
 
     /**
@@ -76,15 +78,13 @@
         }
     }
 
-    /**
-     *
-     * @param {Date | null} date
-     */
-    async function setCurrentDate(date) {
-        if (date) currentDate = date;
-        calendar.set(currentDate);
+    async function goBackInHistory() {
+        if (viewStack.length === 1) return;
+        viewStack.pop();
+        viewStack = viewStack;
+        view = viewStack[viewStack.length - 1];
     }
-
+    
     /**
      * @returns {Promise<import("./lib/js/settings").Shift | "reset">}
      */
