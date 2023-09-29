@@ -125,7 +125,7 @@
     <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
 
-<header class="container-fluid" style="font-size: 1rem;">
+<header style="font-size: 1rem; padding: 4px;">
     <!-- Top app bar -->
 
     {#if view !== viewStack[0]}
@@ -179,7 +179,7 @@
     </div>
 </header>
 
-<main class="container-fluid" style={`bottom: ${editMode_open ? "calc(3em + 22px)" : "1px"}`}>
+<main style={`bottom: ${editMode_open ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
         <Calendar
             bind:this={calendar}
@@ -215,7 +215,7 @@
     {/if}
 </main>
 
-<footer class="container-fluid" class:visible={editMode_open}>
+<footer class:visible={editMode_open}>
     {#if editMode_open && !!settings}
         <span>
             <ShiftCard
@@ -303,11 +303,12 @@
 
     footer {
         transform: none;
-        height: calc(3em + 22px);
+        position: absolute;
         right: 0;
         bottom: 0;
         left: 0;
-        position: absolute;
+        height: calc(3em + 22px);
+        padding: 0 4px;
         border-top: 1px solid var(--muted-border-color);
         display: flex;
         overflow: hidden;
