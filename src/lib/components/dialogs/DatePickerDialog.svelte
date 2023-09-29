@@ -36,7 +36,7 @@
     }
 
     export async function close() {
-        // TODO: ...
+      dialog.close();
     }
 
     async function setDate() {

@@ -7,8 +7,11 @@
     import { ripple } from "../../js/ripple";
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
+    /** @type {HTMLDialogElement} */
+    let dialog;
+
     /** @type {Date} */
-    export let date;
+    let date;
 
     /** @type {import("../settings").Shift | null} */
     let defaultShift;
@@ -32,10 +35,11 @@
      */
     export async function open(_date) {
         date = _date;
+        dialog.show();
     }
 
     export async function close() {
-        // TODO: ...
+        dialog.close();
     }
 
     async function load() {
@@ -47,7 +51,7 @@
     }
 </script>
 
-<dialog {open}>
+<dialog bind:this={dialog}>
     <article>
         <h2 class="title">
             {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
