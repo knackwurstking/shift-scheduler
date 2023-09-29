@@ -7,6 +7,7 @@ export function createRipple(el, ev, { duration = 300, color = "var(--ripple-col
     const top = `${ev.clientY - (rect.top + radius)}px`;
 
     const span = document.createElement("span");
+    span.classList.add("ripple");
 
     span.style.width = `${diameter}px`;
     span.style.height = `${diameter}px`;

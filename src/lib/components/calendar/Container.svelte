@@ -163,6 +163,10 @@
             {currentTranslateX}
             {transition}
             transitionend={() => {
+                for (const child of container.querySelectorAll(".ripple")) {
+                    child.remove();
+                }
+
                 if (direction === "left") {
                     items = [items[1], items[2], items[0]];
                     currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
