@@ -14,12 +14,18 @@
     import * as db from "./lib/js/db";
     import * as settings from "./lib/js/settings";
 
-    import { EditDayDialog } from "./lib/components/dialogs";
+    import { EditDayDialog, DatePickerDialog } from "./lib/components/dialogs";
     import DatePicker from "./lib/components/date-picker";
     import IconButton from "./lib/components/icon-button";
     import Calendar from "./lib/components/calendar";
     import SettingsView from "./lib/components/settings";
     import ShiftCard from "./lib/components/shift";
+
+    /** @type {DatePickerDialog} */
+    let datePickerDialog;
+
+    /** @type {Calendar} */
+    let calendar;
 
     /** @type {Themes} */
     let currentTheme = "custom";
@@ -33,9 +39,6 @@
     let editMode_open = false;
     /** @type {number} - -2 will remove the custom shift from the database */
     let editMode_index = -1;
-
-    /** @type {Calendar} */
-    let calendar;
 
     /** @type {boolean} */
     let editDayDialog_open = false;
@@ -145,7 +148,12 @@
         <DatePicker
             style="margin: 0; width: 30rem;"
             bind:currentDate
-            on:currentdatechanged={() => setCurrentDate(null)}
+            on:click={async ({ detail }) => {
+                datePickerDialog.$on("submit", ({ detail }) => {
+                    setCurrentDate(detail);
+                });
+                datePickerDialog.open(detail.getFullYear(), detail.getMonth());
+            }}
         />
     {:else if view === "settings"}
         <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
@@ -248,6 +256,13 @@
         {/key}
     {/if}
 </footer>
+
+<DatePickerDialog
+    bind:this={datePickerDialog}
+    on:cancel={async () => {
+        datePickerDialog.close();
+    }}
+/>
 
 <style>
     :global(html, body) {

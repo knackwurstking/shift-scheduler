@@ -1,11 +1,6 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
     import { ripple } from "../../js/ripple";
     let _ripple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
-
-    import Dialog from "./Dialog.svelte";
 
     /** @type {string} */
     let _class = "";
@@ -13,34 +8,12 @@
 
     /** @type {Date} */
     export let currentDate;
-
-    /** @type {boolean} */
-    let picker = false;
 </script>
-
-{#if picker}
-    <Dialog
-        open={picker}
-        year={currentDate.getFullYear()}
-        month={currentDate.getMonth() + 1}
-        on:cancel={() => {
-            picker = false;
-        }}
-        on:submit={({ detail }) => {
-            currentDate = new Date(detail.year, detail.month - 1, currentDate.getDate());
-            dispatch("currentdatechanged", currentDate);
-            picker = false;
-        }}
-    />
-{/if}
 
 <button
     class={"date-picker--preview outline" + _class}
     {...$$restProps}
     use:_ripple
-    on:click={() => {
-        picker = true;
-    }}
 >
     <span>
         {currentDate.getFullYear()} / {(currentDate.getMonth() + 1).toString().padStart(2, "0")}
