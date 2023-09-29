@@ -2,7 +2,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import { createRipple } from "../../js/ripple";
+    import { ripple } from "../../js/ripple";
+    let _ripple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /**
      *
@@ -139,14 +140,12 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
+    use:_ripple
     on:click={async (ev) => {
         if (waitForTransition || pointerlock) return;
         // @ts-ignore
         for (const el of ev?.path || ev.composedPath() || []) {
             if (el.classList?.contains("day-content")) {
-                (async () => {
-                    createRipple(el, ev);
-                })();
                 const date = parseInt(el.getAttribute("data-value"), 10);
                 if (isNaN(date)) dispatch("click", null);
                 else {
