@@ -7,7 +7,6 @@
     import { ripple } from "../../js/ripple";
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
-    export let open = false;
     /** @type {Date} */
     export let date;
 
@@ -26,6 +25,18 @@
         localStorage.getItem("settings") || '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
     );
     $: settings && date && load();
+
+    /**
+     * 
+     * @param {Date} _date
+     */
+    export async function open(_date) {
+        date = _date;
+    }
+
+    export async function close() {
+        // TODO: ...
+    }
 
     async function load() {
         const data = (await db.get(date.getFullYear(), date.getMonth()))[db.getKeyFromDate(date)];

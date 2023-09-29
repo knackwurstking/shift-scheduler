@@ -24,6 +24,21 @@
     $: !date && year && month && setDate();
     $: date && parseDate();
 
+    /**
+     * 
+     * @param {number} _year
+     * @param {number} _month
+     */
+    export async function open(_year, _month) {
+      year = _year;
+      month = _month;
+      dialog.show()
+    }
+
+    export async function close() {
+        // TODO: ...
+    }
+
     async function setDate() {
         date = `${year}-${month}`;
     }
@@ -32,10 +47,6 @@
         const [y, m] = date.split("-", 2);
         year = parseInt(y, 10);
         month = parseInt(m, 10);
-    }
-
-    export async function on() {
-        if (dialog) dialog.show();
     }
 </script>
 

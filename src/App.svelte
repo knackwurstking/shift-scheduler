@@ -24,6 +24,9 @@
     /** @type {DatePickerDialog} */
     let datePickerDialog;
 
+    /** @type {EditDayDialog} */
+    let editDayDialog;
+
     /** @type {Calendar} */
     let calendar;
 
@@ -42,11 +45,6 @@
     let editMode_open = false;
     /** @type {number} - -2 will remove the custom shift from the database */
     let editMode_index = -1;
-
-    /** @type {boolean} */
-    let editDayDialog_open = false;
-    /** @type {Date} */
-    let editDayDialog_date;
 
     /** @type {Date} */
     let today = new Date();
@@ -117,25 +115,6 @@
     <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
 
-{#if editDayDialog_open}
-    <!-- TODO: Move dialogs to the bottom -->
-    <EditDayDialog
-        open={editDayDialog_open}
-        date={editDayDialog_date}
-        on:submit={async ({ detail }) => {
-            editDayDialog_open = false;
-
-            if (!detail.shift && !detail.note) {
-                await db.removeDataForDay(editDayDialog_date);
-            } else {
-                await db.setDataForDay(editDayDialog_date, detail.shift, detail.note);
-            }
-
-            calendar.reload();
-        }}
-    />
-{/if}
-
 <header class="container-fluid" style="font-size: 1rem;">
     <!-- Top app bar -->
 
@@ -153,9 +132,12 @@
             style="margin: 0; width: 30rem;"
             bind:currentDate
             on:click={async ({ detail }) => {
-                datePickerDialog.$on("submit", ({ detail }) => {
+                const onSubmit = async ({ detail }) => {
                     setCurrentDate(new Date(detail.year, detail.month));
-                });
+                    // TODO: i need to remove the submit handler
+                    datePickerDialog.close();
+                };
+                datePickerDialog.$on("submit", onSubmit);
                 datePickerDialog.open(detail.year, detail.month);
             }}
         />
@@ -219,8 +201,19 @@
 
                     calendar.reload();
                 } else if (detail) {
-                    editDayDialog_date = detail;
-                    editDayDialog_open = true;
+                    const onSubmit = async (ev) => {
+                        if (!detail.shift && !detail.note) {
+                            await db.removeDataForDay(detail);
+                        } else {
+                            await db.setDataForDay(detail, ev.detail.shift, ev.detail.note);
+                        }
+
+                        calendar.reload();
+                        // TODO: i need to remove the submit handler
+                        editDayDialog.close();
+                    };
+                    editDayDialog.$on("submit", onSubmit);
+                    editDayDialog.open(detail);
                 }
             }}
             on:currentdatechange={({ detail }) => (currentDate = detail)}
@@ -266,6 +259,10 @@
     on:cancel={async () => {
         datePickerDialog.close();
     }}
+/>
+
+<EditDayDialog
+    bind:this={editDayDialog}
 />
 
 <style>
