@@ -62,10 +62,6 @@
         opacity: 0.5;
     }
 
-    :global(div.day-content.disabled .ripple) {
-        display: none;
-    }
-
     div.day-content.today {
         color: var(--primary);
         border-color: var(--primary);

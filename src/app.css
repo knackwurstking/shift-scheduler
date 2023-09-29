@@ -11,3 +11,7 @@ dialog > article {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+div.day-content.disabled .ripple {
+    display: none;
+}
