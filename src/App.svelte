@@ -132,12 +132,6 @@
             style="margin: 0; width: 30rem;"
             bind:currentDate
             on:click={async ({ detail }) => {
-                const onSubmit = async ({ detail }) => {
-                    setCurrentDate(new Date(detail.year, detail.month));
-                    // TODO: i need to remove the submit handler
-                    datePickerDialog.close();
-                };
-                datePickerDialog.$on("submit", onSubmit);
                 datePickerDialog.open(detail.year, detail.month);
             }}
         />
@@ -201,18 +195,6 @@
 
                     calendar.reload();
                 } else if (detail) {
-                    const onSubmit = async (ev) => {
-                        if (!detail.shift && !detail.note) {
-                            await db.removeDataForDay(detail);
-                        } else {
-                            await db.setDataForDay(detail, ev.detail.shift, ev.detail.note);
-                        }
-
-                        calendar.reload();
-                        // TODO: i need to remove the submit handler
-                        editDayDialog.close();
-                    };
-                    editDayDialog.$on("submit", onSubmit);
                     editDayDialog.open(detail);
                 }
             }}
@@ -259,10 +241,24 @@
     on:cancel={async () => {
         datePickerDialog.close();
     }}
+    on:submit={async ({ detail }) => {
+        setCurrentDate(new Date(detail.year, detail.month));
+        datePickerDialog.close();
+    }}
 />
 
 <EditDayDialog
     bind:this={editDayDialog}
+    on:submit={async ({ detail }) => {
+        if (!detail.shift && !detail.note) {
+            db.removeDataForDay(detail.date);
+        } else {
+            db.setDataForDay(detail.date, detail.shift, detail.note);
+        }
+
+        calendar.reload();
+        editDayDialog.close();
+    }}
 />
 
 <style>
