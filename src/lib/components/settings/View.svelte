@@ -1,7 +1,11 @@
 <script>
+    // @ts-ignore
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
+    // @ts-ignore
     import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
+    // @ts-ignore
     import FaUpload from "svelte-icons/fa/FaUpload.svelte";
+    // @ts-ignore
     import FaDownload from "svelte-icons/fa/FaDownload.svelte";
 
     import Shift, { ShiftAdd } from "../shift";

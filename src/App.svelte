@@ -4,9 +4,13 @@
     import { App } from "@capacitor/app";
     import { onMount } from "svelte";
 
+    // @ts-ignore
     import MdModeEdit from "svelte-icons/md/MdModeEdit.svelte";
+    // @ts-ignore
     import MdToday from "svelte-icons/md/MdToday.svelte";
+    // @ts-ignore
     import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
+    // @ts-ignore
     import TiSpanner from "svelte-icons/ti/TiSpanner.svelte";
 
     import * as db from "./lib/js/db";

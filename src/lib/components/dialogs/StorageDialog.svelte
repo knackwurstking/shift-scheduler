@@ -2,7 +2,9 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    // @ts-ignore
     import IoIosClose from "svelte-icons/io/IoIosClose.svelte";
+    // @ts-ignore
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
 
     import IconButton from "../icon-button";
