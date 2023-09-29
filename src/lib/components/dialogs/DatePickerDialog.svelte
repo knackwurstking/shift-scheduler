@@ -31,7 +31,7 @@
      */
     export async function open(_year, _month) {
       year = _year;
-      month = _month;
+      month = _month + 1;
       dialog.show()
     }
 
@@ -97,7 +97,7 @@
         <button
           class="secondary"
           use:_secondaryRipple
-          on:click={async () => dispatch("cancel", { year, month })}
+          on:click={async () => dispatch("cancel", { year, month: month + 1 })}
         >
             Cancel
         </button>
@@ -107,7 +107,7 @@
             use:_primaryRipple
             on:click={async () => {
                 if (invalidMonth || invalidYear) return;
-                dispatch("submit", { year, month });
+                dispatch("submit", { year, month: month - 1 });
             }}
         >
             OK

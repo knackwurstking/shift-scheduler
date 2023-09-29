@@ -1,4 +1,7 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+
     import { ripple } from "../../js/ripple";
     let _ripple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
@@ -14,6 +17,7 @@
     class={"date-picker--preview outline" + _class}
     {...$$restProps}
     use:_ripple
+    on:click={() => dispatch("click", { year: currentDate.getFullYear(), month: currentDate.getMonth() })}
 >
     <span>
         {currentDate.getFullYear()} / {(currentDate.getMonth() + 1).toString().padStart(2, "0")}

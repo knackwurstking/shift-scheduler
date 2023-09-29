@@ -100,10 +100,10 @@ export function getKeyFromDate(date) {
 /**
  *
  * @param {Date} date
- * @returns {Promise<StorageData | null>}
+ * @returns {Promise<StorageData>}
  */
-export function getDataForDay(date) {
-    const data = get(date.getFullYear(), date.getMonth());
+export async function getDataForDay(date) {
+    const data = await get(date.getFullYear(), date.getMonth());
     return data[getKeyFromDate(date)] || { shift: null, note: "" };
 }
 

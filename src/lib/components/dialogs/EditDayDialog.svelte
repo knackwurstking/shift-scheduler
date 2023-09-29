@@ -53,10 +53,12 @@
 
 <dialog bind:this={dialog}>
     <article>
-        <h2 class="title">
-            {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
-            / {date.getDate().toString().padStart(2, "0")}
-        </h2>
+        {#if !!date}
+            <h2 class="title">
+                {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
+                / {date.getDate().toString().padStart(2, "0")}
+            </h2>
+        {/if}
 
         <select bind:value={current}>
             <option value="-1" selected={current === "-1"}

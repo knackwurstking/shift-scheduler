@@ -251,13 +251,13 @@
     bind:this={editDayDialog}
     on:submit={async ({ detail }) => {
         if (!detail.shift && !detail.note) {
-            db.removeDataForDay(detail.date);
+            await db.removeDataForDay(detail.date);
         } else {
-            db.setDataForDay(detail.date, detail.shift, detail.note);
+            await db.setDataForDay(detail.date, detail.shift, detail.note);
         }
 
-        calendar.reload();
         editDayDialog.close();
+        calendar.reload();
     }}
 />
 

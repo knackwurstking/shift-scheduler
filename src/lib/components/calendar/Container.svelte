@@ -2,9 +2,6 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    import { ripple } from "../../js/ripple";
-    let _ripple = ripple({ usePointer: true });
-
     /**
      *
      * @param {Date} date
@@ -140,7 +137,6 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
-    use:_ripple
     on:click={async (ev) => {
         if (waitForTransition || pointerlock) return;
         // @ts-ignore
