@@ -27,7 +27,6 @@
     let settings = JSON.parse(
         localStorage.getItem("settings") || '{ "shifts": [], "startDate": "", "shiftRhythm": []}'
     );
-    $: settings && date && load();
 
     /**
      * 
@@ -35,19 +34,18 @@
      */
     export async function open(_date) {
         date = _date;
-        dialog.show();
-    }
 
-    export async function close() {
-        dialog.close();
-    }
-
-    async function load() {
         const data = (await db.get(date.getFullYear(), date.getMonth()))[db.getKeyFromDate(date)];
         defaultShift = utils.calcShiftStep(date);
         shift = data?.shift || null;
         if (shift) current = settings.shifts.findIndex((s) => s.name === shift?.name).toString();
         note = data?.note || "";
+
+        dialog.show();
+    }
+
+    export async function close() {
+        dialog.close();
     }
 </script>
 
