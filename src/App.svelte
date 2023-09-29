@@ -49,19 +49,6 @@
     /** @type {Date} */
     let today = new Date();
 
-    $: {
-        if (view === "calendar") {
-            settings.load().then(() => {
-                currentTheme = settings.data.currentTheme;
-                if (settings.data.mode !== "auto") {
-                    document.documentElement.setAttribute("data-theme", settings.data.mode);
-                } else {
-                    document.documentElement.removeAttribute("data-theme");
-                }
-            });
-        }
-    }
-
     $: calendar && initCalendar();
 
     async function initCalendar() {
@@ -83,6 +70,10 @@
         editMode_open = false;
         viewStack = [...viewStack, v];
         view = v;
+
+        if (view === "calendar") {
+            loadTheme();
+        }
     }
 
     /**
@@ -102,12 +93,25 @@
         return settings.data.shifts[editMode_index] || null;
     }
 
+    async function loadTheme() {
+        settings.load().then(() => {
+            currentTheme = settings.data.currentTheme;
+            if (settings.data.mode !== "auto") {
+                document.documentElement.setAttribute("data-theme", settings.data.mode);
+            } else {
+                document.documentElement.removeAttribute("data-theme");
+            }
+        });
+    }
+
     // TODO: need to update today after 12:00 AM
 
     onMount(async () => {
         if (utils.isAndroid()) {
             App.addListener("backButton", () => goBackInHistory());
         }
+
+        loadTheme();
     });
 </script>
 
