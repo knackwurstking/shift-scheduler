@@ -29,12 +29,15 @@
 
     /** @type {Themes} */
     let currentTheme = "custom";
+
     /** @type {Views} */
     let view = "calendar";
     /** @type {Views[]}*/
     let viewStack = [view];
+
     /** @type {Date} */
     let currentDate = new Date();
+
     /** @type {boolean} */
     let editMode_open = false;
     /** @type {number} - -2 will remove the custom shift from the database */
@@ -63,11 +66,11 @@
 
     $: calendar && initCalendar();
 
-    function initCalendar() {
+    async function initCalendar() {
         calendar.set(currentDate);
     }
 
-    function goBackInHistory() {
+    async function goBackInHistory() {
         if (viewStack.length === 1) return;
         viewStack.pop();
         viewStack = viewStack;
@@ -78,7 +81,7 @@
      *
      * @param {Views} v
      */
-    function goTo(v) {
+    async function goTo(v) {
         editMode_open = false;
         viewStack = [...viewStack, v];
         view = v;
@@ -88,15 +91,15 @@
      *
      * @param {Date | null} date
      */
-    function setCurrentDate(date) {
+    async function setCurrentDate(date) {
         if (date) currentDate = date;
         calendar.set(currentDate);
     }
 
     /**
-     * @returns {import("./lib/js/settings").Shift | "reset"}
+     * @returns {Promise<import("./lib/js/settings").Shift | "reset">}
      */
-    function getEditModeShift() {
+    async function getEditModeShift() {
         if (editMode_index === -2) return "reset";
         return settings.data.shifts[editMode_index] || null;
     }
@@ -195,7 +198,7 @@
             bind:this={calendar}
             on:click={async ({ detail }) => {
                 if (detail && editMode_open) {
-                    let shift = getEditModeShift();
+                    let shift = await getEditModeShift();
                     if (!shift) {
                         return;
                     }
