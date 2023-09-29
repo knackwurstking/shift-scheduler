@@ -63,6 +63,14 @@ export function validateDBData(data) {
 }
 
 /**
+ *
+ * @param {Date} date
+ */
+export function getKeyFromDate(date) {
+    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+}
+
+/**
  * @returns {Date[]}
  */
 export function list() {
@@ -87,14 +95,6 @@ export function list() {
     }
 
     return keys;
-}
-
-/**
- *
- * @param {Date} date
- */
-export function getKeyFromDate(date) {
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 }
 
 /**
@@ -146,7 +146,7 @@ export async function remove(year, month) {
  */
 export async function setDataForDay(date, shift, note) {
     const data = await get(date.getFullYear(), date.getMonth());
-    data[await getKeyFromDate(date)] = { shift: shift, note: note };
+    data[getKeyFromDate(date)] = { shift: shift, note: note };
     await set(date.getFullYear(), date.getMonth(), data);
 }
 
@@ -156,7 +156,7 @@ export async function setDataForDay(date, shift, note) {
  */
 export async function removeDataForDay(date) {
     const data = await get(date.getFullYear(), date.getMonth());
-    delete data[await getKeyFromDate(date)];
+    delete data[getKeyFromDate(date)];
     await set(date.getFullYear(), date.getMonth(), data);
 }
 
