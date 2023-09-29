@@ -25,18 +25,18 @@
     $: date && parseDate();
 
     /**
-     * 
+     *
      * @param {number} _year
      * @param {number} _month
      */
     export async function open(_year, _month) {
-      year = _year;
-      month = _month + 1;
-      dialog.show()
+        year = _year;
+        month = _month + 1;
+        dialog.show();
     }
 
     export async function close() {
-      dialog.close();
+        dialog.close();
     }
 
     async function setDate() {
@@ -95,9 +95,9 @@
         {/if}
 
         <button
-          class="secondary"
-          use:_secondaryRipple
-          on:click={async () => dispatch("cancel", { year, month: month + 1 })}
+            class="secondary"
+            use:_secondaryRipple
+            on:click={async () => dispatch("cancel", { year, month: month + 1 })}
         >
             Cancel
         </button>

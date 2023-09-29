@@ -6,8 +6,8 @@ export { default } from "./View.svelte";
  *
  * @typedef Themes
  * @type {import("../../js/settings").Themes}
- * 
- * @typedef Shift 
+ *
+ * @typedef Shift
  * @type {import("../../js/settings").Shift}
  *
  * @typedef Settings

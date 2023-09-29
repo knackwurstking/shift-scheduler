@@ -1,45 +1,55 @@
 <script>
     import "./app.css";
 
-    import { onMount } from "svelte";
     import { App } from "@capacitor/app";
+    import { onMount } from "svelte";
 
-    import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
-    import TiSpanner from "svelte-icons/ti/TiSpanner.svelte";
     import MdModeEdit from "svelte-icons/md/MdModeEdit.svelte";
     import MdToday from "svelte-icons/md/MdToday.svelte";
+    import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
+    import TiSpanner from "svelte-icons/ti/TiSpanner.svelte";
 
-    //import * as ripple from "./lib/js/ripple";
-    import * as utils from "./lib/js/utils";
     import * as db from "./lib/js/db";
     import * as settings from "./lib/js/settings";
+    import * as utils from "./lib/js/utils";
 
-    import { EditDayDialog, DatePickerDialog } from "./lib/components/dialogs";
-    import DatePicker from "./lib/components/date-picker";
-    import IconButton from "./lib/components/icon-button";
     import Calendar from "./lib/components/calendar";
+    import DatePicker from "./lib/components/date-picker";
+    import { DatePickerDialog, EditDayDialog } from "./lib/components/dialogs";
+    import IconButton from "./lib/components/icon-button";
     import SettingsView from "./lib/components/settings";
     import ShiftCard from "./lib/components/shift";
 
     /** @type {DatePickerDialog} */
     let datePickerDialog;
-
     /** @type {EditDayDialog} */
     let editDayDialog;
 
+
     /** @type {Calendar} */
     let calendar;
+    $: calendar && _initCalendar();
+
+    function _initCalendar() {
+        calendar.set(currentDate);
+    }
+
 
     /** @type {Themes} */
     let currentTheme = "custom";
 
-    /** @type {Views} */
-    let view = "calendar";
-    /** @type {Views[]}*/
-    let viewStack = [view];
 
     /** @type {Date} */
     let currentDate = new Date();
+
+    /**
+     * @param {Date | null} date
+     */
+    async function setCurrentDate(date) {
+        if (date) currentDate = date;
+        calendar.set(currentDate);
+    }
+
 
     /** @type {boolean} */
     let editMode_open = false;
@@ -49,20 +59,11 @@
     /** @type {Date} */
     let today = new Date();
 
-    $: calendar && initCalendar();
 
-    async function initCalendar() {
-        calendar.set(currentDate);
-    }
-
-    /**
-     *
-     * @param {Date | null} date
-     */
-    async function setCurrentDate(date) {
-        if (date) currentDate = date;
-        calendar.set(currentDate);
-    }
+    /** @type {Views} */
+    let view = "calendar";
+    /** @type {Views[]}*/
+    let viewStack = [view];
 
     /**
      *
@@ -84,6 +85,7 @@
         viewStack = viewStack;
         view = viewStack[viewStack.length - 1];
     }
+
     
     /**
      * @returns {Promise<import("./lib/js/settings").Shift | "reset">}
@@ -266,19 +268,6 @@
 />
 
 <style>
-    :global(html, body) {
-        overflow: hidden;
-    }
-
-    :global(button) {
-        position: relative;
-        overflow: hidden;
-    }
-
-    :global(*) {
-        box-sizing: border-box;
-    }
-
     header {
         position: relative;
         height: 60px;

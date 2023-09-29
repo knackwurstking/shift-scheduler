@@ -29,7 +29,7 @@
     );
 
     /**
-     * 
+     *
      * @param {Date} _date
      */
     export async function open(_date) {

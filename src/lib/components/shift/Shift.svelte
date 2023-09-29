@@ -18,12 +18,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-    class="card"
-    class:active
-    use:_primaryRipple
-    on:click
->
+<div class="card" class:active use:_primaryRipple on:click>
     <div class="background" style={`background-color: ${color || "transparent"};`} />
     <span class="name">{name}</span><br />
     <span class="short-name" class:visible>{shortName || name[0]}</span>

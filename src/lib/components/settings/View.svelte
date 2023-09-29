@@ -1,8 +1,8 @@
 <script>
     import IoIosTrash from "svelte-icons/io/IoIosTrash.svelte";
     import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
-    import FaUpload from 'svelte-icons/fa/FaUpload.svelte'
-    import FaDownload from 'svelte-icons/fa/FaDownload.svelte'
+    import FaUpload from "svelte-icons/fa/FaUpload.svelte";
+    import FaDownload from "svelte-icons/fa/FaDownload.svelte";
 
     import Shift, { ShiftAdd } from "../shift";
     import { EditRhythmDialog, AddShiftDialog, EditShiftDialog, StorageDialog } from "../dialogs";
@@ -269,10 +269,7 @@
                     on:click={async () => {
                         const data = await db.getAll();
                         try {
-                            await db.exportAllData(
-                                data,
-                                utils.isAndroid() ? "android" : "browser"
-                            );
+                            await db.exportAllData(data, utils.isAndroid() ? "android" : "browser");
                         } catch (err) {
                             alert(`Data download failed!\n${err}`);
                         }

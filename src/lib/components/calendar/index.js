@@ -6,7 +6,7 @@ export { default } from "./Calendar.svelte";
  *  date: Date,
  *  data: DayData,
  * }}
- * 
+ *
  * @typedef DayData
  * @type {{
  *  shift: import("../settings").Shift,

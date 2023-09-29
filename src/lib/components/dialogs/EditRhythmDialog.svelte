@@ -55,11 +55,7 @@
 
             <div class="spacer" />
 
-            <button
-                type="submit"
-                use:_primaryRipple
-                on:click={() => dispatch("submit", rhythm)}
-            >
+            <button type="submit" use:_primaryRipple on:click={() => dispatch("submit", rhythm)}>
                 OK
             </button>
         </div>

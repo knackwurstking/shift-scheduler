@@ -1,4 +1,3 @@
-
 import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
@@ -195,10 +194,7 @@ export async function exportAllData(data, platform = "browser") {
  * @param {{ [key: string]: DBData }} data
  */
 async function _exportBrowser(data) {
-    const blob = new Blob(
-        [JSON.stringify(data)],
-        { type: "octet/stream" }
-    );
+    const blob = new Blob([JSON.stringify(data)], { type: "octet/stream" });
 
     const a = document.createElement("a");
 
@@ -209,7 +205,7 @@ async function _exportBrowser(data) {
 }
 
 /**
- * 
+ *
  * @param {{ [key: string]: DBData }} data
  */
 async function _exportAndroid(data) {

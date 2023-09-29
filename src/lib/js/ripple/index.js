@@ -1,4 +1,7 @@
-export function createRipple(el, ev, { duration = 300, color = "var(--ripple-color, rgba(255, 255, 255, 0.7))" } = {}) {
+export function createRipple(
+    el, ev,
+    { duration = 300, color = "var(--ripple-color, rgba(255, 255, 255, 0.7))" } = {}
+) {
     const rect = el.getBoundingClientRect();
 
     const diameter = Math.max(rect.width, rect.height);
@@ -19,31 +22,40 @@ export function createRipple(el, ev, { duration = 300, color = "var(--ripple-col
 
     el.append(span);
 
-    const animation = span.animate([
-        { // from
-            transform: "scale(.7)",
-            opacity: 0.5,
-            filter: "blur(2px)",
-        },
-        { // to
-            transform: "scale(4)",
-            opacity: 0,
-            filter: "blur(5px)",
-        },
-    ], duration);
+    const animation = span.animate(
+        [
+            {
+                // from
+                transform: "scale(.7)",
+                opacity: 0.5,
+                filter: "blur(2px)",
+            },
+            {
+                // to
+                transform: "scale(4)",
+                opacity: 0,
+                filter: "blur(5px)",
+            },
+        ],
+        duration
+    );
 
     animation.onfinish = () => span.remove();
 }
 
 /**
- * 
+ *
  * @param {{
  *  duration?: number;
  *  color?: string;
  *  usePointer?: boolean;
- * }} options 
+ * }} options
  */
-export function ripple({ duration = 600, color = "var(--ripple-color, rgba(255, 255, 255, 0.7))", usePointer = false } = {}) {
+export function ripple({
+    duration = 600,
+    color = "var(--ripple-color, rgba(255, 255, 255, 0.7))",
+    usePointer = false,
+} = {}) {
     return (el) => {
         const handler = async (ev) => createRipple(el, ev, { duration, color });
 
@@ -54,7 +66,7 @@ export function ripple({ duration = 600, color = "var(--ripple-color, rgba(255, 
             destroy() {
                 if (usePointer) el.removeEventListener("pointerdown", handler);
                 else el.removeEventListener("click", handler);
-            }
+            },
         };
     };
 }
