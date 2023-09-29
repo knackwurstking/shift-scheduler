@@ -156,7 +156,7 @@
                 datePickerDialog.$on("submit", ({ detail }) => {
                     setCurrentDate(new Date(detail.year, detail.month));
                 });
-                datePickerDialog.open(detail.getFullYear(), detail.getMonth());
+                datePickerDialog.open(detail.year, detail.month);
             }}
         />
     {:else if view === "settings"}
