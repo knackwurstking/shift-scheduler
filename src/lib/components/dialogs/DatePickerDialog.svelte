@@ -10,8 +10,6 @@
     /** @type {HTMLDialogElement} */
     let dialog;
 
-    /** @type {boolean} */
-    let open;
     /** @type {number} */
     let year;
     /** @type {number} */
@@ -41,7 +39,7 @@
     }
 </script>
 
-<dialog bind:this={dialog} class="date-picker--dialog" {open}>
+<dialog bind:this={dialog}>
     <article>
         {#if utils.isAndroid()}
             <label>
@@ -85,7 +83,11 @@
             </div>
         {/if}
 
-        <button class="secondary" use:_secondaryRipple on:click={async () => dispatch("cancel")}>
+        <button
+          class="secondary"
+          use:_secondaryRipple
+          on:click={async () => dispatch("cancel", { year, month })}
+        >
             Cancel
         </button>
 

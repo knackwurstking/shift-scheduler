@@ -154,7 +154,7 @@
             bind:currentDate
             on:click={async ({ detail }) => {
                 datePickerDialog.$on("submit", ({ detail }) => {
-                    setCurrentDate(detail);
+                    setCurrentDate(new Date(detail.year, detail.month));
                 });
                 datePickerDialog.open(detail.getFullYear(), detail.getMonth());
             }}
