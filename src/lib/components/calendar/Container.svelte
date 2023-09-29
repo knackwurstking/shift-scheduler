@@ -3,7 +3,7 @@
     const dispatch = createEventDispatcher();
 
     import { ripple } from "../../js/ripple";
-    let _ripple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
+    let _ripple = ripple({ usePointer: true });
 
     /**
      *
