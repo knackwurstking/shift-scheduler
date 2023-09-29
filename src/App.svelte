@@ -118,6 +118,7 @@
 </svelte:head>
 
 {#if editDayDialog_open}
+    <!-- TODO: Move dialogs to the bottom -->
     <EditDayDialog
         open={editDayDialog_open}
         date={editDayDialog_date}
