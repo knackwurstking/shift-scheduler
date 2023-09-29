@@ -1,4 +1,4 @@
-export function createRipple(el, ev, { duration = 600, color = "var(--ripple-color, rgba(255, 255, 255, 0.7))" } = {}) {
+export function createRipple(el, ev, { duration = 300, color = "var(--ripple-color, rgba(255, 255, 255, 0.7))" } = {}) {
     const rect = el.getBoundingClientRect();
 
     const diameter = Math.max(rect.width, rect.height);
