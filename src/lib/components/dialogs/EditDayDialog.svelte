@@ -79,6 +79,7 @@
             use:_primaryRipple
             on:click={() =>
                 dispatch("submit", {
+                    date: date,
                     shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
                     note: note,
                 })}
