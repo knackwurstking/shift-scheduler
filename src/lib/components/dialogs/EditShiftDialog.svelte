@@ -6,11 +6,14 @@
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
     let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
+    /** @type {HTMLDialogElement} */
+    let dialog;
+
     /** @type {import("../settings").Shift[]} */
-    export let shifts = [];
+    let shifts = [];
 
     /** @type {string} */
-    export let selected = "0";
+    let selected = "0";
 
     let hidden = !shifts[selected].visible;
     $: typeof hidden === "boolean" && updateVisible();
@@ -18,9 +21,23 @@
     function updateVisible() {
         shifts[parseInt(selected)].visible = !hidden;
     }
+
+    /**
+     * @param {import("../settings").Shift[]} _shifts
+     * @param {string} _selected
+     */
+    export async function open(_shifts, _selected) {
+        shifts = _shifts;
+        selected = _selected;
+        dialog.show();
+    }
+
+    export async function close() {
+        dialog.close();
+    }
 </script>
 
-<dialog open>
+<dialog bind:this={dialog}>
     <article>
         <select name="shiftsToEdit" bind:value={selected}>
             {#each shifts as shift, index}

@@ -74,8 +74,7 @@
                         <Shift
                             {...item}
                             on:click={async () => {
-                                editShiftDialogSelected = index.toString();
-                                editShiftDialogOpen = true;
+                                editShiftDialog.open(data.shifts, index.toString());
                             }}
                         />
                     {/each}
@@ -302,8 +301,6 @@
 </div>
 
 <EditShiftDialog
-    shifts={data.shifts}
-    selected={editShiftDialogSelected}
     on:submit={async ({ detail }) => {
         editShiftDialog.close();
 
