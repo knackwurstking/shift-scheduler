@@ -154,6 +154,7 @@ export async function setDataForDay(year, month, key, shift, note) {
 export async function removeDataForDay(year, month, key) {
     const data = await get(year, month);
     delete data[key];
+    if (!Object.keys(data).length) return;
     await set(year, month, data);
 }
 
