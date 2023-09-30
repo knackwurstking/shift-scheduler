@@ -110,7 +110,14 @@
         });
     }
 
-    // TODO: need to update today after 12:00 AM
+    async function updateToday() {
+        const today = new Date();
+        setTimeout(() => {
+            console.debug("update today: reload calendar");
+            calendar.reload();
+            updateToday();
+        }, (new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 0, 0, 0, 0)).getMilliseconds() - (new Date()).getMilliseconds());
+    }
 
     onMount(async () => {
         if (utils.isAndroid()) {
@@ -118,6 +125,7 @@
         }
 
         loadTheme();
+        updateToday();
     });
 </script>
 

@@ -47,6 +47,7 @@
         justify-content: center;
         align-items: center;
 
+        border: none;
         box-shadow: var(--button-box-shadow);
     }
 </style>
