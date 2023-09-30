@@ -11,10 +11,12 @@
 
     import * as db from "../../js/db";
 
+    let dialog
+
     /** @type {number} */
-    export let year;
+    let year;
     /** @type {number} */
-    export let month;
+    let month;
 
     /**
      *
@@ -26,9 +28,7 @@
      */
     let data;
 
-    $: year, month && initData();
-
-    async function initData() {
+    async function loadData() {
         data = [];
         for (let [key, value] of Object.entries(await db.get(year, month))) {
             data.push({
@@ -38,9 +38,24 @@
         }
         data = data;
     }
+
+    /**
+     * @param {number} _year
+     * @param {number} _month
+     */
+    export async function open(_year, _month) {
+        year = _year;
+        month = _month;
+        await loadData();
+        dialog.show();
+    }
+
+    export async function close() {
+        dialog.close();
+    }
 </script>
 
-<dialog open>
+<dialog bind:this={dialog}>
     <article>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -71,8 +86,9 @@
                                 <td class="note"><code>{item.note || ""}</code></td>
                                 <td class="delete">
                                     <IconButton
-                                        on:click={() => {
-                                            // TODO: delete entry and reload table
+                                        on:click={async () => {
+                                            await db.removeDataForDay(new Date(item.key));
+                                            loadData();
                                         }}
                                     >
                                         <IoIosTrash />
