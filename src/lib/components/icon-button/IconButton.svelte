@@ -39,11 +39,14 @@
         position: relative;
         overflow: hidden;
 
-        height: 42px;
-        width: 42px;
+        height: 1.75rem;
+        width: 1.75rem;
         padding: 4px;
 
-        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         box-shadow: var(--button-box-shadow);
     }
 </style>
