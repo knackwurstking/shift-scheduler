@@ -87,7 +87,6 @@
                                 <td class="delete">
                                     <IconButton
                                         on:click={async () => {
-                                            console.debug(year, month, item.key);
                                             await db.removeDataForDay(year, month, item.key);
                                             await loadData();
                                         }}

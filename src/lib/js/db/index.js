@@ -152,7 +152,6 @@ export async function setDataForDay(year, month, key, shift, note) {
  * @param {string} key 
  */
 export async function removeDataForDay(year, month, key) {
-    console.debug(year, month, key);
     const data = await get(year, month);
     delete data[key];
     await set(year, month, data);
