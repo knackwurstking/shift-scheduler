@@ -15,14 +15,14 @@
     /** @type {number} */
     let month;
     /** @type {string} */
-    let date;
+    let dateString;
     /** @type {boolean} */
     let invalidYear = false;
     /** @type {boolean} */
     let invalidMonth = false;
 
-    $: !date && year && month && setDate();
-    $: date && parseDate();
+    $: !dateString && year && month && setDate();
+    $: dateString && parseDate();
 
     /**
      *
@@ -40,11 +40,11 @@
     }
 
     async function setDate() {
-        date = `${year}-${month}`;
+        dateString = `${year}-${month}`;
     }
 
     async function parseDate() {
-        const [y, m] = date.split("-", 2);
+        const [y, m] = dateString.split("-", 2);
         year = parseInt(y, 10);
         month = parseInt(m, 10);
     }
@@ -55,7 +55,7 @@
         {#if utils.isAndroid()}
             <label>
                 Pick a Date
-                <input type="month" bind:value={date} />
+                <input type="month" bind:value={dateString} />
             </label>
         {:else}
             <div>
