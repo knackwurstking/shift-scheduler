@@ -8,17 +8,28 @@
     import { ripple } from "../../js/ripple";
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
+    /** @type {HTMLDialogElement} */
+    let dialog;
+
     /**
      * @type {import("../settings").Shift[]}
      */
-    export let shifts;
+    let shifts;
     /**
      * @type {number[]}
      */
-    export let rhythm;
+    let rhythm;
+
+    export async function open() {
+        // ...
+    }
+
+    export async function close() {
+        dialog.close();
+    }
 </script>
 
-<dialog open>
+<dialog bind:this={dialog}>
     <article>
         <div>
             <h6>Shift Rhythm</h6>
