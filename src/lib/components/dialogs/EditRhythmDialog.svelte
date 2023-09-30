@@ -20,8 +20,14 @@
      */
     let rhythm;
 
-    export async function open() {
-        // ...
+    /**
+     * @param {import("../settings").Shift[]} _shifts
+     * @param {number[]} _rhythm
+     */
+    export async function open(_shifts, _rhythm) {
+        shifts = _shifts;
+        rhythm = _rhythm;
+        dialog.show();
     }
 
     export async function close() {

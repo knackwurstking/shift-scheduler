@@ -103,7 +103,7 @@
                     class="secondary"
                     use:_secondaryRipple
                     on:click={async () => {
-                        editShiftRhythmDialogOpen = true;
+                        editRhythmDialog.open(data.shifts, data.shiftRhythm);
                     }}
                 >
                     Edit
@@ -312,8 +312,6 @@
 />
 
 <EditRhythmDialog
-    shifts={data.shifts}
-    rhythm={data.shiftRhythm}
     on:submit={async ({ detail }) => {
         editRhythmDialog.close();
 
