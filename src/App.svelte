@@ -206,7 +206,7 @@
 
                     calendar.reload();
                 } else if (detail) {
-                    editDayDialog.open(detail);
+                    editDayDialog.open(detail.getFullYear(), detail.getMonth(), detail.getDate());
                 }
             }}
             on:currentdatechange={({ detail }) => (currentDate = detail)}
@@ -261,12 +261,12 @@
 <EditDayDialog
     bind:this={editDayDialog}
     on:submit={async ({ detail }) => {
-        const key = `${detail.date.getFullYear()}-${detail.date.getMonth()}-${detail.date.getDate()}`;
+        const key = `${detail.date.year}-${detail.date.month}-${detail.date.date}`;
 
         if (!detail.shift && !detail.note) {
-            await db.removeDataForDay(detail.date.getFullYear(), detail.date.getMonth(), key);
+            await db.removeDataForDay(detail.date.year, detail.date.month, key);
         } else {
-            await db.setDataForDay(detail.date.getFullYear(), detail.date.getMonth(), key, detail.shift, detail.note);
+            await db.setDataForDay(detail.date.year, detail.date.month, key, detail.shift, detail.note);
         }
 
         editDayDialog.close();

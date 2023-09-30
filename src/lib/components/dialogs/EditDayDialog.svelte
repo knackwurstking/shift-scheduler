@@ -10,7 +10,11 @@
     /** @type {HTMLDialogElement} */
     let dialog;
 
-    /** @type {Date} */
+    /** @type {number} */
+    let year;
+    /** @type {number} */
+    let month;
+    /** @type {number} */
     let date;
 
     /** @type {import("../settings").Shift | null} */
@@ -29,14 +33,17 @@
     );
 
     /**
-     *
-     * @param {Date} _date
+     * @param {number} _year
+     * @param {number} _month
+     * @param {number} _date
      */
-    export async function open(_date) {
+    export async function open(_year, _month, _date) {
+        year = _year;
+        month = _month;
         date = _date;
 
-        const data = (await db.get(date.getFullYear(), date.getMonth()))[`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`];
-        defaultShift = utils.calcShiftStep(date);
+        const data = (await db.get(year, month))[`${year}-${month}-${date}`];
+        defaultShift = utils.calcShiftStep(new Date(year, month, date));
         shift = data?.shift || null;
         if (shift) current = settings.shifts.findIndex((s) => s.name === shift?.name).toString();
         note = data?.note || "";
@@ -53,8 +60,8 @@
     <article>
         {#if !!date}
             <h2 class="title">
-                {date.getFullYear()} / {(date.getMonth() + 1).toString().padStart(2, "0")}
-                / {date.getDate().toString().padStart(2, "0")}
+                {year} / {(month + 1).toString().padStart(2, "0")}
+                / {date.toString().padStart(2, "0")}
             </h2>
         {/if}
 
@@ -79,7 +86,7 @@
             use:_primaryRipple
             on:click={() =>
                 dispatch("submit", {
-                    date: date,
+                    date: { year, month, date },
                     shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
                     note: note,
                 })}
