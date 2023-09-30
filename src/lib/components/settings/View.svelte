@@ -22,16 +22,16 @@
 
     /** @type {StorageDialog} */
     let storageDialog;
+    /** @type {AddShiftDialog} */
+    let addShiftDialog;
+    /** @type {EditShiftDialog} */
+    let editShiftDialog;
+    /** @type {EditRhythmDialog} */
+    let editRhythmDialog;
 
     /** @type {import(".").Settings} */
     let data;
     $: (!data && initSettings()) || save();
-
-    let addShiftDialogOpen = false;
-    let editShiftRhythmDialogOpen = false;
-    let editShiftDialogOpen = false;
-    /** @type {string} */
-    let editShiftDialogSelected;
 
     let themes = ["custom", "picocss"];
 
@@ -63,49 +63,6 @@
 </svelte:head>
 
 <div class="_container">
-    {#if addShiftDialogOpen}
-        <AddShiftDialog
-            on:cancel={async () => (addShiftDialogOpen = false)}
-            on:submit={async ({ detail }) => {
-                addShiftDialogOpen = false;
-
-                let id = 0;
-                data.shifts.forEach((shift) => {
-                    if (shift.id > id) id = shift.id;
-                });
-                detail.id = id + 1;
-
-                if (!detail.name) {
-                    return;
-                }
-
-                data.shifts = [...data.shifts, detail];
-            }}
-        />
-    {/if}
-
-    {#if editShiftDialogOpen}
-        <EditShiftDialog
-            shifts={data.shifts}
-            selected={editShiftDialogSelected}
-            on:submit={async ({ detail }) => {
-                editShiftDialogOpen = false;
-                data.shifts = detail;
-            }}
-        />
-    {/if}
-
-    {#if editShiftRhythmDialogOpen}
-        <EditRhythmDialog
-            shifts={data.shifts}
-            rhythm={data.shiftRhythm}
-            on:submit={async ({ detail }) => {
-                editShiftRhythmDialogOpen = false;
-                data.shiftRhythm = detail;
-            }}
-        />
-    {/if}
-
     {#if !!data}
         <article class="shift-scheduler">
             <div class="shifts">
@@ -123,7 +80,7 @@
                         />
                     {/each}
 
-                    <ShiftAdd on:click={async () => (addShiftDialogOpen = true)} />
+                    <ShiftAdd on:click={async () => addShiftDialog.open()} />
                 </ul>
             </div>
 
@@ -343,6 +300,40 @@
         </article>
     {/if}
 </div>
+
+<EditShiftDialog
+    shifts={data.shifts}
+    selected={editShiftDialogSelected}
+    on:submit={async ({ detail }) => {
+        editShiftDialog.close();
+
+        data.shifts = detail;
+    }}
+/>
+
+<EditRhythmDialog
+    shifts={data.shifts}
+    rhythm={data.shiftRhythm}
+    on:submit={async ({ detail }) => {
+        editRhythmDialog.close();
+
+        data.shiftRhythm = detail;
+    }}
+/>
+
+<AddShiftDialog
+    bind:this={addShiftDialog}
+    on:cancel={async () => {
+        addShiftDialog.close();
+    }}
+    on:submit={async (ev) => {
+        addShiftDialog.close();
+        const newShift = ev.detail;
+        if (!newShift.name) return;
+        newShift.id = (new Date()).getTime();
+        data.shifts = [...data.shifts, newShift];
+    }}
+/>
 
 <StorageDialog
     bind:this={storageDialog}

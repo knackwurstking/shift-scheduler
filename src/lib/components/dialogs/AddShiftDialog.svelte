@@ -6,13 +6,24 @@
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
     let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
+    /** @type {HTMLDialogElement} */
+    let dialog;
+
     let name = "";
     let shortName = "";
     let hidden = false;
     let color;
+
+    export async function open() {
+        dialog.show();
+    }
+
+    export async function close() {
+        dialog.close();
+    }
 </script>
 
-<dialog open>
+<dialog bind:this={dialog}>
     <article>
         <label for="name">
             Shift Name
