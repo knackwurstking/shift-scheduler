@@ -301,6 +301,7 @@
 </div>
 
 <EditShiftDialog
+    bind:this={editShiftDialog}
     on:submit={async ({ detail }) => {
         editShiftDialog.close();
 
@@ -309,6 +310,7 @@
 />
 
 <EditRhythmDialog
+    bind:this={editRhythmDialog}
     on:submit={async ({ detail }) => {
         editRhythmDialog.close();
 

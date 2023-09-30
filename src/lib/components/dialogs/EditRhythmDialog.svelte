@@ -14,11 +14,11 @@
     /**
      * @type {import("../settings").Shift[]}
      */
-    let shifts;
+    let shifts = [];
     /**
      * @type {number[]}
      */
-    let rhythm;
+    let rhythm = [];
 
     /**
      * @param {import("../settings").Shift[]} _shifts
