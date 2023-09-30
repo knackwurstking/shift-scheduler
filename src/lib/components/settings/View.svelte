@@ -220,7 +220,7 @@
                                         const data = JSON.parse(r.result);
 
                                         for (const [k, v] of Object.entries(data)) {
-                                            if (!db.validateDBData(v)) {
+                                            if (!db.validate(v)) {
                                                 console.error(
                                                     `Data Upload: data "${k}" invalid`,
                                                     v
@@ -260,7 +260,7 @@
                     on:click={async () => {
                         const data = await db.getAll();
                         try {
-                            await db.exportAllData(data, utils.isAndroid() ? "android" : "browser");
+                            await db.exportDatabase(data, utils.isAndroid() ? "android" : "browser");
                         } catch (err) {
                             alert(`Data download failed!\n${err}`);
                         }
@@ -283,7 +283,7 @@
                         <tbody>
                             {#key reloadDataStorageTable}
                                 {#each db
-                                    .list()
+                                    .listKeys()
                                     .sort((a, b) => (a.year > b.year ? 1 : -1))
                                     .sort( (a, b) => (a.month > b.month && a.year === b.year ? 1 : -1) ) as item}
                                     <tr>

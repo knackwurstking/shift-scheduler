@@ -15,11 +15,10 @@ import { Share } from "@capacitor/share";
  */
 
 /**
- *
  * @param {any} data
  * @returns {boolean}
  */
-export function validateDBData(data) {
+export function validate(data) {
     try {
         for (const [k, v] of Object.entries(data)) {
             if (typeof k === "string") {
@@ -64,7 +63,7 @@ export function validateDBData(data) {
 /**
  * @returns {{ year: number, month: number }[]}
  */
-export function list() {
+export function listKeys() {
     /** @type {{ year: number, month: number }[]}  */
     const keys = [];
 
@@ -89,19 +88,6 @@ export function list() {
 }
 
 /**
- *
- * @param {number} year
- * @param {number} month 
- * @param {string} key 
- * @returns {Promise<StorageData>}
- */
-export async function getDataForDay(year, month, key) {
-    const data = await get(year, month);
-    return data[key] || { shift: null, note: "" };
-}
-
-/**
- *
  * @param {number} year
  * @param {number} month
  * @returns {Promise<DBData>}
@@ -113,7 +99,6 @@ export async function get(year, month) {
 }
 
 /**
- *
  * @param {number} year
  * @param {number} month
  * @param {DBData} data
@@ -123,7 +108,6 @@ export async function set(year, month, data) {
 }
 
 /**
- *
  * @param {number} year
  * @param {number} month
  */
@@ -132,26 +116,35 @@ export async function remove(year, month) {
 }
 
 /**
- *
+ * @param {number} year
+ * @param {number} month 
+ * @param {string} key 
+ * @returns {Promise<StorageData>}
+ */
+export async function getData(year, month, key) {
+    const data = await get(year, month);
+    return data[key] || { shift: null, note: "" };
+}
+
+/**
  * @param {number} year
  * @param {number} month 
  * @param {string} key 
  * @param {import("../../components/settings").Shift | null} shift
  * @param {string} note
  */
-export async function setDataForDay(year, month, key, shift, note) {
+export async function setData(year, month, key, shift, note) {
     const data = await get(year, month);
     data[key] = { shift: shift, note: note };
     await set(year, month, data);
 }
 
 /**
- *
  * @param {number} year
  * @param {number} month 
  * @param {string} key 
  */
-export async function removeDataForDay(year, month, key) {
+export async function removeData(year, month, key) {
     const data = await get(year, month);
     delete data[key];
     if (!Object.keys(data).length) return;
@@ -161,7 +154,7 @@ export async function removeDataForDay(year, month, key) {
 export async function getAll() {
     /** @type {{ [key: string]: DBData }} */
     const data = {};
-    for (const { year, month } of list()) {
+    for (const { year, month } of listKeys()) {
         data[`db-${year}-${month}`] = await get(year, month);
     }
     return data;
@@ -172,7 +165,7 @@ export async function getAll() {
  * @param {{ [key: string]: DBData }} data
  * @param {"browser" | "android"} platform
  */
-export async function exportAllData(data, platform = "browser") {
+export async function exportDatabase(data, platform = "browser") {
     switch (platform) {
         case "browser":
             await _exportBrowser(data);

@@ -191,17 +191,17 @@
                     }
 
                     const key = `${detail.getFullYear()}-${detail.getMonth()}-${detail.getDate()}`;
-                    const { note } = await db.getDataForDay(detail.getFullYear(), detail.getMonth(), key);
+                    const { note } = await db.getData(detail.getFullYear(), detail.getMonth(), key);
 
                     if (shift === "reset") {
                         shift = null;
                         if (note) {
-                            await db.setDataForDay(detail.getFullYear(), detail.getMonth(), key, null, note);
+                            await db.setData(detail.getFullYear(), detail.getMonth(), key, null, note);
                         } else {
-                            await db.removeDataForDay(detail.getFullYear(), detail.getMonth(), key);
+                            await db.removeData(detail.getFullYear(), detail.getMonth(), key);
                         }
                     } else {
-                        await db.setDataForDay(detail.getFullYear(), detail.getMonth(), key, shift, note);
+                        await db.setData(detail.getFullYear(), detail.getMonth(), key, shift, note);
                     }
 
                     calendar.reload();
@@ -264,9 +264,9 @@
         const key = `${detail.date.year}-${detail.date.month}-${detail.date.date}`;
 
         if (!detail.shift && !detail.note) {
-            await db.removeDataForDay(detail.date.year, detail.date.month, key);
+            await db.removeData(detail.date.year, detail.date.month, key);
         } else {
-            await db.setDataForDay(detail.date.year, detail.date.month, key, detail.shift, detail.note);
+            await db.setData(detail.date.year, detail.date.month, key, detail.shift, detail.note);
         }
 
         editDayDialog.close();
