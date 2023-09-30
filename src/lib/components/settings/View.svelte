@@ -62,7 +62,7 @@
     {/if}
 </svelte:head>
 
-<div class="_container">
+<div class="container">
     {#if !!data}
         <article class="shift-scheduler">
             <div class="shifts">
@@ -342,55 +342,55 @@
         border-bottom: 1px solid var(--muted-border-color);
     }
 
-    div._container {
+    div.container {
         width: 100%;
         height: 100%;
         overflow-y: scroll;
         padding: var(--spacing);
     }
 
-    div._container::-webkit-scrollbar {
+    div.container::-webkit-scrollbar {
         display: none;
     }
 
-    div._container {
+    div.container {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
 
-    article.shift-scheduler .shifts {
+    div.container article.shift-scheduler .shifts {
         position: relative;
     }
 
-    article.shift-scheduler .shifts > label {
+    div.container article.shift-scheduler .shifts > label {
         margin-bottom: 16px;
     }
 
-    article.shift-scheduler .rhythm {
+    div.container article.shift-scheduler .rhythm {
         display: flex;
         justify-content: space-between;
         border-bottom: none;
     }
 
-    article.shift-scheduler .rhythm button {
+    div.container article.shift-scheduler .rhythm button {
         width: fit-content;
     }
 
-    article.themes fieldset label {
+    div.container article.themes fieldset label {
         display: inline-block;
         margin: calc(var(--spacing) / 2);
         user-select: none;
     }
 
-    article.data-storage {
+    div.container article.data-storage {
         position: relative;
     }
 
-    article.data-storage > h2 {
+    div.container article.data-storage > h2 {
         max-width: calc(100% - 120px - 1rem);
     }
 
-    article.data-storage .button-group {
+    div.container article.data-storage .button-group {
         position: absolute;
         top: 1rem;
         right: 1rem;
@@ -399,7 +399,7 @@
         display: flex;
     }
 
-    article.data-storage .button-group button {
+    div.container article.data-storage .button-group button {
         border-radius: 0;
         width: 60px;
         height: 40px;
@@ -407,17 +407,17 @@
         box-shadow: var(--button-box-shadow);
     }
 
-    article.data-storage .button-group button:first-child {
+    div.container article.data-storage .button-group button:first-child {
         border-top-left-radius: var(--border-radius);
         border-bottom-left-radius: var(--border-radius);
     }
 
-    article.data-storage .button-group button:last-child {
+    div.container article.data-storage .button-group button:last-child {
         border-top-right-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius);
     }
 
-    article.data-storage table .actions {
+    div.container article.data-storage table .actions {
         position: relative;
         width: 100%;
         height: 100%;
