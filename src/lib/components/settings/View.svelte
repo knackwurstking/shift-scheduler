@@ -20,6 +20,9 @@
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
     let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
+    /** @type {StorageDialog} */
+    let storageDialog;
+
     /** @type {import(".").Settings} */
     let data;
     $: (!data && initSettings()) || save();
@@ -34,12 +37,6 @@
 
     let dataStorage = false;
     let reloadDataStorageTable = false;
-
-    let storageDialog_open = false;
-    /** @type {number} */
-    let storageDialog_year;
-    /** @type {number} */
-    let storageDialog_month;
 
     async function initSettings() {
         await settings.load();
@@ -105,16 +102,6 @@
             on:submit={async ({ detail }) => {
                 editShiftRhythmDialogOpen = false;
                 data.shiftRhythm = detail;
-            }}
-        />
-    {/if}
-
-    {#if storageDialog_open}
-        <StorageDialog
-            year={storageDialog_year}
-            month={storageDialog_month}
-            on:close={async () => {
-                storageDialog_open = false;
             }}
         />
     {/if}
@@ -298,19 +285,17 @@
                                 {#each db
                                     .list()
                                     .sort((a, b) => (a.getFullYear() > b.getFullYear() ? 1 : -1))
-                                    .sort( (a, b) => (a.getMonth() > b.getMonth() && a.getFullYear() === b.getFullYear() ? 1 : -1) ) as key}
+                                    .sort( (a, b) => (a.getMonth() > b.getMonth() && a.getFullYear() === b.getFullYear() ? 1 : -1) ) as item}
                                     <tr>
-                                        <td>{key.getFullYear()}</td>
-                                        <td>{key.getMonth() + 1}</td>
+                                        <td>{item.getFullYear()}</td>
+                                        <td>{item.getMonth() + 1}</td>
                                         <td class="actions">
                                             <IconButton
                                                 style={`
                                                     margin: 4px;
                                                 `}
                                                 on:click={async () => {
-                                                    storageDialog_year = key.getFullYear();
-                                                    storageDialog_month = key.getMonth();
-                                                    storageDialog_open = true;
+                                                    storageDialog.open(item.getFullYear(), item.getMonth());
                                                 }}
                                             >
                                                 <IoIosOpen />
@@ -322,16 +307,16 @@
                                                 `}
                                                 on:click={async () => {
                                                     const yes = window.confirm(
-                                                        `Delete all data for "${key.getFullYear()}/${(
-                                                            key.getMonth() + 1
+                                                        `Delete all data for "${item.getFullYear()}/${(
+                                                            item.getMonth() + 1
                                                         )
                                                             .toString()
                                                             .padStart(2, "0")}" ?`
                                                     );
                                                     if (yes) {
                                                         await db.remove(
-                                                            key.getFullYear(),
-                                                            key.getMonth()
+                                                            item.getFullYear(),
+                                                            item.getMonth()
                                                         );
                                                         reloadDataStorageTable =
                                                             !reloadDataStorageTable;
@@ -361,6 +346,13 @@
         </article>
     {/if}
 </div>
+
+<StorageDialog
+    bind:this={storageDialog}
+    on:close={async () => {
+        storageDialog.close();
+    }}
+/>
 
 <style>
     .spacer {
