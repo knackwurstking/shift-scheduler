@@ -43,9 +43,13 @@
         date = _date;
 
         const data = (await db.get(year, month))[`${year}-${month}-${date}`];
+
         defaultShift = utils.calcShiftStep(new Date(year, month, date));
+
         shift = data?.shift || null;
         if (shift) current = settings.shifts.findIndex((s) => s.name === shift?.name).toString();
+        else current = "-1";
+
         note = data?.note || "";
 
         dialog.show();
