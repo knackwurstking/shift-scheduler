@@ -1,6 +1,5 @@
 <script>
     import { ripple } from "../../js/ripple";
-    let _ripple = ripple({ usePointer: true });
 
     let _class = "";
     export { _class as class };
@@ -19,6 +18,8 @@
             _ripple = ripple({ duration: rippleDuration, color: rippleColor, usePointer: true });
         }
     }
+
+    let _ripple = ripple({ usePointer: true });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

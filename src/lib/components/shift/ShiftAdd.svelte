@@ -1,9 +1,9 @@
 <script>
     import { ripple } from "../../js/ripple";
-    let _secondaryRipple = ripple({ usePointer: true });
-
     // @ts-ignore
     import IoIosAdd from "svelte-icons/io/IoIosAdd.svelte";
+
+    let _secondaryRipple = ripple({ usePointer: true });
 </script>
 
 <div class="card">

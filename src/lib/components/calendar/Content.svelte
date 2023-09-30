@@ -1,6 +1,5 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
 
     import DayContent from "./DayContent.svelte";
 
@@ -12,14 +11,16 @@
     /** @type {Date} */
     export let currentDate;
 
+    $: currentDate && setDays();
+    $: index === 1 && currentDate && dispatch("currentdatechange", currentDate);
+
+    const dispatch = createEventDispatcher();
+
     /** @type {import(".").Day[]} */
     let days = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ].map(() => ({ date: currentDate, data: { shift: null, note: "" } }));
-
-    $: currentDate && setDays();
-    $: index === 1 && currentDate && dispatch("currentdatechange", currentDate);
 
     async function setDays() {
         const year = currentDate.getFullYear();

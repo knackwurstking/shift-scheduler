@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
+
     const dispatch = createEventDispatcher();
 
     /** @type {[string, string, string, string, string, string, string]} */

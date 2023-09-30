@@ -1,8 +1,10 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
 
     import { ripple } from "../../js/ripple";
+
+    const dispatch = createEventDispatcher();
+
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
     let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 

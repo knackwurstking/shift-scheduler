@@ -8,14 +8,15 @@
     // @ts-ignore
     import FaDownload from "svelte-icons/fa/FaDownload.svelte";
 
-    import Shift, { ShiftAdd } from "../shift";
-    import { EditRhythmDialog, AddShiftDialog, EditShiftDialog, StorageDialog } from "../dialogs";
+    import { AddShiftDialog, EditRhythmDialog, EditShiftDialog, StorageDialog } from "../dialogs";
     import IconButton from "../icon-button";
+    import Shift, { ShiftAdd } from "../shift";
 
-    import * as utils from "../../js/utils";
-    import * as settings from "../../js/settings";
     import * as db from "../../js/db";
     import { ripple } from "../../js/ripple";
+    import * as settings from "../../js/settings";
+    import * as utils from "../../js/utils";
+
     let _ripple = ripple({ usePointer: true });
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
     let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
@@ -216,7 +217,10 @@
                     on:click={async () => {
                         const data = await db.getAll();
                         try {
-                            await db.exportDatabase(data, utils.isAndroid() ? "android" : "browser");
+                            await db.exportDatabase(
+                                data,
+                                utils.isAndroid() ? "android" : "browser"
+                            );
                         } catch (err) {
                             alert(`Data download failed!\n${err}`);
                         }
@@ -327,7 +331,7 @@
         addShiftDialog.close();
         const newShift = ev.detail;
         if (!newShift.name) return;
-        newShift.id = (new Date()).getTime();
+        newShift.id = new Date().getTime();
         data.shifts = [...data.shifts, newShift];
     }}
 />

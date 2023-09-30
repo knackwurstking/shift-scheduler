@@ -1,7 +1,8 @@
 <script>
     import { ripple } from "../../js/ripple";
-    let _primaryRipple = ripple({ usePointer: true });
 
+    /** @type {number} */
+    export let id;
     /** @type {string} */
     export let name;
     /** @type {string} */
@@ -10,10 +11,10 @@
     export let visible = true;
     /** @type {string} */
     export let color = "var(--color)";
-    /** @type {number} */
-    export let id;
 
     export let active = false;
+
+    let _primaryRipple = ripple({ usePointer: true });
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->

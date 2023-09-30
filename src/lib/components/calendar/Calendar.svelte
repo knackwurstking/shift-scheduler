@@ -1,10 +1,11 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
 
     import Container from "./Container.svelte";
     import ContainerItem from "./ContainerItem.svelte";
     import Content from "./Content.svelte";
+
+    const dispatch = createEventDispatcher();
 
     /**
      *

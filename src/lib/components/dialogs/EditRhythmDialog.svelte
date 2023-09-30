@@ -1,11 +1,13 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
 
     import Shift from "../shift";
 
-    import * as settings from "../../js/settings";
     import { ripple } from "../../js/ripple";
+    import * as settings from "../../js/settings";
+
+    const dispatch = createEventDispatcher();
+
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */

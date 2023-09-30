@@ -1,6 +1,5 @@
 <script>
     import { ripple } from "../../js/ripple";
-    let _ripple = ripple({ usePointer: true });
 
     /** @type {number} */
     export let currentMonth;
@@ -8,6 +7,8 @@
     export let day;
 
     $: day && setData();
+
+    let _ripple = ripple({ usePointer: true });
 
     async function setData() {
         if (currentMonth !== day.date.getMonth()) {

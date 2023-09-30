@@ -37,11 +37,6 @@
         calendar.set(currentDate);
     }
 
-
-    /** @type {Themes} */
-    let currentTheme = "custom";
-
-
     /** @type {Date} */
     let currentDate = new Date();
 
@@ -52,16 +47,6 @@
         if (date) currentDate = date;
         calendar.set(currentDate);
     }
-
-
-    /** @type {boolean} */
-    let editMode_open = false;
-    /** @type {number} - -2 will remove the custom shift from the database */
-    let editMode_index = -1;
-
-    /** @type {Date} */
-    let today = new Date();
-
 
     /** @type {Views} */
     let view = "calendar";
@@ -89,6 +74,10 @@
         view = viewStack[viewStack.length - 1];
     }
 
+    /** @type {boolean} */
+    let editMode_open = false;
+    /** @type {number} - -2 will remove the custom shift from the database */
+    let editMode_index = -1;
     
     /**
      * @returns {Promise<import("./lib/js/settings").Shift | "reset">}
@@ -97,6 +86,9 @@
         if (editMode_index === -2) return "reset";
         return settings.data.shifts[editMode_index] || null;
     }
+
+    /** @type {Themes} */
+    let currentTheme = "custom";
 
     async function loadTheme() {
         settings.load().then(() => {
@@ -108,6 +100,9 @@
             }
         });
     }
+
+    /** @type {Date} */
+    let today = new Date();
 
     async function updateToday() {
         const today = new Date();

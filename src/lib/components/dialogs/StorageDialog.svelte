@@ -1,7 +1,5 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
     // @ts-ignore
     import IoIosClose from "svelte-icons/io/IoIosClose.svelte";
     // @ts-ignore
@@ -10,6 +8,8 @@
     import IconButton from "../icon-button";
 
     import * as db from "../../js/db";
+
+    const dispatch = createEventDispatcher();
 
     let dialog
 
