@@ -190,17 +190,18 @@
                         return;
                     }
 
-                    const { note } = await db.getDataForDay(detail);
+                    const key = `${detail.getFullYear()}-${detail.getMonth()}-${detail.getDate()}`;
+                    const { note } = await db.getDataForDay(detail.getFullYear(), detail.getMonth(), key);
 
                     if (shift === "reset") {
                         shift = null;
                         if (note) {
-                            await db.setDataForDay(detail, null, note);
+                            await db.setDataForDay(detail.getFullYear(), detail.getMonth(), key, null, note);
                         } else {
-                            await db.removeDataForDay(detail);
+                            await db.removeDataForDay(detail.getFullYear(), detail.getMonth(), key);
                         }
                     } else {
-                        await db.setDataForDay(detail, shift, note);
+                        await db.setDataForDay(detail.getFullYear(), detail.getMonth(), key, shift, note);
                     }
 
                     calendar.reload();
@@ -260,10 +261,12 @@
 <EditDayDialog
     bind:this={editDayDialog}
     on:submit={async ({ detail }) => {
+        const key = `${detail.date.getFullYear()}-${detail.date.getMonth()}-${detail.date.getDate()}`;
+
         if (!detail.shift && !detail.note) {
-            await db.removeDataForDay(detail.date);
+            await db.removeDataForDay(detail.date.getFullYear(), detail.date.getMonth(), key);
         } else {
-            await db.setDataForDay(detail.date, detail.shift, detail.note);
+            await db.setDataForDay(detail.date.getFullYear(), detail.date.getMonth(), key, detail.shift, detail.note);
         }
 
         editDayDialog.close();

@@ -87,8 +87,9 @@
                                 <td class="delete">
                                     <IconButton
                                         on:click={async () => {
-                                            await db.removeDataForDay(new Date(item.key));
-                                            loadData();
+                                            console.debug(year, month, item.key);
+                                            await db.removeDataForDay(year, month, item.key);
+                                            await loadData();
                                         }}
                                     >
                                         <IoIosTrash />

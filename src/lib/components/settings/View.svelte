@@ -284,18 +284,18 @@
                             {#key reloadDataStorageTable}
                                 {#each db
                                     .list()
-                                    .sort((a, b) => (a.getFullYear() > b.getFullYear() ? 1 : -1))
-                                    .sort( (a, b) => (a.getMonth() > b.getMonth() && a.getFullYear() === b.getFullYear() ? 1 : -1) ) as item}
+                                    .sort((a, b) => (a.year > b.year ? 1 : -1))
+                                    .sort( (a, b) => (a.month > b.month && a.year === b.year ? 1 : -1) ) as item}
                                     <tr>
-                                        <td>{item.getFullYear()}</td>
-                                        <td>{item.getMonth() + 1}</td>
+                                        <td>{item.year}</td>
+                                        <td>{item.month + 1}</td>
                                         <td class="actions">
                                             <IconButton
                                                 style={`
                                                     margin: 4px;
                                                 `}
                                                 on:click={async () => {
-                                                    storageDialog.open(item.getFullYear(), item.getMonth());
+                                                    storageDialog.open(item.year, item.month);
                                                 }}
                                             >
                                                 <IoIosOpen />
@@ -307,17 +307,14 @@
                                                 `}
                                                 on:click={async () => {
                                                     const yes = window.confirm(
-                                                        `Delete all data for "${item.getFullYear()}/${(
-                                                            item.getMonth() + 1
+                                                        `Delete all data for "${item.year}/${(
+                                                            item.month + 1
                                                         )
                                                             .toString()
                                                             .padStart(2, "0")}" ?`
                                                     );
                                                     if (yes) {
-                                                        await db.remove(
-                                                            item.getFullYear(),
-                                                            item.getMonth()
-                                                        );
+                                                        await db.remove(item.year, item.month);
                                                         reloadDataStorageTable =
                                                             !reloadDataStorageTable;
                                                     }

@@ -29,7 +29,7 @@
         for (let i = 0; i < days.length; i++) {
             days[i].date = new Date(year, month, i + 1 - startDay);
 
-            const key = db.getKeyFromDate(days[i].date);
+            const key = `${days[i].date.getFullYear()}-${days[i].date.getMonth()}-${days[i].date.getDate()}`;
             days[i].data = {
                 shift: data[key]?.shift || utils.calcShiftStep(days[i].date),
                 note: data[key]?.note || "",

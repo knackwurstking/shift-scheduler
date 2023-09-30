@@ -35,7 +35,7 @@
     export async function open(_date) {
         date = _date;
 
-        const data = (await db.get(date.getFullYear(), date.getMonth()))[db.getKeyFromDate(date)];
+        const data = (await db.get(date.getFullYear(), date.getMonth()))[`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`];
         defaultShift = utils.calcShiftStep(date);
         shift = data?.shift || null;
         if (shift) current = settings.shifts.findIndex((s) => s.name === shift?.name).toString();

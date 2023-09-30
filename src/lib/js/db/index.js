@@ -62,18 +62,10 @@ export function validateDBData(data) {
 }
 
 /**
- *
- * @param {Date} date
- */
-export function getKeyFromDate(date) {
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-}
-
-/**
- * @returns {Date[]}
+ * @returns {{ year: number, month: number }[]}
  */
 export function list() {
-    /** @type {Date[]}  */
+    /** @type {{ year: number, month: number }[]}  */
     const keys = [];
 
     for (let x = 0; x < window.localStorage.length; x++) {
@@ -89,7 +81,7 @@ export function list() {
             if (isNaN(year) || isNaN(month)) continue;
             if (month < 0 || month > 11) continue;
 
-            keys.push(new Date(year, month));
+            keys.push({ year, month });
         }
     }
 
@@ -98,12 +90,14 @@ export function list() {
 
 /**
  *
- * @param {Date} date
+ * @param {number} year
+ * @param {number} month 
+ * @param {string} key 
  * @returns {Promise<StorageData>}
  */
-export async function getDataForDay(date) {
-    const data = await get(date.getFullYear(), date.getMonth());
-    return data[getKeyFromDate(date)] || { shift: null, note: "" };
+export async function getDataForDay(year, month, key) {
+    const data = await get(year, month);
+    return data[key] || { shift: null, note: "" };
 }
 
 /**
@@ -139,34 +133,36 @@ export async function remove(year, month) {
 
 /**
  *
- * @param {Date} date
+ * @param {number} year
+ * @param {number} month 
+ * @param {string} key 
  * @param {import("../../components/settings").Shift | null} shift
  * @param {string} note
  */
-export async function setDataForDay(date, shift, note) {
-    const data = await get(date.getFullYear(), date.getMonth());
-    data[getKeyFromDate(date)] = { shift: shift, note: note };
-    await set(date.getFullYear(), date.getMonth(), data);
+export async function setDataForDay(year, month, key, shift, note) {
+    const data = await get(year, month);
+    data[key] = { shift: shift, note: note };
+    await set(year, month, data);
 }
 
 /**
  *
- * @param {Date} date
+ * @param {number} year
+ * @param {number} month 
+ * @param {string} key 
  */
-export async function removeDataForDay(date) {
-    const data = await get(date.getFullYear(), date.getMonth());
-    delete data[getKeyFromDate(date)];
-    await set(date.getFullYear(), date.getMonth(), data);
+export async function removeDataForDay(year, month, key) {
+    console.debug(year, month, key);
+    const data = await get(year, month);
+    delete data[key];
+    await set(year, month, data);
 }
 
 export async function getAll() {
     /** @type {{ [key: string]: DBData }} */
     const data = {};
-    for (const date of list()) {
-        data[`db-${date.getFullYear()}-${date.getMonth()}`] = await get(
-            date.getFullYear(),
-            date.getMonth()
-        );
+    for (const { year, month } of list()) {
+        data[`db-${year}-${month}`] = await get(year, month);
     }
     return data;
 }
