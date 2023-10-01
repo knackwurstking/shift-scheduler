@@ -8,10 +8,15 @@
 
     const dispatch = createEventDispatcher();
 
+    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
     let dialog;
+    /** @type {HTMLElement} */
+    let footer;
+    /** @type {HTMLElement} */
+    let header;
 
     /**
      * @type {import("../settings").Shift[]}
@@ -22,6 +27,8 @@
      */
     let rhythm = [];
 
+    let footer_and_header_height = 0;
+
     /**
      * @param {import("../settings").Shift[]} _shifts
      * @param {number[]} _rhythm
@@ -30,6 +37,7 @@
         shifts = _shifts;
         rhythm = _rhythm;
         dialog.show();
+        footer_and_header_height = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
     }
 
     export async function close() {
@@ -39,11 +47,13 @@
 
 <dialog bind:this={dialog}>
     <article>
-        <div>
-            <h6>Shift Rhythm</h6>
-
-            <div class="spacer" />
-
+        <header bind:this={header}>Shift Rhythm</header>
+        <div
+            class="content"
+            style={`
+                height: calc(100% - ${footer_and_header_height}px);
+            `}
+        >
             <ul>
                 {#each rhythm as id, index}
                     {#if !!settings.getShift(id)}
@@ -71,13 +81,25 @@
                     </div>
                 {/each}
             </div>
-
-            <div class="spacer" />
-
-            <button type="submit" use:_primaryRipple on:click={() => dispatch("submit", rhythm)}>
-                OK
-            </button>
         </div>
+
+        <footer bind:this={footer}>
+            <button
+                class="contrast"
+                use:_contrastRipple
+                on:click={async () => dispatch("cancel")}
+            >
+                Cancel
+            </button>
+
+            <button
+                type="submit"
+                use:_primaryRipple
+                on:click={() => dispatch("submit", rhythm)}
+            >
+               Confirm 
+            </button>
+        </footer>
     </article>
 </dialog>
 
@@ -92,15 +114,16 @@
         width: 100%;
 
         overflow: hidden;
+
     }
 
-    article > div {
+    article > .content {
         width: 100%;
-        height: 100%;
+        overflow: hidden;
     }
 
-    article > div > ul {
-        height: calc(100% - 17em);
+    article > .content > ul {
+        height: calc(100% - 7.5rem);
 
         overflow: hidden;
         overflow-y: auto;

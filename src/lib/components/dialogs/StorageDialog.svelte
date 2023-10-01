@@ -55,6 +55,7 @@
     }
 </script>
 
+<!-- TODO: use header tag -->
 <dialog bind:this={dialog}>
     <article>
         <!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -2,7 +2,7 @@ html, body {
     overflow: hidden;
 }
 
-button {
+button, a {
     position: relative;
     overflow: hidden;
 }
@@ -27,4 +27,14 @@ dialog > article::-webkit-scrollbar {
 dialog > article {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+dialog > article > footer > button {
+    display: inline;
+    width: fit-content;
+    margin-bottom: 0;
+}
+
+dialog > article > footer > button:not(:first-child) {
+    margin-left: calc(var(--spacing) * 0.5);
 }

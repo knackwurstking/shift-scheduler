@@ -5,8 +5,8 @@
 
     const dispatch = createEventDispatcher();
 
+    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
-    let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
     let dialog;
@@ -47,22 +47,46 @@
             <input type="color" name="color" bind:value={color} />
         </label>
 
-        <button class="secondary" use:_secondaryRipple on:click={() => dispatch("cancel")}>
-            Cancel
-        </button>
+        <footer>
+            <button
+                class="contrast"
+                use:_contrastRipple
+                on:click={async () => dispatch("cancel")}
+            >
+                Cancel
+            </button>
 
-        <button
-            use:_primaryRipple
-            on:click={() =>
-                dispatch("submit", {
-                    name,
-                    shortName: shortName || name[0] || "",
-                    color: color,
-                    visible: !hidden,
-                })}
-        >
-            OK
-        </button>
+            <button
+                use:_primaryRipple
+                on:click={async () => {
+                    dispatch("submit", {
+                        name,
+                        shortName: shortName || name[0] || "",
+                        color: color,
+                        visible: !hidden,
+                    });
+                }}
+            >
+                Confirm
+            </button>
+
+            <!--button class="secondary" use:_secondaryRipple on:click={() => dispatch("cancel")}>
+                Cancel
+            </button>
+
+            <button
+                use:_primaryRipple
+                on:click={() =>
+                    dispatch("submit", {
+                        name,
+                        shortName: shortName || name[0] || "",
+                        color: color,
+                        visible: !hidden,
+                    })}
+            >
+                OK
+            </button-->
+        </footer>
     </article>
 </dialog>
 

@@ -4,8 +4,9 @@
 
     const dispatch = createEventDispatcher();
 
-    let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
+    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
     let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
+    let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
     let dialog;
@@ -69,22 +70,39 @@
                 Hidden Shift (Not visible in calendar)
             </label>
 
-            <button
-                class="secondary"
-                use:_secondaryRipple
-                on:click={() => {
-                    if (window.confirm(`Delete "${shifts[parseInt(selected)].name}"?`)) {
-                        if (shifts.length <= 1) dispatch("submit", []);
-                        shifts = [
-                            ...shifts.slice(0, parseInt(selected)),
-                            ...shifts.slice(parseInt(selected) + 1),
-                        ];
-                        selected = "0";
-                    }
-                }}>Delete</button
-            >
+            <footer>
+                <button
+                    class="contrast"
+                    use:_contrastRipple
+                    on:click={async () => dispatch("cancel")}
+                >
+                    Cancel
+                </button>
 
-            <button use:_primaryRipple on:click={() => dispatch("submit", shifts)}> OK </button>
+                <button
+                    class="secondary"
+                    use:_secondaryRipple
+                    on:click={() => {
+                        if (window.confirm(`Delete "${shifts[parseInt(selected)].name}"?`)) {
+                            if (shifts.length <= 1) dispatch("submit", []);
+                            shifts = [
+                                ...shifts.slice(0, parseInt(selected)),
+                                ...shifts.slice(parseInt(selected) + 1),
+                            ];
+                            selected = "0";
+                        }
+                    }}
+                >
+                    Delete
+                </button>
+
+                <button
+                    use:_primaryRipple
+                    on:click={() => dispatch("submit", shifts)}
+                >
+                    Confirm 
+                </button>
+            </footer>
         </article>
     {/if}
 </dialog>

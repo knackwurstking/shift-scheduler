@@ -62,6 +62,7 @@
     }
 </script>
 
+<!-- TODO: use header/footer tag and contrast cancel button -->
 <dialog bind:this={dialog}>
     <article>
         {#if !!date}

@@ -306,6 +306,9 @@
 
 <EditShiftDialog
     bind:this={editShiftDialog}
+    on:cancel={() => {
+        editShiftDialog.close();
+    }}
     on:submit={async ({ detail }) => {
         editShiftDialog.close();
 
@@ -315,6 +318,9 @@
 
 <EditRhythmDialog
     bind:this={editRhythmDialog}
+    on:cancel={() => {
+        editRhythmDialog.close();
+    }}
     on:submit={async ({ detail }) => {
         editRhythmDialog.close();
 
