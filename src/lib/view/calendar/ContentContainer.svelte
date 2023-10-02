@@ -50,10 +50,12 @@
         justify-content: center;
         align-items: center;
 
+        margin: 1px;
+
         font-weight: bolder;
 
         border: 1px solid var(--muted-border-color);
-        border-radius: 0;
+        border-radius: var(--border-radius);
     }
 
     div.calendar-item > div > div.header > span.sunday,

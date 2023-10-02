@@ -49,8 +49,9 @@
 
         overflow: hidden;
 
+        margin: 1px;
         border: 1px solid var(--muted-border-color);
-        border-radius: 0;
+        border-radius: var(--border-radius);
     }
 
     div.day-content.disabled {
