@@ -3,13 +3,9 @@
 
     import Shift from "../shift";
 
-    import { ripple } from "../../js/ripple";
     import * as settings from "../../js/settings";
 
     const dispatch = createEventDispatcher();
-
-    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
-    let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
     let dialog;
@@ -86,7 +82,6 @@
         <footer bind:this={footer}>
             <button
                 class="contrast"
-                use:_contrastRipple
                 on:click={async () => dispatch("cancel")}
             >
                 Cancel
@@ -94,7 +89,6 @@
 
             <button
                 type="submit"
-                use:_primaryRipple
                 on:click={() => dispatch("submit", rhythm)}
             >
                Confirm 

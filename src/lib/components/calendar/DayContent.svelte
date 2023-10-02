@@ -1,14 +1,10 @@
 <script>
-    import { ripple } from "../../js/ripple";
-
     /** @type {number} */
     export let currentMonth;
     /** @type {import(".").Day} */
     export let day;
 
     $: day && setData();
-
-    let _ripple = ripple({ usePointer: true });
 
     async function setData() {
         if (currentMonth !== day.date.getMonth()) {
@@ -25,7 +21,6 @@
         day.date.getMonth() === new Date().getMonth() &&
         day.date.getDate() === new Date().getDate()}
     data-value={`${day.date.getMonth() === currentMonth ? day.date.getDate() : NaN}`}
-    use:_ripple
 >
     {#if !!day.data}
         {#if day.data.shift}

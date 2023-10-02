@@ -1,12 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
 
-    import { ripple } from "../../js/ripple";
-
     const dispatch = createEventDispatcher();
-
-    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
-    let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
     let dialog;
@@ -50,14 +45,12 @@
         <footer>
             <button
                 class="contrast"
-                use:_contrastRipple
                 on:click={async () => dispatch("cancel")}
             >
                 Cancel
             </button>
 
             <button
-                use:_primaryRipple
                 on:click={async () => {
                     dispatch("submit", {
                         name,
@@ -69,23 +62,6 @@
             >
                 Confirm
             </button>
-
-            <!--button class="secondary" use:_secondaryRipple on:click={() => dispatch("cancel")}>
-                Cancel
-            </button>
-
-            <button
-                use:_primaryRipple
-                on:click={() =>
-                    dispatch("submit", {
-                        name,
-                        shortName: shortName || name[0] || "",
-                        color: color,
-                        visible: !hidden,
-                    })}
-            >
-                OK
-            </button-->
         </footer>
     </article>
 </dialog>

@@ -2,13 +2,9 @@
     import { createEventDispatcher } from "svelte";
 
     import * as db from "../../js/db";
-    import { ripple } from "../../js/ripple";
     import * as utils from "../../js/utils";
 
     const dispatch = createEventDispatcher();
-
-    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
-    let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
     let dialog;
@@ -92,14 +88,12 @@
         <footer>
             <button
                 class="contrast"
-                use:_contrastRipple
                 on:click={async () => dispatch("cancel")}
             >
                 Cancel
             </button>
 
             <button
-                use:_primaryRipple
                 on:click={() =>
                     dispatch("submit", {
                         date: { year, month, date },

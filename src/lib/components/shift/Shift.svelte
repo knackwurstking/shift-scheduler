@@ -1,6 +1,4 @@
 <script>
-    import { ripple } from "../../js/ripple";
-
     /** @type {number} */
     export let id;
     /** @type {string} */
@@ -13,13 +11,11 @@
     export let color = "var(--color)";
 
     export let active = false;
-
-    let _primaryRipple = ripple({ usePointer: true });
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="card" class:active use:_primaryRipple on:click>
+<div class="card" class:active on:click>
     <div class="background" style={`background-color: ${color || "transparent"};`} />
     <span class="name">{name}</span><br />
     <span class="short-name" class:visible>{shortName || name[0]}</span>

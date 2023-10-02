@@ -13,13 +13,8 @@
     import Shift, { ShiftAdd } from "../shift";
 
     import * as db from "../../js/db";
-    import { ripple } from "../../js/ripple";
     import * as settings from "../../js/settings";
     import * as utils from "../../js/utils";
-
-    let _ripple = ripple({ usePointer: true });
-    let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
-    let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
     /** @type {StorageDialog} */
     let storageDialog;
@@ -101,7 +96,6 @@
                 <label>Rhythm</label>
                 <button
                     class="secondary"
-                    use:_secondaryRipple
                     on:click={async () => {
                         editRhythmDialog.open(data.shifts, data.shiftRhythm);
                     }}
@@ -162,7 +156,6 @@
             <div class="button-group">
                 <button
                     class="upload secondary outline"
-                    use:_ripple
                     on:click={async () => {
                         const input = document.createElement("input");
 
@@ -213,7 +206,6 @@
 
                 <button
                     class="download secondary outline"
-                    use:_ripple
                     on:click={async () => {
                         const data = await db.getAll();
                         try {
@@ -292,7 +284,6 @@
             {:else}
                 <button
                     class="load-data"
-                    use:_primaryRipple
                     on:click={async () => {
                         dataStorage = true;
                     }}

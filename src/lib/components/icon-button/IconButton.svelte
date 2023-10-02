@@ -1,6 +1,4 @@
 <script>
-    import { ripple } from "../../js/ripple";
-
     let _class = "";
     export { _class as class };
 
@@ -8,18 +6,6 @@
     export let variant = "contrast";
     /** @type {string | undefined} */
     export let margin = undefined;
-    /** @type {number} */
-    export let rippleDuration = 600;
-    /** @type {string} */
-    export let rippleColor = "var(--ripple-color)";
-
-    $: {
-        if (!!rippleColor) {
-            _ripple = ripple({ duration: rippleDuration, color: rippleColor, usePointer: true });
-        }
-    }
-
-    let _ripple = ripple({ usePointer: true });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -29,7 +15,6 @@
         margin: ${margin !== undefined ? margin : "var(--spacing)"};
     `}
     {...$$restProps}
-    use:_ripple
     on:click
 >
     <slot />

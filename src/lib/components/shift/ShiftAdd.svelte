@@ -1,13 +1,10 @@
 <script>
-    import { ripple } from "../../js/ripple";
     // @ts-ignore
     import IoIosAdd from "svelte-icons/io/IoIosAdd.svelte";
-
-    let _secondaryRipple = ripple({ usePointer: true });
 </script>
 
 <div class="card">
-    <button class="outline secondary" use:_secondaryRipple on:click>
+    <button class="outline secondary" on:click>
         <span>
             <IoIosAdd />
         </span>
