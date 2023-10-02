@@ -4,9 +4,9 @@
     // @ts-ignore
     import IoIosOpen from "svelte-icons/io/IoIosOpen.svelte";
     // @ts-ignore
-    import FaUpload from "svelte-icons/fa/FaUpload.svelte";
+    import FaUpload from "svelte-icons/fa/FaFileUpload.svelte";
     // @ts-ignore
-    import FaDownload from "svelte-icons/fa/FaDownload.svelte";
+    import FaDownload from "svelte-icons/fa/FaFileDownload.svelte";
 
     import { AddShiftDialog, EditRhythmDialog, EditShiftDialog, StorageDialog } from "../../components/dialogs";
     import IconButton from "../../components/icon-button";
@@ -201,7 +201,7 @@
                         input.click();
                     }}
                 >
-                    <FaDownload />
+                    <FaUpload />
                 </button>
 
                 <button
@@ -218,7 +218,7 @@
                         }
                     }}
                 >
-                    <FaUpload />
+                    <FaDownload />
                 </button>
             </div>
 
