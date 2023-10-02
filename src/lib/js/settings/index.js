@@ -50,13 +50,12 @@ export async function load() {
  */
 export async function save(_data = null) {
     if (_data) data = _data;
-    else {
-        if (data.shiftRhythm.findIndex((id) => typeof id !== "number") !== -1) {
-            console.error(`Wrong data type in shift!`);
-            data.shiftRhythm = data.shiftRhythm.filter((id) => typeof id === "number");
-        }
-        localStorage.setItem("settings", JSON.stringify(data));
+
+    if (data.shiftRhythm.findIndex((id) => typeof id !== "number") !== -1) {
+        console.error(`Wrong data type in shift!`);
+        data.shiftRhythm = data.shiftRhythm.filter((id) => typeof id === "number");
     }
+    localStorage.setItem("settings", JSON.stringify(data));
 }
 
 /**

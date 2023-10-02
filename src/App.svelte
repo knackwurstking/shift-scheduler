@@ -223,7 +223,7 @@
 </main>
 
 <footer class:visible={editMode_open}>
-    {#if editMode_open && !!settings}
+    {#if editMode_open && !!settings.data}
         <span>
             <ShiftCard
                 name="Reset"
