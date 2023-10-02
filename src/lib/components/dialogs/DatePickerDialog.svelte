@@ -6,7 +6,7 @@
 
     const dispatch = createEventDispatcher();
 
-    let _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
+    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
@@ -97,24 +97,26 @@
             </div>
         {/if}
 
-        <button
-            class="secondary"
-            use:_secondaryRipple
-            on:click={async () => dispatch("cancel", { year, month: month + 1 })}
-        >
-            Cancel
-        </button>
+        <footer>
+            <button
+                class="contrast"
+                use:_contrastRipple
+                on:click={async () => dispatch("cancel")}
+            >
+                Cancel
+            </button>
 
-        <button
-            type="submit"
-            use:_primaryRipple
-            on:click={async () => {
-                if (invalidMonth || invalidYear) return;
-                dispatch("submit", { year, month: month - 1 });
-            }}
-        >
-            OK
-        </button>
+            <button
+                type="submit"
+                use:_primaryRipple
+                on:click={async () => {
+                    if (invalidMonth || invalidYear) return;
+                    dispatch("submit", { year, month: month - 1 });
+                }}
+            >
+                Confirm
+            </button>
+        </footer>
     </article>
 </dialog>
 

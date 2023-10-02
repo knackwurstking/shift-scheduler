@@ -266,6 +266,9 @@
 
 <EditDayDialog
     bind:this={editDayDialog}
+    on:cancel={async () => {
+        editDayDialog.close();
+    }}
     on:submit={async ({ detail }) => {
         const key = `${detail.date.year}-${detail.date.month}-${detail.date.date}`;
 

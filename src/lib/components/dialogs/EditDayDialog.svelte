@@ -7,6 +7,7 @@
 
     const dispatch = createEventDispatcher();
 
+    let _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
     let _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
 
     /** @type {HTMLDialogElement} */
@@ -62,14 +63,13 @@
     }
 </script>
 
-<!-- TODO: use header/footer tag and contrast cancel button -->
 <dialog bind:this={dialog}>
     <article>
         {#if !!date}
-            <h2 class="title">
+            <header>
                 {year} / {(month + 1).toString().padStart(2, "0")}
                 / {date.toString().padStart(2, "0")}
-            </h2>
+            </header>
         {/if}
 
         <select bind:value={current}>
@@ -89,17 +89,27 @@
             <textarea name="note" cols="30" rows="10" bind:value={note} />
         </label>
 
-        <button
-            use:_primaryRipple
-            on:click={() =>
-                dispatch("submit", {
-                    date: { year, month, date },
-                    shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
-                    note: note,
-                })}
-        >
-            OK
-        </button>
+        <footer>
+            <button
+                class="contrast"
+                use:_contrastRipple
+                on:click={async () => dispatch("cancel")}
+            >
+                Cancel
+            </button>
+
+            <button
+                use:_primaryRipple
+                on:click={() =>
+                    dispatch("submit", {
+                        date: { year, month, date },
+                        shift: settings.shifts.find((_s, i) => i.toString() === current) || null,
+                        note: note,
+                    })}
+            >
+                Confirm
+            </button>
+        </footer>
     </article>
 </dialog>
 
