@@ -55,18 +55,15 @@
     }
 </script>
 
-<!-- TODO: use header tag -->
 <dialog bind:this={dialog}>
     <article>
+        <header>Data: {year}/{(month + 1).toString().padStart(2, "0")}</header>
+
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div class="icon close" on:click={() => dispatch("close")}>
             <IoIosClose />
         </div>
-
-        <h2 class="title">
-            Data: {year}/{(month + 1).toString().padStart(2, "0")}
-        </h2>
 
         <figure>
             <table role="grid">
