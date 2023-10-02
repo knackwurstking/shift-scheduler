@@ -8,9 +8,9 @@
     // @ts-ignore
     import FaDownload from "svelte-icons/fa/FaDownload.svelte";
 
-    import { AddShiftDialog, EditRhythmDialog, EditShiftDialog, StorageDialog } from "../dialogs";
-    import IconButton from "../icon-button";
-    import Shift, { ShiftAdd } from "../shift";
+    import { AddShiftDialog, EditRhythmDialog, EditShiftDialog, StorageDialog } from "../../components/dialogs";
+    import IconButton from "../../components/icon-button";
+    import Shift, { ShiftAdd } from "../../components/shift";
 
     import * as db from "../../js/db";
     import * as settings from "../../js/settings";

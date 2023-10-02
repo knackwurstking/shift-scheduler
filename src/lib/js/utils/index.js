@@ -11,7 +11,7 @@ export function isAndroid() {
 /**
  *
  * @param {Date} date
- * @returns {import("../../components/settings").Shift | null}
+ * @returns {import("../../view/settings").Shift | null}
  */
 export function calcShiftStep(date) {
     if (!settings.data?.startDate || !settings.data?.shiftRhythm.length) return null;

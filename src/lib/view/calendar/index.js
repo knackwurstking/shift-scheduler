@@ -1,4 +1,4 @@
-export { default } from "./Calendar.svelte";
+export { default } from "./View.svelte";
 
 /**
  * @typedef Day

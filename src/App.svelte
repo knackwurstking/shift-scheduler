@@ -17,11 +17,12 @@
     import * as settings from "./lib/js/settings";
     import * as utils from "./lib/js/utils";
 
-    import Calendar from "./lib/components/calendar";
+    import CalendarView from "./lib/view/calendar"
+    import SettingsView from "./lib/view/settings";
+
     import DatePicker from "./lib/components/date-picker";
     import { DatePickerDialog, EditDayDialog } from "./lib/components/dialogs";
     import IconButton from "./lib/components/icon-button";
-    import SettingsView from "./lib/components/settings";
     import ShiftCard from "./lib/components/shift";
 
     /** @type {DatePickerDialog} */
@@ -29,12 +30,12 @@
     /** @type {EditDayDialog} */
     let editDayDialog;
 
-    /** @type {Calendar} */
-    let calendar;
-    $: calendar && _initCalendar();
+    /** @type {CalendarView} */
+    let calendarView;
+    $: calendarView && _initCalendar();
 
     function _initCalendar() {
-        calendar.set(currentDate);
+        calendarView.set(currentDate);
     }
 
     /** @type {Date} */
@@ -45,7 +46,7 @@
      */
     async function setCurrentDate(date) {
         if (date) currentDate = date;
-        calendar.set(currentDate);
+        calendarView.set(currentDate);
     }
 
     /** @type {Views} */
@@ -58,7 +59,7 @@
      * @param {Views} v
      */
     async function goTo(v) {
-        editMode_open = false;
+        editMode = false;
         viewStack = [...viewStack, v];
         view = v;
 
@@ -75,16 +76,16 @@
     }
 
     /** @type {boolean} */
-    let editMode_open = false;
+    let editMode = false;
     /** @type {number} - -2 will remove the custom shift from the database */
-    let editMode_index = -1;
+    let editModeIndex = -1;
     
     /**
      * @returns {Promise<import("./lib/js/settings").Shift | "reset">}
      */
     async function getEditModeShift() {
-        if (editMode_index === -2) return "reset";
-        return settings.data.shifts[editMode_index] || null;
+        if (editModeIndex === -2) return "reset";
+        return settings.data.shifts[editModeIndex] || null;
     }
 
     /** @type {Themes} */
@@ -112,7 +113,7 @@
 
         setTimeout(() => {
             console.debug("update today: reload calendar");
-            calendar.reload();
+            calendarView.reload();
             updateToday();
         }, timeout);
     }
@@ -163,7 +164,7 @@
             <IconButton
                 margin="8px 4px"
                 on:click={() => {
-                    editMode_open = !editMode_open;
+                    editMode = !editMode;
                 }}><MdModeEdit /></IconButton
             >
 
@@ -185,12 +186,12 @@
     </div>
 </header>
 
-<main style={`bottom: ${editMode_open ? "calc(3em + 22px)" : "1px"}`}>
+<main style={`bottom: ${editMode ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
-        <Calendar
-            bind:this={calendar}
+        <CalendarView
+            bind:this={calendarView}
             on:click={async ({ detail }) => {
-                if (detail && editMode_open) {
+                if (detail && editMode) {
                     let shift = await getEditModeShift();
                     if (!shift) {
                         return;
@@ -210,7 +211,7 @@
                         await db.setData(detail.getFullYear(), detail.getMonth(), key, shift, note);
                     }
 
-                    calendar.reload();
+                    calendarView.reload();
                 } else if (detail) {
                     editDayDialog.open(detail.getFullYear(), detail.getMonth(), detail.getDate());
                 }
@@ -222,17 +223,17 @@
     {/if}
 </main>
 
-<footer class:visible={editMode_open}>
-    {#if editMode_open && !!settings.data}
+<footer class:visible={editMode}>
+    {#if editMode && !!settings.data}
         <span>
             <ShiftCard
                 name="Reset"
                 visible={false}
-                active={editMode_index === -2}
+                active={editModeIndex === -2}
                 color="var(--color)"
                 id={-2}
                 on:click={() => {
-                    editMode_index = editMode_index === -2 ? -1 : -2;
+                    editModeIndex = editModeIndex === -2 ? -1 : -2;
                 }}
             />
         </span>
@@ -242,9 +243,9 @@
                 <span>
                     <ShiftCard
                         {...shift}
-                        active={editMode_index == index}
+                        active={editModeIndex == index}
                         on:click={() => {
-                            editMode_index = editMode_index === index ? -1 : index;
+                            editModeIndex = editModeIndex === index ? -1 : index;
                         }}
                     />
                 </span>
@@ -279,7 +280,7 @@
         }
 
         editDayDialog.close();
-        calendar.reload();
+        calendarView.reload();
     }}
 />
 

@@ -1,7 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
 
-    import DayContent from "./DayContent.svelte";
+    import Day from "./Day.svelte";
 
     import * as utils from "../../js/utils";
     import * as db from "../../js/db";
@@ -42,7 +42,7 @@
 <div class="container">
     <div>
         {#each days as day}
-            <DayContent currentMonth={currentDate.getMonth()} {day} />
+            <Day currentMonth={currentDate.getMonth()} {day} />
         {/each}
     </div>
 </div>
@@ -52,13 +52,9 @@
         min-width: 100%;
         width: 100%;
         max-width: 100%;
-        height: calc(100% - 44px);
-        padding: 4px;
-
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+        height: calc(100% - 40px);
+        padding: 0;
+        margin: 0;
     }
 
     div.container > div {
@@ -67,6 +63,6 @@
 
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-gap: 4px;
+        grid-gap: 0;
     }
 </style>

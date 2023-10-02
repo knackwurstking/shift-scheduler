@@ -40,7 +40,6 @@
 
     div.calendar-item > div > div.header {
         height: 40px;
-        padding: 4px 4px;
 
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -51,12 +50,10 @@
         justify-content: center;
         align-items: center;
 
-        margin: 0 2px;
-
         font-weight: bolder;
 
         border: 1px solid var(--muted-border-color);
-        border-radius: var(--border-radius);
+        border-radius: 0;
     }
 
     div.calendar-item > div > div.header > span.sunday,

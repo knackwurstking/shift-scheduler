@@ -50,12 +50,11 @@
         overflow: hidden;
 
         border: 1px solid var(--muted-border-color);
-        border-radius: var(--border-radius);
+        border-radius: 0;
     }
 
     div.day-content.disabled {
-        filter: blur(1px);
-        opacity: 0.5;
+        opacity: 0.2;
     }
 
     div.day-content.today {

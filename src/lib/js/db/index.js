@@ -4,7 +4,7 @@ import { Share } from "@capacitor/share";
 /**
  * @typedef StorageData
  * @type {{
- *  shift: import("../../components/settings").Shift | null,
+ *  shift: import("../../view/settings").Shift | null,
  *  note: string,
  * }}
  *
@@ -130,7 +130,7 @@ export async function getData(year, month, key) {
  * @param {number} year
  * @param {number} month 
  * @param {string} key 
- * @param {import("../../components/settings").Shift | null} shift
+ * @param {import("../../view/settings").Shift | null} shift
  * @param {string} note
  */
 export async function setData(year, month, key, shift, note) {

@@ -1,8 +1,8 @@
 <script>
     import { createEventDispatcher } from "svelte";
 
-    import Container from "./Container.svelte";
-    import ContainerItem from "./ContainerItem.svelte";
+    import Container from "./SwipeHandler.svelte";
+    import ContentContainer from "./ContentContainer.svelte";
     import Content from "./Content.svelte";
 
     const dispatch = createEventDispatcher();
@@ -29,7 +29,7 @@
         dispatch("click", ev.detail);
     }}
 >
-    <ContainerItem
+    <ContentContainer
         slot="container-item"
         style={`
             transform: translateX(${currentTranslateX});
@@ -49,5 +49,5 @@
                 dispatch("currentdatechange", ev.detail);
             }}
         />
-    </ContainerItem>
+    </ContentContainer>
 </Container>
