@@ -227,27 +227,6 @@
 />
 
 <style>
-    header {
-        position: relative;
-        height: 60px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        border-bottom: 1px solid var(--muted-border-color);
-    }
-
-    header > .spacer {
-        width: 100%;
-        border: none;
-    }
-
-    header > .actions {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 100%;
-    }
-
     main {
         position: fixed;
         top: 60px;
@@ -263,7 +242,7 @@
         bottom: 0;
         left: 0;
         height: calc(3em + 22px);
-        padding: 0 4px;
+        padding: 0;
         border-top: 1px solid var(--muted-border-color);
         display: flex;
         overflow: hidden;
