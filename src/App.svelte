@@ -4,29 +4,21 @@
     import { App } from "@capacitor/app";
     import { onMount } from "svelte";
 
-    // @ts-ignore
-    import MdModeEdit from "svelte-icons/md/MdModeEdit.svelte";
-    // @ts-ignore
-    import MdToday from "svelte-icons/md/MdToday.svelte";
-    // @ts-ignore
-    import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
-    // @ts-ignore
-    import TiSpanner from "svelte-icons/ti/TiSpanner.svelte";
-
     import * as db from "./lib/js/db";
     import * as settings from "./lib/js/settings";
     import * as utils from "./lib/js/utils";
 
+    import Header from "./Header.svelte";
+
     import CalendarView from "./lib/view/calendar"
     import SettingsView from "./lib/view/settings";
 
-    import DatePicker from "./lib/components/date-picker";
-    import { DatePickerDialog, EditDayDialog } from "./lib/components/dialogs";
-    import IconButton from "./lib/components/icon-button";
+    import { EditDayDialog } from "./lib/components/dialogs";
     import ShiftCard from "./lib/components/shift";
 
-    /** @type {DatePickerDialog} */
-    let datePickerDialog;
+    /** @type {Header} */
+    let header;
+
     /** @type {EditDayDialog} */
     let editDayDialog;
 
@@ -132,59 +124,18 @@
     <link rel="stylesheet" href="/css/themes/{currentTheme}.min.css" />
 </svelte:head>
 
-<header style="font-size: 1rem; padding: 4px;">
-    <!-- Top app bar -->
+<Header
+    bind:this={header}
 
-    {#if view !== viewStack[0]}
-        <div class="actions">
-            <IconButton on:click={() => goBackInHistory()}>
-                <TiArrowBackOutline />
-            </IconButton>
-        </div>
-    {/if}
+    enableBackButton={viewStack.length > 1}
+    enableDatePicker={view === "calendar"}
 
-    {#if view === "calendar"}
-        <!--DatePicker style="margin: 0; width: 30rem;" bind:monthCount={currentMonthCount} /-->
-        <DatePicker
-            style="margin: 0; width: 30rem;"
-            bind:currentDate
-            on:click={async ({ detail }) => {
-                datePickerDialog.open(detail.year, detail.month);
-            }}
-        />
-    {:else if view === "settings"}
-        <h1 style="margin: 0; margin-left: 8px;">Settings</h1>
-    {/if}
+    datePickerDate={currentDate}
+    title={(view === "settings") ? "Settings" : undefined}
 
-    <span class="spacer" />
-
-    <div class="actions">
-        {#if view === "calendar"}
-            <!-- Edit Shifts -->
-            <IconButton
-                margin="8px 4px"
-                on:click={() => {
-                    editMode = !editMode;
-                }}><MdModeEdit /></IconButton
-            >
-
-            <!-- GoTo Today -->
-            <IconButton
-                margin="8px 4px"
-                disabled={today.getFullYear() === currentDate.getFullYear() &&
-                    today.getMonth() === currentDate.getMonth()}
-                on:click={() => setCurrentDate(new Date())}
-            >
-                <MdToday />
-            </IconButton>
-
-            <!-- Settings -->
-            <IconButton margin="8px 4px" on:click={() => goTo("settings")}>
-                <TiSpanner />
-            </IconButton>
-        {/if}
-    </div>
-</header>
+    on:backbuttonclick={() => goBackInHistory()}
+    on:editmodeclick={() => (editMode = !editMode)}
+/>
 
 <main style={`bottom: ${editMode ? "calc(3em + 22px)" : "1px"}`}>
     {#if view === "calendar"}
@@ -253,17 +204,6 @@
         {/key}
     {/if}
 </footer>
-
-<DatePickerDialog
-    bind:this={datePickerDialog}
-    on:cancel={async () => {
-        datePickerDialog.close();
-    }}
-    on:submit={async ({ detail }) => {
-        setCurrentDate(new Date(detail.year, detail.month));
-        datePickerDialog.close();
-    }}
-/>
 
 <EditDayDialog
     bind:this={editDayDialog}
