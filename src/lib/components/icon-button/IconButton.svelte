@@ -1,4 +1,6 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    
     let _class = "";
     export { _class as class };
 
@@ -6,6 +8,8 @@
     export let variant = "contrast";
     /** @type {string | undefined} */
     export let margin = undefined;
+
+    const dispatch = createEventDispatcher();
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -15,7 +19,11 @@
         margin: ${margin !== undefined ? margin : "var(--spacing)"};
     `}
     {...$$restProps}
-    on:click
+    on:click={() => {
+        setTimeout(() => {
+            dispatch("click");
+        }, 100);
+    }}
 >
     <slot />
 </button>

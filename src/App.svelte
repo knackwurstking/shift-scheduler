@@ -143,31 +143,33 @@
     {#if view === "calendar"}
         <CalendarView
             bind:this={calendarView}
-            on:click={async ({ detail }) => {
-                if (detail && editMode) {
-                    let shift = await getEditModeShift();
-                    if (!shift) {
-                        return;
-                    }
-
-                    const key = `${detail.getFullYear()}-${detail.getMonth()}-${detail.getDate()}`;
-                    const { note } = await db.getData(detail.getFullYear(), detail.getMonth(), key);
-
-                    if (shift === "reset") {
-                        shift = null;
-                        if (note) {
-                            await db.setData(detail.getFullYear(), detail.getMonth(), key, null, note);
-                        } else {
-                            await db.removeData(detail.getFullYear(), detail.getMonth(), key);
+            on:click={(ev) => {
+                setTimeout(async () => {
+                    if (ev.detail && editMode) {
+                        let shift = await getEditModeShift();
+                        if (!shift) {
+                            return;
                         }
-                    } else {
-                        await db.setData(detail.getFullYear(), detail.getMonth(), key, shift, note);
-                    }
 
-                    calendarView.reload();
-                } else if (detail) {
-                    editDayDialog.open(detail.getFullYear(), detail.getMonth(), detail.getDate());
-                }
+                        const key = `${ev.detail.getFullYear()}-${ev.detail.getMonth()}-${ev.detail.getDate()}`;
+                        const { note } = await db.getData(ev.detail.getFullYear(), ev.detail.getMonth(), key);
+
+                        if (shift === "reset") {
+                            shift = null;
+                            if (note) {
+                                await db.setData(ev.detail.getFullYear(), ev.detail.getMonth(), key, null, note);
+                            } else {
+                                await db.removeData(ev.detail.getFullYear(), ev.detail.getMonth(), key);
+                            }
+                        } else {
+                            await db.setData(ev.detail.getFullYear(), ev.detail.getMonth(), key, shift, note);
+                        }
+
+                        calendarView.reload();
+                    } else if (ev.detail) {
+                        editDayDialog.open(ev.detail.getFullYear(), ev.detail.getMonth(), ev.detail.getDate());
+                    }
+                }, 100);
             }}
             on:currentdatechange={({ detail }) => (currentDate = detail)}
         />
