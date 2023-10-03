@@ -113,11 +113,3 @@
         </footer>
     </article>
 </dialog>
-
-<style>
-    dialog article {
-        /* Need to set a width */
-        padding: var(--spacing);
-        width: 100%;
-    }
-</style>

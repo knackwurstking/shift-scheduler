@@ -9,24 +9,16 @@
     let _class = "";
     export { _class as class };
 
-    /** @type {string | undefined | null} */
-    export let style = undefined;
-
     /** @type {Date} */
     export let currentDate;
 </script>
 
 <Button
-    class={"date-picker--preview outline" + _class}
-    style={`
-        padding: calc(var(--spacing) / 2);
-    ` + style}
+    class={"button primary" + _class}
     {...$$restProps}
     on:click={() => {
         dispatch("click", { year: currentDate.getFullYear(), month: currentDate.getMonth() });
     }}
 >
-    <span>
-        {currentDate.getFullYear()} / {(currentDate.getMonth() + 1).toString().padStart(2, "0")}
-    </span>
+    {currentDate.getFullYear()} / {(currentDate.getMonth() + 1).toString().padStart(2, "0")}
 </Button>

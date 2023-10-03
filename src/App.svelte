@@ -1,4 +1,5 @@
 <script>
+    import "../node_modules/chota/src/chota.css";
     import "./app.css";
 
     import { App } from "@capacitor/app";

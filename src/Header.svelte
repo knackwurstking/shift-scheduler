@@ -74,7 +74,6 @@
         style="width: 30rem;"
     >
         <DatePicker
-            style="margin: 0;"
             bind:currentDate={datePickerDate}
             on:click={async ({ detail }) => {
                 datePickerDialog.open(detail.year, detail.month);

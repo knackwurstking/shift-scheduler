@@ -15,7 +15,7 @@
     let header;
 
     /**
-     * @type {import("../settings").Shift[]}
+     * @type {import("../../js/settings").Shift[]}
      */
     let shifts = [];
     /**
@@ -26,7 +26,7 @@
     let footer_and_header_height = 0;
 
     /**
-     * @param {import("../settings").Shift[]} _shifts
+     * @param {import("../../js/settings").Shift[]} _shifts
      * @param {number[]} _rhythm
      */
     export async function open(_shifts, _rhythm) {

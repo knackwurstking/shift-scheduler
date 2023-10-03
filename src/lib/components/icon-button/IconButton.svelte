@@ -12,6 +12,14 @@
     const dispatch = createEventDispatcher();
 </script>
 
+<style>
+    .icon-button {
+        height: 2.5rem;
+        width: 2.5rem;
+        padding: 4px;
+    }
+</style>
+
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <button
     class={`${variant} outline icon-button ${_class}`}
@@ -27,21 +35,3 @@
 >
     <slot />
 </button>
-
-<style>
-    .icon-button {
-        position: relative;
-        overflow: hidden;
-
-        height: 1.75rem;
-        width: 1.75rem;
-        padding: 4px;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        border: none;
-        box-shadow: var(--button-box-shadow);
-    }
-</style>
