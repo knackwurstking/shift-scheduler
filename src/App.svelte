@@ -135,7 +135,7 @@
 
     on:backbuttonclick={() => goBackInHistory()}
     on:editmodeclick={() => (editMode = !editMode)}
-    on:currentdatechange={({ detail }) => setCurrentDate(new Date(detail.year, detail.month))}
+    on:currentdatechange={({ detail }) => setCurrentDate(detail)}
     on:goto={({ detail }) => goTo(detail)}
 />
 

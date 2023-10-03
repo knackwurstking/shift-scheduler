@@ -114,7 +114,7 @@
                         today.getMonth() === datePickerDate.getMonth()
                     )
                 })()}
-                on:click={() => dispatch("currentdatechange")}
+                on:click={() => dispatch("currentdatechange", new Date())}
             >
                 <MdToday />
             </IconButton>
@@ -138,7 +138,7 @@
         datePickerDialog.close();
     }}
     on:submit={async ({ detail }) => {
-        dispatch("currentdatachange", new Date(detail.year, detail.month));
+        dispatch("currentdatechange", new Date(detail.year, detail.month));
         datePickerDialog.close();
     }}
 />
