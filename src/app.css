@@ -11,19 +11,29 @@ button, a {
     overflow: hidden;
 }
 
-button:active, div[role=button]:active {
-    transform: translateY(4px);
+button, div[role=button] {
+    transform: translateY(0);
     transition: transform 0.25s ease;
-}
-
-div.day-content:active {
-    transform: scale(0.95);
-    transition: transform 0.1s linear;
 }
 
 div[role=button] {
     background-color: transparent;
     box-shadow: var(--button-box-shadow);
+}
+
+button:active, div[role=button]:active {
+    transform: translateY(4px);
+    transition: transform 0.025s ease;
+}
+
+div.day-content {
+    transform: scale(1);
+    transition: transform 0.25s linear;
+}
+
+div.day-content:active {
+    transform: scale(0.95);
+    transition: transform 0.025s linear;
 }
 
 div.day-content.disabled .ripple {
