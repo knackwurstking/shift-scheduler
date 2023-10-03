@@ -136,6 +136,7 @@
     on:backbuttonclick={() => goBackInHistory()}
     on:editmodeclick={() => (editMode = !editMode)}
     on:currentdatechange={({ detail }) => setCurrentDate(new Date(detail.year, detail.month))}
+    on:goto={({ detail }) => goTo(detail)}
 />
 
 <main style={`bottom: ${editMode ? "calc(3em + 22px)" : "1px"}`}>

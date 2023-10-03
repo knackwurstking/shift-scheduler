@@ -76,8 +76,11 @@
                 <MdToday />
             </IconButton>
 
-            <!-- TODO: Settings -->
-            <IconButton margin="8px 4px" on:click={() => goTo("settings")}>
+            <!-- Settings -->
+            <IconButton
+                margin="8px 4px"
+                on:click={() => dispatch("goto", "settings")}
+            >
                 <TiSpanner />
             </IconButton>
         </span>
