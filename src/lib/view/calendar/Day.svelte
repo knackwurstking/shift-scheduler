@@ -20,6 +20,8 @@
     class:today={day.date.getFullYear() === new Date().getFullYear() &&
         day.date.getMonth() === new Date().getMonth() &&
         day.date.getDate() === new Date().getDate()}
+    role="button"
+    tabindex="0"
     data-value={`${day.date.getMonth() === currentMonth ? day.date.getDate() : NaN}`}
 >
     {#if !!day.data}

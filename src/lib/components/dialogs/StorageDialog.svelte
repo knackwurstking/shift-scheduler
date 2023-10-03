@@ -22,7 +22,7 @@
      *
      * @type {{
      *  key: string;
-     *  shift: import("../../components/settings").Shift | null;
+     *  shift: import("../../js/settings").Shift | null;
      *  note: string;
      * }[]}
      */
@@ -57,13 +57,17 @@
 
 <dialog bind:this={dialog}>
     <article>
-        <header>Data: {year}/{(month + 1).toString().padStart(2, "0")}</header>
-
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="icon close" on:click={() => dispatch("close")}>
-            <IoIosClose />
-        </div>
+        <header>
+            Data: {year}/{(month + 1).toString().padStart(2, "0")}
+            <IconButton
+                style={`
+                    float: right;
+                `}
+                on:click={() => dispatch("close")}
+            >
+                <IoIosClose />
+            </IconButton>
+        </header>
 
         <figure>
             <table role="grid">
@@ -85,8 +89,13 @@
                                 <td class="delete">
                                     <IconButton
                                         on:click={async () => {
-                                            await db.removeData(year, month, item.key);
-                                            await loadData();
+                                            const yes = window.confirm(
+                                                `Delete data for "${year}/${month+1}/${item.key.split("-", 3)[2]}" ?`
+                                            );
+                                            if (yes) {
+                                                await db.removeData(year, month, item.key);
+                                                await loadData();
+                                            }
                                         }}
                                     >
                                         <IoIosTrash />
