@@ -30,14 +30,14 @@
 </script>
 
 <header style="font-size: 1rem; padding: 4px;">
-    <div class="enable-back-button" class:visible={enableBackButton}>
+    <span class="enable-back-button" class:visible={enableBackButton}>
         <IconButton on:click={() => dispatch("backbuttonclick")}>
             <TiArrowBackOutline />
         </IconButton>
-    </div>
+    </span>
 
     <!--DatePicker style="margin: 0; width: 30rem;" bind:monthCount={currentMonthCount} /-->
-    <div class="enable-date-picker" class:visible={enableDatePicker}>
+    <span class="enable-date-picker" class:visible={enableDatePicker}>
         <DatePicker
             style="margin: 0; width: 30rem;"
             bind:currentDate={datePickerDate}
@@ -45,14 +45,14 @@
                 datePickerDialog.open(detail.year, detail.month);
             }}
         />
-    </div>
+    </span>
 
     <h1 style="margin: 0; margin-left: 8px;" class:visible={!!title}>Settings</h1>
 
     <span class="spacer" />
 
     <div class="actions">
-        <div class="enable-data-picker" class:visible={enableDatePicker}>
+        <span class="enable-data-picker" class:visible={enableDatePicker}>
             <!-- Toggle EditMode -->
             <IconButton
                 margin="8px 4px"
@@ -75,7 +75,7 @@
             <IconButton margin="8px 4px" on:click={() => goTo("settings")}>
                 <TiSpanner />
             </IconButton>
-        </div>
+        </span>
     </div>
 </header>
 
@@ -85,7 +85,14 @@
         datePickerDialog.close();
     }}
     on:submit={async ({ detail }) => {
-        setCurrentDate(new Date(detail.year, detail.month));
+        dispatch("currentdatachange", new Date(detail.year, detail.month));
         datePickerDialog.close();
     }}
 />
+
+<style>
+    .enable-back-button:not(.visible),
+    .enable-date-picker:not(.visible) {
+        display: none;
+    }
+</style>

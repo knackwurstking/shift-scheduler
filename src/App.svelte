@@ -130,11 +130,12 @@
     enableBackButton={viewStack.length > 1}
     enableDatePicker={view === "calendar"}
 
-    datePickerDate={currentDate}
+    bind:datePickerDate={currentDate}
     title={(view === "settings") ? "Settings" : undefined}
 
     on:backbuttonclick={() => goBackInHistory()}
     on:editmodeclick={() => (editMode = !editMode)}
+    on:currentdatechange={({ detail }) => setCurrentDate(new Date(detail.year, detail.month))}
 />
 
 <main style={`bottom: ${editMode ? "calc(3em + 22px)" : "1px"}`}>
