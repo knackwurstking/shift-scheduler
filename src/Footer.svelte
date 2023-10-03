@@ -61,17 +61,22 @@
                 <MdModeEdit />
             </IconButton>
 
-            <!-- TODO: GoTo Today -->
+            <!-- GoTo Today -->
             <IconButton
                 margin="8px 4px"
-                disabled={today.getFullYear() === currentDate.getFullYear() &&
-                    today.getMonth() === currentDate.getMonth()}
-                on:click={() => setCurrentDate(new Date())}
+                disabled={(() => {
+                    const today = new Date();
+                    return (
+                        today.getFullYear() === datePickerDate.getFullYear() &&
+                        today.getMonth() === datePickerDate.getMonth()
+                    )
+                })()}
+                on:click={() => dispatch("currentdatechange")}
             >
                 <MdToday />
             </IconButton>
 
-            <!-- Settings -->
+            <!-- TODO: Settings -->
             <IconButton margin="8px 4px" on:click={() => goTo("settings")}>
                 <TiSpanner />
             </IconButton>
