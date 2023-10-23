@@ -1,0 +1,6 @@
+Füge einfach einige Schichten hinzu, füge den Rhythmus und ein Startdatum hinzu, fertig.
+
+Anmerkungen
+
+- Diese App nutzt derzeit den `localStorage` des Browsers.
+- Ermöglicht das Hinzufügen von Notizen und den Schichtwechsel.

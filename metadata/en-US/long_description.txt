@@ -1,0 +1,6 @@
+Just add some shifts, add the rhythm and a start data, done.
+
+Notes
+
+- This app uses the browsers `localStorage` for now.
+- Allows you to add notes and change shifts.
