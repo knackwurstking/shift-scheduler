@@ -17,7 +17,7 @@
     const dispatch = createEventDispatcher();
 </script>
 
-<Button
+<Button.Root
     {...$$restProps}
     color="primary"
     variant="outline"
@@ -31,4 +31,4 @@
     {currentDate.getFullYear()} / {(currentDate.getMonth() + 1)
         .toString()
         .padStart(2, "0")}
-</Button>
+</Button.Root>

@@ -3,14 +3,17 @@
 
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
 
-    import { IconButton, Dialog, DialogHeader } from "svelte-css";
+    import {
+        Button,
+        Dialog,
+    } from "svelte-css";
 
     import * as lang from "../../js/lang";
     import * as db from "../../js/db";
 
     const dispatch = createEventDispatcher();
 
-    /** @type {Dialog} */
+    /** @type {Dialog.Root} */
     let dialog;
 
     /** @type {number} */
@@ -57,10 +60,10 @@
     }
 </script>
 
-<Dialog bind:this={dialog} fullscreen>
-    <DialogHeader
+<Dialog.Root bind:this={dialog} fullscreen>
+    <Dialog.Header
         title={`Data: ${year}/${(month + 1).toString().padStart(2, "0")}`}
-        on:close={() => dispatch("close")}
+        on:close={() => close()}
     />
 
     <section
@@ -108,7 +111,7 @@
                                     </p>
                                 </td>
                                 <td class="right" style="font-size: 1.1em;">
-                                    <IconButton
+                                    <Button.Icon
                                         style="margin: 4px;"
                                         color="destructive"
                                         on:click={async () => {
@@ -134,7 +137,7 @@
                                         }}
                                     >
                                         <DeleteOutline />
-                                    </IconButton>
+                                    </Button.Icon>
                                 </td>
                             </tr>
                         {/each}
@@ -143,7 +146,7 @@
             </table>
         </figure>
     </section>
-</Dialog>
+</Dialog.Root>
 
 <style>
     tr > *:nth-child(1) {

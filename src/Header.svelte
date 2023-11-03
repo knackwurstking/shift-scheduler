@@ -6,11 +6,11 @@
     import CalendarToday from "svelte-material-icons/CalendarToday.svelte";
     import Wrench from "svelte-material-icons/Wrench.svelte";
 
-    import { IconButton } from "svelte-css";
-
-    import { DatePickerDialog, DatePicker } from "./lib/components";
+    import { Button } from "svelte-css";
 
     import * as lang from "./lib/js/lang";
+
+    import { DatePickerDialog, DatePicker } from "./lib/components";
 
     /******************************
      * Variable Export Definitions
@@ -40,12 +40,12 @@
         style="display: flex; justify-content: flex-start; align-items: center; width: calc(100% - 15em);"
     >
         <span class="item" class:visible={enableBackButton}>
-            <IconButton
+            <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2)"
                 on:click={() => dispatch("backbuttonclick")}
             >
                 <ArrowLeft />
-            </IconButton>
+            </Button.Icon>
         </span>
 
         <!-- DatePicker -->
@@ -79,17 +79,17 @@
     >
         <span class="item" class:visible={enableDatePicker}>
             <!-- Toggle EditMode -->
-            <IconButton
+            <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2);"
                 on:click={() => dispatch("editmodeclick")}
             >
                 <Pencil />
-            </IconButton>
+            </Button.Icon>
         </span>
 
         <span class="item" class:visible={enableDatePicker}>
             <!-- GoTo Today -->
-            <IconButton
+            <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2);"
                 disabled={(() => {
                     const today = new Date();
@@ -101,24 +101,23 @@
                 on:click={() => dispatch("currentdatechange", new Date())}
             >
                 <CalendarToday />
-            </IconButton>
+            </Button.Icon>
         </span>
 
         <span class="item" class:visible={enableDatePicker}>
             <!-- Settings -->
-            <IconButton
+            <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2);"
                 on:click={() => dispatch("goto", "settings")}
             >
                 <Wrench />
-            </IconButton>
+            </Button.Icon>
         </span>
     </span>
 </header>
 
 <DatePickerDialog
     bind:this={datePickerDialog}
-    on:close={async () => datePickerDialog.close()}
     on:submit={async ({ detail }) => {
         dispatch("currentdatechange", new Date(detail.year, detail.month));
         datePickerDialog.close();

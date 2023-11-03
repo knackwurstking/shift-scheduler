@@ -5,23 +5,20 @@
 
     import {
         Button,
-        IconButton,
         Dialog,
-        DialogHeader,
-        DialogFooter,
     } from "svelte-css";
 
-    import { Shift } from "../shift";
+    import { createShiftSetupStore } from "../../stores/shift-setup-store";
 
     import * as lang from "../../js/lang";
 
-    import { createShiftSetupStore } from "../../stores/shift-setup-store";
+    import { Shift } from "../shift";
 
     /***********
      * Bindings
      ***********/
 
-    /** @type {Dialog} */
+    /** @type {Dialog.Root} */
     let dialog;
 
     /** @type {HTMLElement} */
@@ -87,10 +84,10 @@
     }
 </script>
 
-<Dialog bind:this={dialog} fullscreen>
-    <DialogHeader
+<Dialog.Root bind:this={dialog} fullscreen>
+    <Dialog.Header
         title={lang.get("rhythmDialog", "title")}
-        on:close={() => dispatch("close")}
+        on:close={() => close()}
     />
 
     <section style="height: calc(100% - 7em);">
@@ -124,7 +121,7 @@
                                         {shift.color}
                                     </td>
                                     <td class="right" style="width: 3em;">
-                                        <IconButton
+                                        <Button.Icon
                                             on:click={async () => {
                                                 rhythm = [
                                                     ...rhythm.slice(0, index),
@@ -133,7 +130,7 @@
                                             }}
                                         >
                                             <DeleteOutline />
-                                        </IconButton>
+                                        </Button.Icon>
                                     </td>
                                 </tr>
                             {/if}
@@ -160,16 +157,16 @@
         </section>
     </section>
 
-    <DialogFooter>
-        <Button
+    <Dialog.Footer>
+        <Button.Root
             color="primary"
             type="submit"
             on:click={() => dispatch("submit", rhythm)}
         >
             {lang.get("buttons", "submit")}
-        </Button>
-    </DialogFooter>
-</Dialog>
+        </Button.Root>
+    </Dialog.Footer>
+</Dialog.Root>
 
 <style>
     figure {

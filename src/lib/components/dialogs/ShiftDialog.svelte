@@ -4,9 +4,7 @@
     import {
         Button,
         Dialog,
-        DialogHeader,
-        DialogFooter,
-        Label,
+        Text,
     } from "svelte-css";
 
     import * as lang from "../../js/lang";
@@ -15,7 +13,7 @@
      * Bindings
      ***********/
 
-    /** @type {Dialog} */
+    /** @type {Dialog.Root} */
     let dialog;
 
     /***********************
@@ -64,63 +62,63 @@
     }
 </script>
 
-<Dialog
+<Dialog.Root
     bind:this={dialog}
     style={`
         width: 75%;
         max-width: 20em;
     `}
 >
-    <DialogHeader
+    <Dialog.Header
         title={`${
             id
                 ? lang.get("shiftDialog", "titleEdit")
                 : lang.get("shiftDialog", "titleNew")
         }`}
-        on:close={() => dispatch("close")}
+        on:close={() => close()}
     />
 
     <section>
-        <Label>
-            <span slot="secondaryText">
+        <Text.Label>
+            <span slot="secondary">
                 {lang.get("shiftDialog", "longNameInputLabel")}
                 <small>
                     {lang.get("shiftDialog", "longNameInputLabelExample")}
                 </small>
             </span>
             <input style="width: 100%;" type="text" bind:value={name} />
-        </Label>
+        </Text.Label>
     </section>
 
     <section>
-        <Label>
-            <span slot="secondaryText">
+        <Text.Label>
+            <span slot="secondary">
                 {lang.get("shiftDialog", "shortNameInputLabel")}
                 <small>
                     {lang.get("shiftDialog", "shortNameInputLabelExample")}
                 </small>
             </span>
             <input style="width: 100%;" type="text" bind:value={shortName} />
-        </Label>
+        </Text.Label>
     </section>
 
     <section><hr /></section>
 
     <section>
-        <Label
-            secondaryText={lang.get("shiftDialog", "hideShiftInputLabel")}
+        <Text.Label
+            secondary={lang.get("shiftDialog", "hideShiftInputLabel")}
             useLabel
             row
         >
             <input type="checkbox" bind:checked={hidden} />
-        </Label>
+        </Text.Label>
     </section>
 
     <section><hr /></section>
 
     <section>
-        <Label
-            secondaryText={lang.get("shiftDialog", "pickBackgroundColorLabel")}
+        <Text.Label
+            secondary={lang.get("shiftDialog", "pickBackgroundColorLabel")}
         >
             <input
                 style="width: 100%;"
@@ -128,12 +126,12 @@
                 bind:value={color}
                 disabled={disableColor}
             />
-        </Label>
+        </Text.Label>
 
         <div class="spacer" />
 
-        <Label
-            secondaryText={lang.get(
+        <Text.Label
+            secondary={lang.get(
                 "shiftDialog",
                 "disableBackgroundColorLabel"
             )}
@@ -141,11 +139,11 @@
             row
         >
             <input type="checkbox" bind:checked={disableColor} />
-        </Label>
+        </Text.Label>
     </section>
 
-    <DialogFooter>
-        <Button
+    <Dialog.Footer>
+        <Button.Root
             color="primary"
             on:click={async () => {
                 dispatch("submit", {
@@ -158,6 +156,6 @@
             }}
         >
             {lang.get("buttons", "submit")}
-        </Button>
-    </DialogFooter>
-</Dialog>
+        </Button.Root>
+    </Dialog.Footer>
+</Dialog.Root>

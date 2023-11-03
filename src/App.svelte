@@ -3,12 +3,14 @@
 
     import { App } from "@capacitor/app";
     import { onMount, onDestroy } from "svelte";
-    import { CSSBase } from "svelte-css";
+
+    import { CSS } from "svelte-css";
 
     import {
         createEditModeStore,
         createEditModeIndexStore,
     } from "./lib/stores/edit-mode-store";
+
     import { createViewStore } from "./lib/stores/view-store";
     import { createThemeStore } from "./lib/stores/theme-store";
 
@@ -92,7 +94,7 @@
 </script>
 
 <svelte:head>
-    <CSSBase
+    <CSS.Root
         theme={$theme === "system" ? undefined : $theme}
         auto={$theme === "system"}
     />

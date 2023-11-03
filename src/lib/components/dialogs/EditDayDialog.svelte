@@ -4,21 +4,19 @@
     import {
         Button,
         Dialog,
-        DialogHeader,
-        DialogFooter,
-        Label,
+        Text,
     } from "svelte-css";
+
+    import { createShiftSetupStore } from "../../stores/shift-setup-store";
 
     import * as db from "../../js/db";
     import * as lang from "../../js/lang";
-
-    import { createShiftSetupStore } from "../../stores/shift-setup-store";
 
     /***********
      * Bindings
      ***********/
 
-    /** @type {Dialog} */
+    /** @type {Dialog.Root} */
     let dialog;
 
     /***********************
@@ -81,23 +79,22 @@
     }
 </script>
 
-<Dialog
+<Dialog.Root
     bind:this={dialog}
     style={`
         width: 17rem;
         max-width: 100%;
     `}
 >
-    <DialogHeader
-        slot="header"
+    <Dialog.Header
         title={`${year} / ${(month + 1).toString().padStart(2, "0")} / ${
             date?.toString().padStart(2, "0") || "??"
         }`}
-        on:close={() => dispatch("close")}
+        on:close={() => close()}
     />
 
     <section>
-        <Label>
+        <Text.Label>
             <select bind:value={current} class="col" style="width: 100%;">
                 <option value="-1" selected={current === "-1"}>
                     (Default) {defaultShift?.name || ""}
@@ -112,17 +109,17 @@
                     </option>
                 {/each}
             </select>
-        </Label>
+        </Text.Label>
     </section>
 
     <section>
-        <Label secondaryText={lang.get("dayDialog", "textfieldLabel")}>
+        <Text.Label secondary={lang.get("dayDialog", "textfieldLabel")}>
             <textarea bind:value={note} rows="10" style="width: 100%;" />
-        </Label>
+        </Text.Label>
     </section>
 
-    <DialogFooter>
-        <Button
+    <Dialog.Footer>
+        <Button.Root
             color="primary"
             on:click={() =>
                 dispatch("submit", {
@@ -132,9 +129,9 @@
                 })}
         >
             {lang.get("buttons", "submit")}
-        </Button>
-    </DialogFooter>
-</Dialog>
+        </Button.Root>
+    </Dialog.Footer>
+</Dialog.Root>
 
 <style>
     textarea {

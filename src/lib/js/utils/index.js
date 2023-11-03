@@ -1,10 +1,10 @@
-import { utils } from "svelte-css";
+import { Utils } from "svelte-css";
 
 import { createShiftSetupStore } from "../../stores/shift-setup-store";
 
 const shiftSetup = createShiftSetupStore();
 
-export const isAndroid = utils.isAndroid;
+export const isAndroid = Utils.isAndroid;
 
 /**
  * @param {import("../db").DBData} data

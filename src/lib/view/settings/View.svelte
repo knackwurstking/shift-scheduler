@@ -5,7 +5,10 @@
     import OpenInNew from "svelte-material-icons/OpenInNew.svelte";
     import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
 
-    import { IconButton, Button, Label, CSSBase } from "svelte-css";
+    import {
+        Button,
+        Text,
+    } from "svelte-css";
 
     import {
         ShiftDialog,
@@ -234,16 +237,16 @@
                                 </td>
 
                                 <td class="right" style="font-size: 1.1em;">
-                                    <IconButton
+                                    <Button.Icon
                                         style="margin: 4px;"
                                         on:click={async () => {
                                             shiftDialog.open(item);
                                         }}
                                     >
                                         <PencilOutline />
-                                    </IconButton>
+                                    </Button.Icon>
 
-                                    <IconButton
+                                    <Button.Icon
                                         style="margin: 4px;"
                                         color="destructive"
                                         on:click={async (ev) => {
@@ -271,7 +274,7 @@
                                         }}
                                     >
                                         <DeleteOutline />
-                                    </IconButton>
+                                    </Button.Icon>
                                 </td>
                             </tr>
                         {/each}
@@ -281,20 +284,20 @@
         </section>
 
         <section>
-            <Button
+            <Button.Root
                 color="primary"
                 style="width: 100%;"
                 on:click={async () => shiftDialog.open()}
             >
                 {lang.get("settingsView", "addShiftButton")}
-            </Button>
+            </Button.Root>
         </section>
 
         <hr />
 
         <section>
-            <Label
-                primaryText={lang.get("settingsView", "startDatePrimaryText")}
+            <Text.Label
+                primary={lang.get("settingsView", "startDatePrimaryText")}
                 row
             >
                 <input
@@ -304,17 +307,17 @@
                     on:change={(ev) =>
                         shiftSetup.updateStartDate(ev.currentTarget.value)}
                 />
-            </Label>
+            </Text.Label>
         </section>
 
         <hr />
 
         <section>
-            <Label
-                primaryText={lang.get("settingsView", "rhythmPrimaryText")}
+            <Text.Label
+                primary={lang.get("settingsView", "rhythmPrimaryText")}
                 row
             >
-                <Button
+                <Button.Root
                     disabled={!$shiftSetup.shifts.length}
                     on:click={async () => {
                         editRhythmDialog.open(
@@ -329,8 +332,8 @@
                     }}
                 >
                     {lang.get("buttons", "edit")}
-                </Button>
-            </Label>
+                </Button.Root>
+            </Text.Label>
         </section>
     </article>
 
@@ -342,8 +345,8 @@
         <hr />
 
         <section>
-            <Label
-                primaryText={lang.get("settingsView", "miscThemePrimaryText")}
+            <Text.Label
+                primary={lang.get("settingsView", "miscThemePrimaryText")}
                 row
             >
                 <select
@@ -371,14 +374,14 @@
                         Light
                     </option>
                 </select>
-            </Label>
+            </Text.Label>
         </section>
 
         <hr />
 
         <section>
-            <Label
-                primaryText={lang.get(
+            <Text.Label
+                primary={lang.get(
                     "settingsView",
                     "miscWeekStartPrimaryText"
                 )}
@@ -396,7 +399,7 @@
                         else weekStart.sunday();
                     }}
                 />
-            </Label>
+            </Text.Label>
         </section>
     </article>
 
@@ -408,27 +411,27 @@
         <hr />
 
         <section>
-            <Label
-                primaryText={lang.get("settingsView", "labelupdownPrimaryText")}
-                secondaryText={lang.get(
+            <Text.Label
+                primary={lang.get("settingsView", "labelupdownPrimaryText")}
+                secondary={lang.get(
                     "settingsView",
                     "labelupdownSecondaryText"
                 )}
                 row
             >
-                <IconButton
+                <Button.Icon
                     style="margin: calc(var(--spacing) / 2)"
                     on:click={() => storageFileUpload()}
                 >
                     <Upload />
-                </IconButton>
-                <IconButton
+                </Button.Icon>
+                <Button.Icon
                     style="margin: calc(var(--spacing) / 2)"
                     on:click={() => storageFileDownload()}
                 >
                     <Download />
-                </IconButton>
-            </Label>
+                </Button.Icon>
+            </Text.Label>
         </section>
 
         <hr />
@@ -467,7 +470,7 @@
                                             class="actions right"
                                             style="font-size: 1.1em;"
                                         >
-                                            <IconButton
+                                            <Button.Icon
                                                 style={`
                                                     margin: 4px;
                                                 `}
@@ -479,9 +482,9 @@
                                                 }}
                                             >
                                                 <OpenInNew />
-                                            </IconButton>
+                                            </Button.Icon>
 
-                                            <IconButton
+                                            <Button.Icon
                                                 style={`
                                                     margin: 4px;
                                                 `}
@@ -508,7 +511,7 @@
                                                 }}
                                             >
                                                 <DeleteOutline />
-                                            </IconButton>
+                                            </Button.Icon>
                                         </td>
                                     </tr>
                                 {/each}
@@ -519,9 +522,9 @@
             </section>
         {:else}
             <section>
-                <Button color="secondary" on:click={() => (dataStorage = true)}>
+                <Button.Root color="secondary" on:click={() => (dataStorage = true)}>
                     {lang.get("settingsView", "storageFetchDataButton")}
-                </Button>
+                </Button.Root>
             </section>
         {/if}
     </article>

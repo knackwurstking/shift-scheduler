@@ -4,9 +4,7 @@
     import {
         Button,
         Dialog,
-        DialogHeader,
-        DialogFooter,
-        Label,
+        Text,
     } from "svelte-css";
 
     import * as lang from "../../js/lang";
@@ -16,7 +14,7 @@
      * Bindings
      ***********/
 
-    /** @type {Dialog} */
+    /** @type {Dialog.Root} */
     let dialog;
 
     /***********************
@@ -64,37 +62,33 @@
     }
 </script>
 
-<Dialog
+<Dialog.Root
     bind:this={dialog}
     style={`
         width: 75%;
         max-width: 20em;
     `}
 >
-    <DialogHeader
-        slot="header"
+    <Dialog.Header
         title={lang.get("datePickerDialog", "title")}
-        on:close={() => dispatch("close")}
+        on:close={() => close()}
     />
 
     {#if utils.isAndroid()}
         <section>
-            <Label
-                secondaryText={lang.get(
-                    "datePickerDialog",
-                    "inputAndroidLabel"
-                )}
+            <Text.Label
+                secondary={lang.get("datePickerDialog", "inputAndroidLabel")}
             >
                 <input
                     style="width: 100%;"
                     type="month"
                     bind:value={dateString}
                 />
-            </Label>
+            </Text.Label>
         </section>
     {:else}
         <section>
-            <Label secondaryText={lang.get("datePickerDialog", "input1Label")}>
+            <Text.Label secondary={lang.get("datePickerDialog", "input1Label")}>
                 <input
                     style="width: 100%;"
                     type="number"
@@ -107,11 +101,11 @@
                         }
                     }}
                 />
-            </Label>
+            </Text.Label>
         </section>
 
         <section>
-            <Label secondaryText={lang.get("datePickerDialog", "input2Label")}>
+            <Text.Label secondary={lang.get("datePickerDialog", "input2Label")}>
                 <input
                     style="width: 100%;"
                     type="number"
@@ -127,12 +121,12 @@
                         }
                     }}
                 />
-            </Label>
+            </Text.Label>
         </section>
     {/if}
 
-    <DialogFooter>
-        <Button
+    <Dialog.Footer>
+        <Button.Root
             color="primary"
             type="submit"
             on:click={async () => {
@@ -141,6 +135,6 @@
             }}
         >
             {lang.get("buttons", "submit")}
-        </Button>
-    </DialogFooter>
-</Dialog>
+        </Button.Root>
+    </Dialog.Footer>
+</Dialog.Root>
