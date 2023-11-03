@@ -76,7 +76,11 @@
          * @param {PointerEvent} ev
          */
         const move = async (ev) => {
-            if (!pointerlock) pointerlock = true;
+            if (
+                !pointerlock &&
+                Math.abs(_startX - ev.clientX) >= minSwipeRange/3
+            ) pointerlock = true;
+
             currentTranslateX = `calc(-100% + ${0 - (_startX - ev.clientX)}px)`;
             _lastX = ev.clientX;
         };
@@ -86,24 +90,26 @@
 
             transition = "transform .25s ease-out";
 
-            if (Math.abs(_lastX - _startX) < minSwipeRange) {
-                direction = null;
-            } else if (_lastX < _startX) {
-                direction = "left";
-            } else if (_lastX > _startX) {
-                direction = "right";
-            }
+            if (pointerlock) {
+                if (Math.abs(_lastX - _startX) < minSwipeRange) {
+                    direction = null;
+                } else if (_lastX < _startX) {
+                    direction = "left";
+                } else if (_lastX > _startX) {
+                    direction = "right";
+                }
 
-            switch (direction) {
-                case null:
-                    currentTranslateX = "-100%";
-                    break;
-                case "left":
-                    currentTranslateX = "-200%";
-                    break;
-                case "right":
-                    currentTranslateX = "0";
-                    break;
+                switch (direction) {
+                    case null:
+                        currentTranslateX = "-100%";
+                        break;
+                    case "left":
+                        currentTranslateX = "-200%";
+                        break;
+                    case "right":
+                        currentTranslateX = "0";
+                        break;
+                }
             }
 
             _lastX = null;
