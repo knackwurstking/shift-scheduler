@@ -1,5 +1,5 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onDestroy } from "svelte";
 
     /***********
      * Bindings
@@ -19,12 +19,12 @@
      * Variable Definitions
      ***********************/
 
+    const cleanUp = [];
+
     const dispatch = createEventDispatcher();
 
     /** @type {boolean} */
     let pointerlock = false;
-    /** @type {boolean} */
-    let waitForTransition = false;
 
     /** @type {[number, number, number]} */
     let items = [-1, 0, 1];
@@ -66,35 +66,25 @@
      * Function Definitions
      ***********************/
 
-    async function setCurrentTranslateX() {
-        switch (direction) {
-            case null:
-                currentTranslateX = "-100%";
-                break;
-            case "left":
-                currentTranslateX = "-200%";
-                break;
-            case "right":
-                currentTranslateX = "0";
-                break;
-        }
-    }
-
     /**
-     * @param {number} x
+     * @param {PointerEvent} ev
      */
-    async function swipeStart(x) {
-        if (!waitForTransition && !pointerlock) {
-            _startX = x;
-            transition = "none";
-            minSwipeRange = container.getBoundingClientRect().width / 7;
-        }
-    }
+    async function swipeStart(ev) {
+        if (pointerlock) return;
 
-    async function swipeEnd() {
-        if (pointerlock && !waitForTransition) {
+        /**
+         * @param {PointerEvent} ev
+         */
+        const move = async (ev) => {
+            if (!pointerlock) pointerlock = true;
+            currentTranslateX = `calc(-100% + ${0 - (_startX - ev.clientX)}px)`;
+            _lastX = ev.clientX;
+        };
+
+        const end = async () => {
+            cleanUp.forEach(fn => fn());
+
             transition = "transform .25s ease-out";
-            waitForTransition = true;
 
             if (Math.abs(_lastX - _startX) < minSwipeRange) {
                 direction = null;
@@ -104,38 +94,38 @@
                 direction = "right";
             }
 
-            await setCurrentTranslateX();
-            pointerlock = false;
-        }
-    }
-
-    /**
-     * @param {number} buttons
-     * @param {number} x
-     */
-    async function swipeMove(buttons, x) {
-        if (waitForTransition) return;
-
-        if (pointerlock && buttons === 1 && !waitForTransition) {
-            currentTranslateX = `calc(-100% + ${0 - (_startX - x)}px)`;
-            _lastX = x;
-            return;
-        }
-
-        if (!pointerlock && buttons === 1) {
-            if (Math.abs(_startX - x) > minSwipeRange / 2) {
-                _startX = x;
-                pointerlock = true;
+            switch (direction) {
+                case null:
+                    currentTranslateX = "-100%";
+                    break;
+                case "left":
+                    currentTranslateX = "-200%";
+                    break;
+                case "right":
+                    currentTranslateX = "0";
+                    break;
             }
-            return;
-        }
+
+            _lastX = null;
+            setTimeout(() => (pointerlock = false), 250);
+        };
+
+        _startX = ev.clientX;
+        transition = "none";
+        minSwipeRange = container.getBoundingClientRect().width / 7;
+
+        window.addEventListener("pointermove", move);
+        window.addEventListener("pointerup", end);
+        window.addEventListener("pointercancel", end);
+
+        cleanUp.push(() => {
+            window.removeEventListener("pointermove", move);
+            window.removeEventListener("pointerup", end);
+            window.removeEventListener("pointercancel", end);
+        });
     }
 
-    async function resetSwipe() {
-        direction = null;
-        _lastX = null;
-        waitForTransition = false;
-    }
+    onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -155,13 +145,9 @@
         touch-action: none;
         user-select: none;
     `}
-    on:pointerdown={(ev) => swipeStart(ev.clientX)}
-    on:pointerup={() => swipeEnd()}
-    on:pointercancel={() => swipeEnd()}
-    on:pointerleave={() => swipeEnd()}
-    on:pointermove={(ev) => swipeMove(ev.buttons, ev.clientX)}
+    on:pointerdown={(ev) => swipeStart(ev)}
     on:click={async (ev) => {
-        if (waitForTransition || pointerlock) return;
+        if (pointerlock) return;
         // @ts-ignore
         for (const el of ev?.path || ev.composedPath() || []) {
             if (el.classList?.contains("day")) {
@@ -209,8 +195,7 @@
                     );
                 }
 
-                await resetSwipe();
-
+                direction = null;
                 transition = "none";
                 currentTranslateX = "-100%";
             }}
