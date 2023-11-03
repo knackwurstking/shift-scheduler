@@ -6,8 +6,6 @@
     "scripts": {
         "dev": "vite --host",
         "build": "vite build",
-        "build:windows": "npm run build && rm -r build/wails/frontend/src/* && cp -r dist/* build/wails/frontend/src/ && cd build/wails && wails build && wails build -nsis",
-        "build:linux": "npm run build && rm -r build/wails/frontend/src/* && cp -r dist/* build/wails/frontend/src/ && cd build/wails && wails build",
         "build:android": "npm run build && npx cap sync android && npx cap open android",
         "preview": "vite preview"
     },
@@ -17,7 +15,7 @@
         "@capacitor/share": "^5.0.6",
         "@sveltejs/vite-plugin-svelte": "^2.4.2",
         "svelte": "^4.0.5",
-        "svelte-css": "github:knackwurstking/svelte-css#v0.4.0",
+        "svelte-css": "github:knackwurstking/svelte-css#v0.4.1",
         "svelte-material-icons": "^3.0.5",
         "vite": "^4.4.5"
     },
