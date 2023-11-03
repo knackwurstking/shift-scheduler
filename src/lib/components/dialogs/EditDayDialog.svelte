@@ -5,6 +5,7 @@
         Button,
         Dialog,
         Text,
+        Input,
     } from "svelte-css";
 
     import { createShiftSetupStore } from "../../stores/shift-setup-store";
@@ -39,8 +40,10 @@
     /** @type {string} */
     let note;
 
-    /** @type {string} */
-    let current = "-1";
+    /** @type {{ value: string, label: string }[]} */
+    let selectItems = [];
+    /** @type {{ value: string, label: string }} */
+    let selected = undefined;
 
     /*********************
      * Store: shift-setup
@@ -66,10 +69,20 @@
 
         const data = (await db.get(year, month))[`${year}-${month}-${date}`];
         shift = data?.shift || null;
-        if (shift) current = shiftSetup.getShiftIndex(shift.id).toString();
-        else current = "-1";
-
         note = data?.note || "";
+
+        selectItems = [
+            { value: "-1", label: `(Default) ${defaultShift?.name || ""}`},
+            ...$shiftSetup.shifts.map(
+                (s, i) => ({ value: i.toString(), label: s.name })
+            ),
+        ];
+        selected = !!shift
+            ? {
+                value: shiftSetup.getShiftIndex(shift.id).toString(),
+                label: shift.name,
+            }
+            : selectItems[0];
 
         dialog.showModal();
     }
@@ -95,20 +108,11 @@
 
     <section>
         <Text.Label>
-            <select bind:value={current} class="col" style="width: 100%;">
-                <option value="-1" selected={current === "-1"}>
-                    (Default) {defaultShift?.name || ""}
-                </option>
-
-                {#each $shiftSetup.shifts as shift, index}
-                    <option
-                        value={index.toString()}
-                        selected={current === index.toString()}
-                    >
-                        {shift.name}
-                    </option>
-                {/each}
-            </select>
+            <Input.Select
+                class="col"
+                items={selectItems}
+                bind:selected
+            />
         </Text.Label>
     </section>
 
@@ -124,7 +128,7 @@
             on:click={() =>
                 dispatch("submit", {
                     date: { year, month, date },
-                    shift: shiftSetup.getShift(parseInt(current, 10)) || null,
+                    shift: shiftSetup.getShift(parseInt(selected.value, 10)) || null,
                     note: note,
                 })}
         >
