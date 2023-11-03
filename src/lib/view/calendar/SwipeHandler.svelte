@@ -78,7 +78,7 @@
         const move = async (ev) => {
             if (
                 !pointerlock &&
-                Math.abs(_startX - ev.clientX) >= minSwipeRange/3
+                Math.abs(_startX - ev.clientX) >= minSwipeRange/2
             ) pointerlock = true;
 
             currentTranslateX = `calc(-100% + ${0 - (_startX - ev.clientX)}px)`;
