@@ -4,6 +4,7 @@
     import {
         Button,
         Dialog,
+        Input,
         Text,
     } from "svelte-css";
 
@@ -79,33 +80,26 @@
     />
 
     <section>
-        <Text.Label>
-            <span slot="secondary">
-                {lang.get("shiftDialog", "longNameInputLabel")}
-                <small>
-                    {lang.get("shiftDialog", "longNameInputLabelExample")}
-                </small>
-            </span>
-            <input style="width: 100%;" type="text" bind:value={name} />
-        </Text.Label>
+        <Input.Text
+            title={lang.get("shiftDialog", "longName")}
+            bind:value={name}
+        />
     </section>
+
+    <div class="spacer" />
 
     <section>
-        <Text.Label>
-            <span slot="secondary">
-                {lang.get("shiftDialog", "shortNameInputLabel")}
-                <small>
-                    {lang.get("shiftDialog", "shortNameInputLabelExample")}
-                </small>
-            </span>
-            <input style="width: 100%;" type="text" bind:value={shortName} />
-        </Text.Label>
+        <Input.Text
+            title={lang.get("shiftDialog", "shortName")}
+            bind:value={shortName}
+        />
     </section>
 
-    <section><hr /></section>
+    <div class="spacer" />
 
     <section>
         <Text.Label
+            style="cursor: pointer;"
             secondary={lang.get("shiftDialog", "hideShiftInputLabel")}
             useLabel
             row
@@ -114,7 +108,7 @@
         </Text.Label>
     </section>
 
-    <section><hr /></section>
+    <div class="spacer" />
 
     <section>
         <Text.Label
