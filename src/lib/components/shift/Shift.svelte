@@ -33,8 +33,12 @@
 </div>
 
 <style>
+    .card {
+        transition: border-color .25s linear;
+    }
+
     .card.active {
-        border: 0.1em solid hsl(var(--primary));
+        border: var(--border-width) solid hsl(var(--primary));
     }
 
     .card .background {
