@@ -5,6 +5,7 @@
         Button,
         Dialog,
         Text,
+        Input,
     } from "svelte-css";
 
     import * as lang from "../../js/lang";
@@ -88,40 +89,21 @@
         </section>
     {:else}
         <section>
-            <Text.Label secondary={lang.get("datePickerDialog", "input1Label")}>
-                <input
-                    style="width: 100%;"
-                    type="number"
-                    bind:value={year}
-                    on:input={async () => {
-                        if (year === null) {
-                            invalidYear = true;
-                        } else {
-                            invalidYear = false;
-                        }
-                    }}
-                />
-            </Text.Label>
+            <Input.Number
+                title={lang.get("datePickerDialog", "input1Label")}
+                bind:value={year}
+                invalid={year === null}
+            />
         </section>
 
         <section>
-            <Text.Label secondary={lang.get("datePickerDialog", "input2Label")}>
-                <input
-                    style="width: 100%;"
-                    type="number"
-                    min={1}
-                    max={12}
-                    bind:value={month}
-                    aria-invalid={invalidMonth}
-                    on:input={async () => {
-                        if (month < 1 || month > 12 || month === null) {
-                            invalidMonth = true;
-                        } else {
-                            invalidMonth = false;
-                        }
-                    }}
-                />
-            </Text.Label>
+            <Input.Number
+                title={lang.get("datePickerDialog", "input2Label")}
+                min={1}
+                max={12}
+                bind:value={month}
+                invalid={month < 1 || month > 12 || month === null}
+            />
         </section>
     {/if}
 
