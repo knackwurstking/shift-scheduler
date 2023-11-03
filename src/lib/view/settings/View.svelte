@@ -381,6 +381,7 @@
 
         <section>
             <Text.Label
+                style="cursor: pointer;"
                 primary={lang.get(
                     "settingsView",
                     "miscWeekStartPrimaryText"
