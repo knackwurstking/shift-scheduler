@@ -80,7 +80,6 @@
             <Text.Label
                 secondary={lang.get("datePickerDialog", "inputAndroidLabel")}
             >
-                <!-- TODO: replace with Input.Month element -->
                 <input
                     style="width: 100%;"
                     type="month"
