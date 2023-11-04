@@ -8,6 +8,7 @@
         Dialog,
     } from "svelte-css";
 
+    import { createViewStore } from "../../stores/view-store.js";
     import { createShiftSetupStore } from "../../stores/shift-setup-store";
 
     import * as lang from "../../js/lang";
@@ -41,6 +42,12 @@
     let rhythm = [];
     $: rhythm && setTimeout(scrollToBottom, 150);
 
+    /**************
+     * Store: view
+     **************/
+
+    const view = createViewStore();
+
     /*********************
      * Store: shift-setup
      *********************/
@@ -59,10 +66,12 @@
         shifts = _shifts;
         rhythm = _rhythm;
         dialog.showModal();
+        view.lock();
     }
 
     export async function close() {
         dialog.close();
+        view.unlock();
     }
 
     /***********************

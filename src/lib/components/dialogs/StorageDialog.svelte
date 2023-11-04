@@ -1,6 +1,4 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
 
     import {
@@ -8,13 +6,21 @@
         Dialog,
     } from "svelte-css";
 
+    import { createViewStore } from "../../stores/view-store.js";
+
     import * as lang from "../../js/lang";
     import * as db from "../../js/db";
 
-    const dispatch = createEventDispatcher();
+    /***********
+     * Bindings
+     ***********/
 
     /** @type {Dialog.Root} */
     let dialog;
+
+    /***********************
+     * Variable Definitions
+     ***********************/
 
     /** @type {number} */
     let year;
@@ -31,16 +37,15 @@
      */
     let data;
 
-    async function loadData() {
-        data = [];
-        for (let [key, value] of Object.entries(await db.get(year, month))) {
-            data.push({
-                key,
-                ...value,
-            });
-        }
-        data = data;
-    }
+    /**************
+     * Store: view
+     **************/
+
+    const view = createViewStore();
+
+    /******************************
+     * Function Export Definitions
+     ******************************/
 
     /**
      * @param {number} _year
@@ -53,10 +58,27 @@
         await loadData();
 
         dialog.showModal();
+        view.lock();
     }
 
     export async function close() {
         dialog.close();
+        view.unlock();
+    }
+
+    /***********************
+     * Function Definitions
+     ***********************/
+
+    async function loadData() {
+        data = [];
+        for (let [key, value] of Object.entries(await db.get(year, month))) {
+            data.push({
+                key,
+                ...value,
+            });
+        }
+        data = data;
     }
 </script>
 

@@ -8,6 +8,7 @@
         Input,
     } from "svelte-css";
 
+    import { createViewStore } from "../../stores/view-store.js";
     import { createShiftSetupStore } from "../../stores/shift-setup-store";
 
     import * as db from "../../js/db";
@@ -44,6 +45,12 @@
     let selectItems = [];
     /** @type {{ value: string, label: string }} */
     let selected = undefined;
+
+    /**************
+     * Store: view
+     **************/
+
+    const view = createViewStore();
 
     /*********************
      * Store: shift-setup
@@ -85,10 +92,12 @@
             : selectItems[0];
 
         dialog.showModal();
+        view.lock();
     }
 
     export async function close() {
         dialog.close();
+        view.unlock();
     }
 </script>
 

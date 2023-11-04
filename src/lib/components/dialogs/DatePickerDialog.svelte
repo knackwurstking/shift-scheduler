@@ -8,6 +8,8 @@
         Input,
     } from "svelte-css";
 
+    import { createViewStore } from "../../stores/view-store.js";
+
     import * as lang from "../../js/lang";
     import * as utils from "../../js/utils";
 
@@ -37,9 +39,15 @@
     let invalidYear = false;
     let invalidMonth = false;
 
-    /***********************
-     * Function Definitions
-     ***********************/
+    /**************
+     * Store: view
+     **************/
+
+    const view = createViewStore();
+
+    /******************************
+     * Function Export Definitions
+     ******************************/
 
     /**
      * @param {number} _year
@@ -50,11 +58,17 @@
         month = _month + 1;
         dateString = `${year}-${month}`;
         dialog.showModal();
+        view.lock();
     }
 
     export async function close() {
         dialog.close();
+        view.unlock();
     }
+
+    /***********************
+     * Function Definitions
+     ***********************/
 
     async function parseDate() {
         const [y, m] = dateString.split("-", 2);

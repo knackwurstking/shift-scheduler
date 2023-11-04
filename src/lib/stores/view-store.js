@@ -5,6 +5,8 @@ import { writable } from "svelte/store";
  * @type {"calendar" | "settings"}
  */
 
+let lockHistory = false;
+
 /**
  * @type {Views[]}
  */
@@ -14,6 +16,14 @@ const stack = [];
 const view = writable();
 
 export function createViewStore() {
+    function lock() {
+        lockHistory = true;
+    }
+
+    function unlock() {
+        lockHistory = false;
+    }
+
     function history() {
         return [...stack];
     }
@@ -22,6 +32,8 @@ export function createViewStore() {
      * @param {Views} _view
      */
     function goto(_view) {
+        if (lockHistory) return;
+
         switch (_view) {
             case "calendar":
                 stack.push(_view);
@@ -35,6 +47,8 @@ export function createViewStore() {
     }
 
     function back() {
+        if (lockHistory) return;
+
         if (stack.length <= 1) {
             return;
         }
@@ -45,6 +59,8 @@ export function createViewStore() {
 
     return {
         ...view,
+        lock,
+        unlock,
         history,
         goto,
         back,

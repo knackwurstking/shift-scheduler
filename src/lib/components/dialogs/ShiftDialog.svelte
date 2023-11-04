@@ -8,6 +8,8 @@
         Text,
     } from "svelte-css";
 
+    import { createViewStore } from "../../stores/view-store.js";
+
     import * as lang from "../../js/lang";
 
     /***********
@@ -30,6 +32,12 @@
     let color;
 
     let disableColor = false;
+
+    /**************
+     * Store: view
+     **************/
+
+    const view = createViewStore();
 
     /******************************
      * Function Export Definitions
@@ -56,10 +64,12 @@
         }
 
         dialog.showModal();
+        view.lock();
     }
 
     export async function close() {
         dialog.close();
+        view.unlock();
     }
 </script>
 
