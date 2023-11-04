@@ -1,7 +1,7 @@
 {
     "name": "shift-scheduler",
     "private": true,
-    "version": "1.0.0",
+    "version": "1.1.0",
     "type": "module",
     "scripts": {
         "dev": "vite --host",
@@ -15,7 +15,7 @@
         "@capacitor/share": "^5.0.6",
         "@sveltejs/vite-plugin-svelte": "^2.4.2",
         "svelte": "^4.0.5",
-        "svelte-css": "github:knackwurstking/svelte-css#v0.4.1",
+        "svelte-css": "../svelte-css",
         "svelte-material-icons": "^3.0.5",
         "vite": "^4.4.5"
     },
