@@ -1,6 +1,5 @@
-Füge einfach einige Schichten hinzu, füge den Rhythmus und ein Startdatum hinzu, fertig.
+Ein einfacher Schichtplaner. (ermöglicht Rhythmuskonfiguration)
 
-Anmerkungen
-
-- Diese App nutzt derzeit den `localStorage` des Browsers.
-- Ermöglicht das Hinzufügen von Notizen und den Schichtwechsel.
+- Hinzufügen von Schichten, eines Rhythmus und eines Startdatums.
+- Diese App verwendet vorerst den „localStorage“ des Browsers.
+- Notizen pro Tag hinzufügen.

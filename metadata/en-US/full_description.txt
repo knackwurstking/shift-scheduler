@@ -1,6 +1,5 @@
-Just add some shifts, add the rhythm and a start data, done.
+A simple shift scheduler. (enables rhythm configuration)
 
-Notes
-
+- Adding shifts, a rhythm and a start date.
 - This app uses the browsers `localStorage` for now.
-- Allows you to add notes and change shifts.
+- Adding notes per day.
