@@ -6,6 +6,7 @@
     "scripts": {
         "dev": "vite --host",
         "build": "vite build",
+        "build:linux": "wails build",
         "build:android": "npm run build && npx cap sync android && npx cap open android",
         "preview": "vite preview"
     },
