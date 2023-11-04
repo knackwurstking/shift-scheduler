@@ -32,7 +32,7 @@ export CAPACITOR_ANDROID_STUDIO_PATH=$(which android-studio)
 npm run build:android
 ```
 
-### Build desktop application. (linux and windows)
+### Build desktop application. (linux)
 
 Install wails
 
@@ -44,12 +44,6 @@ Build for linux
 
 ```bash
 npm run build:linux
-```
-
-Build for windows
-
-```bash
-npm run build:windows
 ```
 
 ## Screenshots
