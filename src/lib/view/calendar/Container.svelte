@@ -125,6 +125,13 @@
 </div>
 
 <style>
+    div.container {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
     .card {
         display: flex;
         justify-content: center;
