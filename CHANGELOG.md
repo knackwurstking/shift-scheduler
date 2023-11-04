@@ -2,15 +2,15 @@
 
 ## v1.1.0
 
-- fix calendar swipe (sometimes not swiping)
+- Fix calendar swipe (sometimes not swiping anymore)
 - `svelte-css` using version "v0.4.2" now
-- update components (using `svelte-css` custom components now)
+- Using `svelte-css` custom components for:
     - `input[type=text]`
     - `input[type=number]`
     - `select`
-- add wails for Linux/Windows desktop builds
-- some minor changes
+- Add wails (v2.6.0) for Linux/Windows desktop builds
+- Some minor changes
 
 ## V1.0.0
 
-- first version
+- First version
