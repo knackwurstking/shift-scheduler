@@ -23,5 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
+# wails
 /build/bin
 /package.json.md5
+/frontend
