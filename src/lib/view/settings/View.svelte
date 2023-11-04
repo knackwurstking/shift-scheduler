@@ -8,6 +8,7 @@
     import {
         Button,
         Text,
+        Input,
     } from "svelte-css";
 
     import {
@@ -349,31 +350,18 @@
                 primary={lang.get("settingsView", "miscThemePrimaryText")}
                 row
             >
-                <select
-                    on:change={(ev) => {
-                        switch (ev.currentTarget.value) {
-                            case "system":
-                                theme.set("system");
-                                break;
-                            case "dark":
-                                theme.set("dark");
-                                break;
-                            case "light":
-                                theme.set("light");
-                                break;
-                        }
+                <Input.Select
+                    items={[
+                        { value: "system", label: "System" },
+                        { value: "dark", label: "Dark" },
+                        { value: "light", label: "Light" },
+                    ]}
+                    selected={{
+                        value: $theme,
+                        label: $theme.charAt(0).toUpperCase() + $theme.slice(1)
                     }}
-                >
-                    <option value="system" selected={$theme === "system"}>
-                        System
-                    </option>
-                    <option value="dark" selected={$theme === "dark"}>
-                        Dark
-                    </option>
-                    <option value="light" selected={$theme === "light"}>
-                        Light
-                    </option>
-                </select>
+                    on:change={ev => theme.set(ev.detail.value)}
+                />
             </Text.Label>
         </section>
 
