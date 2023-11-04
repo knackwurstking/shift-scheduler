@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 /build/bin
-/frontend
+/package.json.md5
