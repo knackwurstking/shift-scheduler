@@ -2,6 +2,8 @@
 
 <img src="public/icon.png" width="100" />
 
+[<img src="https://s1.ax1x.com/2023/01/12/pSu1a36.png" alt="Get it on GitHub" height="80">](https://github.com/knackwurstking/svelte-shift-scheduler/releases)
+
 A simple shift scheduler. (enables rhythm configuration)
 
 - Adding shifts, a rhythm and a start date.
