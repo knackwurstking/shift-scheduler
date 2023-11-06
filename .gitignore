@@ -26,3 +26,4 @@ dist-ssr
 # wails
 /build/bin
 /package.json.md5
+/.vscode
