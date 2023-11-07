@@ -4,7 +4,6 @@
     import {
         Button,
         Dialog,
-        Text,
         Input,
     } from "svelte-css";
 
@@ -56,7 +55,7 @@
     export async function open(_year, _month) {
         year = _year;
         month = _month + 1;
-        dateString = `${year}-${month}`;
+        dateString = `${year}-${month.toString().padStart(2, "0")}`;
         dialog.showModal();
         view.lock();
     }
@@ -79,10 +78,6 @@
 
 <Dialog.Root
     bind:this={dialog}
-    style={`
-        width: 75%;
-        max-width: 20em;
-    `}
 >
     <Dialog.Header
         title={lang.get("datePickerDialog", "title")}
@@ -91,15 +86,10 @@
 
     {#if utils.isAndroid()}
         <section>
-            <Text.Label
-                secondary={lang.get("datePickerDialog", "inputAndroidLabel")}
-            >
-                <input
-                    style="width: 100%;"
-                    type="month"
-                    bind:value={dateString}
-                />
-            </Text.Label>
+            <Input.Month
+                title={lang.get("datePickerDialog", "inputAndroidLabel")}
+                bind:value={dateString}
+            />
         </section>
     {:else}
         <section>
