@@ -7,6 +7,7 @@
 - `svelte-css` version v0.5.0
 - Settings start date input
 - Date picker input (android)
+- Day calendar component font size and weight
 
 ## v1.1.0 2023/11/06
 
