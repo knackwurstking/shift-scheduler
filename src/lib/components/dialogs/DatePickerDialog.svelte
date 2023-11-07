@@ -77,6 +77,7 @@
 </script>
 
 <Dialog.Root
+    style="min-width: 15em;"
     bind:this={dialog}
 >
     <Dialog.Header
