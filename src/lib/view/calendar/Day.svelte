@@ -78,24 +78,20 @@
             0 0 0.25em hsla(var(--primary), 0.6) inset;
     }
 
-    .card.today .date,
-    .card.today .shift {
-        text-shadow: 0 0 0.1em hsla(var(--primary), 0.5),
-            0 0 0.15em hsla(var(--primary), 0.45),
-            0 0 0.2em hsla(var(--primary), 0.35),
-            0 0 0.25em hsla(var(--primary), 0.3);
-    }
-
     .date {
         position: absolute;
         top: var(--spacing);
         left: var(--spacing);
 
+        font-weight: 300;
         font-size: 3vmin;
-        font-size: clamp(0em, 3vmin, 0.9em);
+        font-size: clamp(0em, 3vmin, 1em);
 
-        font-weight: 800;
         text-decoration: underline;
+    }
+
+    .card.today .date {
+        font-weight: 900;
     }
 
     .shift {
@@ -109,6 +105,7 @@
         justify-content: center;
         align-items: center;
 
+        font-weight: 500;
         font-size: 4vmin;
         font-size: clamp(0em, 4vmin, 1.5em);
     }
