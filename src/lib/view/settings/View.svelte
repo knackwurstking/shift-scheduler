@@ -301,12 +301,12 @@
                 primary={lang.get("settingsView", "startDatePrimaryText")}
                 row
             >
-                <input
-                    type="date"
-                    class="shift-start-date"
+                <Input.Date
                     value={$shiftSetup.startDate}
-                    on:change={(ev) =>
-                        shiftSetup.updateStartDate(ev.currentTarget.value)}
+                    on:input={(ev) => {
+                        // @ts-ignore
+                        shiftSetup.updateStartDate(ev.currentTarget.value);
+                    }}
                 />
             </Text.Label>
         </section>
