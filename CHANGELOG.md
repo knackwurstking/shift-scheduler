@@ -5,6 +5,7 @@
 ### Added
 
 - text-shadow to calendar day items (.date)
+- settings margin between article tags
 
 ### Changed
 
@@ -16,6 +17,10 @@
 - calendar .day item styles
 - shift card color highlighting
 - calendar day items (shift) color highlighting
+
+### Fixed
+
+- footer .row height
 
 ## v1.1.0 2023/11/06
 
