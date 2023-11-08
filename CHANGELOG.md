@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] v1.2.0
+## v1.2.0 2023-11-08
 
 ### Added
 
@@ -24,7 +24,7 @@
 - footer shift cards height if `shortName` is hidden 
 - collapse select item on day dialog close
 
-## v1.1.0 2023/11/06
+## v1.1.0 2023-11-06
 
 ### Added
 
