@@ -126,7 +126,6 @@
                                             overflow: hidden;
                                             text-overflow: ellipsis;
                                             max-height: calc(3em * var(--line-height, 1));
-                                            user-select: text;
                                         `}
                                     >
                                         {item.note || ""}

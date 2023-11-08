@@ -75,7 +75,7 @@
 
 <div
     {...$$restProps}
-    class={"container " + _class}
+    class={"container has-user-select-none " + _class}
     style={`
         min-width: 100%;
         width: 100%;
@@ -125,13 +125,6 @@
 </div>
 
 <style>
-    div.container {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
     .card {
         display: flex;
         justify-content: center;
