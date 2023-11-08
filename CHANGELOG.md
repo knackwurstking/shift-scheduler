@@ -21,6 +21,7 @@
 ### Fixed
 
 - footer shift cards height if `shortName` is hidden 
+- collapse select item on day dialog close
 
 ## v1.1.0 2023/11/06
 
