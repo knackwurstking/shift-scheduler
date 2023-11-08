@@ -86,8 +86,6 @@
         font-weight: normal;
         font-size: 3vmin;
         font-size: clamp(0em, 3vmin, 1em);
-
-        text-decoration: underline;
     }
 
     .card.today .date {
