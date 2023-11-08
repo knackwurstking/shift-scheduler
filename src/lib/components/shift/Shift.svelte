@@ -69,6 +69,6 @@
     }
 
     .card .short-name:not(.visible) {
-        display: none;
+        opacity: 0;
     }
 </style>

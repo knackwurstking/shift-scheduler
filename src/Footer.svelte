@@ -25,7 +25,7 @@
 <footer class="container" class:visible={$editMode}>
     {#if $editMode}
         <figure class="container">
-            <div class="row" style="flex-wrap: nowrap; height: 100%;">
+            <div class="row" style="flex-wrap: nowrap;">
                 <div
                     class="col"
                     style={

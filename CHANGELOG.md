@@ -20,7 +20,7 @@
 
 ### Fixed
 
-- footer .row height
+- footer shift cards height if `shortName` is hidden 
 
 ## v1.1.0 2023/11/06
 
