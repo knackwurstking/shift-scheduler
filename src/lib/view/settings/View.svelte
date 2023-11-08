@@ -147,9 +147,6 @@
                             <th class="left">
                                 {lang.get("settingsView", "tableHeaderShort")}
                             </th>
-                            <th class="left">
-                                {lang.get("settingsView", "tableHeaderColor")}
-                            </th>
                             <th class="right" />
                         </tr>
                     </thead>
@@ -224,17 +221,13 @@
                             >
                                 <td class="left">{item.name}</td>
 
-                                <td class="left">
-                                    {item.visible ? item.shortName : ""}
-                                </td>
-
                                 <td
                                     class="left"
-                                    style="color: {item.color}; font-weight: 600;"
+                                    style={
+                                        `--shift-color: ${item.color || "hsl(var(--foreground))"}`
+                                    }
                                 >
-                                    {!item.color || item.color === "transparent"
-                                        ? ""
-                                        : item.color}
+                                    {item.visible ? item.shortName : ""}
                                 </td>
 
                                 <td class="right" style="font-size: 1.1em;">
@@ -578,13 +571,11 @@
 
     .shift-table tr > *:nth-child(2) {
         width: 4.5em;
+        color: var(--shift-color);
+        text-shadow: .1em .1em .1em hsl(var(--border));
     }
 
     .shift-table tr > *:nth-child(3) {
-        width: 6em;
-    }
-
-    .shift-table tr > *:nth-child(4) {
         width: 6.75em;
     }
 

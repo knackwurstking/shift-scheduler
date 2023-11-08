@@ -17,6 +17,7 @@
 - calendar .day item styles
 - shift card color highlighting
 - calendar day items (shift) color highlighting
+- settings: color section removed from table
 
 ### Fixed
 
