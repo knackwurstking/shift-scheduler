@@ -83,7 +83,7 @@
         top: var(--spacing);
         left: var(--spacing);
 
-        font-weight: 400;
+        font-weight: normal;
         font-size: 3vmin;
         font-size: clamp(0em, 3vmin, 1em);
 
@@ -91,7 +91,7 @@
     }
 
     .card.today .date {
-        font-weight: 900;
+        font-weight: bolder;
     }
 
     .shift {
@@ -105,7 +105,7 @@
         justify-content: center;
         align-items: center;
 
-        font-weight: 500;
+        font-weight: bold;
         font-size: 4vmin;
         font-size: clamp(0em, 4vmin, 1.5em);
     }
