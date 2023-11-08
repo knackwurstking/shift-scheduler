@@ -131,7 +131,7 @@
 </script>
 
 <div class="root">
-    <article class="card">
+    <article class="card has-margin">
         <section style="padding-left: 0; padding-right: 0;">
             <h2>{lang.get("settingsView", "titleShifts")}</h2>
 
@@ -338,7 +338,9 @@
         </section>
     </article>
 
-    <article class="card">
+    <br />
+
+    <article class="card has-margin">
         <h2 style="margin: var(--spacing)">
             {lang.get("settingsView", "titleMisc")}
         </h2>
@@ -392,7 +394,9 @@
         </section>
     </article>
 
-    <article class="card">
+    <br />
+
+    <article class="card has-margin">
         <h2 style="margin: var(--spacing)">
             {lang.get("settingsView", "titleStorage")}
         </h2>
