@@ -87,7 +87,6 @@
         font-size: 3vmin;
         font-size: clamp(0em, 3vmin, 1em);
 
-        text-shadow: .05em .05em hsl(var(--border));
         text-decoration: underline;
     }
 
