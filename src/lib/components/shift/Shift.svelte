@@ -24,12 +24,14 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div {...$$restProps} class="card no-user-select" class:active on:click>
-    <div
-        class="background"
-        style={`background-color: ${color || "transparent"};`}
-    />
     <div class="name">{name}</div>
-    <div class="short-name" class:visible>{shortName || name[0]}</div>
+    <div
+        class="short-name"
+        class:visible
+        style={
+            `--shift-color: ${color || "hsl(var(--card-foreground))"};`
+        }
+    >{shortName || name[0]}</div>
 </div>
 
 <style>
@@ -39,16 +41,6 @@
 
     .card.active {
         border: var(--border-width) solid hsl(var(--primary));
-    }
-
-    .card .background {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-
-        opacity: 0.25;
     }
 
     .card .name {
@@ -68,7 +60,11 @@
         font-weight: 600;
         font-style: italic;
 
+        color: var(--shift-color);
+
         text-overflow: ellipsis;
+        text-shadow: .1em .1em .1em hsl(var(--border));
+
         overflow: hidden;
     }
 

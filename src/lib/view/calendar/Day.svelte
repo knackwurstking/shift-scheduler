@@ -23,7 +23,7 @@
 </script>
 
 <div
-    class={`card no-shadow day ${
+    class={`card day ${
         day.date.getMonth() === currentMonth
             ? `date-${day.date.getFullYear()}-${day.date.getMonth()}-${day.date.getDate()}`
             : ""
@@ -37,27 +37,17 @@
         day.date.getMonth() === currentMonth ? day.date.getDate() : NaN
     }`}
 >
-    {#if day.data.shift}
-        <div
-            class="background"
-            style={`
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: ${day.data.shift.color || "transparent"};
-                opacity: .25;
-            `}
-        />
-    {/if}
-
     <span class="date" class:has-shift={!!day.data?.shift}>
         {day.date.getDate()}
     </span>
 
     {#if !!day.data?.shift}
-        <span class="shift">
+        <span
+            class="shift"
+            style={
+                `--shift-color: ${day.data.shift.color || "hsl(var(--card-foreground))"};`
+            }
+        >
             {day.data.shift.visible ? day.data.shift.shortName || "" : ""}
         </span>
     {/if}
@@ -106,6 +96,9 @@
         font-weight: bold;
         font-size: 4vmin;
         font-size: clamp(0em, 4vmin, 1.5em);
+
+        color: var(--shift-color);
+        text-shadow: .1em .1em .1em hsl(var(--border));
     }
 
     .has-note .date {
@@ -115,6 +108,6 @@
 
     .has-note .date,
     .card.today .date {
-        text-shadow: .1em .1em hsl(var(--border));
+        text-shadow: .1em .1em .1em hsl(var(--border));
     }
 </style>
