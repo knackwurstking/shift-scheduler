@@ -25,10 +25,12 @@
 <footer class="container" class:visible={$editMode}>
     {#if $editMode}
         <figure class="container">
-            <div class="row" style="flex-wrap: nowrap;">
+            <div class="row" style="flex-wrap: nowrap; height: 100%;">
                 <div
                     class="col"
-                    style="max-width: calc(7em + var(--spacing) * 2);"
+                    style={
+                        "max-width: calc(7em + var(--spacing) * 2);"
+                    }
                 >
                     <Shift
                         name="Reset"
@@ -49,7 +51,9 @@
                 {#each $shiftSetup.shifts as shift, index}
                     <div
                         class="col"
-                        style="max-width: calc(7em + var(--spacing) * 2);"
+                        style={
+                            "max-width: calc(7em + var(--spacing) * 2);"
+                        }
                     >
                         <Shift
                             {...shift}
