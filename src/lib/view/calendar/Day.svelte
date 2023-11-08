@@ -83,10 +83,11 @@
         top: var(--spacing);
         left: var(--spacing);
 
-        font-weight: 300;
+        font-weight: 400;
         font-size: 3vmin;
         font-size: clamp(0em, 3vmin, 1em);
 
+        text-shadow: .05em .05em hsl(var(--border));
         text-decoration: underline;
     }
 
@@ -112,5 +113,11 @@
 
     .has-note .date {
         color: hsl(var(--destructive));
+        font-weight: 900;
+    }
+
+    .has-note .date,
+    .card.today .date {
+        text-shadow: .1em .1em hsl(var(--border));
     }
 </style>
