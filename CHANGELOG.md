@@ -2,12 +2,17 @@
 
 ## [unreleased] v1.2.0
 
+### Added
+
+- text-shadow to calendar day items (.date)
+
 ### Changed
 
 - `svelte-css` version v0.5.0
 - Settings start date input
 - Date picker input (android)
 - Day calendar component font size and weight
+- Fonts, using system-ui now
 
 ## v1.1.0 2023/11/06
 
