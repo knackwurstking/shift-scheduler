@@ -9,19 +9,21 @@
 ### Changed
 
 - `svelte-css` version v0.5.0
-- Settings start date input
-- Date picker input (android)
-- Day calendar component font size and weight
-- Fonts ("Fira Sans", "Fira Mono")
-- Calendar .day item styles
+- settings start date input
+- date picker input (android)
+- day calendar component font size and weight
+- fonts ("Fira Sans", "Fira Mono")
+- calendar .day item styles
+- shift card color highlighting
+- calendar day items (shift) color highlighting
 
 ## v1.1.0 2023/11/06
 
 ### Added
 
-- New components for html text and number input
-- New component for html select
-- Add wails (v2.6.0) for Linux/Windows desktop builds
+- new components for html text and number input
+- new component for html select
+- add wails (v2.6.0) for Linux/Windows desktop builds
 
 ### Changed
 
@@ -29,4 +31,4 @@
 
 ### Fixed
 
-- Calendar swipe (no swipe)
+- calendar swipe (no swipe)
