@@ -23,7 +23,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div {...$$restProps} class="card has-user-select-none" class:active on:click>
+<div {...$$restProps} class="card no-user-select" class:active on:click>
     <div
         class="background"
         style={`background-color: ${color || "transparent"};`}

@@ -75,7 +75,7 @@
 
 <div
     {...$$restProps}
-    class={"container has-user-select-none " + _class}
+    class={"container no-user-select " + _class}
     style={`
         min-width: 100%;
         width: 100%;

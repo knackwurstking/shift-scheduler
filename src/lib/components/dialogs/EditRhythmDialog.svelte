@@ -153,7 +153,7 @@
             <figure style="width: 100%;">
                 <div class="row" style="flex-wrap: nowrap;">
                     {#each shifts as shift}
-                        <div class="col has-user-select-none">
+                        <div class="col no-user-select">
                             <Shift
                                 {...shift}
                                 on:click={() =>

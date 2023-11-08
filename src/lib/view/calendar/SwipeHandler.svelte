@@ -138,7 +138,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
-    class="has-user-select-none"
+    class="no-user-select"
     style={`
         width: 100%;
         height: 100%;
