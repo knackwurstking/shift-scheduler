@@ -21,6 +21,9 @@
     /** @type {Dialog.Root} */
     let dialog;
 
+    /** @type {Input.Select} */
+    let select;
+
     /***********************
      * Variable Definitions
      ***********************/
@@ -96,6 +99,7 @@
     }
 
     export async function close() {
+        select.collapse();
         dialog.close();
         view.unlock();
     }
@@ -116,13 +120,12 @@
     />
 
     <section>
-        <Text.Label>
-            <Input.Select
-                class="col"
-                items={selectItems}
-                bind:selected
-            />
-        </Text.Label>
+        <Input.Select
+            bind:this={select}
+            class="col"
+            items={selectItems}
+            bind:selected
+        />
     </section>
 
     <section>
