@@ -150,7 +150,7 @@
         </section>
 
         <section>
-            <figure style="width: 100%;">
+            <figure style="width: 100%;" class="no-overflow">
                 <div class="row" style="flex-wrap: nowrap;">
                     {#each shifts as shift}
                         <div class="col no-user-select">
@@ -179,7 +179,6 @@
 
 <style>
     figure {
-        -moz-overflow-style: none;
         scrollbar-width: none;
     }
 
