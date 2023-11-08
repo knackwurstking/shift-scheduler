@@ -12,7 +12,8 @@
 - Settings start date input
 - Date picker input (android)
 - Day calendar component font size and weight
-- Fonts, using system-ui now
+- Fonts ("Fira Sans", "Fira Mono")
+- Calendar .day item styles
 
 ## v1.1.0 2023/11/06
 
