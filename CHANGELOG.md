@@ -4,25 +4,20 @@
 
 ### Added
 
-- text-shadow to calendar day items (.date)
-- settings margin between article tags
+- "Fira Sans" and "Fira Mono" fonts
 
 ### Changed
 
 - `svelte-css` version v0.5.0
-- settings start date input
-- date picker input (android)
-- day calendar component font size and weight
-- fonts ("Fira Sans", "Fira Mono")
-- calendar .day item styles
-- shift card color highlighting
-- calendar day items (shift) color highlighting
-- settings: color section removed from table
+- some style changes
+- input components for types "date" and "month"
+- calendar items font size (".date" and ".shiftName")
+- shifts color highlighting (".background" removed)
+- remove color table section from settings shifts
 
 ### Fixed
 
-- footer shift cards height if `shortName` is hidden 
-- collapse select item on day dialog close
+- collapse select component on day dialog close
 
 ## v1.1.0 2023-11-06
 
