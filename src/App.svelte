@@ -20,13 +20,6 @@
     import Main from "./Main.svelte";
     import Footer from "./Footer.svelte";
 
-    /***********
-     * Bindings
-     ***********/
-
-    /** @type {Header} */
-    let header;
-
     /***********************
      * Variable Definitions
      ***********************/
@@ -93,15 +86,13 @@
     });
 </script>
 
-<svelte:head>
-    <CSS.Root
-        theme={$theme === "system" ? undefined : $theme}
-        auto={$theme === "system"}
-    />
-</svelte:head>
+<CSS.Root
+    mode={$theme === "system" ? undefined : $theme}
+    variant="zinc"
+    auto={$theme === "system"}
+/>
 
 <Header
-    bind:this={header}
     {enableBackButton}
     {enableDatePicker}
     bind:datePickerDate={currentDate}
