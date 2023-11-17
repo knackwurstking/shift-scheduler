@@ -6,23 +6,26 @@
     import CalendarToday from "svelte-material-icons/CalendarToday.svelte";
     import Wrench from "svelte-material-icons/Wrench.svelte";
 
-    import { Button } from "svelte-css";
+    import { Button, TopAppBar, Grid } from "svelte-css";
 
-    import * as lang from "./lib/js/lang";
-
-    import { DatePickerDialog, DatePicker } from "./lib/components";
+    import { DatePickerDialog } from "./lib/components";
 
     /******************************
      * Variable Export Definitions
      ******************************/
 
+    // TODO: using $view to handle top-app-bar content
+
     /** @type {boolean} */
     export let enableBackButton = false;
     export let enableDatePicker = false;
 
+    // TODO: rename to `currentDate`
+
     /** @type {Date} */
     export let datePickerDate;
-    /** @type {string | undefined | null} */
+
+    /** @type {string | undefined} */
     export let title = undefined;
 
     /***********************
@@ -35,62 +38,57 @@
     let datePickerDialog;
 </script>
 
-<header class="container">
-    <span
-        style="display: flex; justify-content: flex-start; align-items: center; width: calc(100% - 15em);"
-    >
-        <span class="item" class:visible={enableBackButton}>
+<TopAppBar.Root uiContainer>
+    <svelte:fragment slot="left">
+        {#if enableBackButton}
             <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2)"
+                ghost
                 on:click={() => dispatch("backbuttonclick")}
             >
                 <ArrowLeft />
             </Button.Icon>
-        </span>
+        {/if}
 
-        <!-- DatePicker -->
-        <span
-            class="item"
-            class:visible={enableDatePicker}
-            style="min-width: 7em"
-        >
-            <DatePicker
-                bind:currentDate={datePickerDate}
-                on:click={async ({ detail }) => {
-                    datePickerDialog.open(detail.year, detail.month);
-                }}
-            />
-        </span>
+        {#if enableDatePicker}
+            <Grid.Col height="100%" width="7.5em">
+                <Button.Root
+                    class="is-max"
+                    variant="outline"
+                    on:click={() => {
+                        datePickerDialog.open(
+                            datePickerDate.getFullYear(),
+                            datePickerDate.getMonth(),
+                        );
+                    }}
+                >
+                    {datePickerDate.getFullYear()} / {(datePickerDate.getMonth() + 1)
+                        .toString()
+                        .padStart(2, "0")}
+                </Button.Root>
+            </Grid.Col>
+        {/if}
+    </svelte:fragment>
 
-        <h1
-            class="item"
-            class:visible={!!title}
-            style="margin-left: var(--spacing);"
-        >
-            {lang.get("appBar", "settings")}
-        </h1>
-    </span>
+    <svelte:fragment slot="center">
+        {#if !!title}
+            <h4 class="title">{title}</h4>
+        {/if}
+    </svelte:fragment>
 
-    <span
-        style={`
-            display: flex;
-            justify-content: flex-end;
-        `}
-    >
-        <span class="item" class:visible={enableDatePicker}>
-            <!-- Toggle EditMode -->
+    <svelte:fragment slot="right">
+        {#if enableDatePicker}
             <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2);"
+                ghost
                 on:click={() => dispatch("editmodeclick")}
             >
                 <Pencil />
             </Button.Icon>
-        </span>
 
-        <span class="item" class:visible={enableDatePicker}>
-            <!-- GoTo Today -->
             <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2);"
+                ghost
                 disabled={(() => {
                     const today = new Date();
                     return (
@@ -102,19 +100,17 @@
             >
                 <CalendarToday />
             </Button.Icon>
-        </span>
 
-        <span class="item" class:visible={enableDatePicker}>
-            <!-- Settings -->
             <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2);"
+                ghost
                 on:click={() => dispatch("goto", "settings")}
             >
                 <Wrench />
             </Button.Icon>
-        </span>
-    </span>
-</header>
+        {/if}
+    </svelte:fragment>
+</TopAppBar.Root>
 
 <DatePickerDialog
     bind:this={datePickerDialog}
@@ -123,22 +119,3 @@
         datePickerDialog.close();
     }}
 />
-
-<style>
-    header {
-        position: relative;
-        height: 3.5em;
-
-        padding: 0 calc(var(--spacing) / 2);
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        border-bottom: 0.1em solid hsl(var(--border));
-    }
-
-    header .item:not(.visible) {
-        display: none;
-    }
-</style>

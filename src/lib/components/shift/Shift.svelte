@@ -23,7 +23,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div {...$$restProps} class="card no-user-select" class:active on:click>
+<div {...$$restProps} class={"ui-card no-user-select " + ($$restProps.class || "")} class:active on:click>
     <div class="name">{name}</div>
     <div
         class="short-name"
@@ -35,15 +35,15 @@
 </div>
 
 <style>
-    .card {
+    .ui-card {
         transition: border-color .25s linear;
     }
 
-    .card.active {
+    .ui-card.active {
         border: var(--border-width) solid hsl(var(--primary));
     }
 
-    .card .name {
+    .ui-card .name {
         width: 5rem;
 
         font-size: 0.8rem;
@@ -53,7 +53,7 @@
         overflow: hidden;
     }
 
-    .card .short-name {
+    .ui-card .short-name {
         width: 4rem;
 
         font-size: 0.9rem;
@@ -68,7 +68,7 @@
         overflow: hidden;
     }
 
-    .card .short-name:not(.visible) {
+    .ui-card .short-name:not(.visible) {
         opacity: 0;
     }
 </style>

@@ -1,4 +1,6 @@
 <script>
+    import { Grid } from "svelte-css";
+
     import { Shift } from "./lib/components";
 
     import {
@@ -22,17 +24,13 @@
     const shiftSetup = createShiftSetupStore();
 </script>
 
-<footer class="container" class:visible={$editMode}>
+<footer class="ui-container is-max-width" class:visible={$editMode}>
     {#if $editMode}
-        <figure class="container">
-            <div class="row" style="flex-wrap: nowrap;">
-                <div
-                    class="col"
-                    style={
-                        "max-width: calc(7em + var(--spacing) * 2);"
-                    }
-                >
+        <figure class="flex no-scrollbar is-max">
+            <Grid.Row flexFlow="row nowrap">
+                <Grid.Col width="calc(7.5em + var(--spacing))" flex="0">
                     <Shift
+                        class="is-max"
                         name="Reset"
                         visible={false}
                         active={$editModeIndex === -2}
@@ -46,16 +44,12 @@
                             }
                         }}
                     />
-                </div>
+                </Grid.Col>
 
                 {#each $shiftSetup.shifts as shift, index}
-                    <div
-                        class="col"
-                        style={
-                            "max-width: calc(7em + var(--spacing) * 2);"
-                        }
-                    >
+                    <Grid.Col width="calc(7.5em + var(--spacing))" flex="0">
                         <Shift
+                            class="is-max"
                             {...shift}
                             active={$editModeIndex === index}
                             on:click={() => {
@@ -66,9 +60,9 @@
                                 }
                             }}
                         />
-                    </div>
+                    </Grid.Col>
                 {/each}
-            </div>
+            </Grid.Row>
         </figure>
     {/if}
 </footer>
@@ -82,17 +76,6 @@
         left: 0;
         height: 4.5em;
         padding: 0;
-        display: flex;
-    }
-
-    footer figure {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        height: 100%;
-    }
-
-    footer figure::-webkit-scrollbar {
-        display: none;
     }
 
     footer:not(.visible) {

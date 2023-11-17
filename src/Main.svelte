@@ -102,7 +102,10 @@
     });
 </script>
 
-<main class="container" style:bottom={$editMode ? "4.5em" : "0"}>
+<main
+    class="ui-container is-debug"
+    style:bottom={$editMode ? "4.5em" : "0"}
+>
     {#if $view === "calendar"}
         <CalendarView
             bind:this={calendarView}
@@ -197,9 +200,11 @@
 <style>
     main {
         position: fixed;
-        top: 3.5rem;
+        top: 0;
         right: 0;
         left: 0;
+
         padding: 0;
+        padding-top: 3.5em;
     }
 </style>

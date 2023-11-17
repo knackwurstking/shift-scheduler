@@ -14,6 +14,7 @@
     import { createViewStore } from "./lib/stores/view-store";
     import { createThemeStore } from "./lib/stores/theme-store";
 
+    import * as lang from "./lib/js/lang";
     import * as utils from "./lib/js/utils";
 
     import Header from "./Header.svelte";
@@ -96,7 +97,7 @@
     {enableBackButton}
     {enableDatePicker}
     bind:datePickerDate={currentDate}
-    title={$view === "settings" ? "Settings" : undefined}
+    title={$view === "settings" ? (lang.get("appBar", "settings")) : undefined}
     on:backbuttonclick={() => view.back()}
     on:editmodeclick={() => editMode.toggle()}
     on:currentdatechange={({ detail }) => (currentDate = detail)}
