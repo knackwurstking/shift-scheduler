@@ -25,6 +25,7 @@
 <div
     class={
         "ui-card " +
+        "is-max " +
         "day " +
         (
             day.date.getMonth() === currentMonth

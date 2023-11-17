@@ -80,7 +80,7 @@
     }
 </script>
 
-<Grid.Row height="16.6%">
+<Grid.Row height="100%">
     {#each days.slice(0, 7) as day}
         <Grid.Col width="calc(100% / 7)" height="100%">
             <Day currentMonth={currentDate.getMonth()} {day} />
@@ -88,7 +88,7 @@
     {/each}
 </Grid.Row>
 
-<Grid.Row height="16.6%">
+<Grid.Row height="100%">
     {#each days.slice(7, 14) as day}
         <Grid.Col width="calc(100% / 7)" height="100%">
             <Day currentMonth={currentDate.getMonth()} {day} />
@@ -96,7 +96,7 @@
     {/each}
 </Grid.Row>
 
-<Grid.Row height="16.6%">
+<Grid.Row height="100%">
     {#each days.slice(14, 21) as day}
         <Grid.Col width="calc(100% / 7)" height="100%">
             <Day currentMonth={currentDate.getMonth()} {day} />
@@ -104,7 +104,7 @@
     {/each}
 </Grid.Row>
 
-<Grid.Row height="16.6%">
+<Grid.Row height="100%">
     {#each days.slice(21, 28) as day}
         <Grid.Col width="calc(100% / 7)" height="100%">
             <Day currentMonth={currentDate.getMonth()} {day} />
@@ -112,7 +112,7 @@
     {/each}
 </Grid.Row>
 
-<Grid.Row height="16.6%">
+<Grid.Row height="100%">
     {#each days.slice(28, 35) as day}
         <Grid.Col width="calc(100% / 7)" height="100%">
             <Day currentMonth={currentDate.getMonth()} {day} />
@@ -120,7 +120,7 @@
     {/each}
 </Grid.Row>
 
-<Grid.Row height="16.6%">
+<Grid.Row height="100%">
     {#each days.slice(35, 42) as day}
         <Grid.Col width="calc(100% / 7)" height="100%">
             <Day currentMonth={currentDate.getMonth()} {day} />

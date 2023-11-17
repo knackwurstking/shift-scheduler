@@ -76,12 +76,12 @@
         }
     }}
 >
-    <Grid.Root class="is-max-height is-debug">
-        <Grid.Row height="2em" align="center">
+    <Grid.Root height="100%" width="100%">
+        <Grid.Row height="2em">
             {#each headerItems as item}
-                <Grid.Col width="calc(100% / 7)" height="100%">
+                <Grid.Col width="calc(100% / 7)" height="100%" padding="0 calc(var(--spacing) / 2)">
                     <div
-                        class="ui-card flex justify-center align-center"
+                        class="ui-card is-max flex justify-center align-center"
                         class:sunday={item === "Sun"}
                         class:saturday={item === "Sat"}
                     >
