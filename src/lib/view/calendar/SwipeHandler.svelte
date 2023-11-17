@@ -138,19 +138,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
-    class="no-user-select"
-    style={`
-        width: 100%;
-        height: 100%;
-
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-
-        overflow: hidden;
-
-        touch-action: none;
-    `}
+    class="is-max no-user-select no-touch flex fow nowrap no-overflow"
     on:pointerdown={(ev) => swipeStart(ev)}
     on:click={async (ev) => {
         if (pointerlock) return;
@@ -176,7 +164,7 @@
 >
     {#each items as _item, index}
         <slot
-            name="container-item"
+            name="item"
             {index}
             currentDate={new Date(
                 currentDate.getFullYear(),

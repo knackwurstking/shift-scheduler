@@ -5,8 +5,6 @@
     import Container from "./Container.svelte";
     import Content from "./Content.svelte";
 
-    import { createWeekStartStore } from "../../stores/week-start-store";
-
     /***********
      * Bindings
      ***********/
@@ -22,12 +20,6 @@
     export let currentDate;
 
     const dispatch = createEventDispatcher();
-
-    /********************
-     * Store: week-start
-     ********************/
-
-    const weekStart = createWeekStartStore();
 
     /******************************
      * Function Export Definitions
@@ -56,7 +48,7 @@
     }}
 >
     <Container
-        slot="container-item"
+        slot="item"
         style={`
             transform: translateX(${currentTranslateX});
             transition: ${transition || "none"};

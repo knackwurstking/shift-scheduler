@@ -23,16 +23,24 @@
 </script>
 
 <div
-    class={`card day ${
-        day.date.getMonth() === currentMonth
-            ? `date-${day.date.getFullYear()}-${day.date.getMonth()}-${day.date.getDate()}`
-            : ""
-    }`}
+    class={
+        "ui-card " +
+        "day " +
+        (
+            day.date.getMonth() === currentMonth
+                ? `date-${day.date.getFullYear()}-${day.date.getMonth()}-${day.date.getDate()}`
+                : ""
+        )
+    }
+
     class:disabled={day.date.getMonth() !== currentMonth}
+
     class:today={day.date.getFullYear() === new Date().getFullYear() &&
         day.date.getMonth() === new Date().getMonth() &&
         day.date.getDate() === new Date().getDate()}
+
     class:has-note={!!day.data?.note}
+
     data-value={`${
         day.date.getMonth() === currentMonth ? day.date.getDate() : NaN
     }`}
@@ -54,21 +62,21 @@
 </div>
 
 <style>
-    .card {
+    .ui-card {
         overflow: hidden;
     }
 
-    .card.disabled {
+    .ui-card.disabled {
         opacity: 0.25;
     }
 
-    .card.today {
+    .ui-card.today {
         border: 0.1em solid hsl(var(--primary));
         box-shadow: 0 0 0.1em hsla(var(--primary), 0.8) inset,
             0 0 0.25em hsla(var(--primary), 0.6) inset;
     }
 
-    .date {
+    .ui-card .date {
         position: absolute;
         top: var(--spacing);
         left: var(--spacing);
@@ -78,11 +86,11 @@
         font-size: clamp(0em, 3vmin, 1em);
     }
 
-    .card.today .date {
+    .ui-card.today .date {
         font-weight: bolder;
     }
 
-    .shift {
+    .ui-card .shift {
         position: absolute;
         top: var(--spacing);
         right: var(--spacing);
@@ -101,13 +109,13 @@
         text-shadow: .1em .1em .1em hsl(var(--border));
     }
 
-    .has-note .date {
+    .ui-card.has-note .date {
         color: hsl(var(--destructive));
         font-weight: 900;
     }
 
-    .has-note .date,
-    .card.today .date {
+    .ui-card.has-note .date,
+    .ui-card.today .date {
         text-shadow: .1em .1em .1em hsl(var(--border));
     }
 </style>

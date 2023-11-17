@@ -1,18 +1,11 @@
 <script>
     import { createEventDispatcher, onDestroy } from "svelte";
 
+    import { Grid } from "svelte-css";
+
     import { createWeekStartStore } from "../../stores/week-start-store";
 
     import * as lang from "../../js/lang";
-
-    /******************************
-     * Variable Export Definitions
-     ******************************/
-
-    let _class = "";
-    export { _class as class };
-
-    export let style = "";
 
     /***********************
      * Variable Definitions
@@ -75,70 +68,44 @@
 
 <div
     {...$$restProps}
-    class={"container no-user-select " + _class}
-    style={`
-        min-width: 100%;
-        width: 100%;
-        max-width: 100%;
-
-        height: 100%;
-    ` + style}
+    class={"ui-container is-max no-user-select " + ($$restProps.class || "")}
+    style:min-width="100%"
     on:transitionend={(ev) => {
         if (ev.propertyName === "transform") {
             dispatch("transformend");
         }
     }}
 >
-    <div
-        style={`
-            height: 100%;
-        `}
-    >
-        <div
-            class="row"
-            style={`
-                height: 3em;
-                align-items: center;
-            `}
-        >
+    <Grid.Root class="is-max-height is-debug">
+        <Grid.Row height="2em" align="center">
             {#each headerItems as item}
-                <div
-                    class="col"
-                    style={`
-                        width: calc(100% / 7);
-                        height: 100%;
-                    `}
-                >
+                <Grid.Col width="calc(100% / 7)" height="100%">
                     <div
-                        class="card"
+                        class="ui-card flex justify-center align-center"
                         class:sunday={item === "Sun"}
                         class:saturday={item === "Sat"}
                     >
                         {item}
                     </div>
-                </div>
+                </Grid.Col>
             {/each}
-        </div>
+        </Grid.Row>
 
         <slot />
-    </div>
+    </Grid.Root>
 </div>
 
 <style>
-    .card {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
+    .ui-card {
         font-size: 0.9em;
     }
 
-    .card.saturday,
-    .card.sunday {
+    .ui-card.saturday,
+    .ui-card.sunday {
         font-weight: 700;
     }
 
-    .card:not(.saturday, .sunday) {
+    .ui-card:not(.saturday, .sunday) {
         font-weight: 400;
     }
 </style>

@@ -103,7 +103,7 @@
 </script>
 
 <main
-    class="ui-container is-debug"
+    class="ui-container"
     style:bottom={$editMode ? "4.5em" : "0"}
 >
     {#if $view === "calendar"}

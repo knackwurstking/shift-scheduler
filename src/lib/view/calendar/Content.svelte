@@ -1,6 +1,8 @@
 <script>
     import { createEventDispatcher } from "svelte";
 
+    import { Grid } from "svelte-css";
+
     import Day from "./Day.svelte";
 
     import * as db from "../../js/db";
@@ -78,88 +80,50 @@
     }
 </script>
 
-<div
-    style={`
-        width: 100%;
-        height: calc(100% - 3em);
-    `}
->
-    <div class="row" style="height: 16.6%;">
-        {#each days.slice(0, 7) as day}
-            <div
-                class="col"
-                style={`
-                    height: 100%;
-                    width: calc(100% / 7);
-                `}
-            >
-                <Day currentMonth={currentDate.getMonth()} {day} />
-            </div>
-        {/each}
-    </div>
-    <div class="row" style="height: 16.6%;">
-        {#each days.slice(7, 14) as day}
-            <div
-                class="col"
-                style={`
-                    height: 100%;
-                    width: calc(100% / 7);
-                `}
-            >
-                <Day currentMonth={currentDate.getMonth()} {day} />
-            </div>
-        {/each}
-    </div>
-    <div class="row" style="height: 16.6%;">
-        {#each days.slice(14, 21) as day}
-            <div
-                class="col"
-                style={`
-                    height: 100%;
-                    width: calc(100% / 7);
-                `}
-            >
-                <Day currentMonth={currentDate.getMonth()} {day} />
-            </div>
-        {/each}
-    </div>
-    <div class="row" style="height: 16.6%;">
-        {#each days.slice(21, 28) as day}
-            <div
-                class="col"
-                style={`
-                    height: 100%;
-                    width: calc(100% / 7);
-                `}
-            >
-                <Day currentMonth={currentDate.getMonth()} {day} />
-            </div>
-        {/each}
-    </div>
-    <div class="row" style="height: 16.6%;">
-        {#each days.slice(28, 35) as day}
-            <div
-                class="col"
-                style={`
-                    height: 100%;
-                    width: calc(100% / 7);
-                `}
-            >
-                <Day currentMonth={currentDate.getMonth()} {day} />
-            </div>
-        {/each}
-    </div>
-    <div class="row" style="height: 16.6%;">
-        {#each days.slice(35, 42) as day}
-            <div
-                class="col"
-                style={`
-                    height: 100%;
-                    width: calc(100% / 7);
-                `}
-            >
-                <Day currentMonth={currentDate.getMonth()} {day} />
-            </div>
-        {/each}
-    </div>
-</div>
+<Grid.Row height="16.6%">
+    {#each days.slice(0, 7) as day}
+        <Grid.Col width="calc(100% / 7)" height="100%">
+            <Day currentMonth={currentDate.getMonth()} {day} />
+        </Grid.Col>
+    {/each}
+</Grid.Row>
+
+<Grid.Row height="16.6%">
+    {#each days.slice(7, 14) as day}
+        <Grid.Col width="calc(100% / 7)" height="100%">
+            <Day currentMonth={currentDate.getMonth()} {day} />
+        </Grid.Col>
+    {/each}
+</Grid.Row>
+
+<Grid.Row height="16.6%">
+    {#each days.slice(14, 21) as day}
+        <Grid.Col width="calc(100% / 7)" height="100%">
+            <Day currentMonth={currentDate.getMonth()} {day} />
+        </Grid.Col>
+    {/each}
+</Grid.Row>
+
+<Grid.Row height="16.6%">
+    {#each days.slice(21, 28) as day}
+        <Grid.Col width="calc(100% / 7)" height="100%">
+            <Day currentMonth={currentDate.getMonth()} {day} />
+        </Grid.Col>
+    {/each}
+</Grid.Row>
+
+<Grid.Row height="16.6%">
+    {#each days.slice(28, 35) as day}
+        <Grid.Col width="calc(100% / 7)" height="100%">
+            <Day currentMonth={currentDate.getMonth()} {day} />
+        </Grid.Col>
+    {/each}
+</Grid.Row>
+
+<Grid.Row height="16.6%">
+    {#each days.slice(35, 42) as day}
+        <Grid.Col width="calc(100% / 7)" height="100%">
+            <Day currentMonth={currentDate.getMonth()} {day} />
+        </Grid.Col>
+    {/each}
+</Grid.Row>
