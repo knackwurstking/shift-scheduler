@@ -93,6 +93,8 @@
     auto={$theme === "system"}
 />
 
+<Main bind:currentDate />
+
 <Header
     {enableBackButton}
     {enableDatePicker}
@@ -103,7 +105,5 @@
     on:currentdatechange={({ detail }) => (currentDate = detail)}
     on:goto={({ detail }) => view.goto(detail)}
 />
-
-<Main bind:currentDate />
 
 <Footer />
