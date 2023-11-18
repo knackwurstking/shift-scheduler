@@ -77,6 +77,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="right">
+        <!-- TODO: new page: jspdf year table view and download/share button -->
         {#if enableDatePicker}
             <Button.Icon
                 style="margin: 0 calc(var(--spacing) / 2);"
