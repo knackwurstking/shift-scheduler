@@ -6,7 +6,7 @@
     import CalendarToday from "svelte-material-icons/CalendarToday.svelte";
     import Wrench from "svelte-material-icons/Wrench.svelte";
 
-    import { Button, TopAppBar, Grid } from "svelte-css";
+    import { Button, TopAppBar, FlexGrid } from "svelte-css";
 
     import { DatePickerDialog } from "./lib/components";
 
@@ -42,7 +42,6 @@
     <svelte:fragment slot="left">
         {#if enableBackButton}
             <Button.Icon
-                style="margin: 0 calc(var(--spacing) / 2)"
                 ghost
                 on:click={() => dispatch("backbuttonclick")}
             >
@@ -51,7 +50,7 @@
         {/if}
 
         {#if enableDatePicker}
-            <Grid.Col height="100%" width="7.5em">
+            <FlexGrid.Col style="width: 7.5em; height: 100%;">
                 <Button.Root
                     class="is-max"
                     variant="outline"
@@ -66,7 +65,7 @@
                         .toString()
                         .padStart(2, "0")}
                 </Button.Root>
-            </Grid.Col>
+            </FlexGrid.Col>
         {/if}
     </svelte:fragment>
 
@@ -80,7 +79,6 @@
         <!-- TODO: new page: jspdf year table view and download/share button -->
         {#if enableDatePicker}
             <Button.Icon
-                style="margin: 0 calc(var(--spacing) / 2);"
                 ghost
                 on:click={() => dispatch("editmodeclick")}
             >
@@ -88,7 +86,6 @@
             </Button.Icon>
 
             <Button.Icon
-                style="margin: 0 calc(var(--spacing) / 2);"
                 ghost
                 disabled={(() => {
                     const today = new Date();
@@ -103,7 +100,6 @@
             </Button.Icon>
 
             <Button.Icon
-                style="margin: 0 calc(var(--spacing) / 2);"
                 ghost
                 on:click={() => dispatch("goto", "settings")}
             >

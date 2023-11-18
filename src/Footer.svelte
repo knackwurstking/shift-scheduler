@@ -1,5 +1,5 @@
 <script>
-    import { Grid } from "svelte-css";
+    import { FlexGrid } from "svelte-css";
 
     import { Shift } from "./lib/components";
 
@@ -27,8 +27,8 @@
 <footer class="ui-container is-max-width" class:visible={$editMode}>
     {#if $editMode}
         <figure class="flex no-scrollbar is-max">
-            <Grid.Row flexFlow="row nowrap">
-                <Grid.Col width="calc(7.5em + var(--spacing))" flex="0">
+            <FlexGrid.Row gap=".1em">
+                <FlexGrid.Col style="width: calc(7.5em + var(--spacing));" flex="0">
                     <Shift
                         class="is-max"
                         name="Reset"
@@ -44,10 +44,10 @@
                             }
                         }}
                     />
-                </Grid.Col>
+                </FlexGrid.Col>
 
                 {#each $shiftSetup.shifts as shift, index}
-                    <Grid.Col width="calc(7.5em + var(--spacing))" flex="0">
+                    <FlexGrid.Col style="width: calc(7.5em + var(--spacing));" flex="0">
                         <Shift
                             class="is-max"
                             {...shift}
@@ -60,9 +60,9 @@
                                 }
                             }}
                         />
-                    </Grid.Col>
+                    </FlexGrid.Col>
                 {/each}
-            </Grid.Row>
+            </FlexGrid.Row>
         </figure>
     {/if}
 </footer>
@@ -74,7 +74,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        height: 4.5em;
+        height: 3em;
         padding: 0;
     }
 

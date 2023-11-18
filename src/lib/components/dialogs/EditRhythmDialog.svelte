@@ -6,6 +6,7 @@
     import {
         Button,
         Dialog,
+        FlexGrid,
     } from "svelte-css";
 
     import { createViewStore } from "../../stores/view-store.js";
@@ -107,10 +108,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="left">Name</th>
-                        <th class="left">Short</th>
-                        <th class="left">Color</th>
-                        <th class="left" />
+                        <th class="is-text-left">Name</th>
+                        <th class="is-text-left">Short</th>
+                        <th class="is-text-rigth" />
                     </tr>
                 </thead>
 
@@ -119,18 +119,21 @@
                         {#await getShiftForID(id) then shift}
                             {#if !!shift}
                                 <tr>
-                                    <td class="left">{shift.name}</td>
-                                    <td class="left" style="width: 4em;">
+                                    <td class="is-text-left">{shift.name}</td>
+                                    <td
+                                        class="is-text-left"
+                                        style={
+                                            "width: 4em;" +
+                                            `color: ${shift.color || "hsl(var(--fg))"};` +
+                                            "text-shadow: .1em .1em .1em hsl(var(--border));"
+                                        }
+                                    >
                                         {shift.visible ? shift.shortName : ""}
                                     </td>
-                                    <td
-                                        class="left"
-                                        style="color: {shift.color}; width: 6em;"
-                                    >
-                                        {shift.color}
-                                    </td>
-                                    <td class="right" style="width: 3em;">
+                                    <td class="is-text-right" style="width: 3em;">
                                         <Button.Icon
+                                            color="destructive"
+                                            ghost
                                             on:click={async () => {
                                                 rhythm = [
                                                     ...rhythm.slice(0, index),
@@ -150,18 +153,19 @@
         </section>
 
         <section>
-            <figure style="width: 100%;" class="no-overflow">
-                <div class="row" style="flex-wrap: nowrap;">
+            <figure class="no-scrollbar is-max-width">
+                <FlexGrid.Row gap=".1em">
                     {#each shifts as shift}
-                        <div class="col no-user-select">
+                        <FlexGrid.Col class="no-user-select">
                             <Shift
+                                style="height: 100%;"
                                 {...shift}
                                 on:click={() =>
                                     (rhythm = [...rhythm, shift.id])}
                             />
-                        </div>
+                        </FlexGrid.Col>
                     {/each}
-                </div>
+                </FlexGrid.Row>
             </figure>
         </section>
     </section>

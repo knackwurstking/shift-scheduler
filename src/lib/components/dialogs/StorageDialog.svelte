@@ -89,52 +89,53 @@
     />
 
     <section
-        style="height: calc(100% - 6rem); overflow-y: auto; padding-left: 0; padding-right: 0;"
+        style="height: calc(100% - 6rem); overflow-y: auto;"
     >
         <figure style="width: 100%;">
             <table>
                 <thead>
                     <tr>
-                        <th class="left">
+                        <th class="is-text-left">
                             {lang.get("storageDialog", "tableHeaderDay")}
                         </th>
-                        <th class="left">
+                        <th class="is-text-left">
                             {lang.get("storageDialog", "tableHeaderShift")}
                         </th>
-                        <th class="left">
+                        <th class="is-text-left">
                             {lang.get("storageDialog", "tableHeaderNote")}
                         </th>
-                        <th class="right" />
+                        <th class="is-text-right" />
                     </tr>
                 </thead>
                 <tbody>
                     {#if !!data}
                         {#each data.sort( (a, b) => (parseInt(a.key.split("-", 3)[2], 10) > parseInt(b.key.split("-", 3)[2], 10) ? 1 : -1) ) as item}
                             <tr>
-                                <td class="left">
+                                <td class="is-text-left">
                                     {item.key.split("-", 3)[2]}
                                 </td>
-                                <td class="left">
+                                <td class="is-text-left">
                                     {item.shift?.name || null}
                                 </td>
-                                <td class="left">
+                                <td class="is-text-left">
                                     <p
-                                        style={`
-                                            display: -webkit-box;
-                                            -webkit-line-clamp: 3;
-                                            -webkit-box-orient: vertical;
-                                            overflow: hidden;
-                                            text-overflow: ellipsis;
-                                            max-height: calc(3em * var(--line-height, 1));
-                                        `}
+                                        style={
+                                            "display: -webkit-box;" +
+                                            "-webkit-line-clamp: 3;" +
+                                            "-webkit-box-orient: vertical;" +
+                                            "overflow: hidden;" +
+                                            "text-overflow: ellipsis;" +
+                                            "max-height: calc(3em * var(--line-height, 1));"
+                                        }
                                     >
                                         {item.note || ""}
                                     </p>
                                 </td>
-                                <td class="right" style="font-size: 1.1em;">
+                                <td class="is-text-right" style="font-size: 1.1em;">
                                     <Button.Icon
                                         style="margin: 4px;"
                                         color="destructive"
+                                        ghost
                                         on:click={async () => {
                                             if (
                                                 window.confirm(
@@ -179,6 +180,6 @@
     }
 
     tr > *:nth-child(4) {
-        width: 3em;
+        width: calc(2.5em + (var(--spacing) * 2));
     }
 </style>

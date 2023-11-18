@@ -1,7 +1,7 @@
 <script>
     import { createEventDispatcher, onDestroy } from "svelte";
 
-    import { Grid } from "svelte-css";
+    import { FlexGrid } from "svelte-css";
 
     import { createWeekStartStore } from "../../stores/week-start-store";
 
@@ -76,10 +76,16 @@
         }
     }}
 >
-    <Grid.Root height="100%" width="100%">
-        <Grid.Row height="2em">
+    <FlexGrid.Root class="is-max" gap=".1em">
+        <FlexGrid.Row style="height: 2em" gap=".1em">
             {#each headerItems as item}
-                <Grid.Col width="calc(100% / 7)" height="100%" padding="0 calc(var(--spacing) / 2)">
+                <FlexGrid.Col
+                    style={
+                        "font-family: var(--font-family-heading);" +
+                        "width: calc(100% / 7);" +
+                        "height: 100%;"
+                    }
+                >
                     <div
                         class="ui-card is-max flex justify-center align-center"
                         class:sunday={item === "Sun"}
@@ -87,12 +93,12 @@
                     >
                         {item}
                     </div>
-                </Grid.Col>
+                </FlexGrid.Col>
             {/each}
-        </Grid.Row>
+        </FlexGrid.Row>
 
         <slot />
-    </Grid.Root>
+    </FlexGrid.Root>
 </div>
 
 <style>

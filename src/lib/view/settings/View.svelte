@@ -131,23 +131,23 @@
 </script>
 
 <div class="root">
-    <article class="card has-margin">
-        <section style="padding-left: 0; padding-right: 0;">
-            <h2>{lang.get("settingsView", "titleShifts")}</h2>
+    <article class="ui-card has-margin">
+        <section>
+            <h3>{lang.get("settingsView", "titleShifts")}</h3>
 
             <hr />
 
-            <figure>
-                <table class="shift-table">
+            <figure class="is-max-width">
+                <table class="shift-table is-max-width">
                     <thead>
                         <tr>
-                            <th class="left">
+                            <th class="is-text-left">
                                 {lang.get("settingsView", "tableHeaderName")}
                             </th>
-                            <th class="left">
+                            <th class="is-text-left">
                                 {lang.get("settingsView", "tableHeaderShort")}
                             </th>
-                            <th class="right" />
+                            <th class="is-text-right" />
                         </tr>
                     </thead>
 
@@ -159,7 +159,7 @@
                                     ? "hsl(var(--primary))"
                                     : undefined}
                                 style:color={tableRowHovering === index
-                                    ? "hsl(var(--primary-foreground))"
+                                    ? "hsl(var(--primary-fg))"
                                     : undefined}
                                 draggable={true}
                                 on:dragstart={(ev) => {
@@ -219,20 +219,21 @@
                                 on:dragenter|preventDefault={() =>
                                     (tableRowHovering = index)}
                             >
-                                <td class="left">{item.name}</td>
+                                <td class="is-text-left">{item.name}</td>
 
                                 <td
-                                    class="left"
+                                    class="is-text-left"
                                     style={
-                                        `--shift-color: ${item.color || "hsl(var(--foreground))"}`
+                                        `--shift-color: ${item.color || "hsl(var(--fg))"}`
                                     }
                                 >
                                     {item.visible ? item.shortName : ""}
                                 </td>
 
-                                <td class="right" style="font-size: 1.1em;">
+                                <td class="is-text-right" style="font-size: 1.1em;">
                                     <Button.Icon
                                         style="margin: 4px;"
+                                        ghost
                                         on:click={async () => {
                                             shiftDialog.open(item);
                                         }}
@@ -243,6 +244,7 @@
                                     <Button.Icon
                                         style="margin: 4px;"
                                         color="destructive"
+                                        ghost
                                         on:click={async (ev) => {
                                             ev.stopPropagation();
                                             if (
@@ -279,8 +281,8 @@
 
         <section>
             <Button.Root
+                class="is-max-width"
                 color="primary"
-                style="width: 100%;"
                 on:click={async () => shiftDialog.open()}
             >
                 {lang.get("settingsView", "addShiftButton")}
@@ -333,10 +335,10 @@
 
     <br />
 
-    <article class="card has-margin">
-        <h2 style="margin: var(--spacing)">
+    <article class="ui-card has-margin">
+        <h3 style="margin: var(--spacing)">
             {lang.get("settingsView", "titleMisc")}
-        </h2>
+        </h3>
 
         <hr />
 
@@ -389,10 +391,10 @@
 
     <br />
 
-    <article class="card has-margin">
-        <h2 style="margin: var(--spacing)">
+    <article class="ui-card has-margin">
+        <h3 style="margin: var(--spacing)">
             {lang.get("settingsView", "titleStorage")}
-        </h2>
+        </h3>
 
         <hr />
 
@@ -428,38 +430,39 @@
                     <table class="storage-data-table">
                         <thead>
                             <tr>
-                                <th class="left">
+                                <th class="is-text-left">
                                     {lang.get(
                                         "settingsView",
                                         "tableHeaderYear"
                                     )}
                                 </th>
-                                <th class="left">
+                                <th class="is-text-left">
                                     {lang.get(
                                         "settingsView",
                                         "tableHeaderMonth"
                                     )}
                                 </th>
-                                <th class="left" />
+                                <th class="is-text-left" />
                             </tr>
                         </thead>
+
                         <tbody>
                             {#key reloadDataStorageTable}
                                 {#each db
                                     .listKeys()
                                     .sort((a, b) => (a.year > b.year ? 1 : -1))
                                     .sort( (a, b) => (a.month > b.month && a.year === b.year ? 1 : -1) ) as item}
+
                                     <tr>
-                                        <td>{item.year}</td>
-                                        <td>{item.month + 1}</td>
+                                        <td class="is-text-left">{item.year}</td>
+                                        <td class="is-text-left">{item.month + 1}</td>
                                         <td
-                                            class="actions right"
+                                            class="actions is-text-right"
                                             style="font-size: 1.1em;"
                                         >
                                             <Button.Icon
-                                                style={`
-                                                    margin: 4px;
-                                                `}
+                                                style="margin: 4px;"
+                                                ghost
                                                 on:click={async () => {
                                                     storageDialog.open(
                                                         item.year,
@@ -471,10 +474,9 @@
                                             </Button.Icon>
 
                                             <Button.Icon
-                                                style={`
-                                                    margin: 4px;
-                                                `}
+                                                style="margin: 4px;"
                                                 color="destructive"
+                                                ghost
                                                 on:click={async () => {
                                                     const yes = window.confirm(
                                                         `Delete all data for "${
@@ -556,8 +558,9 @@
 />
 
 <style>
-    div.root {
+    .root {
         height: 100%;
+        padding-top: 3em;
         overflow: hidden;
         overflow-y: auto;
 
@@ -565,7 +568,7 @@
         scrollbar-width: none;
     }
 
-    div.root::-webkit-scrollbar {
+    .root::-webkit-scrollbar {
         display: none;
     }
 
@@ -575,11 +578,8 @@
         text-shadow: .1em .1em .1em hsl(var(--border));
     }
 
-    .shift-table tr > *:nth-child(3) {
-        width: 6.75em;
-    }
-
+    .shift-table tr > *:nth-child(3),
     .storage-data-table tr > *:last-child {
-        width: 6.75em;
+        width: calc(6em + (4px * 4) + (var(--spacing) * 2));
     }
 </style>

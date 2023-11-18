@@ -107,10 +107,10 @@
 
 <Dialog.Root
     bind:this={dialog}
-    style={`
-        width: 17rem;
-        max-width: 100%;
-    `}
+    style={
+        "width: 17rem;" +
+        "max-width: 100%;"
+    }
 >
     <Dialog.Header
         title={`${year} / ${(month + 1).toString().padStart(2, "0")} / ${
@@ -119,10 +119,9 @@
         on:close={() => close()}
     />
 
-    <section>
+    <section class="has-padding-x">
         <Input.Select
             bind:this={select}
-            class="col"
             items={selectItems}
             bind:selected
         />

@@ -139,6 +139,7 @@
 <div
     bind:this={container}
     class="is-max no-user-select no-touch flex fow nowrap no-overflow"
+    style:padding-top="3em"
     on:pointerdown={(ev) => swipeStart(ev)}
     on:click={async (ev) => {
         if (pointerlock) return;

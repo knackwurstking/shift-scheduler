@@ -96,8 +96,6 @@
         />
     </section>
 
-    <div class="spacer" />
-
     <section>
         <Input.Text
             title={lang.get("shiftDialog", "shortName")}
@@ -105,7 +103,7 @@
         />
     </section>
 
-    <div class="spacer" />
+    <br />
 
     <section>
         <Text.Label
@@ -118,7 +116,7 @@
         </Text.Label>
     </section>
 
-    <div class="spacer" />
+    <br />
 
     <section>
         <Text.Label
@@ -132,7 +130,7 @@
             />
         </Text.Label>
 
-        <div class="spacer" />
+        <br />
 
         <Text.Label
             secondary={lang.get(

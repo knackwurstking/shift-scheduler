@@ -79,7 +79,7 @@
      */
     async function animateDayCardItem(date) {
         const el = calendarView.querySelector(
-            `.card.day.date-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+            `.ui-card.day.date-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
         );
         if (el) {
             el.animate(
@@ -104,7 +104,7 @@
 
 <main
     class="ui-container"
-    style:bottom={$editMode ? "4.5em" : "0"}
+    style:bottom={$editMode ? "3em" : "0"}
 >
     {#if $view === "calendar"}
         <CalendarView
@@ -202,9 +202,7 @@
         position: fixed;
         top: 0;
         right: 0;
+        bottom: 0;
         left: 0;
-
-        padding: 0;
-        padding-top: 3.5em;
     }
 </style>

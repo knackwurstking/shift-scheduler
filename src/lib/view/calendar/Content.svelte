@@ -1,7 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
 
-    import { Grid } from "svelte-css";
+    import { FlexGrid } from "svelte-css";
 
     import Day from "./Day.svelte";
 
@@ -80,50 +80,50 @@
     }
 </script>
 
-<Grid.Row height="100%">
+<FlexGrid.Row class="is-max-height" gap=".1em">
     {#each days.slice(0, 7) as day}
-        <Grid.Col width="calc(100% / 7)" height="100%">
+        <FlexGrid.Col class="is-max-height" style="width: calc(100% / 7);">
             <Day currentMonth={currentDate.getMonth()} {day} />
-        </Grid.Col>
+        </FlexGrid.Col>
     {/each}
-</Grid.Row>
+</FlexGrid.Row>
 
-<Grid.Row height="100%">
+<FlexGrid.Row class="is-max-height" gap=".1em">
     {#each days.slice(7, 14) as day}
-        <Grid.Col width="calc(100% / 7)" height="100%">
+        <FlexGrid.Col class="is-max-height" style="width: calc(100% / 7);">
             <Day currentMonth={currentDate.getMonth()} {day} />
-        </Grid.Col>
+        </FlexGrid.Col>
     {/each}
-</Grid.Row>
+</FlexGrid.Row>
 
-<Grid.Row height="100%">
+<FlexGrid.Row class="is-max-height" gap=".1em">
     {#each days.slice(14, 21) as day}
-        <Grid.Col width="calc(100% / 7)" height="100%">
+        <FlexGrid.Col class="is-max-height" style="width: calc(100% / 7);">
             <Day currentMonth={currentDate.getMonth()} {day} />
-        </Grid.Col>
+        </FlexGrid.Col>
     {/each}
-</Grid.Row>
+</FlexGrid.Row>
 
-<Grid.Row height="100%">
+<FlexGrid.Row class="is-max-height" gap=".1em">
     {#each days.slice(21, 28) as day}
-        <Grid.Col width="calc(100% / 7)" height="100%">
+        <FlexGrid.Col class="is-max-height" style="width: calc(100% / 7);">
             <Day currentMonth={currentDate.getMonth()} {day} />
-        </Grid.Col>
+        </FlexGrid.Col>
     {/each}
-</Grid.Row>
+</FlexGrid.Row>
 
-<Grid.Row height="100%">
+<FlexGrid.Row class="is-max-height" gap=".1em">
     {#each days.slice(28, 35) as day}
-        <Grid.Col width="calc(100% / 7)" height="100%">
+        <FlexGrid.Col class="is-max-height" style="width: calc(100% / 7);">
             <Day currentMonth={currentDate.getMonth()} {day} />
-        </Grid.Col>
+        </FlexGrid.Col>
     {/each}
-</Grid.Row>
+</FlexGrid.Row>
 
-<Grid.Row height="100%">
+<FlexGrid.Row class="is-max-height" gap=".1em">
     {#each days.slice(35, 42) as day}
-        <Grid.Col width="calc(100% / 7)" height="100%">
+        <FlexGrid.Col class="is-max-height" style="width: calc(100% / 7);">
             <Day currentMonth={currentDate.getMonth()} {day} />
-        </Grid.Col>
+        </FlexGrid.Col>
     {/each}
-</Grid.Row>
+</FlexGrid.Row>
