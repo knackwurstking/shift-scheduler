@@ -1,8 +1,8 @@
 import { Utils } from "svelte-css";
 
-import { createShiftSetupStore } from "../../stores/shift-setup-store";
+import * as Store from "../../stores";
 
-const shiftSetup = createShiftSetupStore();
+const shiftSetup = Store.shiftSetup.create();
 
 export const isAndroid = Utils.isAndroid;
 
