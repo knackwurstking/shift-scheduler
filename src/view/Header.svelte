@@ -10,20 +10,14 @@
 
     import { DatePickerDialog } from "../lib/components";
 
+    import * as Store from "../lib/stores";
+
     /******************************
      * Variable Export Definitions
      ******************************/
 
-    // TODO: using $view to handle top-app-bar content
-
-    /** @type {boolean} */
-    export let enableBackButton = false;
-    export let enableDatePicker = false;
-
-    // TODO: rename to `currentDate`
-
     /** @type {Date} */
-    export let datePickerDate;
+    export let currentDate;
 
     /** @type {string | undefined} */
     export let title = undefined;
@@ -36,6 +30,19 @@
 
     /** @type {DatePickerDialog} */
     let datePickerDialog;
+
+    let enableBackButton = false;
+    let enableDatePicker = false;
+
+    /**************
+     * Store: view
+     **************/
+
+    const view = Store.view.create();
+    $: !!view && view.subscribe(currentView => {
+        enableBackButton = view.history().length > 1;
+        enableDatePicker = currentView === "calendar";
+    })
 </script>
 
 <TopAppBar.Root uiContainer>
@@ -56,12 +63,12 @@
                     variant="outline"
                     on:click={() => {
                         datePickerDialog.open(
-                            datePickerDate.getFullYear(),
-                            datePickerDate.getMonth(),
+                            currentDate.getFullYear(),
+                            currentDate.getMonth(),
                         );
                     }}
                 >
-                    {datePickerDate.getFullYear()} / {(datePickerDate.getMonth() + 1)
+                    {currentDate.getFullYear()} / {(currentDate.getMonth() + 1)
                         .toString()
                         .padStart(2, "0")}
                 </Button.Root>
@@ -90,8 +97,8 @@
                 disabled={(() => {
                     const today = new Date();
                     return (
-                        today.getFullYear() === datePickerDate.getFullYear() &&
-                        today.getMonth() === datePickerDate.getMonth()
+                        today.getFullYear() === currentDate.getFullYear() &&
+                        today.getMonth() === currentDate.getMonth()
                     );
                 })()}
                 on:click={() => dispatch("currentdatechange", new Date())}

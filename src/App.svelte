@@ -16,16 +16,13 @@
     import Footer from "./view/Footer.svelte";
 
     /***********************
-     * Variable Definitions
+    * Variable Definitions
      ***********************/
 
     const cleanUp = [];
 
     /** @type {Date} */
     let currentDate = new Date();
-
-    let enableBackButton = false;
-    let enableDatePicker = false;
 
     /**************
      * Store: view
@@ -38,9 +35,6 @@
         // reset edit mode
         editMode.indexUnselect()
         editMode.disable();
-
-        enableDatePicker = currentView === "calendar";
-        enableBackButton = view.history().length > 1;
     }));
 
     /**************************************
@@ -79,9 +73,7 @@
 <Main bind:currentDate />
 
 <Header
-    {enableBackButton}
-    {enableDatePicker}
-    bind:datePickerDate={currentDate}
+    bind:currentDate
     title={$view === "settings" ? (lang.get("appBar", "settings")) : undefined}
     on:backbuttonclick={() => view.back()}
     on:editmodeclick={() => editMode.toggle()}
