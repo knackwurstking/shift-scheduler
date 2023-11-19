@@ -31,7 +31,7 @@ export function create() {
      * @param {number} n
      */
     function indexSelect(n) {
-        if (n > 1) editMode.update((editMode) => ({ ...editMode, index: n }))
+        if (n > -1) editMode.update((editMode) => ({ ...editMode, index: n }))
     }
 
     return {
