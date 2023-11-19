@@ -3,7 +3,7 @@
 
     import { FlexGrid } from "svelte-css";
 
-    import { createWeekStartStore } from "../../stores/week-start-store";
+    import * as Store from "../../stores";
 
     import * as lang from "../../js/lang";
 
@@ -11,6 +11,7 @@
      * Variable Definitions
      ***********************/
 
+    const cleanUp = [];
     const dispatch = createEventDispatcher();
 
     /** @type {string[]} */
@@ -28,42 +29,30 @@
      * Store: week-start
      ********************/
 
-    /** @type {import("svelte/store").Unsubscriber} */
-    let unsubscribeWeekStart;
-    const weekStart = createWeekStartStore();
-    $: weekStart && setHeaderItems();
+    const weekStart = Store.weekStart.create();
+    $: !!weekStart && cleanUp.push(weekStart.subscribe(weekStart => {
+        const items = [
+            lang.get("misc", "sun"),
+            lang.get("misc", "mon"),
+            lang.get("misc", "tue"),
+            lang.get("misc", "wed"),
+            lang.get("misc", "thu"),
+            lang.get("misc", "fri"),
+            lang.get("misc", "sat"),
+        ];
 
-    /***********************
-     * Function Definitions
-     ***********************/
+        if (weekStart === "mon") {
+            items.push(items.shift());
+        }
 
-    async function setHeaderItems() {
-        unsubscribeWeekStart = weekStart.subscribe((weekStart) => {
-            const items = [
-                lang.get("misc", "sun"),
-                lang.get("misc", "mon"),
-                lang.get("misc", "tue"),
-                lang.get("misc", "wed"),
-                lang.get("misc", "thu"),
-                lang.get("misc", "fri"),
-                lang.get("misc", "sat"),
-            ];
-
-            if (weekStart === "mon") {
-                items.push(items.shift());
-            }
-
-            headerItems = items;
-        });
-    }
+        headerItems = items;
+    }));
 
     /********************
      * Mount and Destroy
      ********************/
 
-    onDestroy(() => {
-        if (unsubscribeWeekStart) unsubscribeWeekStart();
-    });
+    onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
 
 <div

@@ -6,7 +6,7 @@
         Dialog,
     } from "svelte-css";
 
-    import { createViewStore } from "../../stores/view-store.js";
+    import * as Store from "../../stores";
 
     import * as lang from "../../js/lang";
     import * as db from "../../js/db";
@@ -31,7 +31,7 @@
      *
      * @type {{
      *  key: string;
-     *  shift: import("../../stores/shift-setup-store").Shift | null;
+     *  shift: import("../../stores/shift-setup").Shift | null;
      *  note: string;
      * }[]}
      */
@@ -41,7 +41,7 @@
      * Store: view
      **************/
 
-    const view = createViewStore();
+    const view = Store.view.create();
 
     /******************************
      * Function Export Definitions

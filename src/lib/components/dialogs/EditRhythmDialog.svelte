@@ -9,8 +9,7 @@
         FlexGrid,
     } from "svelte-css";
 
-    import { createViewStore } from "../../stores/view-store.js";
-    import { createShiftSetupStore } from "../../stores/shift-setup-store";
+    import * as Store from "../../stores";
 
     import * as lang from "../../js/lang";
 
@@ -33,12 +32,12 @@
     const dispatch = createEventDispatcher();
 
     /**
-     * @type {import("../../stores/shift-setup-store").Shift[]}
+     * @type {import("../../stores/shift-setup").Shift[]}
      */
     let shifts = [];
 
     /**
-     * @type {import("../../stores/shift-setup-store").ShiftID[]}
+     * @type {import("../../stores/shift-setup").ShiftID[]}
      */
     let rhythm = [];
     $: rhythm && setTimeout(scrollToBottom, 150);
@@ -47,21 +46,21 @@
      * Store: view
      **************/
 
-    const view = createViewStore();
+    const view = Store.view.create();
 
     /*********************
      * Store: shift-setup
      *********************/
 
-    let shiftSetup = createShiftSetupStore();
+    let shiftSetup = Store.shiftSetup.create();
 
     /******************************
      * Function Export Definitions
      ******************************/
 
     /**
-     * @param {import("../../stores/shift-setup-store").Shift[]} _shifts
-     * @param {import("../../stores/shift-setup-store").ShiftID[]} _rhythm
+     * @param {import("../../stores/shift-setup").Shift[]} _shifts
+     * @param {import("../../stores/shift-setup").ShiftID[]} _rhythm
      */
     export async function open(_shifts, _rhythm) {
         shifts = _shifts;
@@ -80,7 +79,7 @@
      ***********************/
 
     /**
-     * @param {import("../../stores/shift-setup-store").ShiftID} id
+     * @param {import("../../stores/shift-setup").ShiftID} id
      */
     async function getShiftForID(id) {
         return shiftSetup.getShiftForID(id);

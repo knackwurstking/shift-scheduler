@@ -17,9 +17,7 @@
         StorageDialog,
     } from "../../components";
 
-    import { createThemeStore } from "../../stores/theme-store";
-    import { createShiftSetupStore } from "../../stores/shift-setup-store";
-    import { createWeekStartStore } from "../../stores/week-start-store";
+    import * as Store from "../../stores";
 
     import * as lang from "../../js/lang";
     import * as db from "../../js/db";
@@ -50,19 +48,19 @@
      * Store: theme
      ***************/
 
-    const theme = createThemeStore();
+    const theme = Store.theme.create();
 
     /*********************
      * Store: shift-setup
      *********************/
 
-    const shiftSetup = createShiftSetupStore();
+    const shiftSetup = Store.shiftSetup.create();
 
     /********************
      * Store: week-start
      ********************/
 
-    const weekStart = createWeekStartStore();
+    const weekStart = Store.weekStart.create();
 
     /***********************
      * Function Definitions

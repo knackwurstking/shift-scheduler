@@ -8,8 +8,7 @@
         Input,
     } from "svelte-css";
 
-    import { createViewStore } from "../../stores/view-store.js";
-    import { createShiftSetupStore } from "../../stores/shift-setup-store";
+    import * as Store from "../../stores";
 
     import * as db from "../../js/db";
     import * as lang from "../../js/lang";
@@ -37,9 +36,9 @@
     /** @type {number} */
     let date;
 
-    /** @type {import("../../stores/shift-setup-store").Shift | null} */
+    /** @type {import("../../stores/shift-setup").Shift | null} */
     let defaultShift;
-    /** @type {import("../../stores/shift-setup-store").Shift | null} */
+    /** @type {import("../../stores/shift-setup").Shift | null} */
     let shift;
     /** @type {string} */
     let note;
@@ -53,13 +52,13 @@
      * Store: view
      **************/
 
-    const view = createViewStore();
+    const view = Store.view.create();
 
     /*********************
      * Store: shift-setup
      *********************/
 
-    let shiftSetup = createShiftSetupStore();
+    let shiftSetup = Store.shiftSetup.create();
 
     /******************************
      * Function Export Definitions

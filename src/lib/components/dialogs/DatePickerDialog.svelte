@@ -7,7 +7,7 @@
         Input,
     } from "svelte-css";
 
-    import { createViewStore } from "../../stores/view-store.js";
+    import * as Store from "../../stores";
 
     import * as lang from "../../js/lang";
     import * as utils from "../../js/utils";
@@ -42,7 +42,7 @@
      * Store: view
      **************/
 
-    const view = createViewStore();
+    const view = Store.view.create();
 
     /******************************
      * Function Export Definitions

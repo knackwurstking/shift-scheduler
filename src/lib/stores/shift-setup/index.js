@@ -52,7 +52,7 @@ shiftSetup.subscribe((setup) => {
     }));
 })
 
-export function createShiftSetupStore() {
+export function create() {
     /**
      * @param {number} index
      */

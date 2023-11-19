@@ -17,7 +17,7 @@ weekStart.subscribe((weekStart) => {
     localStorage.setItem(storageKey, weekStart);
 })
 
-export function createWeekStartStore() {
+export function create() {
     function sunday() {
         weekStart.set("sun");
     }

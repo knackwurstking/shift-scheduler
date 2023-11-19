@@ -1,20 +1,13 @@
 <script>
     import { onDestroy } from "svelte";
 
-    import { EditDayDialog } from "./lib/components";
+    import { EditDayDialog } from "../lib/components";
 
-    import SettingsView from "./lib/view/settings";
-    import CalendarView from "./lib/view/calendar";
+    import SettingsView from "../lib/view/settings";
+    import CalendarView from "../lib/view/calendar";
 
-    import {
-        createEditModeStore,
-        createEditModeIndexStore,
-    } from "./lib/stores/edit-mode-store";
-
-    import { createViewStore } from "./lib/stores/view-store";
-    import { createShiftSetupStore } from "./lib/stores/shift-setup-store";
-
-    import * as db from "./lib/js/db";
+    import * as Store from "../lib/stores";
+    import * as db from "../lib/js/db";
 
     /***********
      * Bindings
@@ -25,6 +18,12 @@
 
     /** @type {CalendarView} */
     let calendarView;
+
+    /***********************
+     * Variable Definitions
+     ***********************/
+
+    const cleanUp = [];
 
     /******************************
      * Variable Export Definitions
@@ -37,41 +36,33 @@
      * Store: view
      **************/
 
-    let unsubscribeView;
-
-    const view = createViewStore();
-
-    $: view && subscribeView();
-
-    async function subscribeView() {
-        const handler = async (view) => console.debug(`view=${view}`);
-        console.debug("subscribe to view");
-        unsubscribeView = view.subscribe(handler);
-    }
+    const view = Store.view.create();
+    $: !!view && cleanUp.push(view.subscribe(view => {
+        console.debug(`view=${view}`);
+    }));
 
     /**************************************
      * Store: edit-mode && edit-mode-index
      **************************************/
 
-    const editMode = createEditModeStore();
-    const editModeIndex = createEditModeIndexStore();
+    const editMode = Store.editMode.create();
 
     /*********************
      * Store: shift-setup
      *********************/
 
-    const shiftSetup = createShiftSetupStore();
+    const shiftSetup = Store.shiftSetup.create();
 
     /***********************
      * Function Definitions
      ***********************/
 
     /**
-     * @returns {Promise<(-2 | import("./lib/stores/shift-setup-store").Shift | undefined)>}
+     * @returns {Promise<(-2 | import("../lib/stores/shift-setup").Shift | undefined)>}
      */
     async function getEditModeShift() {
-        if ($editModeIndex === -2) return -2; // NOTE: "reset"
-        return shiftSetup.getShift($editModeIndex);
+        if ($editMode.index === -2) return -2; // NOTE: "reset"
+        return shiftSetup.getShift($editMode.index);
     }
 
     /**
@@ -97,21 +88,19 @@
      * Mount and Destroy
      ********************/
 
-    onDestroy(() => {
-        if (unsubscribeView) unsubscribeView();
-    });
+    onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
 
 <main
     class="ui-container"
-    style:bottom={$editMode ? "3em" : "0"}
+    style:bottom={$editMode.open ? "3em" : "0"}
 >
     {#if $view === "calendar"}
         <CalendarView
             bind:this={calendarView}
             bind:currentDate
             on:click={async (ev) => {
-                if (ev.detail && $editMode) {
+                if (ev.detail && $editMode.open) {
                     let shift = await getEditModeShift();
                     if (!shift) return;
 

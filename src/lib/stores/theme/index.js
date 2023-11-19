@@ -24,7 +24,7 @@ theme.subscribe((theme) => {
     localStorage.setItem(storageKey, theme);
 });
 
-export function createThemeStore() {
+export function create() {
     return {
         ...theme,
     };

@@ -6,24 +6,20 @@
 
     import { CSS } from "svelte-css";
 
-    import {
-        createEditModeStore,
-        createEditModeIndexStore,
-    } from "./lib/stores/edit-mode-store";
-
-    import { createViewStore } from "./lib/stores/view-store";
-    import { createThemeStore } from "./lib/stores/theme-store";
+    import * as Store from "./lib/stores";
 
     import * as lang from "./lib/js/lang";
     import * as utils from "./lib/js/utils";
 
-    import Header from "./Header.svelte";
-    import Main from "./Main.svelte";
-    import Footer from "./Footer.svelte";
+    import Header from "./view/Header.svelte";
+    import Main from "./view/Main.svelte";
+    import Footer from "./view/Footer.svelte";
 
     /***********************
      * Variable Definitions
      ***********************/
+
+    const cleanUp = [];
 
     /** @type {Date} */
     let currentDate = new Date();
@@ -35,40 +31,29 @@
      * Store: view
      **************/
 
-    let unsubscribeView;
+    const view = Store.view.create();
+    $: !!view && cleanUp.push(view.subscribe((currentView) => {
+        console.debug(`view=${currentView}`);
 
-    const view = createViewStore();
+        // reset edit mode
+        editMode.indexUnselect()
+        editMode.disable();
 
-    $: view && subscribeView();
-
-    async function subscribeView() {
-        const handler = async (_view) => {
-            console.debug(`view=${_view}`);
-
-            // reset edit mode
-            editModeIndex.unselect();
-            editMode.disable();
-
-            enableDatePicker = _view === "calendar";
-            enableBackButton = view.history().length > 1;
-        };
-
-        console.debug("subscribe to view");
-        unsubscribeView = view.subscribe(handler);
-    }
+        enableDatePicker = currentView === "calendar";
+        enableBackButton = view.history().length > 1;
+    }));
 
     /**************************************
      * Store: edit-mode && edit-mode-index
      **************************************/
 
-    const editMode = createEditModeStore();
-    const editModeIndex = createEditModeIndexStore();
+    const editMode = Store.editMode.create();
 
     /***************
      * Store: theme
      ***************/
 
-    const theme = createThemeStore();
+    const theme = Store.theme.create();
 
     /********************
      * Mount and Destroy
@@ -82,9 +67,7 @@
         view.goto("calendar");
     });
 
-    onDestroy(() => {
-        if (unsubscribeView) unsubscribeView();
-    });
+    onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
 
 <CSS.Root

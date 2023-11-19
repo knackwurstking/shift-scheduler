@@ -1,31 +1,24 @@
 <script>
     import { FlexGrid } from "svelte-css";
 
-    import { Shift } from "./lib/components";
-
-    import {
-        createEditModeStore,
-        createEditModeIndexStore,
-    } from "./lib/stores/edit-mode-store";
-
-    import { createShiftSetupStore } from "./lib/stores/shift-setup-store";
+    import { Shift } from "../lib/components";
+    import * as Store from "../lib/stores";
 
     /**************************************
      * Store: edit-mode && edit-mode-index
      **************************************/
 
-    const editMode = createEditModeStore();
-    const editModeIndex = createEditModeIndexStore();
+    const editMode = Store.editMode.create();
 
     /*********************
      * Store: shift-setup
      *********************/
 
-    const shiftSetup = createShiftSetupStore();
+    const shiftSetup = Store.shiftSetup.create();
 </script>
 
-<footer class="ui-container is-max-width" class:visible={$editMode}>
-    {#if $editMode}
+<footer class="ui-container is-max-width" class:visible={$editMode.open}>
+    {#if $editMode.open}
         <figure class="flex no-scrollbar is-max">
             <FlexGrid.Row gap=".1em">
                 <FlexGrid.Col style="width: calc(7.5em + var(--spacing));" flex="0">
@@ -33,14 +26,14 @@
                         class="is-max"
                         name="Reset"
                         visible={false}
-                        active={$editModeIndex === -2}
+                        active={$editMode.index === -2}
                         color="transparent"
                         id={-2}
                         on:click={() => {
-                            if ($editModeIndex === -2) {
-                                editModeIndex.unselect();
+                            if ($editMode.index === -2) {
+                                editMode.indexUnselect();
                             } else {
-                                editModeIndex.reset();
+                                editMode.indexReset();
                             }
                         }}
                     />
@@ -51,12 +44,12 @@
                         <Shift
                             class="is-max"
                             {...shift}
-                            active={$editModeIndex === index}
+                            active={$editMode.index === index}
                             on:click={() => {
-                                if ($editModeIndex === index) {
-                                    editModeIndex.unselect();
+                                if ($editMode.index === index) {
+                                    editMode.indexUnselect();
                                 } else {
-                                    editModeIndex.select(index);
+                                    editMode.indexSelect(index);
                                 }
                             }}
                         />

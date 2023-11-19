@@ -8,7 +8,7 @@
         Text,
     } from "svelte-css";
 
-    import { createViewStore } from "../../stores/view-store.js";
+    import * as Store from "../../stores";
 
     import * as lang from "../../js/lang";
 
@@ -37,14 +37,14 @@
      * Store: view
      **************/
 
-    const view = createViewStore();
+    const view = Store.view.create();
 
     /******************************
      * Function Export Definitions
      ******************************/
 
     /**
-     * @param {import("../../stores/shift-setup-store").Shift | null | undefined} shift
+     * @param {import("../../stores/shift-setup").Shift | null | undefined} shift
      */
     export async function open(shift = null) {
         if (shift) {

@@ -15,7 +15,7 @@ const stack = [];
 /** @type {import("svelte/store").Writable<Views>} */
 const view = writable();
 
-export function createViewStore() {
+export function create() {
     function lock() {
         lockHistory = true;
     }

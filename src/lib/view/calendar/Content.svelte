@@ -7,8 +7,7 @@
 
     import * as db from "../../js/db";
 
-    import { createShiftSetupStore } from "../../stores/shift-setup-store";
-    import { createWeekStartStore } from "../../stores/week-start-store";
+    import * as Store from "../../stores";
 
     /******************************
      * Variable Export Definitions
@@ -25,13 +24,13 @@
      * Store: shift-setup
      ********************/
 
-    const shiftSetup = createShiftSetupStore();
+    const shiftSetup = Store.shiftSetup.create();
 
     /********************
      * Store: week-start
      ********************/
 
-    const weekStart = createWeekStartStore();
+    const weekStart = Store.weekStart.create();
 
     /***********************
      * Variable Definitions
