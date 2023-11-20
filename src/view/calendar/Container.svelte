@@ -3,9 +3,9 @@
 
     import { FlexGrid } from "svelte-css";
 
-    import * as Store from "../../stores";
+    import * as Store from "../../lib/stores";
 
-    import * as lang from "../../js/lang";
+    import * as lang from "../../lib/js/lang";
 
     /***********************
      * Variable Definitions

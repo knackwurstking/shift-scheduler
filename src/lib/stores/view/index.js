@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 
 /**
  * @typedef Views
- * @type {"calendar" | "settings"}
+ * @type {"calendar" | "settings" | "pdf"}
  */
 
 let lockHistory = false;
@@ -43,6 +43,10 @@ export function create() {
                 stack.push(_view);
                 view.set(_view)
                 break
+            case "pdf":
+                stack.push(_view);
+                view.set(_view)
+                break;
         }
     }
 

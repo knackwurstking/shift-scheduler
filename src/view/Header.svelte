@@ -1,6 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
 
+    import FilePdfBox from "svelte-material-icons/FilePdfBox.svelte";
     import Pencil from "svelte-material-icons/Pencil.svelte";
     import ArrowLeft from "svelte-material-icons/ArrowLeft.svelte";
     import CalendarToday from "svelte-material-icons/CalendarToday.svelte";
@@ -83,8 +84,14 @@
     </svelte:fragment>
 
     <svelte:fragment slot="right">
-        <!-- TODO: new page: jspdf year table view and download/share button -->
         {#if enableDatePicker}
+            <Button.Icon
+                ghost
+                on:click={() => dispatch("goto", "pdf")}
+            >
+                <FilePdfBox />
+            </Button.Icon>
+
             <Button.Icon
                 ghost
                 on:click={() => dispatch("editmodeclick")}

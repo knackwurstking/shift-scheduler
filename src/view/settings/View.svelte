@@ -15,13 +15,13 @@
         ShiftDialog,
         EditRhythmDialog,
         StorageDialog,
-    } from "../../components";
+    } from "../../lib/components";
 
-    import * as Store from "../../stores";
+    import * as Store from "../../lib/stores";
 
-    import * as lang from "../../js/lang";
-    import * as db from "../../js/db";
-    import * as utils from "../../js/utils";
+    import * as lang from "../../lib/js/lang";
+    import * as db from "../../lib/js/db";
+    import * as utils from "../../lib/js/utils";
 
     /***********
      * Bindings

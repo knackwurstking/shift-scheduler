@@ -3,8 +3,9 @@
 
     import { EditDayDialog } from "../lib/components";
 
-    import SettingsView from "../lib/view/settings";
-    import CalendarView from "../lib/view/calendar";
+    import CalendarView from "./calendar";
+    import SettingsView from "./settings";
+    import PdfView from "./pdf";
 
     import * as Store from "../lib/stores";
     import * as db from "../lib/js/db";
@@ -160,6 +161,8 @@
         />
     {:else if $view === "settings"}
         <SettingsView />
+    {:else if $view === "pdf"}
+        <PdfView />
     {/if}
 </main>
 

@@ -5,9 +5,9 @@
 
     import Day from "./Day.svelte";
 
-    import * as db from "../../js/db";
+    import * as db from "../../lib/js/db";
 
-    import * as Store from "../../stores";
+    import * as Store from "../../lib/stores";
 
     /******************************
      * Variable Export Definitions

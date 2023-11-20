@@ -112,6 +112,7 @@ const data = {
         },
         appBar: {
             settings: "Einstellungen",
+            pdf: "PDF Generation",
         },
         buttons: {
             edit: "Bearbeiten",
@@ -148,14 +149,15 @@ export let lang = (() => {
 
 /**
  * @param {string} group
- * @param {string} key 
- * @returns {string}
+ * @param {string} key
+ * @returns {string | null}
  */
 export function get(group, key) {
     try {
         return data[lang][group][key];
     } catch {
         console.error(`lang (${lang}): "${group}" -> "${key}" not found!`);
+        return null;
     }
 }
 
