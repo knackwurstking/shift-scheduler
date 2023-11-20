@@ -57,7 +57,7 @@
 
 <div
     {...$$restProps}
-    class={"ui-container is-max no-user-select " + ($$restProps.class || "")}
+    class={"is-max no-user-select " + ($$restProps.class || "")}
     style:min-width="100%"
     on:transitionend={(ev) => {
         if (ev.propertyName === "transform") {

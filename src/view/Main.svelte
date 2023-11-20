@@ -93,7 +93,7 @@
 
 <main
     class="ui-container"
-    style:bottom={$editMode.open ? "3em" : "0"}
+    style:bottom={$editMode.open ? "4em" : "0"}
 >
     {#if $view === "calendar"}
         <CalendarView

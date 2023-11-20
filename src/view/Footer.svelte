@@ -17,7 +17,10 @@
     const shiftSetup = Store.shiftSetup.create();
 </script>
 
-<footer class="ui-container is-max-width" class:visible={$editMode.open}>
+<footer
+    class="ui-container is-max-width"
+    class:visible={$editMode.open}
+>
     {#if $editMode.open}
         <figure class="flex no-scrollbar is-max">
             <FlexGrid.Row gap=".1em">
@@ -67,8 +70,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        height: 3em;
-        padding: 0;
+        height: 4em;
     }
 
     footer:not(.visible) {
