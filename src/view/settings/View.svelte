@@ -128,7 +128,7 @@
     }
 </script>
 
-<div class="root">
+<div class="root no-scrollbar">
     <article class="ui-card has-margin">
         <section>
             <h3>{lang.get("settingsView", "titleShifts")}</h3>
@@ -561,13 +561,6 @@
         padding-top: 3em;
         overflow: hidden;
         overflow-y: auto;
-
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    .root::-webkit-scrollbar {
-        display: none;
     }
 
     .shift-table tr > *:nth-child(2) {
