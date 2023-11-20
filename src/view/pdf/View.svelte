@@ -38,25 +38,25 @@
                     <td class="is-text-center"></td>
                     <td class="is-text-center"></td>
                     <td class="is-text-center"></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>1</span> <span style:color="blue">Nacht</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>1</span> <span style:color="blue">N</span></div></td>
                 </tr>
                 <tr>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>2</span> <span style:color="transparent"></span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>3</span> <span style:color="transparent"></span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>4</span> <span style:color="transparent"></span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>5</span> <span style:color="green">Frueh</span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>6</span> <span style:color="green">Fruehschicht</span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>7</span> <span style:color="orange">Spaet</span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>8</span> <span style:color="orange">Spaetschicht</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>2</span> <span style:color="transparent"></span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>3</span> <span style:color="transparent"></span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>4</span> <span style:color="transparent"></span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>5</span> <span style:color="green">F</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>6</span> <span style:color="green">F</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>7</span> <span style:color="orange">S</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>8</span> <span style:color="orange">S</span></div></td>
                 </tr>
                 <tr>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>9</span> <span style:color="blue">Nacht</span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>10</span> <span style:color="black">Langer Shicht Name</span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>11</span> <span style:color="transparent"></span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>12</span> <span style:color="transparent"></span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>13</span> <span style:color="transparent"></span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>14</span> <span style:color="magenta">Kurzarbeit</span></div></td>
-                    <td class="is-text-left"><div class="is-max-width flex align-center"><span>15</span> <span style:color="green">Frueh</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>9</span> <span style:color="blue">Nacht</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>10</span> <span style:color="red">K</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>11</span> <span style:color="transparent"></span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>12</span> <span style:color="transparent"></span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>13</span> <span style:color="transparent"></span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>14</span> <span style:color="magenta">Ka</span></div></td>
+                    <td class="is-text-left"><div class="is-max-width flex column"><span>15</span> <span style:color="green">F</span></div></td>
                 </tr>
             </tbody>
         </table>
@@ -82,22 +82,29 @@
 </div>
 
 <style>
+    table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
     td {
         width: calc(100% / 7);
     }
 
     td span {
-        display: inline-block;
+        display: block;
     }
 
     td span:nth-child(1) {
-        width: 2em;
+        font-size: 0.85em;
+        font-weight: lighter;
     }
 
     td span:nth-child(2) {
-        width: calc(100% - 2em);
+        width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        font-size: 0.9em;
     }
 </style>
