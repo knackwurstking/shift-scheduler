@@ -118,7 +118,12 @@
         on:close={() => close()}
     />
 
-    <section class="has-padding-x">
+    <section
+        style={
+            "padding-left: calc(var(--spacing) * 2.5);" +
+            "padding-right: calc(var(--spacing) * 2.5);"
+        }
+    >
         <Input.Select
             bind:this={select}
             items={selectItems}
