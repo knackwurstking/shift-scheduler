@@ -48,6 +48,7 @@ const data = {
         },
         appBar: {
             settings: "Settings",
+            pdf: "PDF Generation",
         },
         buttons: {
             edit: "Edit",
@@ -112,7 +113,7 @@ const data = {
         },
         appBar: {
             settings: "Einstellungen",
-            pdf: "PDF Generation",
+            pdf: "PDF-Generierung",
         },
         buttons: {
             edit: "Bearbeiten",
