@@ -38,9 +38,6 @@
      **************/
 
     const view = Store.view.create();
-    $: !!view && cleanUp.push(view.subscribe(view => {
-        console.debug(`view=${view}`);
-    }));
 
     /**************************************
      * Store: edit-mode && edit-mode-index
