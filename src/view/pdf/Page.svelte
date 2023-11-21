@@ -1,4 +1,7 @@
 <script>
+    import WeekDaysHeader from "./WeekDaysHeader.svelte";
+    import Day from "./Day.svelte";
+
     /** @type {number} */
     export let month;
     /** @type {import("../calendar").Day[]} */
@@ -6,9 +9,22 @@
 </script>
 
 <div>
-    <!-- TODO: create table for month -->
-    {#each data as day}
-    {/each}
+    <h3>@TODO: Month name for {month}</h3>
+
+    <table>
+        <WeekDaysHeader />
+
+        <tbody>
+            {#each data as day}
+                {#if day.date.getMonth() === month}
+                    <Day
+                        date={day.date.getDate()}
+                        shift={day.data.shift}
+                    />
+                {/if}
+            {/each}
+        </tbody>
+    </table>
 </div>
 
 <style>
