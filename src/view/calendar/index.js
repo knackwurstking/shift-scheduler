@@ -9,7 +9,7 @@ export { default } from "./View.svelte";
  *
  * @typedef DayData
  * @type {{
- *  shift: import("../../stores/shift-setup-store").Shift,
+ *  shift: import("../../lib/stores/shift-setup").Shift,
  *  note: string,
  * }}
  */
