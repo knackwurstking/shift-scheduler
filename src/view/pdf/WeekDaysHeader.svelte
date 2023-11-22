@@ -55,7 +55,7 @@
 <thead>
     <tr>
         {#each headerItems as item}
-            <th>{item}</th>
+            <th class="is-text-center">{item}</th>
         {/each}
     </tr>
 </thead>
