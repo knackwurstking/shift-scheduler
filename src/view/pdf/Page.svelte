@@ -2,6 +2,8 @@
     import WeekDaysHeader from "./WeekDaysHeader.svelte";
     import Day from "./Day.svelte";
 
+    import * as lang from "../../lib/js/lang";
+
     /** @type {number} */
     export let month;
     /** @type {import("../calendar").Day[]} */
@@ -9,7 +11,7 @@
 </script>
 
 <div>
-    <h3>@TODO: Month name for {month}</h3>
+    <h3>{lang.get("months", month.toString())}</h3>
 
     <table>
         <WeekDaysHeader />

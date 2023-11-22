@@ -28,6 +28,3 @@
         >{shift.shortName}</span>
     </div>
 </td>
-
-<style>
-</style>

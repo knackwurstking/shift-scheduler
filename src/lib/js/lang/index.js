@@ -54,7 +54,7 @@ const data = {
             edit: "Edit",
             submit: "OK",
         },
-        misc: {
+        weekDays: {
             sun: "Sun",
             mon: "Mon",
             tue: "Tue",
@@ -62,6 +62,20 @@ const data = {
             thu: "Thu",
             fri: "Fri",
             sat: "Sat",
+        },
+        months: {
+            "0": "January",
+            "1": "February",
+            "2": "March",
+            "3": "April",
+            "4": "May",
+            "5": "June",
+            "6": "July",
+            "7": "August",
+            "8": "September",
+            "9": "October",
+            "10": "November",
+            "11": "December",
         },
     },
     "de": {
@@ -119,7 +133,7 @@ const data = {
             edit: "Bearbeiten",
             submit: "OK",
         },
-        misc: {
+        weekDays: {
             sun: "So",
             mon: "Mo",
             tue: "Di",
@@ -127,6 +141,20 @@ const data = {
             thu: "Do",
             fri: "Fr",
             sat: "Sa",
+        },
+        months: {
+            "0": "Januar",
+            "1": "Februar",
+            "2": "März",
+            "3": "April",
+            "4": "Mai",
+            "5": "Juni",
+            "6": "Juli",
+            "7": "August",
+            "8": "September",
+            "9": "August",
+            "10": "November",
+            "11": "Dezember",
         },
     },
 };
