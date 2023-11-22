@@ -17,13 +17,17 @@
         <WeekDaysHeader />
 
         <tbody>
-            {#each data as day}
-                {#if day.date.getMonth() === month}
-                    <Day
-                        date={day.date.getDate()}
-                        shift={day.data.shift}
-                    />
-                {/if}
+            {#each [[0,7],[7,14],[14,21],[21,28],[28,35],[35,42]] as i}
+                <tr>
+                    {#each data.slice(i[0], i[1]) as day}
+                        {#if day.date.getMonth() === month}
+                            <Day
+                                date={day.date.getDate()}
+                                shift={day.data.shift}
+                            />
+                        {/if}
+                    {/each}
+                </tr>
             {/each}
         </tbody>
     </table>
