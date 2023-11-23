@@ -1,6 +1,6 @@
 <script>
     import Page from "./Page.svelte";
-    import Article from "./Article.svelte";
+    import PageSection from "./PageSection.svelte";
 
     import * as Store from "../../lib/stores";
 
@@ -59,13 +59,13 @@
 <div {...$$restProps}>
     {#each pagesData as data}
         <Page>
-            <Article
+            <PageSection
                 class="flex column align-center justify-center"
                 style="height: 50%; padding: 1em;"
                 month={data[0].month}
                 data={data[0].data}
             />
-            <Article
+            <PageSection
                 class="flex column align-center justify-center"
                 style="height: 50%; padding: 1em;"
                 month={data[1].month}
