@@ -54,7 +54,7 @@
         <span
             class="shift"
             style={
-                `--shift-color: ${day.data.shift.color || "hsl(var(--card-foreground))"};`
+                `--shift-color: ${day.data.shift.color || "hsl(var(--card-fg))"};`
             }
         >
             {day.data.shift.visible ? day.data.shift.shortName || "" : ""}

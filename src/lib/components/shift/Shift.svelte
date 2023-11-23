@@ -29,7 +29,7 @@
         class="short-name"
         class:visible
         style={
-            `--shift-color: ${color || "hsl(var(--card-foreground))"};`
+            `--shift-color: ${color || "hsl(var(--card-fg))"};`
         }
     >{shortName || name[0]}</div>
 </div>
