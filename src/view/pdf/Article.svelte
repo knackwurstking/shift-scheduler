@@ -1,6 +1,6 @@
 <script>
     import WeekDaysHeader from "./WeekDaysHeader.svelte";
-    import Day from "./Day.svelte";
+    import TableData from "./TableData.svelte";
 
     import * as lang from "../../lib/js/lang";
 
@@ -23,7 +23,7 @@
             {#each [[0,7],[7,14],[14,21],[21,28],[28,35],[35,42]] as i}
                 <tr>
                     {#each data.slice(i[0], i[1]) as day}
-                        <Day
+                        <TableData
                             date={day.date.getDate()}
                             shift={day.data.shift}
                             empty={day.date.getMonth() !== month}
