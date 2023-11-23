@@ -36,7 +36,7 @@
     const weekStart = Store.weekStart.create();
 </script>
 
-<div>
+<div {...$$restProps}>
     {#each data as month, index}
         <Page month={index} data={month} />
     {/each}

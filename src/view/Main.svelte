@@ -159,7 +159,7 @@
     {:else if $view === "settings"}
         <SettingsView />
     {:else if $view === "pdf"}
-        <PdfView />
+        <PdfView year={currentDate.getFullYear()} />
     {/if}
 </main>
 
