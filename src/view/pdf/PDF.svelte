@@ -1,9 +1,10 @@
 <script>
+    import Page from "./Page.svelte";
+    import Article from "./Article.svelte";
+
     import * as Store from "../../lib/stores";
 
     import * as utils from "../../lib/js/utils";
-
-    import Page from "./Page.svelte";
 
     /******************************
      * Variable Export Definitions
@@ -11,16 +12,16 @@
 
     export let year;
     $: if (!!year && !!weekStart) (async () => {
-        const newData = [];
+        const data = [];
         for (let month = 0; month < 12; month++) {
-            newData.push(
+            data.push(
                 await utils.getDaysForMonth(
                     year, month,
                     { weekStart: $weekStart }
                 )
             );
         }
-        data = newData;
+        pagesData = data;
     })();
 
     /***********************
@@ -28,8 +29,7 @@
      ***********************/
 
     /** @type {import("../calendar").Day[][]} */
-    let data = [];
-    $: console.debug(data);
+    let pagesData = [];
 
     /********************
      * Store: week-start
@@ -39,8 +39,19 @@
 </script>
 
 <div {...$$restProps}>
-    {#each data as month, index}
-        <Page month={index} data={month} />
+    {#each pagesData as data, index}
+        <Page>
+            <Article
+                style="height: 50%;"
+                month={index}
+                data={data}
+            />
+            <Article
+                style="height: 50%;"
+                month={index}
+                data={data}
+            />
+        </Page>
     {/each}
 </div>
 
