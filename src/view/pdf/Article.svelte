@@ -11,7 +11,9 @@
     export let data;
 </script>
 
-<section {...$$restProps}>
+<section
+    {...$$restProps}
+>
     <h3>{lang.get("months", month.toString())}</h3>
 
     <table>

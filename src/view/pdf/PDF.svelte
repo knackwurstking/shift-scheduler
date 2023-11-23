@@ -42,12 +42,14 @@
     {#each pagesData as data, index}
         <Page>
             <Article
-                style="height: 50%;"
+                class="flex column align-center justify-center"
+                style="height: 50%; padding: 1em;"
                 month={index}
                 data={data}
             />
             <Article
-                style="height: 50%;"
+                class="flex column align-center justify-center"
+                style="height: 50%; padding: 1em;"
                 month={index}
                 data={data}
             />
