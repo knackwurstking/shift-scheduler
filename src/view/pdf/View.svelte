@@ -19,18 +19,19 @@
     <PDF
         id="pdf"
         {year}
+        data-theme="light"
     />
 
     <section>
         <Button.Root
             on:click={() => {
-                const el = document.getElementById("pdf-content");
+                const el = document.getElementById("pdf");
                 pdf.html(el, {
                     callback: (doc) => {
                         doc.save();
                     },
-                    width: 190,
-                    windowWidth: 440, //window width in CSS pixels
+                    width: 210,
+                    windowWidth: 650, //window width in CSS pixels
                 });
             }}
         >

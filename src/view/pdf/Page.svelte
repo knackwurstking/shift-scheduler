@@ -10,10 +10,15 @@
     export let data;
 </script>
 
-<div>
+<div
+    class="has-border"
+>
     <h3>{lang.get("months", month.toString())}</h3>
 
-    <table>
+    <table
+        style:width="100%"
+        style:height="50%"
+    >
         <WeekDaysHeader />
 
         <tbody>
@@ -25,6 +30,8 @@
                                 date={day.date.getDate()}
                                 shift={day.data.shift}
                             />
+                        {:else}
+                            <td />
                         {/if}
                     {/each}
                 </tr>

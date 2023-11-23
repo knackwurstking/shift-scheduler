@@ -10,16 +10,17 @@
      ******************************/
 
     export let year;
-    $: if (!!year) (async () => {
-        data = [];
+    $: if (!!year && !!weekStart) (async () => {
+        const newData = [];
         for (let month = 0; month < 12; month++) {
-            data.push(
+            newData.push(
                 await utils.getDaysForMonth(
                     year, month,
                     { weekStart: $weekStart }
                 )
             );
         }
+        data = newData;
     })();
 
     /***********************
@@ -28,6 +29,7 @@
 
     /** @type {import("../calendar").Day[][]} */
     let data = [];
+    $: console.debug(data);
 
     /********************
      * Store: week-start
