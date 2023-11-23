@@ -38,35 +38,3 @@
         </Button.Root>
     </section>
 </div>
-
-<style>
-    table {
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    tbody td {
-        height: calc(3em);
-    }
-
-    td {
-        width: calc(100% / 7);
-    }
-
-    td span {
-        display: block;
-    }
-
-    td span:nth-child(1) {
-        font-size: 0.85em;
-        font-weight: lighter;
-    }
-
-    td span:nth-child(2) {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 0.9em;
-    }
-</style>
