@@ -6,6 +6,14 @@
 
     import * as utils from "../../lib/js/utils";
 
+    /**
+     * @typedef Day
+     * @type {import("../calendar").Day}
+     *
+     * @typedef ArticleData
+     * @type {{ month: number; data: Day[] }}
+     */
+
     /******************************
      * Variable Export Definitions
      ******************************/
@@ -13,13 +21,23 @@
     export let year;
     $: if (!!year && !!weekStart) (async () => {
         const data = [];
-        for (let month = 0; month < 12; month++) {
-            data.push(
-                await utils.getDaysForMonth(
-                    year, month,
-                    { weekStart: $weekStart }
-                )
-            );
+        for (const month of [1, 3, 5, 7, 9, 11]) {
+            data.push([
+                {
+                    month: month-1,
+                    data: await utils.getDaysForMonth(
+                        year, month-1,
+                        { weekStart: $weekStart }
+                    ),
+                },
+                {
+                    month: month,
+                    data: await utils.getDaysForMonth(
+                        year, month,
+                        { weekStart: $weekStart }
+                    ),
+                },
+            ]);
         }
         pagesData = data;
     })();
@@ -28,7 +46,7 @@
      * Variable Definitions
      ***********************/
 
-    /** @type {import("../calendar").Day[][]} */
+    /** @type {ArticleData[][]} */
     let pagesData = [];
 
     /********************
@@ -39,19 +57,19 @@
 </script>
 
 <div {...$$restProps}>
-    {#each pagesData as data, index}
+    {#each pagesData as data}
         <Page>
             <Article
                 class="flex column align-center justify-center"
                 style="height: 50%; padding: 1em;"
-                month={index}
-                data={data}
+                month={data[0].month}
+                data={data[0].data}
             />
             <Article
                 class="flex column align-center justify-center"
                 style="height: 50%; padding: 1em;"
-                month={index}
-                data={data}
+                month={data[1].month}
+                data={data[1].data}
             />
         </Page>
     {/each}
