@@ -3,7 +3,7 @@
     export let year;
 </script>
 
-<div>
+<div class="page">
     <h2
         style={
             "position: absolute;" +
@@ -18,6 +18,5 @@
 <style>
     div {
         width: 100%;
-        aspect-ratio: 1 / 1.414;
     }
 </style>

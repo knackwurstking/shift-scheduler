@@ -1,4 +1,6 @@
 <script>
+    import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
+    import { Share } from "@capacitor/share";
     import { jsPDF } from "jspdf";
 
     import { Button, Input } from "svelte-css";
@@ -6,6 +8,7 @@
     import PDF from "./PDF.svelte";
 
     import * as lang from "../../lib/js/lang";
+    import * as utils from "../../lib/js/utils";
 
     /** @type {number} */
     export let year;
@@ -28,14 +31,40 @@
         </div>
 
         <Button.Root
-            on:click={() => {
-                const el = document.getElementById("pdf");
+            on:click={async () => {
+                // TODO: add a processing indicator (rotating spinner)
+
+                /** @type {HTMLElement} */
+                // @ts-ignore
+                const el = document.getElementById("pdf").cloneNode(true);
+                el.setAttribute("data-theme", "light");
+                [...el.querySelectorAll(".page")].forEach((el) => {
+                    // @ts-ignore
+                    el.style.aspectRatio = "1 / 1.414";
+                });
+                const file = `${year}.pdf`;
+
                 pdf.html(el, {
-                    callback: (doc) => {
-                        doc.save();
+                    callback: async (doc) => {
+                        if (utils.isAndroid()) {
+                            const result = await Filesystem.writeFile({
+                                path: file,
+                                data: doc.output(),
+                                encoding: Encoding.UTF8,
+                                directory: Directory.Cache,
+                            });
+
+                            Share.share({
+                                title: file,
+                                url: result.uri,
+                                dialogTitle: `Share "${file}"`,
+                            });
+                        } else {
+                            doc.save(`${year}.pdf`);
+                        }
                     },
                     width: 210,
-                    windowWidth: 750, //window width in CSS pixels
+                    windowWidth: 500, //window width in CSS pixels
                 });
             }}
         >
@@ -49,12 +78,10 @@
             "height: 100%;" +
             "overflow-y: auto;"
         }
-        data-theme="light"
     >
         <PDF
             id="pdf"
             {year}
-            data-theme="light"
         />
     </div>
 </div>

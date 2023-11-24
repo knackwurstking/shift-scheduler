@@ -531,7 +531,7 @@
     on:submit={async (ev) => {
         shiftDialog.close();
 
-        /** @type {import("../../stores/shift-setup-store").Shift} */
+        /** @type {import("../../lib/stores/shift-setup").Shift} */
         const shift = ev.detail;
 
         if (!shift.name) return;

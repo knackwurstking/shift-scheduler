@@ -21,15 +21,8 @@
     export let year;
     $: if (!!year && !!weekStart) (async () => {
         const data = [];
-        for (const month of [2, 5, 8, 11]) {
+        for (const month of [1, 3, 5, 7, 9, 11]) {
             data.push([
-                {
-                    month: month-2,
-                    data: await utils.getDaysForMonth(
-                        year, month-2,
-                        { weekStart: $weekStart }
-                    ),
-                },
                 {
                     month: month-1,
                     data: await utils.getDaysForMonth(
@@ -77,12 +70,6 @@
                 style="padding: 1em;"
                 month={data[1].month}
                 data={data[1].data}
-            />
-
-            <PageSection
-                style="padding: 1em;"
-                month={data[2].month}
-                data={data[2].data}
             />
         </Page>
     {/each}
