@@ -19,6 +19,5 @@
     div {
         width: 100%;
         aspect-ratio: 1 / 1.414;
-        font-size: 1.25em;
     }
 </style>

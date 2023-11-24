@@ -35,7 +35,7 @@
                         doc.save();
                     },
                     width: 210,
-                    windowWidth: 950, //window width in CSS pixels
+                    windowWidth: 750, //window width in CSS pixels
                 });
             }}
         >
