@@ -109,6 +109,7 @@
         width: 100%;
         height: 100%;
         padding-top: 3em;
-        background-color: hsl(var(--bg));
+        background-color: hsl(0, 0%, 0%, 0.4);
+        backdrop-filter: blur(5px);
     }
 </style>
