@@ -73,7 +73,7 @@
                 }, 0);
             }}
         >
-            Print
+            Download
         </Button.Root>
     </section>
 
