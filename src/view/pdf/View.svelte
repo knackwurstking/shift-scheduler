@@ -64,12 +64,12 @@
                             } else {
                                 doc.save(`${year}.pdf`);
                             }
+
+                            processing = false;
                         },
                         width: 210,
                         windowWidth: 500, //window width in CSS pixels
                     });
-
-                    processing = false;
                 }, 0);
             }}
         >
@@ -90,13 +90,14 @@
         />
     </div>
 
-    <div class="spinner" style:display={processing ? "block" : "none"}>
-        @TODO: Processing indicator (spinner)
-    </div>
+    <div
+        class="ui-spinner"
+        style:display={processing ? "block" : "none"}
+    ></div>
 </div>
 
 <style>
-    .spinner {
+    .ui-spinner {
         position: absolute;
         top: 0;
         left: 0;
