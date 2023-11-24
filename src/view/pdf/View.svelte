@@ -14,6 +14,7 @@
     export let year;
 
     const pdf = new jsPDF("portrait", "mm", "a4");
+    let processing = false;
 </script>
 
 <div
@@ -32,40 +33,44 @@
 
         <Button.Root
             on:click={async () => {
-                // TODO: add a processing indicator (rotating spinner)
+                processing = true;
 
-                /** @type {HTMLElement} */
-                // @ts-ignore
-                const el = document.getElementById("pdf").cloneNode(true);
-                el.setAttribute("data-theme", "light");
-                [...el.querySelectorAll(".page")].forEach((el) => {
+                setTimeout(() => {
+                    /** @type {HTMLElement} */
                     // @ts-ignore
-                    el.style.aspectRatio = "1 / 1.414";
-                });
-                const file = `${year}.pdf`;
+                    const el = document.getElementById("pdf").cloneNode(true);
+                    el.setAttribute("data-theme", "light");
+                    [...el.querySelectorAll(".page")].forEach((el) => {
+                        // @ts-ignore
+                        el.style.aspectRatio = "1 / 1.414";
+                    });
+                    const file = `${year}.pdf`;
 
-                pdf.html(el, {
-                    callback: async (doc) => {
-                        if (utils.isAndroid()) {
-                            const result = await Filesystem.writeFile({
-                                path: file,
-                                data: doc.output(),
-                                encoding: Encoding.UTF8,
-                                directory: Directory.Cache,
-                            });
+                    pdf.html(el, {
+                        callback: async (doc) => {
+                            if (utils.isAndroid()) {
+                                const result = await Filesystem.writeFile({
+                                    path: file,
+                                    data: doc.output(),
+                                    encoding: Encoding.UTF8,
+                                    directory: Directory.Cache,
+                                });
 
-                            Share.share({
-                                title: file,
-                                url: result.uri,
-                                dialogTitle: `Share "${file}"`,
-                            });
-                        } else {
-                            doc.save(`${year}.pdf`);
-                        }
-                    },
-                    width: 210,
-                    windowWidth: 500, //window width in CSS pixels
-                });
+                                Share.share({
+                                    title: file,
+                                    url: result.uri,
+                                    dialogTitle: `Share "${file}"`,
+                                });
+                            } else {
+                                doc.save(`${year}.pdf`);
+                            }
+                        },
+                        width: 210,
+                        windowWidth: 500, //window width in CSS pixels
+                    });
+
+                    //processing = false;
+                }, 1000);
             }}
         >
             Print
@@ -84,4 +89,20 @@
             {year}
         />
     </div>
+
+    <div class="spinner" style:display={processing ? "block" : "none"}>
+        @TODO: Processing indicator (spinner)
+    </div>
 </div>
+
+<style>
+    .spinner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding-top: 3em;
+        background-color: hsl(var(--bg));
+    }
+</style>
