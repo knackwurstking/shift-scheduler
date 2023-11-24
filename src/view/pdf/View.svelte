@@ -69,8 +69,8 @@
                         windowWidth: 500, //window width in CSS pixels
                     });
 
-                    //processing = false;
-                }, 1000);
+                    processing = false;
+                }, 0);
             }}
         >
             Print
