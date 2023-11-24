@@ -55,7 +55,7 @@
 <thead>
     <tr>
         {#each headerItems as item}
-            <th class="is-text-center">{item}</th>
+            <th class="is-text-center no-padding">{item}</th>
         {/each}
     </tr>
 </thead>
