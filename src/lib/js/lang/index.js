@@ -46,6 +46,9 @@ const data = {
             tableHeaderYear: "Year",
             tableHeaderMonth: "Month",
         },
+        pdfView: {
+            yearPicker: "Pick a Year",
+        },
         appBar: {
             settings: "Settings",
             pdf: "PDF Generation",
@@ -124,6 +127,9 @@ const data = {
             storageFetchDataButton: "Daten abrufen",
             tableHeaderYear: "Jahr",
             tableHeaderMonth: "Monat",
+        },
+        pdfView: {
+            yearPicker: "Wähle ein Jahr",
         },
         appBar: {
             settings: "Einstellungen",
