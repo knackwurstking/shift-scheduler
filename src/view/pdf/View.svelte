@@ -7,6 +7,8 @@
 
     import PDF from "./PDF.svelte";
 
+    import * as Store from "../../lib/stores";
+
     import * as lang from "../../lib/js/lang";
     import * as utils from "../../lib/js/utils";
 
@@ -15,6 +17,9 @@
 
     const pdf = new jsPDF("portrait", "mm", "a4");
     let processing = false;
+    $: processing ? view.lock() : view.unlock();
+
+    const view = Store.view.create();
 </script>
 
 <div
