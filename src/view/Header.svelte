@@ -79,7 +79,7 @@
 
     <svelte:fragment slot="center">
         {#if !!title}
-            <h4 class="title">{title}</h4>
+            <h4 class="title" style:white-space="nowrap">{title}</h4>
         {/if}
     </svelte:fragment>
 
