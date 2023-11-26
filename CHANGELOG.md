@@ -4,12 +4,15 @@
 
 ### Added
 
-- new view: "pdf" (+icon on top-app-bar)
-    - create a pdf for a specific year (with some sort of a preview)
+- New "pdf" view for preview a whole year and dowload as pdf
+
+### Fixed
+
+- Code clean up
 
 ### Changed
 
-- `svelte-css` dependency to version 0.6.0
+- Version for `svelte-css`: v0.6.0
 
 ## v1.2.0 2023-11-08
 
