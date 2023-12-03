@@ -9,6 +9,7 @@
 ### Fixed
 
 - Code clean up: settings view
+- Sort, storage db entries, years and month from low to high
 
 ## v1.3.0 2023-11-26
 
