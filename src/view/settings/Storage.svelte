@@ -95,6 +95,32 @@
             alert(`Data download failed!\n${err}`);
         }
     }
+
+    function listDataBaseKeys() {
+        const keys = db.listKeys();
+
+        const loops = keys.length-1;
+        for (let n = 0; n < loops; n++) {
+            for (let i = 0; i < loops; i++) {
+                let itemCurrent = keys[i];
+                let itemNext = keys[i+1];
+
+                if (itemCurrent.year > itemNext.year) {
+                    keys[i] = itemNext;
+                    keys[i+1] = itemCurrent;
+                    itemCurrent = keys[i];
+                    itemNext = keys[i+1];
+                }
+
+                if (itemCurrent.month > itemNext.month && itemCurrent.year === itemNext.year) {
+                    keys[i] = itemNext;
+                    keys[i+1] = itemCurrent;
+                }
+            }
+        }
+
+        return keys;
+    }
 </script>
 
 <article class="ui-card has-margin">
@@ -154,11 +180,7 @@
 
                     <tbody>
                         {#key reloadDataStorageTable}
-                            {#each db
-                                .listKeys()
-                                .sort((a, b) => (a.year > b.year ? 1 : -1))
-                                .sort( (a, b) => (a.month > b.month && a.year === b.year ? 1 : -1) ) as item}
-
+                            {#each listDataBaseKeys() as item}
                                 <tr>
                                     <td class="is-text-left">{item.year}</td>
                                     <td class="is-text-left">{item.month + 1}</td>
