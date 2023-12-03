@@ -10,6 +10,7 @@
 
 - Code clean up: settings view
 - Sort, storage db entries, years and month from low to high
+- TopAppBar styles
 
 ## v1.3.0 2023-11-26
 
