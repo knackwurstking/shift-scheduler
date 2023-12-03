@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.3.1 2023-12-03
+
+### Changed
+
+- Update `svelte-css` from v0.6.0 to v0.6.1
+
+### Fixed
+
+- Code clean up: settings view
+
 ## v1.3.0 2023-11-26
 
 ### Added
