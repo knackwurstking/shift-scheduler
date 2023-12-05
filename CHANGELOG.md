@@ -2,6 +2,10 @@
 
 ## v1.3.1 2023-12-05
 
+### Added
+
+- Calendar reload on an app resume event
+
 ### Changed
 
 - Update `svelte-css` from v0.6.0 to v0.6.1
@@ -9,10 +13,8 @@
 ### Fixed
 
 - Code clean up: settings view
-- Sort, storage db entries, years and month from low to high
-- TopAppBar styles
-- Update today on a app resume
-- Update today/calendar on a app "resume" event
+- Sort settings storage table entries, years and months from low to high
+- TopAppBar (css) styles
 
 ## v1.3.0 2023-11-26
 
