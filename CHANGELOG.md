@@ -9,6 +9,7 @@
 ### Changed
 
 - Update `svelte-css` from v0.6.0 to v0.6.1
+- Rename storage backup description (upload/download => import/export)
 
 ### Fixed
 
