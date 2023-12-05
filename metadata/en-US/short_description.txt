@@ -1,1 +1,1 @@
-A simple shift scheduler. (enables rhythm configuration)
+A simple shift scheduler. (Enables rhythm configuration)

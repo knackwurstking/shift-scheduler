@@ -1,5 +1,1 @@
-A simple shift scheduler. (enables rhythm configuration)
-
-- Adding shifts, a rhythm and a start date.
-- This app uses the browsers `localStorage` for now.
-- Adding notes per day.
+@TODO: adding some features list here ...

@@ -1,5 +1,1 @@
-Ein einfacher Schichtplaner. (ermöglicht Rhythmuskonfiguration)
-
-- Hinzufügen von Schichten, eines Rhythmus und eines Startdatums.
-- Diese App verwendet vorerst den „localStorage“ des Browsers.
-- Notizen pro Tag hinzufügen.
+@TODO: translate from english
