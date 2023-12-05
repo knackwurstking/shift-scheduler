@@ -1,5 +1,5 @@
 <script>
-    import { onDestroy } from "svelte";
+    import { onDestroy, onMount } from "svelte";
 
     import { EditDayDialog } from "../lib/components";
 
@@ -85,6 +85,14 @@
     /********************
      * Mount and Destroy
      ********************/
+
+    onMount(() => {
+        const onResume = () => {
+            if (calendarView) calendarView.reload();
+        };
+        document.addEventListener("resume", onResume);
+        cleanUp.push(onResume);
+    });
 
     onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
