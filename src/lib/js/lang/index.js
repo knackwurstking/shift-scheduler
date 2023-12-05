@@ -40,8 +40,8 @@ const data = {
             miscWeekStartPrimaryText: "The week starts on Monday",
 
             titleStorage: "Data Storage",
-            labelupdownPrimaryText: "Upload/Download",
-            labelupdownSecondaryText: "Upload or download backup data",
+            labelupdownPrimaryText: "Import/Export",
+            labelupdownSecondaryText: "Import or export storage data",
             storageFetchDataButton: "Fetch Data",
             tableHeaderYear: "Year",
             tableHeaderMonth: "Month",
@@ -122,8 +122,8 @@ const data = {
             miscWeekStartPrimaryText: "Die Woche beginnt am Montag",
 
             titleStorage: "Datenspeicher",
-            labelupdownPrimaryText: "Hochladen/Runterladen",
-            labelupdownSecondaryText: "Backup hochladen oder runterladen",
+            labelupdownPrimaryText: "Import/Export",
+            labelupdownSecondaryText: "Storage data import oder export",
             storageFetchDataButton: "Daten abrufen",
             tableHeaderYear: "Jahr",
             tableHeaderMonth: "Monat",

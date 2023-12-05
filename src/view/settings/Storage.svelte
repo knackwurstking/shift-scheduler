@@ -35,7 +35,7 @@
      * Function Definitions
      ***********************/
 
-    async function storageFileUpload() {
+    async function storageFileImport() {
         const input = document.createElement("input");
 
         input.type = "file";
@@ -51,7 +51,7 @@
                         for (const [key, dbData] of Object.entries(result)) {
                             if (!db.validate(dbData)) {
                                 console.error(
-                                    `Data Upload: data "${key}" invalid`,
+                                    `Import data: data "${key}" invalid`,
                                     dbData
                                 );
                                 return;
@@ -69,13 +69,13 @@
 
                         if (dataStorage) dataStorage = false;
                     } catch (err) {
-                        alert(`Data upload failed!\n${err}`);
+                        alert(`Import data failed!\n${err}`);
                     }
                 }
             };
 
             r.onerror = async (ev) => {
-                console.error("Data Upload: Read file failed:", ev);
+                console.error("Import data: Read file failed:", ev);
             };
 
             r.readAsText(input.files[0]);
@@ -84,7 +84,7 @@
         input.click();
     }
 
-    async function storageFileDownload() {
+    async function storageFileExport() {
         const data = await db.getAll();
         try {
             await db.exportDatabase(
@@ -92,7 +92,7 @@
                 utils.isAndroid() ? "android" : "browser"
             );
         } catch (err) {
-            alert(`Data download failed!\n${err}`);
+            alert(`Data export failed!\n${err}`);
         }
     }
 
@@ -141,13 +141,13 @@
         >
             <Button.Icon
                 style="margin: calc(var(--spacing) / 2)"
-                on:click={() => storageFileUpload()}
+                on:click={() => storageFileImport()}
             >
                 <Upload />
             </Button.Icon>
             <Button.Icon
                 style="margin: calc(var(--spacing) / 2)"
-                on:click={() => storageFileDownload()}
+                on:click={() => storageFileExport()}
             >
                 <Download />
             </Button.Icon>
