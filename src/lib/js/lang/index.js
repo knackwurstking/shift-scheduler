@@ -41,7 +41,7 @@ const data = {
 
             titleStorage: "Data Storage",
             labelupdownPrimaryText: "Import/Export",
-            labelupdownSecondaryText: "Import or export storage data",
+            labelupdownSecondaryText: "Import or Export storage data",
             storageFetchDataButton: "Fetch Data",
             tableHeaderYear: "Year",
             tableHeaderMonth: "Month",
