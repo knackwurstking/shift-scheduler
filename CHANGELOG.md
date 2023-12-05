@@ -11,6 +11,8 @@
 - Code clean up: settings view
 - Sort, storage db entries, years and month from low to high
 - TopAppBar styles
+- Update today on a app resume
+- Update today/calendar on a app "resume" event
 
 ## v1.3.0 2023-11-26
 
