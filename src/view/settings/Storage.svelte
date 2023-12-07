@@ -131,6 +131,7 @@
     <hr />
 
     <section>
+        <!-- TODO: Move import/export section to "./Backup.svelte" -->
         <Text.Label
             primary={lang.get("settingsView", "labelupdownPrimaryText")}
             secondary={lang.get(

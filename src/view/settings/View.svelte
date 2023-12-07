@@ -1,10 +1,13 @@
 <script>
+    import Backup from "./Backup.svelte";
     import ShiftSettings from "./ShiftSettings.svelte";
     import Miscellaneous from "./Miscellaneous.svelte";
     import Storage from "./Storage.svelte";
 </script>
 
 <div class="root no-scrollbar">
+    <Backup />
+    <br />
     <ShiftSettings />
     <br />
     <Miscellaneous />
