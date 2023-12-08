@@ -39,9 +39,7 @@ import de from "./de.json";
  * }}
  */
 
-/**
- * @type {Lang}
- */
+/** @type {Lang} */
 const data = { "en": en, "de": de };
 
 export let defaultLanguage = "en";

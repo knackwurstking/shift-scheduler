@@ -2,7 +2,7 @@ import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
 /**
- * @typedef StorageData
+ * @typedef DBDataValue
  * @type {{
  *  shift: import("../../stores/shift-setup").Shift | null,
  *  note: string,
@@ -10,7 +10,7 @@ import { Share } from "@capacitor/share";
  *
  * @typedef DBData
  * @type {{
- *  [date: string]: StorageData,
+ *  [date: string]: DBDataValue,
  * }}
  */
 
@@ -117,9 +117,9 @@ export async function remove(year, month) {
 
 /**
  * @param {number} year
- * @param {number} month 
- * @param {string} key 
- * @returns {Promise<StorageData>}
+ * @param {number} month
+ * @param {string} key
+ * @returns {Promise<DBDataValue>}
  */
 export async function getData(year, month, key) {
     const data = await get(year, month);

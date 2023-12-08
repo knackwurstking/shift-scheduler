@@ -1,12 +1,9 @@
 import { writable, get } from "svelte/store";
 
 /**
- * @typedef ShiftID
- * @type { number }
- *
  * @typedef Shift
  * @type {{
- *  id: ShiftID;
+ *  id: number;
  *  name: string;
  *  shortName: string;
  *  visible: boolean;
@@ -16,7 +13,7 @@ import { writable, get } from "svelte/store";
  * @typedef Setup
  * @type {{
  *  shifts: Shift[];
- *  rhythm: ShiftID[];
+ *  rhythm: number[];
  *  startDate: string;
  * }}
  */
@@ -62,7 +59,7 @@ export function create() {
     }
 
     /**
-     * @param {ShiftID} id
+     * @param {number} id
      */
     function getShiftIndex(id) {
         const setupCopy = get(shiftSetup);
@@ -70,7 +67,7 @@ export function create() {
     }
 
     /**
-     * @param {ShiftID} id
+     * @param {number} id
      * @returns {Shift | undefined}
      */
     function getShiftForID(id) {
