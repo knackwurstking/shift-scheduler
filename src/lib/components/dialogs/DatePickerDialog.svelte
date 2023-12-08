@@ -81,21 +81,21 @@
     bind:this={dialog}
 >
     <Dialog.Header
-        title={lang.get("datePickerDialog", "title")}
+        title={lang.get("dialog date-picker", "title")}
         on:close={() => close()}
     />
 
     {#if utils.isAndroid()}
         <section>
             <Input.Month
-                title={lang.get("datePickerDialog", "inputAndroidLabel")}
+                title={lang.get("dialog date-picker", "inputAndroidLabel")}
                 bind:value={dateString}
             />
         </section>
     {:else}
         <section>
             <Input.Number
-                title={lang.get("datePickerDialog", "input1Label")}
+                title={lang.get("dialog date-picker", "input1Label")}
                 bind:value={year}
                 invalid={year === null}
             />
@@ -103,7 +103,7 @@
 
         <section>
             <Input.Number
-                title={lang.get("datePickerDialog", "input2Label")}
+                title={lang.get("dialog date-picker", "input2Label")}
                 min={1}
                 max={12}
                 bind:value={month}

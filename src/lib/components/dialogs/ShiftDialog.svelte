@@ -83,22 +83,22 @@
     <Dialog.Header
         title={`${
             id
-                ? lang.get("shiftDialog", "titleEdit")
-                : lang.get("shiftDialog", "titleNew")
+                ? lang.get("dialog shift", "titleEdit")
+                : lang.get("dialog shift", "titleNew")
         }`}
         on:close={() => close()}
     />
 
     <section>
         <Input.Text
-            title={lang.get("shiftDialog", "longName")}
+            title={lang.get("dialog shift", "longName")}
             bind:value={name}
         />
     </section>
 
     <section>
         <Input.Text
-            title={lang.get("shiftDialog", "shortName")}
+            title={lang.get("dialog shift", "shortName")}
             bind:value={shortName}
         />
     </section>
@@ -108,7 +108,7 @@
     <section>
         <Text.Label
             style="cursor: pointer;"
-            secondary={lang.get("shiftDialog", "hideShiftInputLabel")}
+            secondary={lang.get("dialog shift", "hideShiftInputLabel")}
             useLabel
             row
         >
@@ -120,7 +120,7 @@
 
     <section>
         <Text.Label
-            secondary={lang.get("shiftDialog", "pickBackgroundColorLabel")}
+            secondary={lang.get("dialog shift", "pickBackgroundColorLabel")}
         >
             <input
                 style="width: 100%;"
@@ -134,7 +134,7 @@
 
         <Text.Label
             secondary={lang.get(
-                "shiftDialog",
+                "dialog shift",
                 "disableBackgroundColorLabel"
             )}
             useLabel

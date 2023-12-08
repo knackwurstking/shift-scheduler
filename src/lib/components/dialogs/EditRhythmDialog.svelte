@@ -95,7 +95,7 @@
 
 <Dialog.Root bind:this={dialog} fullscreen>
     <Dialog.Header
-        title={lang.get("rhythmDialog", "title")}
+        title={lang.get("dialog rhythm", "title")}
         on:close={() => close()}
     />
 

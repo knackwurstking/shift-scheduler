@@ -23,14 +23,14 @@
 
 <article class="ui-card has-margin">
     <h3 style="margin: var(--spacing)">
-        {lang.get("settingsView", "titleMisc")}
+        {lang.get("view settings", "titleMisc")}
     </h3>
 
     <hr />
 
     <section>
         <Text.Label
-            primary={lang.get("settingsView", "miscThemePrimaryText")}
+            primary={lang.get("view settings", "miscThemePrimaryText")}
             row
         >
             <Input.Select
@@ -53,10 +53,7 @@
     <section>
         <Text.Label
             style="cursor: pointer;"
-            primary={lang.get(
-                "settingsView",
-                "miscWeekStartPrimaryText"
-            )}
+            primary={lang.get("view settings", "miscWeekStartPrimaryText")}
             useLabel
             row
         >

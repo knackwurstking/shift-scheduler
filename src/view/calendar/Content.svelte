@@ -7,7 +7,6 @@
 
     import * as Store from "../../lib/stores";
 
-    import * as db from "../../lib/js/db";
     import * as utils from "../../lib/js/utils";
 
     /******************************
@@ -19,14 +18,6 @@
 
     /** @type {Date} */
     export let currentDate;
-
-    $: currentDate && utils.getDaysForMonth(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        {
-            weekStart: $weekStart
-        }
-    ).then(result => days = result);
 
     $: index === 1 && currentDate && dispatch("currentdatechange", currentDate);
 
@@ -51,6 +42,14 @@
         0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0,
     ].map(() => ({ date: currentDate, data: { shift: null, note: "" } }));
+
+    $: currentDate && utils.getDaysForMonth(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        {
+            weekStart: $weekStart
+        }
+    ).then(result => days = result);
 </script>
 
 <FlexGrid.Row class="is-max-height" gap=".1em">

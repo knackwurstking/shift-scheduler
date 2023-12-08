@@ -42,7 +42,7 @@
 
 <article class="ui-card has-margin">
     <section>
-        <h3>{lang.get("settingsView", "titleShifts")}</h3>
+        <h3>{lang.get("view settings", "titleShifts")}</h3>
 
         <hr />
 
@@ -51,10 +51,10 @@
                 <thead>
                     <tr>
                         <th class="is-text-left">
-                            {lang.get("settingsView", "tableHeaderName")}
+                            {lang.get("view settings", "tableHeaderName")}
                         </th>
                         <th class="is-text-left">
-                            {lang.get("settingsView", "tableHeaderShort")}
+                            {lang.get("view settings", "tableHeaderShort")}
                         </th>
                         <th class="is-text-right" />
                     </tr>
@@ -194,7 +194,7 @@
             color="primary"
             on:click={async () => shiftDialog.open()}
         >
-            {lang.get("settingsView", "addShiftButton")}
+            {lang.get("view settings", "addShiftButton")}
         </Button.Root>
     </section>
 
@@ -202,7 +202,7 @@
 
     <section>
         <Text.Label
-            primary={lang.get("settingsView", "startDatePrimaryText")}
+            primary={lang.get("view settings", "startDatePrimaryText")}
             row
         >
             <Input.Date
@@ -219,7 +219,7 @@
 
     <section>
         <Text.Label
-            primary={lang.get("settingsView", "rhythmPrimaryText")}
+            primary={lang.get("view settings", "rhythmPrimaryText")}
             row
         >
             <Button.Root

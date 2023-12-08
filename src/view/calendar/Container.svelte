@@ -16,13 +16,13 @@
 
     /** @type {string[]} */
     let headerItems = [
-        lang.get("weekDays", "sun"),
-        lang.get("weekDays", "mon"),
-        lang.get("weekDays", "tue"),
-        lang.get("weekDays", "wed"),
-        lang.get("weekDays", "thu"),
-        lang.get("weekDays", "fri"),
-        lang.get("weekDays", "sat"),
+        lang.get("week-days", "sun"),
+        lang.get("week-days", "mon"),
+        lang.get("week-days", "tue"),
+        lang.get("week-days", "wed"),
+        lang.get("week-days", "thu"),
+        lang.get("week-days", "fri"),
+        lang.get("week-days", "sat"),
     ];
 
     /********************
@@ -32,13 +32,13 @@
     const weekStart = Store.weekStart.create();
     $: !!weekStart && cleanUp.push(weekStart.subscribe(weekStart => {
         const items = [
-            lang.get("weekDays", "sun"),
-            lang.get("weekDays", "mon"),
-            lang.get("weekDays", "tue"),
-            lang.get("weekDays", "wed"),
-            lang.get("weekDays", "thu"),
-            lang.get("weekDays", "fri"),
-            lang.get("weekDays", "sat"),
+            lang.get("week-days", "sun"),
+            lang.get("week-days", "mon"),
+            lang.get("week-days", "tue"),
+            lang.get("week-days", "wed"),
+            lang.get("week-days", "thu"),
+            lang.get("week-days", "fri"),
+            lang.get("week-days", "sat"),
         ];
 
         if (weekStart === "mon") {

@@ -61,7 +61,7 @@
 
 <article class="ui-card has-margin">
     <h3 style="margin: var(--spacing)">
-        {lang.get("settingsView", "titleStorage")}
+        {lang.get("view settings", "titleStorage")}
     </h3>
 
     <hr />
@@ -73,16 +73,10 @@
                     <thead>
                         <tr>
                             <th class="is-text-left">
-                                {lang.get(
-                                    "settingsView",
-                                    "tableHeaderYear"
-                                )}
+                                {lang.get("view settings", "tableHeaderYear")}
                             </th>
                             <th class="is-text-left">
-                                {lang.get(
-                                    "settingsView",
-                                    "tableHeaderMonth"
-                                )}
+                                {lang.get("view settings", "tableHeaderMonth")}
                             </th>
                             <th class="is-text-left" />
                         </tr>
@@ -135,7 +129,7 @@
     {:else}
         <section>
             <Button.Root color="secondary" on:click={() => (settingsStorage.open())}>
-                {lang.get("settingsView", "storageFetchDataButton")}
+                {lang.get("view settings", "storageFetchDataButton")}
             </Button.Root>
         </section>
     {/if}

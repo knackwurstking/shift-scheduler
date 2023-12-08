@@ -96,13 +96,13 @@
                 <thead>
                     <tr>
                         <th class="is-text-left">
-                            {lang.get("storageDialog", "tableHeaderDay")}
+                            {lang.get("dialog storage", "tableHeaderDay")}
                         </th>
                         <th class="is-text-left">
-                            {lang.get("storageDialog", "tableHeaderShift")}
+                            {lang.get("dialog storage", "tableHeaderShift")}
                         </th>
                         <th class="is-text-left">
-                            {lang.get("storageDialog", "tableHeaderNote")}
+                            {lang.get("dialog storage", "tableHeaderNote")}
                         </th>
                         <th class="is-text-right" />
                     </tr>

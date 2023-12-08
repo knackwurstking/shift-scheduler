@@ -2,8 +2,8 @@
     import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
     import { Share } from "@capacitor/share";
 
-    import FileImportOutline from "svelte-material-icons/FileImportOutline.svelte";
-    import FileExportOutline from "svelte-material-icons/FileExportOutline.svelte";
+    import FileImportOutline from "svelte-material-icons/Download.svelte";
+    import FileExportOutline from "svelte-material-icons/Upload.svelte";
 
     import { Text, Button, Utils } from "svelte-css";
 
@@ -185,11 +185,8 @@
 <article class="ui-card has-margin">
     <section>
         <Text.Label
-            primary={lang.get("settingsView", "labelupdownPrimaryText")}
-            secondary={lang.get(
-                "settingsView",
-                "labelupdownSecondaryText"
-            )}
+            primary={lang.get("view settings", "labelupdownPrimaryText")}
+            secondary={lang.get("view settings", "labelupdownSecondaryText")}
             row
         >
             <Button.Icon

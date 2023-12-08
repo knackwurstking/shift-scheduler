@@ -132,7 +132,7 @@
     </section>
 
     <section>
-        <Text.Label secondary={lang.get("dayDialog", "textfieldLabel")}>
+        <Text.Label secondary={lang.get("dialog day", "textfieldLabel")}>
             <textarea bind:value={note} rows="10" style="width: 100%;" />
         </Text.Label>
     </section>

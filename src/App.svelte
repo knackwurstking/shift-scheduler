@@ -74,7 +74,7 @@
 
 <Header
     bind:currentDate
-    title={!!$view ? (lang.get("appBar", $view) || undefined) : undefined}
+    title={!!$view ? (lang.get("app-bar", $view) || undefined) : undefined}
     on:backbuttonclick={() => view.back()}
     on:editmodeclick={() => editMode.toggle()}
     on:currentdatechange={({ detail }) => (currentDate = detail)}

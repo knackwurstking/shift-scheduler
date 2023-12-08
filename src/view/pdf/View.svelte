@@ -30,7 +30,7 @@
     <section class="flex row justify-between">
         <div>
             <Input.Number
-                title={lang.get("pdfView", "yearPicker")}
+                title={lang.get("view pdf", "yearPicker")}
                 min={0}
                 bind:value={year}
             />
