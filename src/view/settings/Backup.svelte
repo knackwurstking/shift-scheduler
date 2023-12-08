@@ -47,9 +47,14 @@
      * @param {string} result
      */
     const handleReaderOnLoad = async (result) => {
+        /** @type {BackupData} */
         const data = JSON.parse(result);
 
-        for (const [key, dbData] of Object.entries(data)) {
+        if (data.settings) {
+            shiftSetup.update(setup => ({ ...setup, ...data.settings }));
+        }
+
+        for (const [key, dbData] of Object.entries(data.storage)) {
             if (!db.validate(dbData)) {
                 console.error(`Import data: invalid key="${key}":`, dbData);
                 return;
@@ -58,7 +63,7 @@
             await utils.mergeDataWithShifts(dbData);
         }
 
-        for (const [key, dbData] of Object.entries(data)) {
+        for (const [key, dbData] of Object.entries(data.storage)) {
             const keySplit = key.split("-", 3);
             const year = parseInt(keySplit[1], 10);
             const month = parseInt(keySplit[2], 10);
