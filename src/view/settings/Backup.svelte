@@ -183,6 +183,12 @@
 </script>
 
 <article class="ui-card has-margin">
+    <h3 style="margin: var(--spacing)">
+        {lang.get("view settings", "titleBackup")}
+    </h3>
+
+    <hr />
+
     <section>
         <Text.Label
             primary={lang.get("view settings", "labelupdownPrimaryText")}

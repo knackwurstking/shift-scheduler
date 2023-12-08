@@ -48,7 +48,9 @@
         "labelupdownSecondaryText": "Import/Export Storage und Schichteinstellungen",
         "storageFetchDataButton": "Daten abrufen",
         "tableHeaderYear": "Jahr",
-        "tableHeaderMonth": "Monat"
+        "tableHeaderMonth": "Monat",
+
+        "titleBackup": "Backup"
     },
 
     "view pdf": {

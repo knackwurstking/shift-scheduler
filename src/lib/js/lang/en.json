@@ -48,7 +48,9 @@
         "labelupdownSecondaryText": "Import/Export storage and shift settings",
         "storageFetchDataButton": "Fetch Data",
         "tableHeaderYear": "Year",
-        "tableHeaderMonth": "Month"
+        "tableHeaderMonth": "Month",
+
+        "titleBackup": "Backup"
     },
 
     "view pdf": {
