@@ -1,12 +1,9 @@
 <script>
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
-    import Upload from "svelte-material-icons/Upload.svelte";
-    import Download from "svelte-material-icons/Download.svelte";
     import OpenInNew from "svelte-material-icons/OpenInNew.svelte";
 
     import {
         Button,
-        Text,
     } from "svelte-css";
 
     import {
@@ -15,7 +12,8 @@
 
     import * as lang from "../../lib/js/lang";
     import * as db from "../../lib/js/db";
-    import * as utils from "../../lib/js/utils";
+
+    import * as Stores from "../../lib/stores";
 
     /***********
      * Bindings
@@ -24,77 +22,15 @@
     /** @type {StorageDialog} */
     let storageDialog;
 
-    /************************
-     * Variable Definitions
-     ************************/
+    /**************************
+     * Store: settings-storage
+     **************************/
 
-    let dataStorage = false;
-    let reloadDataStorageTable = false;
+    const settingsStorage = Stores.settingsStorage.create();
 
     /***********************
      * Function Definitions
      ***********************/
-
-    async function storageFileImport() {
-        const input = document.createElement("input");
-
-        input.type = "file";
-
-        input.onchange = async () => {
-            const r = new FileReader();
-
-            r.onload = async () => {
-                if (typeof r.result === "string") {
-                    try {
-                        const result = JSON.parse(r.result);
-
-                        for (const [key, dbData] of Object.entries(result)) {
-                            if (!db.validate(dbData)) {
-                                console.error(
-                                    `Import data: data "${key}" invalid`,
-                                    dbData
-                                );
-                                return;
-                            }
-
-                            await utils.mergeDataWithShifts(dbData);
-                        }
-
-                        for (const [key, dbData] of Object.entries(result)) {
-                            const keySplit = key.split("-", 3);
-                            const year = parseInt(keySplit[1], 10);
-                            const month = parseInt(keySplit[2], 10);
-                            await db.set(year, month, dbData);
-                        }
-
-                        if (dataStorage) dataStorage = false;
-                    } catch (err) {
-                        alert(`Import data failed!\n${err}`);
-                    }
-                }
-            };
-
-            r.onerror = async (ev) => {
-                console.error("Import data: Read file failed:", ev);
-            };
-
-            r.readAsText(input.files[0]);
-        };
-
-        input.click();
-    }
-
-    async function storageFileExport() {
-        const data = await db.getAll();
-        try {
-            await db.exportDatabase(
-                data,
-                utils.isAndroid() ? "android" : "browser"
-            );
-        } catch (err) {
-            alert(`Data export failed!\n${err}`);
-        }
-    }
 
     function listDataBaseKeys() {
         const keys = db.listKeys();
@@ -130,34 +66,7 @@
 
     <hr />
 
-    <section>
-        <!-- TODO: Move import/export section to "./Backup.svelte" -->
-        <Text.Label
-            primary={lang.get("settingsView", "labelupdownPrimaryText")}
-            secondary={lang.get(
-                "settingsView",
-                "labelupdownSecondaryText"
-            )}
-            row
-        >
-            <Button.Icon
-                style="margin: calc(var(--spacing) / 2)"
-                on:click={() => storageFileImport()}
-            >
-                <Upload />
-            </Button.Icon>
-            <Button.Icon
-                style="margin: calc(var(--spacing) / 2)"
-                on:click={() => storageFileExport()}
-            >
-                <Download />
-            </Button.Icon>
-        </Text.Label>
-    </section>
-
-    <hr />
-
-    {#if dataStorage}
+    {#if $settingsStorage.open}
         <section>
             <figure>
                 <table class="storage-data-table">
@@ -180,7 +89,7 @@
                     </thead>
 
                     <tbody>
-                        {#key reloadDataStorageTable}
+                        {#key $settingsStorage.reload}
                             {#each listDataBaseKeys() as item}
                                 <tr>
                                     <td class="is-text-left">{item.year}</td>
@@ -192,12 +101,9 @@
                                         <Button.Icon
                                             style="margin: 4px;"
                                             ghost
-                                            on:click={async () => {
-                                                storageDialog.open(
-                                                    item.year,
-                                                    item.month
-                                                );
-                                            }}
+                                            on:click={() =>
+                                                storageDialog.open(item.year, item.month)
+                                            }
                                         >
                                             <OpenInNew />
                                         </Button.Icon>
@@ -207,23 +113,12 @@
                                             color="destructive"
                                             ghost
                                             on:click={async () => {
+                                                const month = (item.month + 1).toString().padStart(2, "0");
                                                 const yes = window.confirm(
-                                                    `Delete all data for "${
-                                                        item.year
-                                                    }/${(item.month + 1)
-                                                        .toString()
-                                                        .padStart(
-                                                            2,
-                                                            "0"
-                                                        )}" ?`
-                                                );
+                                                    `Delete all data for "${item.year}/${month}" ?`);
                                                 if (yes) {
-                                                    await db.remove(
-                                                        item.year,
-                                                        item.month
-                                                    );
-                                                    reloadDataStorageTable =
-                                                        !reloadDataStorageTable;
+                                                    await db.remove(item.year, item.month);
+                                                    settingsStorage.reload();
                                                 }
                                             }}
                                         >
@@ -239,7 +134,7 @@
         </section>
     {:else}
         <section>
-            <Button.Root color="secondary" on:click={() => (dataStorage = true)}>
+            <Button.Root color="secondary" on:click={() => (settingsStorage.open())}>
                 {lang.get("settingsView", "storageFetchDataButton")}
             </Button.Root>
         </section>
