@@ -2,7 +2,7 @@ import en from "./en.json";
 import de from "./de.json";
 
 /**
- * @typedef LDKeys
+ * @typedef LangDataKeys
  * @type {(
  *  "dialog date-picker" |
  *  "dialog day" |
@@ -17,7 +17,7 @@ import de from "./de.json";
  *  "months"
  * )}
  *
- * @typedef LD
+ * @typedef LangData
  * @type {{
  *  "dialog date-picker": { [key: string]: string };
  *  "dialog day": { [key: string]: string };
@@ -31,10 +31,16 @@ import de from "./de.json";
  *  "week-days": { [key: string]: string };
  *  "months": { [key: string]: string };
  * }}
+ *
+ * @typedef Lang
+ * @type {{
+ *  en: LangData;
+ *  de: LangData
+ * }}
  */
 
 /**
- * @type {{ en: LD; de: LD }}
+ * @type {Lang}
  */
 const data = { "en": en, "de": de };
 
@@ -56,7 +62,7 @@ export let lang = (() => {
 })();
 
 /**
- * @param {LDKeys} group
+ * @param {LangDataKeys} group
  * @param {string} key
  * @returns {string | null}
  */
