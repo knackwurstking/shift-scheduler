@@ -2,7 +2,9 @@
 
 ## [unreleased] v1.4.0
 
-- @todo: ...
+- New settings section: Backup (replacing storage backup)
+- Code clean up: `js/lang`
+- Code clean up: `jsdoc` types
 
 ## v1.3.1 2023-12-06
 
