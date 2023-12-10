@@ -18,7 +18,7 @@
         "svelte": "^4.0.5",
         "svelte-css": "github:knackwurstking/svelte-css#v0.6.1",
         "svelte-material-icons": "^3.0.5",
-        "vite": "^4.4.5"
+        "vite": "^4.5.1"
     },
     "dependencies": {
         "@capacitor/android": "^5.2.2",
