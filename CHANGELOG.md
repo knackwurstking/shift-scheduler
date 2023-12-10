@@ -6,7 +6,7 @@
 - Code clean up: `js/lang`
 - Code clean up: `jsdoc` types
 
-*NOTE*:
+__*NOTE*__:
 - Old storage backup files will no longer work with this version
 
 ## v1.3.1 2023-12-06
