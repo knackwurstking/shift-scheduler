@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] v1.4.0
+## v1.4.0 2023-12-10
 
 - New settings section: Backup (replacing storage backup)
 - Code clean up: `js/lang`
