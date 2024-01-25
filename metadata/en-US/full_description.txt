@@ -10,4 +10,4 @@ This is a simple shift scheduler with an easy-to-use shift rhythm editor.
 * Theme: System/Dark/Light
 
 Note:
-* Data stored in the browser `localStorage`
+* Data will be stored in the browser `localStorage`

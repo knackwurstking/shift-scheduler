@@ -10,4 +10,4 @@ Ein einfacher Schichtplaner mit einem einfachen Shichtrhythmus "Editor".
 * Theme: System/Dark/Light
 
 Notiz:
-* Daten werden im Browser `localStorage` gespeichert
+* Daten werden im localStorage vom Browser gespeichert
