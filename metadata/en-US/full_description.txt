@@ -1,1 +1,13 @@
-@TODO: adding some features list here ...
+This is a simple shift scheduler with an easy-to-use shift rhythm editor.
+
+* Shift rhythm editor
+* Week-Start: Monday or Sunday
+* Supported Languages: DE/EN (system settings)
+* Notes
+* Edit mode for fast shift change
+* Download PDF for sharing
+* Import/Export Backup (JSON)
+* Theme: System/Dark/Light
+
+Note:
+* Data stored in the browser `localStorage`

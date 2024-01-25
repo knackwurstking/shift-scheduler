@@ -1,1 +1,13 @@
-@TODO: translate from english
+Ein einfacher Schichtplaner mit einem einfachen Shichtrhythmus "Editor".
+
+* Shichtrhythmus "Editor"
+* Wochenstart: Montag oder Sonntag
+* Unterstuetzte Sprachen: DE/EN
+* Notizen
+* Edit Mode fuer schnelle schicht aenderungen
+* Download PDF fuer Sharing
+* Import/Export Backup (JSON)
+* Theme: System/Dark/Light
+
+Notiz:
+* Daten werden im Browser `localStorage` gespeichert
