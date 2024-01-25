@@ -1,5 +1,3 @@
-Ein einfacher Schichtplaner mit einem einfachen Shichtrhythmus "Editor".
-
 * Shichtrhythmus "Editor"
 * Wochenstart: Montag oder Sonntag
 * Unterstuetzte Sprachen: DE/EN

@@ -1,5 +1,3 @@
-This is a simple shift scheduler with an easy-to-use shift rhythm editor.
-
 * Shift rhythm editor
 * Week-Start: Monday or Sunday
 * Supported Languages: DE/EN (system settings)
