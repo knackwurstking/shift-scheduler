@@ -1,9 +1,9 @@
 # Changelog
 
-## v1.4.1 [unreleased]
+## v1.4.1 2023-01-26
 
-- Add metadata full_description (for f-droid upload)
-- TODO: Add some new screenshots
+- Added metadata full_description (for f-droid upload)
+- Added some new screenshots
 
 ## v1.4.0 2023-12-10
 
