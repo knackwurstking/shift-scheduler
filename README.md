@@ -55,3 +55,5 @@ npm run build:linux
 <img src="metadata/en-US/images/phoneScreenshots/screenshot_3.jpg" width="200" />
 <img src="metadata/en-US/images/phoneScreenshots/screenshot_4.jpg" width="200" />
 <img src="metadata/en-US/images/phoneScreenshots/screenshot_5.jpg" width="200" />
+<img src="metadata/en-US/images/phoneScreenshots/screenshot_6.jpg" width="200" />
+<img src="metadata/en-US/images/phoneScreenshots/screenshot_7.jpg" width="200" />
