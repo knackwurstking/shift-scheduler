@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.1 [unreleased]
+
+- Add metadata full_description (for f-droid upload)
+- TODO: Add some new screenshots
+
 ## v1.4.0 2023-12-10
 
 - New settings section: Backup (replacing storage backup)
