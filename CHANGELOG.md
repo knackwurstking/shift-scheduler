@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.5.0 [unreleased]
+
+- [ ] Changed backup section (import/export)
+
 ## v1.4.1 2023-01-26
 
 - Added metadata full_description (for f-droid upload)
