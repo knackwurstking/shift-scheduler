@@ -2,10 +2,7 @@
     import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
     import { Share } from "@capacitor/share";
 
-    import FileImportOutline from "svelte-material-icons/Download.svelte";
-    import FileExportOutline from "svelte-material-icons/Upload.svelte";
-
-    import { Text, Button, Utils } from "svelte-css";
+    import { Button, Utils, FlexGrid } from "svelte-css";
 
     import * as lang from "../../lib/js/lang";
     import * as db from "../../lib/js/db";
@@ -51,7 +48,7 @@
         const data = JSON.parse(result);
 
         if (data.settings) {
-            shiftSetup.update(setup => ({ ...setup, ...data.settings }));
+            shiftSetup.update((setup) => ({ ...setup, ...data.settings }));
         }
 
         for (const [key, dbData] of Object.entries(data.storage)) {
@@ -117,7 +114,7 @@
         const backup = {
             settings: await getSettings(),
             storage: await getStorage(),
-        }
+        };
 
         if (Utils.isAndroid()) {
             androidExport(backup);
@@ -166,12 +163,9 @@
     async function browserExport(data) {
         const fileName = "shift-scheduler-backup.json";
 
-        const blob = new Blob(
-            [JSON.stringify(data)],
-            {
-                type: "octet/stream",
-            }
-        );
+        const blob = new Blob([JSON.stringify(data)], {
+            type: "octet/stream",
+        });
 
         const anchor = document.createElement("a");
 
@@ -190,23 +184,27 @@
     <hr />
 
     <section>
-        <Text.Label
-            primary={lang.get("view settings", "labelupdownPrimaryText")}
-            secondary={lang.get("view settings", "labelupdownSecondaryText")}
-            row
+        <FlexGrid.Row
+            class="is-max-width"
+            style="--gap: calc(var(--spacing) / 2);"
         >
-            <Button.Icon
-                style="margin: calc(var(--spacing) / 2)"
+            <Button.Root
+                class="is-max"
+                variant="outline"
+                color="primary"
                 on:click={() => importBackup()}
             >
-                <FileImportOutline />
-            </Button.Icon>
-            <Button.Icon
-                style="margin: calc(var(--spacing) / 2)"
+                Import
+            </Button.Root>
+
+            <Button.Root
+                class="is-max"
+                variant="outline"
+                color="primary"
                 on:click={() => exportBackup()}
             >
-                <FileExportOutline />
-            </Button.Icon>
-        </Text.Label>
+                Export
+            </Button.Root>
+        </FlexGrid.Row>
     </section>
 </article>

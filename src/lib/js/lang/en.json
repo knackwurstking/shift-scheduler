@@ -5,15 +5,12 @@
         "input1Label": "Year",
         "input2Label": "Month"
     },
-
     "dialog day": {
         "textfieldLabel": "Note"
     },
-
     "dialog rhythm": {
         "title": "Shift Rhythm"
     },
-
     "dialog shift": {
         "titleEdit": "Edit Shift",
         "titleNew": "New Shift",
@@ -23,13 +20,11 @@
         "pickBackgroundColorLabel": "Pick a background color",
         "disableBackgroundColorLabel": "Disable background color"
     },
-
     "dialog storage": {
         "tableHeaderDay": "Day",
         "tableHeaderShift": "Shift",
         "tableHeaderNote": "Note"
     },
-
     "view settings": {
         "titleShifts": "Shift Settings",
         "tableHeaderName": "Name",
@@ -38,35 +33,26 @@
         "addShiftButton": "Add a new shift",
         "startDatePrimaryText": "Start Date",
         "rhythmPrimaryText": "Rhythm",
-
         "titleMisc": "Miscellaneous",
         "miscThemePrimaryText": "Theme",
         "miscWeekStartPrimaryText": "The week starts on Monday",
-
         "titleStorage": "Data Storage",
-        "labelupdownPrimaryText": "Import / Export",
-        "labelupdownSecondaryText": "Import/Export storage and shift settings",
         "storageFetchDataButton": "Fetch Data",
         "tableHeaderYear": "Year",
         "tableHeaderMonth": "Month",
-
         "titleBackup": "Backup"
     },
-
     "view pdf": {
         "yearPicker": "Pick a Year"
     },
-
     "app-bar": {
         "settings": "Settings",
         "pdf": "PDF Generation"
     },
-
     "buttons": {
         "edit": "Edit",
         "submit": "OK"
     },
-
     "week-days": {
         "sun": "Sun",
         "mon": "Mon",
@@ -76,7 +62,6 @@
         "fri": "Fri",
         "sat": "Sat"
     },
-
     "months": {
         "0": "January",
         "1": "February",

@@ -5,15 +5,12 @@
         "input1Label": "Jahr",
         "input2Label": "Monat"
     },
-
     "dialog day": {
         "textfieldLabel": "Notiz"
     },
-
     "dialog rhythm": {
         "title": "Schicht Rhythmus"
     },
-
     "dialog shift": {
         "titleEdit": "Schicht Bearbeiten",
         "titleNew": "Neue Schicht",
@@ -23,13 +20,11 @@
         "pickBackgroundColorLabel": "Hintergrundfarbe wählen",
         "disableBackgroundColorLabel": "Hintergrundfarbe deaktivieren"
     },
-
     "dialog storage": {
         "tableHeaderDay": "Tag",
         "tableHeaderShift": "Schicht",
         "tableHeaderNote": "Notiz"
     },
-
     "view settings": {
         "titleShifts": "Schichteinstellungen",
         "tableHeaderName": "Name",
@@ -38,35 +33,26 @@
         "addShiftButton": "Neue Schicht hinzufügen",
         "startDatePrimaryText": "Start Datum",
         "rhythmPrimaryText": "Rhythmus",
-
         "titleMisc": "Sonstiges",
         "miscThemePrimaryText": "Theme",
         "miscWeekStartPrimaryText": "Die Woche beginnt am Montag",
-
         "titleStorage": "Datenspeicher",
-        "labelupdownPrimaryText": "Import / Export",
-        "labelupdownSecondaryText": "Import/Export Storage und Schichteinstellungen",
         "storageFetchDataButton": "Daten abrufen",
         "tableHeaderYear": "Jahr",
         "tableHeaderMonth": "Monat",
-
         "titleBackup": "Backup"
     },
-
     "view pdf": {
         "yearPicker": "Wähle ein Jahr"
     },
-
     "app-bar": {
         "settings": "Einstellungen",
         "pdf": "PDF-Generierung"
     },
-
     "buttons": {
         "edit": "Bearbeiten",
         "submit": "OK"
     },
-
     "week-days": {
         "sun": "So",
         "mon": "Mo",
@@ -76,7 +62,6 @@
         "fri": "Fr",
         "sat": "Sa"
     },
-
     "months": {
         "0": "Januar",
         "1": "Februar",
