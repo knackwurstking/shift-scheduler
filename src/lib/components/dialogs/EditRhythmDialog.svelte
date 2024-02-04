@@ -2,12 +2,7 @@
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
 
     import { createEventDispatcher } from "svelte";
-
-    import {
-        Button,
-        Dialog,
-        FlexGrid,
-    } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../stores";
 
@@ -19,7 +14,7 @@
      * Bindings
      ***********/
 
-    /** @type {Dialog.Root} */
+    /** @type {UI.Dialog.Root} */
     let dialog;
 
     /** @type {HTMLElement} */
@@ -37,7 +32,7 @@
     let shifts = [];
 
     /**
-     * @type {import("../../stores/shift-setup").ShiftID[]}
+     * @type {number[]}
      */
     let rhythm = [];
     $: rhythm && setTimeout(scrollToBottom, 150);
@@ -60,7 +55,7 @@
 
     /**
      * @param {import("../../stores/shift-setup").Shift[]} _shifts
-     * @param {import("../../stores/shift-setup").ShiftID[]} _rhythm
+     * @param {number[]} _rhythm
      */
     export async function open(_shifts, _rhythm) {
         shifts = _shifts;
@@ -79,7 +74,7 @@
      ***********************/
 
     /**
-     * @param {import("../../stores/shift-setup").ShiftID} id
+     * @param {number} id
      */
     async function getShiftForID(id) {
         return shiftSetup.getShiftForID(id);
@@ -93,8 +88,8 @@
     }
 </script>
 
-<Dialog.Root bind:this={dialog} fullscreen>
-    <Dialog.Header
+<UI.Dialog.Root bind:this={dialog} fullscreen>
+    <UI.Dialog.Header
         title={lang.get("dialog rhythm", "title")}
         on:close={() => close()}
     />
@@ -109,7 +104,7 @@
                     <tr>
                         <th class="is-text-left">Name</th>
                         <th class="is-text-left">Short</th>
-                        <th class="is-text-rigth" />
+                        <th class="is-text-right" />
                     </tr>
                 </thead>
 
@@ -121,16 +116,19 @@
                                     <td class="is-text-left">{shift.name}</td>
                                     <td
                                         class="is-text-left"
-                                        style={
-                                            "width: 4em;" +
-                                            `color: ${shift.color || "hsl(var(--fg))"};` +
-                                            "text-shadow: .1em .1em .1em hsl(var(--border));"
-                                        }
+                                        style={"width: 4em;" +
+                                            `color: ${
+                                                shift.color || "hsl(var(--fg))"
+                                            };` +
+                                            "text-shadow: .1em .1em .1em hsl(var(--border));"}
                                     >
                                         {shift.visible ? shift.shortName : ""}
                                     </td>
-                                    <td class="is-text-right" style="width: 3em;">
-                                        <Button.Icon
+                                    <td
+                                        class="is-text-right"
+                                        style="width: 3em;"
+                                    >
+                                        <UI.Button.Icon
                                             color="destructive"
                                             ghost
                                             on:click={async () => {
@@ -141,7 +139,7 @@
                                             }}
                                         >
                                             <DeleteOutline />
-                                        </Button.Icon>
+                                        </UI.Button.Icon>
                                     </td>
                                 </tr>
                             {/if}
@@ -153,32 +151,32 @@
 
         <section>
             <figure class="no-scrollbar is-max-width">
-                <FlexGrid.Row gap=".1em">
+                <UI.FlexGrid.Row gap=".1em">
                     {#each shifts as shift}
-                        <FlexGrid.Col class="no-user-select">
+                        <UI.FlexGrid.Col class="no-user-select">
                             <Shift
                                 style="height: 100%;"
                                 {...shift}
                                 on:click={() =>
                                     (rhythm = [...rhythm, shift.id])}
                             />
-                        </FlexGrid.Col>
+                        </UI.FlexGrid.Col>
                     {/each}
-                </FlexGrid.Row>
+                </UI.FlexGrid.Row>
             </figure>
         </section>
     </section>
 
-    <Dialog.Footer>
-        <Button.Root
+    <UI.Dialog.Footer>
+        <UI.Button.Root
             color="primary"
             type="submit"
             on:click={() => dispatch("submit", rhythm)}
         >
             {lang.get("buttons", "submit")}
-        </Button.Root>
-    </Dialog.Footer>
-</Dialog.Root>
+        </UI.Button.Root>
+    </UI.Dialog.Footer>
+</UI.Dialog.Root>
 
 <style>
     figure {

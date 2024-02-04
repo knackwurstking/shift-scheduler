@@ -1,13 +1,12 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-
     import FilePdfBox from "svelte-material-icons/FilePdfBox.svelte";
     import Pencil from "svelte-material-icons/Pencil.svelte";
     import ArrowLeft from "svelte-material-icons/ArrowLeft.svelte";
     import CalendarToday from "svelte-material-icons/CalendarToday.svelte";
     import Wrench from "svelte-material-icons/Wrench.svelte";
 
-    import { Button, TopAppBar, FlexGrid } from "svelte-css";
+    import { createEventDispatcher } from "svelte";
+    import { UI } from "svelte-css";
 
     import { DatePickerDialog } from "../lib/components";
 
@@ -40,26 +39,24 @@
      **************/
 
     const view = Store.view.create();
-    $: !!view && view.subscribe(currentView => {
-        enableBackButton = view.history().length > 1;
-        enableDatePicker = currentView === "calendar";
-    })
+    $: !!view &&
+        view.subscribe((currentView) => {
+            enableBackButton = view.history().length > 1;
+            enableDatePicker = currentView === "calendar";
+        });
 </script>
 
-<TopAppBar.Root uiContainer>
+<UI.TopAppBar.Root uiContainer>
     <svelte:fragment slot="left">
         {#if enableBackButton}
-            <Button.Icon
-                ghost
-                on:click={() => dispatch("backbuttonclick")}
-            >
+            <UI.Button.Icon ghost on:click={() => dispatch("backbuttonclick")}>
                 <ArrowLeft />
-            </Button.Icon>
+            </UI.Button.Icon>
         {/if}
 
         {#if enableDatePicker}
-            <FlexGrid.Col style="width: 7.5em; height: 100%;">
-                <Button.Root
+            <UI.FlexGrid.Col style="width: 7.5em; height: 100%;">
+                <UI.Button.Root
                     class="is-max"
                     variant="outline"
                     on:click={() => {
@@ -72,8 +69,8 @@
                     {currentDate.getFullYear()} / {(currentDate.getMonth() + 1)
                         .toString()
                         .padStart(2, "0")}
-                </Button.Root>
-            </FlexGrid.Col>
+                </UI.Button.Root>
+            </UI.FlexGrid.Col>
         {/if}
     </svelte:fragment>
 
@@ -85,21 +82,15 @@
 
     <svelte:fragment slot="right">
         {#if enableDatePicker}
-            <Button.Icon
-                ghost
-                on:click={() => dispatch("goto", "pdf")}
-            >
+            <UI.Button.Icon ghost on:click={() => dispatch("goto", "pdf")}>
                 <FilePdfBox />
-            </Button.Icon>
+            </UI.Button.Icon>
 
-            <Button.Icon
-                ghost
-                on:click={() => dispatch("editmodeclick")}
-            >
+            <UI.Button.Icon ghost on:click={() => dispatch("editmodeclick")}>
                 <Pencil />
-            </Button.Icon>
+            </UI.Button.Icon>
 
-            <Button.Icon
+            <UI.Button.Icon
                 ghost
                 disabled={(() => {
                     const today = new Date();
@@ -111,17 +102,14 @@
                 on:click={() => dispatch("currentdatechange", new Date())}
             >
                 <CalendarToday />
-            </Button.Icon>
+            </UI.Button.Icon>
 
-            <Button.Icon
-                ghost
-                on:click={() => dispatch("goto", "settings")}
-            >
+            <UI.Button.Icon ghost on:click={() => dispatch("goto", "settings")}>
                 <Wrench />
-            </Button.Icon>
+            </UI.Button.Icon>
         {/if}
     </svelte:fragment>
-</TopAppBar.Root>
+</UI.TopAppBar.Root>
 
 <DatePickerDialog
     bind:this={datePickerDialog}

@@ -1,12 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
-
-    import {
-        Button,
-        Dialog,
-        Input,
-        Text,
-    } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../stores";
 
@@ -16,7 +10,7 @@
      * Bindings
      ***********/
 
-    /** @type {Dialog.Root} */
+    /** @type {UI.Dialog.Root} */
     let dialog;
 
     /***********************
@@ -73,14 +67,14 @@
     }
 </script>
 
-<Dialog.Root
+<UI.Dialog.Root
     bind:this={dialog}
     style={`
         width: 75%;
         max-width: 20em;
     `}
 >
-    <Dialog.Header
+    <UI.Dialog.Header
         title={`${
             id
                 ? lang.get("dialog shift", "titleEdit")
@@ -90,14 +84,14 @@
     />
 
     <section>
-        <Input.Text
+        <UI.Input.Text
             title={lang.get("dialog shift", "longName")}
             bind:value={name}
         />
     </section>
 
     <section>
-        <Input.Text
+        <UI.Input.Text
             title={lang.get("dialog shift", "shortName")}
             bind:value={shortName}
         />
@@ -106,20 +100,20 @@
     <br />
 
     <section>
-        <Text.Label
+        <UI.Text.Label
             style="cursor: pointer;"
             secondary={lang.get("dialog shift", "hideShiftInputLabel")}
             useLabel
             row
         >
             <input type="checkbox" bind:checked={hidden} />
-        </Text.Label>
+        </UI.Text.Label>
     </section>
 
     <br />
 
     <section>
-        <Text.Label
+        <UI.Text.Label
             secondary={lang.get("dialog shift", "pickBackgroundColorLabel")}
         >
             <input
@@ -128,24 +122,21 @@
                 bind:value={color}
                 disabled={disableColor}
             />
-        </Text.Label>
+        </UI.Text.Label>
 
         <br />
 
-        <Text.Label
-            secondary={lang.get(
-                "dialog shift",
-                "disableBackgroundColorLabel"
-            )}
+        <UI.Text.Label
+            secondary={lang.get("dialog shift", "disableBackgroundColorLabel")}
             useLabel
             row
         >
             <input type="checkbox" bind:checked={disableColor} />
-        </Text.Label>
+        </UI.Text.Label>
     </section>
 
-    <Dialog.Footer>
-        <Button.Root
+    <UI.Dialog.Footer>
+        <UI.Button.Root
             color="primary"
             on:click={async () => {
                 dispatch("submit", {
@@ -158,6 +149,6 @@
             }}
         >
             {lang.get("buttons", "submit")}
-        </Button.Root>
-    </Dialog.Footer>
-</Dialog.Root>
+        </UI.Button.Root>
+    </UI.Dialog.Footer>
+</UI.Dialog.Root>

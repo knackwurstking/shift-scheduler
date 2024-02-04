@@ -2,16 +2,9 @@
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
     import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
 
-    import {
-        Button,
-        Text,
-        Input,
-    } from "svelte-css";
+    import { UI } from "svelte-css";
 
-    import {
-        ShiftDialog,
-        EditRhythmDialog,
-    } from "../../lib/components";
+    import { ShiftDialog, EditRhythmDialog } from "../../lib/components";
 
     import * as Store from "../../lib/stores";
 
@@ -63,8 +56,7 @@
                 <tbody>
                     {#each $shiftSetup.shifts as item, index}
                         <tr
-                            style:background-color={tableRowHovering ===
-                            index
+                            style:background-color={tableRowHovering === index
                                 ? "hsl(var(--primary))"
                                 : undefined}
                             style:color={tableRowHovering === index
@@ -76,7 +68,7 @@
                                 ev.dataTransfer.dropEffect = "move";
                                 ev.dataTransfer.setData(
                                     "text/plain",
-                                    index.toString()
+                                    index.toString(),
                                 );
                             }}
                             on:drop|preventDefault={(ev) => {
@@ -84,7 +76,7 @@
 
                                 const startIndex = parseInt(
                                     ev.dataTransfer.getData("text/plain"),
-                                    10
+                                    10,
                                 );
 
                                 shiftSetup.update((setup) => {
@@ -93,16 +85,14 @@
                                         setup.shifts = [
                                             ...setup.shifts.slice(
                                                 0,
-                                                startIndex
+                                                startIndex,
                                             ),
                                             ...setup.shifts.slice(
                                                 startIndex + 1,
-                                                index + 1
+                                                index + 1,
                                             ),
                                             setup.shifts[startIndex],
-                                            ...setup.shifts.slice(
-                                                index + 1
-                                            ),
+                                            ...setup.shifts.slice(index + 1),
                                         ];
                                     } else {
                                         // dragged up
@@ -111,10 +101,10 @@
                                             setup.shifts[startIndex],
                                             ...setup.shifts.slice(
                                                 index,
-                                                startIndex
+                                                startIndex,
                                             ),
                                             ...setup.shifts.slice(
-                                                startIndex + 1
+                                                startIndex + 1,
                                             ),
                                         ];
                                     }
@@ -132,15 +122,15 @@
 
                             <td
                                 class="is-text-left"
-                                style={
-                                    `--shift-color: ${item.color || "hsl(var(--fg))"}`
-                                }
+                                style={`--shift-color: ${
+                                    item.color || "hsl(var(--fg))"
+                                }`}
                             >
                                 {item.visible ? item.shortName : ""}
                             </td>
 
                             <td class="is-text-right" style="font-size: 1.1em;">
-                                <Button.Icon
+                                <UI.Button.Icon
                                     style="margin: 4px;"
                                     ghost
                                     on:click={async () => {
@@ -148,9 +138,9 @@
                                     }}
                                 >
                                     <PencilOutline />
-                                </Button.Icon>
+                                </UI.Button.Icon>
 
-                                <Button.Icon
+                                <UI.Button.Icon
                                     style="margin: 4px;"
                                     color="destructive"
                                     ghost
@@ -158,7 +148,7 @@
                                         ev.stopPropagation();
                                         if (
                                             window.confirm(
-                                                `Delete shift "${item.name}"?`
+                                                `Delete shift "${item.name}"?`,
                                             )
                                         ) {
                                             shiftSetup.update((setup) => {
@@ -167,10 +157,10 @@
                                                     shifts: [
                                                         ...setup.shifts.slice(
                                                             0,
-                                                            index
+                                                            index,
                                                         ),
                                                         ...setup.shifts.slice(
-                                                            index + 1
+                                                            index + 1,
                                                         ),
                                                     ],
                                                 };
@@ -179,7 +169,7 @@
                                     }}
                                 >
                                     <DeleteOutline />
-                                </Button.Icon>
+                                </UI.Button.Icon>
                             </td>
                         </tr>
                     {/each}
@@ -189,56 +179,54 @@
     </section>
 
     <section>
-        <Button.Root
+        <UI.Button.Root
             class="is-max-width"
             color="primary"
             on:click={async () => shiftDialog.open()}
         >
             {lang.get("view settings", "addShiftButton")}
-        </Button.Root>
+        </UI.Button.Root>
     </section>
 
     <hr />
 
     <section>
-        <Text.Label
+        <UI.Text.Label
             primary={lang.get("view settings", "startDatePrimaryText")}
             row
         >
-            <Input.Date
+            <UI.Input.Date
                 value={$shiftSetup.startDate}
                 on:input={(ev) => {
                     // @ts-ignore
                     shiftSetup.updateStartDate(ev.currentTarget.value);
                 }}
             />
-        </Text.Label>
+        </UI.Text.Label>
     </section>
 
     <hr />
 
     <section>
-        <Text.Label
+        <UI.Text.Label
             primary={lang.get("view settings", "rhythmPrimaryText")}
             row
         >
-            <Button.Root
+            <UI.Button.Root
                 disabled={!$shiftSetup.shifts.length}
                 on:click={async () => {
                     editRhythmDialog.open(
                         $shiftSetup.shifts,
                         $shiftSetup.rhythm.filter(
                             (id) =>
-                                !!$shiftSetup.shifts.find(
-                                    (s) => s.id === id
-                                )
-                        )
+                                !!$shiftSetup.shifts.find((s) => s.id === id),
+                        ),
                     );
                 }}
             >
                 {lang.get("buttons", "edit")}
-            </Button.Root>
-        </Text.Label>
+            </UI.Button.Root>
+        </UI.Text.Label>
     </section>
 </article>
 
@@ -278,7 +266,7 @@
     .shift-table tr > *:nth-child(2) {
         width: 4.5em;
         color: var(--shift-color);
-        text-shadow: .1em .1em .1em hsl(var(--border));
+        text-shadow: 0.1em 0.1em 0.1em hsl(var(--border));
     }
 
     .shift-table tr > *:nth-child(3) {

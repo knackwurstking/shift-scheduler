@@ -3,7 +3,6 @@
 
     import { App } from "@capacitor/app";
     import { onMount, onDestroy } from "svelte";
-
     import { CSS } from "svelte-css";
 
     import * as Store from "./lib/stores";
@@ -16,7 +15,7 @@
     import Footer from "./view/Footer.svelte";
 
     /***********************
-    * Variable Definitions
+     * Variable Definitions
      ***********************/
 
     const cleanUp = [];
@@ -29,13 +28,16 @@
      **************/
 
     const view = Store.view.create();
-    $: !!view && cleanUp.push(view.subscribe((currentView) => {
-        console.debug(`view=${currentView}`);
+    $: !!view &&
+        cleanUp.push(
+            view.subscribe((currentView) => {
+                console.debug(`view=${currentView}`);
 
-        // reset edit mode
-        editMode.indexUnselect()
-        editMode.disable();
-    }));
+                // reset edit mode
+                editMode.indexUnselect();
+                editMode.disable();
+            }),
+        );
 
     /**************************************
      * Store: edit-mode && edit-mode-index
@@ -61,7 +63,7 @@
         view.goto("calendar");
     });
 
-    onDestroy(() => cleanUp.forEach(fn => fn()));
+    onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
 <CSS.Root
@@ -74,7 +76,7 @@
 
 <Header
     bind:currentDate
-    title={!!$view ? (lang.get("app-bar", $view) || undefined) : undefined}
+    title={!!$view ? lang.get("app-bar", $view) || undefined : undefined}
     on:backbuttonclick={() => view.back()}
     on:editmodeclick={() => editMode.toggle()}
     on:currentdatechange={({ detail }) => (currentDate = detail)}

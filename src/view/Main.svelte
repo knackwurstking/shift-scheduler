@@ -3,12 +3,12 @@
 
     import { EditDayDialog } from "../lib/components";
 
+    import * as Store from "../lib/stores";
+    import * as db from "../lib/js/db";
+
     import CalendarView from "./calendar";
     import SettingsView from "./settings";
     import PdfView from "./pdf";
-
-    import * as Store from "../lib/stores";
-    import * as db from "../lib/js/db";
 
     /***********
      * Bindings
@@ -68,7 +68,7 @@
      */
     async function animateDayCardItem(date) {
         const el = calendarView.querySelector(
-            `.ui-card.day.date-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+            `.ui-card.day.date-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
         );
         if (el) {
             el.animate(
@@ -77,7 +77,7 @@
                     { transform: "scale(.9)" },
                     { transform: "scale(1)" },
                 ],
-                { duration: 500 }
+                { duration: 500 },
             );
         }
     }
@@ -94,13 +94,10 @@
         cleanUp.push(onResume);
     });
 
-    onDestroy(() => cleanUp.forEach(fn => fn()));
+    onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
-<main
-    class="ui-container"
-    style:bottom={$editMode.open ? "4em" : "0"}
->
+<main class="ui-container" style:bottom={$editMode.open ? "4em" : "0"}>
     {#if $view === "calendar"}
         <CalendarView
             bind:this={calendarView}
@@ -117,7 +114,7 @@
                     const { note } = await db.getData(
                         ev.detail.getFullYear(),
                         ev.detail.getMonth(),
-                        key
+                        key,
                     );
 
                     if (shift === -2) {
@@ -130,13 +127,13 @@
                                 ev.detail.getMonth(),
                                 key,
                                 null,
-                                note
+                                note,
                             );
                         else
                             await db.removeData(
                                 ev.detail.getFullYear(),
                                 ev.detail.getMonth(),
-                                key
+                                key,
                             );
                     } else {
                         // update shift for this day
@@ -145,7 +142,7 @@
                             ev.detail.getMonth(),
                             key,
                             shift,
-                            note
+                            note,
                         );
                     }
 
@@ -157,7 +154,7 @@
                         editDayDialog.open(
                             ev.detail.getFullYear(),
                             ev.detail.getMonth(),
-                            ev.detail.getDate()
+                            ev.detail.getDate(),
                         );
                     }, 100);
                 }
@@ -185,7 +182,7 @@
                 detail.date.month,
                 key,
                 detail.shift,
-                detail.note
+                detail.note,
             );
         }
 

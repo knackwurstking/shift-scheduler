@@ -1,11 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
-
-    import {
-        Button,
-        Dialog,
-        Input,
-    } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../stores";
 
@@ -16,7 +11,7 @@
      * Bindings
      ***********/
 
-    /** @type {Dialog.Root} */
+    /** @type {UI.Dialog.Root} */
     let dialog;
 
     /***********************
@@ -76,25 +71,22 @@
     }
 </script>
 
-<Dialog.Root
-    style="min-width: 15em;"
-    bind:this={dialog}
->
-    <Dialog.Header
+<UI.Dialog.Root style="min-width: 15em;" bind:this={dialog}>
+    <UI.Dialog.Header
         title={lang.get("dialog date-picker", "title")}
         on:close={() => close()}
     />
 
     {#if utils.isAndroid()}
         <section>
-            <Input.Month
+            <UI.Input.Month
                 title={lang.get("dialog date-picker", "inputAndroidLabel")}
                 bind:value={dateString}
             />
         </section>
     {:else}
         <section>
-            <Input.Number
+            <UI.Input.Number
                 title={lang.get("dialog date-picker", "input1Label")}
                 bind:value={year}
                 invalid={year === null}
@@ -102,7 +94,7 @@
         </section>
 
         <section>
-            <Input.Number
+            <UI.Input.Number
                 title={lang.get("dialog date-picker", "input2Label")}
                 min={1}
                 max={12}
@@ -112,8 +104,8 @@
         </section>
     {/if}
 
-    <Dialog.Footer>
-        <Button.Root
+    <UI.Dialog.Footer>
+        <UI.Button.Root
             color="primary"
             type="submit"
             on:click={async () => {
@@ -122,6 +114,6 @@
             }}
         >
             {lang.get("buttons", "submit")}
-        </Button.Root>
-    </Dialog.Footer>
-</Dialog.Root>
+        </UI.Button.Root>
+    </UI.Dialog.Footer>
+</UI.Dialog.Root>

@@ -1,10 +1,7 @@
 <script>
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
 
-    import {
-        Button,
-        Dialog,
-    } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../stores";
 
@@ -15,7 +12,7 @@
      * Bindings
      ***********/
 
-    /** @type {Dialog.Root} */
+    /** @type {UI.Dialog.Root} */
     let dialog;
 
     /***********************
@@ -82,15 +79,13 @@
     }
 </script>
 
-<Dialog.Root bind:this={dialog} fullscreen>
-    <Dialog.Header
+<UI.Dialog.Root bind:this={dialog} fullscreen>
+    <UI.Dialog.Header
         title={`Data: ${year}/${(month + 1).toString().padStart(2, "0")}`}
         on:close={() => close()}
     />
 
-    <section
-        style="height: calc(100% - 6rem); overflow-y: auto;"
-    >
+    <section style="height: calc(100% - 6rem); overflow-y: auto;">
         <figure style="width: 100%;">
             <table>
                 <thead>
@@ -109,7 +104,7 @@
                 </thead>
                 <tbody>
                     {#if !!data}
-                        {#each data.sort( (a, b) => (parseInt(a.key.split("-", 3)[2], 10) > parseInt(b.key.split("-", 3)[2], 10) ? 1 : -1) ) as item}
+                        {#each data.sort( (a, b) => (parseInt(a.key.split("-", 3)[2], 10) > parseInt(b.key.split("-", 3)[2], 10) ? 1 : -1), ) as item}
                             <tr>
                                 <td class="is-text-left">
                                     {item.key.split("-", 3)[2]}
@@ -119,20 +114,21 @@
                                 </td>
                                 <td class="is-text-left">
                                     <p
-                                        style={
-                                            "display: -webkit-box;" +
+                                        style={"display: -webkit-box;" +
                                             "-webkit-line-clamp: 3;" +
                                             "-webkit-box-orient: vertical;" +
                                             "overflow: hidden;" +
                                             "text-overflow: ellipsis;" +
-                                            "max-height: calc(3em * var(--line-height, 1));"
-                                        }
+                                            "max-height: calc(3em * var(--line-height, 1));"}
                                     >
                                         {item.note || ""}
                                     </p>
                                 </td>
-                                <td class="is-text-right" style="font-size: 1.1em;">
-                                    <Button.Icon
+                                <td
+                                    class="is-text-right"
+                                    style="font-size: 1.1em;"
+                                >
+                                    <UI.Button.Icon
                                         style="margin: 4px;"
                                         color="destructive"
                                         ghost
@@ -144,22 +140,22 @@
                                                     }/${
                                                         item.key.split(
                                                             "-",
-                                                            3
+                                                            3,
                                                         )[2]
-                                                    }" ?`
+                                                    }" ?`,
                                                 )
                                             ) {
                                                 await db.removeData(
                                                     year,
                                                     month,
-                                                    item.key
+                                                    item.key,
                                                 );
                                                 await loadData();
                                             }
                                         }}
                                     >
                                         <DeleteOutline />
-                                    </Button.Icon>
+                                    </UI.Button.Icon>
                                 </td>
                             </tr>
                         {/each}
@@ -168,7 +164,7 @@
             </table>
         </figure>
     </section>
-</Dialog.Root>
+</UI.Dialog.Root>
 
 <style>
     tr > *:nth-child(1) {

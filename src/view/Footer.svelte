@@ -1,5 +1,5 @@
 <script>
-    import { FlexGrid } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import { Shift } from "../lib/components";
     import * as Store from "../lib/stores";
@@ -17,14 +17,14 @@
     const shiftSetup = Store.shiftSetup.create();
 </script>
 
-<footer
-    class="ui-container is-max-width"
-    class:visible={$editMode.open}
->
+<footer class="ui-container is-max-width" class:visible={$editMode.open}>
     {#if $editMode.open}
         <figure class="flex no-scrollbar is-max">
-            <FlexGrid.Row gap=".1em">
-                <FlexGrid.Col style="width: calc(7.5em + var(--spacing));" flex="0">
+            <UI.FlexGrid.Row gap=".1em">
+                <UI.FlexGrid.Col
+                    style="width: calc(7.5em + var(--spacing));"
+                    flex="0"
+                >
                     <Shift
                         class="is-max"
                         name="Reset"
@@ -40,10 +40,13 @@
                             }
                         }}
                     />
-                </FlexGrid.Col>
+                </UI.FlexGrid.Col>
 
                 {#each $shiftSetup.shifts as shift, index}
-                    <FlexGrid.Col style="width: calc(7.5em + var(--spacing));" flex="0">
+                    <UI.FlexGrid.Col
+                        style="width: calc(7.5em + var(--spacing));"
+                        flex="0"
+                    >
                         <Shift
                             class="is-max"
                             {...shift}
@@ -56,9 +59,9 @@
                                 }
                             }}
                         />
-                    </FlexGrid.Col>
+                    </UI.FlexGrid.Col>
                 {/each}
-            </FlexGrid.Row>
+            </UI.FlexGrid.Row>
         </figure>
     {/if}
 </footer>

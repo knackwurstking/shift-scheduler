@@ -1,8 +1,5 @@
 <script>
-    import {
-        Text,
-        Input,
-    } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../lib/stores";
 
@@ -29,11 +26,11 @@
     <hr />
 
     <section>
-        <Text.Label
+        <UI.Text.Label
             primary={lang.get("view settings", "miscThemePrimaryText")}
             row
         >
-            <Input.Select
+            <UI.Input.Select
                 items={[
                     { value: "system", label: "System" },
                     { value: "dark", label: "Dark" },
@@ -41,17 +38,17 @@
                 ]}
                 selected={{
                     value: $theme,
-                    label: $theme.charAt(0).toUpperCase() + $theme.slice(1)
+                    label: $theme.charAt(0).toUpperCase() + $theme.slice(1),
                 }}
-                on:change={ev => theme.set(ev.detail.value)}
+                on:change={(ev) => theme.set(ev.detail.value)}
             />
-        </Text.Label>
+        </UI.Text.Label>
     </section>
 
     <hr />
 
     <section>
-        <Text.Label
+        <UI.Text.Label
             style="cursor: pointer;"
             primary={lang.get("view settings", "miscWeekStartPrimaryText")}
             useLabel
@@ -68,6 +65,6 @@
                     else weekStart.sunday();
                 }}
             />
-        </Text.Label>
+        </UI.Text.Label>
     </section>
 </article>

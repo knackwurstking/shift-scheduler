@@ -1,12 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
-
-    import {
-        Button,
-        Dialog,
-        Text,
-        Input,
-    } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../stores";
 
@@ -17,10 +11,10 @@
      * Bindings
      ***********/
 
-    /** @type {Dialog.Root} */
+    /** @type {UI.Dialog.Root} */
     let dialog;
 
-    /** @type {Input.Select} */
+    /** @type {UI.Input.Select} */
     let select;
 
     /***********************
@@ -81,16 +75,17 @@
         note = data?.note || "";
 
         selectItems = [
-            { value: "-1", label: `(Default) ${defaultShift?.name || ""}`},
-            ...$shiftSetup.shifts.map(
-                (s, i) => ({ value: i.toString(), label: s.name })
-            ),
+            { value: "-1", label: `(Default) ${defaultShift?.name || ""}` },
+            ...$shiftSetup.shifts.map((s, i) => ({
+                value: i.toString(),
+                label: s.name,
+            })),
         ];
         selected = !!shift
             ? {
-                value: shiftSetup.getShiftIndex(shift.id).toString(),
-                label: shift.name,
-            }
+                  value: shiftSetup.getShiftIndex(shift.id).toString(),
+                  label: shift.name,
+              }
             : selectItems[0];
 
         dialog.showModal();
@@ -104,14 +99,8 @@
     }
 </script>
 
-<Dialog.Root
-    bind:this={dialog}
-    style={
-        "width: 17rem;" +
-        "max-width: 100%;"
-    }
->
-    <Dialog.Header
+<UI.Dialog.Root bind:this={dialog} style={"width: 17rem;" + "max-width: 100%;"}>
+    <UI.Dialog.Header
         title={`${year} / ${(month + 1).toString().padStart(2, "0")} / ${
             date?.toString().padStart(2, "0") || "??"
         }`}
@@ -119,38 +108,34 @@
     />
 
     <section
-        style={
-            "padding-left: calc(var(--spacing) * 2.5);" +
-            "padding-right: calc(var(--spacing) * 2.5);"
-        }
+        style={"padding-left: calc(var(--spacing) * 2.5);" +
+            "padding-right: calc(var(--spacing) * 2.5);"}
     >
-        <Input.Select
-            bind:this={select}
-            items={selectItems}
-            bind:selected
-        />
+        <UI.Input.Select bind:this={select} items={selectItems} bind:selected />
     </section>
 
     <section>
-        <Text.Label secondary={lang.get("dialog day", "textfieldLabel")}>
+        <UI.Text.Label secondary={lang.get("dialog day", "textfieldLabel")}>
             <textarea bind:value={note} rows="10" style="width: 100%;" />
-        </Text.Label>
+        </UI.Text.Label>
     </section>
 
-    <Dialog.Footer>
-        <Button.Root
+    <UI.Dialog.Footer>
+        <UI.Button.Root
             color="primary"
             on:click={() =>
                 dispatch("submit", {
                     date: { year, month, date },
-                    shift: shiftSetup.getShift(parseInt(selected.value, 10)) || null,
+                    shift:
+                        shiftSetup.getShift(parseInt(selected.value, 10)) ||
+                        null,
                     note: note,
                 })}
         >
             {lang.get("buttons", "submit")}
-        </Button.Root>
-    </Dialog.Footer>
-</Dialog.Root>
+        </UI.Button.Root>
+    </UI.Dialog.Footer>
+</UI.Dialog.Root>
 
 <style>
     textarea {

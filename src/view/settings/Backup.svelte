@@ -1,8 +1,7 @@
 <script>
     import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
     import { Share } from "@capacitor/share";
-
-    import { Button, Utils, FlexGrid } from "svelte-css";
+    import { UI, JS } from "svelte-css";
 
     import * as lang from "../../lib/js/lang";
     import * as db from "../../lib/js/db";
@@ -116,7 +115,7 @@
             storage: await getStorage(),
         };
 
-        if (Utils.isAndroid()) {
+        if (JS.Utils.isAndroid()) {
             androidExport(backup);
         } else {
             browserExport(backup);
@@ -184,27 +183,24 @@
     <hr />
 
     <section>
-        <FlexGrid.Row
-            class="is-max-width"
-            style="--gap: calc(var(--spacing) / 2);"
-        >
-            <Button.Root
+        <UI.FlexGrid.Row class="is-max-width" gap="calc(var(--spacing) / 2)">
+            <UI.Button.Root
                 class="is-max"
                 variant="outline"
                 color="primary"
                 on:click={() => importBackup()}
             >
                 Import
-            </Button.Root>
+            </UI.Button.Root>
 
-            <Button.Root
+            <UI.Button.Root
                 class="is-max"
                 variant="outline"
                 color="primary"
                 on:click={() => exportBackup()}
             >
                 Export
-            </Button.Root>
-        </FlexGrid.Row>
+            </UI.Button.Root>
+        </UI.FlexGrid.Row>
     </section>
 </article>
