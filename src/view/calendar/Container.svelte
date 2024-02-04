@@ -1,7 +1,6 @@
 <script>
     import { createEventDispatcher, onDestroy } from "svelte";
-
-    import { FlexGrid } from "svelte-css";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../lib/stores";
 
@@ -30,29 +29,32 @@
      ********************/
 
     const weekStart = Store.weekStart.create();
-    $: !!weekStart && cleanUp.push(weekStart.subscribe(weekStart => {
-        const items = [
-            lang.get("week-days", "sun"),
-            lang.get("week-days", "mon"),
-            lang.get("week-days", "tue"),
-            lang.get("week-days", "wed"),
-            lang.get("week-days", "thu"),
-            lang.get("week-days", "fri"),
-            lang.get("week-days", "sat"),
-        ];
+    $: !!weekStart &&
+        cleanUp.push(
+            weekStart.subscribe((weekStart) => {
+                const items = [
+                    lang.get("week-days", "sun"),
+                    lang.get("week-days", "mon"),
+                    lang.get("week-days", "tue"),
+                    lang.get("week-days", "wed"),
+                    lang.get("week-days", "thu"),
+                    lang.get("week-days", "fri"),
+                    lang.get("week-days", "sat"),
+                ];
 
-        if (weekStart === "mon") {
-            items.push(items.shift());
-        }
+                if (weekStart === "mon") {
+                    items.push(items.shift());
+                }
 
-        headerItems = items;
-    }));
+                headerItems = items;
+            }),
+        );
 
     /********************
      * Mount and Destroy
      ********************/
 
-    onDestroy(() => cleanUp.forEach(fn => fn()));
+    onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
 <div
@@ -65,15 +67,13 @@
         }
     }}
 >
-    <FlexGrid.Root class="is-max" gap=".1em">
-        <FlexGrid.Row style="height: 2em" gap=".1em">
+    <UI.FlexGrid.Root class="is-max" gap=".1em">
+        <UI.FlexGrid.Row style="height: 2em" gap=".1em">
             {#each headerItems as item}
-                <FlexGrid.Col
-                    style={
-                        "font-family: var(--font-family-heading);" +
+                <UI.FlexGrid.Col
+                    style={"font-family: var(--font-family-heading);" +
                         "width: calc(100% / 7);" +
-                        "height: 100%;"
-                    }
+                        "height: 100%;"}
                 >
                     <div
                         class="ui-card is-max flex justify-center align-center"
@@ -82,12 +82,12 @@
                     >
                         {item}
                     </div>
-                </FlexGrid.Col>
+                </UI.FlexGrid.Col>
             {/each}
-        </FlexGrid.Row>
+        </UI.FlexGrid.Row>
 
         <slot />
-    </FlexGrid.Root>
+    </UI.FlexGrid.Root>
 </div>
 
 <style>

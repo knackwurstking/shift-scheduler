@@ -1,10 +1,10 @@
 <script>
-    import Page from "./Page.svelte";
-    import PageSection from "./PageSection.svelte";
-
     import * as Store from "../../lib/stores";
 
     import * as utils from "../../lib/js/utils";
+
+    import Page from "./Page.svelte";
+    import PageSection from "./PageSection.svelte";
 
     /**
      * @typedef Day
@@ -19,28 +19,27 @@
      ******************************/
 
     export let year;
-    $: if (!!year && !!weekStart) (async () => {
-        const data = [];
-        for (const month of [1, 3, 5, 7, 9, 11]) {
-            data.push([
-                {
-                    month: month-1,
-                    data: await utils.getDaysForMonth(
-                        year, month-1,
-                        { weekStart: $weekStart }
-                    ),
-                },
-                {
-                    month: month,
-                    data: await utils.getDaysForMonth(
-                        year, month,
-                        { weekStart: $weekStart }
-                    ),
-                },
-            ]);
-        }
-        pagesData = data;
-    })();
+    $: if (!!year && !!weekStart)
+        (async () => {
+            const data = [];
+            for (const month of [1, 3, 5, 7, 9, 11]) {
+                data.push([
+                    {
+                        month: month - 1,
+                        data: await utils.getDaysForMonth(year, month - 1, {
+                            weekStart: $weekStart,
+                        }),
+                    },
+                    {
+                        month: month,
+                        data: await utils.getDaysForMonth(year, month, {
+                            weekStart: $weekStart,
+                        }),
+                    },
+                ]);
+            }
+            pagesData = data;
+        })();
 
     /***********************
      * Variable Definitions
@@ -58,7 +57,6 @@
 
 <div {...$$restProps}>
     {#each pagesData as data}
-
         <Page {year}>
             <PageSection
                 style="padding: 1em;"

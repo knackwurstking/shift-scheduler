@@ -78,15 +78,16 @@
         const move = async (ev) => {
             if (
                 !pointerlock &&
-                Math.abs(_startX - ev.clientX) >= minSwipeRange/2
-            ) pointerlock = true;
+                Math.abs(_startX - ev.clientX) >= minSwipeRange / 2
+            )
+                pointerlock = true;
 
             currentTranslateX = `calc(-100% + ${0 - (_startX - ev.clientX)}px)`;
             _lastX = ev.clientX;
         };
 
         const end = async () => {
-            cleanUp.forEach(fn => fn());
+            cleanUp.forEach((fn) => fn());
 
             transition = "transform .25s ease-out";
 
@@ -131,7 +132,7 @@
         });
     }
 
-    onDestroy(() => cleanUp.forEach(fn => fn()));
+    onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -154,8 +155,8 @@
                         new Date(
                             currentDate.getFullYear(),
                             currentDate.getMonth(),
-                            date
-                        )
+                            date,
+                        ),
                     );
                 }
                 return;
@@ -169,7 +170,7 @@
             {index}
             currentDate={new Date(
                 currentDate.getFullYear(),
-                currentDate.getMonth() + (index - 1)
+                currentDate.getMonth() + (index - 1),
             )}
             {currentTranslateX}
             {transition}
@@ -180,13 +181,13 @@
                     items = [items[1], items[2], items[0]];
                     currentDate = new Date(
                         currentDate.getFullYear(),
-                        currentDate.getMonth() + 1
+                        currentDate.getMonth() + 1,
                     );
                 } else if (direction === "right") {
                     items = [items[2], items[0], items[1]];
                     currentDate = new Date(
                         currentDate.getFullYear(),
-                        currentDate.getMonth() - 1
+                        currentDate.getMonth() - 1,
                     );
                 }
 

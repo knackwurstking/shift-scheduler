@@ -2,15 +2,14 @@
     import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
     import { Share } from "@capacitor/share";
     import { jsPDF } from "jspdf";
-
-    import { Button, Input } from "svelte-css";
-
-    import PDF from "./PDF.svelte";
+    import { UI } from "svelte-css";
 
     import * as Store from "../../lib/stores";
 
     import * as lang from "../../lib/js/lang";
     import * as utils from "../../lib/js/utils";
+
+    import PDF from "./PDF.svelte";
 
     /** @type {number} */
     export let year;
@@ -29,14 +28,14 @@
 >
     <section class="flex row justify-between">
         <div>
-            <Input.Number
+            <UI.Input.Number
                 title={lang.get("view pdf", "yearPicker")}
                 min={0}
                 bind:value={year}
             />
         </div>
 
-        <Button.Root
+        <UI.Button.Root
             on:click={async () => {
                 processing = true;
 
@@ -79,26 +78,17 @@
             }}
         >
             Download
-        </Button.Root>
+        </UI.Button.Root>
     </section>
 
     <div
         class="is-max-width no-scrollbar flex"
-        style={
-            "height: 100%;" +
-            "overflow-y: auto;"
-        }
+        style={"height: 100%;" + "overflow-y: auto;"}
     >
-        <PDF
-            id="pdf"
-            {year}
-        />
+        <PDF id="pdf" {year} />
     </div>
 
-    <div
-        class="ui-spinner"
-        style:display={processing ? "block" : "none"}
-    ></div>
+    <div class="ui-spinner" style:display={processing ? "block" : "none"}></div>
 </div>
 
 <style>
