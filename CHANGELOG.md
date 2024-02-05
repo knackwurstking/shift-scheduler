@@ -1,9 +1,9 @@
 # Changelog
 
-## v1.5.0 [unreleased]
+## v1.5.0 2024-02-05
 
 - Changed backup settings: import/export buttons
-- Upgrade to `svelte-css` version "v0.7.0"
+- Upgrade `svelte-css` version to "v0.7.0"
 
 ## v1.4.1 2023-01-26
 
