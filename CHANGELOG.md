@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.5.1 [unreleased]
+## v1.5.1 2024-02-07
 
 - Change android share titles for backup and pdf exports
 - Some code clean up
