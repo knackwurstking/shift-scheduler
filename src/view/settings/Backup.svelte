@@ -111,8 +111,8 @@
     async function exportBackup() {
         /** @type {BackupData} */
         const backup = {
-            settings: await getSettings(),
-            storage: await getStorage(),
+            settings: $shiftSetup,
+            storage: await db.getAll(),
         };
 
         if (JS.Utils.isAndroid()) {
@@ -123,36 +123,23 @@
     }
 
     /**
-     * @returns {Promise<SettingsData>}
-     */
-    async function getSettings() {
-        return $shiftSetup;
-    }
-
-    /**
-     * @returns {Promise<StorageData>}
-     */
-    async function getStorage() {
-        return await db.getAll();
-    }
-
-    /**
      * @param {BackupData} data
      */
     async function androidExport(data) {
-        const fileName = "shift-scheduler-backup.json";
-
         const result = await Filesystem.writeFile({
-            path: fileName,
+            path: getFileName(),
             data: JSON.stringify(data),
             encoding: Encoding.UTF8,
             directory: Directory.Cache,
         });
 
+        const today = new Date();
+        const month = today.getMonth().toString().padStart(2, "0");
+        const date = today.getDate().toString().padStart(2, "0");
         Share.share({
-            title: fileName,
+            title: `${today.getFullYear()}-${month}-${date} Backup`,
             url: result.uri,
-            dialogTitle: "shift-scheduler backup",
+            dialogTitle: `Backup "${getFileName()}"`,
         });
     }
 
@@ -160,8 +147,6 @@
      * @param {BackupData} data
      */
     async function browserExport(data) {
-        const fileName = "shift-scheduler-backup.json";
-
         const blob = new Blob([JSON.stringify(data)], {
             type: "octet/stream",
         });
@@ -169,9 +154,16 @@
         const anchor = document.createElement("a");
 
         anchor.setAttribute("href", window.URL.createObjectURL(blob));
-        anchor.setAttribute("download", fileName);
+        anchor.setAttribute("download", getFileName());
 
         anchor.click();
+    }
+
+    function getFileName() {
+        const today = new Date();
+        const month = today.getMonth().toString().padStart(2, "0");
+        const date = today.getDate().toString().padStart(2, "0");
+        return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     }
 </script>
 

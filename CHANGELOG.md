@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.1 [unreleased]
+
+- Change android share titles for backup and pdf exports
+- Some code clean up
+
 ## v1.5.0 2024-02-05
 
 - Changed backup settings: import/export buttons

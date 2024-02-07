@@ -19,6 +19,55 @@
     $: processing ? view.lock() : view.unlock();
 
     const view = Store.view.create();
+
+    /**
+     * @param {any} doc
+     * @param {number} year
+     */
+    async function exportPDF(doc, year) {
+        const fileName = `${year}.pdf`;
+
+        if (utils.isAndroid()) {
+            const result = await Filesystem.writeFile({
+                path: fileName,
+                data: doc.output(),
+                encoding: Encoding.UTF8,
+                directory: Directory.Cache,
+            });
+
+            Share.share({
+                title: `${year}`,
+                url: result.uri,
+                dialogTitle: `Share "${fileName}"`,
+            });
+        } else {
+            doc.save(fileName);
+        }
+
+        processing = false;
+    }
+
+    async function download() {
+        processing = true;
+
+        setTimeout(() => {
+            /** @type {HTMLElement} */
+            // @ts-ignore
+            const el = document.getElementById("pdf").cloneNode(true);
+
+            el.setAttribute("data-theme", "light");
+            [...el.querySelectorAll(".page")].forEach((el) => {
+                // @ts-ignore
+                el.style.aspectRatio = "1 / 1.414";
+            });
+
+            pdf.html(el, {
+                callback: (doc) => exportPDF(doc, year),
+                width: 210,
+                windowWidth: 500, //window width in CSS pixels
+            });
+        }, 0);
+    }
 </script>
 
 <div
@@ -35,50 +84,7 @@
             />
         </div>
 
-        <UI.Button.Root
-            on:click={async () => {
-                processing = true;
-
-                setTimeout(() => {
-                    /** @type {HTMLElement} */
-                    // @ts-ignore
-                    const el = document.getElementById("pdf").cloneNode(true);
-                    el.setAttribute("data-theme", "light");
-                    [...el.querySelectorAll(".page")].forEach((el) => {
-                        // @ts-ignore
-                        el.style.aspectRatio = "1 / 1.414";
-                    });
-                    const file = `${year}.pdf`;
-
-                    pdf.html(el, {
-                        callback: async (doc) => {
-                            if (utils.isAndroid()) {
-                                const result = await Filesystem.writeFile({
-                                    path: file,
-                                    data: doc.output(),
-                                    encoding: Encoding.UTF8,
-                                    directory: Directory.Cache,
-                                });
-
-                                Share.share({
-                                    title: file,
-                                    url: result.uri,
-                                    dialogTitle: `Share "${file}"`,
-                                });
-                            } else {
-                                doc.save(`${year}.pdf`);
-                            }
-
-                            processing = false;
-                        },
-                        width: 210,
-                        windowWidth: 500, //window width in CSS pixels
-                    });
-                }, 0);
-            }}
-        >
-            Download
-        </UI.Button.Root>
+        <UI.Button.Root on:click={() => download()}>Download</UI.Button.Root>
     </section>
 
     <div
