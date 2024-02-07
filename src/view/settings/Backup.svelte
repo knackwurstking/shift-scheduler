@@ -134,7 +134,7 @@
         });
 
         const today = new Date();
-        const month = today.getMonth().toString().padStart(2, "0");
+        const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
         Share.share({
             title: `${today.getFullYear()}-${month}-${date} Backup`,
@@ -161,7 +161,7 @@
 
     function getFileName() {
         const today = new Date();
-        const month = today.getMonth().toString().padStart(2, "0");
+        const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     }
