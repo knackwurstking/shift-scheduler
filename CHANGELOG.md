@@ -2,8 +2,8 @@
 
 ## v1.5.1 2024-02-07
 
-- Change android share titles for backup and pdf exports
-- Some code clean up
+- Change Android share titles for backup and PDF exports
+- Code clean up
 
 ## v1.5.0 2024-02-05
 
@@ -17,11 +17,12 @@
 
 ## v1.4.0 2023-12-10
 
-- New settings section: Backup (replacing storage backup)
+- Added backup section to settings view (the old storage backup part removed)
 - Code clean up: `js/lang`
 - Code clean up: `jsdoc` types
 
-__*NOTE*__:
+**_NOTE_**:
+
 - Old storage backup files will no longer work with this version
 
 ## v1.3.1 2023-12-06
@@ -45,7 +46,7 @@ __*NOTE*__:
 
 ### Added
 
-- New "pdf" view for preview a whole year and dowload as pdf
+- New "pdf" view for preview a whole year and download as pdf
 
 ### Fixed
 
@@ -64,23 +65,23 @@ __*NOTE*__:
 ### Changed
 
 - `svelte-css` version v0.5.0
-- some style changes
-- input components for types "date" and "month"
-- calendar items font size (".date" and ".shiftName")
-- shifts color highlighting (".background" removed)
-- remove color table section from settings shifts
+- Some style changes
+- Input components for types "date" and "month"
+- Calendar items font size (".date" and ".shiftName")
+- Shifts color highlighting (".background" removed)
+- Remove the color table section from settings shifts
 
 ### Fixed
 
-- collapse select component on day dialog close
+- Collapse select component on day dialog close
 
 ## v1.1.0 2023-11-06
 
 ### Added
 
-- new components for html text and number input
-- new component for html select
-- add wails (v2.6.0) for Linux/Windows desktop builds
+- Replaced components for HTML text and number input
+- Replaced component(s) for html select
+- Added wails (v2.6.0) for Linux/Windows desktop builds
 
 ### Changed
 
@@ -88,4 +89,4 @@ __*NOTE*__:
 
 ### Fixed
 
-- calendar swipe (no swipe)
+- Calendar swipe (no swipe)
