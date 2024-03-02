@@ -93,9 +93,9 @@
     </section>
 
     <section class="has-x-margin">
-        <UI.Text.Secondary>
+        <span class="ui-input-title">
             {lang.get("dialog day", "textfieldLabel")}
-        </UI.Text.Secondary>
+        </span>
 
         <textarea bind:value={note} rows="10" style="width: 100%;" />
     </section>
