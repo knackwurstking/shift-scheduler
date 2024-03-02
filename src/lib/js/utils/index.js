@@ -1,4 +1,4 @@
-import { JS } from "svelte-css";
+import { JS } from "ui";
 
 import * as Store from "../../stores";
 

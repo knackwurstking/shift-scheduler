@@ -1,15 +1,13 @@
 <script>
     import { onDestroy } from "svelte";
 
-    import * as Store from "../../lib/stores";
-
     import * as lang from "../../lib/js/lang";
 
-    /***********************
-     * Variable Definitions
-     ***********************/
+    import * as Store from "../../lib/stores";
 
     let cleanUp = [];
+
+    const weekStart = Store.weekStart.create();
 
     /** @type {string[]} */
     let headerItems = [
@@ -22,12 +20,9 @@
         lang.get("week-days", "sat"),
     ];
 
-    /********************
-     * Store: week-start
-     ********************/
+    $: !!weekStart && initWeekStart();
 
-    const weekStart = Store.weekStart.create();
-    $: !!weekStart &&
+    async function initWeekStart() {
         cleanUp.push(
             weekStart.subscribe((weekStart) => {
                 const items = [
@@ -47,10 +42,7 @@
                 headerItems = items;
             }),
         );
-
-    /********************
-     * Mount and Destroy
-     ********************/
+    }
 
     onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>

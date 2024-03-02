@@ -1,47 +1,30 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { UI } from "svelte-css";
-
-    import * as Store from "../../stores";
+    import { UI } from "ui";
 
     import * as lang from "../../js/lang";
     import * as utils from "../../js/utils";
 
-    /***********
-     * Bindings
-     ***********/
+    import * as Store from "../../stores";
+
+    const dispatch = createEventDispatcher();
+    const view = Store.view.create();
 
     /** @type {UI.Dialog.Root} */
     let dialog;
 
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    const dispatch = createEventDispatcher();
-
     /** @type {number} */
     let year;
-
     /** @type {number} */
     let month;
 
     /** @type {string} */
     let dateString;
-    $: dateString && parseDate();
 
     let invalidYear = false;
     let invalidMonth = false;
 
-    /**************
-     * Store: view
-     **************/
-
-    const view = Store.view.create();
-
-    /******************************
-     * Function Export Definitions
-     ******************************/
+    $: dateString && parseDate();
 
     /**
      * @param {number} _year
@@ -59,10 +42,6 @@
         dialog.close();
         view.unlock();
     }
-
-    /***********************
-     * Function Definitions
-     ***********************/
 
     async function parseDate() {
         const [y, m] = dateString.split("-", 2);
@@ -106,7 +85,6 @@
 
     <UI.Dialog.Footer>
         <UI.Button.Root
-            color="primary"
             type="submit"
             on:click={async () => {
                 if (invalidMonth || invalidYear) return;

@@ -1,19 +1,10 @@
 <script>
-    import { UI } from "svelte-css";
+    import { UI } from "ui";
 
     import { Shift } from "../lib/components";
     import * as Store from "../lib/stores";
 
-    /**************************************
-     * Store: edit-mode && edit-mode-index
-     **************************************/
-
     const editMode = Store.editMode.create();
-
-    /*********************
-     * Store: shift-setup
-     *********************/
-
     const shiftSetup = Store.shiftSetup.create();
 </script>
 

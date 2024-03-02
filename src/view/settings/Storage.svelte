@@ -2,7 +2,7 @@
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
     import OpenInNew from "svelte-material-icons/OpenInNew.svelte";
 
-    import { UI } from "svelte-css";
+    import { UI } from "ui";
 
     import { StorageDialog } from "../../lib/components";
 
@@ -11,22 +11,10 @@
 
     import * as Stores from "../../lib/stores";
 
-    /***********
-     * Bindings
-     ***********/
+    const settingsStorage = Stores.settingsStorage.create();
 
     /** @type {StorageDialog} */
     let storageDialog;
-
-    /**************************
-     * Store: settings-storage
-     **************************/
-
-    const settingsStorage = Stores.settingsStorage.create();
-
-    /***********************
-     * Function Definitions
-     ***********************/
 
     function listDataBaseKeys() {
         const keys = db.listKeys();

@@ -5,25 +5,13 @@
     import Container from "./Container.svelte";
     import Content from "./Content.svelte";
 
-    /***********
-     * Bindings
-     ***********/
-
-    /** @type {SwipeHandler} */
-    let swipeHandler;
-
-    /***********************
-     * Variable Definitions
-     ***********************/
+    const dispatch = createEventDispatcher();
 
     /** @type {Date} */
     export let currentDate;
 
-    const dispatch = createEventDispatcher();
-
-    /******************************
-     * Function Export Definitions
-     ******************************/
+    /** @type {SwipeHandler} */
+    let swipeHandler;
 
     /**
      * Trigger a calendar reload after a database update

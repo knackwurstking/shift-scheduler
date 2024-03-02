@@ -10,50 +10,19 @@
     import SettingsView from "./settings";
     import PdfView from "./pdf";
 
-    /***********
-     * Bindings
-     ***********/
-
-    /** @type {EditDayDialog} */
-    let editDayDialog;
-
-    /** @type {CalendarView} */
-    let calendarView;
-
-    /***********************
-     * Variable Definitions
-     ***********************/
-
     const cleanUp = [];
 
-    /******************************
-     * Variable Export Definitions
-     ******************************/
+    const view = Store.view.create();
+    const editMode = Store.editMode.create();
+    const shiftSetup = Store.shiftSetup.create();
 
     /** @type {Date} */
     export let currentDate = new Date();
 
-    /**************
-     * Store: view
-     **************/
-
-    const view = Store.view.create();
-
-    /**************************************
-     * Store: edit-mode && edit-mode-index
-     **************************************/
-
-    const editMode = Store.editMode.create();
-
-    /*********************
-     * Store: shift-setup
-     *********************/
-
-    const shiftSetup = Store.shiftSetup.create();
-
-    /***********************
-     * Function Definitions
-     ***********************/
+    /** @type {EditDayDialog} */
+    let editDayDialog;
+    /** @type {CalendarView} */
+    let calendarView;
 
     /**
      * @returns {Promise<(-2 | import("../lib/stores/shift-setup").Shift | undefined)>}
@@ -81,10 +50,6 @@
             );
         }
     }
-
-    /********************
-     * Mount and Destroy
-     ********************/
 
     onMount(() => {
         const onResume = () => {

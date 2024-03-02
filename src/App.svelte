@@ -1,12 +1,9 @@
 <script>
-    import "./app.css";
-
     import { App } from "@capacitor/app";
     import { onMount, onDestroy } from "svelte";
-    import { CSS } from "svelte-css";
+    import { UI } from "ui";
 
     import * as Store from "./lib/stores";
-
     import * as lang from "./lib/js/lang";
     import * as utils from "./lib/js/utils";
 
@@ -14,21 +11,18 @@
     import Main from "./view/Main.svelte";
     import Footer from "./view/Footer.svelte";
 
-    /***********************
-     * Variable Definitions
-     ***********************/
-
     const cleanUp = [];
+
+    const view = Store.view.create();
+    const editMode = Store.editMode.create();
+    const theme = Store.theme.create();
 
     /** @type {Date} */
     let currentDate = new Date();
 
-    /**************
-     * Store: view
-     **************/
+    $: !!view && initViewStore();
 
-    const view = Store.view.create();
-    $: !!view &&
+    function initViewStore() {
         cleanUp.push(
             view.subscribe((currentView) => {
                 console.debug(`view=${currentView}`);
@@ -38,22 +32,7 @@
                 editMode.disable();
             }),
         );
-
-    /**************************************
-     * Store: edit-mode && edit-mode-index
-     **************************************/
-
-    const editMode = Store.editMode.create();
-
-    /***************
-     * Store: theme
-     ***************/
-
-    const theme = Store.theme.create();
-
-    /********************
-     * Mount and Destroy
-     ********************/
+    }
 
     onMount(async () => {
         if (utils.isAndroid()) {
@@ -66,8 +45,8 @@
     onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
-<CSS.Root
-    mode={$theme === "system" ? undefined : $theme}
+<UI.Theme.Root
+    mode={$theme === "system" ? null : $theme}
     variant="zinc"
     auto={$theme === "system"}
 />

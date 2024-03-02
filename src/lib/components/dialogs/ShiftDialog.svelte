@@ -1,23 +1,16 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { UI } from "svelte-css";
-
-    import * as Store from "../../stores";
+    import { UI } from "ui";
 
     import * as lang from "../../js/lang";
 
-    /***********
-     * Bindings
-     ***********/
+    import * as Store from "../../stores";
+
+    const dispatch = createEventDispatcher();
+    const view = Store.view.create();
 
     /** @type {UI.Dialog.Root} */
     let dialog;
-
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    const dispatch = createEventDispatcher();
 
     let id;
     let name = "";
@@ -26,16 +19,6 @@
     let color;
 
     let disableColor = false;
-
-    /**************
-     * Store: view
-     **************/
-
-    const view = Store.view.create();
-
-    /******************************
-     * Function Export Definitions
-     ******************************/
 
     /**
      * @param {import("../../stores/shift-setup").Shift | null | undefined} shift

@@ -1,16 +1,14 @@
 <script>
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
 
-    import { UI } from "svelte-css";
-
-    import * as Store from "../../stores";
+    import { UI } from "ui";
 
     import * as lang from "../../js/lang";
     import * as db from "../../js/db";
 
-    /***********
-     * Bindings
-     ***********/
+    import * as Store from "../../stores";
+
+    const view = Store.view.create();
 
     /** @type {UI.Dialog.Root} */
     let dialog;
@@ -34,16 +32,6 @@
      */
     let data;
 
-    /**************
-     * Store: view
-     **************/
-
-    const view = Store.view.create();
-
-    /******************************
-     * Function Export Definitions
-     ******************************/
-
     /**
      * @param {number} _year
      * @param {number} _month
@@ -62,10 +50,6 @@
         dialog.close();
         view.unlock();
     }
-
-    /***********************
-     * Function Definitions
-     ***********************/
 
     async function loadData() {
         data = [];

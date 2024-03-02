@@ -2,35 +2,21 @@
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
     import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
 
-    import { UI } from "svelte-css";
+    import { UI } from "ui";
 
     import { ShiftDialog, EditRhythmDialog } from "../../lib/components";
 
-    import * as Store from "../../lib/stores";
-
     import * as lang from "../../lib/js/lang";
 
-    /***********
-     * Bindings
-     ***********/
+    import * as Store from "../../lib/stores";
+
+    const shiftSetup = Store.shiftSetup.create();
 
     /** @type {ShiftDialog} */
     let shiftDialog;
-
     /** @type {EditRhythmDialog} */
     let editRhythmDialog;
-
-    /************************
-     * Variable Definitions
-     ************************/
-
     let tableRowHovering = null;
-
-    /*********************
-     * Store: shift-setup
-     *********************/
-
-    const shiftSetup = Store.shiftSetup.create();
 </script>
 
 <article class="ui-card has-margin">
@@ -181,7 +167,6 @@
     <section>
         <UI.Button.Root
             class="is-max-width"
-            color="primary"
             on:click={async () => shiftDialog.open()}
         >
             {lang.get("view settings", "addShiftButton")}

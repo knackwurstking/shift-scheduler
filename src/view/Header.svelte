@@ -6,44 +6,33 @@
     import Wrench from "svelte-material-icons/Wrench.svelte";
 
     import { createEventDispatcher } from "svelte";
-    import { UI } from "svelte-css";
+    import { UI } from "ui";
 
     import { DatePickerDialog } from "../lib/components";
 
     import * as Store from "../lib/stores";
 
-    /******************************
-     * Variable Export Definitions
-     ******************************/
+    const dispatch = createEventDispatcher();
+    const view = Store.view.create();
 
     /** @type {Date} */
     export let currentDate;
-
     /** @type {string | undefined} */
     export let title = undefined;
 
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    const dispatch = createEventDispatcher();
-
     /** @type {DatePickerDialog} */
     let datePickerDialog;
-
     let enableBackButton = false;
     let enableDatePicker = false;
 
-    /**************
-     * Store: view
-     **************/
+    $: !!view && initViewStore();
 
-    const view = Store.view.create();
-    $: !!view &&
+    function initViewStore() {
         view.subscribe((currentView) => {
             enableBackButton = view.history().length > 1;
             enableDatePicker = currentView === "calendar";
         });
+    }
 </script>
 
 <UI.TopAppBar.Root uiContainer>

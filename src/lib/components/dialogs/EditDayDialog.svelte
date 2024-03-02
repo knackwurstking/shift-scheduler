@@ -1,27 +1,21 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { UI } from "svelte-css";
+    import { UI } from "ui";
 
     import * as Store from "../../stores";
 
     import * as db from "../../js/db";
     import * as lang from "../../js/lang";
 
-    /***********
-     * Bindings
-     ***********/
+    const dispatch = createEventDispatcher();
+    const shiftSetup = Store.shiftSetup.create();
+    const view = Store.view.create();
 
     /** @type {UI.Dialog.Root} */
     let dialog;
 
     /** @type {UI.Input.Select} */
     let select;
-
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    const dispatch = createEventDispatcher();
 
     /** @type {number} */
     let year;
@@ -41,22 +35,6 @@
     let selectItems = [];
     /** @type {{ value: string, label: string }} */
     let selected = undefined;
-
-    /**************
-     * Store: view
-     **************/
-
-    const view = Store.view.create();
-
-    /*********************
-     * Store: shift-setup
-     *********************/
-
-    let shiftSetup = Store.shiftSetup.create();
-
-    /******************************
-     * Function Export Definitions
-     ******************************/
 
     /**
      * @param {number} _year

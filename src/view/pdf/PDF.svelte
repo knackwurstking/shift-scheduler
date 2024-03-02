@@ -14,11 +14,13 @@
      * @type {{ month: number; data: Day[] }}
      */
 
-    /******************************
-     * Variable Export Definitions
-     ******************************/
+    const weekStart = Store.weekStart.create();
 
     export let year;
+
+    /** @type {ArticleData[][]} */
+    let pagesData = [];
+
     $: if (!!year && !!weekStart)
         (async () => {
             const data = [];
@@ -40,19 +42,6 @@
             }
             pagesData = data;
         })();
-
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    /** @type {ArticleData[][]} */
-    let pagesData = [];
-
-    /********************
-     * Store: week-start
-     ********************/
-
-    const weekStart = Store.weekStart.create();
 </script>
 
 <div {...$$restProps}>

@@ -1,8 +1,4 @@
 <script>
-    /******************************
-     * Variable Export Definitions
-     ******************************/
-
     /** @type {number} */
     export let id;
 

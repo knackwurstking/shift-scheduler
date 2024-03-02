@@ -1,20 +1,11 @@
 <script>
-    import { UI } from "svelte-css";
-
-    import * as Store from "../../lib/stores";
+    import { UI } from "ui";
 
     import * as lang from "../../lib/js/lang";
 
-    /***************
-     * Store: theme
-     ***************/
+    import * as Store from "../../lib/stores";
 
     const theme = Store.theme.create();
-
-    /********************
-     * Store: week-start
-     ********************/
-
     const weekStart = Store.weekStart.create();
 </script>
 

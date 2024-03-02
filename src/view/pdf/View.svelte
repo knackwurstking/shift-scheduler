@@ -2,23 +2,24 @@
     import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
     import { Share } from "@capacitor/share";
     import { jsPDF } from "jspdf";
-    import { UI } from "svelte-css";
-
-    import * as Store from "../../lib/stores";
+    import { UI } from "ui";
 
     import * as lang from "../../lib/js/lang";
     import * as utils from "../../lib/js/utils";
 
+    import * as Store from "../../lib/stores";
+
     import PDF from "./PDF.svelte";
+
+    const pdf = new jsPDF("portrait", "mm", "a4");
+    const view = Store.view.create();
 
     /** @type {number} */
     export let year;
 
-    const pdf = new jsPDF("portrait", "mm", "a4");
     let processing = false;
-    $: processing ? view.lock() : view.unlock();
 
-    const view = Store.view.create();
+    $: processing ? view.lock() : view.unlock();
 
     /**
      * @param {any} doc

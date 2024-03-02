@@ -1,27 +1,14 @@
 <script>
     import { createEventDispatcher, onDestroy } from "svelte";
 
-    /***********
-     * Bindings
-     ***********/
-
-    /** @type {HTMLDivElement} */
-    let container;
-
-    /******************************
-     * Variable Export Definitions
-     ******************************/
+    const cleanUp = [];
+    const dispatch = createEventDispatcher();
 
     /** @type {Date} */
     export let currentDate = new Date();
 
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    const cleanUp = [];
-
-    const dispatch = createEventDispatcher();
+    /** @type {HTMLDivElement} */
+    let container;
 
     /** @type {boolean} */
     let pointerlock = false;
@@ -44,10 +31,6 @@
     /** @type {number | null} */
     let _lastX = null;
 
-    /******************************
-     * Function Export Definitions
-     ******************************/
-
     /**
      * Trigger a calendar reload after a database update
      */
@@ -61,10 +44,6 @@
     export function querySelector(selector) {
         return container.querySelector(selector);
     }
-
-    /***********************
-     * Function Definitions
-     ***********************/
 
     /**
      * @param {PointerEvent} ev

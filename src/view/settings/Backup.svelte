@@ -1,7 +1,7 @@
 <script>
     import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
     import { Share } from "@capacitor/share";
-    import { UI, JS } from "svelte-css";
+    import { UI, JS } from "ui";
 
     import * as lang from "../../lib/js/lang";
     import * as db from "../../lib/js/db";
@@ -23,26 +23,13 @@
      * @type {{ [month: string]: db.DBData }}
      */
 
-    /**************************
-     * Store: settings-storage
-     **************************/
-
     const settingsStorage = Stores.settingsStorage.create();
-
-    /*********************
-     * Store: shift-setup
-     *********************/
-
     const shiftSetup = Stores.shiftSetup.create();
-
-    /***********************
-     * Function Definitions
-     ***********************/
 
     /**
      * @param {string} result
      */
-    const handleReaderOnLoad = async (result) => {
+    async function handleReaderOnLoad(result) {
         /** @type {BackupData} */
         const data = JSON.parse(result);
 
@@ -67,12 +54,12 @@
         }
 
         settingsStorage.close();
-    };
+    }
 
     /**
      * @param {FileReader} reader
      */
-    const readerOnLoad = async (reader) => {
+    async function readerOnLoad(reader) {
         switch (typeof reader.result) {
             case "string":
                 try {
@@ -84,14 +71,14 @@
             default:
                 alert("Wrong data!");
         }
-    };
+    }
 
     /**
      * @param {ProgressEvent<FileReader>} ev
      */
-    const readerOnError = async (ev) => {
+    async function readerOnError(ev) {
         console.error("Import data: read file failed!", ev);
-    };
+    }
 
     async function importBackup() {
         const input = document.createElement("input");

@@ -1,18 +1,10 @@
 <script>
-    /******************************
-     * Variable Export Definitions
-     ******************************/
-
     /** @type {number} */
     export let currentMonth;
-
     /** @type {import(".").Day} */
     export let day;
-    $: day && setData();
 
-    /***********************
-     * Function Definitions
-     ***********************/
+    $: day && setData();
 
     async function setData() {
         if (currentMonth !== day.date.getMonth()) {

@@ -2,29 +2,23 @@
     import DeleteOutline from "svelte-material-icons/DeleteOutline.svelte";
 
     import { createEventDispatcher } from "svelte";
-    import { UI } from "svelte-css";
-
-    import * as Store from "../../stores";
+    import { UI } from "ui";
 
     import * as lang from "../../js/lang";
 
+    import * as Store from "../../stores";
+
     import { Shift } from "../shift";
 
-    /***********
-     * Bindings
-     ***********/
+    const dispatch = createEventDispatcher();
+    const shiftSetup = Store.shiftSetup.create();
+    const view = Store.view.create();
 
     /** @type {UI.Dialog.Root} */
     let dialog;
 
     /** @type {HTMLElement} */
     let scrollContainer;
-
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    const dispatch = createEventDispatcher();
 
     /**
      * @type {import("../../stores/shift-setup").Shift[]}
@@ -35,23 +29,8 @@
      * @type {number[]}
      */
     let rhythm = [];
+
     $: rhythm && setTimeout(scrollToBottom, 150);
-
-    /**************
-     * Store: view
-     **************/
-
-    const view = Store.view.create();
-
-    /*********************
-     * Store: shift-setup
-     *********************/
-
-    let shiftSetup = Store.shiftSetup.create();
-
-    /******************************
-     * Function Export Definitions
-     ******************************/
 
     /**
      * @param {import("../../stores/shift-setup").Shift[]} _shifts
@@ -68,10 +47,6 @@
         dialog.close();
         view.unlock();
     }
-
-    /***********************
-     * Function Definitions
-     ***********************/
 
     /**
      * @param {number} id

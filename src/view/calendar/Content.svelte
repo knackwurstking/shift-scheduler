@@ -1,52 +1,38 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { UI } from "svelte-css";
-
-    import Day from "./Day.svelte";
-
-    import * as Store from "../../lib/stores";
+    import { UI } from "ui";
 
     import * as utils from "../../lib/js/utils";
 
-    /******************************
-     * Variable Export Definitions
-     ******************************/
+    import * as Store from "../../lib/stores";
+
+    import Day from "./Day.svelte";
+
+    const dispatch = createEventDispatcher();
+    const weekStart = Store.weekStart.create();
 
     /** @type {number} */
     export let index;
-
     /** @type {Date} */
     export let currentDate;
-
-    $: index === 1 && currentDate && dispatch("currentdatechange", currentDate);
-
-    /********************
-     * Store: week-start
-     ********************/
-
-    const weekStart = Store.weekStart.create();
-
-    /***********************
-     * Variable Definitions
-     ***********************/
-
-    const dispatch = createEventDispatcher();
 
     /** @type {import(".").Day[]} */
     let days = Array(42)
         .fill(0)
         .map(() => ({ date: currentDate, data: { shift: null, note: "" } }));
 
-    $: currentDate &&
-        utils
-            .getDaysForMonth(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                {
-                    weekStart: $weekStart,
-                },
-            )
-            .then((result) => (days = result));
+    $: index === 1 && currentDate && dispatch("currentdatechange", currentDate);
+    $: currentDate && getDaysForMonth();
+
+    async function getDaysForMonth() {
+        days = await utils.getDaysForMonth(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            {
+                weekStart: $weekStart,
+            },
+        );
+    }
 </script>
 
 <UI.FlexGrid.Row class="is-max-height" gap=".1em">
