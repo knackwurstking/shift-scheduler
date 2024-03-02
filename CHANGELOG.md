@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.5.2 unreleased
+
+- [ ] switch from `svelte-css` to [ui v0.1.0](https://github.com/knackwurstking/ui.git)
+
 ## v1.5.1 2024-02-07
 
 - Change Android share titles for backup and PDF exports
