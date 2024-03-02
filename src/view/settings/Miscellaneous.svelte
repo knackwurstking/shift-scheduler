@@ -43,7 +43,6 @@
             style="cursor: pointer;"
             primary={lang.get("view settings", "miscWeekStartPrimaryText")}
             useLabel
-            useRipple
             row
         >
             <input
