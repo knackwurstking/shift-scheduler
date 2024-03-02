@@ -92,10 +92,12 @@
         <UI.Input.Select bind:this={select} items={selectItems} bind:selected />
     </section>
 
-    <section>
-        <UI.Text.Label secondary={lang.get("dialog day", "textfieldLabel")}>
-            <textarea bind:value={note} rows="10" style="width: 100%;" />
-        </UI.Text.Label>
+    <section class="has-x-margin">
+        <UI.Text.Secondary>
+            {lang.get("dialog day", "textfieldLabel")}
+        </UI.Text.Secondary>
+
+        <textarea bind:value={note} rows="10" style="width: 100%;" />
     </section>
 
     <UI.Dialog.Footer>
