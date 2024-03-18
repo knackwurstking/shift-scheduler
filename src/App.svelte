@@ -36,7 +36,13 @@
 
     onMount(async () => {
         if (utils.isAndroid()) {
-            App.addListener("backButton", () => view.back());
+            App.addListener("backButton", () => {
+                if ($editMode.open) {
+                    editMode.disable()
+                } else {
+                    view.back()
+                }
+            });
         }
 
         view.goto("calendar");
