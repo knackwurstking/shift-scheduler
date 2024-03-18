@@ -5,9 +5,10 @@
 - [x] Add separator line with text "Edit Mode" if toggled on
 - [x] Slide in and out the edit mode footer
 - [x] Calendar view height transition css prop
-- [ ] Save current month to the local storage
+- ~~[ ] Save current month to the local storage~~
 - [ ] Slide in and out all dialogs
-- [ ] Slide in views (like settings) from right to left, and slide if removed from stack
+- ~~[ ] Slide in views (like settings) from right to left, and slide if removed from stack~~
+- [ ] Change the app icon
 
 ## v1.5.2 2024-03-02
 
