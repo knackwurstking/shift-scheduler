@@ -4,6 +4,7 @@
 
 - Slide in and out the edit mode (footer) bar
 - Added separator line with text "Edit Mode" if toggled on
+- [ ] Listen for key events, arrow left/right, to swipe calendar month
 - [ ] Change the app icon
 
 ## v1.5.2 2024-03-02
