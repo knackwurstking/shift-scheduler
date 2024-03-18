@@ -49,6 +49,9 @@
         "settings": "Settings",
         "pdf": "PDF Generation"
     },
+    "footer": {
+        "edit mode": "Edit Mode"
+    },
     "buttons": {
         "edit": "Edit",
         "submit": "OK"

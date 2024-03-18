@@ -5,6 +5,7 @@
 
     import * as Store from "../lib/stores";
     import * as db from "../lib/js/db";
+    import * as constants from "../lib/js/constants";
 
     import CalendarView from "./calendar";
     import SettingsView from "./settings";
@@ -62,7 +63,7 @@
     onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
-<main class="ui-container" style:bottom={$editMode.open ? "4em" : "0"}>
+<main class="ui-container" style:bottom={$editMode.open ? constants.footerHeight : "0"}>
     {#if $view === "calendar"}
         <CalendarView
             bind:this={calendarView}
@@ -163,5 +164,7 @@
         right: 0;
         bottom: 0;
         left: 0;
+
+        /* TODO: transition on bottom change? */
     }
 </style>

@@ -2,7 +2,7 @@ import en from "./en.json";
 import de from "./de.json";
 
 /**
- * @typedef LangDataKeys
+ * @typedef LangDataGroups
  * @type {(
  *  "dialog date-picker" |
  *  "dialog day" |
@@ -12,6 +12,7 @@ import de from "./de.json";
  *  "view settings" |
  *  "view pdf" |
  *  "app-bar" |
+ *  "footer" |
  *  "buttons" |
  *  "week-days" |
  *  "months"
@@ -60,7 +61,7 @@ export let lang = (() => {
 })();
 
 /**
- * @param {LangDataKeys} group
+ * @param {LangDataGroups} group
  * @param {string} key
  * @returns {string | null}
  */

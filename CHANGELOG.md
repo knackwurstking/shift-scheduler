@@ -1,8 +1,11 @@
 # Changelog
 
-## ... [unreleased]
+## v1.6.0 [unreleased]
 
-- [ ] Add separator line with text "Edit Mode" if toggled on
+- [x] Add separator line with text "Edit Mode" if toggled on
+- [x] Slide in and out the edit mode footer
+- [ ] Calendar view height transition css prop
+- [ ] Save current month to the local storage
 - [ ] Slide in and out all dialogs
 - [ ] Slide in views (like settings) from right to left, and slide if removed from stack
 
