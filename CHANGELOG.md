@@ -1,6 +1,12 @@
 # Changelog
 
-## v1.5.2 unreleased
+## ... [unreleased]
+
+- [ ] Add separator line with text "Edit Mode" if toggled on
+- [ ] Slide in and out all dialogs
+- [ ] Slide in views (like settings) from right to left, and slide if removed from stack
+
+## v1.5.2 2024-03-02
 
 - Changed ui library from `svelte-css` to [ui v0.1.0](https://github.com/knackwurstking/ui.git)
 
