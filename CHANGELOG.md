@@ -2,12 +2,8 @@
 
 ## v1.6.0 [unreleased]
 
-- [x] Add separator line with text "Edit Mode" if toggled on
-- [x] Slide in and out the edit mode footer
-- [x] Calendar view height transition css prop
-- ~~[ ] Save current month to the local storage~~
-- [ ] Slide in and out all dialogs
-- ~~[ ] Slide in views (like settings) from right to left, and slide if removed from stack~~
+- Slide in and out the edit mode (footer) bar
+- Added separator line with text "Edit Mode" if toggled on
 - [ ] Change the app icon
 
 ## v1.5.2 2024-03-02
@@ -16,8 +12,7 @@
 
 ## v1.5.1 2024-02-07
 
-- Change Android share titles for backup and PDF exports
-- Code clean up
+- Changed Android share titles for backup and PDF exports
 
 ## v1.5.0 2024-02-05
 
@@ -32,8 +27,6 @@
 ## v1.4.0 2023-12-10
 
 - Added backup section to settings view (the old storage backup part removed)
-- Code clean up: `js/lang`
-- Code clean up: `jsdoc` types
 
 **_NOTE_**:
 
