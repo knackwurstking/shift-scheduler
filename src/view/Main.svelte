@@ -165,6 +165,6 @@
         bottom: 0;
         left: 0;
 
-        /* TODO: transition on bottom change? */
+        transition: bottom .25s ease-out;
     }
 </style>
