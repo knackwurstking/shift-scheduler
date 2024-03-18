@@ -165,6 +165,6 @@
         bottom: 0;
         left: 0;
 
-        transition: bottom .25s ease-out;
+        transition: bottom .15s ease-out;
     }
 </style>

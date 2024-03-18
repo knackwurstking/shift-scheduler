@@ -68,7 +68,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        transition: transform .25s ease-out;
+        transition: transform .15s ease-out;
     }
 
     .separator-title {
