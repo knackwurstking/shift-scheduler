@@ -96,6 +96,7 @@
     <br />
 
     <section>
+        <!-- TODO: Fix this "background*" shit -->
         <UI.Text.Label
             secondary={lang.get("dialog shift", "pickBackgroundColorLabel")}
         >
@@ -109,6 +110,7 @@
 
         <br />
 
+        <!-- TODO: Fix this "background*" shit -->
         <UI.Text.Label
             secondary={lang.get("dialog shift", "disableBackgroundColorLabel")}
             useLabel

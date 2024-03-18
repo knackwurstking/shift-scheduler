@@ -159,7 +159,7 @@
 
 <style>
     main {
-        position: fixed;
+        position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
