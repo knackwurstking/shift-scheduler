@@ -116,3 +116,9 @@
         </UI.Button.Root>
     </UI.Dialog.Footer>
 </UI.Dialog.Root>
+
+<style>
+    textarea {
+        resize: none;
+    }
+</style>
