@@ -24,7 +24,7 @@
     let invalidYear = false;
     let invalidMonth = false;
 
-    let isVisible = false; 
+    let isVisible = false;
 
     $: dateString && parseDate();
 
@@ -36,13 +36,13 @@
         year = _year;
         month = _month + 1;
         dateString = `${year}-${month.toString().padStart(2, "0")}`;
-        isVisible = true
+        isVisible = true;
         dialog.showModal();
         view.lock();
     }
 
     export async function close() {
-        isVisible = false 
+        isVisible = false;
         dialog.close();
         view.unlock();
     }
@@ -54,7 +54,11 @@
     }
 </script>
 
-<UI.Dialog.Root bind:this={dialog} class={"date-picker " + (isVisible ? "visible" : "")} style="min-width: 15em;">
+<UI.Dialog.Root
+    bind:this={dialog}
+    class={"date-picker " + (isVisible ? "visible" : "")}
+    style="min-width: 15em;"
+>
     <UI.Dialog.Header
         title={lang.get("dialog date-picker", "title")}
         on:close={() => close()}
@@ -102,7 +106,7 @@
 
 <style>
     :global(.ui-dialog.date-picker.visible) {
-        transition: all .25s ease-in-out;
+        transition: all 0.25s ease-in-out;
     }
 
     :global(.ui-dialog.date-picker:not(.visible)) {
