@@ -13,36 +13,41 @@
 
   const cleanUp = [];
 
-  const view = Store.view.create();
-  const editMode = Store.editMode.create();
-  const theme = Store.theme.create();
+  const view = Store.View.create();
+  const editMode = Store.EditMode.create();
+  const theme = Store.Theme.create();
 
   /** @type {Date} */
   let currentDate = new Date();
 
   $: !!view && initViewStore();
 
-  function initViewStore() {
-    cleanUp.push(
-      view.subscribe((currentView) => {
-        console.debug(`view=${currentView}`);
+  /**
+   * @param {Store.View.Views} currentView
+   */
+  function viewSubscribeHandler(currentView) {
+    console.debug(`view=${currentView}`);
 
-        // reset edit mode
-        editMode.indexUnselect();
-        editMode.disable();
-      }),
-    );
+    // reset edit mode
+    editMode.indexUnselect();
+    editMode.disable();
+  }
+
+  function initViewStore() {
+    cleanUp.push(view.subscribe(viewSubscribeHandler));
+  }
+
+  function androidBackButtonHandler() {
+    if ($editMode.open) {
+      editMode.disable();
+    } else {
+      view.back();
+    }
   }
 
   onMount(async () => {
     if (utils.isAndroid()) {
-      App.addListener("backButton", () => {
-        if ($editMode.open) {
-          editMode.disable();
-        } else {
-          view.back();
-        }
-      });
+      App.addListener("backButton", androidBackButtonHandler);
     }
 
     view.goto("calendar");
