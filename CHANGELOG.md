@@ -5,6 +5,7 @@
 - Slide in and out the edit mode (footer) bar
 - Added separator line with text "Edit Mode" if toggled on
 - Changed the app icon
+- Updated dependency [ui v0.1.1](https://github.com/knackwurstking/ui.git)
 
 ## v1.5.2 2024-03-02
 
