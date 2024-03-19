@@ -1,13 +1,13 @@
 <script>
   import { UI } from "ui";
 
-  import { Shift } from "../lib/components";
   import * as Store from "../lib/stores";
   import * as lang from "../lib/js/lang";
   import * as constants from "../lib/js/constants";
 
-  const editMode = Store.editMode.create();
-  const shiftSetup = Store.shiftSetup.create();
+  import FooterItems from "./FooterItems.svelte";
+
+  const editMode = Store.EditMode.create();
 </script>
 
 <footer
@@ -23,43 +23,7 @@
       style:padding-top="calc(var(--spacing) / 2)"
     >
       <UI.FlexGrid.Row gap=".1em">
-        <UI.FlexGrid.Col style="width: calc(7.5em + var(--spacing));" flex="0">
-          <Shift
-            class="is-max"
-            name="Reset"
-            visible={false}
-            active={$editMode.index === -2}
-            color="transparent"
-            id={-2}
-            on:click={() => {
-              if ($editMode.index === -2) {
-                editMode.indexUnselect();
-              } else {
-                editMode.indexReset();
-              }
-            }}
-          />
-        </UI.FlexGrid.Col>
-
-        {#each $shiftSetup.shifts as shift, index}
-          <UI.FlexGrid.Col
-            style="width: calc(7.5em + var(--spacing));"
-            flex="0"
-          >
-            <Shift
-              class="is-max"
-              {...shift}
-              active={$editMode.index === index}
-              on:click={() => {
-                if ($editMode.index === index) {
-                  editMode.indexUnselect();
-                } else {
-                  editMode.indexSelect(index);
-                }
-              }}
-            />
-          </UI.FlexGrid.Col>
-        {/each}
+        <FooterItems />
       </UI.FlexGrid.Row>
     </figure>
   {/if}
