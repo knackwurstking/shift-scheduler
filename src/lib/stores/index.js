@@ -1,6 +1,6 @@
-export * as editMode from "./edit-mode";
-export * as settingsStorage from "./settings-storage";
-export * as shiftSetup from "./shift-setup";
-export * as theme from "./theme";
-export * as view from "./view";
-export * as weekStart from "./week-start";
+export * as EditMode from "./edit-mode";
+export * as SettingsStorage from "./settings-storage";
+export * as ShiftSetup from "./shift-setup";
+export * as Theme from "./theme";
+export * as View from "./view";
+export * as WeekStart from "./week-start";
