@@ -1,82 +1,82 @@
 {
-    "dialog date-picker": {
-        "title": "Datumsauswahl",
-        "inputAndroidLabel": "Wähle ein Datum",
-        "input1Label": "Jahr",
-        "input2Label": "Monat"
-    },
-    "dialog day": {
-        "textfieldLabel": "Notiz"
-    },
-    "dialog rhythm": {
-        "title": "Schicht Rhythmus"
-    },
-    "dialog shift": {
-        "titleEdit": "Schicht Bearbeiten",
-        "titleNew": "Neue Schicht",
-        "longName": "Schicht Name (Bsp.: Nacht)",
-        "shortName": "Kürzel (Bsp.: N)",
-        "hideShiftInputLabel": "Schicht aus dem Kalendar ausblenden",
-        "pickBackgroundColorLabel": "Hintergrundfarbe wählen",
-        "disableBackgroundColorLabel": "Hintergrundfarbe deaktivieren"
-    },
-    "dialog storage": {
-        "tableHeaderDay": "Tag",
-        "tableHeaderShift": "Schicht",
-        "tableHeaderNote": "Notiz"
-    },
-    "view settings": {
-        "titleShifts": "Schichteinstellungen",
-        "tableHeaderName": "Name",
-        "tableHeaderShort": "Kürzel",
-        "tableHeaderColor": "Farbe",
-        "addShiftButton": "Neue Schicht hinzufügen",
-        "startDatePrimaryText": "Start Datum",
-        "rhythmPrimaryText": "Rhythmus",
-        "titleMisc": "Sonstiges",
-        "miscThemePrimaryText": "Theme",
-        "miscWeekStartPrimaryText": "Die Woche beginnt am Montag",
-        "titleStorage": "Datenspeicher",
-        "storageFetchDataButton": "Daten abrufen",
-        "tableHeaderYear": "Jahr",
-        "tableHeaderMonth": "Monat",
-        "titleBackup": "Backup"
-    },
-    "view pdf": {
-        "yearPicker": "Wähle ein Jahr"
-    },
-    "app-bar": {
-        "settings": "Einstellungen",
-        "pdf": "PDF-Generierung"
-    },
-    "footer": {
-        "edit mode": "Edit Mode"
-    },
-    "buttons": {
-        "edit": "Bearbeiten",
-        "submit": "OK"
-    },
-    "week-days": {
-        "sun": "So",
-        "mon": "Mo",
-        "tue": "Di",
-        "wed": "Mi",
-        "thu": "Do",
-        "fri": "Fr",
-        "sat": "Sa"
-    },
-    "months": {
-        "0": "Januar",
-        "1": "Februar",
-        "2": "März",
-        "3": "April",
-        "4": "Mai",
-        "5": "Juni",
-        "6": "Juli",
-        "7": "August",
-        "8": "September",
-        "9": "August",
-        "10": "November",
-        "11": "Dezember"
-    }
+  "dialog date-picker": {
+    "title": "Datumsauswahl",
+    "inputAndroidLabel": "Wähle ein Datum",
+    "input1Label": "Jahr",
+    "input2Label": "Monat"
+  },
+  "dialog day": {
+    "textfieldLabel": "Notiz"
+  },
+  "dialog rhythm": {
+    "title": "Schicht Rhythmus"
+  },
+  "dialog shift": {
+    "titleEdit": "Schicht Bearbeiten",
+    "titleNew": "Neue Schicht",
+    "longName": "Schicht Name (Bsp.: Nacht)",
+    "shortName": "Kürzel (Bsp.: N)",
+    "hideShiftInputLabel": "Schicht aus dem Kalendar ausblenden",
+    "pickBackgroundColorLabel": "Hintergrundfarbe wählen",
+    "disableBackgroundColorLabel": "Hintergrundfarbe deaktivieren"
+  },
+  "dialog storage": {
+    "tableHeaderDay": "Tag",
+    "tableHeaderShift": "Schicht",
+    "tableHeaderNote": "Notiz"
+  },
+  "view settings": {
+    "titleShifts": "Schichteinstellungen",
+    "tableHeaderName": "Name",
+    "tableHeaderShort": "Kürzel",
+    "tableHeaderColor": "Farbe",
+    "addShiftButton": "Neue Schicht hinzufügen",
+    "startDatePrimaryText": "Start Datum",
+    "rhythmPrimaryText": "Rhythmus",
+    "titleMisc": "Sonstiges",
+    "miscThemePrimaryText": "Theme",
+    "miscWeekStartPrimaryText": "Die Woche beginnt am Montag",
+    "titleStorage": "Datenspeicher",
+    "storageFetchDataButton": "Daten abrufen",
+    "tableHeaderYear": "Jahr",
+    "tableHeaderMonth": "Monat",
+    "titleBackup": "Backup"
+  },
+  "view pdf": {
+    "yearPicker": "Wähle ein Jahr"
+  },
+  "app-bar": {
+    "settings": "Einstellungen",
+    "pdf": "PDF-Generierung"
+  },
+  "footer": {
+    "edit mode": "Edit Mode"
+  },
+  "buttons": {
+    "edit": "Bearbeiten",
+    "submit": "OK"
+  },
+  "week-days": {
+    "sun": "So",
+    "mon": "Mo",
+    "tue": "Di",
+    "wed": "Mi",
+    "thu": "Do",
+    "fri": "Fr",
+    "sat": "Sa"
+  },
+  "months": {
+    "0": "Januar",
+    "1": "Februar",
+    "2": "März",
+    "3": "April",
+    "4": "Mai",
+    "5": "Juni",
+    "6": "Juli",
+    "7": "August",
+    "8": "September",
+    "9": "August",
+    "10": "November",
+    "11": "Dezember"
+  }
 }

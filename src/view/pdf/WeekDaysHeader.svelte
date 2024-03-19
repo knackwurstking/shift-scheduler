@@ -1,56 +1,56 @@
 <script>
-    import { onDestroy } from "svelte";
+  import { onDestroy } from "svelte";
 
-    import * as lang from "../../lib/js/lang";
+  import * as lang from "../../lib/js/lang";
 
-    import * as Store from "../../lib/stores";
+  import * as Store from "../../lib/stores";
 
-    let cleanUp = [];
+  let cleanUp = [];
 
-    const weekStart = Store.weekStart.create();
+  const weekStart = Store.weekStart.create();
 
-    /** @type {string[]} */
-    let headerItems = [
-        lang.get("week-days", "sun"),
-        lang.get("week-days", "mon"),
-        lang.get("week-days", "tue"),
-        lang.get("week-days", "wed"),
-        lang.get("week-days", "thu"),
-        lang.get("week-days", "fri"),
-        lang.get("week-days", "sat"),
-    ];
+  /** @type {string[]} */
+  let headerItems = [
+    lang.get("week-days", "sun"),
+    lang.get("week-days", "mon"),
+    lang.get("week-days", "tue"),
+    lang.get("week-days", "wed"),
+    lang.get("week-days", "thu"),
+    lang.get("week-days", "fri"),
+    lang.get("week-days", "sat"),
+  ];
 
-    $: !!weekStart && initWeekStart();
+  $: !!weekStart && initWeekStart();
 
-    async function initWeekStart() {
-        cleanUp.push(
-            weekStart.subscribe((weekStart) => {
-                const items = [
-                    lang.get("week-days", "sun"),
-                    lang.get("week-days", "mon"),
-                    lang.get("week-days", "tue"),
-                    lang.get("week-days", "wed"),
-                    lang.get("week-days", "thu"),
-                    lang.get("week-days", "fri"),
-                    lang.get("week-days", "sat"),
-                ];
+  async function initWeekStart() {
+    cleanUp.push(
+      weekStart.subscribe((weekStart) => {
+        const items = [
+          lang.get("week-days", "sun"),
+          lang.get("week-days", "mon"),
+          lang.get("week-days", "tue"),
+          lang.get("week-days", "wed"),
+          lang.get("week-days", "thu"),
+          lang.get("week-days", "fri"),
+          lang.get("week-days", "sat"),
+        ];
 
-                if (weekStart === "mon") {
-                    items.push(items.shift());
-                }
+        if (weekStart === "mon") {
+          items.push(items.shift());
+        }
 
-                headerItems = items;
-            }),
-        );
-    }
+        headerItems = items;
+      }),
+    );
+  }
 
-    onDestroy(() => cleanUp.forEach((fn) => fn()));
+  onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
 <thead>
-    <tr>
-        {#each headerItems as item}
-            <th class="is-text-center no-padding">{item}</th>
-        {/each}
-    </tr>
+  <tr>
+    {#each headerItems as item}
+      <th class="is-text-center no-padding">{item}</th>
+    {/each}
+  </tr>
 </thead>

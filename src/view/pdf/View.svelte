@@ -1,112 +1,112 @@
 <script>
-    import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
-    import { Share } from "@capacitor/share";
-    import { jsPDF } from "jspdf";
-    import { UI } from "ui";
+  import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
+  import { Share } from "@capacitor/share";
+  import { jsPDF } from "jspdf";
+  import { UI } from "ui";
 
-    import * as lang from "../../lib/js/lang";
-    import * as utils from "../../lib/js/utils";
+  import * as lang from "../../lib/js/lang";
+  import * as utils from "../../lib/js/utils";
 
-    import * as Store from "../../lib/stores";
+  import * as Store from "../../lib/stores";
 
-    import PDF from "./PDF.svelte";
+  import PDF from "./PDF.svelte";
 
-    const pdf = new jsPDF("portrait", "mm", "a4");
-    const view = Store.view.create();
+  const pdf = new jsPDF("portrait", "mm", "a4");
+  const view = Store.view.create();
 
-    /** @type {number} */
-    export let year;
+  /** @type {number} */
+  export let year;
 
-    let processing = false;
+  let processing = false;
 
-    $: processing ? view.lock() : view.unlock();
+  $: processing ? view.lock() : view.unlock();
 
-    /**
-     * @param {any} doc
-     * @param {number} year
-     */
-    async function exportPDF(doc, year) {
-        const fileName = `${year}.pdf`;
+  /**
+   * @param {any} doc
+   * @param {number} year
+   */
+  async function exportPDF(doc, year) {
+    const fileName = `${year}.pdf`;
 
-        if (utils.isAndroid()) {
-            const result = await Filesystem.writeFile({
-                path: fileName,
-                data: doc.output(),
-                encoding: Encoding.UTF8,
-                directory: Directory.Cache,
-            });
+    if (utils.isAndroid()) {
+      const result = await Filesystem.writeFile({
+        path: fileName,
+        data: doc.output(),
+        encoding: Encoding.UTF8,
+        directory: Directory.Cache,
+      });
 
-            Share.share({
-                title: `${year}`,
-                url: result.uri,
-                dialogTitle: `Share "${fileName}"`,
-            });
-        } else {
-            doc.save(fileName);
-        }
-
-        processing = false;
+      Share.share({
+        title: `${year}`,
+        url: result.uri,
+        dialogTitle: `Share "${fileName}"`,
+      });
+    } else {
+      doc.save(fileName);
     }
 
-    async function download() {
-        processing = true;
+    processing = false;
+  }
 
-        setTimeout(() => {
-            /** @type {HTMLElement} */
-            // @ts-ignore
-            const el = document.getElementById("pdf").cloneNode(true);
+  async function download() {
+    processing = true;
 
-            el.setAttribute("data-theme", "light");
-            [...el.querySelectorAll(".page")].forEach((el) => {
-                // @ts-ignore
-                el.style.aspectRatio = "1 / 1.414";
-            });
+    setTimeout(() => {
+      /** @type {HTMLElement} */
+      // @ts-ignore
+      const el = document.getElementById("pdf").cloneNode(true);
 
-            pdf.html(el, {
-                callback: (doc) => exportPDF(doc, year),
-                width: 210,
-                windowWidth: 500, //window width in CSS pixels
-            });
-        }, 0);
-    }
+      el.setAttribute("data-theme", "light");
+      [...el.querySelectorAll(".page")].forEach((el) => {
+        // @ts-ignore
+        el.style.aspectRatio = "1 / 1.414";
+      });
+
+      pdf.html(el, {
+        callback: (doc) => exportPDF(doc, year),
+        width: 210,
+        windowWidth: 500, //window width in CSS pixels
+      });
+    }, 0);
+  }
 </script>
 
 <div
-    class="ui-container is-max no-scrollbar flex column"
-    style:padding-top="3em"
-    style:overflow="auto"
+  class="ui-container is-max no-scrollbar flex column"
+  style:padding-top="3em"
+  style:overflow="auto"
 >
-    <section class="flex row justify-between">
-        <div>
-            <UI.Input.Number
-                title={lang.get("view pdf", "yearPicker")}
-                min={0}
-                bind:value={year}
-            />
-        </div>
-
-        <UI.Button.Root on:click={() => download()}>Download</UI.Button.Root>
-    </section>
-
-    <div
-        class="is-max-width no-scrollbar flex"
-        style={"height: 100%;" + "overflow-y: auto;"}
-    >
-        <PDF id="pdf" {year} />
+  <section class="flex row justify-between">
+    <div>
+      <UI.Input.Number
+        title={lang.get("view pdf", "yearPicker")}
+        min={0}
+        bind:value={year}
+      />
     </div>
 
-    <div class="ui-spinner" style:display={processing ? "block" : "none"}></div>
+    <UI.Button.Root on:click={() => download()}>Download</UI.Button.Root>
+  </section>
+
+  <div
+    class="is-max-width no-scrollbar flex"
+    style={"height: 100%;" + "overflow-y: auto;"}
+  >
+    <PDF id="pdf" {year} />
+  </div>
+
+  <div class="ui-spinner" style:display={processing ? "block" : "none"}></div>
 </div>
 
 <style>
-    .ui-spinner {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        padding-top: 3em;
-        background-color: hsl(0, 0%, 0%, 0.4);
-        backdrop-filter: blur(5px);
-    }
+  .ui-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 3em;
+    background-color: hsl(0, 0%, 0%, 0.4);
+    backdrop-filter: blur(5px);
+  }
 </style>

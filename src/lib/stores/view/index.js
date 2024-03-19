@@ -16,57 +16,57 @@ const stack = [];
 const view = writable();
 
 export function create() {
-    function lock() {
-        lockHistory = true;
+  function lock() {
+    lockHistory = true;
+  }
+
+  function unlock() {
+    lockHistory = false;
+  }
+
+  function history() {
+    return [...stack];
+  }
+
+  /**
+   * @param {Views} _view
+   */
+  function goto(_view) {
+    if (lockHistory) return;
+
+    switch (_view) {
+      case "calendar":
+        stack.push(_view);
+        view.set(_view)
+        break
+      case "settings":
+        stack.push(_view);
+        view.set(_view)
+        break
+      case "pdf":
+        stack.push(_view);
+        view.set(_view)
+        break;
+    }
+  }
+
+  function back() {
+    if (lockHistory) return;
+
+    if (stack.length <= 1) {
+      return;
     }
 
-    function unlock() {
-        lockHistory = false;
-    }
+    stack.pop();
+    view.set(stack[stack.length - 1])
+  }
 
-    function history() {
-        return [...stack];
-    }
-
-    /**
-     * @param {Views} _view
-     */
-    function goto(_view) {
-        if (lockHistory) return;
-
-        switch (_view) {
-            case "calendar":
-                stack.push(_view);
-                view.set(_view)
-                break
-            case "settings":
-                stack.push(_view);
-                view.set(_view)
-                break
-            case "pdf":
-                stack.push(_view);
-                view.set(_view)
-                break;
-        }
-    }
-
-    function back() {
-        if (lockHistory) return;
-
-        if (stack.length <= 1) {
-            return;
-        }
-
-        stack.pop();
-        view.set(stack[stack.length - 1])
-    }
-
-    return {
-        ...view,
-        lock,
-        unlock,
-        history,
-        goto,
-        back,
-    };
+  return {
+    ...view,
+    lock,
+    unlock,
+    history,
+    goto,
+    back,
+  };
 }

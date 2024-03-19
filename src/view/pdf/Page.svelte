@@ -1,22 +1,22 @@
 <script>
-    /** @type {number} */
-    export let year;
+  /** @type {number} */
+  export let year;
 </script>
 
 <div class="page">
-    <h2
-        style={"position: absolute;" +
-            "top: var(--spacing);" +
-            "right: var(--spacing);"}
-    >
-        {year}
-    </h2>
+  <h2
+    style={"position: absolute;" +
+      "top: var(--spacing);" +
+      "right: var(--spacing);"}
+  >
+    {year}
+  </h2>
 
-    <slot />
+  <slot />
 </div>
 
 <style>
-    div {
-        width: 100%;
-    }
+  div {
+    width: 100%;
+  }
 </style>
