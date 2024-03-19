@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.6.0 [unreleased]
+## v1.5.3 [unreleased]
 
 - Slide in and out the edit mode (footer) bar
 - Added separator line with text "Edit Mode" if toggled on
