@@ -2,19 +2,6 @@ import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
 /**
- * @typedef DBDataValue
- * @type {{
- *  shift: import("../../stores/shift-setup").Shift | null,
- *  note: string,
- * }}
- *
- * @typedef DBData
- * @type {{
- *  [date: string]: DBDataValue,
- * }}
- */
-
-/**
  * @param {any} data
  * @returns {boolean}
  */
@@ -90,7 +77,7 @@ export function listKeys() {
 /**
  * @param {number} year
  * @param {number} month
- * @returns {Promise<DBData>}
+ * @returns {Promise<_DBData>}
  */
 export async function get(year, month) {
   const rawData = window.localStorage.getItem(`db-${year}-${month}`);
@@ -101,7 +88,7 @@ export async function get(year, month) {
 /**
  * @param {number} year
  * @param {number} month
- * @param {DBData} data
+ * @param {_DBData} data
  */
 export async function set(year, month, data) {
   window.localStorage.setItem(`db-${year}-${month}`, JSON.stringify(data));
@@ -119,7 +106,7 @@ export async function remove(year, month) {
  * @param {number} year
  * @param {number} month
  * @param {string} key
- * @returns {Promise<DBDataValue>}
+ * @returns {Promise<_DBDataValue>}
  */
 export async function getData(year, month, key) {
   const data = await get(year, month);
@@ -130,7 +117,7 @@ export async function getData(year, month, key) {
  * @param {number} year
  * @param {number} month 
  * @param {string} key 
- * @param {import("../../stores/shift-setup").Shift | null} shift
+ * @param {_Shift | null} shift
  * @param {string} note
  */
 export async function setData(year, month, key, shift, note) {
@@ -152,7 +139,7 @@ export async function removeData(year, month, key) {
 }
 
 export async function getAll() {
-  /** @type {{ [key: string]: DBData }} */
+  /** @type {{ [key: string]: _DBData }} */
   const data = {};
   for (const { year, month } of listKeys()) {
     data[`db-${year}-${month}`] = await get(year, month);
@@ -162,7 +149,7 @@ export async function getAll() {
 
 /**
  *
- * @param {{ [key: string]: DBData }} data
+ * @param {{ [key: string]: _DBData }} data
  * @param {"browser" | "android"} platform
  */
 export async function exportDatabase(data, platform = "browser") {
@@ -180,7 +167,7 @@ export async function exportDatabase(data, platform = "browser") {
 
 /**
  *
- * @param {{ [key: string]: DBData }} data
+ * @param {{ [key: string]: _DBData }} data
  */
 async function _exportBrowser(data) {
   const blob = new Blob([JSON.stringify(data)], { type: "octet/stream" });
@@ -195,7 +182,7 @@ async function _exportBrowser(data) {
 
 /**
  *
- * @param {{ [key: string]: DBData }} data
+ * @param {{ [key: string]: _DBData }} data
  */
 async function _exportAndroid(data) {
   const file = "shift-scheduler-storage-data.json";

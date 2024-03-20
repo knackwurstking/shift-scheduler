@@ -11,8 +11,8 @@
   import { Shift } from "../shift";
 
   const dispatch = createEventDispatcher();
-  const shiftSetup = Store.shiftSetup.create();
-  const view = Store.view.create();
+  const shiftSetup = Store.ShiftSetup.create();
+  const view = Store.View.create();
 
   /** @type {UI.Dialog.Root} */
   let dialog;
@@ -21,7 +21,7 @@
   let scrollContainer;
 
   /**
-   * @type {import("../../stores/shift-setup").Shift[]}
+   * @type {_Shift[]}
    */
   let shifts = [];
 
@@ -33,7 +33,7 @@
   $: rhythm && setTimeout(scrollToBottom, 150);
 
   /**
-   * @param {import("../../stores/shift-setup").Shift[]} _shifts
+   * @param {_Shift[]} _shifts
    * @param {number[]} _rhythm
    */
   export async function open(_shifts, _rhythm) {

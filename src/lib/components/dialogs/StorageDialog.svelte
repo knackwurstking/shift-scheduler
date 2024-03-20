@@ -8,14 +8,10 @@
 
   import * as Store from "../../stores";
 
-  const view = Store.view.create();
+  const view = Store.View.create();
 
   /** @type {UI.Dialog.Root} */
   let dialog;
-
-  /***********************
-   * Variable Definitions
-   ***********************/
 
   /** @type {number} */
   let year;
@@ -26,7 +22,7 @@
    *
    * @type {{
    *  key: string;
-   *  shift: import("../../stores/shift-setup").Shift | null;
+   *  shift: _Shift | null;
    *  note: string;
    * }[]}
    */

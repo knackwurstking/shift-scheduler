@@ -4,7 +4,7 @@ import * as Store from "../../stores";
 
 import * as db from "../db";
 
-const shiftSetup = Store.shiftSetup.create();
+const shiftSetup = Store.ShiftSetup.create();
 
 export const isAndroid = JS.Utils.isAndroid;
 
@@ -33,7 +33,7 @@ export async function getDaysForMonth(year, month, { weekStart = "sun" } = {}) {
     sd = (sd === 0) ? 6 : sd - 1;
   }
 
-  /** @type {import("../../../view/calendar").Day[]} */
+  /** @type {_Day[]} */
   let days = [
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,

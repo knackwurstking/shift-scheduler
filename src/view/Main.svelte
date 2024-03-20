@@ -7,15 +7,15 @@
   import * as db from "../lib/js/db";
   import * as constants from "../lib/js/constants";
 
-  import CalendarView from "./calendar";
-  import SettingsView from "./settings";
-  import PdfView from "./pdf";
+  import CalendarView from "./calendar/View.svelte";
+  import PdfView from "./pdf/View.svelte";
+  import SettingsView from "./settings/View.svelte";
 
   const cleanUp = [];
 
-  const view = Store.view.create();
-  const editMode = Store.editMode.create();
-  const shiftSetup = Store.shiftSetup.create();
+  const view = Store.View.create();
+  const editMode = Store.EditMode.create();
+  const shiftSetup = Store.ShiftSetup.create();
 
   /** @type {Date} */
   export let currentDate = new Date();
@@ -26,7 +26,7 @@
   let calendarView;
 
   /**
-   * @returns {Promise<(-2 | import("../lib/stores/shift-setup").Shift | undefined)>}
+   * @returns {Promise<(-2 | _Shift | undefined)>}
    */
   async function getEditModeShift() {
     if ($editMode.index === -2) return -2; // NOTE: "reset"
@@ -52,6 +52,96 @@
     }
   }
 
+  /**
+   * @param {CustomEvent<Date | null>} ev
+   */
+  async function handleCalendarClick(ev) {
+    if (!ev.detail) {
+      return;
+    }
+
+    if ($editMode.open) {
+      // edit selected day (update shift)
+      let shift = await getEditModeShift();
+      if (!shift) return;
+
+      animateDayCardItem(ev.detail);
+
+      const key = `${ev.detail.getFullYear()}-${ev.detail.getMonth()}-${ev.detail.getDate()}`;
+
+      const { note } = await db.getData(
+        ev.detail.getFullYear(),
+        ev.detail.getMonth(),
+        key,
+      );
+
+      if (shift === -2) {
+        // reset shift for this day
+        shift = null;
+
+        if (note)
+          await db.setData(
+            ev.detail.getFullYear(),
+            ev.detail.getMonth(),
+            key,
+            null,
+            note,
+          );
+        else
+          await db.removeData(
+            ev.detail.getFullYear(),
+            ev.detail.getMonth(),
+            key,
+          );
+      } else {
+        // update shift for this day
+        await db.setData(
+          ev.detail.getFullYear(),
+          ev.detail.getMonth(),
+          key,
+          shift,
+          note,
+        );
+      }
+
+      calendarView.reload();
+      return;
+    }
+
+    // animate click event and open the dialog (day-dialog) with a timeout of 100ms
+    animateDayCardItem(ev.detail);
+
+    setTimeout(() => {
+      editDayDialog.open(
+        ev.detail.getFullYear(),
+        ev.detail.getMonth(),
+        ev.detail.getDate(),
+      );
+    }, 100);
+  }
+
+  /**
+   * @param {DayDialogSubmit} detail
+   */
+  async function submitDay(detail) {
+    const key = `${detail.date.year}-${detail.date.month}-${detail.date.date}`;
+
+    if (!detail.shift && !detail.note) {
+      await db.removeData(detail.date.year, detail.date.month, key);
+    } else {
+      await db.setData(
+        detail.date.year,
+        detail.date.month,
+        key,
+        detail.shift,
+        detail.note,
+      );
+    }
+
+    editDayDialog.close();
+    calendarView.reload();
+  }
+
   onMount(() => {
     const onResume = () => {
       if (calendarView) calendarView.reload();
@@ -71,63 +161,7 @@
     <CalendarView
       bind:this={calendarView}
       bind:currentDate
-      on:click={async (ev) => {
-        if (ev.detail && $editMode.open) {
-          let shift = await getEditModeShift();
-          if (!shift) return;
-
-          animateDayCardItem(ev.detail);
-
-          const key = `${ev.detail.getFullYear()}-${ev.detail.getMonth()}-${ev.detail.getDate()}`;
-
-          const { note } = await db.getData(
-            ev.detail.getFullYear(),
-            ev.detail.getMonth(),
-            key,
-          );
-
-          if (shift === -2) {
-            // reset shift for this day
-            shift = null;
-
-            if (note)
-              await db.setData(
-                ev.detail.getFullYear(),
-                ev.detail.getMonth(),
-                key,
-                null,
-                note,
-              );
-            else
-              await db.removeData(
-                ev.detail.getFullYear(),
-                ev.detail.getMonth(),
-                key,
-              );
-          } else {
-            // update shift for this day
-            await db.setData(
-              ev.detail.getFullYear(),
-              ev.detail.getMonth(),
-              key,
-              shift,
-              note,
-            );
-          }
-
-          calendarView.reload();
-        } else if (ev.detail) {
-          animateDayCardItem(ev.detail);
-
-          setTimeout(() => {
-            editDayDialog.open(
-              ev.detail.getFullYear(),
-              ev.detail.getMonth(),
-              ev.detail.getDate(),
-            );
-          }, 100);
-        }
-      }}
+      on:click={handleCalendarClick}
       on:currentdatechange={({ detail }) => (currentDate = detail)}
     />
   {:else if $view === "settings"}
@@ -139,25 +173,8 @@
 
 <EditDayDialog
   bind:this={editDayDialog}
-  on:close={async () => editDayDialog.close()}
-  on:submit={async ({ detail }) => {
-    const key = `${detail.date.year}-${detail.date.month}-${detail.date.date}`;
-
-    if (!detail.shift && !detail.note) {
-      await db.removeData(detail.date.year, detail.date.month, key);
-    } else {
-      await db.setData(
-        detail.date.year,
-        detail.date.month,
-        key,
-        detail.shift,
-        detail.note,
-      );
-    }
-
-    editDayDialog.close();
-    calendarView.reload();
-  }}
+  on:close={() => editDayDialog.close()}
+  on:submit={({ detail }) => submitDay(detail)}
 />
 
 <style>

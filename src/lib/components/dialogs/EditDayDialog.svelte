@@ -8,8 +8,8 @@
   import * as lang from "../../js/lang";
 
   const dispatch = createEventDispatcher();
-  const shiftSetup = Store.shiftSetup.create();
-  const view = Store.view.create();
+  const shiftSetup = Store.ShiftSetup.create();
+  const view = Store.View.create();
 
   /** @type {UI.Dialog.Root} */
   let dialog;
@@ -24,9 +24,9 @@
   /** @type {number} */
   let date;
 
-  /** @type {import("../../stores/shift-setup").Shift | null} */
+  /** @type {_Shift | null} */
   let defaultShift;
-  /** @type {import("../../stores/shift-setup").Shift | null} */
+  /** @type {_Shift | null} */
   let shift;
   /** @type {string} */
   let note;

@@ -8,7 +8,7 @@
   import * as Store from "../../stores";
 
   const dispatch = createEventDispatcher();
-  const view = Store.view.create();
+  const view = Store.View.create();
 
   /** @type {UI.Dialog.Root} */
   let dialog;

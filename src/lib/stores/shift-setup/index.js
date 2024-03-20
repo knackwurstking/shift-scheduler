@@ -1,15 +1,6 @@
 import { writable, get } from "svelte/store";
 
 /**
- * @typedef Shift
- * @type {{
- *  id: number;
- *  name: string;
- *  shortName: string;
- *  visible: boolean;
- *  color?: string;
- * }}
- *
  * @typedef Setup
  * @type {{
  *  shifts: Shift[];

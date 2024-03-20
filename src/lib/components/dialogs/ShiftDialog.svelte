@@ -7,7 +7,7 @@
   import * as Store from "../../stores";
 
   const dispatch = createEventDispatcher();
-  const view = Store.view.create();
+  const view = Store.View.create();
 
   /** @type {UI.Dialog.Root} */
   let dialog;
@@ -21,7 +21,7 @@
   let disableColor = false;
 
   /**
-   * @param {import("../../stores/shift-setup").Shift | null | undefined} shift
+   * @param {_Shift | null | undefined} shift
    */
   export async function open(shift = null) {
     if (shift) {
