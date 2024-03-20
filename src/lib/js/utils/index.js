@@ -9,8 +9,8 @@ const shiftSetup = Store.ShiftSetup.create();
 export const isAndroid = JS.Utils.isAndroid;
 
 /**
- * @param {import("../db").DBData} data
- * @returns {Promise<import("../db").DBData>}
+ * @param {_DBData} data
+ * @returns {Promise<_DBData>}
  */
 export async function mergeDataWithShifts(data) {
   for (const key in data) {

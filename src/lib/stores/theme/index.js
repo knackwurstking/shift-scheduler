@@ -1,13 +1,8 @@
 import { writable } from "svelte/store";
 
-/**
- * @typedef Themes
- * @type {"system" | "dark" | "light"}
- */
-
 const storageKey = "theme-store";
 
-/** @type {import("svelte/store").Writable<Themes>} */
+/** @type {import("svelte/store").Writable<_Themes>} */
 const theme = writable((() => {
   const theme = localStorage.getItem(storageKey) || "system";
   switch (theme) {

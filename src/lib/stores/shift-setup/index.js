@@ -1,21 +1,12 @@
 import { writable, get } from "svelte/store";
 
-/**
- * @typedef Setup
- * @type {{
- *  shifts: Shift[];
- *  rhythm: number[];
- *  startDate: string;
- * }}
- */
-
 const storageKey = "shift-setup-store";
 
-/** @type {import("svelte/store").Writable<Setup>} */
+/** @type {import("svelte/store").Writable<_ShiftSetup>} */
 const shiftSetup = writable((() => {
   const setupJSON = localStorage.getItem(storageKey);
   if (setupJSON) {
-    /** @type {Setup} */
+    /** @type {_ShiftSetup} */
     const setup = JSON.parse(setupJSON);
 
     return {
@@ -59,7 +50,7 @@ export function create() {
 
   /**
    * @param {number} id
-   * @returns {Shift | undefined}
+   * @returns {_Shift | undefined}
    */
   function getShiftForID(id) {
     const setupCopy = get(shiftSetup);
@@ -68,7 +59,7 @@ export function create() {
 
   /**
    * @param {string} name
-   * @returns {Shift | undefined}
+   * @returns {_Shift | undefined}
    */
   function getShiftForName(name) {
     const setupCopy = get(shiftSetup);
@@ -76,7 +67,7 @@ export function create() {
   }
 
   /**
-   * @param {Shift} shift
+   * @param {_Shift} shift
    */
   function updateShift(shift) {
     shiftSetup.update(setup => {
@@ -127,8 +118,8 @@ export function create() {
   }
 
   /**
-   * @param {Shift} shift
-   * @returns {Shift}
+   * @param {_Shift} shift
+   * @returns {_Shift}
    */
   function mergeShift(shift) {
     const setupCopy = get(shiftSetup);
