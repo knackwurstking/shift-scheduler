@@ -1,46 +1,7 @@
 import en from "./en.json";
 import de from "./de.json";
 
-/**
- * @typedef LangDataGroups
- * @type {(
- *  "dialog date-picker" |
- *  "dialog day" |
- *  "dialog rhythm" |
- *  "dialog shift" |
- *  "dialog storage" |
- *  "view settings" |
- *  "view pdf" |
- *  "app-bar" |
- *  "footer" |
- *  "buttons" |
- *  "week-days" |
- *  "months"
- * )}
- *
- * @typedef LangData
- * @type {{
- *  "dialog date-picker": { [key: string]: string };
- *  "dialog day": { [key: string]: string };
- *  "dialog rhythm": { [key: string]: string };
- *  "dialog shift": { [key: string]: string };
- *  "dialog storage": { [key: string]: string };
- *  "view settings": { [key: string]: string };
- *  "view pdf": { [key: string]: string };
- *  "app-bar": { [key: string]: string };
- *  "buttons": { [key: string]: string };
- *  "week-days": { [key: string]: string };
- *  "months": { [key: string]: string };
- * }}
- *
- * @typedef Lang
- * @type {{
- *  en: LangData;
- *  de: LangData
- * }}
- */
-
-/** @type {Lang} */
+/** @type {_Lang} */
 const data = { "en": en, "de": de };
 
 export let defaultLanguage = "en";
@@ -61,7 +22,7 @@ export let lang = (() => {
 })();
 
 /**
- * @param {LangDataGroups} group
+ * @param {_LangDataGroups} group
  * @param {string} key
  * @returns {string | null}
  */
