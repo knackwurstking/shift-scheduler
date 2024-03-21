@@ -1,7 +1,7 @@
 <script>
   import Backup from "./Backup.svelte";
   import ShiftSettings from "./ShiftSettings.svelte";
-  import Miscellaneous from "./Miscellaneous.svelte";
+  import Misc from "./Misc.svelte";
   import Storage from "./Storage.svelte";
 </script>
 
@@ -10,7 +10,7 @@
   <br />
   <ShiftSettings />
   <br />
-  <Miscellaneous />
+  <Misc />
   <br />
   <Storage />
 </div>
