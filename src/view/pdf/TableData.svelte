@@ -1,7 +1,7 @@
 <script>
   /** @type {number} */
   export let date;
-  /** @type {_Shift} */
+  /** @type {_Shift | null} */
   export let shift;
   export let empty = false;
 </script>
@@ -14,7 +14,7 @@
         style:font-size=".85em"
         style:font-weight="lighter">{date}</span
       >
-      {#if shift.visible}
+      {#if shift?.visible}
         <span
           style:width="100%"
           style:display="block"
