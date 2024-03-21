@@ -7,9 +7,9 @@
   import * as db from "../lib/js/db";
   import * as constants from "../lib/js/constants";
 
-  import CalendarView from "./calendar/View.svelte";
-  import PdfView from "./pdf/View.svelte";
-  import SettingsView from "./settings/View.svelte";
+  import Calendar from "./calendar";
+  import Pdf from "./pdf";
+  import Settings from "./settings";
 
   const cleanUp = [];
 
@@ -22,7 +22,7 @@
 
   /** @type {EditDayDialog} */
   let editDayDialog;
-  /** @type {CalendarView} */
+  /** @type {Calendar} */
   let calendarView;
 
   /**
@@ -158,16 +158,16 @@
   style:bottom={$editMode.open ? constants.footerHeight : "0"}
 >
   {#if $view === "calendar"}
-    <CalendarView
+    <Calendar
       bind:this={calendarView}
       bind:currentDate
       on:click={handleCalendarClick}
       on:currentdatechange={({ detail }) => (currentDate = detail)}
     />
   {:else if $view === "settings"}
-    <SettingsView />
+    <Settings />
   {:else if $view === "pdf"}
-    <PdfView year={currentDate.getFullYear()} />
+    <Pdf year={currentDate.getFullYear()} />
   {/if}
 </main>
 
