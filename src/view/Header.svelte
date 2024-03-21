@@ -45,7 +45,7 @@
     />
   </svelte:fragment>
 
-  <svelte:fragment>
+  <svelte:fragment slot="center">
     <HeaderCenterSlot {title} />
   </svelte:fragment>
 
