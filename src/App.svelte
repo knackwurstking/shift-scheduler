@@ -23,7 +23,7 @@
   $: !!view && initViewStore();
 
   /**
-   * @param {Store.View.Views} currentView
+   * @param {_Views} currentView
    */
   function viewSubscribeHandler(currentView) {
     console.debug(`view=${currentView}`);
