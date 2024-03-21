@@ -42,6 +42,7 @@
       {datePickerDialog}
       backButton={enableBackButton}
       datePicker={enableDatePicker}
+      on:backbuttonclick
     />
   </svelte:fragment>
 
@@ -50,7 +51,13 @@
   </svelte:fragment>
 
   <svelte:fragment slot="right">
-    <HeaderRightSlot {currentDate} datePicker={enableDatePicker} />
+    <HeaderRightSlot
+      {currentDate}
+      datePicker={enableDatePicker}
+      on:goto
+      on:editmodeclick
+      on:currentdatechange
+    />
   </svelte:fragment>
 </UI.TopAppBar.Root>
 
