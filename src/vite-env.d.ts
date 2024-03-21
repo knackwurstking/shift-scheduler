@@ -57,7 +57,7 @@ interface _Lang {
 }
 
 /*
- * stores 
+ * stores
  */
 
 interface _ShiftSetup {
@@ -70,6 +70,11 @@ type _Themes =
   "system" |
   "dark" |
   "light";
+
+type _Views =
+  "calendar" |
+  "settings" |
+  "pdf";
 
 /*
  * calendar

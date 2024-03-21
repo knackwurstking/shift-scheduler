@@ -1,18 +1,13 @@
 import { writable } from "svelte/store";
 
-/**
- * @typedef Views
- * @type {"calendar" | "settings" | "pdf"}
- */
-
 let lockHistory = false;
 
 /**
- * @type {Views[]}
+ * @type {_Views[]}
  */
 const stack = [];
 
-/** @type {import("svelte/store").Writable<Views>} */
+/** @type {import("svelte/store").Writable<_Views>} */
 const view = writable();
 
 export function create() {
@@ -29,7 +24,7 @@ export function create() {
   }
 
   /**
-   * @param {Views} _view
+   * @param {_Views} _view
    */
   function goto(_view) {
     if (lockHistory) return;
