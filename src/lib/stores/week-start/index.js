@@ -1,16 +1,13 @@
 import { writable } from "svelte/store";
 
-/**
- * @typedef WeekStartDays
- * @type {"sun" | "mon"}
- */
-
 const storageKey = "week-start-store";
 
-/** @type {import("svelte/store").Writable<WeekStartDays>} */
-// @ts-ignore
+/** @type {import("svelte/store").Writable<_WeekStartDays>} */
 const weekStart = writable((() => {
-  return localStorage.getItem(storageKey) || "sun";
+  /** @type {_WeekStartDays} */
+  // @ts-ignore
+  const ws = localStorage.getItem(storageKey) || "sun";
+  return ws;
 })());
 
 weekStart.subscribe((weekStart) => {

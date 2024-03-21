@@ -76,6 +76,10 @@ type _Views =
   "settings" |
   "pdf";
 
+type _WeekStartDays =
+  "sun" |
+  "mon";
+
 /*
  * calendar
  */
