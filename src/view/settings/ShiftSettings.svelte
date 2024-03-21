@@ -10,7 +10,7 @@
 
   import * as Store from "../../lib/stores";
 
-  const shiftSetup = Store.shiftSetup.create();
+  const shiftSetup = Store.ShiftSetup.create();
 
   /** @type {ShiftDialog} */
   let shiftDialog;
@@ -200,7 +200,7 @@
   on:submit={async (ev) => {
     shiftDialog.close();
 
-    /** @type {import("../../lib/stores/shift-setup").Shift} */
+    /** @type {_Shift} */
     const shift = ev.detail;
 
     if (!shift.name) return;

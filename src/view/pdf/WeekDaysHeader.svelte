@@ -7,7 +7,7 @@
 
   let cleanUp = [];
 
-  const weekStart = Store.weekStart.create();
+  const weekStart = Store.WeekStart.create();
 
   /** @type {string[]} */
   let headerItems = [

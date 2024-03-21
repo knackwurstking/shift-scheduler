@@ -9,14 +9,14 @@
   import Day from "./Day.svelte";
 
   const dispatch = createEventDispatcher();
-  const weekStart = Store.weekStart.create();
+  const weekStart = Store.WeekStart.create();
 
   /** @type {number} */
   export let index;
   /** @type {Date} */
   export let currentDate;
 
-  /** @type {import(".").Day[]} */
+  /** @type {_Day[]} */
   let days = Array(42)
     .fill(0)
     .map(() => ({ date: currentDate, data: { shift: null, note: "" } }));

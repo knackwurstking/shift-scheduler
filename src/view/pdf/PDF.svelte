@@ -6,19 +6,11 @@
   import Page from "./Page.svelte";
   import PageSection from "./PageSection.svelte";
 
-  /**
-   * @typedef Day
-   * @type {import("../calendar").Day}
-   *
-   * @typedef ArticleData
-   * @type {{ month: number; data: Day[] }}
-   */
-
-  const weekStart = Store.weekStart.create();
+  const weekStart = Store.WeekStart.create();
 
   export let year;
 
-  /** @type {ArticleData[][]} */
+  /** @type {{ month: number; data: _Day[] }[][]} */
   let pagesData = [];
 
   $: if (!!year && !!weekStart)

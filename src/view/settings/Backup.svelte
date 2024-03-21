@@ -12,19 +12,16 @@
   /**
    * @typedef BackupData
    * @type {{
-   *  settings: SettingsData;
+   *  settings: _ShiftSetup;
    *  storage: StorageData;
    * }}
    *
-   * @typedef SettingsData
-   * @type {Stores.shiftSetup.Setup}
-   *
    * @typedef StorageData
-   * @type {{ [month: string]: db.DBData }}
+   * @type {{ [month: string]: _DBData }}
    */
 
-  const settingsStorage = Stores.settingsStorage.create();
-  const shiftSetup = Stores.shiftSetup.create();
+  const settingsStorage = Stores.SettingsStorage.create();
+  const shiftSetup = Stores.ShiftSetup.create();
 
   /**
    * @param {string} result

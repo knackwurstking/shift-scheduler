@@ -8,7 +8,7 @@
 
   const cleanUp = [];
   const dispatch = createEventDispatcher();
-  const weekStart = Store.weekStart.create();
+  const weekStart = Store.WeekStart.create();
 
   /** @type {string[]} */
   let headerItems = [

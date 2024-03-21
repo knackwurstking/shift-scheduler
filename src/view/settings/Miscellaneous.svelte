@@ -5,8 +5,8 @@
 
   import * as Store from "../../lib/stores";
 
-  const theme = Store.theme.create();
-  const weekStart = Store.weekStart.create();
+  const theme = Store.Theme.create();
+  const weekStart = Store.WeekStart.create();
 </script>
 
 <article class="ui-card has-margin">

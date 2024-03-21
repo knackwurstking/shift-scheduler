@@ -1,7 +1,7 @@
 <script>
   /** @type {number} */
   export let date;
-  /** @type {import("../../lib/stores/shift-setup").Shift} */
+  /** @type {_Shift} */
   export let shift;
   export let empty = false;
 </script>

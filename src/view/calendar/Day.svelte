@@ -1,7 +1,7 @@
 <script>
   /** @type {number} */
   export let currentMonth;
-  /** @type {import(".").Day} */
+  /** @type {_Day} */
   export let day;
 
   $: day && setData();

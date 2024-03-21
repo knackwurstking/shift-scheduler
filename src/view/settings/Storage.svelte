@@ -11,7 +11,7 @@
 
   import * as Stores from "../../lib/stores";
 
-  const settingsStorage = Stores.settingsStorage.create();
+  const settingsStorage = Stores.SettingsStorage.create();
 
   /** @type {StorageDialog} */
   let storageDialog;

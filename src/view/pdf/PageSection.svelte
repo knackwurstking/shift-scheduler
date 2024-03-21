@@ -6,7 +6,7 @@
 
   /** @type {number} */
   export let month;
-  /** @type {import("../calendar").Day[]} */
+  /** @type {_Day[]} */
   export let data;
 </script>
 

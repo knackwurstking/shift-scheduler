@@ -14,6 +14,14 @@ interface _DBData {
   [date: string]: DBDataValue;
 }
 
+interface _Shift {
+  id: number;
+  name: string;
+  shortName: string;
+  visible: boolean;
+  color?: string;
+}
+
 /*
  * js: "lang" types
  */
@@ -101,16 +109,4 @@ interface _DayDialogSubmit {
   },
   shift: Shift | null;
   note: string;
-}
-
-/*
- * misc
- */
-
-interface _Shift {
-  id: number;
-  name: string;
-  shortName: string;
-  visible: boolean;
-  color?: string;
 }

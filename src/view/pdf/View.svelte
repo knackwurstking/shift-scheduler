@@ -12,7 +12,7 @@
   import PDF from "./PDF.svelte";
 
   const pdf = new jsPDF("portrait", "mm", "a4");
-  const view = Store.view.create();
+  const view = Store.View.create();
 
   /** @type {number} */
   export let year;

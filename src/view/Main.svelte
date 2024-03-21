@@ -121,7 +121,7 @@
   }
 
   /**
-   * @param {DayDialogSubmit} detail
+   * @param {_DayDialogSubmit} detail
    */
   async function submitDay(detail) {
     const key = `${detail.date.year}-${detail.date.month}-${detail.date.date}`;
