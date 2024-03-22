@@ -1,9 +1,8 @@
 <script>
   import { onDestroy } from "svelte";
 
-  import * as lang from "../../lib/js/lang";
-
-  import * as Store from "../../lib/stores";
+  import { lang } from "../../../lib/js";
+  import * as Store from "../../../lib/stores";
 
   let cleanUp = [];
 

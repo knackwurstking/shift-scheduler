@@ -3,8 +3,8 @@
 
   import * as utils from "../../lib/js/utils";
 
-  import Page from "./Page.svelte";
-  import PageSection from "./PageSection.svelte";
+  import PDFPage from "./PDFPage.svelte";
+  import PDFPageSection from "./PDFPageSection.svelte";
 
   const weekStart = Store.WeekStart.create();
 
@@ -38,19 +38,19 @@
 
 <div {...$$restProps}>
   {#each pagesData as data}
-    <Page {year}>
-      <PageSection
+    <PDFPage {year}>
+      <PDFPageSection
         style="padding: 1em;"
         month={data[0].month}
         data={data[0].data}
       />
 
-      <PageSection
+      <PDFPageSection
         style="padding: 1em;"
         month={data[1].month}
         data={data[1].data}
       />
-    </Page>
+    </PDFPage>
   {/each}
 </div>
 

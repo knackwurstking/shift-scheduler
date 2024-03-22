@@ -1,8 +1,8 @@
 <script>
   import * as lang from "../../lib/js/lang";
 
-  import WeekDaysHeader from "./WeekDaysHeader.svelte";
-  import TableData from "./TableData.svelte";
+  import WeekDaysHeader from "./pdf-page-section/WeekDaysHeader.svelte";
+  import TableData from "./pdf-page-section/TableData.svelte";
 
   /** @type {number} */
   export let month;
