@@ -7,6 +7,7 @@
 - Changed the app icon
 - Fix pdf view error if no shift rhythm configured
 - Updated dependency [ui v0.1.1](https://github.com/knackwurstking/ui.git)
+- Code clean up
 
 ## v1.5.2 2024-03-02
 
