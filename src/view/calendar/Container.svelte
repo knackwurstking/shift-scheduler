@@ -2,8 +2,7 @@
   import { createEventDispatcher, onDestroy } from "svelte";
   import { UI } from "ui";
 
-  import * as lang from "../../lib/js/lang";
-
+  import { lang } from "../../lib/js";
   import * as Store from "../../lib/stores";
 
   const cleanUp = [];
