@@ -13,11 +13,8 @@
    * @typedef BackupData
    * @type {{
    *  settings: _ShiftSetup;
-   *  storage: StorageData;
+   *  storage: { [month: string]: _DBData };
    * }}
-   *
-   * @typedef StorageData
-   * @type {{ [month: string]: _DBData }}
    */
 
   const settingsStorage = Stores.SettingsStorage.create();
