@@ -5,10 +5,10 @@
 - Slide in and out the edit mode (footer) bar
 - Added separator line with text "Edit Mode" if toggled on
 - Changed the app icon
-- Fix pdf view error if no shift rhythm configured
+- Fixed pdf view error if no shift rhythm configured
 - Updated dependency [ui v0.1.1](https://github.com/knackwurstking/ui.git)
-- Code clean up
 - Changed `lang` library
+- Code clean up
 
 ## v1.5.2 2024-03-02
 
