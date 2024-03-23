@@ -3,7 +3,7 @@
   export let year;
 </script>
 
-<div class="page">
+<div class="page is-max-width">
   <h2
     style={"position: absolute;" +
       "top: var(--spacing);" +
@@ -14,9 +14,3 @@
 
   <slot />
 </div>
-
-<style>
-  div {
-    width: 100%;
-  }
-</style>

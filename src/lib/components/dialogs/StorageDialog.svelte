@@ -3,9 +3,7 @@
 
   import { UI } from "ui";
 
-  import * as lang from "../../js/lang";
-  import * as db from "../../js/db";
-
+  import { lang, db } from "../../js";
   import * as Store from "../../stores";
 
   const view = Store.View.create();
@@ -71,13 +69,13 @@
         <thead>
           <tr>
             <th class="is-text-left">
-              {lang.get("dialog storage", "tableHeaderDay")}
+              {lang.get()["dialog storage"]["table header day"]}
             </th>
             <th class="is-text-left">
-              {lang.get("dialog storage", "tableHeaderShift")}
+              {lang.get()["dialog storage"]["table header shift"]}
             </th>
             <th class="is-text-left">
-              {lang.get("dialog storage", "tableHeaderNote")}
+              {lang.get()["dialog storage"]["table header note"]}
             </th>
             <th class="is-text-right" />
           </tr>

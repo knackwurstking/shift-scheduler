@@ -1,5 +1,5 @@
 <script>
-  import * as lang from "../../lib/js/lang";
+  import { lang } from "../../lib/js";
 
   import WeekDaysHeader from "./pdf-page-section/WeekDaysHeader.svelte";
   import TableData from "./pdf-page-section/TableData.svelte";
@@ -11,9 +11,9 @@
 </script>
 
 <section {...$$restProps}>
-  <h3>{lang.get("months", month.toString())}</h3>
+  <h3>{lang.get()["months"][month.toString()]}</h3>
 
-  <table>
+  <table class="is-max-width">
     <WeekDaysHeader />
 
     <tbody>
@@ -34,7 +34,6 @@
 
 <style>
   table {
-    width: 100%;
     height: fit-content;
     max-height: 50%;
     table-layout: fixed;

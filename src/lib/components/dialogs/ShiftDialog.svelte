@@ -2,8 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { UI } from "ui";
 
-  import * as lang from "../../js/lang";
-
+  import { lang } from "../../js";
   import * as Store from "../../stores";
 
   const dispatch = createEventDispatcher();
@@ -60,22 +59,22 @@
   <UI.Dialog.Header
     title={`${
       id
-        ? lang.get("dialog shift", "titleEdit")
-        : lang.get("dialog shift", "titleNew")
+        ? lang.get()["dialog shift"]["edit shift title"]
+        : lang.get()["dialog shift"]["new shift title"]
     }`}
     on:close={() => close()}
   />
 
   <section>
     <UI.Input.Text
-      title={lang.get("dialog shift", "longName")}
+      title={lang.get()["dialog shift"]["long name"]}
       bind:value={name}
     />
   </section>
 
   <section>
     <UI.Input.Text
-      title={lang.get("dialog shift", "shortName")}
+      title={lang.get()["dialog shift"]["short name"]}
       bind:value={shortName}
     />
   </section>
@@ -85,7 +84,7 @@
   <section>
     <UI.Text.Label
       style="cursor: pointer;"
-      secondary={lang.get("dialog shift", "hideShiftInputLabel")}
+      secondary={lang.get()["dialog shift"]["hide shift"]}
       useLabel
       row
     >
@@ -96,7 +95,7 @@
   <br />
 
   <section>
-    <UI.Text.Label secondary={lang.get("dialog shift", "color picker")}>
+    <UI.Text.Label secondary={lang.get()["dialog shift"]["color picker"]}>
       <input style="width: 100%;" type="color" bind:value={color} />
     </UI.Text.Label>
 
@@ -116,7 +115,7 @@
         });
       }}
     >
-      {lang.get("buttons", "submit")}
+      {lang.get()["buttons"]["submit"]}
     </UI.Button.Root>
   </UI.Dialog.Footer>
 </UI.Dialog.Root>

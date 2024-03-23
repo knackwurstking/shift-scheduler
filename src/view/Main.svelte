@@ -3,9 +3,8 @@
 
   import { EditDayDialog } from "../lib/components";
 
+  import { db, constants } from "../lib/js";
   import * as Store from "../lib/stores";
-  import * as db from "../lib/js/db";
-  import * as constants from "../lib/js/constants";
 
   import Calendar from "./calendar";
   import Pdf from "./pdf";

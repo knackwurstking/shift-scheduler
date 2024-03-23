@@ -4,9 +4,7 @@
   import { jsPDF } from "jspdf";
   import { UI } from "ui";
 
-  import * as lang from "../../lib/js/lang";
-  import * as utils from "../../lib/js/utils";
-
+  import { lang, utils } from "../../lib/js";
   import * as Store from "../../lib/stores";
 
   import PDF from "./PDF.svelte";
@@ -79,7 +77,7 @@
   <section class="flex row justify-between">
     <div>
       <UI.Input.Number
-        title={lang.get("view pdf", "yearPicker")}
+        title={lang.get()["pdf"]["year picker"]}
         min={0}
         bind:value={year}
       />
@@ -95,7 +93,10 @@
     <PDF id="pdf" {year} />
   </div>
 
-  <div class="ui-spinner" style:display={processing ? "block" : "none"}></div>
+  <div
+    class="ui-spinner is-max"
+    style:display={processing ? "block" : "none"}
+  ></div>
 </div>
 
 <style>
@@ -103,8 +104,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     padding-top: 3em;
     background-color: hsl(0, 0%, 0%, 0.4);
     backdrop-filter: blur(5px);

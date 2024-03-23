@@ -1,7 +1,6 @@
 <script>
+  import { utils } from "../../lib/js";
   import * as Store from "../../lib/stores";
-
-  import * as utils from "../../lib/js/utils";
 
   import PDFPage from "./PDFPage.svelte";
   import PDFPageSection from "./PDFPageSection.svelte";
@@ -36,7 +35,7 @@
     })();
 </script>
 
-<div {...$$restProps}>
+<div class={"is-max-width " + ($$restProps.class || "")} {...$$restProps}>
   {#each pagesData as data}
     <PDFPage {year}>
       <PDFPageSection
@@ -53,9 +52,3 @@
     </PDFPage>
   {/each}
 </div>
-
-<style>
-  div {
-    width: 100%;
-  }
-</style>

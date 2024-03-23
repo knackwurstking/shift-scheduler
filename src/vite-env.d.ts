@@ -100,6 +100,7 @@ interface _LangData {
     "year picker": string;
   };
   "app-bar": {
+    "calendar": string;
     "settings": string;
     "pdf": string;
   };

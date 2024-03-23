@@ -4,8 +4,7 @@
 
   import * as Store from "../../stores";
 
-  import * as db from "../../js/db";
-  import * as lang from "../../js/lang";
+  import { db, lang } from "../../js";
 
   const dispatch = createEventDispatcher();
   const shiftSetup = Store.ShiftSetup.create();
@@ -94,7 +93,7 @@
 
   <section class="has-x-margin">
     <span class="ui-input-title">
-      {lang.get("dialog day", "textfieldLabel")}
+      {lang.get()["dialog day"]["textfield"]}
     </span>
 
     <textarea bind:value={note} rows="10" style="width: 100%;" />
@@ -110,7 +109,7 @@
           note: note,
         })}
     >
-      {lang.get("buttons", "submit")}
+      {lang.get()["buttons"]["submit"]}
     </UI.Button.Root>
   </UI.Dialog.Footer>
 </UI.Dialog.Root>

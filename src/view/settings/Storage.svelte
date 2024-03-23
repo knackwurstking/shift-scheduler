@@ -12,7 +12,7 @@
 
 <article class="ui-card has-margin">
   <h3 style="margin: var(--spacing)">
-    {lang.get("view settings", "titleStorage")}
+    {lang.get()["settings storage"]["title"]}
   </h3>
 
   <hr />
@@ -29,7 +29,7 @@
   {:else}
     <section>
       <UI.Button.Root color="secondary" on:click={() => settingsStorage.open()}>
-        {lang.get("view settings", "storageFetchDataButton")}
+        {lang.get()["settings storage"]["button fetch data"]}
       </UI.Button.Root>
     </section>
   {/if}

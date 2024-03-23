@@ -3,10 +3,7 @@
   import { Share } from "@capacitor/share";
   import { UI, JS } from "ui";
 
-  import * as lang from "../../lib/js/lang";
-  import * as db from "../../lib/js/db";
-  import * as utils from "../../lib/js/utils";
-
+  import { lang, db, utils } from "../../lib/js";
   import * as Stores from "../../lib/stores";
 
   /**
@@ -150,7 +147,7 @@
 
 <article class="ui-card has-margin">
   <h3 style="margin: var(--spacing)">
-    {lang.get("view settings", "titleBackup")}
+    {lang.get()["settings backup"]["title"]}
   </h3>
 
   <hr />

@@ -8,10 +8,7 @@
 </script>
 
 <section>
-  <UI.Text.Label
-    primary={lang.get("view settings", "startDatePrimaryText")}
-    row
-  >
+  <UI.Text.Label primary={lang.get()["settings shifts"]["start date"]} row>
     <UI.Input.Date
       value={$shiftSetup.startDate}
       on:input={(ev) => {

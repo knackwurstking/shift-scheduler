@@ -11,7 +11,7 @@
 </script>
 
 <section>
-  <UI.Text.Label primary={lang.get("view settings", "rhythmPrimaryText")} row>
+  <UI.Text.Label primary={lang.get()["settings shifts"]["rhythm"]} row>
     <UI.Button.Root
       disabled={!$shiftSetup.shifts.length}
       on:click={async () => {
@@ -23,7 +23,7 @@
         );
       }}
     >
-      {lang.get("buttons", "edit")}
+      {lang.get()["buttons"]["edit"]}
     </UI.Button.Root>
   </UI.Text.Label>
 </section>

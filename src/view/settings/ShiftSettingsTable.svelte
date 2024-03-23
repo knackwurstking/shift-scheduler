@@ -19,10 +19,10 @@
   <thead>
     <tr>
       <th class="is-text-left">
-        {lang.get("view settings", "tableHeaderName")}
+        {lang.get()["settings shifts"]["table header name"]}
       </th>
       <th class="is-text-left">
-        {lang.get("view settings", "tableHeaderShort")}
+        {lang.get()["settings shifts"]["table header short name"]}
       </th>
       <th class="is-text-right" />
     </tr>

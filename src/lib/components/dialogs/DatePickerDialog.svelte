@@ -2,9 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { UI } from "ui";
 
-  import * as lang from "../../js/lang";
-  import * as utils from "../../js/utils";
-
+  import { lang, utils } from "../../js";
   import * as Store from "../../stores";
 
   const dispatch = createEventDispatcher();
@@ -52,21 +50,21 @@
 
 <UI.Dialog.Root bind:this={dialog} style="min-width: 15em;">
   <UI.Dialog.Header
-    title={lang.get("dialog date-picker", "title")}
+    title={lang.get()["dialog date-picker"]["title"]}
     on:close={() => close()}
   />
 
   {#if utils.isAndroid()}
     <section>
       <UI.Input.Month
-        title={lang.get("dialog date-picker", "inputAndroidLabel")}
+        title={lang.get()["dialog date-picker"]["android input"]}
         bind:value={dateString}
       />
     </section>
   {:else}
     <section>
       <UI.Input.Number
-        title={lang.get("dialog date-picker", "input1Label")}
+        title={lang.get()["dialog date-picker"]["input year"]}
         bind:value={year}
         invalid={year === null}
       />
@@ -74,7 +72,7 @@
 
     <section>
       <UI.Input.Number
-        title={lang.get("dialog date-picker", "input2Label")}
+        title={lang.get()["dialog date-picker"]["input month"]}
         min={1}
         max={12}
         bind:value={month}
@@ -91,7 +89,7 @@
         dispatch("submit", { year, month: month - 1 });
       }}
     >
-      {lang.get("buttons", "submit")}
+      {lang.get()["buttons"]["submit"]}
     </UI.Button.Root>
   </UI.Dialog.Footer>
 </UI.Dialog.Root>

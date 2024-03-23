@@ -1,8 +1,7 @@
 import { JS } from "ui";
 
+import { db } from "..";
 import * as Store from "../../stores";
-
-import * as db from "../db";
 
 const shiftSetup = Store.ShiftSetup.create();
 

@@ -2,7 +2,6 @@
   import { UI } from "ui";
 
   import * as Store from "../lib/stores";
-
   import { Shift } from "../lib/components";
 
   const editMode = Store.EditMode.create();

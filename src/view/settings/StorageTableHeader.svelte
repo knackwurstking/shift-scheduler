@@ -5,10 +5,10 @@
 <thead>
   <tr>
     <th class="is-text-left">
-      {lang.get("view settings", "tableHeaderYear")}
+      {lang.get()["settings storage"]["table header year"]}
     </th>
     <th class="is-text-left">
-      {lang.get("view settings", "tableHeaderMonth")}
+      {lang.get()["settings storage"]["table header month"]}
     </th>
     <th class="is-text-left" />
   </tr>

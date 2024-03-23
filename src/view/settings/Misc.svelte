@@ -7,7 +7,7 @@
 
 <article class="ui-card has-margin">
   <h3 style="margin: var(--spacing)">
-    {lang.get("view settings", "titleMisc")}
+    {lang.get()["settings misc"]["title"]}
   </h3>
 
   <hr />

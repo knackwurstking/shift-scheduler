@@ -10,13 +10,13 @@
 
   /** @type {string[]} */
   let headerItems = [
-    lang.get("week-days", "sun"),
-    lang.get("week-days", "mon"),
-    lang.get("week-days", "tue"),
-    lang.get("week-days", "wed"),
-    lang.get("week-days", "thu"),
-    lang.get("week-days", "fri"),
-    lang.get("week-days", "sat"),
+    lang.get()["week-days"]["sun"],
+    lang.get()["week-days"]["mon"],
+    lang.get()["week-days"]["tue"],
+    lang.get()["week-days"]["wed"],
+    lang.get()["week-days"]["thu"],
+    lang.get()["week-days"]["fri"],
+    lang.get()["week-days"]["sat"],
   ];
 
   $: !!weekStart && initWeekStart();
@@ -25,13 +25,13 @@
     cleanUp.push(
       weekStart.subscribe((weekStart) => {
         const items = [
-          lang.get("week-days", "sun"),
-          lang.get("week-days", "mon"),
-          lang.get("week-days", "tue"),
-          lang.get("week-days", "wed"),
-          lang.get("week-days", "thu"),
-          lang.get("week-days", "fri"),
-          lang.get("week-days", "sat"),
+          lang.get()["week-days"]["sun"],
+          lang.get()["week-days"]["mon"],
+          lang.get()["week-days"]["tue"],
+          lang.get()["week-days"]["wed"],
+          lang.get()["week-days"]["thu"],
+          lang.get()["week-days"]["fri"],
+          lang.get()["week-days"]["sat"],
         ];
 
         if (weekStart === "mon") {

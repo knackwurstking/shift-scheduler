@@ -12,6 +12,6 @@
     class="is-max-width"
     on:click={async () => shiftDialog.open()}
   >
-    {lang.get("view settings", "addShiftButton")}
+    {lang.get()["settings shifts"]["button new shift"]}
   </UI.Button.Root>
 </section>

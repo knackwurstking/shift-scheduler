@@ -4,8 +4,7 @@
   import { createEventDispatcher } from "svelte";
   import { UI } from "ui";
 
-  import * as lang from "../../js/lang";
-
+  import { lang } from "../../js";
   import * as Store from "../../stores";
 
   import { Shift } from "../shift";
@@ -65,7 +64,7 @@
 
 <UI.Dialog.Root bind:this={dialog} fullscreen>
   <UI.Dialog.Header
-    title={lang.get("dialog rhythm", "title")}
+    title={lang.get()["dialog rhythm"]["title"]}
     on:close={() => close()}
   />
 
@@ -142,7 +141,7 @@
       type="submit"
       on:click={() => dispatch("submit", rhythm)}
     >
-      {lang.get("buttons", "submit")}
+      {lang.get()["buttons"]["submit"]}
     </UI.Button.Root>
   </UI.Dialog.Footer>
 </UI.Dialog.Root>

@@ -51,6 +51,7 @@
     "year picker": "Pick a Year"
   },
   "app-bar": {
+    "calendar": "",
     "settings": "Settings",
     "pdf": "PDF Generation"
   },

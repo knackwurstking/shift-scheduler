@@ -1,9 +1,8 @@
 <script>
   import { UI } from "ui";
 
+  import { lang, constants } from "../lib/js";
   import * as Store from "../lib/stores";
-  import * as lang from "../lib/js/lang";
-  import * as constants from "../lib/js/constants";
 
   import FooterItems from "./FooterItems.svelte";
 
@@ -15,7 +14,7 @@
   class:visible={$editMode.open}
   style:height={constants.footerHeight}
 >
-  <span class="separator-title">{lang.get("footer", "edit mode")}</span>
+  <span class="separator-title">{lang.get()["footer"]["edit mode"]}</span>
 
   {#if $editMode.open}
     <figure

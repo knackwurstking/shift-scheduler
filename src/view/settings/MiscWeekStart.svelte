@@ -10,7 +10,7 @@
 <section>
   <UI.Text.Label
     style="cursor: pointer;"
-    primary={lang.get("view settings", "miscWeekStartPrimaryText")}
+    primary={lang.get()["settings misc"]["week start"]}
     useLabel
     row
   >

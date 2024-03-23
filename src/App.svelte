@@ -3,9 +3,8 @@
   import { onMount, onDestroy } from "svelte";
   import { UI } from "ui";
 
+  import { lang, utils } from "./lib/js";
   import * as Store from "./lib/stores";
-  import * as lang from "./lib/js/lang";
-  import * as utils from "./lib/js/utils";
 
   import Header from "./view/Header.svelte";
   import Main from "./view/Main.svelte";
@@ -66,7 +65,7 @@
 
 <Header
   bind:currentDate
-  title={!!$view ? lang.get("app-bar", $view) || undefined : undefined}
+  title={!!$view ? lang.get()["app-bar"][$view] : undefined}
   on:backbuttonclick={() => view.back()}
   on:editmodeclick={() => editMode.toggle()}
   on:currentdatechange={({ detail }) => (currentDate = detail)}

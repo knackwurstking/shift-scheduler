@@ -20,7 +20,7 @@
 
 <article class="ui-card has-margin">
   <section>
-    <h3>{lang.get("view settings", "titleShifts")}</h3>
+    <h3>{lang.get()["settings shifts"]["title"]}</h3>
 
     <hr />
 

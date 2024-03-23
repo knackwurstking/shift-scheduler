@@ -8,10 +8,7 @@
 </script>
 
 <section>
-  <UI.Text.Label
-    primary={lang.get("view settings", "miscThemePrimaryText")}
-    row
-  >
+  <UI.Text.Label primary={lang.get()["settings misc"]["theme picker"]} row>
     <UI.Input.Select
       items={[
         { value: "system", label: "System" },
