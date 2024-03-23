@@ -32,7 +32,10 @@ type _LangDataGroups =
   "dialog rhythm" |
   "dialog shift" |
   "dialog storage" |
-  "view settings" |
+  "settings backup" |
+  "settings shifts" |
+  "settings misc" |
+  "settings storage" |
   "view pdf" |
   "app-bar" |
   "footer" |
@@ -45,18 +48,92 @@ interface _LangDataKey {
 }
 
 interface _LangData {
-  "dialog date-picker": _LangDataKey;
-  "dialog day": _LangDataKey;
-  "dialog rhythm": _LangDataKey;
-  "dialog shift": _LangDataKey;
-  "dialog storage": _LangDataKey;
-  "view settings": _LangDataKey;
-  "view pdf": _LangDataKey;
-  "app-bar": _LangDataKey;
-  "footer": _LangDataKey;
-  "buttons": _LangDataKey;
-  "week-days": _LangDataKey;
-  "months": _LangDataKey;
+  "dialog date-picker": {
+    "title": string;
+    "android input": string;
+    "input year": string;
+    "input month": string;
+  };
+  "dialog day": {
+    "textfield": string;
+  };
+  "dialog rhythm": {
+    "title": string;
+  };
+  "dialog shift": {
+    "edit shift title": string;
+    "new shift title": string;
+    "long name": string;
+    "short name": string;
+    "hide shift": string;
+    "color picker": string;
+  };
+  "dialog storage": {
+    "table header day": string;
+    "table header shift": string;
+    "table header note": string;
+  };
+  "settings backup": {
+    "title": string;
+  };
+  "settings shifts": {
+    "title": string;
+    "table header name": string;
+    "table header short name": string;
+    "table header color": string;
+    "button new shift": string;
+    "start date": string;
+    "rhythm": string;
+  };
+  "settings misc": {
+    "title": string;
+    "theme picker": string;
+    "week start": string;
+  };
+  "settings storage": {
+    "title": string
+    "button fetch data": string;
+    "table header year": string;
+    "table header month": string;
+  };
+  "pdf": {
+    "year picker": string;
+  };
+  "app-bar": {
+    "settings": string;
+    "pdf": string;
+  };
+  "footer": {
+    "edit mode": string;
+  };
+  "buttons": {
+    "edit": string;
+    "submit": string;
+  };
+  "week-days": {
+    "sun": string;
+    "mon": string;
+    "tue": string;
+    "wed": string;
+    "thu": string;
+    "fri": string;
+    "sat": string;
+  };
+  "months": {
+    "0": string;
+    "1": string;
+    "2": string;
+    "3": string;
+    "4": string;
+    "5": string;
+    "6": string;
+    "7": string;
+    "8": string;
+    "9": string;
+    "10": string;
+    "11": string;
+    "12": string;
+  };
 }
 
 interface _Lang {

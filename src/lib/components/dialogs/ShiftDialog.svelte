@@ -96,28 +96,11 @@
   <br />
 
   <section>
-    <!-- TODO: Fix this "background*" shit -->
-    <UI.Text.Label
-      secondary={lang.get("dialog shift", "pickBackgroundColorLabel")}
-    >
-      <input
-        style="width: 100%;"
-        type="color"
-        bind:value={color}
-        disabled={disableColor}
-      />
+    <UI.Text.Label secondary={lang.get("dialog shift", "color picker")}>
+      <input style="width: 100%;" type="color" bind:value={color} />
     </UI.Text.Label>
 
     <br />
-
-    <!-- TODO: Fix this "background*" shit -->
-    <UI.Text.Label
-      secondary={lang.get("dialog shift", "disableBackgroundColorLabel")}
-      useLabel
-      row
-    >
-      <input type="checkbox" bind:checked={disableColor} />
-    </UI.Text.Label>
   </section>
 
   <UI.Dialog.Footer>

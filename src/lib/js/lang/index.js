@@ -2,6 +2,7 @@ import en from "./en.json";
 import de from "./de.json";
 
 /** @type {_Lang} */
+// @ts-ignore
 const data = { "en": en, "de": de };
 
 export let defaultLanguage = "en";
@@ -22,15 +23,14 @@ export let lang = (() => {
 })();
 
 /**
- * @param {_LangDataGroups} group
- * @param {string} key
- * @returns {string | null}
+ * @param {("en" | "de") | null} lang
+ * @returns {_LangData}
  */
-export function get(group, key) {
+export function get(lang = null) {
   try {
-    return data[lang][group][key];
+    return data[lang];
   } catch {
-    console.error(`lang (${lang}): "${group}" -> "${key}" not found!`);
+    console.error(`Language "${lang}" not found!`);
     return null;
   }
 }

@@ -1,49 +1,54 @@
 {
   "dialog date-picker": {
     "title": "Date Picker",
-    "inputAndroidLabel": "Pick a Date",
-    "input1Label": "Year",
-    "input2Label": "Month"
+    "android input": "Pick a Date",
+    "input year": "Year",
+    "input month": "Month"
   },
   "dialog day": {
-    "textfieldLabel": "Note"
+    "textfield": "Note"
   },
   "dialog rhythm": {
     "title": "Shift Rhythm"
   },
   "dialog shift": {
-    "titleEdit": "Edit Shift",
-    "titleNew": "New Shift",
-    "longName": "Shift Name (ex.: Night)",
-    "shortName": "Short (ex.: N)",
-    "hideShiftInputLabel": "Hide shift name from the calendar",
-    "pickBackgroundColorLabel": "Pick a background color",
-    "disableBackgroundColorLabel": "Disable background color"
+    "edit shift title": "Edit Shift",
+    "new shift title": "New Shift",
+    "long name": "Shift Name (ex.: Night)",
+    "short name": "Short (ex.: N)",
+    "hide shift": "Hide shift name from the calendar",
+    "color picker": "Pick a color"
   },
   "dialog storage": {
-    "tableHeaderDay": "Day",
-    "tableHeaderShift": "Shift",
-    "tableHeaderNote": "Note"
+    "table header day": "Day",
+    "table header shift": "Shift",
+    "table header note": "Note"
   },
-  "view settings": {
-    "titleShifts": "Shift Settings",
-    "tableHeaderName": "Name",
-    "tableHeaderShort": "Short",
-    "tableHeaderColor": "Color",
-    "addShiftButton": "Add a new shift",
-    "startDatePrimaryText": "Start Date",
-    "rhythmPrimaryText": "Rhythm",
-    "titleMisc": "Miscellaneous",
-    "miscThemePrimaryText": "Theme",
-    "miscWeekStartPrimaryText": "The week starts on Monday",
-    "titleStorage": "Data Storage",
-    "storageFetchDataButton": "Fetch Data",
-    "tableHeaderYear": "Year",
-    "tableHeaderMonth": "Month",
-    "titleBackup": "Backup"
+  "settings backup": {
+    "title": "Backup"
   },
-  "view pdf": {
-    "yearPicker": "Pick a Year"
+  "settings shifts": {
+    "title": "Shift Settings",
+    "table header name": "Name",
+    "table header short name": "Short",
+    "table header color": "Color",
+    "button new shift": "Add a new shift",
+    "start date": "Start Date",
+    "rhythm": "Rhythm"
+  },
+  "settings misc": {
+    "title": "Miscellaneous",
+    "theme picker": "Theme",
+    "week start": "The week starts on Monday"
+  },
+  "settings storage": {
+    "title": "Data Storage",
+    "button fetch data": "Fetch Data",
+    "table header year": "Year",
+    "table header month": "Month"
+  },
+  "pdf": {
+    "year picker": "Pick a Year"
   },
   "app-bar": {
     "settings": "Settings",

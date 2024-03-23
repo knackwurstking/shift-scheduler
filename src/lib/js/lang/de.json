@@ -1,49 +1,54 @@
 {
   "dialog date-picker": {
     "title": "Datumsauswahl",
-    "inputAndroidLabel": "Wähle ein Datum",
-    "input1Label": "Jahr",
-    "input2Label": "Monat"
+    "android input": "Wähle ein Datum",
+    "input year": "Jahr",
+    "input month": "Monat"
   },
   "dialog day": {
-    "textfieldLabel": "Notiz"
+    "textfield": "Notiz"
   },
   "dialog rhythm": {
     "title": "Schicht Rhythmus"
   },
   "dialog shift": {
-    "titleEdit": "Schicht Bearbeiten",
-    "titleNew": "Neue Schicht",
-    "longName": "Schicht Name (Bsp.: Nacht)",
-    "shortName": "Kürzel (Bsp.: N)",
-    "hideShiftInputLabel": "Schicht aus dem Kalendar ausblenden",
-    "pickBackgroundColorLabel": "Hintergrundfarbe wählen",
-    "disableBackgroundColorLabel": "Hintergrundfarbe deaktivieren"
+    "edit shift title": "Schicht Bearbeiten",
+    "new shift title": "Neue Schicht",
+    "long name": "Schicht Name (Bsp.: Nacht)",
+    "short name": "Kürzel (Bsp.: N)",
+    "hide shift": "Schicht aus dem Kalendar ausblenden",
+    "color picker": "Farbe wählen"
   },
   "dialog storage": {
-    "tableHeaderDay": "Tag",
-    "tableHeaderShift": "Schicht",
-    "tableHeaderNote": "Notiz"
+    "table header day": "Tag",
+    "table header shift": "Schicht",
+    "table header note": "Notiz"
   },
-  "view settings": {
-    "titleShifts": "Schichteinstellungen",
-    "tableHeaderName": "Name",
-    "tableHeaderShort": "Kürzel",
-    "tableHeaderColor": "Farbe",
-    "addShiftButton": "Neue Schicht hinzufügen",
-    "startDatePrimaryText": "Start Datum",
-    "rhythmPrimaryText": "Rhythmus",
-    "titleMisc": "Sonstiges",
-    "miscThemePrimaryText": "Theme",
-    "miscWeekStartPrimaryText": "Die Woche beginnt am Montag",
-    "titleStorage": "Datenspeicher",
-    "storageFetchDataButton": "Daten abrufen",
-    "tableHeaderYear": "Jahr",
-    "tableHeaderMonth": "Monat",
-    "titleBackup": "Backup"
+  "settings backup": {
+    "title": "Backup"
   },
-  "view pdf": {
-    "yearPicker": "Wähle ein Jahr"
+  "settings shifts": {
+    "title": "Schichteinstellungen",
+    "table header name": "Name",
+    "table header short name": "Kürzel",
+    "table header color": "Farbe",
+    "button new shift": "Neue Schicht hinzufügen",
+    "start date": "Start Datum",
+    "rhythm": "Rhythmus"
+  },
+  "settings misc": {
+    "title": "Sonstiges",
+    "theme picker": "Theme",
+    "week start": "Die Woche beginnt am Montag"
+  },
+  "settings storage": {
+    "title": "Datenspeicher",
+    "button fetch data": "Daten abrufen",
+    "table header year": "Jahr",
+    "table header month": "Monat"
+  },
+  "pdf": {
+    "year picker": "Wähle ein Jahr"
   },
   "app-bar": {
     "settings": "Einstellungen",
