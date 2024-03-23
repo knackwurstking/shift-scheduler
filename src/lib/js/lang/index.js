@@ -23,14 +23,14 @@ export let lang = (() => {
 })();
 
 /**
- * @param {("en" | "de") | null} lang
+ * @param {("en" | "de") | null} _lang
  * @returns {_LangData}
  */
-export function get(lang = null) {
+export function get(_lang = null) {
   try {
-    return data[lang];
+    return data[_lang || lang];
   } catch {
-    console.error(`Language "${lang}" not found!`);
+    console.error(`Language "${_lang || lang}" not found!`);
     return null;
   }
 }
