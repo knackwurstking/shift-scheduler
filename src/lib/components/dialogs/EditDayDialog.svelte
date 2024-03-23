@@ -2,9 +2,8 @@
   import { createEventDispatcher } from "svelte";
   import { UI } from "ui";
 
-  import * as Store from "../../stores";
-
   import { db, lang } from "../../js";
+  import * as Store from "../../stores";
 
   const dispatch = createEventDispatcher();
   const shiftSetup = Store.ShiftSetup.create();
