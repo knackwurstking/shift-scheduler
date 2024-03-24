@@ -1,6 +1,6 @@
 # Svelte Shift Scheduler
 
-<img src="public/icon.png" width="100" />
+<img src="src/assets/icon.png" width="100" />
 
 [<img src="https://s1.ax1x.com/2023/01/12/pSu1a36.png" alt="Get it on GitHub" height="80">](https://github.com/knackwurstking/svelte-shift-scheduler/releases)
 
@@ -34,18 +34,10 @@ export CAPACITOR_ANDROID_STUDIO_PATH=$(which android-studio)
 npm run build:android
 ```
 
-### Build desktop application. (linux)
-
-Install wails
+Build macos app
 
 ```bash
-go install github.com/wailsapp/wails/v2/cmd/wails@latest
-```
-
-Build for linux
-
-```bash
-npm run build:linux
+...
 ```
 
 ## Screenshots
