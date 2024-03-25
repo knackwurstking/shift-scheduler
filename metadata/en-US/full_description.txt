@@ -1,11 +1,12 @@
-* Shift rhythm editor
-* Week-Start: Monday or Sunday
-* Supported Languages: DE/EN (system settings)
-* Notes
-* Edit mode for fast shift change
-* Download PDF for sharing
-* Import/Export Backup (JSON)
-* Theme: System/Dark/Light
 
-Note:
-* Data will be stored in the browser `localStorage`
+@TODO: why i wrote and uploaded this app
+
+Features:
+  - easy shift rhythm "editor"
+  - week starts on monday or sunday
+  - supported languages: en, de
+  - add notes for each day
+  - edit mode for changing shifts quickly
+  - download as pdf for sharing
+  - allow completed backups via local json file (import/export)
+  - dark and light mode

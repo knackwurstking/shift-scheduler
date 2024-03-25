@@ -1,15 +1,1 @@
-Schichtplaner
-
-Ein einfacher Schichtplaner. (Ermöglicht die Rhythmuskonfiguration)
-
-* Shichtrhythmus "Editor"
-* Wochenstart: Montag oder Sonntag
-* Unterstützte Sprachen: DE/EN
-* Notizen
-* Edit Mode für schnelle schicht änderungen
-* Download PDF für Sharing
-* Import/Export Backup (JSON)
-* Theme: System/Dark/Light
-
-Notiz:
-* Daten werden im localStorage vom Browser gespeichert.
+@TODO: translate from english if ready
