@@ -11,7 +11,7 @@ A simple shift scheduler. (enables rhythm configuration)
 - Adding notes per day.
 - Languages: de, en-US
 
-## Gettings Started
+## Getting Started
 
 Download
 
