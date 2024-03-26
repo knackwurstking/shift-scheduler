@@ -20,7 +20,7 @@
   $: processing ? view.lock() : view.unlock();
 
   /**
-   * @param {any} doc
+   * @param {jsPDF} doc
    * @param {number} year
    */
   async function exportPDF(doc, year) {
