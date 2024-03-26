@@ -1,12 +1,10 @@
-
-@TODO: why i wrote and uploaded this app
-
 Features:
-  - easy shift rhythm "editor"
-  - week starts on monday or sunday
-  - supported languages: en, de
-  - add notes for each day
-  - edit mode for changing shifts quickly
-  - download as pdf for sharing
-  - allow completed backups via local json file (import/export)
-  - dark and light mode
+
+- Easy shift rhythm "editor"
+- Week starts on Monday or Sunday
+- Supported languages: en, de
+- Add notes for each day
+- Edit mode to change shifts quickly
+- Download the annual overview as a PDF
+- Import and export a backup
+- Dark and light mode

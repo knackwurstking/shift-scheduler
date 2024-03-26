@@ -1,1 +1,10 @@
-@TODO: translate from english if ready
+Features:
+
+- Einfacher Schichtrhythmus „Editor“
+- Die Woche beginnt am Montag oder Sonntag
+- Unterstützte Sprachen: en, de
+- Fügen Sie Notizen für jeden Tag hinzu
+- Bearbeitungsmodus zum schnellen Wechseln der Schichten
+- Laden Sie sich die Jahresübersicht als PDF herunter
+- Backup import und export 
+- Dark und Light theme support
