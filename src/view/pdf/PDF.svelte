@@ -2,34 +2,25 @@
   import { utils } from "../../lib/js";
   import * as Store from "../../lib/stores";
 
-  import PDFPage from "./PDFPage.svelte";
-  import PDFPageSection from "./PDFPageSection.svelte";
+  import PDFTable from "./PDFTable.svelte";
 
   const weekStart = Store.WeekStart.create();
 
   export let year;
 
-  /** @type {{ month: number; data: _Day[] }[][]} */
+  /** @type {{ month: number; data: _Day[] }[]} */
   let pagesData = [];
 
   $: if (!!year && !!weekStart)
     (async () => {
       const data = [];
-      for (const month of [1, 3, 5, 7, 9, 11]) {
-        data.push([
-          {
-            month: month - 1,
-            data: await utils.getDaysForMonth(year, month - 1, {
-              weekStart: $weekStart,
-            }),
-          },
-          {
-            month: month,
-            data: await utils.getDaysForMonth(year, month, {
-              weekStart: $weekStart,
-            }),
-          },
-        ]);
+      for (let month = 0; month < 12; month++) {
+        data.push({
+          month: month,
+          data: await utils.getDaysForMonth(year, month, {
+            weekStart: $weekStart,
+          }),
+        });
       }
       pagesData = data;
     })();
@@ -42,18 +33,6 @@
   data-theme="light"
 >
   {#each pagesData as data}
-    <PDFPage {year}>
-      <PDFPageSection
-        style="padding: 1em;"
-        month={data[0].month}
-        data={data[0].data}
-      />
-
-      <PDFPageSection
-        style="padding: 1em;"
-        month={data[1].month}
-        data={data[1].data}
-      />
-    </PDFPage>
+    <PDFTable style="padding: 1em;" month={data.month} data={data.data} />
   {/each}
 </div>

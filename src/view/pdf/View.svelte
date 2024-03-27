@@ -83,6 +83,8 @@
       pdf.addImage(dURL, "PNG", 0, position, w, h);
 
       pdf.save(`${year}.pdf`);
+
+      processing = false;
     }, 0);
   }
 
