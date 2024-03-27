@@ -31,8 +31,9 @@
     if (utils.isAndroid()) {
       const result = await Filesystem.writeFile({
         path: fileName,
-        data: doc.output(),
-        encoding: Encoding.UTF8,
+        // @ts-ignore
+        data: doc.output("datauri"),
+        //encoding: Encoding.UTF8,
         directory: Directory.Cache,
       });
 
@@ -52,25 +53,27 @@
     setTimeout(async () => {
       const el = await getPDFElement();
 
-      console.debug(-el.scrollHeight);
-      const canvas = await html2canvas(el);
+      const canvas = await html2canvas(el, {
+        width: window.innerWidth,
+        height: el.clientHeight,
+      });
 
       const dURL = canvas.toDataURL("image/png");
       const pdf = new jspdf.jsPDF("portrait", "mm", "a4");
 
-      const w = 210;
-      const h = (w / 1.414) * 6;
+      const w = 220;
+      const h = w * 1.414 * 3;
 
       let position = 0;
-      pdf.addImage(dURL, "PNG", 0, position, w, h);
+      pdf.addImage(dURL, "PNG", 0, position, w, h, "someAlias", "FAST");
 
       position -= w * 1.414;
       pdf.addPage();
-      pdf.addImage(dURL, "PNG", 0, position, w, h);
+      pdf.addImage(dURL, "PNG", 0, position, w, h, "someAlias", "FAST");
 
       position -= w * 1.414;
       pdf.addPage();
-      pdf.addImage(dURL, "PNG", 0, position, w, h);
+      pdf.addImage(dURL, "PNG", 0, position, w, h, "someAlias", "FAST");
 
       await exportPDF(pdf, year);
       processing = false;

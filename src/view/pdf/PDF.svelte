@@ -30,6 +30,7 @@
   class={"is-max-width " + ($$restProps.class || "")}
   {...$$restProps}
   style:height="fit-content"
+  style:background="#ffffff"
   data-theme="light"
 >
   {#each pagesData as data}

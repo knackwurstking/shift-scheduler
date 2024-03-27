@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "build:android": "npm run build && npx cap sync android && npx cap open android",
+    "build:android": "npm run build && npx cap sync android",
     "build:ios": "npm run build && npx cap sync ios && npx cap open ios",
     "preview": "vite preview"
   },
