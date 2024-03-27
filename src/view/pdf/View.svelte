@@ -44,8 +44,6 @@
     } else {
       doc.save(fileName);
     }
-
-    processing = false;
   }
 
   async function download() {
@@ -63,15 +61,7 @@
       const w = 210;
       const h = (w / 1.414) * 6;
 
-      console.table({
-        width: canvas.width,
-        height: canvas.height,
-        w,
-        h,
-      });
-
       let position = 0;
-
       pdf.addImage(dURL, "PNG", 0, position, w, h);
 
       position -= w * 1.414;
@@ -82,8 +72,7 @@
       pdf.addPage();
       pdf.addImage(dURL, "PNG", 0, position, w, h);
 
-      pdf.save(`${year}.pdf`);
-
+      await exportPDF(pdf, year);
       processing = false;
     }, 0);
   }
