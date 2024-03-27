@@ -5,7 +5,9 @@
 - Slide in and out the edit mode (footer) bar
 - Added separator line with text "Edit Mode" if toggled on
 - Changed the app icon
-- Fixed pdf view error if no shift rhythm configured
+- Fixed PDF view error when no shift rhythm was configured
+- Changed PDF format, 4 months per page
+- Fixed PDF generation in German, no UTF-8 encoding
 - Updated dependency [ui v0.1.1](https://github.com/knackwurstking/ui.git)
 - Changed `lang` library
 - Code clean up
