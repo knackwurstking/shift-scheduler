@@ -3,7 +3,7 @@
   export let year;
 </script>
 
-<div class="page is-max-width">
+<div class="page is-max-width" style:aspectRatio="1 / 1.414">
   <h2
     style={"position: absolute;" +
       "top: var(--spacing);" +

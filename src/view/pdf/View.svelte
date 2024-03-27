@@ -1,15 +1,17 @@
 <script>
   import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
   import { Share } from "@capacitor/share";
-  import { jsPDF } from "jspdf";
+
   import { UI } from "ui";
+
+  import * as jspdf from "jspdf";
+  import html2canvas from "html2canvas";
 
   import { lang, utils } from "../../lib/js";
   import * as Store from "../../lib/stores";
 
   import PDF from "./PDF.svelte";
 
-  const pdf = new jsPDF("portrait", "mm", "a4");
   const view = Store.View.create();
 
   /** @type {number} */
@@ -20,7 +22,7 @@
   $: processing ? view.lock() : view.unlock();
 
   /**
-   * @param {jsPDF} doc
+   * @param {jspdf.jsPDF} doc
    * @param {number} year
    */
   async function exportPDF(doc, year) {
@@ -49,31 +51,47 @@
   async function download() {
     processing = true;
 
-    setTimeout(() => {
-      /** @type {HTMLElement} */
-      // @ts-ignore
-      const el = document.getElementById("pdf").cloneNode(true);
+    setTimeout(async () => {
+      const el = await getPDFElement();
 
-      el.setAttribute("data-theme", "light");
-      [...el.querySelectorAll(".page")].forEach((el) => {
-        // @ts-ignore
-        el.style.aspectRatio = "1 / 1.414";
+      console.debug(-el.scrollHeight);
+      const canvas = await html2canvas(el);
+
+      const dURL = canvas.toDataURL("image/png");
+      const pdf = new jspdf.jsPDF("portrait", "mm", "a4");
+
+      const w = 210;
+      const h = (w / 1.414) * 6;
+
+      console.table({
+        width: canvas.width,
+        height: canvas.height,
+        w,
+        h,
       });
 
-      pdf.html(el, {
-        callback: (doc) => exportPDF(doc, year),
-        width: 210,
-        windowWidth: 500, //window width in CSS pixels
-      });
+      let position = 0;
+
+      pdf.addImage(dURL, "PNG", 0, position, w, h);
+
+      position -= w * 1.414;
+      pdf.addPage();
+      pdf.addImage(dURL, "PNG", 0, position, w, h);
+
+      position -= w * 1.414;
+      pdf.addPage();
+      pdf.addImage(dURL, "PNG", 0, position, w, h);
+
+      pdf.save(`${year}.pdf`);
     }, 0);
+  }
+
+  async function getPDFElement() {
+    return document.getElementById("pdf");
   }
 </script>
 
-<div
-  class="ui-container is-max no-scrollbar flex column"
-  style:padding-top="3em"
-  style:overflow="auto"
->
+<div class="ui-container is-max flex column" style:padding-top="3em">
   <section class="flex row justify-between">
     <div>
       <UI.Input.Number
