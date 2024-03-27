@@ -61,19 +61,47 @@
       const dURL = canvas.toDataURL("image/png");
       const pdf = new jspdf.jsPDF("portrait", "mm", "a4");
 
-      const w = 220;
+      const paddingLeft = 5;
+      const w = 210;
       const h = w * 1.414 * 3;
 
       let position = 0;
-      pdf.addImage(dURL, "PNG", 0, position, w, h, "someAlias", "FAST");
+      pdf.addImage(
+        dURL,
+        "PNG",
+        paddingLeft,
+        position,
+        w,
+        h,
+        "someAlias",
+        "FAST",
+      );
 
       position -= w * 1.414;
       pdf.addPage();
-      pdf.addImage(dURL, "PNG", 0, position, w, h, "someAlias", "FAST");
+      pdf.addImage(
+        dURL,
+        "PNG",
+        paddingLeft,
+        position,
+        w,
+        h,
+        "someAlias",
+        "FAST",
+      );
 
       position -= w * 1.414;
       pdf.addPage();
-      pdf.addImage(dURL, "PNG", 0, position, w, h, "someAlias", "FAST");
+      pdf.addImage(
+        dURL,
+        "PNG",
+        paddingLeft,
+        position,
+        w,
+        h,
+        "someAlias",
+        "FAST",
+      );
 
       await exportPDF(pdf, year);
       processing = false;
