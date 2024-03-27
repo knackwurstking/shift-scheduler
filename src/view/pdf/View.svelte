@@ -63,7 +63,7 @@
 
       const paddingLeft = 5;
       const w = 210;
-      const h = w * 1.414 * 3;
+      const h = w * 1.414 * 4;
 
       let position = 0;
       pdf.addImage(
@@ -74,7 +74,7 @@
         w,
         h,
         "someAlias",
-        "FAST",
+        "MEDIUM",
       );
 
       position -= w * 1.414;
@@ -87,7 +87,7 @@
         w,
         h,
         "someAlias",
-        "FAST",
+        "MEDIUM",
       );
 
       position -= w * 1.414;
@@ -100,7 +100,20 @@
         w,
         h,
         "someAlias",
-        "FAST",
+        "MEDIUM",
+      );
+
+      position -= w * 1.414;
+      pdf.addPage();
+      pdf.addImage(
+        dURL,
+        "PNG",
+        paddingLeft,
+        position,
+        w,
+        h,
+        "someAlias",
+        "MEDIUM",
       );
 
       await exportPDF(pdf, year);
