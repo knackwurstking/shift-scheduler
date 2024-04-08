@@ -111,7 +111,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
     bind:this={container}
-    class="is-max no-user-select no-touch flex fow nowrap no-overflow"
+    class="calendar-container is-max no-user-select no-touch flex fow nowrap no-overflow"
     style:padding-top="3em"
     on:click={async (ev) => {
         if (pointerlock) return;
