@@ -32,7 +32,6 @@ document.querySelector('#app').innerHTML = `
                         data-ripple="{}"
                     >
                         Date Picker
-                        <!-- TODO: Implement the currentDate object -->
                     </button>
                 </div>
             </div>
@@ -41,7 +40,36 @@ document.querySelector('#app').innerHTML = `
                 <h4 class="app-bar-title"></h4>
             </div>
 
-            <div></div>
+            <div>
+                <!-- TODO: Add icons and update app-bar -->
+                    <button
+                        class="app-bar-edit-mode ui-icon-button ghost primary"
+                        style="display: none;"
+                        data-ripple="{}"
+                    >
+                    </button>
+
+                    <button
+                        class="app-bar-today ui-icon-button ghost primary"
+                        style="display: none;"
+                        data-ripple="{}"
+                    >
+                    </button>
+
+                    <button
+                        class="app-bar-pdf ui-icon-button ghost primary"
+                        style="display: none;"
+                        data-ripple="{}"
+                    >
+                    </button>
+
+                    <button
+                        class="app-bar-settings ui-icon-button ghost primary"
+                        style="display: none;"
+                        data-ripple="{}"
+                    >
+                    </button>
+            </div>
         </div>
     </header>
 `
