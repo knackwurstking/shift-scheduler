@@ -1,6 +1,6 @@
 :root {
     --edit-mode-height: 4.5em;
-    --top-app-bar-height: ;
+    --top-app-bar-height: 3em;
 }
 
 html,
@@ -19,9 +19,15 @@ main.container {
     bottom: 0;
     left: 0;
 
+    padding-top: var(--top-app-bar-height);
+
     transition: bottom 0.15s ease-out;
 }
 
 main.container.edit-mode {
     bottom: var(--edit-mode-height);
+}
+
+.ui-app-bar .app-bar-title {
+    white-space: "nowrap";
 }
