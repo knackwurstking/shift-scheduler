@@ -1,88 +1,88 @@
 {
-  "dialog date-picker": {
-    "title": "Datumsauswahl",
-    "android input": "Wähle ein Datum",
-    "input year": "Jahr",
-    "input month": "Monat"
-  },
-  "dialog day": {
-    "textfield": "Notiz"
-  },
-  "dialog rhythm": {
-    "title": "Schicht Rhythmus"
-  },
-  "dialog shift": {
-    "edit shift title": "Schicht Bearbeiten",
-    "new shift title": "Neue Schicht",
-    "long name": "Schicht Name (Bsp.: Nacht)",
-    "short name": "Kürzel (Bsp.: N)",
-    "hide shift": "Schicht aus dem Kalendar ausblenden",
-    "color picker": "Farbe wählen"
-  },
-  "dialog storage": {
-    "table header day": "Tag",
-    "table header shift": "Schicht",
-    "table header note": "Notiz"
-  },
-  "settings backup": {
-    "title": "Backup"
-  },
-  "settings shifts": {
-    "title": "Schichteinstellungen",
-    "table header name": "Name",
-    "table header short name": "Kürzel",
-    "table header color": "Farbe",
-    "button new shift": "Neue Schicht hinzufügen",
-    "start date": "Start Datum",
-    "rhythm": "Rhythmus"
-  },
-  "settings misc": {
-    "title": "Sonstiges",
-    "theme picker": "Theme",
-    "week start": "Die Woche beginnt am Montag"
-  },
-  "settings storage": {
-    "title": "Datenspeicher",
-    "button fetch data": "Daten abrufen",
-    "table header year": "Jahr",
-    "table header month": "Monat"
-  },
-  "pdf": {
-    "year picker": "Wähle ein Jahr"
-  },
-  "app-bar": {
-    "calendar": "",
-    "settings": "Einstellungen",
-    "pdf": "PDF-Generierung"
-  },
-  "footer": {
-    "edit mode": "Edit Mode"
-  },
-  "buttons": {
-    "edit": "Bearbeiten",
-    "submit": "OK"
-  },
-  "week-days": {
-    "sun": "So",
-    "mon": "Mo",
-    "tue": "Di",
-    "wed": "Mi",
-    "thu": "Do",
-    "fri": "Fr",
-    "sat": "Sa"
-  },
-  "months": {
-    "0": "Januar",
-    "1": "Februar",
-    "2": "März",
-    "3": "April",
-    "4": "Mai",
-    "5": "Juni",
-    "6": "Juli",
-    "7": "August",
-    "8": "September",
-    "9": "August",
-    "10": "November",
-    "11": "Dezember"
-  }
+    "dialog date-picker": {
+        "title": "Datumsauswahl",
+        "android input": "Wähle ein Datum",
+        "input year": "Jahr",
+        "input month": "Monat"
+    },
+    "dialog day": {
+        "textfield": "Notiz"
+    },
+    "dialog rhythm": {
+        "title": "Schicht Rhythmus"
+    },
+    "dialog shift": {
+        "edit shift title": "Schicht Bearbeiten",
+        "new shift title": "Neue Schicht",
+        "long name": "Schicht Name (Bsp.: Nacht)",
+        "short name": "Kürzel (Bsp.: N)",
+        "hide shift": "Schicht aus dem Kalendar ausblenden",
+        "color picker": "Farbe wählen"
+    },
+    "dialog storage": {
+        "table header day": "Tag",
+        "table header shift": "Schicht",
+        "table header note": "Notiz"
+    },
+    "settings backup": {
+        "title": "Backup"
+    },
+    "settings shifts": {
+        "title": "Schichteinstellungen",
+        "table header name": "Name",
+        "table header short name": "Kürzel",
+        "table header color": "Farbe",
+        "button new shift": "Neue Schicht hinzufügen",
+        "start date": "Start Datum",
+        "rhythm": "Rhythmus"
+    },
+    "settings misc": {
+        "title": "Sonstiges",
+        "theme picker": "Theme",
+        "week start": "Die Woche beginnt am Montag"
+    },
+    "settings storage": {
+        "title": "Datenspeicher",
+        "button fetch data": "Daten abrufen",
+        "table header year": "Jahr",
+        "table header month": "Monat"
+    },
+    "pdf": {
+        "year picker": "Wähle ein Jahr"
+    },
+    "app-bar": {
+        "calendar": "",
+        "settings": "Einstellungen",
+        "pdf": "PDF-Generierung"
+    },
+    "footer": {
+        "edit mode": "Edit Mode"
+    },
+    "buttons": {
+        "edit": "Bearbeiten",
+        "submit": "OK"
+    },
+    "week-days": {
+        "sun": "So",
+        "mon": "Mo",
+        "tue": "Di",
+        "wed": "Mi",
+        "thu": "Do",
+        "fri": "Fr",
+        "sat": "Sa"
+    },
+    "months": {
+        "0": "Januar",
+        "1": "Februar",
+        "2": "März",
+        "3": "April",
+        "4": "Mai",
+        "5": "Juni",
+        "6": "Juli",
+        "7": "August",
+        "8": "September",
+        "9": "August",
+        "10": "November",
+        "11": "Dezember"
+    }
 }
