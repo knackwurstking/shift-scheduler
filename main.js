@@ -1,4 +1,4 @@
-import "ui/css/main.css"
+import "./node_modules/ui/css/main.css"
 import "./style.css"
 
 import setupThemeHandler from "./lib/theme-handler"
