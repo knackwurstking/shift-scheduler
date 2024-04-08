@@ -29,5 +29,9 @@ main.container.edit-mode {
 }
 
 .ui-app-bar .app-bar-title {
-    white-space: "nowrap";
+    white-space: nowrap;
+}
+
+.ui-app-bar .app-bar-date-picker {
+    white-space: nowrap;
 }
