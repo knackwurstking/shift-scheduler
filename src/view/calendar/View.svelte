@@ -6,6 +6,8 @@
     import Days from "./Days.svelte";
 
     const dispatch = createEventDispatcher();
+    /** @type {(() => void)[]} */
+    const cleanUp = [];
 
     /** @type {Date} */
     export let currentDate;
@@ -32,26 +34,80 @@
     onMount(() => {
         mounted = true;
 
-        let container = document.querySelectorAll(".calendar-container-item");
-        console.log(...container);
+        let ratio = window.innerWidth / 1080;
 
-        const handleSwipe = () => {
-            if (!mounted) {
-                return;
-            }
+        {
+            const resizeHandler = () => {
+                ratio = window.innerWidth / 1080;
+            };
+            document.addEventListener("resize", resizeHandler);
+            cleanUp.push(() =>
+                document.removeEventListener("resize", resizeHandler),
+            );
+        }
 
-            // TODO: read input (pointermove, touchmove or whatever) and swipe (set Container transform translateX)
-            //  - update transform, finish transition (see transform end callback in Container.svelte, reorder items prop)
+        const swipeRange = Math.floor(50 * ratio);
 
+        /** @type {number | null} */
+        let clientX = null;
+        /** @type {number | null} */
+        let startX = null;
+
+        {
+            let containerItems = document.querySelectorAll(
+                ".calendar-container-item",
+            );
+
+            const handleSwipe = () => {
+                if (!mounted) {
+                    return;
+                }
+
+                // NOTE: If clientX is set, startX is also set
+                if (clientX == null) {
+                    requestAnimationFrame(handleSwipe);
+                    return;
+                }
+
+                // TODO: Move containerItems transform (translate) prop
+                // ...
+
+                requestAnimationFrame(handleSwipe);
+            };
+
+            // TODO: Handle app pause and resume events?
             requestAnimationFrame(handleSwipe);
-        };
+        }
 
-        // TODO: handle app pause and resume events?
-        requestAnimationFrame(handleSwipe);
+        {
+            let container = document.querySelector(".calendar-container");
+
+            /** @param {TouchEvent} ev */
+            const trackMovement = (ev) => {
+                if (startX == null) {
+                    clientX = startX = ev.changedTouches[0].clientX;
+                    return;
+                }
+
+                clientX = ev.changedTouches[0].clientX;
+            };
+
+            const stopTracking = () => {
+                clientX = null;
+            };
+
+            container.addEventListener("touchmove", trackMovement);
+            container.addEventListener("touchend", stopTracking);
+            cleanUp.push(() => {
+                container.removeEventListener("touchmove", trackMovement);
+                container.removeEventListener("touchend", stopTracking);
+            });
+        }
     });
 
     onDestroy(() => {
         mounted = false;
+        cleanUp.forEach((fn) => fn());
     });
 </script>
 
