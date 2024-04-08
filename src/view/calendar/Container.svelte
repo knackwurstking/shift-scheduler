@@ -1,97 +1,179 @@
 <script>
     import { createEventDispatcher, onDestroy } from "svelte";
-    import { UI } from "ui";
-
-    import { lang } from "../../lib/js";
-    import * as Store from "../../lib/stores";
 
     const cleanUp = [];
     const dispatch = createEventDispatcher();
-    const weekStart = Store.WeekStart.create();
 
-    /** @type {string[]} */
-    let headerItems = [
-        lang.get()["week-days"]["sun"],
-        lang.get()["week-days"]["mon"],
-        lang.get()["week-days"]["tue"],
-        lang.get()["week-days"]["wed"],
-        lang.get()["week-days"]["thu"],
-        lang.get()["week-days"]["fri"],
-        lang.get()["week-days"]["sat"],
-    ];
+    /** @type {Date} */
+    export let currentDate = new Date();
 
-    $: !!weekStart && initWeekStart();
+    /** @type {HTMLDivElement} */
+    let container;
 
-    async function initWeekStart() {
-        cleanUp.push(
-            weekStart.subscribe((weekStart) => {
-                const items = [
-                    lang.get()["week-days"]["sun"],
-                    lang.get()["week-days"]["mon"],
-                    lang.get()["week-days"]["tue"],
-                    lang.get()["week-days"]["wed"],
-                    lang.get()["week-days"]["thu"],
-                    lang.get()["week-days"]["fri"],
-                    lang.get()["week-days"]["sat"],
-                ];
+    /** @type {boolean} */
+    let pointerlock = false;
 
-                if (weekStart === "mon") {
-                    items.push(items.shift());
+    /** @type {[number, number, number]} */
+    let items = [-1, 0, 1];
+
+    /** @type {number} */
+    let minSwipeRange;
+
+    /** @type {string} */
+    let transition;
+    /** @type {string} */
+    let currentTranslateX = "-100%";
+    /** @type {null | "right" | "left"} */
+    let direction = null;
+
+    /** @type {number} */
+    let _startX = 0;
+    /** @type {number | null} */
+    let _lastX = null;
+
+    /**
+     * Trigger a calendar reload after a database update
+     */
+    export function reload() {
+        currentDate = currentDate;
+    }
+
+    /**
+     * @param {string} selector
+     */
+    export function querySelector(selector) {
+        return container.querySelector(selector);
+    }
+
+    /**
+     * @param {PointerEvent} ev
+     */
+    async function swipeStart(ev) {
+        if (pointerlock) return;
+
+        /**
+         * @param {PointerEvent} ev
+         */
+        const move = async (ev) => {
+            if (
+                !pointerlock &&
+                Math.abs(_startX - ev.clientX) >= minSwipeRange / 2
+            )
+                pointerlock = true;
+
+            currentTranslateX = `calc(-100% + ${0 - (_startX - ev.clientX)}px)`;
+            _lastX = ev.clientX;
+        };
+
+        const end = async () => {
+            cleanUp.forEach((fn) => fn());
+
+            transition = "transform .25s ease-out";
+
+            if (pointerlock) {
+                if (Math.abs(_lastX - _startX) < minSwipeRange) {
+                    direction = null;
+                } else if (_lastX < _startX) {
+                    direction = "left";
+                } else if (_lastX > _startX) {
+                    direction = "right";
                 }
 
-                headerItems = items;
-            }),
-        );
+                switch (direction) {
+                    case null:
+                        currentTranslateX = "-100%";
+                        break;
+                    case "left":
+                        currentTranslateX = "-200%";
+                        break;
+                    case "right":
+                        currentTranslateX = "0";
+                        break;
+                }
+            }
+
+            _lastX = null;
+            setTimeout(() => (pointerlock = false), 250);
+        };
+
+        _startX = ev.clientX;
+        transition = "none";
+        minSwipeRange = container.getBoundingClientRect().width / 7;
+
+        window.addEventListener("pointermove", move);
+        window.addEventListener("pointerup", end);
+        window.addEventListener("pointercancel", end);
+
+        cleanUp.push(() => {
+            window.removeEventListener("pointermove", move);
+            window.removeEventListener("pointerup", end);
+            window.removeEventListener("pointercancel", end);
+        });
     }
 
     onDestroy(() => cleanUp.forEach((fn) => fn()));
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-    {...$$restProps}
-    class={"calendar-container-item is-max no-user-select " +
-        ($$restProps.class || "")}
-    style:min-width="100%"
-    on:transitionend={(ev) => {
-        if (ev.propertyName === "transform") {
-            dispatch("transformend");
+    bind:this={container}
+    class="is-max no-user-select no-touch flex fow nowrap no-overflow"
+    style:padding-top="3em"
+    on:pointerdown={(ev) => swipeStart(ev)}
+    on:click={async (ev) => {
+        if (pointerlock) return;
+        // @ts-ignore
+        for (const el of ev?.path || ev.composedPath() || []) {
+            if (el.classList?.contains("day")) {
+                const date = el.getAttribute("data-value");
+                if (isNaN(date)) dispatch("click", null);
+                else {
+                    dispatch(
+                        "click",
+                        new Date(
+                            currentDate.getFullYear(),
+                            currentDate.getMonth(),
+                            date,
+                        ),
+                    );
+                }
+                return;
+            }
         }
     }}
 >
-    <UI.FlexGrid.Root class="is-max" gap=".1em">
-        <UI.FlexGrid.Row style="height: 2em" gap=".1em">
-            {#each headerItems as item}
-                <UI.FlexGrid.Col
-                    style={"font-family: var(--font-family-heading);" +
-                        "width: calc(100% / 7);" +
-                        "height: 100%;"}
-                >
-                    <div
-                        class="ui-card is-max flex justify-center align-center"
-                        class:sunday={item === "Sun"}
-                        class:saturday={item === "Sat"}
-                    >
-                        {item}
-                    </div>
-                </UI.FlexGrid.Col>
-            {/each}
-        </UI.FlexGrid.Row>
+    {#each items as _item, index}
+        <slot
+            name="item"
+            {index}
+            currentDate={new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + (index - 1),
+            )}
+            {currentTranslateX}
+            {transition}
+            onTransformEnd={async () => {
+                if (pointerlock || transition === "none") return;
 
-        <slot />
-    </UI.FlexGrid.Root>
+                if (direction === "left") {
+                    items = [items[1], items[2], items[0]];
+                    currentDate = new Date(
+                        currentDate.getFullYear(),
+                        currentDate.getMonth() + 1,
+                    );
+                } else if (direction === "right") {
+                    items = [items[2], items[0], items[1]];
+                    currentDate = new Date(
+                        currentDate.getFullYear(),
+                        currentDate.getMonth() - 1,
+                    );
+                }
+
+                direction = null;
+                transition = "none";
+                currentTranslateX = "-100%";
+            }}
+        />
+    {/each}
 </div>
-
-<style>
-    .ui-card {
-        font-size: 0.9em;
-    }
-
-    .ui-card.saturday,
-    .ui-card.sunday {
-        font-weight: 700;
-    }
-
-    .ui-card:not(.saturday, .sunday) {
-        font-weight: 400;
-    }
-</style>

@@ -1,16 +1,16 @@
 <script>
     import { createEventDispatcher, onMount, onDestroy } from "svelte";
 
-    import SwipeHandler from "./SwipeHandler.svelte";
     import Container from "./Container.svelte";
-    import Content from "./Content.svelte";
+    import ContainerItem from "./ContainerItem.svelte";
+    import Days from "./Days.svelte";
 
     const dispatch = createEventDispatcher();
 
     /** @type {Date} */
     export let currentDate;
 
-    /** @type {SwipeHandler} */
+    /** @type {Container} */
     let swipeHandler;
 
     let mounted = false;
@@ -58,14 +58,14 @@
     });
 </script>
 
-<SwipeHandler
+<Container
     bind:this={swipeHandler}
     bind:currentDate
     on:click={(ev) => {
         dispatch("click", ev.detail);
     }}
 >
-    <Container
+    <ContainerItem
         slot="item"
         style={`
             transform: translateX(${currentTranslateX});
@@ -79,12 +79,12 @@
         let:onTransformEnd
         on:transformend={() => onTransformEnd()}
     >
-        <Content
+        <Days
             {index}
             {currentDate}
             on:currentdatechange={(ev) => {
                 dispatch("currentdatechange", ev.detail);
             }}
         />
-    </Container>
-</SwipeHandler>
+    </ContainerItem>
+</Container>
