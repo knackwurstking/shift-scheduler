@@ -1,7 +1,7 @@
 import "./node_modules/ui/css/main.css"
 import "./style.css"
 
-import { utils, ripple } from "ui"
+import { utils, ripple, svg } from "ui"
 import constants from "./lib/constants"
 import AppBar from "./lib/app-bar"
 import StackLayout from "./lib/stack-layout"
@@ -18,22 +18,23 @@ document.querySelector('#app').innerHTML = `
     <header class="ui-app-bar ui-app-bar-top is-debug">
         <div class="ui-app-bar-main ui-container">
             <div>
-                <button
-                    class="app-bar-back-button ui-icon-button ghost primary"
-                    style="display: none;"
-                    data-ripple="{}"
-                >
-                    Back
-                    <!-- TODO: Add svg icon -->
-                </button>
+                <div class="ui-grid-row">
+                    <button
+                        class="app-bar-back-button ui-icon-button ghost primary"
+                        style="display: none;"
+                        data-ripple="{}"
+                    >
+                        ${svg.BackArrowNavigation}
+                    </button>
 
-                <button
-                    class="app-bar-date-picker ui-button outline primary"
-                    data-ripple="{}"
-                >
-                    Date Picker
-                    <!-- TODO: Implement the currentDate object -->
-                </button>
+                    <button
+                        class="app-bar-date-picker ui-button outline primary"
+                        data-ripple="{}"
+                    >
+                        Date Picker
+                        <!-- TODO: Implement the currentDate object -->
+                    </button>
+                </div>
             </div>
 
             <div>
