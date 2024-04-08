@@ -1,6 +1,8 @@
 import "./node_modules/ui/css/main.css"
 import "./style.css"
 
+import { utils } from "ui"
+import constants from "./lib/constants"
 import AppBar from "./lib/app-bar"
 import StackLayout from "./lib/stack-layout"
 import Storage from "./lib/storage"
@@ -12,9 +14,11 @@ document.querySelector('#app').innerHTML = `
         <div class="stack-layout is-max"></div>
     </main>
 
-    <header class="ui-app-bar ui-app-bar-top">
-        <div class="ui-app-bar-main">
-            <div></div>
+    <header class="ui-app-bar ui-app-bar-top is-debug">
+        <div class="ui-app-bar-main ui-container">
+            <div>
+                <!-- TODO: back button and the datepicker -->
+            </div>
 
             <div>
                 <h4 class="app-bar-title"></h4>
@@ -26,7 +30,8 @@ document.querySelector('#app').innerHTML = `
 `
 
 async function main() {
-    const themeHandler = createThemeHandler()
+    const themeHandler = await createThemeHandler()
+    themeHandler.start()
 
     const stackLayout = new StackLayout(
         document.querySelector("main.container > .stack-layout")
