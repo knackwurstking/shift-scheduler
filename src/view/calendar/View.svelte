@@ -32,29 +32,26 @@
     onMount(() => {
         mounted = true;
 
-        let container = document.querySelector(".calendar-container-item");
+        let container = document.querySelectorAll(".calendar-container-item");
+        console.log(...container);
 
         const handleSwipe = () => {
             if (!mounted) {
                 return;
             }
 
-            if (!container) {
-                console.warn("Container not found, rerun querySelector call");
-                container = document.querySelector(".calendar-container-item");
-            }
-
             // TODO: read input (pointermove, touchmove or whatever) and swipe (set Container transform translateX)
-            // ...
+            //  - update transform, finish transition (see transform end callback in Container.svelte, reorder items prop)
 
             requestAnimationFrame(handleSwipe);
         };
 
+        // TODO: handle app pause and resume events?
         requestAnimationFrame(handleSwipe);
     });
 
     onDestroy(() => {
-        mounted = false; // TODO: will this event work?
+        mounted = false;
     });
 </script>
 
@@ -68,16 +65,11 @@
     <ContainerItem
         slot="item"
         style={`
-            transform: translateX(${currentTranslateX});
-            transition: ${transition || "none"};
+            transform: translateX(-100%);
             will-change: transform;
         `}
         let:index
         let:currentDate
-        let:transition
-        let:currentTranslateX
-        let:onTransformEnd
-        on:transformend={() => onTransformEnd()}
     >
         <Days
             {index}
