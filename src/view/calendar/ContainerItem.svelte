@@ -52,11 +52,6 @@
     class={"calendar-container-item is-max no-user-select " +
         ($$restProps.class || "")}
     style:min-width="100%"
-    on:transitionend={(ev) => {
-        if (ev.propertyName === "transform") {
-            dispatch("transformend");
-        }
-    }}
 >
     <UI.FlexGrid.Root class="is-max" gap=".1em">
         <UI.FlexGrid.Row style="height: 2em" gap=".1em">
@@ -82,6 +77,11 @@
 </div>
 
 <style>
+    .calendar-container-item {
+        transform: translateX(-100%);
+        will-change: transform;
+    }
+
     .ui-card {
         font-size: 0.9em;
     }
