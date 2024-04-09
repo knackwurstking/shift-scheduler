@@ -31,15 +31,20 @@ export const itemTemplate = `
  * @type {import("../page").Page}
  */
 export default class CalendarPage {
-    /** @type {HTMLElement}*/
-    #container;
+    /** @type {import("../../lib/storage").default}*/
+    #storage;
     /** @type {import("../../lib/language").default}*/
     #language;
 
+    /** @type {HTMLElement}*/
+    #container;
+
     /**
+     * @param {import("../../lib/storage").default} storage
      * @param {import("../../lib/language").default} language
      */
-    constructor(language) {
+    constructor(storage, language) {
+        this.#storage = storage
         this.#language = language
 
         this.#container = document.createElement("div");
@@ -55,8 +60,7 @@ export default class CalendarPage {
         );
         this.#container.innerHTML = innerHTML;
 
-        // TODO: Add storage listeners for "week days start" and update the table header columns  (grep per id, see this.#createWeekDays)
-        // TODO: Add Language class to /lib
+        // TODO: Add storage listeners for "first-week-day" and update the table header columns  (grep per id, see this.#updateWeekDays)
         for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
             el.innerHTML = itemTemplate;
             this.#updateWeekDays(el);

@@ -11,8 +11,8 @@ import CalendarPage from "./pages/calendar";
 import Language from "./lib/language";
 
 const storage = new Storage();
-// TODO: add storage listener
 const language = new Language(storage.get("lang", "en"));
+// TODO: add storage listener - and dispatch "first-week-day"
 
 document.querySelector("#app").innerHTML = `
     <main class="container ui-container is-debug">
@@ -93,7 +93,7 @@ async function main() {
         appBar,
     );
 
-    const calendarPage = new CalendarPage(language);
+    const calendarPage = new CalendarPage(storage, language);
 
     stackLayout.setPage(calendarPage);
 }
