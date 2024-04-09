@@ -31,52 +31,60 @@ export const itemTemplate = `
  * @type {import("../page").Page}
  */
 export default class CalendarPage {
-  #container;
+    /** @type {HTMLElement}*/
+    #container;
+    /** @type {import("../../lib/language").default}*/
+    #language;
 
-  constructor() {
-    this.#container = document.createElement("div");
-    this.#container.classList.add(
-      "page-calendar",
-      "flex",
-      "row",
-      "nowrap",
-      "is-max",
-      "no-touch",
-      "no-overflow",
-      "no-user-select",
-    );
-    this.#container.innerHTML = innerHTML;
+    /**
+     * @param {import("../../lib/language").default} language
+     */
+    constructor(language) {
+        this.#language = language
 
-    for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
-      el.innerHTML = itemTemplate;
-      this.#createWeekDays(el);
+        this.#container = document.createElement("div");
+        this.#container.classList.add(
+            "page-calendar",
+            "flex",
+            "row",
+            "nowrap",
+            "is-max",
+            "no-touch",
+            "no-overflow",
+            "no-user-select",
+        );
+        this.#container.innerHTML = innerHTML;
+
+        // TODO: Add storage listeners for "week days start" and update the table header columns  (grep per id, see this.#createWeekDays)
+        // TODO: Add Language class to /lib
+        for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
+            el.innerHTML = itemTemplate;
+            this.#updateWeekDays(el);
+        }
     }
-  }
 
-  getName() {
-    return "calendar";
-  }
-
-  getTitle() {
-    return "Calendar";
-  }
-
-  getContainer() {
-    return this.#container;
-  }
-
-  /**
-   * @param {Element} el
-   */
-  #createWeekDays(el) {
-    for (const child of el.querySelectorAll(".ui-grid-column")) {
-      const weekIndex = child.getAttribute("data-week-index");
-      if (!!weekIndex) {
-        // TODO: get week-days configuration from storage (week-start on monday or sunday, and language de or en)
-        child.innerHTML = `
-          <span>${weekIndex}</span>
-        `;
-      }
+    getName() {
+        return "calendar";
     }
-  }
+
+    getTitle() {
+        return "Calendar";
+    }
+
+    getContainer() {
+        return this.#container;
+    }
+
+    /**
+     * @param {Element} el
+     */
+    #updateWeekDays(el) {
+        for (const child of el.querySelectorAll(".ui-grid-column")) {
+            const weekIndex = child.getAttribute("data-week-index");
+            if (!!weekIndex) {
+                // TODO: get week-days configuration from storage (week-start on monday or sunday, and language de or en)
+                child.innerHTML = ``;
+            }
+        }
+    }
 }

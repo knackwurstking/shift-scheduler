@@ -8,8 +8,11 @@ import StackLayout from "./lib/stack-layout";
 import Storage from "./lib/storage";
 import DatePicker from "./lib/date-picker";
 import CalendarPage from "./pages/calendar";
+import Language from "./lib/language";
 
 const storage = new Storage();
+// TODO: add storage listener
+const language = new Language(storage.get("lang", "en"));
 
 document.querySelector("#app").innerHTML = `
     <main class="container ui-container is-debug">
@@ -90,7 +93,7 @@ async function main() {
         appBar,
     );
 
-    const calendarPage = new CalendarPage();
+    const calendarPage = new CalendarPage(language);
 
     stackLayout.setPage(calendarPage);
 }
@@ -110,15 +113,22 @@ async function createThemeHandler() {
     themeHandler.addTheme("zinc", "/themes/zinc.css");
     themeHandler.loadTheme(constants.theme.name);
 
-    storage.addListener("theme", (data) => {
-        console.log("storage: theme:", data)
+    {
+        /** @param {import("./lib/storage").ThemeData} data */
+        const themeStorageHandler = (data) => {
+            console.log("storage: theme:", data)
 
-        if (data?.mode) {
-            themeHandler.setMode(data.mode);
-        } else {
-            themeHandler.start()
+            if (!!data?.mode) {
+                themeHandler.stop()
+                themeHandler.setMode(data.mode);
+            } else {
+                themeHandler.start()
+            }
         }
-    });
+
+        themeStorageHandler(storage.get("theme", null))
+        storage.addListener("theme", themeStorageHandler)
+    }
 
     return themeHandler;
 }
