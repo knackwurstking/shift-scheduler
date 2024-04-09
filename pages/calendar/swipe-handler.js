@@ -3,11 +3,6 @@ import constants from "../../lib/constants"
 export default class SwipeHandler {
     /** @type {HTMLElement} */
     #root
-    /** @type {string} */
-    #itemQuery
-
-    /** @type {HTMLElement[]} */
-    #items
 
     /** @type {((ev: TouchEvent) => void|Promise<void>)} */
     #onTouchMove
@@ -28,18 +23,13 @@ export default class SwipeHandler {
 
     /**
      * @param {HTMLElement} root
-     * @param {string} itemQuery
      */
-    constructor(root, itemQuery) {
+    constructor(root) {
         this.#root = root
-        this.#itemQuery = itemQuery
 
         this.#startX = null
         this.#clientX = null
         this.#finalTransformRunning = false
-
-        // @ts-ignore
-        this.#items = [...this.#root.querySelectorAll(this.#itemQuery)]
 
         this.#onTouchMove = async (ev) => {
             if (this.#finalTransformRunning) return;
@@ -47,11 +37,12 @@ export default class SwipeHandler {
             this.#clientX = ev.touches[0].clientX
         }
 
-        this.#onTouchEnd = async (ev) => {
+        this.#onTouchEnd = async () => {
             if (this.#startX === null) return;
 
             const clientX = this.#clientX
             const startX = this.#startX
+            let swipeDirection = "none"
 
             this.#clientX = this.#startX = null
 
@@ -59,12 +50,13 @@ export default class SwipeHandler {
             this.#setTransition("transform 0.25s ease")
             if (Math.abs(startX - clientX) > constants.swipeRange * (window.innerWidth / 1080)) {
                 this.#transform(clientX < startX ? "100%" : "-100%")
+                swipeDirection = clientX > startX ? "right" : "left"
             } else {
                 this.#transform("0%")
             }
             setTimeout(() => {
                 this.#setTransition("none")
-                this.#reorderItems()
+                this.#reorderItems(swipeDirection)
                 this.#finalTransformRunning = false
             }, 250)
         }
@@ -100,8 +92,9 @@ export default class SwipeHandler {
      * @param {string} diff
      */
     #transform(diff) {
-        for (let x = 0; x < this.#items.length; x++) {
-            this.#items[x].style.transform = `translateX(calc(-100% - ${diff}))`
+        for (let x = 0; x < this.#root.children.length; x++) {
+            // @ts-ignore
+            this.#root.children[x].style.transform = `translateX(calc(-100% - ${diff}))`
         }
     }
 
@@ -109,13 +102,34 @@ export default class SwipeHandler {
      * @param {string} value
      */
     #setTransition(value) {
-        for (let x = 0; x < this.#items.length; x++) {
-            this.#items[x].style.transition = value
+        for (let x = 0; x < this.#root.children.length; x++) {
+            // @ts-ignore
+            this.#root.children[x].style.transition = value
         }
     }
 
-    #reorderItems() {
-        // TODO: reorder items (the last one will be the first one, and so on)
-        // ...
+    /**
+     * @param {"left" | "right" | "none" | string} swipeDirection
+     */
+    #reorderItems(swipeDirection) {
+        switch (swipeDirection) {
+            case "left":
+                // The first item will be the last
+                this.#root.appendChild(this.#root.removeChild(this.#root.firstChild))
+                break
+            case "right":
+                // The last item will be the first
+                this.#root.insertBefore(
+                    this.#root.removeChild(this.#root.lastChild),
+                    this.#root.children[0]
+                )
+                break
+            case "none":
+                break
+            default:
+                throw `Ooop, what is this for a direction "${swipeDirection}"?`
+        }
+
+        this.#transform("0%")
     }
 }

@@ -80,7 +80,7 @@ export default class CalendarPage {
         this.#setupStorageListeners()
         this.#storage.dispatch("week-start")
 
-        this.#swipeHandler = new SwipeHandler(this.#container, ".page-calendar-item")
+        this.#swipeHandler = new SwipeHandler(this.#container)
     }
 
     onMount() {
