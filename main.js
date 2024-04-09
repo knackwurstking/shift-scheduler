@@ -116,7 +116,7 @@ async function createThemeHandler() {
     {
         /** @param {import("./lib/storage").ThemeData} data */
         const themeStorageHandler = (data) => {
-            console.log("storage: theme:", data)
+            console.log(`storage: "theme":`, data)
 
             if (!!data?.mode) {
                 themeHandler.stop()

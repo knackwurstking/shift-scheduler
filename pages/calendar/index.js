@@ -16,13 +16,13 @@ export const itemTemplate = `
 <div class="ui-grid is-max">
   <div class="page-calendar-week-days ui-grid-row">
     <!-- One for each day in a week -->
-    <div class="ui-grid-column" data-week-index="0"></div>
-    <div class="ui-grid-column" data-week-index="1"></div>
-    <div class="ui-grid-column" data-week-index="2"></div>
-    <div class="ui-grid-column" data-week-index="3"></div>
-    <div class="ui-grid-column" data-week-index="4"></div>
-    <div class="ui-grid-column" data-week-index="5"></div>
-    <div class="ui-grid-column" data-week-index="6"></div>
+    <div class="ui-grid-column"></div>
+    <div class="ui-grid-column"></div>
+    <div class="ui-grid-column"></div>
+    <div class="ui-grid-column"></div>
+    <div class="ui-grid-column"></div>
+    <div class="ui-grid-column"></div>
+    <div class="ui-grid-column"></div>
   </div>
 </div>
 `;
@@ -60,11 +60,8 @@ export default class CalendarPage {
         );
         this.#container.innerHTML = innerHTML;
 
-        // TODO: Add storage listeners for "first-week-day" and update the table header columns  (grep per id, see this.#updateWeekDays)
-        for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
-            el.innerHTML = itemTemplate;
-            this.#updateWeekDays(el);
-        }
+        this.#setupStorageListeners()
+        this.#storage.dispatch("first-week-day")
     }
 
     getName() {
@@ -79,16 +76,31 @@ export default class CalendarPage {
         return this.#container;
     }
 
+    #setupStorageListeners() {
+        this.#storage.addListener("first-week-day", (data) => {
+            console.log('storage: "first-week-day":', data)
+
+            if (data !== 0 || data !== 6) {
+                data = 0
+            }
+
+            for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
+                el.innerHTML = itemTemplate;
+                this.#updateWeekDays(el, data);
+            }
+        })
+    }
+
     /**
      * @param {Element} el
+     * @param {number} weekStart
      */
-    #updateWeekDays(el) {
+    #updateWeekDays(el, weekStart) {
+        const order = [weekStart, 1, 2, 3, 4, 5, (weekStart === 0 ? 6 : 0)]
+        let index = 0
         for (const child of el.querySelectorAll(".ui-grid-column")) {
-            const weekIndex = child.getAttribute("data-week-index");
-            if (!!weekIndex) {
-                // TODO: get week-days configuration from storage (week-start on monday or sunday, and language de or en)
-                child.innerHTML = ``;
-            }
+            child.innerHTML = `${order[index]}`; // TODO: use language to get the current date
+            index++
         }
     }
 }
