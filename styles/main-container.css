@@ -1,0 +1,15 @@
+main.container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    padding-top: var(--top-app-bar-height);
+
+    transition: bottom 0.15s ease-out;
+}
+
+main.container.edit-mode {
+    bottom: var(--edit-mode-height);
+}

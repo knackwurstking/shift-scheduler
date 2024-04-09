@@ -1,88 +1,43 @@
 import constants from "../../lib/constants";
 import SwipeHandler from "./swipe-handler"
 
-export const innerHTML = `
-<div
-  class="page-calendar-item is-max no-user-select"
-></div>
+const _days = `
+  <div class="page-calendar-days ui-grid-row">
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+  </div>
+`
 
-<div
-  class="page-calendar-item is-max no-user-select"
-></div>
+const _itemTemplate = `
+<div class="ui-grid">
+  <div class="page-calendar-week-days ui-grid-row">
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+  </div>
 
-<div
-  class="page-calendar-item is-max no-user-select"
-></div>
+  ${_days}
+  ${_days}
+  ${_days}
+  ${_days}
+  ${_days}
+  ${_days}
+</div>
 `;
 
-export const itemTemplate = `
-<div class="ui-grid is-max">
-  <div class="page-calendar-week-days ui-grid-row">
-    <!-- One for each day in a week -->
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
-
-  <div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
-  <div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
-  <div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
-  <div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
-  <div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
-  <div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
-</div>
+export const innerHTML = `
+<div class="page-calendar-item is-max no-user-select">${_itemTemplate}</div>
+<div class="page-calendar-item is-max no-user-select">${_itemTemplate}</div>
+<div class="page-calendar-item is-max no-user-select">${_itemTemplate}</div>
 `;
 
 /**
@@ -107,23 +62,26 @@ export default class CalendarPage {
     constructor(storage, language) {
         this.#storage = storage
         this.#language = language
-        this.#swipeHandler = new SwipeHandler()
 
         this.#container = document.createElement("div");
+        this.#container.style.touchAction = "none"
+        this.#container.style.overflow = "hidden"
+        this.#container.style.width = "100%"
+        this.#container.style.height = "100%"
         this.#container.classList.add(
             "page-calendar",
             "flex",
             "row",
             "nowrap",
-            "is-max",
-            "no-touch",
-            "no-overflow",
             "no-user-select",
         );
         this.#container.innerHTML = innerHTML;
 
         this.#setupStorageListeners()
         this.#storage.dispatch("week-start")
+
+        // TODO: pass container to watch and items to move
+        this.#swipeHandler = new SwipeHandler(this.#container)
     }
 
     onMount() {
@@ -152,34 +110,30 @@ export default class CalendarPage {
                 data = constants.weekStart
             }
 
-            for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
-                el.innerHTML = itemTemplate;
-                this.#updateWeekDays(el, data);
-            }
+            this.#updateWeekDays(data)
         })
     }
 
     /**
-     * @param {Element} el
      * @param {number} weekStart
      */
-    #updateWeekDays(el, weekStart) {
+    #updateWeekDays(weekStart) {
         let order = [0, 1, 2, 3, 4, 5, 6]
-        if (weekStart > 0) {
-            const removed = order.splice(weekStart - 1, 1)
-            order = [...order, ...removed]
-        }
+
+        if (weekStart > 0)
+            order = [...order, ...order.splice(weekStart - 1, 1)]
 
         let index = 0
-        for (const child of el.querySelectorAll(".page-calendar-week-days .ui-grid-column")) {
-            if (order[index] === 0 || order[index] === 6) {
-                child.classList.add("page-calendar-weekend")
+        const children = this.#container.querySelectorAll(".page-calendar-week-days .ui-grid-column")
+
+        for (let x = 0; x < children.length; x++) {
+            if (order[x] === 0 || order[x] === 6) {
+                children[x].classList.add("page-calendar-weekend")
             } else {
-                child.classList.remove("page-calendar-weekend")
+                children[x].classList.remove("page-calendar-weekend")
             }
 
-            child.innerHTML = `${this.#language.get("weekDays", order[index].toString())}`;
-            index++
+            children[x].innerHTML = `${this.#language.get("weekDays", order[index].toString())}`;
         }
     }
 }

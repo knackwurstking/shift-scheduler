@@ -1,0 +1,11 @@
+.page-calendar .page-calendar-item .page-calendar-days.ui-grid-row {
+    --gap: 0.1em;
+    height: calc(100% / 7 + 2.5em);
+}
+
+.page-calendar .page-calendar-item .page-calendar-days.ui-grid-row .ui-grid-column {
+    --gap: 0.1em;
+    width: calc(100% / 7);
+    height: 100%;
+    overflow: hidden;
+}

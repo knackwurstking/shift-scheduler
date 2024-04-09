@@ -1,5 +1,5 @@
 import "./node_modules/ui/css/main.css";
-import "./style.css";
+import "./styles/main.css";
 
 import { utils, ripple, svg } from "ui";
 import constants from "./lib/constants";
@@ -24,9 +24,10 @@ storage.addListener("lang", async (data) => {
     storage.dispatch("week-start") // This will trigger an update on the calendar week days
 })
 
+// TODO: Passing ".edit-mode" to the main.container if toggled on
 document.querySelector("#app").innerHTML = `
     <main class="container ui-container is-debug">
-        <div class="stack-layout is-max"></div>
+        <div class="stack-layout"></div>
     </main>
 
     <header class="ui-app-bar ui-app-bar-top is-debug">
