@@ -44,21 +44,29 @@ main.container.edit-mode {
     /*will-change: transform;*/
 }
 
-.page-calendar .page-calendar-item > .ui-grid {
+.page-calendar .page-calendar-item>.ui-grid {
     --gap: 0.1em;
 }
 
-.page-calendar .page-calendar-item > .ui-grid .page-calendar-week-days {
+.page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row {
     --gap: 0.1em;
-    height: 2em;
+    height: fit-content;
 }
 
-.page-calendar
-    .page-calendar-item
-    > .ui-grid
-    .page-calendar-week-days
-    .ui-grid-columns {
+.page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column {
     font-family: var(--font-family-heading);
     width: calc(100% / 7);
     height: 100%;
+}
+
+.page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column.page-calendar-weekend {
+    font-weight: bolder;
+}
+
+.page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column:not(.page-calendar-weekend) {
+    font-weight: normal;
+}
+
+.page-calendar .page-calendar-item .page-calendar-days.ui-grid-row {
+    --gap: 0.1em;
 }

@@ -18,16 +18,29 @@ export const itemTemplate = `
 <div class="ui-grid is-max">
   <div class="page-calendar-week-days ui-grid-row">
     <!-- One for each day in a week -->
-    <div class="ui-grid-column"></div>
-    <div class="ui-grid-column"></div>
-    <div class="ui-grid-column"></div>
-    <div class="ui-grid-column"></div>
-    <div class="ui-grid-column"></div>
-    <div class="ui-grid-column"></div>
-    <div class="ui-grid-column"></div>
+    <div class="ui-grid-column ui-card has-padding is-text-center"></div>
+    <div class="ui-grid-column ui-card has-padding is-text-center"></div>
+    <div class="ui-grid-column ui-card has-padding is-text-center"></div>
+    <div class="ui-grid-column ui-card has-padding is-text-center"></div>
+    <div class="ui-grid-column ui-card has-padding is-text-center"></div>
+    <div class="ui-grid-column ui-card has-padding is-text-center"></div>
+    <div class="ui-grid-column ui-card has-padding is-text-center"></div>
   </div>
 
   <!-- TODO: Continue building the grid here (size: 7x6) -->
+  <div class="page-calendar-days ui-grid-row is-max-height">
+    <div class="ui-grid-column"></div>
+  </div>
+  <div class="page-calendar-days ui-grid-row is-max-height">
+  </div>
+  <div class="page-calendar-days ui-grid-row is-max-height">
+  </div>
+  <div class="page-calendar-days ui-grid-row is-max-height">
+  </div>
+  <div class="page-calendar-days ui-grid-row is-max-height">
+  </div>
+  <div class="page-calendar-days ui-grid-row is-max-height">
+  </div>
 </div>
 `;
 
@@ -105,7 +118,13 @@ export default class CalendarPage {
         }
 
         let index = 0
-        for (const child of el.querySelectorAll(".ui-grid-column")) {
+        for (const child of el.querySelectorAll(".page-calendar-week-days .ui-grid-column")) {
+            if (order[index] === 0 || order[index] === 6) {
+                child.classList.add("page-calendar-weekend")
+            } else {
+                child.classList.remove("page-calendar-weekend")
+            }
+
             child.innerHTML = `${this.#language.get("weekDays", order[index].toString())}`;
             index++
         }
