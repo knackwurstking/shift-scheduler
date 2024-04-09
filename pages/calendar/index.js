@@ -80,8 +80,7 @@ export default class CalendarPage {
         this.#setupStorageListeners()
         this.#storage.dispatch("week-start")
 
-        // TODO: pass container to watch and items to move
-        this.#swipeHandler = new SwipeHandler(this.#container)
+        this.#swipeHandler = new SwipeHandler(this.#container, ".page-calendar-item")
     }
 
     onMount() {
@@ -120,10 +119,11 @@ export default class CalendarPage {
     #updateWeekDays(weekStart) {
         let order = [0, 1, 2, 3, 4, 5, 6]
 
-        if (weekStart > 0)
-            order = [...order, ...order.splice(weekStart - 1, 1)]
+        if (weekStart > 0) {
+            order = [...order.slice(weekStart), ...order.slice(0, weekStart)]
+            console.log(order)
+        }
 
-        let index = 0
         const children = this.#container.querySelectorAll(".page-calendar-week-days .ui-grid-column")
 
         for (let x = 0; x < children.length; x++) {
@@ -133,7 +133,7 @@ export default class CalendarPage {
                 children[x].classList.remove("page-calendar-weekend")
             }
 
-            children[x].innerHTML = `${this.#language.get("weekDays", order[index].toString())}`;
+            children[x].innerHTML = `${this.#language.get("weekDays", order[x % 7].toString())}`;
         }
     }
 }
