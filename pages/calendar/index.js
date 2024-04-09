@@ -26,6 +26,8 @@ export const itemTemplate = `
     <div class="ui-grid-column"></div>
     <div class="ui-grid-column"></div>
   </div>
+
+  <!-- TODO: Continue building the grid here (size: 7x6) -->
 </div>
 `;
 
