@@ -75,9 +75,7 @@ document.querySelector("#app").innerHTML = `
 
 async function main() {
     createRipple();
-
-    const themeHandler = await createThemeHandler();
-    themeHandler.start();
+    createThemeHandler();
 
     // NOTE: The app bar will handle the `currentDate`
     const appBar = new AppBar(
@@ -112,10 +110,15 @@ async function createThemeHandler() {
     themeHandler.addTheme("zinc", "/themes/zinc.css");
     themeHandler.loadTheme(constants.theme.name);
 
-    const theme = storage.get("theme", null);
-    if (theme?.mode) {
-        themeHandler.setMode(theme.mode);
-    }
+    storage.addListener("theme", (data) => {
+        console.log("storage: theme:", data)
+
+        if (data?.mode) {
+            themeHandler.setMode(data.mode);
+        } else {
+            themeHandler.start()
+        }
+    });
 
     return themeHandler;
 }

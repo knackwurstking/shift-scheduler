@@ -58,5 +58,7 @@ main.container.edit-mode {
     > .ui-grid
     .page-calendar-week-days
     .ui-grid-columns {
-    /* TODO: Add font-family, width and height */
+    font-family: var(--font-family-heading);
+    width: calc(100% / 7);
+    height: 100%;
 }

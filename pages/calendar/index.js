@@ -69,6 +69,14 @@ export default class CalendarPage {
    * @param {Element} el
    */
   #createWeekDays(el) {
-    // TODO: get week-days configuration from storage (week-start on monday or sunday, and language de or en)
+    for (const child of el.querySelectorAll(".ui-grid-column")) {
+      const weekIndex = child.getAttribute("data-week-index");
+      if (!!weekIndex) {
+        // TODO: get week-days configuration from storage (week-start on monday or sunday, and language de or en)
+        child.innerHTML = `
+          <span>${weekIndex}</span>
+        `;
+      }
+    }
   }
 }
