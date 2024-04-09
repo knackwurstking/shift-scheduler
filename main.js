@@ -11,15 +11,17 @@ import CalendarPage from "./pages/calendar";
 import Language from "./lib/language";
 
 const storage = new Storage();
-const language = new Language(storage.get("lang", constants.language));
+const language = new Language();
+language.setLanguage(storage.get("lang", constants.language))
+    .then(() => storage.dispatch("lang"))
 
-storage.addListener("lang", (data) => {
+storage.addListener("lang", async (data) => {
     if (!data) {
         data = constants.language
     }
 
-    language.changeLanguage(data)
-    storage.dispatch("week-start")
+    await language.setLanguage(data)
+    storage.dispatch("week-start") // This will trigger an update on the calendar week days
 })
 
 document.querySelector("#app").innerHTML = `
