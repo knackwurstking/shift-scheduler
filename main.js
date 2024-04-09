@@ -81,6 +81,7 @@ async function main() {
   const appBar = new AppBar(
     document.querySelector(".ui-app-bar"),
     new DatePicker(new Date()),
+    "",
   );
   // TODO: add callbacks for "backButton", "datePicker, "editMode", "today", "pdf", "settings"
 
