@@ -1,4 +1,5 @@
 import constants from "../../lib/constants";
+import SwipeHandler from "./swipe-handler"
 
 export const innerHTML = `
 <div
@@ -96,6 +97,9 @@ export default class CalendarPage {
     /** @type {HTMLElement}*/
     #container;
 
+    /** @type {SwipeHandler} */
+    #swipeHandler;
+
     /**
      * @param {import("../../lib/storage").default} storage
      * @param {import("../../lib/language").default} language
@@ -103,6 +107,7 @@ export default class CalendarPage {
     constructor(storage, language) {
         this.#storage = storage
         this.#language = language
+        this.#swipeHandler = new SwipeHandler()
 
         this.#container = document.createElement("div");
         this.#container.classList.add(
@@ -119,6 +124,14 @@ export default class CalendarPage {
 
         this.#setupStorageListeners()
         this.#storage.dispatch("week-start")
+    }
+
+    onMount() {
+        this.#swipeHandler.start()
+    }
+
+    onDestroy() {
+        this.#swipeHandler.stop()
     }
 
     getName() {
