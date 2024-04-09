@@ -81,6 +81,8 @@ export default class CalendarPage {
         this.#storage.dispatch("week-start")
 
         this.#swipeHandler = new SwipeHandler(this.#container)
+        // TODO: after a swipe (left/right, "none" can be ignored) listen for a
+        //       "directionchange" event and update the currentDate and days
     }
 
     onMount() {

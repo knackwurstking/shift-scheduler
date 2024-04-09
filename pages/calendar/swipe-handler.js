@@ -112,6 +112,7 @@ export default class SwipeHandler {
      * @param {"left" | "right" | "none" | string} swipeDirection
      */
     #reorderItems(swipeDirection) {
+        // TODO: needs testing, use the current date for that
         switch (swipeDirection) {
             case "left":
                 // The first item will be the last
