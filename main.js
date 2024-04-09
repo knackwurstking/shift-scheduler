@@ -83,9 +83,11 @@ async function main() {
   const themeHandler = await createThemeHandler();
   themeHandler.start();
 
-  const datePicker = new DatePicker(new Date());
-
-  const appBar = new AppBar(document.querySelector(".ui-app-bar"), datePicker);
+  const appBar = new AppBar(
+    document.querySelector(".ui-app-bar"),
+    new DatePicker(new Date()),
+  );
+  // TODO: add callbacks for "backButton", "datePicker, "editMode", "today", "pdf", "settings"
 
   const stackLayout = new StackLayout(
     document.querySelector("main.container > .stack-layout"),
