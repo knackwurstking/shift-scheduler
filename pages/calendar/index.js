@@ -104,7 +104,7 @@ export default class CalendarPage {
 
         let index = 0
         for (const child of el.querySelectorAll(".ui-grid-column")) {
-            child.innerHTML = `${this.#language.get("weekDays", order[index].toString())}`; // TODO: use language to get the current date
+            child.innerHTML = `${this.#language.get("weekDays", order[index].toString())}`;
             index++
         }
     }
