@@ -21,7 +21,6 @@ document.querySelector("#app").innerHTML = `
                 <div class="ui-grid-row">
                     <button
                         class="app-bar-back-button ui-icon-button ghost primary"
-                        style="display: none;"
                         data-ripple="{}"
                     >
                         ${svg.BackArrowNavigation}
@@ -43,7 +42,6 @@ document.querySelector("#app").innerHTML = `
             <div>
                 <button
                     class="app-bar-edit-mode ui-icon-button ghost primary"
-                    style="display: none;"
                     data-ripple="{}"
                 >
                     ${svg.Edit2}
@@ -51,7 +49,6 @@ document.querySelector("#app").innerHTML = `
 
                 <button
                     class="app-bar-today ui-icon-button ghost primary"
-                    style="display: none;"
                     data-ripple="{}"
                 >
                     ${svg.TodayOutline}
@@ -59,7 +56,6 @@ document.querySelector("#app").innerHTML = `
 
                 <button
                     class="app-bar-pdf ui-icon-button ghost primary"
-                    style="display: none;"
                     data-ripple="{}"
                 >
                     ${svg.PDFDocument}
@@ -67,7 +63,6 @@ document.querySelector("#app").innerHTML = `
 
                 <button
                     class="app-bar-settings ui-icon-button ghost primary"
-                    style="display: none;"
                     data-ripple="{}"
                 >
                     ${svg.Settings}
