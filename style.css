@@ -50,17 +50,21 @@ main.container.edit-mode {
 
 .page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row {
     --gap: 0.1em;
-    height: fit-content;
+    height: 2.5em;
 }
 
 .page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column {
     font-family: var(--font-family-heading);
     width: calc(100% / 7);
     height: 100%;
-}
 
-.page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column.page-calendar-weekend {
+    font-size: 1.15em;
+
     font-weight: bolder;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column:not(.page-calendar-weekend) {
@@ -69,4 +73,12 @@ main.container.edit-mode {
 
 .page-calendar .page-calendar-item .page-calendar-days.ui-grid-row {
     --gap: 0.1em;
+    height: calc(100% / 7 + 2.5em);
+}
+
+.page-calendar .page-calendar-item .page-calendar-days.ui-grid-row .ui-grid-column {
+    --gap: 0.1em;
+    width: calc(100% / 7);
+    height: 100%;
+    overflow: hidden;
 }
