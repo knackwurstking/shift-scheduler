@@ -11,8 +11,18 @@ import CalendarPage from "./pages/calendar";
 import Language from "./lib/language";
 
 const storage = new Storage();
-const language = new Language(storage.get("lang", "en"));
-// TODO: add storage listener - and dispatch "first-week-day"
+const language = new Language(storage.get("lang", constants.language));
+
+storage.addListener("lang", (data) => {
+    console.log('storage: "lang"', data)
+
+    if (!data) {
+        data = constants.language
+    }
+
+    language.changeLanguage(data)
+    storage.dispatch("week-start")
+})
 
 document.querySelector("#app").innerHTML = `
     <main class="container ui-container is-debug">
@@ -120,7 +130,7 @@ async function createThemeHandler() {
 
             if (!!data?.mode) {
                 themeHandler.stop()
-                themeHandler.setMode(data.mode);
+                themeHandler.setMode(data.mode)
             } else {
                 themeHandler.start()
             }

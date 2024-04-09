@@ -1,3 +1,5 @@
+import constants from "../../lib/constants";
+
 export const innerHTML = `
 <div
   class="page-calendar-item is-max no-user-select"
@@ -61,7 +63,7 @@ export default class CalendarPage {
         this.#container.innerHTML = innerHTML;
 
         this.#setupStorageListeners()
-        this.#storage.dispatch("first-week-day")
+        this.#storage.dispatch("week-start")
     }
 
     getName() {
@@ -77,11 +79,11 @@ export default class CalendarPage {
     }
 
     #setupStorageListeners() {
-        this.#storage.addListener("first-week-day", (data) => {
-            console.log('storage: "first-week-day":', data)
+        this.#storage.addListener("week-start", (data) => {
+            console.log('storage: "week-start":', data)
 
             if (data !== 0 || data !== 6) {
-                data = 0
+                data = constants.firstWeekStart
             }
 
             for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
