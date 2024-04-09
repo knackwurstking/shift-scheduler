@@ -7,6 +7,7 @@ import AppBar from "./lib/app-bar";
 import StackLayout from "./lib/stack-layout";
 import Storage from "./lib/storage";
 import DatePicker from "./lib/date-picker";
+import CalendarPage from "./pages/calendar";
 
 const storage = new Storage();
 
@@ -73,45 +74,73 @@ document.querySelector("#app").innerHTML = `
 `;
 
 async function main() {
-  createRipple();
+    createRipple();
 
-  const themeHandler = await createThemeHandler();
-  themeHandler.start();
+    const themeHandler = await createThemeHandler();
+    themeHandler.start();
 
-  const appBar = new AppBar(
-    document.querySelector(".ui-app-bar"),
-    new DatePicker(new Date()),
-    "",
-  );
-  // TODO: add callbacks for "backButton", "datePicker, "editMode", "today", "pdf", "settings"
+    // NOTE: The app bar will handle the `currentDate`
+    const appBar = new AppBar(
+        document.querySelector(".ui-app-bar"),
+        new DatePicker(new Date()),
+        "",
+    );
+    setAppBarHandlers(appBar);
 
-  const stackLayout = new StackLayout(
-    document.querySelector("main.container > .stack-layout"),
-    appBar,
-  );
+    const stackLayout = new StackLayout(
+        document.querySelector("main.container > .stack-layout"),
+        appBar,
+    );
 
-  // TODO: ...
+    const calendarPage = new CalendarPage();
+
+    stackLayout.setPage(calendarPage);
 }
 
 window.addEventListener("DOMContentLoaded", main);
 
 async function createRipple() {
-  const elements = document.querySelectorAll("*[data-ripple]");
-  elements.forEach(async (el) => {
-    ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
-  });
+    const elements = document.querySelectorAll("*[data-ripple]");
+    elements.forEach(async (el) => {
+        ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
+    });
 }
 
 async function createThemeHandler() {
-  const themeHandler = new utils.theme.ThemeHandler();
+    const themeHandler = new utils.theme.ThemeHandler();
 
-  themeHandler.addTheme("zinc", "/themes/zinc.css");
-  themeHandler.loadTheme(constants.theme.name);
+    themeHandler.addTheme("zinc", "/themes/zinc.css");
+    themeHandler.loadTheme(constants.theme.name);
 
-  const theme = storage.get("theme", null);
-  if (theme?.mode) {
-    themeHandler.setMode(theme.mode);
-  }
+    const theme = storage.get("theme", null);
+    if (theme?.mode) {
+        themeHandler.setMode(theme.mode);
+    }
 
-  return themeHandler;
+    return themeHandler;
+}
+
+/**
+ * @param {AppBar} appBar
+ */
+async function setAppBarHandlers(appBar) {
+    appBar.onClick("back-button", () => {
+        // ...
+    });
+
+    appBar.onClick("date-picker", () => {
+        // ...
+    });
+
+    appBar.onClick("edit-mode", () => {
+        // ...
+    });
+
+    appBar.onClick("pdf", () => {
+        // ...
+    });
+
+    appBar.onClick("settings", () => {
+        // ...
+    });
 }
