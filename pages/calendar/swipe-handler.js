@@ -1,3 +1,5 @@
+import constants from "../../lib/constants"
+
 export default class SwipeHandler {
     /** @type {HTMLElement} */
     #root
@@ -46,19 +48,23 @@ export default class SwipeHandler {
         }
 
         this.#onTouchEnd = async (ev) => {
-            if (this.#startX === null) throw `Ooops, how could this happen :)`; // should never happen (i think)
+            if (this.#startX === null) return;
 
-            const clientX = this.#clientX // TODO: modify this value to max left/right
+            const clientX = this.#clientX
             const startX = this.#startX
 
             this.#clientX = this.#startX = null
 
             this.#finalTransformRunning = true
             this.#setTransition("transform 0.25s ease")
-            this.#transform(clientX < startX ? "100%" : "-100%")
+            if (Math.abs(startX - clientX) > constants.swipeRange * (window.innerWidth / 1080)) {
+                this.#transform(clientX < startX ? "100%" : "-100%")
+            } else {
+                this.#transform("0%")
+            }
             setTimeout(() => {
                 this.#setTransition("none")
-                // TODO: reorder items (the last one will be the first one, and so on)
+                this.#reorderItems()
                 this.#finalTransformRunning = false
             }, 250)
         }
@@ -106,5 +112,10 @@ export default class SwipeHandler {
         for (let x = 0; x < this.#items.length; x++) {
             this.#items[x].style.transition = value
         }
+    }
+
+    #reorderItems() {
+        // TODO: reorder items (the last one will be the first one, and so on)
+        // ...
     }
 }
