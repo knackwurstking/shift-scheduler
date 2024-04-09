@@ -80,10 +80,8 @@ export default class CalendarPage {
 
     #setupStorageListeners() {
         this.#storage.addListener("week-start", (data) => {
-            console.log('storage: "week-start":', data)
-
-            if (data !== 0 || data !== 6) {
-                data = constants.firstWeekStart
+            if (data !== 0 || data !== 1) {
+                data = constants.weekStart
             }
 
             for (const el of this.#container.querySelectorAll(".page-calendar-item")) {
@@ -98,7 +96,12 @@ export default class CalendarPage {
      * @param {number} weekStart
      */
     #updateWeekDays(el, weekStart) {
-        const order = [weekStart, 1, 2, 3, 4, 5, (weekStart === 0 ? 6 : 0)]
+        let order = [0, 1, 2, 3, 4, 5, 6]
+        if (weekStart > 0) {
+            const removed = order.splice(weekStart - 1, 1)
+            order = [...order, ...removed]
+        }
+
         let index = 0
         for (const child of el.querySelectorAll(".ui-grid-column")) {
             child.innerHTML = `${order[index]}`; // TODO: use language to get the current date

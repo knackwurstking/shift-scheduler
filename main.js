@@ -14,8 +14,6 @@ const storage = new Storage();
 const language = new Language(storage.get("lang", constants.language));
 
 storage.addListener("lang", (data) => {
-    console.log('storage: "lang"', data)
-
     if (!data) {
         data = constants.language
     }
@@ -126,8 +124,6 @@ async function createThemeHandler() {
     {
         /** @param {import("./lib/storage").ThemeData} data */
         const themeStorageHandler = (data) => {
-            console.log(`storage: "theme":`, data)
-
             if (!!data?.mode) {
                 themeHandler.stop()
                 themeHandler.setMode(data.mode)
