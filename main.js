@@ -6,22 +6,21 @@ import constants from "./lib/constants";
 import AppBar from "./lib/app-bar";
 import StackLayout from "./lib/stack-layout";
 import Storage from "./lib/storage";
-import DatePicker from "./lib/date-picker";
 import CalendarPage from "./pages/calendar";
 import Language from "./lib/language";
 
 const storage = new Storage();
 const language = new Language();
 language.setLanguage(storage.get("lang", constants.language))
-    .then(() => storage.dispatch("lang"))
+  .then(() => storage.dispatch("lang"))
 
 storage.addListener("lang", async (data) => {
-    if (!data) {
-        data = constants.language
-    }
+  if (!data) {
+    data = constants.language
+  }
 
-    await language.setLanguage(data)
-    storage.dispatch("week-start") // This will trigger an update on the calendar week days
+  await language.setLanguage(data)
+  storage.dispatch("week-start") // This will trigger an update on the calendar week days
 })
 
 // TODO: Passing ".edit-mode" to the main.container if toggled on
@@ -88,81 +87,77 @@ document.querySelector("#app").innerHTML = `
 `;
 
 async function main() {
-    createRipple();
-    createThemeHandler();
+  createRipple();
+  createThemeHandler();
 
-    // NOTE: The app bar will handle the `currentDate`
-    const appBar = new AppBar(
-        document.querySelector(".ui-app-bar"),
-        new DatePicker(new Date()),
-        "",
-    );
-    setAppBarHandlers(appBar);
+  // NOTE: The app bar will handle the `currentDate`
+  const appBar = new AppBar(document.querySelector(".ui-app-bar"), "");
+  setAppBarHandlers(appBar);
 
-    const stackLayout = new StackLayout(
-        document.querySelector("main.container > .stack-layout"),
-        appBar,
-    );
+  const stackLayout = new StackLayout(
+    document.querySelector("main.container > .stack-layout"),
+    appBar,
+  );
 
-    const calendarPage = new CalendarPage(storage, language);
+  const calendarPage = new CalendarPage({ storage, language, appBar });
 
-    stackLayout.setPage(calendarPage);
+  stackLayout.setPage(calendarPage);
 }
 
 window.addEventListener("DOMContentLoaded", main);
 
 async function createRipple() {
-    const elements = document.querySelectorAll("*[data-ripple]");
-    elements.forEach(async (el) => {
-        ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
-    });
+  const elements = document.querySelectorAll("*[data-ripple]");
+  elements.forEach(async (el) => {
+    ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
+  });
 }
 
 async function createThemeHandler() {
-    const themeHandler = new utils.theme.ThemeHandler();
+  const themeHandler = new utils.theme.ThemeHandler();
 
-    themeHandler.addTheme("zinc", "/themes/zinc.css");
-    themeHandler.loadTheme(constants.theme.name);
+  themeHandler.addTheme("zinc", "/themes/zinc.css");
+  themeHandler.loadTheme(constants.theme.name);
 
-    {
-        /** @param {import("./lib/storage").ThemeData} data */
-        const themeStorageHandler = (data) => {
-            if (!!data?.mode) {
-                themeHandler.stop()
-                themeHandler.setMode(data.mode)
-            } else {
-                themeHandler.start()
-            }
-        }
-
-        themeStorageHandler(storage.get("theme", null))
-        storage.addListener("theme", themeStorageHandler)
+  {
+    /** @param {import("./lib/storage").ThemeData} data */
+    const themeStorageHandler = (data) => {
+      if (!!data?.mode) {
+        themeHandler.stop()
+        themeHandler.setMode(data.mode)
+      } else {
+        themeHandler.start()
+      }
     }
 
-    return themeHandler;
+    themeStorageHandler(storage.get("theme", null))
+    storage.addListener("theme", themeStorageHandler)
+  }
+
+  return themeHandler;
 }
 
 /**
  * @param {AppBar} appBar
  */
 async function setAppBarHandlers(appBar) {
-    appBar.onClick("back-button", () => {
-        // ...
-    });
+  appBar.onClick("back-button", () => {
+    // ...
+  });
 
-    appBar.onClick("date-picker", () => {
-        // ...
-    });
+  appBar.onClick("date-picker", () => {
+    // ...
+  });
 
-    appBar.onClick("edit-mode", () => {
-        // ...
-    });
+  appBar.onClick("edit-mode", () => {
+    // ...
+  });
 
-    appBar.onClick("pdf", () => {
-        // ...
-    });
+  appBar.onClick("pdf", () => {
+    // ...
+  });
 
-    appBar.onClick("settings", () => {
-        // ...
-    });
+  appBar.onClick("settings", () => {
+    // ...
+  });
 }

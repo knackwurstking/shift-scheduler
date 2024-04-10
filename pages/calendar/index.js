@@ -48,6 +48,8 @@ export default class CalendarPage {
     #storage;
     /** @type {import("../../lib/language").default}*/
     #language;
+    /** @type {import("../../lib/app-bar").default}*/
+    #appBar
 
     /** @type {HTMLElement}*/
     #container;
@@ -56,12 +58,15 @@ export default class CalendarPage {
     #swipeHandler;
 
     /**
-     * @param {import("../../lib/storage").default} storage
-     * @param {import("../../lib/language").default} language
+     * @param {Object} option
+     * @param {import("../../lib/storage").default} option.storage
+     * @param {import("../../lib/language").default} option.language
+     * @param {import("../../lib/app-bar").default} option.appBar
      */
-    constructor(storage, language) {
+    constructor({ storage, language, appBar }) {
         this.#storage = storage
         this.#language = language
+        this.#appBar = appBar 
 
         this.#container = document.createElement("div");
         this.#container.style.touchAction = "none"
