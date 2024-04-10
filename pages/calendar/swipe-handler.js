@@ -4,7 +4,7 @@ export default class SwipeHandler {
     /** @type {HTMLElement} */
     #root
     /** @type {boolean} */
-    #destroy
+    #kill
 
     /** @type {((ev: TouchEvent) => void|Promise<void>)} */
     #onTouchMove
@@ -29,7 +29,7 @@ export default class SwipeHandler {
      */
     constructor(root) {
         this.#root = root
-        this.#destroy = false
+        this.#kill = false
 
         this.#startX = null
         this.#clientX = null
@@ -70,7 +70,7 @@ export default class SwipeHandler {
         }
 
         this.#animationFrameHandler = async () => {
-            if (this.#destroy) return
+            if (this.#kill) return
             if (this.#startX === null) {
                 requestAnimationFrame(this.#animationFrameHandler)
                 return
@@ -94,7 +94,7 @@ export default class SwipeHandler {
         this.#root.removeEventListener("touchend", this.#onTouchEnd)
         this.#root.removeEventListener("touchcancel", this.#onTouchCancel)
 
-        this.#destroy = false
+        this.#kill = false
     }
 
     /**
