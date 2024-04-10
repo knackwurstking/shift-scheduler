@@ -141,15 +141,15 @@ async function createThemeHandler() {
  * @param {AppBar} appBar
  */
 async function setAppBarHandlers(appBar) {
-  appBar.onClick("back-button", () => {
+  appBar.onClick("backButton", () => {
     // ...
   });
 
-  appBar.onClick("date-picker", () => {
+  appBar.onClick("datePicker", () => {
     // ...
   });
 
-  appBar.onClick("edit-mode", () => {
+  appBar.onClick("editMode", () => {
     // ...
   });
 
