@@ -91,9 +91,11 @@ export default class CalendarPage {
 
     // Setup swipe handlers
     this.#swipeHandler = new SwipeHandler(this.#root)
-    // TODO: Add a "directionchange" event handler to the SwipeHandler,
-    //       update the current date after each swipe,
-    //       and the calendar grid days
+    this.#swipeHandler.addListener("swipe", (direction) => {
+      console.log(`directionchange event: "${direction}"`)
+      // TODO: current date -/+ on month if direction is right/left
+      // TODO/NOTE: if currentDate changes - appBar listener "datepickerchange" will handle the calendar days update
+    })
   }
 
   onMount() {

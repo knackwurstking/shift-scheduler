@@ -1,6 +1,7 @@
 import constants from "../../lib/constants"
+import { events } from "ui"
 
-export default class SwipeHandler {
+export default class SwipeHandler extends events.Events {
   /** @type {HTMLElement} */
   #root
   /** @type {boolean} */
@@ -28,6 +29,8 @@ export default class SwipeHandler {
    * @param {HTMLElement} root
    */
   constructor(root) {
+    super()
+
     this.#root = root
     this.#kill = false
 
@@ -121,7 +124,6 @@ export default class SwipeHandler {
    * @param {"left" | "right" | "none" | string} swipeDirection
    */
   #reorderItems(swipeDirection) {
-    // TODO: needs testing, use the current date for that
     switch (swipeDirection) {
       case "left":
         // The first item will be the last
@@ -141,5 +143,33 @@ export default class SwipeHandler {
     }
 
     this.#transform("0%")
+    this.dispatchWithData("swipe", swipeDirection)
+  }
+
+  /**
+   * @param {"swipe"} key
+   * @param {"left" | "right" | "none"} data
+   */
+  dispatchWithData(key, data) {
+    super.dispatchWithData(key, data)
+    return this
+  }
+
+  /**
+   * @param {"swipe"} key
+   * @param {(data: "left" | "right" | "none") => void|Promise<void>} listener
+   * @returns {() => void} clean up function
+   */
+  addListener(key, listener) {
+    return super.addListener(key, listener)
+  }
+
+  /**
+   * @param {"swipe"} key
+   * @param {(data: "left" | "right" | "none") => void|Promise<void>} listener
+   */
+  removeListener(key, listener) {
+    super.removeListener(key, listener)
+    return this
   }
 }
