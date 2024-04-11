@@ -31,6 +31,7 @@
     "include": [
         "lib/**/*.js",
         "pages/**/*.js",
+        "main.d.ts",
         "main.js"
     ]
 }

@@ -120,7 +120,7 @@ async function createThemeHandler() {
   themeHandler.loadTheme(constants.theme.name);
 
   {
-    /** @param {import("./lib/storage").ThemeData} data */
+    /** @param {StorageDataTheme} data */
     const themeStorageHandler = (data) => {
       if (!!data?.mode) {
         themeHandler.stop()
@@ -141,23 +141,27 @@ async function createThemeHandler() {
  * @param {AppBar} appBar
  */
 async function setAppBarHandlers(appBar) {
-  appBar.onClick("backButton", () => {
+  appBar.getElement("backButton").onclick = () => {
     // ...
-  });
+  }
 
-  appBar.onClick("datePicker", () => {
+  appBar.getElement("backButton").onclick = () => {
     // ...
-  });
+  };
 
-  appBar.onClick("editMode", () => {
+  appBar.getElement("datePicker").onclick = () => {
     // ...
-  });
+  };
 
-  appBar.onClick("pdf", () => {
+  appBar.getElement("editMode").onclick = () => {
     // ...
-  });
+  };
 
-  appBar.onClick("settings", () => {
+  appBar.getElement("pdf").onclick = () => {
     // ...
-  });
+  };
+
+  appBar.getElement("settings").onclick = () => {
+    // ...
+  };
 }
