@@ -41,7 +41,7 @@ export const innerHTML = `
 `;
 
 /**
- * @type {import("../page").Page}
+ * @type {Page}
  */
 export default class CalendarPage {
   /** @type {import("../../lib/storage").default}*/
@@ -57,6 +57,9 @@ export default class CalendarPage {
   /** @type {SwipeHandler} */
   #swipeHandler;
 
+  /** @type {(data: Date) => void|Promise<void>} */
+  #ondatepickerchange
+
   /**
    * @param {Object} option
    * @param {import("../../lib/storage").default} option.storage
@@ -66,6 +69,7 @@ export default class CalendarPage {
   constructor({ storage, language, appBar }) {
     this.#storage = storage // NOTE: storage keys: "week-start"
     this.#language = language
+
     this.#appBar = appBar
 
     {
@@ -92,17 +96,29 @@ export default class CalendarPage {
     // Setup swipe handlers
     this.#swipeHandler = new SwipeHandler(this.#root)
     this.#swipeHandler.addListener("swipe", (direction) => {
-      console.log(`directionchange event: "${direction}"`)
-      // TODO: current date -/+ on month if direction is right/left
-      // TODO/NOTE: if currentDate changes - appBar listener "datepickerchange" will handle the calendar days update
+      switch (direction) {
+        case "left":
+          this.#appBar.datePicker.nextMonth()
+          break
+        case "right":
+          this.#appBar.datePicker.prevMonth()
+          break
+      }
     })
+
+    this.#ondatepickerchange = (data) => {
+      console.log("[event] datepickerchange:", data)
+      // TODO: update calendar data (days/dates, notes, shifts, ...)
+    }
   }
 
   onMount() {
+    this.#appBar.datePicker.addListener("datepickerchange", this.#ondatepickerchange)
     this.#swipeHandler.start()
   }
 
   onDestroy() {
+    this.#appBar.datePicker.removeListener("datepickerchange", this.#ondatepickerchange)
     this.#swipeHandler.stop()
   }
 
@@ -136,7 +152,6 @@ export default class CalendarPage {
 
     if (weekStart > 0) {
       order = [...order.slice(weekStart), ...order.slice(0, weekStart)]
-      console.log(order)
     }
 
     const children = this.#root.querySelectorAll(".page-calendar-week-days .ui-grid-column")
