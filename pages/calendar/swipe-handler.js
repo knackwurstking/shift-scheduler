@@ -1,103 +1,106 @@
-import constants from "../../lib/constants"
-import { events } from "ui"
+import { events } from "ui";
+import constants from "../../lib/constants";
 
 export default class SwipeHandler extends events.Events {
   /** @type {HTMLElement} */
-  #root
+  #root;
   /** @type {boolean} */
-  #kill
+  #kill;
 
   /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-  #onTouchMove
+  #onTouchMove;
   /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-  #onTouchEnd
+  #onTouchEnd;
   /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-  #onTouchCancel
+  #onTouchCancel;
 
   /** @type {(() => void|Promise<void>)} */
-  #animationFrameHandler
+  #animationFrameHandler;
 
   /** @type {number | null} */
-  #startX
+  #startX;
   /** @type {number | null} */
-  #clientX
+  #clientX;
 
   /** @type {boolean} */
-  #finalTransformRunning
+  #finalTransformRunning;
 
   /**
    * @param {HTMLElement} root
    */
   constructor(root) {
-    super()
+    super();
 
-    this.#root = root
-    this.#kill = false
+    this.#root = root;
+    this.#kill = false;
 
-    this.#startX = null
-    this.#clientX = null
-    this.#finalTransformRunning = false
+    this.#startX = null;
+    this.#clientX = null;
+    this.#finalTransformRunning = false;
 
     this.#onTouchMove = async (ev) => {
       if (this.#finalTransformRunning) return;
       if (this.#startX === null) this.#startX = ev.touches[0].clientX;
-      this.#clientX = ev.touches[0].clientX
-    }
+      this.#clientX = ev.touches[0].clientX;
+    };
 
     this.#onTouchEnd = async () => {
       if (this.#startX === null) return;
 
-      const clientX = this.#clientX
-      const startX = this.#startX
-      let swipeDirection = "none"
+      const clientX = this.#clientX;
+      const startX = this.#startX;
+      let swipeDirection = "none";
 
-      this.#clientX = this.#startX = null
+      this.#clientX = this.#startX = null;
 
-      this.#finalTransformRunning = true
-      this.#setTransition("transform 0.25s ease")
-      if (Math.abs(startX - clientX) > constants.swipeRange * (window.innerWidth / 1080)) {
-        this.#transform(clientX < startX ? "100%" : "-100%")
-        swipeDirection = clientX > startX ? "right" : "left"
+      this.#finalTransformRunning = true;
+      this.#setTransition("transform 0.25s ease");
+      if (
+        Math.abs(startX - clientX) >
+        constants.swipeRange * (window.innerWidth / 1080)
+      ) {
+        this.#transform(clientX < startX ? "100%" : "-100%");
+        swipeDirection = clientX > startX ? "right" : "left";
       } else {
-        this.#transform("0%")
+        this.#transform("0%");
       }
       setTimeout(() => {
-        this.#setTransition("none")
-        this.#reorderItems(swipeDirection)
-        this.#finalTransformRunning = false
-      }, 250)
-    }
+        this.#setTransition("none");
+        this.#reorderItems(swipeDirection);
+        this.#finalTransformRunning = false;
+      }, 250);
+    };
 
     this.#onTouchCancel = async (ev) => {
       if (this.#startX !== null) await this.#onTouchEnd(ev);
-    }
+    };
 
     this.#animationFrameHandler = async () => {
-      if (this.#kill) return
+      if (this.#kill) return;
       if (this.#startX === null) {
-        requestAnimationFrame(this.#animationFrameHandler)
-        return
-      };
+        requestAnimationFrame(this.#animationFrameHandler);
+        return;
+      }
 
-      this.#transform(`${this.#startX - this.#clientX}px`)
-      requestAnimationFrame(this.#animationFrameHandler)
-    }
+      this.#transform(`${this.#startX - this.#clientX}px`);
+      requestAnimationFrame(this.#animationFrameHandler);
+    };
   }
 
   start() {
-    this.#root.addEventListener("touchmove", this.#onTouchMove)
-    this.#root.addEventListener("touchend", this.#onTouchEnd)
-    this.#root.addEventListener("touchcancel", this.#onTouchCancel)
+    this.#root.addEventListener("touchmove", this.#onTouchMove);
+    this.#root.addEventListener("touchend", this.#onTouchEnd);
+    this.#root.addEventListener("touchcancel", this.#onTouchCancel);
 
-    requestAnimationFrame(this.#animationFrameHandler)
+    requestAnimationFrame(this.#animationFrameHandler);
   }
 
   stop() {
-    this.#root.removeEventListener("touchmove", this.#onTouchMove)
-    this.#root.removeEventListener("touchend", this.#onTouchEnd)
-    this.#root.removeEventListener("touchcancel", this.#onTouchCancel)
+    this.#root.removeEventListener("touchmove", this.#onTouchMove);
+    this.#root.removeEventListener("touchend", this.#onTouchEnd);
+    this.#root.removeEventListener("touchcancel", this.#onTouchCancel);
 
-    this.#kill = false
+    this.#kill = false;
   }
 
   /**
@@ -106,7 +109,8 @@ export default class SwipeHandler extends events.Events {
   #transform(diff) {
     for (let x = 0; x < this.#root.children.length; x++) {
       // @ts-ignore
-      this.#root.children[x].style.transform = `translateX(calc(-100% - ${diff}))`
+      this.#root.children[x].style.transform =
+        `translateX(calc(-100% - ${diff}))`;
     }
   }
 
@@ -116,7 +120,7 @@ export default class SwipeHandler extends events.Events {
   #setTransition(value) {
     for (let x = 0; x < this.#root.children.length; x++) {
       // @ts-ignore
-      this.#root.children[x].style.transition = value
+      this.#root.children[x].style.transition = value;
     }
   }
 
@@ -127,23 +131,23 @@ export default class SwipeHandler extends events.Events {
     switch (swipeDirection) {
       case "left":
         // The first item will be the last
-        this.#root.appendChild(this.#root.removeChild(this.#root.firstChild))
-        break
+        this.#root.appendChild(this.#root.removeChild(this.#root.firstChild));
+        break;
       case "right":
         // The last item will be the first
         this.#root.insertBefore(
           this.#root.removeChild(this.#root.lastChild),
-          this.#root.children[0]
-        )
-        break
+          this.#root.children[0],
+        );
+        break;
       case "none":
-        break
+        break;
       default:
-        throw `Ooop, what is this for a direction "${swipeDirection}"?`
+        throw `Ooop, what is this for a direction "${swipeDirection}"?`;
     }
 
-    this.#transform("0%")
-    this.dispatchWithData("swipe", swipeDirection)
+    this.#transform("0%");
+    this.dispatchWithData("swipe", swipeDirection);
   }
 
   /**
@@ -151,8 +155,8 @@ export default class SwipeHandler extends events.Events {
    * @param {"left" | "right" | "none"} data
    */
   dispatchWithData(key, data) {
-    super.dispatchWithData(key, data)
-    return this
+    super.dispatchWithData(key, data);
+    return this;
   }
 
   /**
@@ -161,7 +165,7 @@ export default class SwipeHandler extends events.Events {
    * @returns {() => void} clean up function
    */
   addListener(key, listener) {
-    return super.addListener(key, listener)
+    return super.addListener(key, listener);
   }
 
   /**
@@ -169,7 +173,7 @@ export default class SwipeHandler extends events.Events {
    * @param {(data: "left" | "right" | "none") => void|Promise<void>} listener
    */
   removeListener(key, listener) {
-    super.removeListener(key, listener)
-    return this
+    super.removeListener(key, listener);
+    return this;
   }
 }

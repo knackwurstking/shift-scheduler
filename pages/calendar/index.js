@@ -1,5 +1,5 @@
 import constants from "../../lib/constants";
-import SwipeHandler from "./swipe-handler"
+import SwipeHandler from "./swipe-handler";
 
 const _days = `
   <div class="page-calendar-days ui-grid-row">
@@ -11,7 +11,7 @@ const _days = `
     <div class="ui-grid-column ui-card"></div>
     <div class="ui-grid-column ui-card"></div>
   </div>
-`
+`;
 
 const _itemTemplate = `
 <div class="ui-grid">
@@ -49,7 +49,7 @@ export default class CalendarPage {
   /** @type {import("../../lib/language").default}*/
   #language;
   /** @type {import("../../lib/app-bar").default}*/
-  #appBar
+  #appBar;
 
   /** @type {HTMLElement}*/
   #root;
@@ -58,7 +58,7 @@ export default class CalendarPage {
   #swipeHandler;
 
   /** @type {(data: Date) => void|Promise<void>} */
-  #ondatepickerchange
+  #ondatepickerchange;
 
   /**
    * @param {Object} option
@@ -67,18 +67,18 @@ export default class CalendarPage {
    * @param {import("../../lib/app-bar").default} option.appBar
    */
   constructor({ storage, language, appBar }) {
-    this.#storage = storage // NOTE: storage keys: "week-start"
-    this.#language = language
+    this.#storage = storage; // NOTE: storage keys: "week-start"
+    this.#language = language;
 
-    this.#appBar = appBar
+    this.#appBar = appBar;
 
     {
       // Create the root container
       this.#root = document.createElement("div");
-      this.#root.style.touchAction = "none"
-      this.#root.style.overflow = "hidden"
-      this.#root.style.width = "100%"
-      this.#root.style.height = "100%"
+      this.#root.style.touchAction = "none";
+      this.#root.style.overflow = "hidden";
+      this.#root.style.width = "100%";
+      this.#root.style.height = "100%";
       this.#root.classList.add(
         "page-calendar",
         "flex",
@@ -90,36 +90,42 @@ export default class CalendarPage {
     }
 
     // Setup storage handlers
-    this.#setupStorageListeners()
-    this.#storage.dispatch("week-start")
+    this.#setupStorageListeners();
+    this.#storage.dispatch("week-start");
 
     // Setup swipe handlers
-    this.#swipeHandler = new SwipeHandler(this.#root)
+    this.#swipeHandler = new SwipeHandler(this.#root);
     this.#swipeHandler.addListener("swipe", (direction) => {
       switch (direction) {
         case "left":
-          this.#appBar.datePicker.nextMonth()
-          break
+          this.#appBar.datePicker.nextMonth();
+          break;
         case "right":
-          this.#appBar.datePicker.prevMonth()
-          break
+          this.#appBar.datePicker.prevMonth();
+          break;
       }
-    })
+    });
 
     this.#ondatepickerchange = (data) => {
-      console.log("[event] datepickerchange:", data)
+      console.log("[event] datepickerchange:", data);
       // TODO: update calendar data (days/dates, notes, shifts, ...)
-    }
+    };
   }
 
   onMount() {
-    this.#appBar.datePicker.addListener("datepickerchange", this.#ondatepickerchange)
-    this.#swipeHandler.start()
+    this.#appBar.datePicker.addListener(
+      "datepickerchange",
+      this.#ondatepickerchange,
+    );
+    this.#swipeHandler.start();
   }
 
   onDestroy() {
-    this.#appBar.datePicker.removeListener("datepickerchange", this.#ondatepickerchange)
-    this.#swipeHandler.stop()
+    this.#appBar.datePicker.removeListener(
+      "datepickerchange",
+      this.#ondatepickerchange,
+    );
+    this.#swipeHandler.stop();
   }
 
   getName() {
@@ -137,33 +143,36 @@ export default class CalendarPage {
   #setupStorageListeners() {
     this.#storage.addListener("week-start", (data) => {
       if (data !== 0 || data !== 1) {
-        data = constants.weekStart
+        data = constants.weekStart;
       }
 
-      this.#updateWeekDays(data)
-    })
+      this.#updateWeekDays(data);
+    });
   }
 
   /**
    * @param {number} weekStart
    */
   #updateWeekDays(weekStart) {
-    let order = [0, 1, 2, 3, 4, 5, 6]
+    let order = [0, 1, 2, 3, 4, 5, 6];
 
     if (weekStart > 0) {
-      order = [...order.slice(weekStart), ...order.slice(0, weekStart)]
+      order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
     }
 
-    const children = this.#root.querySelectorAll(".page-calendar-week-days .ui-grid-column")
+    const children = this.#root.querySelectorAll(
+      ".page-calendar-week-days .ui-grid-column",
+    );
 
     for (let x = 0; x < children.length; x++) {
       if (order[x] === 0 || order[x] === 6) {
-        children[x].classList.add("page-calendar-weekend")
+        children[x].classList.add("page-calendar-weekend");
       } else {
-        children[x].classList.remove("page-calendar-weekend")
+        children[x].classList.remove("page-calendar-weekend");
       }
 
-      children[x].innerHTML = `${this.#language.get("weekDays", order[x % 7].toString())}`;
+      children[x].innerHTML =
+        `${this.#language.get("weekDays", order[x % 7].toString())}`;
     }
   }
 }

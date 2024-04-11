@@ -1,27 +1,28 @@
 import "./node_modules/ui/css/main.css";
 import "./styles/main.css";
 
-import { utils, ripple, svg } from "ui";
-import constants from "./lib/constants";
+import { ripple, svg, utils } from "ui";
 import AppBar from "./lib/app-bar";
+import constants from "./lib/constants";
+import Language from "./lib/language";
 import StackLayout from "./lib/stack-layout";
 import Storage from "./lib/storage";
 import CalendarPage from "./pages/calendar";
-import Language from "./lib/language";
 
 const storage = new Storage();
 const language = new Language();
-language.setLanguage(storage.get("lang", constants.language))
-  .then(() => storage.dispatch("lang"))
+language
+  .setLanguage(storage.get("lang", constants.language))
+  .then(() => storage.dispatch("lang"));
 
 storage.addListener("lang", async (data) => {
   if (!data) {
-    data = constants.language
+    data = constants.language;
   }
 
-  await language.setLanguage(data)
-  storage.dispatch("week-start") // This will trigger an update on the calendar week days
-})
+  await language.setLanguage(data);
+  storage.dispatch("week-start"); // This will trigger an update on the calendar week days
+});
 
 // TODO: Passing ".edit-mode" to the main.container if toggled on
 document.querySelector("#app").innerHTML = `
@@ -93,7 +94,7 @@ async function main() {
   // NOTE: The app bar will handle the `currentDate`
   const appBar = new AppBar(document.querySelector(".ui-app-bar"), "");
   setAppBarHandlers(appBar);
-  appBar.onMount()
+  appBar.onMount();
 
   const stackLayout = new StackLayout(
     document.querySelector("main.container > .stack-layout"),
@@ -124,15 +125,15 @@ async function createThemeHandler() {
     /** @param {StorageDataTheme} data */
     const themeStorageHandler = (data) => {
       if (!!data?.mode) {
-        themeHandler.stop()
-        themeHandler.setMode(data.mode)
+        themeHandler.stop();
+        themeHandler.setMode(data.mode);
       } else {
-        themeHandler.start()
+        themeHandler.start();
       }
-    }
+    };
 
-    themeStorageHandler(storage.get("theme", null))
-    storage.addListener("theme", themeStorageHandler)
+    themeStorageHandler(storage.get("theme", null));
+    storage.addListener("theme", themeStorageHandler);
   }
 
   return themeHandler;
@@ -144,10 +145,6 @@ async function createThemeHandler() {
 async function setAppBarHandlers(appBar) {
   appBar.getElement("backButton").onclick = () => {
     // ...
-  }
-
-  appBar.getElement("backButton").onclick = () => {
-    // ...
   };
 
   appBar.getElement("datePicker").onclick = () => {
@@ -156,6 +153,10 @@ async function setAppBarHandlers(appBar) {
 
   appBar.getElement("editMode").onclick = () => {
     // ...
+  };
+
+  appBar.getElement("today").onclick = () => {
+    // TODO: Set a new date to the DatePicker (AppBar)
   };
 
   appBar.getElement("pdf").onclick = () => {

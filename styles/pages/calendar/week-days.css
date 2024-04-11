@@ -3,7 +3,10 @@
     height: 2.5em;
 }
 
-.page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column {
+.page-calendar
+    .page-calendar-item
+    .page-calendar-week-days.ui-grid-row
+    .ui-grid-column {
     font-family: var(--font-family-heading);
     width: calc(100% / 7);
     height: 100%;
@@ -17,6 +20,9 @@
     justify-content: center;
 }
 
-.page-calendar .page-calendar-item .page-calendar-week-days.ui-grid-row .ui-grid-column:not(.page-calendar-weekend) {
+.page-calendar
+    .page-calendar-item
+    .page-calendar-week-days.ui-grid-row
+    .ui-grid-column:not(.page-calendar-weekend) {
     font-weight: normal;
 }
