@@ -54,21 +54,28 @@ export default class SwipeHandler extends events.Events {
       this.#clientX = this.#startX = null;
 
       this.#finalTransformRunning = true;
-      this.#setTransition("transform 0.25s ease");
+      let transitionTime = 0.4;
       if (
         Math.abs(startX - clientX) >
         constants.swipeRange * (window.innerWidth / 1080)
       ) {
-        this.#transform(clientX < startX ? "100%" : "-100%");
         swipeDirection = clientX > startX ? "right" : "left";
+        this.#setTransition(`transform ${transitionTime}s ease`);
+        this.#transform(swipeDirection === "left" ? "100%" : "-100%");
       } else {
+        transitionTime /= 4;
+        this.#setTransition(`transform ${transitionTime.toFixed(3)}s ease`);
         this.#transform("0%");
       }
-      setTimeout(() => {
-        this.#setTransition("none");
-        this.#reorderItems(swipeDirection);
-        this.#finalTransformRunning = false;
-      }, 250);
+
+      setTimeout(
+        () => {
+          this.#setTransition("none");
+          this.#reorderItems(swipeDirection);
+          this.#finalTransformRunning = false;
+        },
+        Math.floor(transitionTime * 1000),
+      );
     };
 
     this.#onTouchCancel = async (ev) => {
@@ -118,6 +125,7 @@ export default class SwipeHandler extends events.Events {
    * @param {string} value
    */
   #setTransition(value) {
+    console.log("Using transition:", value);
     for (let x = 0; x < this.#root.children.length; x++) {
       // @ts-ignore
       this.#root.children[x].style.transition = value;
