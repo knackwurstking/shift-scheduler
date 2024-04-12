@@ -88,7 +88,7 @@ if (constants.debug) {
 }
 
 async function main() {
-  await createRipple(); // TDOO: Using create button function from the "ui" `ui.button.create`
+  //await createRipple(); // TDOO: Using create button function from the "ui" `ui.button.create`
   await createThemeHandler();
   await language.setLanguage(storage.get("lang", constants.language));
 
@@ -106,12 +106,12 @@ async function main() {
   stackLayout.setPage(calendarPage);
 }
 
-async function createRipple() {
-  const elements = document.querySelectorAll("*[data-ripple]");
-  elements.forEach(async (el) => {
-    ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
-  });
-}
+//async function createRipple() {
+//  const elements = document.querySelectorAll("*[data-ripple]");
+//  elements.forEach(async (el) => {
+//    ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
+//  });
+//}
 
 async function createThemeHandler() {
   const themeHandler = new utils.theme.ThemeHandler();
