@@ -2,7 +2,7 @@ import constants from "../../lib/constants";
 import SwipeHandler from "./swipe-handler";
 
 const _days = `
-  <div class="page-calendar-days ui-grid-row">
+<div class="page-calendar-days ui-grid-row">
     <div class="ui-grid-column ui-card"></div>
     <div class="ui-grid-column ui-card"></div>
     <div class="ui-grid-column ui-card"></div>
@@ -10,27 +10,22 @@ const _days = `
     <div class="ui-grid-column ui-card"></div>
     <div class="ui-grid-column ui-card"></div>
     <div class="ui-grid-column ui-card"></div>
-  </div>
+</div>
 `;
 
 const _itemTemplate = `
 <div class="ui-grid">
-  <div class="page-calendar-week-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-  </div>
+    <div class="page-calendar-week-days ui-grid-row">
+        <div class="ui-grid-column ui-card"></div>
+        <div class="ui-grid-column ui-card"></div>
+        <div class="ui-grid-column ui-card"></div>
+        <div class="ui-grid-column ui-card"></div>
+        <div class="ui-grid-column ui-card"></div>
+        <div class="ui-grid-column ui-card"></div>
+        <div class="ui-grid-column ui-card"></div>
+    </div>
 
-  ${_days}
-  ${_days}
-  ${_days}
-  ${_days}
-  ${_days}
-  ${_days}
+    ${_days} ${_days} ${_days} ${_days} ${_days} ${_days}
 </div>
 `;
 

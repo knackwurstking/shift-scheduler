@@ -26,65 +26,65 @@ storage.addListener("lang", async (data) => {
 
 // TODO: Passing ".edit-mode" to the main.container if toggled on
 document.querySelector("#app").innerHTML = `
-    <main class="container ui-container is-debug">
-        <div class="stack-layout"></div>
-    </main>
+<main class="container ui-container is-debug">
+    <div class="stack-layout"></div>
+</main>
 
-    <header class="ui-app-bar ui-app-bar-top is-debug">
-        <div class="ui-app-bar-main ui-container">
-            <div>
-                <div class="ui-grid-row">
-                    <button
-                        class="app-bar-back-button ui-icon-button ghost primary"
-                        data-ripple="{}"
-                    >
-                        ${svg.BackArrowNavigation}
-                    </button>
-
-                    <button
-                        class="app-bar-date-picker ui-button outline primary"
-                        data-ripple="{}"
-                    >
-                        Date Picker
-                    </button>
-                </div>
-            </div>
-
-            <div>
-                <h4 class="app-bar-title"></h4>
-            </div>
-
-            <div>
+<header class="ui-app-bar ui-app-bar-top is-debug">
+    <div class="ui-app-bar-main ui-container">
+        <div>
+            <div class="ui-grid-row">
                 <button
-                    class="app-bar-edit-mode ui-icon-button ghost primary"
+                    class="app-bar-back-button ui-icon-button ghost primary"
                     data-ripple="{}"
                 >
-                    ${svg.Edit2}
+                    ${svg.BackArrowNavigation}
                 </button>
 
                 <button
-                    class="app-bar-today ui-icon-button ghost primary"
+                    class="app-bar-date-picker ui-button outline primary"
                     data-ripple="{}"
                 >
-                    ${svg.TodayOutline}
-                </button>
-
-                <button
-                    class="app-bar-pdf ui-icon-button ghost primary"
-                    data-ripple="{}"
-                >
-                    ${svg.PDFDocument}
-                </button>
-
-                <button
-                    class="app-bar-settings ui-icon-button ghost primary"
-                    data-ripple="{}"
-                >
-                    ${svg.Settings}
+                    Date Picker
                 </button>
             </div>
         </div>
-    </header>
+
+        <div>
+            <h4 class="app-bar-title"></h4>
+        </div>
+
+        <div>
+            <button
+                class="app-bar-edit-mode ui-icon-button ghost primary"
+                data-ripple="{}"
+            >
+                ${svg.Edit2}
+            </button>
+
+            <button
+                class="app-bar-today ui-icon-button ghost primary"
+                data-ripple="{}"
+            >
+                ${svg.TodayOutline}
+            </button>
+
+            <button
+                class="app-bar-pdf ui-icon-button ghost primary"
+                data-ripple="{}"
+            >
+                ${svg.PDFDocument}
+            </button>
+
+            <button
+                class="app-bar-settings ui-icon-button ghost primary"
+                data-ripple="{}"
+            >
+                ${svg.Settings}
+            </button>
+        </div>
+    </div>
+</header>
 `;
 
 async function main() {
