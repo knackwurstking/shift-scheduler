@@ -45,7 +45,8 @@ export default class SwipeHandler extends events.Events {
     };
 
     this.#onTouchEnd = async () => {
-      if (this.#startX === null) return;
+      if (this.#startX === null || this.#finalTransformRunning) return;
+      this.#finalTransformRunning = true;
 
       const clientX = this.#clientX;
       const startX = this.#startX;
@@ -55,33 +56,31 @@ export default class SwipeHandler extends events.Events {
 
       // Start final transform
       this.#finalTransformRunning = true;
-      let transitionTime = 0.4;
+      if (constants.debug)
+        console.log(`[Calendar SwipeHandler] transform lock`);
+      let transitionTime = 0.3;
 
       if (
         Math.abs(startX - clientX) >
         constants.swipeRange * (window.innerWidth / 1080)
       ) {
         swipeDirection = clientX > startX ? "right" : "left";
-
-        this.#setTransition(`transform ${transitionTime}s ease`, () => {
-          // Reset final transform
-          this.#setTransition("none");
-          this.#reorderItems(swipeDirection);
-          this.#finalTransformRunning = false;
-        });
-
+        this.#setTransition(`transform ${transitionTime}s ease`);
         this.#transform(swipeDirection === "left" ? "100%" : "-100%");
       } else {
-        transitionTime /= 4;
-        this.#setTransition(`transform ${transitionTime.toFixed(3)}s ease`, () => {
-          // Reset final transform
-          this.#setTransition("none");
-          this.#reorderItems(swipeDirection);
-          this.#finalTransformRunning = false;
-        });
-
+        transitionTime /= 3;
+        this.#setTransition(`transform ${transitionTime.toFixed(3)}s ease`);
         this.#transform("0%");
       }
+
+      setTimeout(() => {
+        // Reset final transform
+        this.#setTransition("none");
+        this.#reorderItems(swipeDirection);
+        this.#finalTransformRunning = false;
+        if (constants.debug)
+          console.log(`[Calendar SwipeHandler] release transform lock`);
+      }, transitionTime * 1000);
     };
 
     this.#onTouchCancel = async (ev) => {
@@ -156,26 +155,13 @@ export default class SwipeHandler extends events.Events {
 
   /**
    * @param {string} value
-   * @param {(() => void|Promise<void>) | null} callback
    */
-  #setTransition(value, callback = null) {
-    if (!callback) {
-      [...this.#root.children].forEach(child => {
-        // @ts-ignore
-        child.style.transition = value;
-      });
-      return;
-    }
-
-    let maxCount = this.#root.children.length;
-    let count = 0;
-    [...this.#root.children].forEach(child => {
+  #setTransition(value) {
+    [...this.#root.children].forEach((child) => {
       // @ts-ignore
       child.style.transition = value;
-      // @ts-ignore
-      child.ontransitionend =
-        () => (count++ && (count >= maxCount) && callback());
-    })
+    });
+    return;
   }
 
   /**
