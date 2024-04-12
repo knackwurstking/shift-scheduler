@@ -88,7 +88,7 @@ if (constants.debug) {
 }
 
 async function main() {
-  await createRipple();
+  await createRipple(); // TDOO: Using create button function from the "ui" `ui.button.create`
   await createThemeHandler();
   await language.setLanguage(storage.get("lang", constants.language));
 
