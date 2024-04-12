@@ -38,9 +38,9 @@ interface StorageDataTheme {
   mode: ("dark" | "light") | null;
 }
 
-type StorageDataLang = "en" | "de"; // NOTE: Not in use (yet)
+type StorageDataLang = Languages;
 
-type StorageDataFirstWeek = 0 | 1; // NOTE: Not in use (yet)
+type StorageDataWeekStart = 0 | 1;
 
 interface Page {
   getName(): string;

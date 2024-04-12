@@ -15,7 +15,7 @@ language
   .setLanguage(storage.get("lang", constants.language))
   .then(() => storage.dispatch("lang"));
 
-storage.addListener("lang", async (data) => {
+storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
   if (!data) {
     data = constants.language;
   }

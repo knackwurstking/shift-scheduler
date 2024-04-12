@@ -52,6 +52,8 @@ export default class CalendarPage {
   /** @type {SwipeHandler} */
   #swipeHandler;
 
+  /** @type {(data: StorageDataWeekStart | null) => void|Promise<void>} */
+  #onweekstart;
   /** @type {(data: Date) => void|Promise<void>} */
   #ondatepickerchange;
 
@@ -67,28 +69,42 @@ export default class CalendarPage {
 
     this.#appBar = appBar;
 
-    {
-      // Create the root container
-      this.#root = document.createElement("div");
-      this.#root.style.touchAction = "none";
-      this.#root.style.overflow = "hidden";
-      this.#root.style.width = "100%";
-      this.#root.style.height = "100%";
-      this.#root.classList.add(
-        "page-calendar",
-        "flex",
-        "row",
-        "nowrap",
-        "no-user-select",
-      );
-      this.#root.innerHTML = innerHTML;
-    }
+    // Create the root container
+    this.#root = document.createElement("div");
+    this.#root.style.touchAction = "none";
+    this.#root.style.overflow = "hidden";
+    this.#root.style.width = "100%";
+    this.#root.style.height = "100%";
+    this.#root.classList.add(
+      "page-calendar",
+      "flex",
+      "row",
+      "nowrap",
+      "no-user-select",
+    );
+    this.#root.innerHTML = innerHTML;
+  }
 
-    // Setup storage handlers
-    this.#setupStorageListeners();
+  onMount() {
+    // Storage
+    this.#onweekstart = (data) => {
+      if (data !== 0 && data !== 1) data = constants.weekStart;
+      this.#updateWeekDays(data);
+    };
+    this.#storage.addListener("week-start", this.#onweekstart);
     this.#storage.dispatch("week-start");
 
-    // Setup swipe handlers
+    // AppBar
+    this.#ondatepickerchange = (data) => {
+      console.log("[event] datepickerchange:", data);
+      // TODO: update calendar data (days/dates, notes, shifts, ...)
+    };
+    this.#appBar.datePicker.addListener(
+      "datepickerchange",
+      this.#ondatepickerchange,
+    );
+
+    // SwipeHandler
     this.#swipeHandler = new SwipeHandler(this.#root);
     this.#swipeHandler.addListener("swipe", (direction) => {
       switch (direction) {
@@ -100,26 +116,20 @@ export default class CalendarPage {
           break;
       }
     });
-
-    this.#ondatepickerchange = (data) => {
-      console.log("[event] datepickerchange:", data);
-      // TODO: update calendar data (days/dates, notes, shifts, ...)
-    };
-  }
-
-  onMount() {
-    this.#appBar.datePicker.addListener(
-      "datepickerchange",
-      this.#ondatepickerchange,
-    );
     this.#swipeHandler.start();
   }
 
   onDestroy() {
+    // Storage
+    this.#storage.addListener("week-start", this.#onweekstart);
+
+    // AppBar
     this.#appBar.datePicker.removeListener(
       "datepickerchange",
       this.#ondatepickerchange,
     );
+
+    // SwipeHandler
     this.#swipeHandler.stop();
   }
 
@@ -133,16 +143,6 @@ export default class CalendarPage {
 
   getContainer() {
     return this.#root;
-  }
-
-  #setupStorageListeners() {
-    this.#storage.addListener("week-start", (data) => {
-      if (data !== 0 || data !== 1) {
-        data = constants.weekStart;
-      }
-
-      this.#updateWeekDays(data);
-    });
   }
 
   /**
