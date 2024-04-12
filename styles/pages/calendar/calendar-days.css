@@ -15,12 +15,15 @@
     .ui-card
     .page-calendar-day-date {
     position: absolute;
-    top: var(--spacing);
-    left: var(--spacing);
+    top: 0;
+    left: 0;
+    padding: 0.5vmin;
 
     font-weight: normal;
     font-size: 3vmin;
     font-size: clamp(0em, 3vmin, 1em);
+
+    border-radius: inherit;
 }
 
 .page-calendar
@@ -29,7 +32,7 @@
     .ui-card
     .page-calendar-day-shift {
     position: absolute;
-    top: calc(3vmin + var(--spacing) * 2);
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
@@ -44,4 +47,26 @@
 
     color: var(--shift-color, var(--card-fg));
     text-shadow: 0.1em 0.1em 0.1em hsla(var(--shift-color, var(--card-fg)), 0.2);
+
+    border-radius: inherit;
+}
+
+@media (orientation: landscape) {
+    .page-calendar
+        .page-calendar-item
+        .page-calendar-days
+        .ui-card
+        .page-calendar-day-shift {
+        left: 4vmin;
+    }
+}
+
+@media (orientation: portrait) {
+    .page-calendar
+        .page-calendar-item
+        .page-calendar-days
+        .ui-card
+        .page-calendar-day-shift {
+        top: 5vmin;
+    }
 }
