@@ -152,7 +152,6 @@ export default class SwipeHandler extends events.Events {
    * @param {string} value
    */
   #setTransition(value) {
-    console.log("Using transition:", value);
     for (let x = 0; x < this.#root.children.length; x++) {
       // @ts-ignore
       this.#root.children[x].style.transition = value;

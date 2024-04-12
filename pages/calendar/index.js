@@ -86,16 +86,25 @@ export default class CalendarPage {
   }
 
   onMount() {
+    console.log("[Calendar] onMount");
+
     // Storage
     this.#onweekstart = (data) => {
+      console.log("[Calendar] update week start");
       if (data !== 0 && data !== 1) data = constants.weekStart;
       this.#updateWeekDays(data);
+
+      // Crete days, note, shifts, ... if the week-start changes
+      this.#appBar.datePicker.dispatchWithData(
+        "datepickerchange",
+        this.#appBar.datePicker.date,
+      );
     };
     this.#storage.addListener("week-start", this.#onweekstart);
 
     // AppBar
-    this.#ondatepickerchange = (data) => {
-      console.log("[event] datepickerchange:", data);
+    this.#ondatepickerchange = async (data) => {
+      console.log("[Calendar] date picker change");
       // TODO: update calendar data (days/dates, notes, shifts, ...)
       // ...
     };
@@ -118,12 +127,12 @@ export default class CalendarPage {
     });
 
     this.#swipeHandler.start();
-    this.#storage.dispatch("week-start"); // Create week days once
-    // TODO: dispatch/trigger a "datepickerchange" event
-    // ...
+    this.#storage.dispatch("week-start"); // Create week days (header and body) once
   }
 
   onDestroy() {
+    console.log("[Calendar] onMount");
+
     // Storage
     this.#storage.addListener("week-start", this.#onweekstart);
 
@@ -150,7 +159,7 @@ export default class CalendarPage {
   }
 
   /**
-   * @param {number} weekStart
+   * @param {StorageDataWeekStart} weekStart
    */
   #updateWeekDays(weekStart) {
     let order = [0, 1, 2, 3, 4, 5, 6];

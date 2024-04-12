@@ -11,11 +11,9 @@ import CalendarPage from "./pages/calendar";
 
 const storage = new Storage();
 const language = new Language();
-language
-  .setLanguage(storage.get("lang", constants.language))
-  .then(() => storage.dispatch("lang"));
 
 storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
+  console.log(`[Main] storage: "lang"`, data);
   if (!data) {
     data = constants.language;
   }
@@ -87,8 +85,9 @@ document.querySelector("#app").innerHTML = `
 `;
 
 async function main() {
-  createRipple();
-  createThemeHandler();
+  await createRipple();
+  await createThemeHandler();
+  await language.setLanguage(storage.get("lang", constants.language));
 
   const appBar = new AppBar(document.querySelector(".ui-app-bar"), "");
   setAppBarHandlers(appBar);
@@ -103,8 +102,6 @@ async function main() {
 
   stackLayout.setPage(calendarPage);
 }
-
-window.addEventListener("DOMContentLoaded", main);
 
 async function createRipple() {
   const elements = document.querySelectorAll("*[data-ripple]");
@@ -122,6 +119,7 @@ async function createThemeHandler() {
   {
     /** @param {StorageDataTheme} data */
     const themeStorageHandler = (data) => {
+      console.log(`[Main] storage: "theme"`, data);
       if (!!data?.mode) {
         themeHandler.stop();
         themeHandler.setMode(data.mode);
@@ -165,3 +163,5 @@ async function setAppBarHandlers(appBar) {
     // ...
   };
 }
+
+window.addEventListener("DOMContentLoaded", main);
