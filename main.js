@@ -156,7 +156,7 @@ async function setAppBarHandlers(appBar) {
   };
 
   appBar.getElement("today").onclick = () => {
-    // TODO: Set a new date to the DatePicker (AppBar)
+    appBar.datePicker.date = new Date();
   };
 
   appBar.getElement("pdf").onclick = () => {
