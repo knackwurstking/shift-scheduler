@@ -1,5 +1,6 @@
 import constants from "../../lib/constants";
 import SwipeHandler from "./swipe-handler";
+import * as utils from "./utils";
 
 const _days = `
 <div class="page-calendar-days ui-grid-row">
@@ -105,8 +106,7 @@ export default class CalendarPage {
     // AppBar
     this.#ondatepickerchange = async (data) => {
       console.log("[Calendar] date picker change");
-      // TODO: update calendar data (days/dates, notes, shifts, ...)
-      // ...
+      await this.#update(data);
     };
     this.#appBar.datePicker.addListener(
       "datepickerchange",
@@ -182,5 +182,19 @@ export default class CalendarPage {
       children[x].innerHTML =
         `${this.#language.get("weekDays", order[x % 7].toString())}`;
     }
+  }
+
+  /**
+   *  @param {Date} date
+   */
+  async #update(date) {
+    // TODO: update calendar data (days/dates, notes, shifts, ...)
+    //  - Array of size 42
+    //  - Each array item per ".page-calendar-days > .ui-card"
+    const days = await utils.getDays(
+      date,
+      this.#storage.get("week-start", constants.weekStart),
+    );
+    console.log(days);
   }
 }
