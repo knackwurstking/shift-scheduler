@@ -48,39 +48,25 @@ export default class SwipeHandler extends events.Events {
       if (this.#startX === null || this.#finalTransformRunning) return;
       this.#finalTransformRunning = true;
 
-      const clientX = this.#clientX;
-      const startX = this.#startX;
-      let swipeDirection = "none";
-
-      this.#clientX = this.#startX = null;
-
       // Start final transform
-      this.#finalTransformRunning = true;
       if (constants.debug)
         console.log(`[Calendar SwipeHandler] transform lock`);
-      let transitionTime = 0.3;
 
       if (
-        Math.abs(startX - clientX) >
-        constants.swipeRange * (window.innerWidth / 1080)
+        !(
+          Math.abs(this.#startX - this.#clientX) >
+          constants.swipeRange * (window.innerWidth / 1080)
+        )
       ) {
-        swipeDirection = clientX > startX ? "right" : "left";
-        this.#setTransition(`transform ${transitionTime}s ease`);
-        this.#transform(swipeDirection === "left" ? "100%" : "-100%");
-      } else {
-        transitionTime /= 3;
-        this.#setTransition(`transform ${transitionTime.toFixed(3)}s ease`);
+        this.#setTransition(`transform ${0.1}s ease`);
         this.#transform("0%");
+        setTimeout(() => this.#resetSwipe(), 100);
+        return;
       }
 
-      setTimeout(() => {
-        // Reset final transform
-        this.#setTransition("none");
-        this.#reorderItems(swipeDirection);
-        this.#finalTransformRunning = false;
-        if (constants.debug)
-          console.log(`[Calendar SwipeHandler] release transform lock`);
-      }, transitionTime * 1000);
+      this.#setTransition(`transform ${0.3}s ease`);
+      this.#transform(this.#clientX > this.#startX ? "-100%" : "100%");
+      setTimeout(() => this.#resetSwipe(), 300);
     };
 
     this.#onTouchCancel = async (ev) => {
@@ -89,7 +75,7 @@ export default class SwipeHandler extends events.Events {
 
     this.#animationFrameHandler = async () => {
       if (this.#kill) return;
-      if (this.#startX === null) {
+      if (this.#finalTransformRunning || this.#startX === null) {
         requestAnimationFrame(this.#animationFrameHandler);
         return;
       }
@@ -142,26 +128,35 @@ export default class SwipeHandler extends events.Events {
     return this;
   }
 
+  #resetSwipe() {
+    // Reset final transform
+    this.#setTransition("none");
+    this.#reorderItems(this.#clientX > this.#startX ? "right" : "left");
+    this.#startX = null;
+    this.#clientX = null;
+    this.#finalTransformRunning = false;
+    if (constants.debug)
+      console.log(`[Calendar SwipeHandler] release transform lock`);
+  }
+
   /**
    * @param {string} diff
    */
   #transform(diff) {
-    for (let x = 0; x < this.#root.children.length; x++) {
+    [...this.#root.children].forEach((c) => {
       // @ts-ignore
-      this.#root.children[x].style.transform =
-        `translateX(calc(-100% - ${diff}))`;
-    }
+      c.style.transform = `translateX(calc(-100% - ${diff}))`;
+    });
   }
 
   /**
    * @param {string} value
    */
   #setTransition(value) {
-    [...this.#root.children].forEach((child) => {
+    [...this.#root.children].forEach((c) => {
       // @ts-ignore
-      child.style.transition = value;
+      c.style.transition = value;
     });
-    return;
   }
 
   /**
