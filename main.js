@@ -90,7 +90,6 @@ async function main() {
   createRipple();
   createThemeHandler();
 
-  // NOTE: The app bar will handle the `currentDate`
   const appBar = new AppBar(document.querySelector(".ui-app-bar"), "");
   setAppBarHandlers(appBar);
   appBar.onMount();

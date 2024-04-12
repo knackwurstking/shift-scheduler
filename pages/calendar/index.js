@@ -64,7 +64,7 @@ export default class CalendarPage {
    * @param {import("../../lib/app-bar").default} option.appBar
    */
   constructor({ storage, language, appBar }) {
-    this.#storage = storage; // NOTE: storage keys: "week-start"
+    this.#storage = storage;
     this.#language = language;
 
     this.#appBar = appBar;
@@ -92,12 +92,12 @@ export default class CalendarPage {
       this.#updateWeekDays(data);
     };
     this.#storage.addListener("week-start", this.#onweekstart);
-    this.#storage.dispatch("week-start");
 
     // AppBar
     this.#ondatepickerchange = (data) => {
       console.log("[event] datepickerchange:", data);
       // TODO: update calendar data (days/dates, notes, shifts, ...)
+      // ...
     };
     this.#appBar.datePicker.addListener(
       "datepickerchange",
@@ -116,7 +116,11 @@ export default class CalendarPage {
           break;
       }
     });
+
     this.#swipeHandler.start();
+    this.#storage.dispatch("week-start"); // Create week days once
+    // TODO: dispatch/trigger a "datepickerchange" event
+    // ...
   }
 
   onDestroy() {
