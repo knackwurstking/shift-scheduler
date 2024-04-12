@@ -101,13 +101,25 @@ export default class CalendarPage {
         this.#appBar.datePicker.date,
       );
     };
+
     this.#storage.addListener("week-start", this.#onweekstart);
 
     // AppBar
     this.#ondatepickerchange = async (data) => {
       console.log("[Calendar] date picker change");
-      await this.#update(data);
+
+      const date = new Date(data);
+      date.setMonth(data.getMonth() - 1);
+
+      for (
+        let i = 0;
+        i < this.#root.children.length;
+        i++, date.setMonth(date.getMonth() + 1)
+      ) {
+        this.#update(new Date(date), this.#root.children[i]);
+      }
     };
+
     this.#appBar.datePicker.addListener(
       "datepickerchange",
       this.#ondatepickerchange,
@@ -116,6 +128,7 @@ export default class CalendarPage {
     // SwipeHandler
     this.#swipeHandler = new SwipeHandler(this.#root);
     this.#swipeHandler.addListener("swipe", (direction) => {
+      console.log(`[Calendar] handle swipe to "${direction}"`);
       switch (direction) {
         case "left":
           this.#appBar.datePicker.nextMonth();
@@ -186,15 +199,22 @@ export default class CalendarPage {
 
   /**
    *  @param {Date} date
+   *  @param {Element} calendarItem
    */
-  async #update(date) {
-    // TODO: update calendar data (days/dates, notes, shifts, ...)
-    //  - Array of size 42
-    //  - Each array item per ".page-calendar-days > .ui-card"
-    const days = await utils.getDays(
+  async #update(date, calendarItem) {
+    // TODO: get data, shifts and notes, from the database (using indexedDB if possible)
+    //const data = utils.getData(date)
+    const daysPromise = utils.getDays(
       date,
       this.#storage.get("week-start", constants.weekStart),
     );
-    console.log(days);
+
+    let cards = calendarItem.querySelectorAll(".page-calendar-days > .ui-card");
+    const days = await daysPromise;
+    for (let i = 0; i < days.length; i++) {
+      cards[i].innerHTML = `
+          <span>${days[i].current.getFullYear()}<br/>${days[i].current.getMonth() + 1}</span>
+      `;
+    }
   }
 }
