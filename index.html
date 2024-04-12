@@ -1,59 +1,67 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+        />
+        <title>Shift Scheduler</title>
+    </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-  <title>Shift Scheduler</title>
-</head>
+    <body class="has-save-area">
+        <div id="app">
+            <main class="container ui-container">
+                <div class="stack-layout"></div>
+            </main>
 
-<body class="has-save-area">
-  <div id="app">
-    <main class="container ui-container">
-      <div class="stack-layout"></div>
-    </main>
+            <header class="ui-app-bar ui-app-bar-top">
+                <div class="ui-app-bar-main ui-container">
+                    <div>
+                        <div id="appBarLeft" class="ui-grid-row"></div>
+                    </div>
 
-    <header class="ui-app-bar ui-app-bar-top">
-      <div class="ui-app-bar-main ui-container">
-        <div>
-          <div id="appBarLeft" class="ui-grid-row">
-            <!-- TODO: use ui.component.Button -->
-            <button class="app-bar-date-picker ui-button outline primary" data-ripple="{}">
-              Date Picker
-            </button>
-          </div>
+                    <div>
+                        <h4 class="app-bar-title"></h4>
+                    </div>
+
+                    <div>
+                        <!-- TODO: use ui.component.IconButton -->
+                        <button
+                            class="app-bar-edit-mode ui-icon-button ghost primary"
+                            data-ripple="{}"
+                        >
+                            ${svg.Edit2}
+                        </button>
+
+                        <!-- TODO: use ui.component.IconButton -->
+                        <button
+                            class="app-bar-today ui-icon-button ghost primary"
+                            data-ripple="{}"
+                        >
+                            ${svg.TodayOutline}
+                        </button>
+
+                        <!-- TODO: use ui.component.IconButton -->
+                        <button
+                            class="app-bar-pdf ui-icon-button ghost primary"
+                            data-ripple="{}"
+                        >
+                            ${svg.PDFDocument}
+                        </button>
+
+                        <!-- TODO: use ui.component.IconButton -->
+                        <button
+                            class="app-bar-settings ui-icon-button ghost primary"
+                            data-ripple="{}"
+                        >
+                            ${svg.Settings}
+                        </button>
+                    </div>
+                </div>
+            </header>
         </div>
-
-        <div>
-          <h4 class="app-bar-title"></h4>
-        </div>
-
-        <div>
-          <!-- TODO: use ui.component.IconButton -->
-          <button class="app-bar-edit-mode ui-icon-button ghost primary" data-ripple="{}">
-            ${svg.Edit2}
-          </button>
-
-          <!-- TODO: use ui.component.IconButton -->
-          <button class="app-bar-today ui-icon-button ghost primary" data-ripple="{}">
-            ${svg.TodayOutline}
-          </button>
-
-          <!-- TODO: use ui.component.IconButton -->
-          <button class="app-bar-pdf ui-icon-button ghost primary" data-ripple="{}">
-            ${svg.PDFDocument}
-          </button>
-
-          <!-- TODO: use ui.component.IconButton -->
-          <button class="app-bar-settings ui-icon-button ghost primary" data-ripple="{}">
-            ${svg.Settings}
-          </button>
-        </div>
-      </div>
-    </header>
-  </div>
-  <script type="module" src="/main.js"></script>
-</body>
-
+        <script type="module" src="/main.js"></script>
+    </body>
 </html>

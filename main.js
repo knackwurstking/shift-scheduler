@@ -23,13 +23,27 @@ storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
 });
 
 const c = {
-  // @ts-expect-error
-  backButton: new component.button.IconButton({ icon: svg.BackArrowNavigation, color: "primary", className: "app-bar-back-button" }),
+  backButton: new component.button.IconButton({
+    icon: svg.BackArrowNavigation,
+    color: "primary",
+    className: "app-bar-back-button",
+  }),
+  datePicker: new component.button.Button({
+    text: "Date Picker",
+    variant: "outline",
+    color: "primary",
+    className: "app-bar-date-picker",
+  }),
 };
 
 ((app) => {
-  app.querySelector("#appBarLeft").appendChild(c.backButton.element)
+  ((leftSlot) => {
+    leftSlot.appendChild(c.backButton.element);
+    leftSlot.appendChild(c.datePicker.element);
+  })(app.querySelector("#appBarLeft"));
+
   // TODO: Initialize all the other components missing from the index.html
+  // ...
 })(document.querySelector("#app"));
 
 if (constants.debug) {
