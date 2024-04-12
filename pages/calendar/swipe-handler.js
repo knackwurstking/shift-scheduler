@@ -53,29 +53,35 @@ export default class SwipeHandler extends events.Events {
 
       this.#clientX = this.#startX = null;
 
+      // Start final transform
       this.#finalTransformRunning = true;
       let transitionTime = 0.4;
+
       if (
         Math.abs(startX - clientX) >
         constants.swipeRange * (window.innerWidth / 1080)
       ) {
         swipeDirection = clientX > startX ? "right" : "left";
-        this.#setTransition(`transform ${transitionTime}s ease`);
-        this.#transform(swipeDirection === "left" ? "100%" : "-100%");
-      } else {
-        transitionTime /= 4;
-        this.#setTransition(`transform ${transitionTime.toFixed(3)}s ease`);
-        this.#transform("0%");
-      }
 
-      setTimeout(
-        () => {
+        this.#setTransition(`transform ${transitionTime}s ease`, () => {
+          // Reset final transform
           this.#setTransition("none");
           this.#reorderItems(swipeDirection);
           this.#finalTransformRunning = false;
-        },
-        Math.floor(transitionTime * 1000),
-      );
+        });
+
+        this.#transform(swipeDirection === "left" ? "100%" : "-100%");
+      } else {
+        transitionTime /= 4;
+        this.#setTransition(`transform ${transitionTime.toFixed(3)}s ease`, () => {
+          // Reset final transform
+          this.#setTransition("none");
+          this.#reorderItems(swipeDirection);
+          this.#finalTransformRunning = false;
+        });
+
+        this.#transform("0%");
+      }
     };
 
     this.#onTouchCancel = async (ev) => {
@@ -150,12 +156,26 @@ export default class SwipeHandler extends events.Events {
 
   /**
    * @param {string} value
+   * @param {(() => void|Promise<void>) | null} callback
    */
-  #setTransition(value) {
-    for (let x = 0; x < this.#root.children.length; x++) {
-      // @ts-ignore
-      this.#root.children[x].style.transition = value;
+  #setTransition(value, callback = null) {
+    if (!callback) {
+      [...this.#root.children].forEach(child => {
+        // @ts-ignore
+        child.style.transition = value;
+      });
+      return;
     }
+
+    let maxCount = this.#root.children.length;
+    let count = 0;
+    [...this.#root.children].forEach(child => {
+      // @ts-ignore
+      child.style.transition = value;
+      // @ts-ignore
+      child.ontransitionend =
+        () => (count++ && (count >= maxCount) && callback());
+    })
   }
 
   /**
