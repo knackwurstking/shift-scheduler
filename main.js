@@ -24,7 +24,6 @@ storage.addListener("lang", async (data) => {
   storage.dispatch("week-start"); // This will trigger an update on the calendar week days
 });
 
-// TODO: Passing ".edit-mode" to the main.container if toggled on
 document.querySelector("#app").innerHTML = `
 <main class="container ui-container is-debug">
     <div class="stack-layout"></div>
@@ -152,7 +151,7 @@ async function setAppBarHandlers(appBar) {
   };
 
   appBar.getElement("editMode").onclick = () => {
-    // ...
+    // Add the edit mode (footer), dont forget to apply the class ".edit-mode" to the main container
   };
 
   appBar.getElement("today").onclick = () => {
