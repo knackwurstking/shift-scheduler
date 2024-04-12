@@ -1,7 +1,7 @@
 import "./node_modules/ui/css/main.css";
 import "./styles/main.css";
 
-import { ripple, svg, utils } from "ui";
+import { ripple, svg, utils, component } from "ui";
 import AppBar from "./lib/app-bar";
 import constants from "./lib/constants";
 import Language from "./lib/language";
@@ -22,73 +22,22 @@ storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
   storage.dispatch("week-start"); // This will trigger an update on the calendar week days
 });
 
-document.querySelector("#app").innerHTML = `
-<main class="container ui-container">
-    <div class="stack-layout"></div>
-</main>
+const c = {
+  // @ts-expect-error
+  backButton: new component.button.IconButton({ icon: svg.BackArrowNavigation, color: "primary", className: "app-bar-back-button" }),
+};
 
-<header class="ui-app-bar ui-app-bar-top">
-    <div class="ui-app-bar-main ui-container">
-        <div>
-            <div class="ui-grid-row">
-                <button
-                    class="app-bar-back-button ui-icon-button ghost primary"
-                    data-ripple="{}"
-                >
-                    ${svg.BackArrowNavigation}
-                </button>
-
-                <button
-                    class="app-bar-date-picker ui-button outline primary"
-                    data-ripple="{}"
-                >
-                    Date Picker
-                </button>
-            </div>
-        </div>
-
-        <div>
-            <h4 class="app-bar-title"></h4>
-        </div>
-
-        <div>
-            <button
-                class="app-bar-edit-mode ui-icon-button ghost primary"
-                data-ripple="{}"
-            >
-                ${svg.Edit2}
-            </button>
-
-            <button
-                class="app-bar-today ui-icon-button ghost primary"
-                data-ripple="{}"
-            >
-                ${svg.TodayOutline}
-            </button>
-
-            <button
-                class="app-bar-pdf ui-icon-button ghost primary"
-                data-ripple="{}"
-            >
-                ${svg.PDFDocument}
-            </button>
-
-            <button
-                class="app-bar-settings ui-icon-button ghost primary"
-                data-ripple="{}"
-            >
-                ${svg.Settings}
-            </button>
-        </div>
-    </div>
-</header>`;
+((app) => {
+  app.querySelector("#appBarLeft").appendChild(c.backButton.element)
+  // TODO: Initialize all the other components missing from the index.html
+})(document.querySelector("#app"));
 
 if (constants.debug) {
   document.querySelector("#app").classList.add("is-debug");
 }
 
 async function main() {
-  //await createRipple(); // TDOO: Using create button function from the "ui" `ui.button.create`
+  await createRipple();
   await createThemeHandler();
   await language.setLanguage(storage.get("lang", constants.language));
 
@@ -106,12 +55,12 @@ async function main() {
   stackLayout.setPage(calendarPage);
 }
 
-//async function createRipple() {
-//  const elements = document.querySelectorAll("*[data-ripple]");
-//  elements.forEach(async (el) => {
-//    ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
-//  });
-//}
+async function createRipple() {
+  const elements = document.querySelectorAll("*[data-ripple]");
+  elements.forEach(async (el) => {
+    ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
+  });
+}
 
 async function createThemeHandler() {
   const themeHandler = new utils.theme.ThemeHandler();
