@@ -2,15 +2,20 @@ import constants from "../../lib/constants";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
+const _cardContent = `
+<div class="page-calendar-day-date"></div>
+<div class="page-calendar-day-shift"></div>
+`;
+
 const _days = `
 <div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card">${_cardContent}</div>
+    <div class="ui-grid-column ui-card">${_cardContent}</div>
+    <div class="ui-grid-column ui-card">${_cardContent}</div>
+    <div class="ui-grid-column ui-card">${_cardContent}</div>
+    <div class="ui-grid-column ui-card">${_cardContent}</div>
+    <div class="ui-grid-column ui-card">${_cardContent}</div>
+    <div class="ui-grid-column ui-card">${_cardContent}</div>
 </div>
 `;
 
@@ -108,6 +113,9 @@ export default class CalendarPage {
     this.#ondatepickerchange = async (data) => {
       console.log("[Calendar] date picker change");
 
+      // NOTE: Perfomance testing here
+      const start = new Date().getMilliseconds();
+
       const date = new Date(data);
       date.setMonth(data.getMonth() - 1);
 
@@ -118,6 +126,11 @@ export default class CalendarPage {
       ) {
         this.#update(new Date(date), this.#root.children[i]);
       }
+
+      // Perfomance testing here
+      console.log(
+        `[Calendar] Updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
+      );
     };
 
     this.#appBar.datePicker.addListener(
@@ -212,9 +225,10 @@ export default class CalendarPage {
     let cards = calendarItem.querySelectorAll(".page-calendar-days > .ui-card");
     const days = await daysPromise;
     for (let i = 0; i < days.length; i++) {
-      cards[i].innerHTML = `
-          <span>${days[i].current.getFullYear()}<br/>${days[i].current.getMonth() + 1}</span>
-      `;
+      // TODO: build a proper day card (html)
+      cards[i].querySelector(".page-calendar-day-date").innerHTML =
+        `${date.getMonth() + 1}`;
+      cards[i].querySelector(".page-calendar-day-shift").innerHTML = "Shift";
     }
   }
 }
