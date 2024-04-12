@@ -228,7 +228,6 @@ export default class CalendarPage {
     let cards = calendarItem.querySelectorAll(".page-calendar-days > .ui-card");
     const days = await daysPromise;
     for (let i = 0; i < days.length; i++) {
-      // TODO: build a proper day card (html)
       cards[i].querySelector(".page-calendar-day-date").innerHTML =
         `${date.getMonth() + 1}`;
       cards[i].querySelector(".page-calendar-day-shift").innerHTML = "Shift";
