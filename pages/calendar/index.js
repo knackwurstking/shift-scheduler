@@ -92,11 +92,11 @@ export default class CalendarPage {
   }
 
   onMount() {
-    console.log("[Calendar] onMount");
+    if (constants.debug) console.log("[Calendar] onMount");
 
     // Storage
     this.#onweekstart = (data) => {
-      console.log("[Calendar] update week start");
+      if (constants.debug) console.log("[Calendar] update week start");
       if (data !== 0 && data !== 1) data = constants.weekStart;
       this.#updateWeekDays(data);
 
@@ -111,7 +111,7 @@ export default class CalendarPage {
 
     // AppBar
     this.#ondatepickerchange = async (data) => {
-      console.log("[Calendar] date picker change");
+      if (constants.debug) console.log("[Calendar] date picker change");
 
       // NOTE: Perfomance testing here
       const start = new Date().getMilliseconds();
@@ -128,9 +128,10 @@ export default class CalendarPage {
       }
 
       // Perfomance testing here
-      console.log(
-        `[Calendar] Updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
-      );
+      if (constants.debug)
+        console.log(
+          `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
+        );
     };
 
     this.#appBar.datePicker.addListener(
@@ -141,7 +142,9 @@ export default class CalendarPage {
     // SwipeHandler
     this.#swipeHandler = new SwipeHandler(this.#root);
     this.#swipeHandler.addListener("swipe", (direction) => {
-      console.log(`[Calendar] handle swipe to "${direction}"`);
+      if (constants.debug)
+        console.log(`[Calendar] handle swipe to "${direction}"`);
+
       switch (direction) {
         case "left":
           this.#appBar.datePicker.nextMonth();
@@ -157,7 +160,7 @@ export default class CalendarPage {
   }
 
   onDestroy() {
-    console.log("[Calendar] onMount");
+    if (constants.debug) console.log("[Calendar] onMount");
 
     // Storage
     this.#storage.addListener("week-start", this.#onweekstart);

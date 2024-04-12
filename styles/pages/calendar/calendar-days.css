@@ -21,8 +21,6 @@
     font-weight: normal;
     font-size: 3vmin;
     font-size: clamp(0em, 3vmin, 1em);
-
-    background-color: gray;
 }
 
 .page-calendar

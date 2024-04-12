@@ -13,7 +13,7 @@ const storage = new Storage();
 const language = new Language();
 
 storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
-  console.log(`[Main] storage: "lang"`, data);
+  if (constants.debug) console.log(`[Main] storage: "lang"`, data);
   if (!data) {
     data = constants.language;
   }
@@ -23,11 +23,11 @@ storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
 });
 
 document.querySelector("#app").innerHTML = `
-<main class="container ui-container is-debug">
+<main class="container ui-container">
     <div class="stack-layout"></div>
 </main>
 
-<header class="ui-app-bar ui-app-bar-top is-debug">
+<header class="ui-app-bar ui-app-bar-top">
     <div class="ui-app-bar-main ui-container">
         <div>
             <div class="ui-grid-row">
@@ -81,8 +81,11 @@ document.querySelector("#app").innerHTML = `
             </button>
         </div>
     </div>
-</header>
-`;
+</header>`;
+
+if (constants.debug) {
+  document.querySelector("#app").classList.add("is-debug");
+}
 
 async function main() {
   await createRipple();
@@ -119,7 +122,7 @@ async function createThemeHandler() {
   {
     /** @param {StorageDataTheme} data */
     const themeStorageHandler = (data) => {
-      console.log(`[Main] storage: "theme"`, data);
+      if (constants.debug) console.log(`[Main] storage: "theme"`, data);
       if (!!data?.mode) {
         themeHandler.stop();
         themeHandler.setMode(data.mode);
