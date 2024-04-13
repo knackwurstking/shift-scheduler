@@ -26,27 +26,21 @@ storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
   storage.dispatch("week-start"); // This will trigger an update on the calendar week days
 });
 
-((/** @type {HTMLElement} */ app, /** @type {Components} */ c) => {
-  // AppBar left slot components
-  ((/** @type {HTMLElement} */ leftSlot) => {
+((/**@type{HTMLElement}*/ app, /**@type{Components}*/ c) => {
+  ((/**@type{HTMLElement}*/ leftSlot) => {
     leftSlot.appendChild(c.backButton.element);
     leftSlot.appendChild(c.datePicker.element);
   })(app.querySelector("#appBarLeft"));
 
-  // AppBar center slot components
-  ((/** @type {HTMLElement} */ centerSlot) => {
+  ((/**@type{HTMLElement}*/ rightSlot) => {
     // TODO: Initialize all the other components missing from the index.html
-  })(app.querySelector("#appBarCenter"));
-
-  // AppBar right slot components
-  ((/** @type {HTMLElement} */ rightSlot) => {
-    // TODO: Initialize all the other components missing from the index.html
+    // ...
   })(app.querySelector("#appBarCenter"));
 
   if (constants.debug) app.classList.add("is-debug");
 
   // Main Function
-  (async (/** @type {AppBar} */ appBar) => {
+  (async (/**@type{AppBar}*/ appBar) => {
     createThemeHandler(new utils.theme.ThemeHandler());
     await language.setLanguage(storage.get("lang", constants.language));
 
