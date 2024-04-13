@@ -1,4 +1,5 @@
 import constants from "../../lib/constants";
+import * as db from "../../lib/db";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
@@ -59,6 +60,9 @@ export default class CalendarPage {
   /** @type {HTMLElement}*/
   #root;
 
+  /** @type {db.Custom}*/
+  #db;
+
   /** @type {SwipeHandler} */
   #swipeHandler;
 
@@ -97,6 +101,13 @@ export default class CalendarPage {
 
   onMount() {
     if (constants.debug) console.log("[Calendar] onMount");
+
+    // Create the custom database (shifts and notes per day)
+    if (!!this.#db) this.#db.close();
+    this.#db = new db.Custom(
+      constants.db.custom.name,
+      constants.db.custom.version,
+    );
 
     // Storage
     this.#onweekstart = (data) => {
@@ -223,10 +234,10 @@ export default class CalendarPage {
    */
   async #update(date, calendarItem) {
     // TODO: get data, shifts and notes, from the database (using indexedDB if possible)
-    //const data = utils.getData(date)
     const daysPromise = utils.getDays(
       date,
       this.#storage.get("week-start", constants.weekStart),
+      this.#db,
     );
 
     let cards = calendarItem.querySelectorAll(".page-calendar-days > .ui-card");
