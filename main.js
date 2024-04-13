@@ -9,96 +9,95 @@ import StackLayout from "./lib/stack-layout";
 import Storage from "./lib/storage";
 import CalendarPage from "./pages/calendar";
 
+/**
+ * @typedef Components
+ * @type {{
+ *  backButton: component.base.IconButton;
+ *  datePicker: component.base.Button;
+ * }}
+ */
+
 const storage = new Storage();
 const language = new Language();
 
 storage.addListener("lang", async (/** @type {StorageDataLang} */ data) => {
   if (constants.debug) console.log(`[Main] storage: "lang"`, data);
-  if (!data) {
-    data = constants.language;
-  }
-
-  await language.setLanguage(data);
+  await language.setLanguage(data || constants.language);
   storage.dispatch("week-start"); // This will trigger an update on the calendar week days
 });
 
-const c = {
-  backButton: new component.button.IconButton({
-    icon: svg.BackArrowNavigation,
-    color: "primary",
-    className: "app-bar-back-button",
-  }),
-  datePicker: new component.button.Button({
-    text: "Date Picker",
-    variant: "outline",
-    color: "primary",
-    className: "app-bar-date-picker",
-  }),
-};
-
-((app) => {
-  ((leftSlot) => {
+((/** @type {HTMLElement} */ app, /** @type {Components} */ c) => {
+  // AppBar left slot components
+  ((/** @type {HTMLElement} */ leftSlot) => {
     leftSlot.appendChild(c.backButton.element);
     leftSlot.appendChild(c.datePicker.element);
   })(app.querySelector("#appBarLeft"));
 
-  // TODO: Initialize all the other components missing from the index.html
-  // ...
-})(document.querySelector("#app"));
+  // AppBar center slot components
+  ((/** @type {HTMLElement} */ centerSlot) => {
+    // TODO: Initialize all the other components missing from the index.html
+  })(app.querySelector("#appBarCenter"));
 
-if (constants.debug) {
-  document.querySelector("#app").classList.add("is-debug");
-}
+  // AppBar right slot components
+  ((/** @type {HTMLElement} */ rightSlot) => {
+    // TODO: Initialize all the other components missing from the index.html
+  })(app.querySelector("#appBarCenter"));
 
-async function main() {
-  await createRipple();
-  await createThemeHandler();
-  await language.setLanguage(storage.get("lang", constants.language));
+  if (constants.debug) app.classList.add("is-debug");
 
-  const appBar = new AppBar(document.querySelector(".ui-app-bar"), "");
-  setAppBarHandlers(appBar);
-  appBar.onMount();
+  // Main Function
+  (async (/** @type {AppBar} */ appBar) => {
+    createThemeHandler(new utils.theme.ThemeHandler());
+    await language.setLanguage(storage.get("lang", constants.language));
 
-  const stackLayout = new StackLayout(
-    document.querySelector("main.container > .stack-layout"),
-    appBar,
-  );
+    setAppBarHandlers(appBar).then((appBar) => appBar.onMount());
 
-  const calendarPage = new CalendarPage({ storage, language, appBar });
+    new StackLayout(
+      document.querySelector("main.container > .stack-layout"),
+      appBar,
+    ).setPage(new CalendarPage({ storage, language, appBar }));
+  })(new AppBar(document.querySelector(".ui-app-bar"), ""));
+})(
+  document.querySelector("#app"),
+  // Create "ui" components
+  {
+    backButton: new component.button.IconButton({
+      icon: svg.BackArrowNavigation,
+      color: "primary",
+      className: "app-bar-back-button",
+    }),
+    datePicker: new component.button.Button({
+      text: "Date Picker",
+      variant: "outline",
+      color: "primary",
+      className: "app-bar-date-picker",
+    }),
+  },
+);
 
-  stackLayout.setPage(calendarPage);
-}
-
+/*
 async function createRipple() {
   const elements = document.querySelectorAll("*[data-ripple]");
   elements.forEach(async (el) => {
     ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
   });
 }
+*/
 
-async function createThemeHandler() {
-  const themeHandler = new utils.theme.ThemeHandler();
+async function createThemeHandler(/**@type{utils.theme.ThemeHandler}*/ th) {
+  th.addTheme("zinc", "/themes/zinc.css").loadTheme(constants.theme.name);
 
-  themeHandler.addTheme("zinc", "/themes/zinc.css");
-  themeHandler.loadTheme(constants.theme.name);
+  storage.addListener("theme", (/**@type{StorageDataTheme}*/ data) => {
+    if (constants.debug) console.log(`[Main] storage: "theme"`, data);
+    if (!!data?.mode) {
+      th.stop().setMode(data.mode);
+    } else {
+      th.start();
+    }
+  });
+  storage.dispatch("theme");
 
-  {
-    /** @param {StorageDataTheme} data */
-    const themeStorageHandler = (data) => {
-      if (constants.debug) console.log(`[Main] storage: "theme"`, data);
-      if (!!data?.mode) {
-        themeHandler.stop();
-        themeHandler.setMode(data.mode);
-      } else {
-        themeHandler.start();
-      }
-    };
-
-    themeStorageHandler(storage.get("theme", null));
-    storage.addListener("theme", themeStorageHandler);
-  }
-
-  return themeHandler;
+  return th;
 }
 
 /**
@@ -128,6 +127,6 @@ async function setAppBarHandlers(appBar) {
   appBar.getElement("settings").onclick = () => {
     // ...
   };
-}
 
-window.addEventListener("DOMContentLoaded", main);
+  return appBar;
+}
