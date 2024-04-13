@@ -2,6 +2,10 @@ import constants from "../../lib/constants";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
+/**
+ * @typedef {import("../page").Page} Page
+ */
+
 const _cardContent = `
 <div class="page-calendar-day-date"></div>
 <div class="page-calendar-day-shift"></div>
