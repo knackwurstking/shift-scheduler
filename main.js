@@ -69,27 +69,27 @@ async function createThemeHandler(/**@type{utils.theme.ThemeHandler}*/ th) {
  * @param {AppBar} appBar
  */
 async function setAppBarHandlers(appBar) {
-  appBar.getElement("backButton").element.onclick = () => {
+  appBar.getComponent("backButton").element.onclick = () => {
     // ...
   };
 
-  appBar.getElement("datePickerButton").element.onclick = () => {
+  appBar.getComponent("datePickerButton").element.onclick = () => {
     // ...
   };
 
-  appBar.getElement("editButton").element.onclick = () => {
+  appBar.getComponent("editButton").element.onclick = () => {
     // Add the edit mode (footer), dont forget to apply the class ".edit-mode" to the main container
   };
 
-  appBar.getElement("todayButton").element.onclick = () => {
+  appBar.getComponent("todayButton").element.onclick = () => {
     appBar.datePicker.date = new Date();
   };
 
-  appBar.getElement("pdfButton").element.onclick = () => {
+  appBar.getComponent("pdfButton").element.onclick = () => {
     // ...
   };
 
-  appBar.getElement("settingsButton").element.onclick = () => {
+  appBar.getComponent("settingsButton").element.onclick = () => {
     // ...
   };
 
