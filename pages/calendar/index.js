@@ -1,5 +1,5 @@
 import constants from "../../lib/constants";
-import * as db from "../../lib/db";
+import DB from "../../lib/db";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
@@ -60,7 +60,7 @@ export default class CalendarPage {
   /** @type {HTMLElement}*/
   #root;
 
-  /** @type {db.Custom}*/
+  /** @type {DB}*/
   #db;
 
   /** @type {SwipeHandler} */
@@ -104,10 +104,7 @@ export default class CalendarPage {
 
     // Create the custom database (shifts and notes per day)
     if (!!this.#db) this.#db.close();
-    this.#db = new db.Custom(
-      constants.db.custom.name,
-      constants.db.custom.version,
-    );
+    this.#db = new DB(constants.db.name, constants.db.version);
 
     // Storage
     this.#onweekstart = (data) => {
