@@ -45,5 +45,5 @@ function getStartDay(month, weekStart) {
   month.setDate(1); // 0-6 Sun-Sat
   const d = month.getDay();
   if (weekStart === 0) return d;
-  else if (weekStart === 1) return d === 0 ? 6 : d - 1;
+  else if (weekStart === 1) return d === 0 ? 6 : d - 1; // NOTE: This works as long the weekStart is a 0 or a 1
 }
