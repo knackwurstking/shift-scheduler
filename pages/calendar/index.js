@@ -67,6 +67,9 @@ export default class CalendarPage {
   /** @type {(data: Date) => void|Promise<void>} */
   #ondatepickerchange;
 
+  /** @type {Date} */
+  #today;
+
   /**
    * @param {Object} option
    * @param {import("../../lib/storage").default} option.storage
@@ -127,6 +130,7 @@ export default class CalendarPage {
       const date = new Date(data);
       date.setMonth(data.getMonth() - 1);
 
+      this.#today = new Date();
       for (
         let i = 0;
         i < this.#root.children.length;
@@ -236,9 +240,43 @@ export default class CalendarPage {
     );
     const data = await utils.fillWithData(this.#db, date, await promise);
     for (let i = 0; i < data.length; i++) {
+      if (this.#isNope(data[i].date, date)) cards[i].classList.add("nope");
+      else cards[i].classList.remove("nope");
+
+      if (this.#isToday(data[i].date)) cards[i].classList.add("today");
+      else cards[i].classList.remove("today");
+
+      if (!!data[i].note) cards[i].classList.add("note");
+      else cards[i].classList.remove("note");
+
       cards[i].querySelector(".page-calendar-day-date").innerHTML =
-        `${date.getMonth() + 1}`;
-      cards[i].querySelector(".page-calendar-day-shift").innerHTML = "Shift";
+        `${data[i].date.getDate()}`;
+
+      cards[i].querySelector(".page-calendar-day-shift").innerHTML = !!data[i]
+        .shift?.visible
+        ? data[i].shift?.shortName || ""
+        : "";
     }
+  }
+
+  /**
+   * @param {Date} date
+   */
+  #isToday(date) {
+    return (
+      this.#today.getFullYear() === date.getFullYear() &&
+      this.#today.getMonth() === date.getMonth() &&
+      this.#today.getDate() === date.getDate()
+    );
+  }
+
+  /**
+   * @param {Date} d1
+   * @param {Date} d2
+   */
+  #isNope(d1, d2) {
+    return (
+      d1.getFullYear() !== d2.getFullYear() || d1.getMonth() !== d2.getMonth()
+    );
   }
 }

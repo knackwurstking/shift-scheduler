@@ -9,6 +9,10 @@
     overflow: hidden;
 }
 
+.page-calendar .page-calendar-item .page-calendar-days .ui-card.nope {
+    opacity: 0.2;
+}
+
 .page-calendar
     .page-calendar-item
     .page-calendar-days
