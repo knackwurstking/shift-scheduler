@@ -1,7 +1,7 @@
 /**
  * @typedef Page
  * @type {{
- *  getName(): import("../../lib/app-bar").AppBarGroups;
+ *  getName(): string;
  *  getTitle(): string;
  *  getContainer(): HTMLElement;
  *  onMount(): void;

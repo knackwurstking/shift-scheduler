@@ -3,10 +3,6 @@ import DB from "../../lib/db";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
-/**
- * @typedef {import("../page").Page} Page
- */
-
 const _cardContent = `
 <div class="page-calendar-day-date"></div>
 <div class="page-calendar-day-shift"></div>
@@ -47,7 +43,7 @@ export const innerHTML = `
 `;
 
 /**
- * @type {Page}
+ * @type {import("../page").Page}
  */
 export default class CalendarPage {
   /** @type {import("../../lib/storage").default}*/
@@ -66,7 +62,7 @@ export default class CalendarPage {
   /** @type {SwipeHandler} */
   #swipeHandler;
 
-  /** @type {(data: StorageDataWeekStart | null) => void|Promise<void>} */
+  /** @type {(data: import("../../lib/storage").StorageDataWeekStart | null) => void|Promise<void>} */
   #onweekstart;
   /** @type {(data: Date) => void|Promise<void>} */
   #ondatepickerchange;
@@ -192,7 +188,7 @@ export default class CalendarPage {
   }
 
   getTitle() {
-    return "Calendar";
+    return "";
   }
 
   getContainer() {
@@ -200,7 +196,7 @@ export default class CalendarPage {
   }
 
   /**
-   * @param {StorageDataWeekStart} weekStart
+   * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
    */
   #updateWeekDays(weekStart) {
     let order = [0, 1, 2, 3, 4, 5, 6];
@@ -230,16 +226,16 @@ export default class CalendarPage {
    *  @param {Element} calendarItem
    */
   async #update(date, calendarItem) {
-    // TODO: get data, shifts and notes, from the database (using indexedDB if possible)
-    const daysPromise = utils.getDays(
+    const promise = utils.getMonthArray(
       date,
       this.#storage.get("week-start", constants.weekStart),
-      this.#db,
     );
 
-    let cards = calendarItem.querySelectorAll(".page-calendar-days > .ui-card");
-    const days = await daysPromise;
-    for (let i = 0; i < days.length; i++) {
+    const cards = calendarItem.querySelectorAll(
+      ".page-calendar-days > .ui-card",
+    );
+    const data = await utils.fillWithData(this.#db, date, await promise);
+    for (let i = 0; i < data.length; i++) {
       cards[i].querySelector(".page-calendar-day-date").innerHTML =
         `${date.getMonth() + 1}`;
       cards[i].querySelector(".page-calendar-day-shift").innerHTML = "Shift";

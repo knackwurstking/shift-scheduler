@@ -12,11 +12,14 @@ import CalendarPage from "./pages/calendar";
 const storage = new Storage();
 const language = new Language();
 
-storage.addListener("lang", async (/**@type{StorageDataLang}*/ data) => {
-  if (constants.debug) console.log(`[Main] storage: "lang"`, data);
-  await language.setLanguage(data || constants.language);
-  storage.dispatch("week-start"); // This will trigger an update on the calendar week days
-});
+storage.addListener(
+  "lang",
+  async (/**@type{import("./lib/storage").StorageDataLang}*/ data) => {
+    if (constants.debug) console.log(`[Main] storage: "lang"`, data);
+    await language.setLanguage(data || constants.language);
+    storage.dispatch("week-start"); // This will trigger an update on the calendar week days
+  },
+);
 
 ((/**@type{HTMLElement}*/ app) => {
   /*
@@ -52,14 +55,17 @@ async function createRipple() {
 async function createThemeHandler(/**@type{utils.theme.ThemeHandler}*/ th) {
   th.addTheme("zinc", "/themes/zinc.css").loadTheme(constants.theme.name);
 
-  storage.addListener("theme", (/**@type{StorageDataTheme}*/ data) => {
-    if (constants.debug) console.log(`[Main] storage: "theme"`, data);
-    if (!!data?.mode) {
-      th.stop().setMode(data.mode);
-    } else {
-      th.start();
-    }
-  });
+  storage.addListener(
+    "theme",
+    (/**@type{import("./lib/storage").StorageDataTheme}*/ data) => {
+      if (constants.debug) console.log(`[Main] storage: "theme"`, data);
+      if (!!data?.mode) {
+        th.stop().setMode(data.mode);
+      } else {
+        th.start();
+      }
+    },
+  );
   storage.dispatch("theme");
 
   return th;

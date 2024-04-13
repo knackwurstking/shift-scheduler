@@ -1,14 +1,25 @@
 /**
- * @param {Date} date
- * @param {StorageDataWeekStart} weekStart
- * @param {import("../../lib/db").default | null} [db]
- * @returns {Promise<import("../../lib/db").DBData[]>}
+ * @param {Date} month
+ * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
+ * @returns {Promise<import("../../lib/db").DBMonth>}
  */
-export async function getDays(date, weekStart, db = null) {
-  /** @type {import("../../lib/db").DBData[]} */
-  const days = Array(42).fill({ date: date, shift: null, note: "" });
+export async function getMonthArray(month, weekStart) {
+  /** @type {import("../../lib/db").DBMonth} */
+  const days = Array(42).fill({ date: month, shift: null, note: "" });
 
-  // TODO: Fill days array, only for the current month, ...
+  // TODO: Only set the dates here, and the shift rhythm
+
+  return days;
+}
+
+/**
+ * @param {import("../../lib/db").default | null} db
+ * @param {Date} month
+ * @param {import("../../lib/db").DBMonth} days
+ * @returns {Promise<import("../../lib/db").DBMonth>}
+ */
+export async function fillWithData(db, month, days) {
+  // TODO: Fill days array with data from the database
   // ...
 
   return days;
