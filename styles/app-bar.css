@@ -1,7 +1,7 @@
-.ui-app-bar .app-bar-title {
+#appBarTitle {
     white-space: nowrap;
 }
 
-.ui-app-bar .app-bar-date-picker {
+#appBarDatePicker {
     white-space: nowrap;
 }
