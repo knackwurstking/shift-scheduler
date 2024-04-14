@@ -1,3 +1,5 @@
+export * as utils from "./utils";
+
 export default class Page {
   /** @type {HTMLElement} */
   #root;
