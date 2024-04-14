@@ -61,14 +61,14 @@ export default class AppBar {
     this.back.element.onclick = () => this.#app.stack.goBack();
 
     this.edit.element.onclick = () => {
-      // Add the edit mode (footer), dont forget to apply the class ".edit-mode" to the main container
+      // TODO: add the edit mode (footer), dont forget to apply the class ".edit-mode" to the main container
     };
 
     // The date picker will than dispatch the event for the calendar page
     this.today.element.onclick = () => this.datePicker.setDate(new Date());
 
     this.pdf.element.onclick = () => {
-      // ...
+      // TODO: go to the pdf page
     };
 
     this.settings.element.onclick = () =>
