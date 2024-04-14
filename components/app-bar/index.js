@@ -108,6 +108,8 @@ export default class AppBar {
     }
 
     this.#group = name;
+
+    return this;
   }
 
   getTitle() {
@@ -119,6 +121,8 @@ export default class AppBar {
    */
   setTitle(title) {
     this.#root.querySelector("#appBarCenter #appBarTitle").innerHTML = title;
+
+    return this;
   }
 
   #setupComponents() {
