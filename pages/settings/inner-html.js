@@ -20,7 +20,7 @@ const misc = `
 
         <!--hr /-->
 
-        <!-- TODO: maybe add some theme picker select box for "zink" and some future themes available -->
+        <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
     </section>
 </article>
 `;
