@@ -1,4 +1,5 @@
 import { component } from "ui";
+import Base from "ui/src/component/base/base";
 import Page, { utils } from "../page";
 import innerHTML from "./inner-html";
 import constants from "../../lib/constants";
@@ -6,11 +7,6 @@ import constants from "../../lib/constants";
 export default class SettingsPage extends Page {
   /** @type {import("../../app.js").default}*/
   #app;
-
-  /** @type {component.button.Button} */
-  #importBackup;
-  /** @type {component.button.Button} */
-  #exportBackup;
 
   /**
    * @param {import("../../app.js").default} app
@@ -26,14 +22,51 @@ export default class SettingsPage extends Page {
     this.#app = app;
 
     this.#setup();
+
+    this.miscTitle;
+    this.miscWeekStart;
+    this.miscThemeMode;
     this.#createMiscSection();
+
     this.#createShiftsSection();
+
+    this.backupTitle;
+    this.backupImport;
+    this.backupExport;
     this.#createBackupSection();
+
     this.#createStorageSection();
+
+    /** @type {Base} */
+    this.weekStart;
   }
 
   #createMiscSection() {
-    // ...
+    this.miscTitle = new Base("span");
+    this.miscTitle.innerText = "Miscellaneous"; // TODO: use language
+
+    this.miscWeekStart = new component.text.Label({
+      primary: "The week starts on Monday", // TODO: use language
+      input: new Base("input", { attributes: { type: "checkbox" } }),
+    });
+
+    this.miscThemeMode = new component.text.Label({
+      primary: "Theme (Mode)", // TODO: use language
+      // TODO: ui need some select component (like the svelte version)
+      //input: new Base("input", { attributes: { type: "checkbox" } })
+    });
+
+    utils.replace("miscTitle", this.miscTitle.element, this.getElement());
+    utils.replace(
+      "miscWeekStart",
+      this.miscWeekStart.element,
+      this.getElement(),
+    );
+    utils.replace(
+      "miscThemeMode",
+      this.miscThemeMode.element,
+      this.getElement(),
+    );
   }
 
   #createShiftsSection() {
@@ -45,7 +78,10 @@ export default class SettingsPage extends Page {
   }
 
   #createBackupSection() {
-    this.#importBackup = new component.button.Button({
+    this.backupTitle = new Base("span");
+    this.backupTitle.innerText = "Miscellaneous"; // TODO: use language
+
+    this.backupImport = new component.button.Button({
       text: "Import", // TODO: Use language
       color: "primary",
       variant: "outline",
@@ -54,7 +90,7 @@ export default class SettingsPage extends Page {
         height: "100%",
       },
     });
-    this.#exportBackup = new component.button.Button({
+    this.backupExport = new component.button.Button({
       text: "Export", // TODO: Use language
       color: "primary",
       variant: "outline",
@@ -64,30 +100,17 @@ export default class SettingsPage extends Page {
       },
     });
 
-    utils.replace(
-      "backupTitle",
-      this.#createTitle("Backup"), // TODO: Use language
-      this.getElement(),
-    );
+    utils.replace("backupTitle", this.backupTitle.element, this.getElement());
     utils.replace(
       "backupImportButton",
-      this.#importBackup.element,
+      this.backupImport.element,
       this.getElement(),
     );
     utils.replace(
       "backupExportButton",
-      this.#exportBackup.element,
+      this.backupExport.element,
       this.getElement(),
     );
-  }
-
-  /**
-   * @param {string} text
-   */
-  #createTitle(text) {
-    const e = document.createElement("span");
-    e.innerHTML = text;
-    return e;
   }
 
   #setup() {
