@@ -1,60 +1,17 @@
 import constants from "../../lib/constants";
 import DB from "../../lib/db";
+import Page from "../page";
+import innerHTML from "./inner-html";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
-const _cardContent = `
-<div class="page-calendar-day-date"></div>
-<div class="page-calendar-day-shift"></div>
-`;
-
-const _days = `
-<div class="page-calendar-days ui-grid-row">
-    <div class="ui-grid-column ui-card">${_cardContent}</div>
-    <div class="ui-grid-column ui-card">${_cardContent}</div>
-    <div class="ui-grid-column ui-card">${_cardContent}</div>
-    <div class="ui-grid-column ui-card">${_cardContent}</div>
-    <div class="ui-grid-column ui-card">${_cardContent}</div>
-    <div class="ui-grid-column ui-card">${_cardContent}</div>
-    <div class="ui-grid-column ui-card">${_cardContent}</div>
-</div>
-`;
-
-const _itemTemplate = `
-<div class="ui-grid">
-    <div class="page-calendar-week-days ui-grid-row">
-        <div class="ui-grid-column ui-card"></div>
-        <div class="ui-grid-column ui-card"></div>
-        <div class="ui-grid-column ui-card"></div>
-        <div class="ui-grid-column ui-card"></div>
-        <div class="ui-grid-column ui-card"></div>
-        <div class="ui-grid-column ui-card"></div>
-        <div class="ui-grid-column ui-card"></div>
-    </div>
-
-    ${_days} ${_days} ${_days} ${_days} ${_days} ${_days}
-</div>
-`;
-
-export const innerHTML = `
-<div class="page-calendar-item is-max no-user-select">${_itemTemplate}</div>
-<div class="page-calendar-item is-max no-user-select">${_itemTemplate}</div>
-<div class="page-calendar-item is-max no-user-select">${_itemTemplate}</div>
-`;
-
-/**
- * @type {import("../page").Page}
- */
-export default class CalendarPage {
+export default class CalendarPage extends Page {
   /** @type {import("../../lib/storage").default}*/
   #storage;
   /** @type {import("../../lib/language").default}*/
   #language;
   /** @type {import("../../lib/app-bar").default}*/
   #appBar;
-
-  /** @type {HTMLElement}*/
-  #root;
 
   /** @type {DB}*/
   #db;
@@ -77,25 +34,16 @@ export default class CalendarPage {
    * @param {import("../../lib/app-bar").default} option.appBar
    */
   constructor({ storage, language, appBar }) {
+    super({
+      innerHTML: innerHTML,
+      className: "page-calendar flex row nowrap no-user-select",
+      name: "calendar",
+      title: "",
+    });
     this.#storage = storage;
     this.#language = language;
-
     this.#appBar = appBar;
-
-    // Create the root container
-    this.#root = document.createElement("div");
-    this.#root.style.touchAction = "none";
-    this.#root.style.overflow = "hidden";
-    this.#root.style.width = "100%";
-    this.#root.style.height = "100%";
-    this.#root.classList.add(
-      "page-calendar",
-      "flex",
-      "row",
-      "nowrap",
-      "no-user-select",
-    );
-    this.#root.innerHTML = innerHTML;
+    this.#updateElement();
   }
 
   onMount() {
@@ -133,10 +81,10 @@ export default class CalendarPage {
       this.#today = new Date();
       for (
         let i = 0;
-        i < this.#root.children.length;
+        i < this.getElement().children.length;
         i++, date.setMonth(date.getMonth() + 1)
       ) {
-        this.#update(new Date(date), this.#root.children[i]);
+        this.#update(new Date(date), this.getElement().children[i]);
       }
 
       // Perfomance testing here
@@ -152,7 +100,7 @@ export default class CalendarPage {
     );
 
     // SwipeHandler
-    this.#swipeHandler = new SwipeHandler(this.#root);
+    this.#swipeHandler = new SwipeHandler(this.getElement());
     this.#swipeHandler.addListener("swipe", (direction) => {
       if (constants.debug)
         console.log(`[Calendar] handle swipe to "${direction}"`);
@@ -187,18 +135,6 @@ export default class CalendarPage {
     this.#swipeHandler.stop();
   }
 
-  getName() {
-    return "calendar";
-  }
-
-  getTitle() {
-    return "";
-  }
-
-  getContainer() {
-    return this.#root;
-  }
-
   /**
    * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
    */
@@ -209,7 +145,7 @@ export default class CalendarPage {
       order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
     }
 
-    const children = this.#root.querySelectorAll(
+    const children = this.getElement().querySelectorAll(
       ".page-calendar-week-days .ui-grid-column",
     );
 
@@ -278,5 +214,12 @@ export default class CalendarPage {
     return (
       d1.getFullYear() !== d2.getFullYear() || d1.getMonth() !== d2.getMonth()
     );
+  }
+
+  #updateElement() {
+    this.getElement().style.touchAction = "none";
+    this.getElement().style.overflow = "hidden";
+    this.getElement().style.width = "100%";
+    this.getElement().style.height = "100%";
   }
 }
