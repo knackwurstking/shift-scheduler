@@ -28,12 +28,11 @@ export default class CalendarPage extends Page {
   #today;
 
   /**
-   * @param {Object} option
-   * @param {import("../../lib/storage").default} option.storage
-   * @param {import("../../lib/language").default} option.language
-   * @param {import("../../lib/app-bar").default} option.appBar
+   * @param {import("../../lib/storage").default} storage
+   * @param {import("../../lib/language").default} language
+   * @param {import("../../lib/app-bar").default} appBar
    */
-  constructor({ storage, language, appBar }) {
+  constructor(storage, language, appBar) {
     super({
       innerHTML: innerHTML,
       className: "page-calendar flex row nowrap no-user-select",

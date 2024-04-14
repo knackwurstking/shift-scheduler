@@ -39,18 +39,9 @@ storage.addListener(
     new StackLayout(
       document.querySelector("main.container > .stack-layout"),
       appBar,
-    ).setPage(new CalendarPage({ storage, language, appBar }));
+    ).setPage(new CalendarPage(storage, language, appBar));
   })(new AppBar());
 })(document.querySelector("#app"));
-
-/*
-async function createRipple() {
-  const elements = document.querySelectorAll("*[data-ripple]");
-  elements.forEach(async (el) => {
-    ripple.create(el, JSON.parse(el.getAttribute("data-ripple") || "{}"));
-  });
-}
-*/
 
 async function createThemeHandler(/**@type{utils.theme.ThemeHandler}*/ th) {
   th.addTheme("zinc", "/themes/zinc.css").loadTheme(constants.theme.name);
