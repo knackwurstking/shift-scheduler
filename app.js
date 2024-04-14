@@ -41,7 +41,7 @@ export default class App {
     if (constants.debug) console.log("[app] onMount");
 
     // create the custom database (shifts and notes per day)
-    if (!!this.db) this.db.close(); // TODO: move db to app class
+    if (!!this.db) this.db.close();
     this.db = new DB(constants.db.name, constants.db.version);
 
     // lang storage event listener
@@ -81,7 +81,7 @@ export default class App {
   onDestroy() {
     if (constants.debug) console.log("[app] onDestroy");
 
-    if (!!this.db) this.db.close(); // TODO: move db to app class
+    if (!!this.db) this.db.close();
     this.storage.removeListener("lang", this.#onlang);
     this.storage.removeListener("theme", this.#ontheme);
 

@@ -16,22 +16,7 @@ const misc = `
 
     <!-- theme settings -->
     <section>
-        <!-- TODO: select box for switching theme modes between "system", "dark" and "light" -->
         <span data-replace="miscThemeMode"></span>
-        <!--UI.Text.Label primary={lang.get()["settings misc"]["theme picker"]} row>
-            <UI.Input.Select
-                items={[
-                    { value: "system", label: "System" },
-                    { value: "dark", label: "Dark" },
-                    { value: "light", label: "Light" },
-                ]}
-                selected={{
-                    value: $theme,
-                    label: $theme.charAt(0).toUpperCase() + $theme.slice(1),
-                }}
-                on:change={(ev) => theme.set(ev.detail.value)}
-            />
-        </UI.Text.Label-->
 
         <!--hr /-->
 
