@@ -1,4 +1,4 @@
-import Page from "../page";
+import Page, { utils } from "../page";
 import innerHTML from "./inner-html";
 
 export default class SettingsPage extends Page {
@@ -30,5 +30,22 @@ export default class SettingsPage extends Page {
   #updateElement() {
     this.getElement().style.overflowY = "auto";
     this.getElement().style.scrollBehavior = "smooth";
+
+    utils.replace(
+      "backupTitle",
+      this.#createTitle("Backup"), // TODO: Use language for "Backup"
+      this.getElement(),
+    );
+
+    // TODO: replace elements here... ("backupImportButton", "backupExportButton")
+  }
+
+  /**
+   * @param {string} text
+   */
+  #createTitle(text) {
+    const e = document.createElement("span");
+    e.innerHTML = text;
+    return e;
   }
 }

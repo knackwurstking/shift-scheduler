@@ -1,15 +1,36 @@
+const backup = `
+<article class="ui-card backup">
+    <h3 class="title">
+      <!-- TODO: Title span? (replace) -->
+      <span data-replace="backupTitle"></span>
+    </h3>
+
+    <hr />
+
+    <section>
+        <div class="ui-grid-row actions">
+            <!-- TODO: Import button (replace) -->
+            <span data-replace="backupImportButton"></span>
+
+            <!-- TODO: Export button (replace) -->
+            <span data-replace="backupExportButton"></span>
+        </UI.FlexGrid.Row>
+    </section>
+</article>
+`;
+
 export default `
-  <!-- TODO: Shifts -->
+${backup}
 
-  <br />
+<br />
 
-  <!-- TODO: Misc -->
+<!-- TODO: Shifts -->
 
-  <br />
+<br />
 
-  <!-- TODO: Backup -->
+<!-- TODO: Backup -->
 
-  <br />
+<br />
 
-  <!-- TODO: Backup -->
+<!-- TODO: Storage -->
 `;
