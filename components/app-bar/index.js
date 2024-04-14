@@ -58,27 +58,21 @@ export default class AppBar {
   onMount() {
     if (constants.debug) console.log("[appbar] onMount");
 
-    this.back.element.onclick = () => {
-      // ...
-    };
+    this.back.element.onclick = () => this.#app.stack.goBack();
 
     this.edit.element.onclick = () => {
       // Add the edit mode (footer), dont forget to apply the class ".edit-mode" to the main container
     };
 
-    this.today.element.onclick = () => {
-      // The date picker will than dispatch the event for the calendar page
-      this.datePicker.setDate(new Date());
-    };
+    // The date picker will than dispatch the event for the calendar page
+    this.today.element.onclick = () => this.datePicker.setDate(new Date());
 
     this.pdf.element.onclick = () => {
       // ...
     };
 
-    this.settings.element.onclick = () => {
-      // TODO: Go to settings page (using the stack layout)
+    this.settings.element.onclick = () =>
       this.#app.stack.setPage(new SettingsPage(this.#app));
-    };
 
     return this;
   }
