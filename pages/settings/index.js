@@ -1,12 +1,7 @@
+import Page from "../page";
 import innerHTML from "./inner-html";
 
-/**
- * @type {import("../page").Page}
- */
-export default class SettingsPage {
-  /** @type {HTMLElement} */
-  #root;
-
+export default class SettingsPage extends Page {
   /** @type {import("../../lib/storage").default} */
   #storage;
   /** @type {import("../../lib/language").default} */
@@ -20,25 +15,20 @@ export default class SettingsPage {
    * @param {import("../../lib/app-bar").default} appBar
    */
   constructor(storage, language, appBar) {
+    super({
+      innerHTML: innerHTML,
+      className: "page-settings no-scrollbar",
+      name: "settings",
+      title: "Settings", // TODO: Use language here
+    });
     this.#storage = storage;
     this.#language = language;
     this.#appBar = appBar;
-
-    this.#root = this.#createRoot(document.createElement("div"));
+    this.#updateElement();
   }
 
-  /**
-   * @param {HTMLElement} container
-   */
-  #createRoot(container) {
-    container.classList.add("page-settings");
-    container.classList.add("no-scrollbar");
-    container.style.overflowY = "auto";
-    container.style.scrollBehavior = "smooth";
-    container.style.width = "100%";
-
-    container.innerHTML = innerHTML;
-
-    return container;
+  #updateElement() {
+    this.getElement().style.overflowY = "auto";
+    this.getElement().style.scrollBehavior = "smooth";
   }
 }

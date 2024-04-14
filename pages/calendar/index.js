@@ -218,7 +218,5 @@ export default class CalendarPage extends Page {
   #updateElement() {
     this.getElement().style.touchAction = "none";
     this.getElement().style.overflow = "hidden";
-    this.getElement().style.width = "100%";
-    this.getElement().style.height = "100%";
   }
 }

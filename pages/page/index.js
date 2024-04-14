@@ -17,8 +17,6 @@ export default class Page {
     this.#root = document.createElement("div");
     this.#root.className = className;
     this.#root.classList.add("page");
-    this.#root.style.width = "100%";
-    this.#root.style.height = "100%";
     this.#root.innerHTML = innerHTML;
 
     this.#name = name;
