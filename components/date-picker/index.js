@@ -1,4 +1,5 @@
 import { events, component } from "ui";
+import constants from "../../lib/constants";
 
 /**
  * @typedef EventTypes
@@ -21,6 +22,8 @@ export default class DatePicker extends events.Events {
   }
 
   onMount() {
+    if (constants.debug) console.log("[datepicker] onMount");
+
     this.button.element.onclick = () => {
       // TODO: Open date picker dialog
     };
@@ -29,6 +32,8 @@ export default class DatePicker extends events.Events {
   }
 
   onDestroy() {
+    if (constants.debug) console.log("[datepicker] onDestroy");
+
     this.button.element.onclick = null;
 
     return this;

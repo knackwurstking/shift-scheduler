@@ -1,6 +1,7 @@
+import { component, svg } from "ui";
+import constants from "../../lib/constants";
 import SettingsPage from "../../pages/settings";
 import DatePicker from "../date-picker";
-import { component, svg } from "ui";
 
 export default class AppBar {
   /** @type {HTMLElement} */
@@ -55,6 +56,8 @@ export default class AppBar {
   }
 
   onMount() {
+    if (constants.debug) console.log("[appbar] onMount");
+
     this.back.element.onclick = () => {
       // ...
     };
@@ -81,6 +84,8 @@ export default class AppBar {
   }
 
   onDestroy() {
+    if (constants.debug) console.log("[appbar] onDestroy");
+
     this.back.element.onclick = null;
     this.edit.element.onclick = null;
     this.today.element.onclick = null;

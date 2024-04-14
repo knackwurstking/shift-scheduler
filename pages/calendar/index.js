@@ -34,7 +34,7 @@ export default class CalendarPage extends Page {
   }
 
   onMount() {
-    if (constants.debug) console.log("[Calendar] onMount");
+    super.onMount();
 
     // week-start storage event
     this.#onweekstart = (data) => {
@@ -102,7 +102,7 @@ export default class CalendarPage extends Page {
   }
 
   onDestroy() {
-    if (constants.debug) console.log("[Calendar] onMount");
+    super.onDestroy();
 
     // week-start storage event listener removal
     this.#app.storage.removeListener("week-start", this.#onweekstart);

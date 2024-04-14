@@ -1,3 +1,5 @@
+import constants from "../../lib/constants";
+
 export * as utils from "./utils";
 
 export default class Page {
@@ -25,9 +27,13 @@ export default class Page {
     this.#title = title;
   }
 
-  onMount() {}
+  onMount() {
+    if (constants.debug) console.log(`[${this.getName()}] onMount`);
+  }
 
-  onDestroy() {}
+  onDestroy() {
+    if (constants.debug) console.log(`[${this.getName()}] onDestroy`);
+  }
 
   getElement() {
     return this.#root;

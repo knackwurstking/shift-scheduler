@@ -1,6 +1,7 @@
 import { component } from "ui";
 import Page, { utils } from "../page";
 import innerHTML from "./inner-html";
+import constants from "../../lib/constants";
 
 export default class SettingsPage extends Page {
   /** @type {import("../../app.js").default}*/
