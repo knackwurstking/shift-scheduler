@@ -24,10 +24,14 @@ export default class DatePicker extends events.Events {
     this.button.element.onclick = () => {
       // TODO: Open date picker dialog
     };
+
+    return this;
   }
 
   onDestroy() {
     this.button.element.onclick = null;
+
+    return this;
   }
 
   getDate() {
@@ -37,17 +41,21 @@ export default class DatePicker extends events.Events {
   /** @param {Date} date */
   setDate(date) {
     this.#date = date;
-    this.#update();
+    return this.#update();
   }
 
   nextMonth() {
-    this.getDate().setMonth(this.#date.getMonth() + 1);
+    this.#date.setMonth(this.#date.getMonth() + 1);
     this.#update();
+
+    return this;
   }
 
   prevMonth() {
     this.#date.setMonth(this.#date.getMonth() - 1);
     this.#update();
+
+    return this;
   }
 
   toMonthString() {
@@ -83,7 +91,9 @@ export default class DatePicker extends events.Events {
 
   #update() {
     this.button.innerHTML = this.toMonthString();
-    this.dispatchWithData("datepickerchange", this.getDate());
+    this.dispatchWithData("datepickerchange", this.#date);
+
+    return this;
   }
 
   #setup() {
@@ -93,6 +103,9 @@ export default class DatePicker extends events.Events {
       color: "primary",
       id: "appBarDatePicker",
     });
-    this.setDate(new Date());
+    this.#date = new Date();
+    this.#update();
+
+    return this;
   }
 }

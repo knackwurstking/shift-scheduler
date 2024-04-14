@@ -77,7 +77,15 @@ export default class AppBar {
     return this;
   }
 
-  onDestroy() {}
+  onDestroy() {
+    this.back.element.onclick = null;
+    this.edit.element.onclick = null;
+    this.today.element.onclick = null;
+    this.pdf.element.onclick = null;
+    this.settings.element.onclick = null;
+
+    return this;
+  }
 
   getGroup() {
     return this.#group;
