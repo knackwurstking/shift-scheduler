@@ -17,7 +17,7 @@ const backup = `
 `;
 
 export default `
-${backup}
+<!-- TODO: Misc -->
 
 <br />
 
@@ -25,7 +25,7 @@ ${backup}
 
 <br />
 
-<!-- TODO: Backup -->
+${backup}
 
 <br />
 

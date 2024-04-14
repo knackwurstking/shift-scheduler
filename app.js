@@ -1,6 +1,7 @@
 import { utils } from "ui";
 import AppBar from "./components/app-bar";
 import constants from "./lib/constants";
+import DB from "./lib/db";
 import { default as Language } from "./lib/language";
 import StackLayout from "./lib/stack-layout";
 import Storage from "./lib/storage";
@@ -15,6 +16,8 @@ export default class App {
    */
   constructor(app) {
     this.#root = app;
+    /** @type {DB} */
+    this.db;
     this.storage = new Storage();
     this.language = new Language();
     this.theme = new utils.theme.ThemeHandler();
@@ -26,6 +29,11 @@ export default class App {
   }
 
   onMount() {
+    // create the custom database (shifts and notes per day)
+    if (!!this.db) this.db.close(); // TODO: move db to app class
+    this.db = new DB(constants.db.name, constants.db.version);
+
+    // lang storage event listener
     this.storage.addListener(
       "lang",
       async (/**@type{import("./lib/storage").StorageDataLang}*/ data) => {
@@ -62,6 +70,8 @@ export default class App {
   }
 
   onDestroy() {
+    // TODO: remove all listeners from the onMount function
+
     return this;
   }
 
@@ -70,9 +80,7 @@ export default class App {
   }
 
   run() {
-    this.stack.setPage(
-      new CalendarPage(this.storage, this.language, this.appBar),
-    );
+    this.stack.setPage(new CalendarPage(this));
 
     return this;
   }

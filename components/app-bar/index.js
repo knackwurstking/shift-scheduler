@@ -1,3 +1,4 @@
+import SettingsPage from "../../pages/settings";
 import DatePicker from "../date-picker";
 import { component, svg } from "ui";
 
@@ -63,6 +64,7 @@ export default class AppBar {
     };
 
     this.today.element.onclick = () => {
+      // The date picker will than dispatch the event for the calendar page
       this.datePicker.setDate(new Date());
     };
 
@@ -72,6 +74,7 @@ export default class AppBar {
 
     this.settings.element.onclick = () => {
       // TODO: Go to settings page (using the stack layout)
+      this.#app.stack.setPage(new SettingsPage(this.#app));
     };
 
     return this;
