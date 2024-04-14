@@ -52,12 +52,7 @@ export default class SwipeHandler extends events.Events {
       if (constants.debug)
         console.log(`[Calendar SwipeHandler] transform lock`);
 
-      if (
-        !(
-          Math.abs(this.#startX - this.#clientX) >
-          constants.swipeRange * (window.innerWidth / 1080)
-        )
-      ) {
+      if (!this.#isMinSwipe()) {
         this.#setTransition(`transform ${0.1}s ease`);
         this.#transform("0%");
         setTimeout(() => this.#resetSwipe(), 100);
@@ -131,7 +126,9 @@ export default class SwipeHandler extends events.Events {
   #resetSwipe() {
     // Reset final transform
     this.#setTransition("none");
-    this.#reorderItems(this.#clientX > this.#startX ? "right" : "left");
+    if (this.#isMinSwipe()) {
+      this.#reorderItems(this.#clientX > this.#startX ? "right" : "left");
+    }
     this.#startX = null;
     this.#clientX = null;
     this.#finalTransformRunning = false;
@@ -183,5 +180,12 @@ export default class SwipeHandler extends events.Events {
 
     this.#transform("0%");
     this.dispatchWithData("swipe", swipeDirection);
+  }
+
+  #isMinSwipe() {
+    return (
+      Math.abs(this.#startX - this.#clientX) >
+      constants.swipeRange * (window.innerWidth / 1080)
+    );
   }
 }
