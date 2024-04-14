@@ -2,31 +2,59 @@ import "./node_modules/ui/css/main.css";
 import "./styles/main.css";
 
 import { utils } from "ui";
-import AppBar from "./lib/app-bar";
+import AppBar from "./components/app-bar";
 import constants from "./lib/constants";
 import Language from "./lib/language";
 import StackLayout from "./lib/stack-layout";
 import Storage from "./lib/storage";
 import CalendarPage from "./pages/calendar";
 
-const storage = new Storage();
-const language = new Language();
+// TODO: Convert old style to new style
 
-storage.addListener(
-  "lang",
-  async (/**@type{import("./lib/storage").StorageDataLang}*/ data) => {
-    if (constants.debug) console.log(`[Main] storage: "lang"`, data);
-    await language.setLanguage(data || constants.language);
-    storage.dispatch("week-start"); // This will trigger an update on the calendar week days
-  },
-);
-
-((/**@type{HTMLElement}*/ app) => {
-  /*
-   * Enable debugging (red) borders
+class Main {
+  /**
+   * @param {Element} app
    */
-  if (constants.debug) app.classList.add("is-debug");
+  constructor(app) {
+    this.app = app;
+    this.storage = new Storage();
+    this.language = new Language();
+  }
 
+  onMount() {
+    this.storage.addListener(
+      "lang",
+      async (/**@type{import("./lib/storage").StorageDataLang}*/ data) => {
+        if (constants.debug) console.log(`[Main] storage: "lang"`, data);
+        await this.language.setLanguage(data || constants.language);
+        this.storage.dispatch("week-start"); // This will trigger an update on the calendar week days
+      },
+    );
+
+    return this;
+  }
+
+  onDestroy() {
+    return this;
+  }
+
+  run() {
+    return this;
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const main = new Main(document.querySelector("#app")).onMount().run();
+
+  // Enable debugging borders
+  if (constants.debug) main.app.classList.add("is-debug");
+});
+
+/*
+ * Old
+ */
+
+(() => {
   /*
    * Main function
    */
@@ -41,7 +69,7 @@ storage.addListener(
       appBar,
     ).setPage(new CalendarPage(storage, language, appBar));
   })(new AppBar());
-})(document.querySelector("#app"));
+})();
 
 async function createThemeHandler(/**@type{utils.theme.ThemeHandler}*/ th) {
   th.addTheme("zinc", "/themes/zinc.css").loadTheme(constants.theme.name);
@@ -87,7 +115,7 @@ async function setAppBarHandlers(appBar) {
   };
 
   appBar.getComponent("settingsButton").element.onclick = () => {
-    // ...
+    // TODO: go to settings page (using the stack layout)
   };
 
   return appBar;

@@ -1,4 +1,4 @@
-import DatePicker from "./date-picker";
+import DatePicker from "../date-picker";
 import { component, svg } from "ui";
 
 /**
