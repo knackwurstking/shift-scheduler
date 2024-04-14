@@ -52,8 +52,13 @@ export default class SettingsPage extends Page {
 
     this.miscThemeMode = new component.text.Label({
       primary: "Theme (Mode)", // TODO: use language
-      // TODO: ui need some select component (like the svelte version)
-      //input: new Base("input", { attributes: { type: "checkbox" } })
+      input: new component.input.Select({
+        items: [
+          { value: "system", label: "System", selected: true }, // TODO: get value from storage
+          { value: "dark", label: "Dark" },
+          { value: "light", label: "Light" },
+        ],
+      }),
     });
 
     utils.replace("miscTitle", this.miscTitle.element, this.getElement());
