@@ -33,6 +33,7 @@
     "pages/**/*.js",
     "components/**/*.js",
     "main.d.ts",
+    "app.js",
     "main.js"
   ]
 }

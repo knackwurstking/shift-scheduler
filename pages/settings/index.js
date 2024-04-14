@@ -7,7 +7,7 @@ export default class SettingsPage extends Page {
   #storage;
   /** @type {import("../../lib/language").default} */
   #language;
-  /** @type {import("../../lib/app-bar").default} */
+  /** @type {import("../../components/app-bar").default} */
   #appBar;
 
   /** @type {component.button.Button} */
@@ -18,7 +18,7 @@ export default class SettingsPage extends Page {
   /**
    * @param {import("../../lib/storage").default} storage
    * @param {import("../../lib/language").default} language
-   * @param {import("../../lib/app-bar").default} appBar
+   * @param {import("../../components/app-bar").default} appBar
    */
   constructor(storage, language, appBar) {
     super({

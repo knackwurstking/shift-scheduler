@@ -1,163 +1,95 @@
 import DatePicker from "../date-picker";
 import { component, svg } from "ui";
 
-/**
- * @typedef AppBarComponents
- * @type {{
- *  backButton: component.base.IconButton;
- *  datePickerButton: component.base.Button;
- *  editButton: component.base.IconButton;
- *  todayButton: component.base.IconButton;
- *  pdfButton: component.base.IconButton;
- *  settingsButton: component.base.IconButton;
- * }}
- *
- * @typedef AppBarComponentsKeys
- * @type {(
- *  | "backButton"
- *  | "datePickerButton"
- *  | "editButton"
- *  | "todayButton"
- *  | "pdfButton"
- *  | "settingsButton"
- * )}
- *
- * @typedef AppBarEvents
- * @type {(
- *  | "datepickerchange"
- * )}
- */
-
-// TODO: extend with a Component class (maybe use the base class from the ui lib)
-// TODO: after that move it to a components directory
 export default class AppBar {
   /** @type {HTMLElement} */
   #root;
-
-  /** @type {AppBarComponents} */
-  #c;
-
-  /** @type {DatePicker} */
-  #datePicker;
-
   /** @type {string} */
   #group;
-  /** @type {Object<string, (import("ui/src/component/base").Base)[]>} */
-  #groups;
 
-  /** @type {(date: Date) => void|Promise} */
-  #ondatepickerchange;
+  /** @type {import("../../app.js").default} */
+  #app;
 
   /**
+   * @param {import("../../app.js").default} app
    * @param {string| null} activeGroup
    */
-  constructor(activeGroup = null) {
+  constructor(app, activeGroup = null) {
+    this.#app = app;
     this.#root = document.querySelector("header.ui-app-bar");
 
-    /*
-     * Create AppBar Components
-     */
+    /** @type {component.button.IconButton} */
+    this.back;
+    /** @type {DatePicker} */
+    this.datePicker;
+    /** @type {component.button.IconButton} */
+    this.edit;
+    /** @type {component.button.IconButton} */
+    this.today;
+    /** @type {component.button.IconButton} */
+    this.pdf;
+    /** @type {component.button.IconButton} */
+    this.settings;
+    this.#setupComponents();
 
-    this.#c = {
-      backButton: new component.button.IconButton({
-        icon: svg.BackArrowNavigation,
-        color: "primary",
-        ghost: true,
-        id: "appBarBackButton",
-      }),
-      datePickerButton: new component.button.Button({
-        text: "Date Picker",
-        variant: "outline",
-        color: "primary",
-        id: "appBarDatePicker",
-      }),
-      editButton: new component.button.IconButton({
-        icon: svg.Edit2,
-        color: "primary",
-        ghost: true,
-        id: "appBarEditMode",
-      }),
-      todayButton: new component.button.IconButton({
-        icon: svg.TodayOutline,
-        color: "primary",
-        ghost: true,
-        id: "appBarToday",
-      }),
-      pdfButton: new component.button.IconButton({
-        icon: svg.PDFDocument,
-        color: "primary",
-        ghost: true,
-        id: "appBarPDF",
-      }),
-      settingsButton: new component.button.IconButton({
-        icon: svg.Settings,
-        color: "primary",
-        ghost: true,
-        id: "appBarSettings",
-      }),
-    };
-
-    ((/**@type{Element}*/ container) => {
-      container.appendChild(this.#c.backButton.element);
-      container.appendChild(this.#c.datePickerButton.element);
-    })(this.#root.querySelector("#appBarLeft"));
-
-    ((/**@type{Element}*/ container) => {
-      container.appendChild(this.#c.editButton.element);
-      container.appendChild(this.#c.todayButton.element);
-      container.appendChild(this.#c.pdfButton.element);
-      container.appendChild(this.#c.settingsButton.element);
-    })(this.#root.querySelector("#appBarRight"));
-
-    /*
-     * Setup the DatePicker
-     */
-
-    this.#datePicker = new DatePicker(new Date());
-    this.#ondatepickerchange = () => {
-      this.#c.datePickerButton.element.innerText =
-        this.#datePicker.toMonthString();
-    };
-    this.#ondatepickerchange(this.datePicker.date);
-
-    /*
-     * Create Groups
-     */
-    this.#groups = {
+    /** @type {Object<string, (component.base.Button | component.base.IconButton)[]>} */
+    this.groups = {
       "": [],
       calendar: [
-        this.#c.datePickerButton,
-        this.#c.editButton,
-        this.#c.todayButton,
-        this.#c.pdfButton,
-        this.#c.settingsButton,
+        this.datePicker.button,
+        this.edit,
+        this.today,
+        this.pdf,
+        this.settings,
       ],
 
       //pdf: [this.#c.backButton, this.#c.title],
-      pdf: [this.#c.backButton],
+      pdf: [this.back],
 
       //settings: [this.#c.backButton, this.#c.title],
-      settings: [this.#c.backButton],
+      settings: [this.back],
     };
 
-    this.#group = activeGroup || "";
+    this.setGroup(activeGroup);
   }
 
-  get datePicker() {
-    return this.#datePicker;
+  onMount() {
+    this.back.element.onclick = () => {
+      // ...
+    };
+
+    this.edit.element.onclick = () => {
+      // Add the edit mode (footer), dont forget to apply the class ".edit-mode" to the main container
+    };
+
+    this.today.element.onclick = () => {
+      this.datePicker.setDate(new Date());
+    };
+
+    this.pdf.element.onclick = () => {
+      // ...
+    };
+
+    this.settings.element.onclick = () => {
+      // TODO: Go to settings page (using the stack layout)
+    };
+
+    return this;
   }
 
-  get group() {
+  onDestroy() {}
+
+  getGroup() {
     return this.#group;
   }
 
   /**
    * @param {string} name
    */
-  set group(name) {
-    const newGroup = this.#groups[name] || [];
+  setGroup(name) {
+    const newGroup = this.groups[name] || [];
 
-    for (const g1 of [...Object.values(this.#groups)]) {
+    for (const g1 of [...Object.values(this.groups)]) {
       for (const g2 of g1) {
         if (newGroup.findIndex((g) => g == g2) > -1)
           g2.element.style.display = "block";
@@ -168,33 +100,63 @@ export default class AppBar {
     this.#group = name;
   }
 
-  get title() {
+  getTitle() {
     return this.#root.querySelector("#appBarCenter #appBarTitle").innerHTML;
   }
 
   /**
    * @param {string} title - Will be set the the innerHTML
    */
-  set title(title) {
+  setTitle(title) {
     this.#root.querySelector("#appBarCenter #appBarTitle").innerHTML = title;
   }
 
-  onMount() {
-    this.datePicker.addListener("datepickerchange", this.#ondatepickerchange);
-  }
+  #setupComponents() {
+    this.back = new component.button.IconButton({
+      icon: svg.BackArrowNavigation,
+      color: "primary",
+      ghost: true,
+      id: "appBarBackButton",
+    });
 
-  onDestroy() {
-    this.datePicker.removeListener(
-      "datepickerchange",
-      this.#ondatepickerchange,
-    );
-  }
+    this.datePicker = new DatePicker();
 
-  /**
-   * @param {AppBarComponentsKeys} name
-   * @returns {import("ui/src/component/base").Base}
-   */
-  getComponent(name) {
-    return this.#c[name];
+    this.edit = new component.button.IconButton({
+      icon: svg.Edit2,
+      color: "primary",
+      ghost: true,
+      id: "appBarEditMode",
+    });
+
+    this.today = new component.button.IconButton({
+      icon: svg.TodayOutline,
+      color: "primary",
+      ghost: true,
+      id: "appBarToday",
+    });
+
+    this.pdf = new component.button.IconButton({
+      icon: svg.PDFDocument,
+      color: "primary",
+      ghost: true,
+      id: "appBarPDF",
+    });
+
+    this.settings = new component.button.IconButton({
+      icon: svg.Settings,
+      color: "primary",
+      ghost: true,
+      id: "appBarSettings",
+    });
+
+    const leftSlot = this.#root.querySelector("#appBarLeft");
+    leftSlot.appendChild(this.back.element);
+    leftSlot.appendChild(this.datePicker.button.element);
+
+    const rightSlot = this.#root.querySelector("#appBarRight");
+    rightSlot.appendChild(this.edit.element);
+    rightSlot.appendChild(this.today.element);
+    rightSlot.appendChild(this.pdf.element);
+    rightSlot.appendChild(this.settings.element);
   }
 }

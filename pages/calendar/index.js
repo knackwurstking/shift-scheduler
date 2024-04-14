@@ -10,7 +10,7 @@ export default class CalendarPage extends Page {
   #storage;
   /** @type {import("../../lib/language").default}*/
   #language;
-  /** @type {import("../../lib/app-bar").default}*/
+  /** @type {import("../../components/app-bar").default}*/
   #appBar;
 
   /** @type {DB}*/
@@ -30,7 +30,7 @@ export default class CalendarPage extends Page {
   /**
    * @param {import("../../lib/storage").default} storage
    * @param {import("../../lib/language").default} language
-   * @param {import("../../lib/app-bar").default} appBar
+   * @param {import("../../components/app-bar").default} appBar
    */
   constructor(storage, language, appBar) {
     super({
@@ -61,7 +61,7 @@ export default class CalendarPage extends Page {
       // Crete days, note, shifts, ... if the week-start changes
       this.#appBar.datePicker.dispatchWithData(
         "datepickerchange",
-        this.#appBar.datePicker.date,
+        this.#appBar.datePicker.getDate(),
       );
     };
 
