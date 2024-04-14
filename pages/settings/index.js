@@ -1,3 +1,4 @@
+import { component } from "ui";
 import Page, { utils } from "../page";
 import innerHTML from "./inner-html";
 
@@ -8,6 +9,11 @@ export default class SettingsPage extends Page {
   #language;
   /** @type {import("../../lib/app-bar").default} */
   #appBar;
+
+  /** @type {component.button.Button} */
+  #importBackup;
+  /** @type {component.button.Button} */
+  #exportBackup;
 
   /**
    * @param {import("../../lib/storage").default} storage
@@ -31,13 +37,40 @@ export default class SettingsPage extends Page {
     this.getElement().style.overflowY = "auto";
     this.getElement().style.scrollBehavior = "smooth";
 
+    this.#importBackup = new component.button.Button({
+      text: "Import", // TODO: Use language
+      color: "primary",
+      variant: "outline",
+      style: {
+        width: "100%",
+        height: "100%",
+      },
+    });
+    this.#exportBackup = new component.button.Button({
+      text: "Export", // TODO: Use language
+      color: "primary",
+      variant: "outline",
+      style: {
+        width: "100%",
+        height: "100%",
+      },
+    });
+
     utils.replace(
       "backupTitle",
-      this.#createTitle("Backup"), // TODO: Use language for "Backup"
+      this.#createTitle("Backup"), // TODO: Use language
       this.getElement(),
     );
-
-    // TODO: replace elements here... ("backupImportButton", "backupExportButton")
+    utils.replace(
+      "backupImportButton",
+      this.#importBackup.element,
+      this.getElement(),
+    );
+    utils.replace(
+      "backupExportButton",
+      this.#exportBackup.element,
+      this.getElement(),
+    );
   }
 
   /**
