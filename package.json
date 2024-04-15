@@ -9,7 +9,8 @@
         "preview": "vite preview"
     },
     "devDependencies": {
-        "vite": "^5.2.0"
+        "vite": "^5.2.0",
+        "vite-plugin-pwa": "^0.19.8"
     },
     "dependencies": {
         "ui": "file:../ui"
