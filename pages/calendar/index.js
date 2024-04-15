@@ -107,7 +107,7 @@ export default class CalendarPage extends Page {
         this.#swipeHandler.addListener("swipe", this.#onswipe);
 
         // Storage Event: "lang"
-        this.onlang = (data) => {
+        this.#onlang = (data) => {
             // This will update the week days
             this.#updateWeekDays(this.#app.storage.get("week-start"));
         };
