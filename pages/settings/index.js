@@ -1,6 +1,5 @@
 import { component } from "ui";
 import Base from "ui/src/component/base/base";
-import constants from "../../lib/constants";
 import Page, { utils } from "../page";
 import innerHTML from "./inner-html";
 
