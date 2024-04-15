@@ -1,124 +1,151 @@
 import { component } from "ui";
 import Base from "ui/src/component/base/base";
+import constants from "../../lib/constants";
 import Page, { utils } from "../page";
 import innerHTML from "./inner-html";
 
 export default class SettingsPage extends Page {
-  /** @type {import("../../app.js").default}*/
-  #app;
+    /** @type {import("../../app.js").default}*/
+    #app;
 
-  /**
-   * @param {import("../../app.js").default} app
-   */
-  constructor(app) {
-    super({
-      innerHTML: innerHTML,
-      className: "page-settings no-scrollbar",
-      name: "settings",
-      title: "Settings", // TODO: Use language here
-    });
+    /** @type {(data: import("../../lib/storage").StorageDataLang) => void|Promise<void>}*/
+    #onlang;
 
-    this.#app = app;
+    /**
+     * @param {import("../../app.js").default} app
+     */
+    constructor(app) {
+        super({
+            innerHTML: innerHTML,
+            className: "page-settings no-scrollbar",
+            name: "settings",
+        });
 
-    this.#setup();
+        this.#app = app;
 
-    this.miscTitle;
-    this.miscWeekStart;
-    this.miscThemeMode;
-    this.#createMiscSection();
+        this.#setup();
 
-    this.#createShiftsSection();
+        this.miscTitle;
+        this.miscWeekStart;
+        this.miscThemeMode;
+        this.#createMiscSection();
 
-    this.backupTitle;
-    this.backupImport;
-    this.backupExport;
-    this.#createBackupSection();
+        this.#createShiftsSection();
 
-    this.#createStorageSection();
+        this.backupTitle;
+        this.backupImport;
+        this.backupExport;
+        this.#createBackupSection();
 
-    /** @type {Base} */
-    this.weekStart;
-  }
+        this.#createStorageSection();
 
-  #createMiscSection() {
-    this.miscTitle = new Base("span");
-    this.miscTitle.innerText = "Miscellaneous"; // TODO: use language
+        /** @type {Base} */
+        this.weekStart;
+    }
 
-    this.miscWeekStart = new component.text.Label({
-      primary: "The week starts on Monday", // TODO: use language
-      input: new Base("input", { attributes: { type: "checkbox" } }),
-    });
+    onMount() {
+        super.onMount();
 
-    this.miscThemeMode = new component.text.Label({
-      primary: "Theme (Mode)", // TODO: use language
-      input: new component.input.Select({
-        items: [
-          { value: "system", label: "System", selected: true }, // TODO: get value from storage
-          { value: "dark", label: "Dark" },
-          { value: "light", label: "Light" },
-        ],
-      }),
-    });
+        this.#onlang = () => {
+            this.setTitle(this.#app.language.get("settings", "appBarTitle"));
+            this.miscTitle.innerText = this.#app.language.get(
+                "settings",
+                "miscTitle",
+            );
+        };
+        this.#app.storage.addListener("lang", this.#onlang);
+        this.#onlang(null);
+    }
 
-    utils.replace("miscTitle", this.miscTitle.element, this.getElement());
-    utils.replace(
-      "miscWeekStart",
-      this.miscWeekStart.element,
-      this.getElement(),
-    );
-    utils.replace(
-      "miscThemeMode",
-      this.miscThemeMode.element,
-      this.getElement(),
-    );
-  }
+    onDestroy() {
+        super.onDestroy();
 
-  #createShiftsSection() {
-    // ...
-  }
+        this.#app.storage.removeListener("lang", this.#onlang);
+    }
 
-  #createStorageSection() {
-    // ...
-  }
+    #createMiscSection() {
+        this.miscTitle = new Base("span");
 
-  #createBackupSection() {
-    this.backupTitle = new Base("span");
-    this.backupTitle.innerText = "Miscellaneous"; // TODO: use language
+        this.miscWeekStart = new component.text.Label({
+            primary: "The week starts on Monday", // TODO: use language
+            input: new Base("input", { attributes: { type: "checkbox" } }),
+        });
 
-    this.backupImport = new component.button.Button({
-      text: "Import", // TODO: Use language
-      color: "primary",
-      variant: "outline",
-      style: {
-        width: "100%",
-        height: "100%",
-      },
-    });
-    this.backupExport = new component.button.Button({
-      text: "Export", // TODO: Use language
-      color: "primary",
-      variant: "outline",
-      style: {
-        width: "100%",
-        height: "100%",
-      },
-    });
+        this.miscThemeMode = new component.text.Label({
+            primary: "Theme (Mode)", // TODO: use language
+            // TODO: Handle "change" event
+            input: new component.input.Select({
+                items: [
+                    { value: "system", label: "System", selected: true }, // TODO: get value from storage
+                    { value: "dark", label: "Dark" },
+                    { value: "light", label: "Light" },
+                ],
+            }),
+        });
 
-    utils.replace("backupTitle", this.backupTitle.element, this.getElement());
-    utils.replace(
-      "backupImportButton",
-      this.backupImport.element,
-      this.getElement(),
-    );
-    utils.replace(
-      "backupExportButton",
-      this.backupExport.element,
-      this.getElement(),
-    );
-  }
+        utils.replace("miscTitle", this.miscTitle.element, this.getElement());
+        utils.replace(
+            "miscWeekStart",
+            this.miscWeekStart.element,
+            this.getElement(),
+        );
+        utils.replace(
+            "miscThemeMode",
+            this.miscThemeMode.element,
+            this.getElement(),
+        );
+    }
 
-  #setup() {
-    this.getElement().style.overflowY = "auto";
-    this.getElement().style.scrollBehavior = "smooth";
-  }
+    #createShiftsSection() {
+        // ...
+    }
+
+    #createStorageSection() {
+        // ...
+    }
+
+    #createBackupSection() {
+        this.backupTitle = new Base("span");
+        this.backupTitle.innerText = "Miscellaneous"; // TODO: use language
+
+        this.backupImport = new component.button.Button({
+            text: "Import", // TODO: Use language
+            color: "primary",
+            variant: "outline",
+            style: {
+                width: "100%",
+                height: "100%",
+            },
+        });
+        this.backupExport = new component.button.Button({
+            text: "Export", // TODO: Use language
+            color: "primary",
+            variant: "outline",
+            style: {
+                width: "100%",
+                height: "100%",
+            },
+        });
+
+        utils.replace(
+            "backupTitle",
+            this.backupTitle.element,
+            this.getElement(),
+        );
+        utils.replace(
+            "backupImportButton",
+            this.backupImport.element,
+            this.getElement(),
+        );
+        utils.replace(
+            "backupExportButton",
+            this.backupExport.element,
+            this.getElement(),
+        );
+    }
+
+    #setup() {
+        this.getElement().style.overflowY = "auto";
+        this.getElement().style.scrollBehavior = "smooth";
+    }
 }

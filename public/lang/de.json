@@ -1,5 +1,5 @@
 {
-  "weekDays": {
+  "calendar": {
     "0": "So",
     "1": "Mo",
     "2": "Di",
@@ -7,5 +7,9 @@
     "4": "Do",
     "5": "Fr",
     "6": "Sa"
+  },
+  "settings": {
+    "appBarTitle": "Einstellungen",
+    "miscTitle": "Sonstiges"
   }
 }

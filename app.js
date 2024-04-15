@@ -48,7 +48,6 @@ export default class App {
     this.#onlang = async (data) => {
       if (constants.debug) console.log(`[Main] storage: "lang"`, data);
       await this.language.setLanguage(data || constants.language);
-      this.storage.dispatch("week-start"); // This will trigger an update on the calendar week days
     };
     this.storage.addListener("lang", this.#onlang);
 

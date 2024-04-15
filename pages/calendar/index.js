@@ -5,201 +5,226 @@ import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
 export default class CalendarPage extends Page {
-  /** @type {import("../../app.js").default}*/
-  #app;
+    /** @type {import("../../app.js").default}*/
+    #app;
 
-  /** @type {SwipeHandler} */
-  #swipeHandler;
+    /** @type {SwipeHandler} */
+    #swipeHandler;
 
-  /** @type {(data: import("../../lib/storage").StorageDataWeekStart | null) => void|Promise<void>} */
-  #onweekstart;
-  /** @type {(data: Date) => void|Promise<void>} */
-  #ondatepickerchange;
+    /** @type {(data: import("../../lib/storage").StorageDataWeekStart | null) => void|Promise<void>} */
+    #onweekstart;
+    /** @type {(data: Date) => void|Promise<void>} */
+    #ondatepickerchange;
+    /** @type {(direction: "none" | "left" | "right") => void|Promise<void>} */
+    #onswipe;
+    /** @type {(data: import("../../lib/storage").StorageDataLang) => void|Promise<void>} */
+    #onlang;
 
-  /** @type {Date} */
-  #today;
+    /** @type {Date} */
+    #today;
 
-  /**
-   * @param {import("../../app.js").default} app
-   */
-  constructor(app) {
-    super({
-      innerHTML: innerHTML,
-      className: "page-calendar flex row nowrap no-user-select",
-      name: "calendar",
-      title: "",
-    });
-    this.#app = app;
-    this.#updateElement();
-  }
+    /**
+     * @param {import("../../app.js").default} app
+     */
+    constructor(app) {
+        super({
+            innerHTML: innerHTML,
+            className: "page-calendar flex row nowrap no-user-select",
+            name: "calendar",
+            title: "",
+        });
 
-  onMount() {
-    super.onMount();
+        this.#app = app;
+        this.getElement().style.touchAction = "none";
+        this.getElement().style.overflow = "hidden";
+    }
 
-    // week-start storage event
-    this.#onweekstart = (data) => {
-      if (constants.debug) console.log("[Calendar] update week start");
-      if (data !== 0 && data !== 1) data = constants.weekStart;
-      this.#updateWeekDays(data);
+    onMount() {
+        super.onMount();
 
-      // Crete days, note, shifts, ... if the week-start changes
-      this.#app.appBar.datePicker.dispatchWithData(
-        "datepickerchange",
-        this.#app.appBar.datePicker.getDate(),
-      );
-    };
-    this.#app.storage.addListener("week-start", this.#onweekstart);
+        // Storage Event: "week-start"
+        this.#onweekstart = (data) => {
+            if (constants.debug) console.log("[Calendar] update week start");
+            if (data !== 0 && data !== 1) data = constants.weekStart;
+            this.#updateWeekDays(data);
 
-    // datepickerchange appbar.datepicker event
-    this.#ondatepickerchange = async (data) => {
-      if (constants.debug) console.log("[Calendar] date picker change");
+            // Crete days, note, shifts, ... if the week-start changes
+            this.#app.appBar.datePicker.dispatchWithData(
+                "datepickerchange",
+                this.#app.appBar.datePicker.getDate(),
+            );
+        };
 
-      // performance test for debugging - start
-      const start = new Date().getMilliseconds();
+        this.#app.storage.addListener("week-start", this.#onweekstart);
 
-      const date = new Date(data);
-      date.setMonth(data.getMonth() - 1);
+        // AppBar.DatePicker event: "datepickerchange"
+        this.#ondatepickerchange = async (data) => {
+            if (constants.debug) console.log("[Calendar] date picker change");
 
-      this.#today = new Date();
-      for (
-        let i = 0;
-        i < this.getElement().children.length;
-        i++, date.setMonth(date.getMonth() + 1)
-      ) {
-        this.#updateItem(new Date(date), this.getElement().children[i]);
-      }
+            // Performance testing - start
+            const start = new Date().getMilliseconds();
 
-      // performance test for debugging - end
-      if (constants.debug)
-        console.log(
-          `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
+            const date = new Date(data);
+            date.setMonth(data.getMonth() - 1);
+
+            this.#today = new Date();
+            for (
+                let i = 0;
+                i < this.getElement().children.length;
+                i++, date.setMonth(date.getMonth() + 1)
+            ) {
+                this.#updateItem(new Date(date), this.getElement().children[i]);
+            }
+
+            // Performance testing - end
+            if (constants.debug)
+                console.log(
+                    `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
+                );
+        };
+
+        this.#app.appBar.datePicker.addListener(
+            "datepickerchange",
+            this.#ondatepickerchange,
         );
-    };
-    this.#app.appBar.datePicker.addListener(
-      "datepickerchange",
-      this.#ondatepickerchange,
-    );
 
-    // swipe swipehandler event
-    this.#swipeHandler = new SwipeHandler(this.getElement());
-    this.#swipeHandler.addListener("swipe", (direction) => {
-      if (constants.debug)
-        console.log(`[Calendar] handle swipe to "${direction}"`);
+        // SwipeHandler event: "swipe"
+        this.#swipeHandler = new SwipeHandler(this.getElement());
+        this.#onswipe = (direction) => {
+            if (constants.debug)
+                console.log(`[Calendar] handle swipe to "${direction}"`);
 
-      switch (direction) {
-        case "left":
-          this.#app.appBar.datePicker.nextMonth();
-          break;
-        case "right":
-          this.#app.appBar.datePicker.prevMonth();
-          break;
-      }
-    });
+            switch (direction) {
+                case "left":
+                    this.#app.appBar.datePicker.nextMonth();
+                    break;
+                case "right":
+                    this.#app.appBar.datePicker.prevMonth();
+                    break;
+            }
+        };
 
-    // start swipehandler and trigger week-start event handler
-    this.#swipeHandler.start();
-    this.#app.storage.dispatch("week-start"); // Create week days (header and body) once
-  }
+        this.#swipeHandler.addListener("swipe", this.#onswipe);
 
-  onDestroy() {
-    super.onDestroy();
+        // Storage Event: "lang"
+        this.onlang = (data) => {
+            // This will update the week days
+            this.#updateWeekDays(this.#app.storage.get("week-start"));
+        };
 
-    // week-start storage event listener removal
-    this.#app.storage.removeListener("week-start", this.#onweekstart);
+        this.#app.storage.addListener("lang", this.#onlang);
 
-    // datepickerchage appbar.datepicker event listener removal
-    this.#app.appBar.datePicker.removeListener(
-      "datepickerchange",
-      this.#ondatepickerchange,
-    );
+        // Start the SwipeHandler
+        this.#swipeHandler.start();
 
-    // kill the swipe handler
-    this.#swipeHandler.stop();
-  }
-
-  /**
-   * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
-   */
-  #updateWeekDays(weekStart) {
-    let order = [0, 1, 2, 3, 4, 5, 6];
-
-    if (weekStart > 0) {
-      order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
+        // Trigger "week-start" event handler
+        this.#app.storage.dispatch("week-start");
     }
 
-    const children = this.getElement().querySelectorAll(
-      ".page-calendar-week-days .ui-grid-column",
-    );
+    onDestroy() {
+        super.onDestroy();
 
-    for (let x = 0; x < children.length; x++) {
-      if (order[x] === 0 || order[x] === 6) {
-        children[x].classList.add("page-calendar-weekend");
-      } else {
-        children[x].classList.remove("page-calendar-weekend");
-      }
+        // Storage Event: "week-start"
+        this.#app.storage.removeListener("week-start", this.#onweekstart);
 
-      children[x].innerHTML =
-        `${this.#app.language.get("weekDays", order[x % 7].toString())}`;
+        // AppBar.DatePicker Event: "datepickerchange"
+        this.#app.appBar.datePicker.removeListener(
+            "datepickerchange",
+            this.#ondatepickerchange,
+        );
+
+        // SwipeHandler Event: "swipe"
+        this.#swipeHandler.removeListener("swipe", this.#onswipe);
+
+        // Storage Event: "lang"
+        this.#app.storage.removeListener("lang", this.#onlang);
+
+        // Stop the SwipeHandler
+        this.#swipeHandler.stop();
     }
-  }
 
-  /**
-   *  @param {Date} date
-   *  @param {Element} calendarItem
-   */
-  async #updateItem(date, calendarItem) {
-    const promise = utils.getMonthArray(
-      date,
-      this.#app.storage.get("week-start", constants.weekStart),
-    );
+    /**
+     * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
+     */
+    #updateWeekDays(weekStart) {
+        let order = [0, 1, 2, 3, 4, 5, 6];
 
-    const cards = calendarItem.querySelectorAll(
-      ".page-calendar-days > .ui-card",
-    );
-    const data = await utils.fillWithData(this.#app.db, date, await promise);
-    for (let i = 0; i < data.length; i++) {
-      if (this.#isNope(data[i].date, date)) cards[i].classList.add("nope");
-      else cards[i].classList.remove("nope");
+        if (weekStart > 0) {
+            order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
+        }
 
-      if (this.#isToday(data[i].date)) cards[i].classList.add("today");
-      else cards[i].classList.remove("today");
+        const children = this.getElement().querySelectorAll(
+            ".page-calendar-week-days .ui-grid-column",
+        );
 
-      if (!!data[i].note) cards[i].classList.add("note");
-      else cards[i].classList.remove("note");
+        for (let x = 0; x < children.length; x++) {
+            if (order[x] === 0 || order[x] === 6) {
+                children[x].classList.add("page-calendar-weekend");
+            } else {
+                children[x].classList.remove("page-calendar-weekend");
+            }
 
-      cards[i].querySelector(".page-calendar-day-date").innerHTML =
-        `${data[i].date.getDate()}`;
-
-      cards[i].querySelector(".page-calendar-day-shift").innerHTML = !!data[i]
-        .shift?.visible
-        ? data[i].shift?.shortName || ""
-        : "";
+            children[x].innerHTML =
+                `${this.#app.language.get("calendar", order[x % 7].toString())}`;
+        }
     }
-  }
 
-  /**
-   * @param {Date} date
-   */
-  #isToday(date) {
-    return (
-      this.#today.getFullYear() === date.getFullYear() &&
-      this.#today.getMonth() === date.getMonth() &&
-      this.#today.getDate() === date.getDate()
-    );
-  }
+    /**
+     *  @param {Date} date
+     *  @param {Element} calendarItem
+     */
+    async #updateItem(date, calendarItem) {
+        const promise = utils.getMonthArray(
+            date,
+            this.#app.storage.get("week-start", constants.weekStart),
+        );
 
-  /**
-   * @param {Date} d1
-   * @param {Date} d2
-   */
-  #isNope(d1, d2) {
-    return (
-      d1.getFullYear() !== d2.getFullYear() || d1.getMonth() !== d2.getMonth()
-    );
-  }
+        const cards = calendarItem.querySelectorAll(
+            ".page-calendar-days > .ui-card",
+        );
+        const data = await utils.fillWithData(
+            this.#app.db,
+            date,
+            await promise,
+        );
+        for (let i = 0; i < data.length; i++) {
+            if (this.#isNope(data[i].date, date))
+                cards[i].classList.add("nope");
+            else cards[i].classList.remove("nope");
 
-  #updateElement() {
-    this.getElement().style.touchAction = "none";
-    this.getElement().style.overflow = "hidden";
-  }
+            if (this.#isToday(data[i].date)) cards[i].classList.add("today");
+            else cards[i].classList.remove("today");
+
+            if (!!data[i].note) cards[i].classList.add("note");
+            else cards[i].classList.remove("note");
+
+            cards[i].querySelector(".page-calendar-day-date").innerHTML =
+                `${data[i].date.getDate()}`;
+
+            cards[i].querySelector(".page-calendar-day-shift").innerHTML =
+                !!data[i].shift?.visible ? data[i].shift?.shortName || "" : "";
+        }
+    }
+
+    /**
+     * @param {Date} date
+     */
+    #isToday(date) {
+        return (
+            this.#today.getFullYear() === date.getFullYear() &&
+            this.#today.getMonth() === date.getMonth() &&
+            this.#today.getDate() === date.getDate()
+        );
+    }
+
+    /**
+     * @param {Date} d1
+     * @param {Date} d2
+     */
+    #isNope(d1, d2) {
+        return (
+            d1.getFullYear() !== d2.getFullYear() ||
+            d1.getMonth() !== d2.getMonth()
+        );
+    }
 }

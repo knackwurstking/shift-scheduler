@@ -43,7 +43,22 @@ export default class Page {
     return this.#name;
   }
 
+  /**
+   * @param {string} name
+   */
+  setName(name) {
+    this.#name = name;
+  }
+
   getTitle() {
     return this.#title;
+  }
+
+  /**
+   * @param {string} title
+   */
+  setTitle(title) {
+    this.#title = title;
+    return this;
   }
 }
