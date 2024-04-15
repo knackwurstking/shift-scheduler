@@ -34,11 +34,11 @@ const backup = `
     <hr />
 
     <section>
-        <div class="ui-grid-row actions">
+        <div class="ui-grid-row actions" style="--gap: 0.1em;">
             <span data-replace="backupImportButton"></span>
 
             <span data-replace="backupExportButton"></span>
-        </UI.FlexGrid.Row>
+        </div>
     </section>
 </article>
 `;
