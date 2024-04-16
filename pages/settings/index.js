@@ -52,6 +52,7 @@ export default class SettingsPage extends Page {
                 "miscTitle",
             );
         };
+
         this.#app.storage.addListener("lang", this.#onlang);
         this.#onlang(null);
     }
@@ -72,13 +73,20 @@ export default class SettingsPage extends Page {
 
         this.miscThemeMode = new component.text.Label({
             primary: "Theme (Mode)", // TODO: use language
-            // TODO: Handle "change" event
             input: new component.input.Select({
                 items: [
                     { value: "system", label: "System", selected: true }, // TODO: get value from storage
                     { value: "dark", label: "Dark" },
                     { value: "light", label: "Light" },
                 ],
+                onchange: (item) => {
+                    // TODO: Update storage "theme" - the app class should handle the rest
+                    console.log(
+                        "[settings] onchange event fired:",
+                        item,
+                        this.miscThemeMode.getInput().getItems(),
+                    );
+                },
             }),
         });
 
