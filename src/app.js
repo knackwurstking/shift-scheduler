@@ -1,13 +1,4 @@
-import { utils } from "ui";
-import AppBar from "./components/app-bar";
-import constants from "./lib/constants";
-import DB from "./lib/db";
-import { default as Language } from "./lib/language";
-import StackLayout from "./lib/stack-layout";
-import Storage from "./lib/storage";
-import CalendarPage from "./pages/calendar";
-
-export default class App {
+export class App {
     /** @type {Element} */
     #root;
 
