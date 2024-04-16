@@ -28,12 +28,5 @@
    * Use global.d.ts instead of compilerOptions.types
    * to avoid limiting type declarations.
    */
-  "include": [
-    "lib/**/*.js",
-    "pages/**/*.js",
-    "components/**/*.js",
-    "main.d.ts",
-    "app.js",
-    "main.js"
-  ]
+  "include": ["src/**/*.js"]
 }

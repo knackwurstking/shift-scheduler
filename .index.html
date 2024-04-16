@@ -7,29 +7,17 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
         />
+        <meta name="theme-color" content="#000000" />
         <title>Shift Scheduler</title>
-
-        <script src="node_modules/ui/ui.min.js"></script>
     </head>
 
     <body class="has-save-area">
         <div id="app">
-            <ui-container id="main">
-                <ui-stack-layout id="stack"></ui-stack-layout>
-            </ui-container>
-            <!-- TODO: Container web-component -->
-            <!-- TODO: StackLayout web-component (".stack-layout")-->
-            <!--main class="container ui-container">
+            <main class="container ui-container">
                 <div class="stack-layout"></div>
-            </main-->
+            </main>
 
-            <ui-app-bar position="top">
-                <slot name="left"></slot>
-                <slot name="center"></slot>
-                <slot name="right"></slot>
-            </ui-app-bar>
-            <!-- TODO: AppBar position="top" web-component  -->
-            <!--header class="ui-app-bar ui-app-bar-top">
+            <header class="ui-app-bar ui-app-bar-top">
                 <div class="ui-app-bar-main ui-container">
                     <div id="appBarLeft" class="ui-grid-row"></div>
 
@@ -39,9 +27,8 @@
 
                     <div id="appBarRight"></div>
                 </div>
-            </header-->
+            </header>
         </div>
-
         <script type="module" src="/main.js"></script>
     </body>
 </html>
