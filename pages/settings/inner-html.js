@@ -8,7 +8,7 @@ const misc = `
 
     <!-- week-start settings -->
     <section>
-        <!-- checkbox if thee week should start on monday or not -->
+        <!-- checkbox if the week should start on monday or not -->
         <span data-replace="miscWeekStart"></span>
     </section>
 
