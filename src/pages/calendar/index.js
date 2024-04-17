@@ -22,6 +22,7 @@ template.innerHTML = `
     :host .item {
         min-width: 100%;
         height: 100%;
+        transform: translate(-100%);
     }
 
     :host .item1 {
