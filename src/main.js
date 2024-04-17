@@ -1,4 +1,5 @@
-import "../node_modules/ui/css/main.css";
+import "../node_modules/ui/css/";
+import "../node_modules/ui/css/themes/zinc";
 import "./styles/main.css";
 
 import constants from "./lib/constants";

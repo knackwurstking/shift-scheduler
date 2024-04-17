@@ -9,15 +9,15 @@
  * )}
  */
 
-export default class Language {
-    /** @type {import("../../app.js").default} */
+export class Language {
+    /** @type {import("../../app").App} */
     #app;
     /** @type {Languages} */
     #lang;
     /** @type {any} */
     #data;
 
-    /** @param {import("../../app.js").default} app */
+    /** @param {import("../../app").App} app */
     constructor(app) {
         this.#app = app;
     }

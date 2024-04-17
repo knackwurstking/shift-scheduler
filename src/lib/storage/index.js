@@ -1,4 +1,4 @@
-import { events } from "ui";
+import ui from "ui";
 import constants from "../constants";
 
 /**
@@ -19,7 +19,7 @@ import constants from "../constants";
  * @type {{ mode: ("dark" | "light") | null }}
  */
 
-export default class Storage extends events.Events {
+export class Storage extends ui.events.Events {
     constructor(prefix = constants.storagePrefix) {
         super();
         this.prefix = prefix;

@@ -16,7 +16,7 @@ const storeMonths = "months";
  * @type {import(".").DBEntry}
  */
 
-export default class DB {
+export class DB {
   /** @type {IDBOpenDBRequest} */
   #request;
 

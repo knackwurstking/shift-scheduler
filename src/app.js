@@ -1,3 +1,5 @@
+import { constants, DB, Language, Storage } from "./lib";
+
 export class App {
     /** @type {Element} */
     #root;
@@ -6,26 +8,16 @@ export class App {
      * @type {(data: import("./lib/storage").StorageDataLang) => void|Promise<void>}
      */
     #onlang;
-    /**
-     * @type {(data: import("./lib/storage").StorageDataTheme) => void|Promise<void>}
-     */
-    #ontheme;
 
     /**
      * @param {Element} app
      */
     constructor(app) {
         this.#root = app;
-        /** @type {DB} */
+
         this.db;
         this.storage = new Storage();
         this.language = new Language(this);
-        this.theme = new utils.theme.ThemeHandler();
-        this.appBar = new AppBar(this);
-        this.stack = new StackLayout(
-            document.querySelector("main.container > .stack-layout"),
-            this,
-        );
     }
 
     onMount() {
@@ -42,28 +34,11 @@ export class App {
         };
         this.storage.addListener("lang", this.#onlang);
 
-        // setup theme(s)
-        this.theme
-            .addTheme("zinc", "/themes/zinc.css")
-            .loadTheme(constants.theme.name);
-
-        // theme storage event listener
-        this.#ontheme = async (data) => {
-            if (constants.debug) console.log(`[Main] storage: "theme"`, data);
-            if (!!data?.mode) this.theme.stop().setMode(data.mode);
-            else this.theme.start();
-        };
-        this.storage.addListener("theme", this.#ontheme);
-        this.storage.dispatch("theme");
-
         // set the app language once
         this.storage.dispatchWithData(
             "lang",
             this.storage.get("lang", constants.language),
         );
-
-        // mount components
-        this.appBar.onMount();
 
         return this;
     }
@@ -73,7 +48,6 @@ export class App {
 
         if (!!this.db) this.db.close();
         this.storage.removeListener("lang", this.#onlang);
-        this.storage.removeListener("theme", this.#ontheme);
 
         return this;
     }
@@ -83,7 +57,7 @@ export class App {
     }
 
     run() {
-        this.stack.setPage(new CalendarPage(this));
+        // ...
 
         return this;
     }
