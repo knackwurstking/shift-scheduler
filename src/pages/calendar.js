@@ -2,211 +2,109 @@ import ui from "ui";
 import { StackLayoutPage } from "../components";
 import { constants } from "../lib";
 
-export class Calendar extends StackLayoutPage {
+const template = document.createElement("template");
+template.innerHTML = `
+<style>
+    :host {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        user-select: none;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
+
+    * {
+        border: 1px solid red;
+    }
+
+    :host .item {
+        min-width: 100%;
+        height: 100%;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+
+    :host .item1 {
+        background: yellow;
+    }
+
+    :host .item2 {
+        background: green;
+    }
+
+    :host .item3 {
+        background: blue;
+    }
+</style>
+
+<div class="item item1">
+    item 1
+</div>
+
+<div class="item item2">
+    item 2
+</div>
+
+<div class="item item3">
+    item 3
+</div>
+`;
+
+export class CalendarPage extends StackLayoutPage {
     constructor() {
         super();
+
+        this.scrollStart = null;
     }
 
     connectedCallback() {
         super.connectedCallback();
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.scrollLeft = this.clientWidth;
 
-        // TODO: start/add calendar page events and shit here
+        this.onscroll = () => {
+            if (this.scrollStart === null) {
+                this.scrollStart = this.scrollLeft;
+            }
+        };
+
+        this.onscrollend = () => {
+            // TODO: refactor, to much calculation going on here
+            if (
+                Math.abs(this.scrollStart - this.scrollLeft) <
+                this.clientWidth / 2
+            ) {
+                return;
+            }
+
+            if (this.scrollStart - this.scrollLeft > 0) {
+                // right scroll
+                const items = this.getItems();
+                this.shadowRoot.insertBefore(
+                    this.shadowRoot.removeChild(items[2]),
+                    items[0],
+                );
+            } else if (this.scrollStart - this.scrollLeft < 0) {
+                // left scroll
+                const items = this.getItems();
+                this.shadowRoot.appendChild(
+                    this.shadowRoot.removeChild(items[0]),
+                );
+            }
+
+            // TODO: move children and reset scrollStart (maybe need an timeout, or find another way)
+            this.scrollStart = null;
+        };
     }
 
     disconnectedCallback() {
         super.connectedCallback();
-
-        // TODO: remove calendar page events and shit here
-    }
-}
-
-class SwipeHandler extends ui.events.Events {
-    /** @type {Calendar} */
-    #root;
-    /** @type {boolean} */
-    #kill;
-
-    /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-    #onTouchMove;
-    /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-    #onTouchEnd;
-    /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-    #onTouchCancel;
-
-    /** @type {(() => void|Promise<void>)} */
-    #animationFrameHandler;
-
-    /** @type {number | null} */
-    #startX;
-    /** @type {number | null} */
-    #clientX;
-
-    /** @type {boolean} */
-    #finalTransformRunning;
-
-    /**
-     * @param {Calendar} root
-     */
-    constructor(root) {
-        super();
-
-        this.#root = root;
-        this.#kill = false;
-
-        this.#startX = null;
-        this.#clientX = null;
-        this.#finalTransformRunning = false;
-
-        this.#onTouchMove = async (ev) => {
-            if (this.#finalTransformRunning) return;
-            if (this.#startX === null) this.#startX = ev.touches[0].clientX;
-            this.#clientX = ev.touches[0].clientX;
-        };
-
-        this.#onTouchEnd = async () => {
-            if (this.#startX === null || this.#finalTransformRunning) return;
-            this.#finalTransformRunning = true;
-
-            // Start final transform
-            if (constants.debug)
-                console.log(`[Calendar SwipeHandler] transform lock`);
-
-            if (!this.#isMinSwipe()) {
-                this.#setTransition(`transform ${0.1}s ease`);
-                this.#transform("0%");
-                setTimeout(() => this.#resetSwipe(), 100);
-                return;
-            }
-
-            this.#setTransition(`transform ${0.3}s ease`);
-            this.#transform(this.#clientX > this.#startX ? "-100%" : "100%");
-            setTimeout(() => this.#resetSwipe(), 300);
-        };
-
-        this.#onTouchCancel = async (ev) => {
-            if (this.#startX !== null) await this.#onTouchEnd(ev);
-        };
-
-        this.#animationFrameHandler = async () => {
-            if (this.#kill) return;
-            if (this.#finalTransformRunning || this.#startX === null) {
-                requestAnimationFrame(this.#animationFrameHandler);
-                return;
-            }
-
-            this.#transform(`${this.#startX - this.#clientX}px`);
-            requestAnimationFrame(this.#animationFrameHandler);
-        };
     }
 
-    start() {
-        this.#root.addEventListener("touchmove", this.#onTouchMove);
-        this.#root.addEventListener("touchend", this.#onTouchEnd);
-        this.#root.addEventListener("touchcancel", this.#onTouchCancel);
-
-        requestAnimationFrame(this.#animationFrameHandler);
-    }
-
-    stop() {
-        this.#root.removeEventListener("touchmove", this.#onTouchMove);
-        this.#root.removeEventListener("touchend", this.#onTouchEnd);
-        this.#root.removeEventListener("touchcancel", this.#onTouchCancel);
-
-        this.#kill = false;
-    }
-
-    /**
-     * @param {"swipe"} key
-     * @param {"left" | "right" | "none"} data
-     */
-    dispatchWithData(key, data) {
-        super.dispatchWithData(key, data);
-        return this;
-    }
-
-    /**
-     * @param {"swipe"} key
-     * @param {(data: "left" | "right" | "none") => void|Promise<void>} listener
-     * @returns {() => void} clean up function
-     */
-    addListener(key, listener) {
-        return super.addListener(key, listener);
-    }
-
-    /**
-     * @param {"swipe"} key
-     * @param {(data: "left" | "right" | "none") => void|Promise<void>} listener
-     */
-    removeListener(key, listener) {
-        super.removeListener(key, listener);
-        return this;
-    }
-
-    #resetSwipe() {
-        // Reset final transform
-        this.#setTransition("none");
-        if (this.#isMinSwipe()) {
-            this.#reorderItems(this.#clientX > this.#startX ? "right" : "left");
-        }
-        this.#startX = null;
-        this.#clientX = null;
-        this.#finalTransformRunning = false;
-        if (constants.debug)
-            console.log(`[Calendar SwipeHandler] release transform lock`);
-    }
-
-    /**
-     * @param {string} diff
-     */
-    #transform(diff) {
-        [...this.#root.children].forEach((c) => {
-            // @ts-ignore
-            c.style.transform = `translateX(calc(-100% - ${diff}))`;
-        });
-    }
-
-    /**
-     * @param {string} value
-     */
-    #setTransition(value) {
-        [...this.#root.children].forEach((c) => {
-            // @ts-ignore
-            c.style.transition = value;
-        });
-    }
-
-    /**
-     * @param {"left" | "right" | "none" | string} swipeDirection
-     */
-    #reorderItems(swipeDirection) {
-        switch (swipeDirection) {
-            case "left":
-                // The first item will be the last
-                this.#root.appendChild(
-                    this.#root.removeChild(this.#root.firstChild),
-                );
-                break;
-            case "right":
-                // The last item will be the first
-                this.#root.insertBefore(
-                    this.#root.removeChild(this.#root.lastChild),
-                    this.#root.children[0],
-                );
-                break;
-            case "none":
-                break;
-            default:
-                throw `Ooop, what is this for a direction "${swipeDirection}"?`;
-        }
-
-        this.#transform("0%");
-        this.dispatchWithData("swipe", swipeDirection);
-    }
-
-    #isMinSwipe() {
-        return (
-            Math.abs(this.#startX - this.#clientX) >
-            constants.swipeRange * (window.innerWidth / 1080)
+    getItems() {
+        return [...this.shadowRoot.children].filter((c) =>
+            c.classList.contains("item"),
         );
     }
 }

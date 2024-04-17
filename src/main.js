@@ -5,11 +5,13 @@ import ui from "ui";
 import { App } from "./app";
 import constants from "./lib/constants";
 import { StackLayout, StackLayoutPage } from "./components";
+import { CalendarPage } from "./pages";
 
 ui.define()
     .then(() => {
         customElements.define("stack-layout", StackLayout);
         customElements.define("stack-layout-page", StackLayoutPage);
+        customElements.define("calendar-page", CalendarPage);
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
 
