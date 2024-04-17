@@ -1,9 +1,11 @@
-import "../node_modules/ui/css/";
-import "../node_modules/ui/css/themes/zinc";
+import "../node_modules/ui/css/main.css";
 import "./styles/main.css";
 
-import constants from "./lib/constants";
+import ui from "ui";
 import { App } from "./app";
+import constants from "./lib/constants";
+
+ui.define().catch((err) => alert(`Rendering web components failed: ${err}`));
 
 window.addEventListener("DOMContentLoaded", () => {
     const app = new App(document.querySelector("#app")).onMount().run(); // TODO: Run the onDestroy method?
