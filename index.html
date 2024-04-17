@@ -15,51 +15,64 @@
 
         <div id="app">
             <ui-container id="main" style="width: 100%; height: 100%">
-                <stack-layout>
-                    <stack-layout-page
-                        class="flex row align-center justify-center"
-                    >
-                        <p>Hello, this is a container test :)</p>
-                    </stack-layout-page>
-                </stack-layout>
+                <stack-layout></stack-layout>
             </ui-container>
 
+            <!-- TODO: Continue creating web components here -->
             <ui-app-bar id="appBar" position="top" title="">
                 <ui-flexgrid-row slot="left" gap="0.1em">
                     <ui-flexgrid-item>
                         <!-- TODO: back (icon) button -->
+                        B
                     </ui-flexgrid-item>
 
                     <ui-flexgrid-item>
                         <!-- TODO: date picker button -->
+                        Date Picker
                     </ui-flexgrid-item>
                 </ui-flexgrid-row>
 
                 <ui-flexgrid-row slot="right" gap="0.1em">
                     <ui-flexgrid-item>
                         <!-- TODO: edit mode (icon) button -->
+                        E
                     </ui-flexgrid-item>
 
                     <ui-flexgrid-item>
                         <!-- TODO: (go) today (icon) button -->
+                        T
                     </ui-flexgrid-item>
 
                     <ui-flexgrid-item>
                         <!-- TODO: pdf (icon) button -->
+                        P
                     </ui-flexgrid-item>
 
                     <ui-flexgrid-item>
                         <!-- TODO: settings (icon) button -->
+                        S
                     </ui-flexgrid-item>
                 </ui-flexgrid-row>
             </ui-app-bar>
         </div>
 
-        <template id="pageCalendar"></template>
+        <template id="pageCalendar">
+            <stack-layout-page class="flex row align-center justify-center">
+                <p>Calendar</p>
+            </stack-layout-page>
+        </template>
 
-        <template id="pageSettings"></template>
+        <template id="pageSettings">
+            <stack-layout-page class="flex row align-center justify-center">
+                <p>Settings</p>
+            </stack-layout-page>
+        </template>
 
-        <template id="pagePDF"></template>
+        <template id="pagePDF">
+            <stack-layout-page class="flex row align-center justify-center">
+                <p>PDF</p>
+            </stack-layout-page>
+        </template>
 
         <script type="module" src="/src/main.js"></script>
     </body>
