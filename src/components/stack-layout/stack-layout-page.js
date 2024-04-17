@@ -1,13 +1,8 @@
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
-        div {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        div > page {
+        :host {
+            display: block;
             position: absolute;
             top: 0;
             left: 0;
@@ -17,7 +12,7 @@ template.innerHTML = `
             transition: opacity 0.5s ease;
         }
 
-        div > page:last-child {
+        :host {
             opacity: 1;
             animation: fade-in 0.5s;
         }
@@ -32,9 +27,7 @@ template.innerHTML = `
         }
     </style>
 
-    <div>
-        <slot></slot>
-    </div>
+    <slot></slot>
 `;
 
 export class StackLayoutPage extends HTMLElement {
@@ -43,7 +36,8 @@ export class StackLayoutPage extends HTMLElement {
     }
 
     connectedCallback() {
-        // ...
+        this.attachShadow({ mode: "open" });
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
     disconnectedCallback() {
