@@ -49,6 +49,7 @@ export class StackLayoutPage extends HTMLElement {
 
         // @ts-ignore
         if (this.parentElement.app instanceof App) {
+            // @ts-ignore
             this.app = this.parentElement.app;
         }
     }
