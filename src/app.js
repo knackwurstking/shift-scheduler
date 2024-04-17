@@ -46,6 +46,22 @@ export class App {
         this.settingsButton = document.querySelector("#appBarSettingsButton");
     }
 
+    get element() {
+        return this.#root;
+    }
+
+    get month() {
+        const [year, month] = this.datePickerButton.innerText.split("/");
+        if (!year.trim() || !month.trim())
+            throw `the date-picker button contains no date!`;
+        return new Date(Number(year), Number(month) - 1, 1);
+    }
+
+    /** @param {Date} date */
+    set month(date) {
+        this.datePickerButton.innerText = this.getMonthString(date);
+    }
+
     onMount() {
         if (constants.debug) console.log("[app] onMount");
 
@@ -76,6 +92,9 @@ export class App {
         this.pdfButton.onclick = () => this.#onPDFButtonClick();
         this.settingsButton.onclick = () => this.#onSettingsButtonClick();
 
+        // TODO: Get the last used date from the local storage
+        this.date = new Date();
+
         return this;
     }
 
@@ -91,16 +110,25 @@ export class App {
         return this;
     }
 
-    getElement() {
-        return this.#root;
-    }
-
     run() {
         // Setup pages
         this.stackLayout.app = this;
         this.stackLayout.setPage(this.stackLayout.pages.calendar);
 
         return this;
+    }
+
+    /** @param {Date} date */
+    getMonthString(date) {
+        return `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+    }
+
+    goNextMonth() {
+        // TODO: Set the date picker + 1 month
+    }
+
+    goPrevMonth() {
+        // TODO: Set the date picker - 1 month
     }
 
     #onBackButtonClick() {

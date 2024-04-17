@@ -11,8 +11,7 @@ template.innerHTML = `
         flex-direction: row;
         flex-wrap: nowrap;
         user-select: none;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
+        overflow: hidden;
         touch-action: none;
     }
 
@@ -23,8 +22,6 @@ template.innerHTML = `
     :host .item {
         min-width: 100%;
         height: 100%;
-        scroll-snap-align: center;
-        scroll-snap-stop: always;
     }
 
     :host .item1 {
@@ -92,7 +89,7 @@ export class CalendarPage extends StackLayoutPage {
             // Crete days, note, shifts, ... if the week-start changes
             this.app.datePickerButton.dispatchWithData(
                 "datepickerchange",
-                this.app.datePickerButton.getDate(),
+                this.app.month,
             );
         };
 
@@ -103,10 +100,10 @@ export class CalendarPage extends StackLayoutPage {
 
             switch (direction) {
                 case "left":
-                    this.app.datePickerButton.nextMonth();
+                    this.app.goNextMonth();
                     break;
                 case "right":
-                    this.app.datePickerButton.prevMonth();
+                    this.app.goPrevMonth();
                     break;
             }
         };
