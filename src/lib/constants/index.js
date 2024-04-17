@@ -24,5 +24,5 @@ export default {
     language: "de",
     weekStart: 1,
     swipeRange: 75,
-    debug: false,
+    debug: true,
 };

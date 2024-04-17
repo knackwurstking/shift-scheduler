@@ -1,3 +1,6 @@
+import { constants } from "../../lib";
+import { App } from "../../app";
+
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
@@ -9,12 +12,12 @@ template.innerHTML = `
             width: 100%;
             height: 100%;
             opacity: 0;
+            animation: fade-in 0.5s;
             transition: opacity 0.5s ease;
         }
 
-        :host {
+        :host(:last-child) {
             opacity: 1;
-            animation: fade-in 0.5s;
         }
 
         @keyframes fade-in {
@@ -33,14 +36,25 @@ template.innerHTML = `
 export class StackLayoutPage extends HTMLElement {
     constructor() {
         super();
+
+        /** @type {import("../../app").App | null} */
+        this.app = null;
     }
 
     connectedCallback() {
+        if (constants.debug) console.log(`[StackLayoutPage] connectedCallback`);
+
         this.attachShadow({ mode: "open" });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+        // @ts-ignore
+        if (this.parentElement.app instanceof App) {
+            this.app = this.parentElement.app;
+        }
     }
 
     disconnectedCallback() {
-        // ...
+        if (constants.debug)
+            console.log(`[StackLayoutPage] disconnectedCallback`);
     }
 }

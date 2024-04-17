@@ -1,3 +1,4 @@
+import { StackLayout } from "./components";
 import { constants, DB, Language, Storage } from "./lib";
 
 export class App {
@@ -19,7 +20,30 @@ export class App {
         this.storage = new Storage();
         this.language = new Language(this);
 
-        // TODO: this.datePicker: set onclick handler ("#datePicker")
+        /** @type {StackLayout} */
+        this.stackLayout = document.querySelector("stack-layout");
+
+        // AppBar left slot
+        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        this.backButton = document.querySelector("#appBarBackButton");
+        /** @type {import("ui/src/web-components/button/button").Button} */
+        this.datePickerButton = document.querySelector(
+            "#appBarDatePickerButton",
+        );
+
+        // AppBar center slot
+        /** @type {HTMLElement} */
+        this.title = document.querySelector("#appBarTitle");
+
+        // AppBar right slot
+        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        this.editButton = document.querySelector("#appBarEditButton");
+        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        this.todayButton = document.querySelector("#appBarTodayButton");
+        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        this.pdfButton = document.querySelector("#appBarPDFButton");
+        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        this.settingsButton = document.querySelector("#appBarSettingsButton");
     }
 
     onMount() {
@@ -32,7 +56,7 @@ export class App {
 
         // Storage event: "lang"
         this.#onlang = async (data) => {
-            if (constants.debug) console.log(`[Main] storage: "lang"`, data);
+            if (constants.debug) console.log(`[app] storage: "lang"`, data);
             await this.language.setLanguage(data || constants.language);
         };
 
@@ -43,6 +67,14 @@ export class App {
             "lang",
             this.storage.get("lang", constants.language),
         );
+
+        // Set on click handlers
+        this.backButton.onclick = () => this.#onBackButtonClick();
+        this.datePickerButton.onclick = () => this.#onDatePickerButtonClick();
+        this.editButton.onclick = () => this.#onEditButtonClick();
+        this.todayButton.onclick = () => this.#onTodayButtonClick();
+        this.pdfButton.onclick = () => this.#onPDFButtonClick();
+        this.settingsButton.onclick = () => this.#onSettingsButtonClick();
 
         return this;
     }
@@ -64,8 +96,34 @@ export class App {
     }
 
     run() {
-        // ...
+        // Setup pages
+        this.stackLayout.app = this;
+        this.stackLayout.setPage(this.stackLayout.pages.calendar);
 
         return this;
+    }
+
+    #onBackButtonClick() {
+        // ...
+    }
+
+    #onDatePickerButtonClick() {
+        // ...
+    }
+
+    #onEditButtonClick() {
+        // ...
+    }
+
+    #onTodayButtonClick() {
+        // ...
+    }
+
+    #onPDFButtonClick() {
+        // ...
+    }
+
+    #onSettingsButtonClick() {
+        // ...
     }
 }

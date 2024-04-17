@@ -23,7 +23,7 @@
                     slot="left"
                     class="flex align-center justify-center"
                 >
-                    <ui-icon-button color="primary" ghost>
+                    <ui-icon-button id="appBarBackButton" color="primary" ghost>
                         <ui-back-arrow-navigation></ui-back-arrow-navigation>
                     </ui-icon-button>
                 </ui-flex-grid-item>
@@ -34,7 +34,7 @@
                     style="padding: calc(var(--spacing) / 2)"
                 >
                     <ui-button
-                        id="datePicker"
+                        id="appBarDatePickerButton"
                         style="height: 100%; white-space: nowrap"
                         variant="full"
                         color="primary"
@@ -44,6 +44,7 @@
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item
+                    id="appBarTitle"
                     slot="center"
                     class="flex align-center justify-center"
                 >
@@ -54,7 +55,7 @@
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <ui-icon-button color="primary" ghost>
+                    <ui-icon-button id="appBarEditButton" color="primary" ghost>
                         <ui-edit2></ui-edit2>
                     </ui-icon-button>
                 </ui-flex-grid-item>
@@ -63,7 +64,11 @@
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <ui-icon-button color="primary" ghost>
+                    <ui-icon-button
+                        id="appBarTodayButton"
+                        color="primary"
+                        ghost
+                    >
                         <ui-today-outline></ui-today-outline>
                     </ui-icon-button>
                 </ui-flex-grid-item>
@@ -72,7 +77,7 @@
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <ui-icon-button color="primary" ghost>
+                    <ui-icon-button id="appBarPDFButton" color="primary" ghost>
                         <ui-pdf-document></ui-pdf-document>
                     </ui-icon-button>
                 </ui-flex-grid-item>
@@ -81,7 +86,11 @@
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <ui-icon-button color="primary" ghost>
+                    <ui-icon-button
+                        id="appBarSettingsButton"
+                        color="primary"
+                        ghost
+                    >
                         <ui-settings></ui-settings>
                     </ui-icon-button>
                 </ui-flex-grid-item>
