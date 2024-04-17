@@ -36,7 +36,7 @@ export class App {
 
         this.storage.addListener("lang", this.#onlang);
 
-        // Trigger (storage) language event - this will initialy load the language data
+        // Trigger (storage) language event - this will initially load the language data
         this.storage.dispatchWithData(
             "lang",
             this.storage.get("lang", constants.language),
