@@ -23,16 +23,24 @@
                     slot="left"
                     class="flex align-center justify-center"
                 >
-                    <!-- TODO: back (icon) button -->
-                    B
+                    <ui-icon-button color="primary" ghost>
+                        <ui-back-arrow-navigation></ui-back-arrow-navigation>
+                    </ui-icon-button>
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item
                     slot="left"
                     class="flex align-center justify-center"
+                    style="padding: calc(var(--spacing) / 2)"
                 >
-                    <!-- TODO: date picker button -->
-                    Date Picker
+                    <ui-button
+                        id="datePicker"
+                        style="height: 100%; white-space: nowrap"
+                        variant="full"
+                        color="primary"
+                    >
+                        Date Picker
+                    </ui-button>
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item
@@ -46,32 +54,36 @@
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <!-- TODO: edit mode (icon) button -->
-                    E
+                    <ui-icon-button color="primary" ghost>
+                        <ui-edit2></ui-edit2>
+                    </ui-icon-button>
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <!-- TODO: (go) today (icon) button -->
-                    T
+                    <ui-icon-button color="primary" ghost>
+                        <ui-today-outline></ui-today-outline>
+                    </ui-icon-button>
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <!-- TODO: pdf (icon) button -->
-                    P
+                    <ui-icon-button color="primary" ghost>
+                        <ui-pdf-document></ui-pdf-document>
+                    </ui-icon-button>
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item
                     slot="right"
                     class="flex align-center justify-center"
                 >
-                    <!-- TODO: settings (icon) button -->
-                    S
+                    <ui-icon-button color="primary" ghost>
+                        <ui-settings></ui-settings>
+                    </ui-icon-button>
                 </ui-flex-grid-item>
             </ui-app-bar>
         </div>

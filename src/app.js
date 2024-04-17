@@ -18,6 +18,8 @@ export class App {
         this.db;
         this.storage = new Storage();
         this.language = new Language(this);
+
+        // TODO: this.datePicker: set onclick handler ("#datePicker")
     }
 
     onMount() {
