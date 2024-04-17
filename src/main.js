@@ -4,8 +4,14 @@ import "../styles/main.css";
 import ui from "ui";
 import { App } from "./app";
 import constants from "./lib/constants";
+import { StackLayout, StackLayoutPage } from "./components";
 
-ui.define().catch((err) => alert(`Rendering web components failed: ${err}`));
+ui.define()
+    .then(() => {
+        customElements.define("stack-layout", StackLayout);
+        customElements.define("stack-layout-page", StackLayoutPage);
+    })
+    .catch((err) => alert(`Rendering web components failed: ${err}`));
 
 window.addEventListener("DOMContentLoaded", () => {
     const app = new App(document.querySelector("#app")).onMount().run(); // TODO: Run the onDestroy method?
