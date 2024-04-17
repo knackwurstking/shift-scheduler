@@ -1,5 +1,5 @@
 import "../node_modules/ui/css/main.css";
-import "./styles/main.css";
+import "../styles/main.css";
 
 import ui from "ui";
 import { App } from "./app";
