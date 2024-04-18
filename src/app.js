@@ -60,9 +60,14 @@ export class App extends ui.events.Events {
     }
 
     getMonth() {
-        const [year, month] = this.datePickerButton.innerText.split("/");
-        if (!year.trim() || !month.trim())
+        let [year, month] = this.datePickerButton.innerText.split("/");
+
+        if (!year || !month)
             throw `the date-picker button contains no date!`;
+
+        if (isNaN(Number(year)) || isNaN(Number(month)))
+            throw `the date-picker button contains no date!`;
+
         return new Date(Number(year), Number(month) - 1, 1);
     }
 
