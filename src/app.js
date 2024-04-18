@@ -108,7 +108,7 @@ export class App extends ui.events.Events {
         this.settingsButton.onclick = () => this.#onSettingsButtonClick();
 
         // TODO: Get the last used date from the local storage
-        this.date = new Date();
+        this.setMonth(new Date());
 
         return this;
     }
