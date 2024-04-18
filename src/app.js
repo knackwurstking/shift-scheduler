@@ -1,7 +1,15 @@
 import { StackLayout } from "./components";
 import { constants, DB, Language, Storage } from "./lib";
+import ui from "ui";
 
-export class App {
+export const eventDatePickerChange = "datepickerchange"
+
+/**
+ * @typedef {import("ui/src/web-components/button/button").Button} Button 
+ * @typedef {import("ui/src/web-components/button/icon-button").IconButton} IconButton 
+ */
+
+export class App extends ui.events.Events {
     /** @type {Element} */
     #root;
 
@@ -14,6 +22,7 @@ export class App {
      * @param {Element} app
      */
     constructor(app) {
+        super() // NOTE: Events: "datepickerchange"
         this.#root = app;
 
         this.db;
@@ -24,9 +33,9 @@ export class App {
         this.stackLayout = document.querySelector("stack-layout");
 
         // AppBar left slot
-        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        /** @type {IconButton} */
         this.backButton = document.querySelector("#appBarBackButton");
-        /** @type {import("ui/src/web-components/button/button").Button} */
+        /** @type {Button} */
         this.datePickerButton = document.querySelector(
             "#appBarDatePickerButton",
         );
@@ -36,13 +45,13 @@ export class App {
         this.title = document.querySelector("#appBarTitle");
 
         // AppBar right slot
-        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        /** @type {IconButton} */
         this.editButton = document.querySelector("#appBarEditButton");
-        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        /** @type {IconButton} */
         this.todayButton = document.querySelector("#appBarTodayButton");
-        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        /** @type {IconButton} */
         this.pdfButton = document.querySelector("#appBarPDFButton");
-        /** @type {import("ui/src/web-components/button/icon-button").IconButton} */
+        /** @type {IconButton} */
         this.settingsButton = document.querySelector("#appBarSettingsButton");
     }
 
@@ -50,7 +59,7 @@ export class App {
         return this.#root;
     }
 
-    get month() {
+    getMonth() {
         const [year, month] = this.datePickerButton.innerText.split("/");
         if (!year.trim() || !month.trim())
             throw `the date-picker button contains no date!`;
@@ -58,8 +67,9 @@ export class App {
     }
 
     /** @param {Date} date */
-    set month(date) {
+    setMonth(date) {
         this.datePickerButton.innerText = this.getMonthString(date);
+        this.dispatchWithData(eventDatePickerChange)
     }
 
     onMount() {
@@ -124,11 +134,15 @@ export class App {
     }
 
     goNextMonth() {
-        // TODO: Set the date picker + 1 month
+        const date = this.getMonth()
+        date.setMonth(date.getMonth() + 1);
+        this.setMonth(date)
     }
 
     goPrevMonth() {
-        // TODO: Set the date picker - 1 month
+        const date = this.getMonth()
+        date.setMonth(date.getMonth() - 1);
+        this.setMonth(date)
     }
 
     #onBackButtonClick() {

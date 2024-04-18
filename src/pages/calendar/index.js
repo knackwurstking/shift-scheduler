@@ -88,9 +88,9 @@ export class CalendarPage extends StackLayoutPage {
             this.updateWeekDays(weekStart);
 
             // Crete days, note, shifts, ... if the week-start changes
-            this.app.datePickerButton.dispatchWithData(
+            this.app.dispatchWithData(
                 "datepickerchange",
-                this.app.month,
+                this.app.getMonth(),
             );
         };
 
@@ -120,7 +120,7 @@ export class CalendarPage extends StackLayoutPage {
         super.connectedCallback();
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        this.app.datePickerButton.addListener(
+        this.app.addListener(
             "datepickerchange",
             this.ondatepickerchange,
         );
@@ -137,7 +137,7 @@ export class CalendarPage extends StackLayoutPage {
     disconnectedCallback() {
         super.connectedCallback();
 
-        this.app.datePickerButton.removeListener(
+        this.app.removeListener(
             "datepickerchange",
             this.ondatepickerchange,
         );
