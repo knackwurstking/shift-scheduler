@@ -5,16 +5,15 @@ import * as utils from "./utils";
 
 const template = document.createElement("template");
 
-// TODO: Update old classes and add missing (css) styles
 const templateDayItem = `
-<div class="ui-grid-column ui-card">
-    <div class="page-calendar-day-date"></div>
-    <div class="page-calendar-day-shift"></div>
-</div>
+<ui-flex-grid-item class="day-item ui-card">
+    <div class="day-item-date"></div>
+    <div class="day-item-shift"></div>
+</ui-flex-grid-item>
 `;
 
 const templateDaysRow = `
-<div class="page-calendar-days ui-grid-row">
+<ui-flex-grid-row class="days-row" gap="0.1em">
     ${templateDayItem}
     ${templateDayItem}
     ${templateDayItem}
@@ -22,23 +21,23 @@ const templateDaysRow = `
     ${templateDayItem}
     ${templateDayItem}
     ${templateDayItem}
-</div>
+</ui-flex-grid-row>
 `;
 
 const templateWeekDaysRow = `
-<div class="page-calendar-week-days ui-grid-row">
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-    <div class="ui-grid-column ui-card"></div>
-</div>
+<ui-flex-grid-row class="week-days-row" gap="0.1em">
+    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+</ui-flex-grid-row>
 `
 
 const templateItemContent = `
-<div class="ui-grid">
+<div class="item-content ui-grid">
     ${templateWeekDaysRow}
 
     ${templateDaysRow}
@@ -50,9 +49,11 @@ const templateItemContent = `
 </div>
 `;
 
+// TODO: Update old classes and add missing (css) styles
 template.innerHTML = `
 <style>
     :host {
+        --header-height: 2.5em;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
@@ -68,7 +69,6 @@ template.innerHTML = `
     :host .item {
         min-width: 100%;
         height: 100%;
-        transform: translate(-100%);
     }
 
     :host .item1 {
@@ -82,17 +82,107 @@ template.innerHTML = `
     :host .item3 {
         background: blue;
     }
+
+    :host .item .item-content {
+        --gap: 0.1em;
+        width: 100%;
+        height: 100%;
+    }
+
+    :host .item .item-content .week-days-row {
+        height: var(--header-height);
+    }
+
+    :host .item .item-content .week-days-row > .ui-flex-grid-item {
+        width: calc(100% / 7);
+        height: 100%;
+        font-family: var(--font-family-heading);
+        font-size: 1.15em;
+        font-weight: normal;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-saturday,
+    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-sunday {
+        font-weight: bolder;
+        /* TODO: Some special highlighting */
+    }
+
+    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-saturday {
+        /* TODO: Some special highlighting */
+    }
+
+    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-sunday {
+        /* TODO: Some special highlighting */
+    }
+
+    :host .item .item-content .days-row {
+        height: calc(100% / 7 + var(--header-height));
+    }
+
+    :host .item .item-content .days-row .day-item {
+        width: calc(100% / 7);
+        height: 100%;
+        overflow: hidden;
+    }
+
+    :host .item .item-content .days-row .day-item.is-inactive {
+        opacity: 0.2;
+    }
+
+    :host .item .item-content .days-row .day-item .day-item-date {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 0.5vmin;
+        /*font-size: 3vmin;*/
+        font-size: clamp(0em, 3vmin, 1em);
+        font-weight: 0.5vmin;
+        border-radius: inherit;
+    }
+
+    :host .item .item-content .days-row .day-item .day-item-shift {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /*font-size: 4vmin;*/
+        font-size: clamp(0em, 4vmin, 1.5em);
+        font-weight: bold;
+        color: var(--shift-color, var(--color-fg));
+        text-shadow: 0.1em 0.1em 0.1em hsla(var(--shift-color, var(--card-fg)), 0.2);
+        border-radius: inherit;
+    }
+
+    @media (orientation: landscape) {
+        :host .item .item-content .days-row .day-item .day-item-shift {
+            left: 4vmin;
+        }
+    }
+
+    @media (orientation: portrait) {
+        :host .item .item-content .days-row .day-item .day-item-shift {
+            top: 5vmin;
+        }
+    }
 </style>
 
-<div class="item item1">
+<!-- TODO: Using left, in px, for moving items on swipe -->
+<div class="item item1" style="left: -100%;">
     ${templateItemContent}
 </div>
 
-<div class="item item2">
+<div class="item item2" style="left: 0;">
     ${templateItemContent}
 </div>
 
-<div class="item item3">
+<div class="item item3" style="left: 100%;">
     ${templateItemContent}
 </div>
 `;
