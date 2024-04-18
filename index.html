@@ -1,118 +1,84 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
-        />
-        <title>Shift Scheduler</title>
-    </head>
 
-    <body class="has-save-area">
-        <ui-theme-handler auto></ui-theme-handler>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <title>Shift Scheduler</title>
+</head>
 
-        <div id="app">
-            <ui-container id="main" style="width: 100%; height: 100%">
-                <stack-layout></stack-layout>
-            </ui-container>
+<body class="has-save-area">
+    <ui-theme-handler auto></ui-theme-handler>
 
-            <ui-app-bar id="appBar" position="top" title="">
-                <ui-flex-grid-item
-                    slot="left"
-                    class="flex align-center justify-center"
-                >
-                    <ui-icon-button id="appBarBackButton" color="primary" ghost>
-                        <ui-back-arrow-navigation></ui-back-arrow-navigation>
-                    </ui-icon-button>
-                </ui-flex-grid-item>
+    <div id="app">
+        <ui-container id="main" style="width: 100%; height: 100%">
+            <stack-layout></stack-layout>
+        </ui-container>
 
-                <ui-flex-grid-item
-                    slot="left"
-                    class="flex align-center justify-center"
-                    style="padding: calc(var(--spacing) / 2)"
-                >
-                    <ui-button
-                        id="appBarDatePickerButton"
-                        style="height: 100%; white-space: nowrap"
-                        variant="full"
-                        color="primary"
-                    >
-                        Date Picker
-                    </ui-button>
-                </ui-flex-grid-item>
+        <ui-app-bar id="appBar" position="top" title="">
+            <ui-flex-grid-item slot="left" class="flex align-center justify-center">
+                <ui-icon-button id="appBarBackButton" color="primary" ghost>
+                    <ui-back-arrow-navigation></ui-back-arrow-navigation>
+                </ui-icon-button>
+            </ui-flex-grid-item>
 
-                <ui-flex-grid-item
-                    id="appBarTitle"
-                    slot="center"
-                    class="flex align-center justify-center"
-                >
-                    App Title
-                </ui-flex-grid-item>
+            <ui-flex-grid-item slot="left" class="flex align-center justify-center"
+                style="padding: calc(var(--spacing) / 2)">
+                <ui-button id="appBarDatePickerButton" style="height: 100%; white-space: nowrap;" variant="full"
+                    color="primary">
+                    Date Picker
+                </ui-button>
+            </ui-flex-grid-item>
 
-                <ui-flex-grid-item
-                    slot="right"
-                    class="flex align-center justify-center"
-                >
-                    <ui-icon-button id="appBarEditButton" color="primary" ghost>
-                        <ui-edit2></ui-edit2>
-                    </ui-icon-button>
-                </ui-flex-grid-item>
+            <ui-flex-grid-item id="appBarTitle" slot="center" class="flex align-center justify-center"
+                style="white-space: nowrap;">
+                App Title
+            </ui-flex-grid-item>
 
-                <ui-flex-grid-item
-                    slot="right"
-                    class="flex align-center justify-center"
-                >
-                    <ui-icon-button
-                        id="appBarTodayButton"
-                        color="primary"
-                        ghost
-                    >
-                        <ui-today-outline></ui-today-outline>
-                    </ui-icon-button>
-                </ui-flex-grid-item>
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
+                <ui-icon-button id="appBarEditButton" color="primary" ghost>
+                    <ui-edit2></ui-edit2>
+                </ui-icon-button>
+            </ui-flex-grid-item>
 
-                <ui-flex-grid-item
-                    slot="right"
-                    class="flex align-center justify-center"
-                >
-                    <ui-icon-button id="appBarPDFButton" color="primary" ghost>
-                        <ui-pdf-document></ui-pdf-document>
-                    </ui-icon-button>
-                </ui-flex-grid-item>
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
+                <ui-icon-button id="appBarTodayButton" color="primary" ghost>
+                    <ui-today-outline></ui-today-outline>
+                </ui-icon-button>
+            </ui-flex-grid-item>
 
-                <ui-flex-grid-item
-                    slot="right"
-                    class="flex align-center justify-center"
-                >
-                    <ui-icon-button
-                        id="appBarSettingsButton"
-                        color="primary"
-                        ghost
-                    >
-                        <ui-settings></ui-settings>
-                    </ui-icon-button>
-                </ui-flex-grid-item>
-            </ui-app-bar>
-        </div>
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
+                <ui-icon-button id="appBarPDFButton" color="primary" ghost>
+                    <ui-pdf-document></ui-pdf-document>
+                </ui-icon-button>
+            </ui-flex-grid-item>
 
-        <template id="pageCalendar">
-            <calendar-page></calendar-page>
-        </template>
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
+                <ui-icon-button id="appBarSettingsButton" color="primary" ghost>
+                    <ui-settings></ui-settings>
+                </ui-icon-button>
+            </ui-flex-grid-item>
+        </ui-app-bar>
+    </div>
 
-        <template id="pageSettings">
-            <stack-layout-page title="Settings">
-                <p>Settings</p>
-            </stack-layout-page>
-        </template>
+    <template id="pageCalendar">
+        <calendar-page></calendar-page>
+    </template>
 
-        <template id="pagePDF">
-            <stack-layout-page title="PDF">
-                <p>PDF</p>
-            </stack-layout-page>
-        </template>
+    <template id="pageSettings">
+        <stack-layout-page title="Settings">
+            <p>Settings</p>
+        </stack-layout-page>
+    </template>
 
-        <script type="module" src="/src/main.js"></script>
-    </body>
+    <template id="pagePDF">
+        <stack-layout-page title="PDF">
+            <p>PDF</p>
+        </stack-layout-page>
+    </template>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
