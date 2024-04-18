@@ -4,6 +4,52 @@ import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
 const template = document.createElement("template");
+
+// TODO: Update old classes and add missing (css) styles
+const templateDayItem = `
+<div class="ui-grid-column ui-card">
+    <div class="page-calendar-day-date"></div>
+    <div class="page-calendar-day-shift"></div>
+</div>
+`;
+
+const templateDaysRow = `
+<div class="page-calendar-days ui-grid-row">
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+</div>
+`;
+
+const templateWeekDaysRow = `
+<div class="page-calendar-week-days ui-grid-row">
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+    <div class="ui-grid-column ui-card"></div>
+</div>
+`
+
+const templateItemContent = `
+<div class="ui-grid">
+    ${templateWeekDaysRow}
+
+    ${templateDaysRow}
+    ${templateDaysRow}
+    ${templateDaysRow}
+    ${templateDaysRow}
+    ${templateDaysRow}
+    ${templateDaysRow}
+</div>
+`;
+
 template.innerHTML = `
 <style>
     :host {
@@ -39,15 +85,15 @@ template.innerHTML = `
 </style>
 
 <div class="item item1">
-    item 1
+    ${templateItemContent}
 </div>
 
 <div class="item item2">
-    item 2
+    ${templateItemContent}
 </div>
 
 <div class="item item3">
-    item 3
+    ${templateItemContent}
 </div>
 `;
 
