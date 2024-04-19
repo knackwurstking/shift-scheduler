@@ -2,20 +2,8 @@ import ui from "ui";
 import { constants } from "../../lib";
 
 export default class SwipeHandler extends ui.events.Events {
-    /** @type {import(".").CalendarPage} */
-    #root;
     /** @type {boolean} */
     #kill;
-
-    /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-    #onTouchMove;
-    /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-    #onTouchEnd;
-    /** @type {((ev: TouchEvent) => void|Promise<void>)} */
-    #onTouchCancel;
-
-    /** @type {(() => void|Promise<void>)} */
-    #animationFrameHandler;
 
     /** @type {number | null} */
     #startX;
@@ -23,75 +11,81 @@ export default class SwipeHandler extends ui.events.Events {
     #clientX;
 
     /** @type {boolean} */
-    #finalTransformRunning;
+    #finalTransform;
 
     /**
-     * @param {import(".").CalendarPage} root
+     * @param {import(".").CalendarPage} calendar
      */
-    constructor(root) {
+    constructor(calendar) {
         super();
 
-        this.#root = root;
-        this.#kill = false;
+        this.calendar = calendar;
 
+        this.#finalTransform = false;
         this.#startX = null;
         this.#clientX = null;
-        this.#finalTransformRunning = false;
+        this.#kill = false;
 
-        this.#onTouchMove = async (ev) => {
-            if (this.#finalTransformRunning) return;
+        /** @type {((ev: TouchEvent) => void|Promise<void>)} */
+        this.onTouchMove = async (ev) => {
+            if (this.#finalTransform) return;
             if (this.#startX === null) this.#startX = ev.touches[0].clientX;
             this.#clientX = ev.touches[0].clientX;
         };
 
-        this.#onTouchEnd = async () => {
-            if (this.#startX === null || this.#finalTransformRunning) return;
-            this.#finalTransformRunning = true;
+        /** @type {((ev: TouchEvent) => void|Promise<void>)} */
+        this.onTouchEnd = async (ev) => {
+            if (this.#startX === null || this.#finalTransform) return;
+            this.#finalTransform = true;
 
             // Start final transform
             if (constants.debug)
                 console.log(`[Calendar SwipeHandler] transform lock`);
 
-            if (!this.#isMinSwipe()) {
-                this.#setTransition(`transform ${0.1}s ease`);
-                this.#transform("0%");
-                setTimeout(() => this.#resetSwipe(), 100);
+            if (!this.isMinSwipe()) {
+                this.setTransition(`left ${0.15}s ease`);
+                this.moveX(0);
+                setTimeout(() => this.#resetSwipe(), 150);
                 return;
             }
 
-            this.#setTransition(`transform ${0.3}s ease`);
-            this.#transform(this.#clientX > this.#startX ? "-100%" : "100%");
+            // @ts-ignore
+            const r = ev.currentTarget.getBoundingClientRect()
+            this.setTransition(`left ${0.3}s ease`);
+            this.moveX(this.#clientX > this.#startX ? -(r.width + 1) : r.width + 1);
             setTimeout(() => this.#resetSwipe(), 300);
         };
 
-        this.#onTouchCancel = async (ev) => {
-            if (this.#startX !== null) await this.#onTouchEnd(ev);
+        /** @type {((ev: TouchEvent) => void|Promise<void>)} */
+        this.onTouchCancel = async (ev) => {
+            if (this.#startX !== null) await this.onTouchEnd(ev);
         };
 
-        this.#animationFrameHandler = async () => {
+        /** @type {(() => void|Promise<void>)} */
+        this.animationFrameHandler = async () => {
             if (this.#kill) return;
-            if (this.#finalTransformRunning || this.#startX === null) {
-                requestAnimationFrame(this.#animationFrameHandler);
+            if (this.#finalTransform || this.#startX === null) {
+                requestAnimationFrame(this.animationFrameHandler);
                 return;
             }
 
-            this.#transform(`${this.#startX - this.#clientX}px`);
-            requestAnimationFrame(this.#animationFrameHandler);
+            this.moveX(this.#clientX);
+            requestAnimationFrame(this.animationFrameHandler);
         };
     }
 
     start() {
-        this.#root.addEventListener("touchmove", this.#onTouchMove);
-        this.#root.addEventListener("touchend", this.#onTouchEnd);
-        this.#root.addEventListener("touchcancel", this.#onTouchCancel);
+        this.calendar.addEventListener("touchmove", this.onTouchMove);
+        this.calendar.addEventListener("touchend", this.onTouchEnd);
+        this.calendar.addEventListener("touchcancel", this.onTouchCancel);
 
-        requestAnimationFrame(this.#animationFrameHandler);
+        requestAnimationFrame(this.animationFrameHandler);
     }
 
     stop() {
-        this.#root.removeEventListener("touchmove", this.#onTouchMove);
-        this.#root.removeEventListener("touchend", this.#onTouchEnd);
-        this.#root.removeEventListener("touchcancel", this.#onTouchCancel);
+        this.calendar.removeEventListener("touchmove", this.onTouchMove);
+        this.calendar.removeEventListener("touchend", this.onTouchEnd);
+        this.calendar.removeEventListener("touchcancel", this.onTouchCancel);
 
         this.#kill = false;
     }
@@ -123,71 +117,71 @@ export default class SwipeHandler extends ui.events.Events {
         return this;
     }
 
-    #resetSwipe() {
-        // Reset final transform
-        this.#setTransition("none");
-        if (this.#isMinSwipe()) {
-            this.#reorderItems(this.#clientX > this.#startX ? "right" : "left");
-        }
-        this.#startX = null;
-        this.#clientX = null;
-        this.#finalTransformRunning = false;
-        if (constants.debug)
-            console.log(`[Calendar SwipeHandler] release transform lock`);
-    }
-
     /**
-     * @param {string} diff
+     * @param {number} dX - always the value for the center item
      */
-    #transform(diff) {
-        [...this.#root.children].forEach((c) => {
-            // @ts-ignore
-            c.style.transform = `translateX(calc(-100% - ${diff}))`;
-        });
+    moveX(dX) { // NOTE: -100% | 0% | 100%
+        const items = this.calendar.getItems();
+
+        // @ts-ignore
+        items[0].left = `calc(${dX}px - 100%)`;
+        // @ts-ignore
+        items[1].left = `${dX}px`;
+        // @ts-ignore
+        items[2].left = `calc(${dX}px + 100%)`;
     }
 
     /**
      * @param {string} value
      */
-    #setTransition(value) {
-        [...this.#root.children].forEach((c) => {
-            // @ts-ignore
-            c.style.transition = value;
-        });
+    setTransition(value) {
+        const items = this.calendar.getItems();
+
+        // @ts-ignore
+        items.forEach(c => c.style.transition = value);
     }
 
-    /**
-     * @param {"left" | "right" | "none" | string} swipeDirection
-     */
-    #reorderItems(swipeDirection) {
-        switch (swipeDirection) {
-            case "left":
-                // The first item will be the last
-                this.#root.appendChild(
-                    this.#root.removeChild(this.#root.firstChild),
-                );
-                break;
-            case "right":
-                // The last item will be the first
-                this.#root.insertBefore(
-                    this.#root.removeChild(this.#root.lastChild),
-                    this.#root.children[0],
-                );
-                break;
-            case "none":
-                break;
-            default:
-                throw `Ooop, what is this for a direction "${swipeDirection}"?`;
-        }
-
-        this.#transform("0%");
-        this.dispatchWithData("swipe", swipeDirection);
-    }
-
-    #isMinSwipe() {
+    isMinSwipe() {
         return (
             Math.abs(this.#startX - this.#clientX) >
             constants.swipeRange * (window.innerWidth / 1080)
         );
+    }
+
+    #resetSwipe() {
+        // Reset final transform
+        this.setTransition("none");
+        if (this.isMinSwipe()) {
+            this.#reorderItems();
+        }
+        this.#startX = null;
+        this.#clientX = null;
+        this.#finalTransform = false;
+
+        if (constants.debug)
+            console.log(`[Calendar SwipeHandler] release transform lock`);
+    }
+
+    #reorderItems() {
+        const items = this.calendar.getItems()
+        const direction = this.#clientX > this.#startX ? "right" : "left"
+        switch (direction) {
+            case "left":
+                // The first item will be the last
+                this.calendar.shadowRoot.appendChild(
+                    this.calendar.shadowRoot.removeChild(items[0]),
+                );
+                break;
+            case "right":
+                // The last item will be the first
+                this.calendar.insertBefore(
+                    this.calendar.removeChild(items[2]),
+                    items[0]
+                );
+                break;
+        }
+
+        this.moveX(0);
+        this.dispatchWithData("swipe", direction);
     }
 }
