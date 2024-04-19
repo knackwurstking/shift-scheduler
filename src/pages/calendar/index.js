@@ -6,7 +6,7 @@ import * as utils from "./utils";
 const template = document.createElement("template");
 
 const templateDayItem = `
-<ui-flex-grid-item class="day-item ui-card">
+<ui-flex-grid-item class="day-item ui-card" style="position: relative;">
     <div class="day-item-date"></div>
     <div class="day-item-shift"></div>
 </ui-flex-grid-item>
@@ -62,24 +62,22 @@ template.innerHTML = `
         touch-action: none;
     }
 
-    * {
-        border: 1px solid red;
-    }
-
     :host .item {
+        position: absolute;
+        top: 0;
         min-width: 100%;
         height: 100%;
     }
 
-    :host .item1 {
+    :host .item1 ui-flex-grid-item {
         background: yellow;
     }
 
-    :host .item2 {
+    :host .item2 ui-flex-grid-item {
         background: green;
     }
 
-    :host .item3 {
+    :host .item3 ui-flex-grid-item {
         background: blue;
     }
 
@@ -93,8 +91,8 @@ template.innerHTML = `
         height: var(--header-height);
     }
 
-    :host .item .item-content .week-days-row > .ui-flex-grid-item {
-        width: calc(100% / 7);
+    :host .item .item-content .week-days-row > ui-flex-grid-item {
+        /*width: calc(100% / 7);*/
         height: 100%;
         font-family: var(--font-family-heading);
         font-size: 1.15em;
@@ -119,7 +117,7 @@ template.innerHTML = `
     }
 
     :host .item .item-content .days-row {
-        height: calc(100% / 7 + var(--header-height));
+        height: calc((100% - var(--header-height)) / 6 - var(--gap));
     }
 
     :host .item .item-content .days-row .day-item {
@@ -173,7 +171,6 @@ template.innerHTML = `
     }
 </style>
 
-<!-- TODO: Using left, in px, for moving items on swipe -->
 <div class="item item1" style="left: -100%;">
     ${templateItemContent}
 </div>
