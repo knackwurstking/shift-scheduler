@@ -13,7 +13,7 @@ const templateDayItem = `
 `;
 
 const templateDaysRow = `
-<ui-flex-grid-row class="days-row" gap="0.1em">
+<ui-flex-grid-row class="days-row" gap="0.1rem">
     ${templateDayItem}
     ${templateDayItem}
     ${templateDayItem}
@@ -25,7 +25,7 @@ const templateDaysRow = `
 `;
 
 const templateWeekDaysRow = `
-<ui-flex-grid-row class="week-days-row" gap="0.1em">
+<ui-flex-grid-row class="week-days-row" gap="0.1rem">
     <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
     <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
     <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
@@ -82,7 +82,7 @@ template.innerHTML = `
     }
 
     :host .item .item-content {
-        --gap: 0.1em;
+        --gap: 0.1rem;
         width: 100%;
         height: 100%;
     }
@@ -92,7 +92,8 @@ template.innerHTML = `
     }
 
     :host .item .item-content .week-days-row > ui-flex-grid-item {
-        /*width: calc(100% / 7);*/
+        width: calc(100% / 7);
+        overflow: hidden;
         height: 100%;
         font-family: var(--font-family-heading);
         font-size: 1.15em;
