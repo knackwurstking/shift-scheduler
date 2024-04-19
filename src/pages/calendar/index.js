@@ -299,21 +299,16 @@ export class CalendarPage extends StackLayoutPage {
             order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
         }
 
-        // TODO: Do i need to use the shadowRoot here?
-        const children = this.querySelectorAll(
-            ".page-calendar-week-days .ui-grid-column",
+        const children = this.shadowRoot.querySelectorAll(
+            ".week-days-row ui-flex-grid-item",
         );
 
-        for (let x = 0; x < children.length; x++) {
-            if (order[x] === 0 || order[x] === 6) {
-                children[x].classList.add("page-calendar-weekend");
-            } else {
-                children[x].classList.remove("page-calendar-weekend");
-            }
-
-            children[x].innerHTML =
-                `${this.app.language.get("calendar", order[x % 7].toString())}`;
-        }
+        children.forEach(child => {
+            child.classList.remove("is-saturday");
+            child.classList.remove("is-sunday");
+        });
+        children[order.findIndex(o => o === 6)].classList.add("is-saturday");
+        children[order.findIndex(o => o === 0)].classList.add("is-sunday");
     }
 
     /**
@@ -326,8 +321,8 @@ export class CalendarPage extends StackLayoutPage {
             this.app.storage.get("week-start", constants.weekStart),
         );
 
-        // TODO: Do i need to use the shadowRoot here?
-        const cards = calendarItem.querySelectorAll(
+        // TODO: Continue refactoring here... (classes changed)
+        const cards = calendarItem.shadowRoot.querySelectorAll(
             ".page-calendar-days > .ui-card",
         );
         const data = await utils.fillWithData(this.app.db, date, await promise);
