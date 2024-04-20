@@ -19,6 +19,9 @@ export class StackLayout extends HTMLElement {
     constructor() {
         super();
 
+        this.attachShadow({ mode: "open" });
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+
         /** @type {import("../../app").App | null} */
         this.app = null;
 
@@ -51,9 +54,6 @@ export class StackLayout extends HTMLElement {
     connectedCallback() {
         if (constants.debug)
             console.log(`[StackLayout] connectedCallback: this.children=${this.children} (${this.children.length})`);
-
-        this.attachShadow({ mode: "open" });
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         // @ts-ignore
         this.stack = [...this.children].filter(

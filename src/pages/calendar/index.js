@@ -210,6 +210,8 @@ export class CalendarPage extends StackLayoutPage {
     constructor() {
         super();
 
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+
         this.swipeHandler = new SwipeHandler(this);
         /** @type {Date} */
         this.today;
@@ -271,7 +273,6 @@ export class CalendarPage extends StackLayoutPage {
 
     connectedCallback() {
         super.connectedCallback();
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.app.addListener(
             "datepickerchange",
