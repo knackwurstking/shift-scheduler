@@ -9,7 +9,6 @@
  * )}
  */
 
-// TODO: html file now contains per default english, just update all strings for german if needed
 export class Language {
     /** @type {import("../../app").App} */
     #app;

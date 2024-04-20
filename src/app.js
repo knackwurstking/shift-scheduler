@@ -20,7 +20,7 @@ export class App extends ui.events.Events {
 
     #onBackButtonClick = () => this.stackLayout.goBack();
     #onDatePickerButtonClick = () => null; // TODO: Add date-picker onclick callback
-    #onEditButtonClick = () => null; // TODO: Add date-picker onclick callback
+    #onEditButtonClick = () => null; // TODO: Add edit onclick callback
     #onTodayButtonClick = () => this.setMonth(new Date());
     #onPDFButtonClick = () => this.stackLayout.setPage(this.stackLayout.pages.pdf);
     #onSettingsButtonClick = () => this.stackLayout.setPage(this.stackLayout.pages.settings);
