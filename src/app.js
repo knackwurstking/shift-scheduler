@@ -5,8 +5,8 @@ import ui from "ui";
 export const eventDatePickerChange = "datepickerchange"
 
 /**
- * @typedef {import("ui/src/web-components/button/button").Button} Button 
- * @typedef {import("ui/src/web-components/button/icon-button").IconButton} IconButton 
+ * @typedef {typeof ui.wc.Button} Button 
+ * @typedef {typeof ui.wc.IconButton} IconButton 
  */
 
 export class App extends ui.events.Events {
@@ -14,7 +14,9 @@ export class App extends ui.events.Events {
     #root;
 
     /** @param {import("./lib/storage").StorageDataLang} data */
-    #onlang = async (data) => await this.language.setLanguage(data || constants.language);
+    #onlang = async (data) => {
+        await this.language.setLanguage(data || constants.language);
+    };
 
     #onBackButtonClick = () => this.stackLayout.goBack();
     #onDatePickerButtonClick = () => null; // TODO: Add date-picker onclick callback
@@ -89,11 +91,6 @@ export class App extends ui.events.Events {
         if (!!this.db) this.db.close();
 
         this.db = new DB(constants.db.name, constants.db.version);
-
-        // Storage event: "lang"
-        this.#onlang = async (data) => {
-            await this.language.setLanguage(data || constants.language);
-        };
 
         this.storage.addListener("lang", this.#onlang);
 
