@@ -82,7 +82,9 @@ export class StackLayout extends HTMLElement {
         const page = this.stack.pop()
         this.removeChild(page.element)
 
-        this.app.title.innerHTML = utils.getTitleElement(this.children[this.children.length - 1]?.getAttribute("title") || "");
+        this.app.title.innerHTML = utils.getTitleElement(
+            this.children[this.children.length - 1]?.getAttribute("title") || ""
+        );
         this.app.handlePage(this.stack[this.stack.length - 1]?.name || "")
     }
 
