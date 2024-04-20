@@ -52,7 +52,7 @@ export default class SwipeHandler extends ui.events.Events {
             // @ts-ignore
             const r = ev.currentTarget.getBoundingClientRect()
             this.setTransition(`left ${0.3}s ease`);
-            this.moveX(this.#clientX > this.#startX ? -(r.width + 1) : r.width + 1);
+            this.moveX(this.#clientX > this.#startX ? +(r.width + 1) : -r.width + 1);
             setTimeout(() => this.#resetSwipe(), 300);
         };
 
