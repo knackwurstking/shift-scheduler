@@ -55,7 +55,7 @@ export class StackLayout extends HTMLElement {
         /**
          * All rendered pages
          *
-         * @type {Element[]}
+         * @type {{ element: Element, name: ("calendar" | "pdf" | "settings") }[]}
          */
         this.stack = [];
     }
@@ -69,7 +69,7 @@ export class StackLayout extends HTMLElement {
             (page) => page instanceof StackLayoutPage,
         );
 
-        this.#handleAppBar();
+        this.app.handlePage(this.stack[this.stack.length - 1]?.name || "")
     }
 
     disconnectedCallback() {
@@ -79,24 +79,22 @@ export class StackLayout extends HTMLElement {
 
     goBack() {
         if (!this.stack.length) return;
-        this.removeChild(this.stack.pop())
-        this.#handleAppBar()
-        this.app.title.innerHTML = utils.getTitleElement(this.children[this.children.length - 1].getAttribute("title"));
+        const page = this.stack.pop()
+        this.removeChild(page.element)
+
+        this.app.title.innerHTML = utils.getTitleElement(this.children[this.children.length - 1]?.getAttribute("title") || "");
+        this.app.handlePage(this.stack[this.stack.length - 1]?.name || "")
     }
 
     /**
      * @param {"calendar" | "pdf" | "settings"} name
      */
     setPage(name) {
-        this.stack.push(this.appendChild(this.#pages[name]().children[0]));
-        this.#handleAppBar();
-    }
+        this.stack.push({
+            name: name,
+            element: this.appendChild(this.#pages[name]().children[0]),
+        });
 
-    #handleAppBar() {
-        if (this.stack.length <= 1 && !!this.app) {
-            this.app.backButton.style.display = "none";
-        } else {
-            this.app.backButton.style.display = "flex";
-        }
+        this.app.handlePage(name)
     }
 }

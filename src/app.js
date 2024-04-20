@@ -150,4 +150,49 @@ export class App extends ui.events.Events {
         date.setMonth(date.getMonth() - 1);
         this.setMonth(date)
     }
+
+    /**
+     * Handle app-bar components visibility
+     *
+     * @param {"" | "calendar" | "pdf" | "settings"} name
+     */
+    handlePage(name) {
+        // Setup back button
+        if (this.stackLayout.stack.length <= 1) {
+            this.backButton.style.display = "none";
+        } else {
+            this.backButton.style.display = "flex";
+        }
+
+        switch (name) {
+            case "calendar":
+                this.datePickerButton.style.display = "flex"
+                this.editButton.style.display = "flex"
+                this.todayButton.style.display = "flex"
+                this.pdfButton.style.display = "flex"
+                this.settingsButton.style.display = "flex"
+                break
+            case "pdf":
+                this.datePickerButton.style.display = "none"
+                this.editButton.style.display = "none"
+                this.todayButton.style.display = "none"
+                this.pdfButton.style.display = "none"
+                this.settingsButton.style.display = "none"
+                break
+            case "settings":
+                this.datePickerButton.style.display = "none"
+                this.editButton.style.display = "none"
+                this.todayButton.style.display = "none"
+                this.pdfButton.style.display = "none"
+                this.settingsButton.style.display = "none"
+                break
+            case "":
+                this.datePickerButton.style.display = "none"
+                this.editButton.style.display = "none"
+                this.todayButton.style.display = "none"
+                this.pdfButton.style.display = "none"
+                this.settingsButton.style.display = "none"
+                break
+        }
+    }
 }
