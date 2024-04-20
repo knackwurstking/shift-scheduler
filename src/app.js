@@ -5,8 +5,8 @@ import ui from "ui";
 export const eventDatePickerChange = "datepickerchange"
 
 /**
- * @typedef {typeof ui.wc.Button} Button 
- * @typedef {typeof ui.wc.IconButton} IconButton 
+ * @typedef {import("ui/src/wc").Button} Button 
+ * @typedef {import("ui/src/wc").IconButton} IconButton 
  */
 
 export class App extends ui.events.Events {
