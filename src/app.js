@@ -61,7 +61,7 @@ export class App extends ui.events.Events {
      * @param {Element} app
      */
     constructor(app) {
-        super(constants.debug) // NOTE: Events: "datepickerchange"
+        super(constants.debug) // NOTE: Events: `eventDatePickerChange`
         this.#root = app;
 
         this.db;

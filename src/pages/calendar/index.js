@@ -2,6 +2,7 @@ import { constants } from "../../lib";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 import ui from "ui"
+import { eventDatePickerChange } from "../../app"
 
 const template = document.createElement("template");
 
@@ -243,7 +244,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         // Crete days, note, shifts, ... if the week-start changes
         this.app.dispatchWithData(
-            "datepickerchange",
+            eventDatePickerChange,
             this.app.getMonth(),
         );
     };
@@ -287,7 +288,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             this.#initialized = true
 
             this.app.addListener(
-                "datepickerchange",
+                eventDatePickerChange,
                 this.#onDatePickerChange,
             );
 
@@ -318,7 +319,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         if (!!this.app) {
             this.app.removeListener(
-                "datepickerchange",
+                eventDatePickerChange,
                 this.#onDatePickerChange,
             );
 
