@@ -1,7 +1,7 @@
-import { StackLayoutPage } from "../../components";
 import { constants } from "../../lib";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
+import ui from "ui"
 
 const template = document.createElement("template");
 
@@ -206,7 +206,10 @@ template.innerHTML = `
 </div>
 `;
 
-export class CalendarPage extends StackLayoutPage {
+export class CalendarPage extends ui.wc.StackLayoutPage {
+    /** @type {import("../../app").App | null} */
+    #app = null;
+
     constructor() {
         super();
 
@@ -271,36 +274,52 @@ export class CalendarPage extends StackLayoutPage {
         };
     }
 
+    get app() {
+        return this.#app
+    }
+
+    set app(app) {
+        this.#app = app
+
+        if (super.isConnected) {
+            this.app.addListener(
+                "datepickerchange",
+                this.ondatepickerchange,
+            );
+
+            this.app.storage.addListener("week-start", this.onweekstart);
+            this.app.storage.addListener("lang", this.onlang);
+
+            this.app.storage.dispatch("week-start");
+        }
+    }
+
     connectedCallback() {
         super.connectedCallback();
-
-        this.app.addListener(
-            "datepickerchange",
-            this.ondatepickerchange,
-        );
-
-        this.app.storage.addListener("week-start", this.onweekstart);
-        this.app.storage.addListener("lang", this.onlang);
 
         this.swipeHandler.addListener("swipe", this.onswipe);
         this.swipeHandler.start();
 
-        this.app.storage.dispatch("week-start");
+        if (!!this.app) {
+            this.app = this.app
+        }
     }
 
     disconnectedCallback() {
         super.connectedCallback();
 
-        this.app.removeListener(
-            "datepickerchange",
-            this.ondatepickerchange,
-        );
-
-        this.app.storage.removeListener("week-start", this.onweekstart);
-        this.app.storage.removeListener("lang", this.onlang);
-
         this.swipeHandler.removeListener("swipe", this.onswipe);
         this.swipeHandler.stop();
+
+        if (!!this.app) {
+            this.app.removeListener(
+                "datepickerchange",
+                this.ondatepickerchange,
+            );
+
+            this.app.storage.removeListener("week-start", this.onweekstart);
+            this.app.storage.removeListener("lang", this.onlang);
+        }
     }
 
     getItems() {

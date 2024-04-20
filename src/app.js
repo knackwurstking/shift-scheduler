@@ -1,4 +1,3 @@
-import { StackLayout } from "./components";
 import { constants, DB, Language, Storage } from "./lib";
 import ui from "ui";
 
@@ -7,6 +6,7 @@ export const eventDatePickerChange = "datepickerchange"
 /**
  * @typedef {import("ui/src/wc").Button} Button 
  * @typedef {import("ui/src/wc").IconButton} IconButton 
+ * @typedef {import("ui/src/wc").StackLayout} StackLayout 
  */
 
 export class App extends ui.events.Events {
@@ -25,6 +25,36 @@ export class App extends ui.events.Events {
     #onPDFButtonClick = () => this.stackLayout.setPage("pdf");
     #onSettingsButtonClick = () => this.stackLayout.setPage("settings");
 
+    /** @param {import("ui/src/wc").StackLayoutPage | null} page */
+    #onStackLayoutChange = (page) => {
+        // Setup back button
+        if (this.stackLayout.stack.length <= 1) {
+            this.backButton.style.display = "none";
+        } else {
+            this.backButton.style.display = "flex";
+        }
+
+        if (!page) {
+            this.#noPageSetup()
+        }
+
+        switch (page.name) {
+            case "calendar":
+                // @ts-expect-error
+                page.app = this;
+                this.#calendarPageSetup(page)
+                break;
+            case "settings":
+                this.#settingsPageSetup(page)
+                break;
+            case "pdf":
+                this.#pdfPageSetup(page)
+                break;
+            default:
+                throw `unknown page "${page.name}"`
+        }
+    }
+
     /**
      * @param {Element} app
      */
@@ -37,7 +67,8 @@ export class App extends ui.events.Events {
         this.language = new Language(this);
 
         /** @type {StackLayout} */
-        this.stackLayout = document.querySelector("stack-layout");
+        this.stackLayout = document.querySelector("ui-stack-layout");
+        this.stackLayout.debug = constants.debug
 
         // AppBar left slot
         /** @type {IconButton} */
@@ -66,24 +97,6 @@ export class App extends ui.events.Events {
         return this.#root;
     }
 
-    getMonth() {
-        let [year, month] = this.datePickerButton.innerText.split("/");
-
-        if (!year || !month)
-            throw `the date-picker button contains no date!`;
-
-        if (isNaN(Number(year)) || isNaN(Number(month)))
-            throw `the date-picker button contains no date!`;
-
-        return new Date(Number(year), Number(month) - 1, 1);
-    }
-
-    /** @param {Date} date */
-    setMonth(date) {
-        this.datePickerButton.innerText = this.getMonthString(date);
-        this.dispatchWithData(eventDatePickerChange, date)
-    }
-
     onMount() {
         if (constants.debug) console.log("[app] onMount");
 
@@ -108,6 +121,21 @@ export class App extends ui.events.Events {
         this.pdfButton.onclick = () => this.#onPDFButtonClick();
         this.settingsButton.onclick = () => this.#onSettingsButtonClick();
 
+        // StackLayout
+        this.stackLayout.registerPage("calendar", () =>
+            // @ts-expect-error
+            document.querySelector("template#pageCalendar").content.cloneNode(true));
+
+        this.stackLayout.registerPage("pdf", () =>
+            // @ts-expect-error
+            document.querySelector("template#pagePDF").content.cloneNode(true));
+
+        this.stackLayout.registerPage("settings", () =>
+            // @ts-expect-error
+            document.querySelector("template#pageSettings").content.cloneNode(true));
+
+        this.stackLayout.events.addListener("change", this.#onStackLayoutChange)
+
         // TODO: Get the last used date from the local storage
         this.setMonth(new Date());
 
@@ -123,15 +151,35 @@ export class App extends ui.events.Events {
         // Storage event: "lang"
         this.storage.removeListener("lang", this.#onlang);
 
+        // StackLayout event: "change"
+        this.stackLayout.events.removeListener("change", this.#onStackLayoutChange)
+
         return this;
     }
 
     run() {
         // Setup pages
-        this.stackLayout.app = this;
         this.stackLayout.setPage("calendar");
 
         return this;
+    }
+
+    getMonth() {
+        let [year, month] = this.datePickerButton.innerText.split("/");
+
+        if (!year || !month)
+            throw `the date-picker button contains no date!`;
+
+        if (isNaN(Number(year)) || isNaN(Number(month)))
+            throw `the date-picker button contains no date!`;
+
+        return new Date(Number(year), Number(month) - 1, 1);
+    }
+
+    /** @param {Date} date */
+    setMonth(date) {
+        this.datePickerButton.innerText = this.getMonthString(date);
+        this.dispatchWithData(eventDatePickerChange, date)
     }
 
     /** @param {Date} date */
@@ -151,48 +199,47 @@ export class App extends ui.events.Events {
         this.setMonth(date)
     }
 
-    /**
-     * Handle app-bar components visibility
-     *
-     * @param {"" | "calendar" | "pdf" | "settings"} name
-     */
-    handlePage(name) {
-        // Setup back button
-        if (this.stackLayout.stack.length <= 1) {
-            this.backButton.style.display = "none";
-        } else {
-            this.backButton.style.display = "flex";
-        }
+    #noPageSetup() {
+        this.datePickerButton.style.display = "none"
+        this.editButton.style.display = "none"
+        this.todayButton.style.display = "none"
+        this.pdfButton.style.display = "none"
+        this.settingsButton.style.display = "none"
+    }
 
-        switch (name) {
-            case "calendar":
-                this.datePickerButton.style.display = "flex"
-                this.editButton.style.display = "flex"
-                this.todayButton.style.display = "flex"
-                this.pdfButton.style.display = "flex"
-                this.settingsButton.style.display = "flex"
-                break
-            case "pdf":
-                this.datePickerButton.style.display = "none"
-                this.editButton.style.display = "none"
-                this.todayButton.style.display = "none"
-                this.pdfButton.style.display = "none"
-                this.settingsButton.style.display = "none"
-                break
-            case "settings":
-                this.datePickerButton.style.display = "none"
-                this.editButton.style.display = "none"
-                this.todayButton.style.display = "none"
-                this.pdfButton.style.display = "none"
-                this.settingsButton.style.display = "none"
-                break
-            case "":
-                this.datePickerButton.style.display = "none"
-                this.editButton.style.display = "none"
-                this.todayButton.style.display = "none"
-                this.pdfButton.style.display = "none"
-                this.settingsButton.style.display = "none"
-                break
-        }
+    /**
+     * @param {import("ui/src/wc").StackLayoutPage} page
+     */
+    #calendarPageSetup(page) {
+        this.title.innerHTML = `<h3>${page.getAttribute("title") || ""}</h3>`
+        this.datePickerButton.style.display = "flex"
+        this.editButton.style.display = "flex"
+        this.todayButton.style.display = "flex"
+        this.pdfButton.style.display = "flex"
+        this.settingsButton.style.display = "flex"
+    }
+
+    /**
+     * @param {import("ui/src/wc").StackLayoutPage} page
+     */
+    #settingsPageSetup(page) {
+        this.title.innerHTML = `<h3>${page.getAttribute("title") || ""}</h3>`
+        this.datePickerButton.style.display = "none"
+        this.editButton.style.display = "none"
+        this.todayButton.style.display = "none"
+        this.pdfButton.style.display = "none"
+        this.settingsButton.style.display = "none"
+    }
+
+    /**
+     * @param {import("ui/src/wc").StackLayoutPage} page
+     */
+    #pdfPageSetup(page) {
+        this.title.innerHTML = `<h3>${page.getAttribute("title") || ""}</h3>`
+        this.datePickerButton.style.display = "none"
+        this.editButton.style.display = "none"
+        this.todayButton.style.display = "none"
+        this.pdfButton.style.display = "none"
+        this.settingsButton.style.display = "none"
     }
 }

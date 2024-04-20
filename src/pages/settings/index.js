@@ -1,4 +1,4 @@
-import { StackLayoutPage } from "../../components";
+import ui from "ui"
 
 const template = document.createElement("template");
 
@@ -65,7 +65,7 @@ ${templateMisc} <br /> ${templateShifts} <br /> ${templateBackup} <br /> ${templ
 `
 
 // TODO: Settings page is next...
-export class SettingsPage extends StackLayoutPage {
+export class SettingsPage extends ui.wc.StackLayoutPage {
     constructor() {
         super();
     }

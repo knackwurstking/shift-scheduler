@@ -16,7 +16,7 @@
                 width: 100%;
                 height: 100%;
                 padding-top: calc(var(--app-bar-height) + var(--spacing));">
-            <stack-layout></stack-layout>
+            <ui-stack-layout></ui-stack-layout>
         </ui-container>
 
         <ui-app-bar id="appBar" position="top" title="">
@@ -70,15 +70,15 @@
     </div>
 
     <template id="pageCalendar">
-        <calendar-page title=""></calendar-page>
+        <calendar-page name="calendar" title=""></calendar-page>
     </template>
 
     <template id="pageSettings">
-        <stack-layout-page title="Settings"></stack-layout-page>
+        <ui-stack-layout-page name="settings" title="Settings"></ui-stack-layout-page>
     </template>
 
     <template id="pagePDF">
-        <stack-layout-page title="PDF"></stack-layout-page>
+        <ui-stack-layout-page name="pdf" title="PDF"></ui-stack-layout-page>
     </template>
 
     <script type="module" src="/src/main.js"></script>
