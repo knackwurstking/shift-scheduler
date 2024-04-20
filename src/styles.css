@@ -22,10 +22,14 @@ html {
     right: 0;
     bottom: 0;
     left: 0;
-    padding-top: calc(var(--top-app-bar-height) + var(--spacing));
     transition: bottom 0.15s ease-out;
 }
 
 #app.edit-mode {
     bottom: var(--edit-mode-height);
+}
+
+settings-page > ui-flex-grid {
+    padding-top: var(--app-bar-height);
+    overflow-y: auto; 
 }

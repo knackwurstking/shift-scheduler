@@ -12,10 +12,7 @@
     <ui-theme-handler auto></ui-theme-handler>
 
     <div id="app">
-        <ui-container id="main" style="
-                width: 100%;
-                height: 100%;
-                padding-top: calc(var(--app-bar-height) + var(--spacing));">
+        <ui-container id="main" style="width: 100%; height: 100%;">
             <ui-stack-layout></ui-stack-layout>
         </ui-container>
 
@@ -75,7 +72,7 @@
 
     <template id="pageSettings">
         <settings-page name="settings" title="Settings">
-            <ui-flex-grid gap="0.25em">
+            <ui-flex-grid class="no-scrollbar" style="height: 100%;" gap="0.25em">
                 <ui-flex-grid-row>
                     <ui-flex-grid-item class="ui-card">
                         <!-- TODO: "Miscellaneous" is just a placeholder here -->

@@ -62,9 +62,13 @@ template.innerHTML = `
 
     :host .item {
         position: absolute;
-        top: 0;
+        top: var(--app-bar-height);
+        bottom: 0;
         min-width: 100%;
-        height: 100%;
+    }
+
+    :host ui-flex-grid-item {
+        border-radius: var(--radius);
     }
 
     :host .item1 ui-flex-grid-item {
