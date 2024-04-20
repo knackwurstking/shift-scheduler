@@ -208,7 +208,6 @@ template.innerHTML = `
 export class CalendarPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
     #app = null;
-
     #initialized = false;
 
     /** @param {Date} date */
@@ -265,9 +264,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     constructor() {
         super();
-
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-
         this.swipeHandler = new SwipeHandler(this);
         /** @type {Date} */
         this.today;
