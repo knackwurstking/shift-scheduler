@@ -75,44 +75,50 @@
 
     <template id="pageSettings">
         <settings-page name="settings" title="Settings">
-            <article class="ui-card">
-                <!-- TODO: "Miscellaneous" is just a placeholder here -->
-                <h3 id="miscTitle" class="title">Miscellaneous</h3>
+            <ui-flex-grid gap="0.25em">
+                <ui-flex-grid-row>
+                    <ui-flex-grid-item class="ui-card">
+                        <!-- TODO: "Miscellaneous" is just a placeholder here -->
+                        <h3 id="miscTitle" class="title">Miscellaneous</h3>
 
-                <hr />
+                        <hr />
 
-                <!-- week-start settings -->
-                <section>
-                    <!-- checkbox if the week should start on monday or not -->
-                    <span data-replace="miscWeekStart"></span>
-                </section>
+                        <!-- week-start settings -->
+                        <section>
+                            <!-- checkbox if the week should start on monday or not -->
+                            <span data-replace="miscWeekStart"></span>
+                        </section>
 
-                <hr />
+                        <hr />
 
-                <!-- theme settings -->
-                <section>
-                    <span data-replace="miscThemeMode"></span>
+                        <!-- theme settings -->
+                        <section>
+                            <span data-replace="miscThemeMode"></span>
 
-                    <!--hr /-->
+                            <!--hr /-->
 
-                    <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
-                </section>
-            </article>
+                            <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
+                        </section>
+                    </ui-flex-grid-item>
+                </ui-flex-grid-row>
 
-            <article class="ui-card backup">
-                <!-- TODO: "Backup" is just a placeholder here -->
-                <h3 id="backupTitle" class="title">Backup</h3>
+                <ui-flex-grid-row>
+                    <ui-flex-grid-item class="ui-card backup">
+                        <!-- TODO: "Backup" is just a placeholder here -->
+                        <h3 id="backupTitle" class="title">Backup</h3>
 
-                <hr />
+                        <hr />
 
-                <section>
-                    <div class="ui-grid-row actions" style="--gap: 0.1em;">
-                        <span data-replace="backupImportButton"></span>
+                        <section>
+                            <div class="ui-grid-row actions" style="--gap: 0.1em;">
+                                <span data-replace="backupImportButton"></span>
 
-                        <span data-replace="backupExportButton"></span>
-                    </div>
-                </section>
-            </article>
+                                <span data-replace="backupExportButton"></span>
+                            </div>
+                        </section>
+                    </ui-flex-grid-item>
+                </ui-flex-grid-row>
+            </ui-flex-grid>
         </settings-page>
     </template>
 
