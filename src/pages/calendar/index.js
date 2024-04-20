@@ -58,7 +58,6 @@ template.innerHTML = `
         flex-wrap: nowrap;
         user-select: none;
         overflow: hidden;
-        touch-action: none;
     }
 
     :host .item {
@@ -210,6 +209,60 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
     #app = null;
 
+    #initialized = false;
+
+    /** @param {Date} date */
+    #onDatePickerChange = async (date) => {
+        // Performance testing - start
+        const start = new Date().getMilliseconds();
+
+        date.setMonth(date.getMonth() - 1);
+        this.today = new Date();
+
+        for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
+            this.updateItem(new Date(date), this.getItems()[i]);
+        }
+
+        // Performance testing - end
+        if (constants.debug)
+            console.log(
+                `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
+            );
+    };
+
+    /** @param {import("../../lib/storage").StorageDataWeekStart | null} weekStart */
+    #onWeekStart = async (weekStart) => {
+        if (weekStart !== 0 && weekStart !== 1) {
+            weekStart = constants.weekStart;
+        }
+
+        this.updateWeekDays(weekStart);
+
+        // Crete days, note, shifts, ... if the week-start changes
+        this.app.dispatchWithData(
+            "datepickerchange",
+            this.app.getMonth(),
+        );
+    };
+
+    /** @param {"left" | "right"} direction */
+    #onSwipe = async (direction) => {
+        switch (direction) {
+            case "left":
+                this.app.goNextMonth();
+                break;
+            case "right":
+                this.app.goPrevMonth();
+                break;
+        }
+    };
+
+    /** @param {import("../../lib/storage").StorageDataLang} _lang */
+    #onLang = async (_lang) => {
+        // This will update the week days
+        this.updateWeekDays(this.app.storage.get("week-start", constants.weekStart));
+    };
+
     constructor() {
         super();
 
@@ -220,58 +273,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.today;
         /** @type {number[]} */
         this.order;
-
-        /** @param {Date} date */
-        this.ondatepickerchange = async (date) => {
-            // Performance testing - start
-            const start = new Date().getMilliseconds();
-
-            date.setMonth(date.getMonth() - 1);
-            this.today = new Date();
-
-            for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
-                this.updateItem(new Date(date), this.getItems()[i]);
-            }
-
-            // Performance testing - end
-            if (constants.debug)
-                console.log(
-                    `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
-                );
-        };
-
-        /** @param {import("../../lib/storage").StorageDataWeekStart | null} weekStart */
-        this.onweekstart = (weekStart) => {
-            if (weekStart !== 0 && weekStart !== 1) {
-                weekStart = constants.weekStart;
-            }
-
-            this.updateWeekDays(weekStart);
-
-            // Crete days, note, shifts, ... if the week-start changes
-            this.app.dispatchWithData(
-                "datepickerchange",
-                this.app.getMonth(),
-            );
-        };
-
-        /** @param {"left" | "right"} direction */
-        this.onswipe = (direction) => {
-            switch (direction) {
-                case "left":
-                    this.app.goNextMonth();
-                    break;
-                case "right":
-                    this.app.goPrevMonth();
-                    break;
-            }
-        };
-
-        /** @param {import("../../lib/storage").StorageDataLang} _lang */
-        this.onlang = (_lang) => {
-            // This will update the week days
-            this.updateWeekDays(this.app.storage.get("week-start", constants.weekStart));
-        };
     }
 
     get app() {
@@ -281,14 +282,16 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     set app(app) {
         this.#app = app
 
-        if (super.isConnected) {
+        if (super.isConnected && !this.#initialized) {
+            this.#initialized = true
+
             this.app.addListener(
                 "datepickerchange",
-                this.ondatepickerchange,
+                this.#onDatePickerChange,
             );
 
-            this.app.storage.addListener("week-start", this.onweekstart);
-            this.app.storage.addListener("lang", this.onlang);
+            this.app.storage.addListener("week-start", this.#onWeekStart);
+            this.app.storage.addListener("lang", this.#onLang);
 
             this.app.storage.dispatch("week-start");
         }
@@ -297,7 +300,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     connectedCallback() {
         super.connectedCallback();
 
-        this.swipeHandler.addListener("swipe", this.onswipe);
+        this.swipeHandler.addListener("swipe", this.#onSwipe);
         this.swipeHandler.start();
 
         if (!!this.app) {
@@ -307,18 +310,19 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     disconnectedCallback() {
         super.connectedCallback();
+        this.#initialized = false;
 
-        this.swipeHandler.removeListener("swipe", this.onswipe);
+        this.swipeHandler.removeListener("swipe", this.#onSwipe);
         this.swipeHandler.stop();
 
         if (!!this.app) {
             this.app.removeListener(
                 "datepickerchange",
-                this.ondatepickerchange,
+                this.#onDatePickerChange,
             );
 
-            this.app.storage.removeListener("week-start", this.onweekstart);
-            this.app.storage.removeListener("lang", this.onlang);
+            this.app.storage.removeListener("week-start", this.#onWeekStart);
+            this.app.storage.removeListener("lang", this.#onLang);
         }
     }
 

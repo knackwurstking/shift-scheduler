@@ -18,15 +18,15 @@ export class App extends ui.events.Events {
         await this.language.setLanguage(data || constants.language);
     };
 
-    #onBackButtonClick = () => this.stackLayout.goBack();
-    #onDatePickerButtonClick = () => null; // TODO: Add date-picker onclick callback
-    #onEditButtonClick = () => null; // TODO: Add edit onclick callback
-    #onTodayButtonClick = () => this.setMonth(new Date());
-    #onPDFButtonClick = () => this.stackLayout.setPage("pdf");
-    #onSettingsButtonClick = () => this.stackLayout.setPage("settings");
+    #onBackButtonClick = async () => this.stackLayout.goBack();
+    #onDatePickerButtonClick = async () => null; // TODO: Add date-picker onclick callback
+    #onEditButtonClick = async () => null; // TODO: Add edit onclick callback
+    #onTodayButtonClick = async () => this.setMonth(new Date());
+    #onPDFButtonClick = async () => this.stackLayout.setPage("pdf");
+    #onSettingsButtonClick = async () => this.stackLayout.setPage("settings");
 
     /** @param {import("ui/src/wc").StackLayoutPage | null} page */
-    #onStackLayoutChange = (page) => {
+    #onStackLayoutChange = async (page) => {
         // Setup back button
         if (this.stackLayout.stack.length <= 1) {
             this.backButton.style.display = "none";
