@@ -69,7 +69,7 @@ export default class SwipeHandler extends ui.events.Events {
                 return;
             }
 
-            this.moveX(this.#clientX);
+            this.moveX(this.#clientX - this.#startX);
             requestAnimationFrame(this.animationFrameHandler);
         };
     }
@@ -121,14 +121,15 @@ export default class SwipeHandler extends ui.events.Events {
      * @param {number} dX - always the value for the center item
      */
     moveX(dX) { // NOTE: -100% | 0% | 100%
+        console.log("move", dX)
         const items = this.calendar.getItems();
 
         // @ts-ignore
-        items[0].left = `calc(${dX}px - 100%)`;
+        items[0].style.left = `calc(-100% + ${dX}px)`;
         // @ts-ignore
-        items[1].left = `${dX}px`;
+        items[1].style.left = `calc(0% + ${dX}px)`;
         // @ts-ignore
-        items[2].left = `calc(${dX}px + 100%)`;
+        items[2].style.left = `calc(100% + ${dX}px)`;
     }
 
     /**
