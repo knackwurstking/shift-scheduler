@@ -22,7 +22,7 @@ export class App extends ui.events.Events {
      * @param {Element} app
      */
     constructor(app) {
-        super() // NOTE: Events: "datepickerchange"
+        super(constants.debug) // NOTE: Events: "datepickerchange"
         this.#root = app;
 
         this.db;
@@ -74,7 +74,7 @@ export class App extends ui.events.Events {
     /** @param {Date} date */
     setMonth(date) {
         this.datePickerButton.innerText = this.getMonthString(date);
-        this.dispatchWithData(eventDatePickerChange)
+        this.dispatchWithData(eventDatePickerChange, date)
     }
 
     onMount() {
@@ -87,7 +87,6 @@ export class App extends ui.events.Events {
 
         // Storage event: "lang"
         this.#onlang = async (data) => {
-            if (constants.debug) console.log(`[app] storage: "lang"`, data);
             await this.language.setLanguage(data || constants.language);
         };
 

@@ -17,7 +17,7 @@ export default class SwipeHandler extends ui.events.Events {
      * @param {import(".").CalendarPage} calendar
      */
     constructor(calendar) {
-        super();
+        super(constants.debug);
 
         this.calendar = calendar;
 

@@ -90,7 +90,7 @@ template.innerHTML = `
         height: var(--header-height);
     }
 
-    :host .item .item-content .week-days-row > ui-flex-grid-item {
+    :host .item .item-content .week-days-row > .week-day-item {
         width: calc(100% / 7);
         overflow: hidden;
         height: 100%;
@@ -102,18 +102,20 @@ template.innerHTML = `
         justify-content: center;
     }
 
-    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-saturday,
-    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-sunday {
+    :host .item .item-content .week-days-row .week-day-item.is-saturday,
+    :host .item .item-content .week-days-row .week-day-item.is-sunday {
+        /* TODO: Some special highlighting */
         font-weight: bolder;
-        /* TODO: Some special highlighting */
     }
 
-    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-saturday {
+    :host .item .item-content .week-days-row .week-day-item.is-saturday {
         /* TODO: Some special highlighting */
+        background: violet;
     }
 
-    :host .item .item-content .week-days-row > .ui-flex-grid-item.is-sunday {
+    :host .item .item-content .week-days-row .week-day-item.is-sunday {
         /* TODO: Some special highlighting */
+        background: violet;
     }
 
     :host .item .item-content .days-row {
@@ -132,12 +134,22 @@ template.innerHTML = `
 
     :host .item .item-content .days-row .day-item.is-today {
         /* TODO: Add some highlighting here... */
-        border-color: orange; /* NOTE: Just a placeholder */
+        background: orange;
+    }
+
+    :host .item .item-content .days-row .day-item.is-saturday {
+        /* TODO: Some special highlighting */
+        background: violet;
+    }
+
+    :host .item .item-content .days-row  .day-item.is-sunday {
+        /* TODO: Some special highlighting */
+        background: violet;
     }
 
     :host .item .item-content .days-row .day-item.has-note .day-item-date {
         /* TODO: Add some highlighting here... */
-        background-color: red; /* NOTE: Just a placeholder */
+        background: red; /* NOTE: Just a placeholder */
     }
 
     :host .item .item-content .days-row .day-item .day-item-date {
@@ -200,12 +212,10 @@ export class CalendarPage extends StackLayoutPage {
 
         this.swipeHandler = new SwipeHandler(this);
         this.today;
+        this.order;
 
         /** @param {Date} date */
         this.ondatepickerchange = async (date) => {
-            if (constants.debug)
-                console.log("[Calendar] date picker change:", date);
-
             // Performance testing - start
             const start = new Date().getMilliseconds();
 
@@ -225,9 +235,10 @@ export class CalendarPage extends StackLayoutPage {
 
         /** @param {import("../../lib/storage").StorageDataWeekStart | null} weekStart */
         this.onweekstart = (weekStart) => {
-            if (constants.debug) console.log("[Calendar] update week start");
-            if (weekStart !== 0 && weekStart !== 1)
+            if (weekStart !== 0 && weekStart !== 1) {
                 weekStart = constants.weekStart;
+            }
+
             this.updateWeekDays(weekStart);
 
             // Crete days, note, shifts, ... if the week-start changes
@@ -239,9 +250,6 @@ export class CalendarPage extends StackLayoutPage {
 
         /** @param {"left" | "right"} direction */
         this.onswipe = (direction) => {
-            if (constants.debug)
-                console.log(`[Calendar] handle swipe to "${direction}"`);
-
             switch (direction) {
                 case "left":
                     this.app.goNextMonth();
@@ -302,22 +310,19 @@ export class CalendarPage extends StackLayoutPage {
      * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
      */
     updateWeekDays(weekStart) {
-        let order = [0, 1, 2, 3, 4, 5, 6];
+        if (weekStart === null) throw `weekStart has to be a "0" or a "1"!`
+
+        this.order = [0, 1, 2, 3, 4, 5, 6];
 
         if (weekStart > 0) {
-            order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
+            this.order = [...this.order.slice(weekStart), ...this.order.slice(0, weekStart)];
         }
 
-        const children = this.shadowRoot.querySelectorAll(
-            ".week-days-row .week-day-item",
-        );
-
-        children.forEach(child => {
-            child.classList.remove("is-saturday");
-            child.classList.remove("is-sunday");
-        });
-        children[order.findIndex(o => o === 6)].classList.add("is-saturday");
-        children[order.findIndex(o => o === 0)].classList.add("is-sunday");
+        this.#markWeekendItems(
+            ...this.shadowRoot.querySelectorAll(
+                ".week-days-row .week-day-item",
+            )
+        )
     }
 
     /**
@@ -330,7 +335,7 @@ export class CalendarPage extends StackLayoutPage {
             this.app.storage.get("week-start", constants.weekStart),
         );
 
-        const cards = calendarItem.shadowRoot.querySelectorAll(
+        const cards = calendarItem.querySelectorAll(
             ".days-row > .day-item",
         );
 
@@ -352,6 +357,8 @@ export class CalendarPage extends StackLayoutPage {
             cards[i].querySelector(".day-item-shift").innerHTML =
                 !!data[i].shift?.visible ? data[i].shift?.shortName || "" : "";
         }
+
+        this.#markWeekendItems(...cards)
     }
 
     /**
@@ -374,5 +381,25 @@ export class CalendarPage extends StackLayoutPage {
             d1.getFullYear() !== d2.getFullYear() ||
             d1.getMonth() !== d2.getMonth()
         );
+    }
+
+    /**
+     * @param {Element[]} children
+     */
+    async #markWeekendItems(...children) {
+        const satIndex = this.order.findIndex(o => o === 6)
+        const sunIndex = this.order.findIndex(o => o === 0)
+        children.forEach((c, i) => {
+            c.classList.remove("is-saturday");
+            c.classList.remove("is-sunday");
+
+            if ((i % this.order.length) === satIndex) {
+                c.classList.add("is-saturday")
+            }
+
+            if ((i % this.order.length) === sunIndex) {
+                c.classList.add("is-sunday")
+            }
+        });
     }
 }

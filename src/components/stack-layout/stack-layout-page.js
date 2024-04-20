@@ -41,10 +41,7 @@ export class StackLayoutPage extends HTMLElement {
 
     connectedCallback() {
         if (constants.debug)
-            console.log(
-                `[StackLayoutPage] connectedCallback`,
-                this.getAttribute("title"),
-            );
+            console.log(`[StackLayoutPage] connectedCallback: title=${this.getAttribute("title")}`);
 
         this.attachShadow({ mode: "open" });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -59,6 +56,6 @@ export class StackLayoutPage extends HTMLElement {
 
     disconnectedCallback() {
         if (constants.debug)
-            console.log(`[StackLayoutPage] disconnectedCallback`);
+            console.log(`[StackLayoutPage] disconnectedCallback: title=${this.getAttribute("title")}`);
     }
 }

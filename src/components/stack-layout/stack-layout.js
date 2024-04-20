@@ -50,10 +50,7 @@ export class StackLayout extends HTMLElement {
 
     connectedCallback() {
         if (constants.debug)
-            console.log(
-                `[StackLayout] connectedCallback: children:`,
-                ...this.children,
-            );
+            console.log(`[StackLayout] connectedCallback: this.children=${this.children} (${this.children.length})`);
 
         this.attachShadow({ mode: "open" });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -62,17 +59,11 @@ export class StackLayout extends HTMLElement {
         this.stack = [...this.children].filter(
             (page) => page instanceof StackLayoutPage,
         );
-
-        if (constants.debug)
-            console.log(
-                `[StackLayout] connectedCallback: stack:`,
-                ...this.stack,
-            );
     }
 
     disconnectedCallback() {
         if (constants.debug)
-            console.log(`[StackLayout] disconnectedCallback`, ...this.children);
+            console.log(`[StackLayout] disconnectedCallback: this.children=${this.children} (${this.children.length})`);
     }
 
     goBack() {

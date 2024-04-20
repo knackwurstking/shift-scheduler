@@ -21,7 +21,7 @@ import constants from "../constants";
 
 export class Storage extends ui.events.Events {
     constructor(prefix = constants.storagePrefix) {
-        super();
+        super(constants.debug);
         this.prefix = prefix;
     }
 
@@ -59,7 +59,6 @@ export class Storage extends ui.events.Events {
      * @param {any} data
      */
     dispatchWithData(key, data) {
-        if (constants.debug) console.log(`[storage] "${key}"`, data);
         super.dispatchWithData(key, data);
         return this;
     }
