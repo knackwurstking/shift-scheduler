@@ -26,13 +26,13 @@ const templateDaysRow = `
 
 const templateWeekDaysRow = `
 <ui-flex-grid-row class="week-days-row" gap="0.1rem">
-    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
 </ui-flex-grid-row>
 `
 
@@ -49,7 +49,6 @@ const templateItemContent = `
 </div>
 `;
 
-// TODO: Update old classes and add missing (css) styles
 template.innerHTML = `
 <style>
     :host {
@@ -131,6 +130,16 @@ template.innerHTML = `
         opacity: 0.2;
     }
 
+    :host .item .item-content .days-row .day-item.is-today {
+        /* TODO: Add some highlighting here... */
+        border-color: orange; /* NOTE: Just a placeholder */
+    }
+
+    :host .item .item-content .days-row .day-item.has-note .day-item-date {
+        /* TODO: Add some highlighting here... */
+        background-color: red; /* NOTE: Just a placeholder */
+    }
+
     :host .item .item-content .days-row .day-item .day-item-date {
         position: absolute;
         top: 0;
@@ -138,7 +147,7 @@ template.innerHTML = `
         padding: 0.5vmin;
         /*font-size: 3vmin;*/
         font-size: clamp(0em, 3vmin, 1em);
-        font-weight: 0.5vmin;
+        font-weight: normal;
         border-radius: inherit;
     }
 
@@ -300,7 +309,7 @@ export class CalendarPage extends StackLayoutPage {
         }
 
         const children = this.shadowRoot.querySelectorAll(
-            ".week-days-row ui-flex-grid-item",
+            ".week-days-row .week-day-item",
         );
 
         children.forEach(child => {
@@ -321,25 +330,26 @@ export class CalendarPage extends StackLayoutPage {
             this.app.storage.get("week-start", constants.weekStart),
         );
 
-        // TODO: Continue refactoring here... (classes changed)
         const cards = calendarItem.shadowRoot.querySelectorAll(
-            ".page-calendar-days > .ui-card",
+            ".days-row > .day-item",
         );
+
         const data = await utils.fillWithData(this.app.db, date, await promise);
+
         for (let i = 0; i < data.length; i++) {
-            if (this.isNope(data[i].date, date)) cards[i].classList.add("nope");
-            else cards[i].classList.remove("nope");
+            if (this.isNope(data[i].date, date)) cards[i].classList.add("is-inactive");
+            else cards[i].classList.remove("is-inactive");
 
-            if (this.isToday(data[i].date)) cards[i].classList.add("today");
-            else cards[i].classList.remove("today");
+            if (this.isToday(data[i].date)) cards[i].classList.add("is-today");
+            else cards[i].classList.remove("is-today");
 
-            if (!!data[i].note) cards[i].classList.add("note");
-            else cards[i].classList.remove("note");
+            if (!!data[i].note) cards[i].classList.add("has-note");
+            else cards[i].classList.remove("has-note");
 
-            cards[i].querySelector(".page-calendar-day-date").innerHTML =
+            cards[i].querySelector(".day-item-date").innerHTML =
                 `${data[i].date.getDate()}`;
 
-            cards[i].querySelector(".page-calendar-day-shift").innerHTML =
+            cards[i].querySelector(".day-item-shift").innerHTML =
                 !!data[i].shift?.visible ? data[i].shift?.shortName || "" : "";
         }
     }
