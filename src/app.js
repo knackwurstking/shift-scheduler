@@ -13,10 +13,15 @@ export class App extends ui.events.Events {
     /** @type {Element} */
     #root;
 
-    /**
-     * @type {(data: import("./lib/storage").StorageDataLang) => void|Promise<void>}
-     */
-    #onlang;
+    /** @param {import("./lib/storage").StorageDataLang} data */
+    #onlang = async (data) => await this.language.setLanguage(data || constants.language);
+
+    #onBackButtonClick = () => this.stackLayout.goBack();
+    #onDatePickerButtonClick = () => null; // TODO: Add date-picker onclick callback
+    #onEditButtonClick = () => null; // TODO: Add date-picker onclick callback
+    #onTodayButtonClick = () => this.setMonth(new Date());
+    #onPDFButtonClick = () => this.stackLayout.setPage(this.stackLayout.pages.pdf);
+    #onSettingsButtonClick = () => this.stackLayout.setPage(this.stackLayout.pages.settings);
 
     /**
      * @param {Element} app
@@ -147,29 +152,5 @@ export class App extends ui.events.Events {
         const date = this.getMonth()
         date.setMonth(date.getMonth() - 1);
         this.setMonth(date)
-    }
-
-    #onBackButtonClick() {
-        this.stackLayout.goBack()
-    }
-
-    #onDatePickerButtonClick() {
-        // ...
-    }
-
-    #onEditButtonClick() {
-        // ...
-    }
-
-    #onTodayButtonClick() {
-        this.setMonth(new Date())
-    }
-
-    #onPDFButtonClick() {
-        this.stackLayout.setPage(this.stackLayout.pages.pdf)
-    }
-
-    #onSettingsButtonClick() {
-        this.stackLayout.setPage(this.stackLayout.pages.settings)
     }
 }
