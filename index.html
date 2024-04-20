@@ -74,7 +74,46 @@
     </template>
 
     <template id="pageSettings">
-        <settings-page name="settings" title="Settings"></settings-page>
+        <settings-page name="settings" title="Settings">
+            <article class="ui-card">
+                <!-- TODO: "Miscellaneous" is just a placeholder here -->
+                <h3 id="miscTitle" class="title">Miscellaneous</h3>
+
+                <hr />
+
+                <!-- week-start settings -->
+                <section>
+                    <!-- checkbox if the week should start on monday or not -->
+                    <span data-replace="miscWeekStart"></span>
+                </section>
+
+                <hr />
+
+                <!-- theme settings -->
+                <section>
+                    <span data-replace="miscThemeMode"></span>
+
+                    <!--hr /-->
+
+                    <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
+                </section>
+            </article>
+
+            <article class="ui-card backup">
+                <!-- TODO: "Backup" is just a placeholder here -->
+                <h3 id="backupTitle" class="title">Backup</h3>
+
+                <hr />
+
+                <section>
+                    <div class="ui-grid-row actions" style="--gap: 0.1em;">
+                        <span data-replace="backupImportButton"></span>
+
+                        <span data-replace="backupExportButton"></span>
+                    </div>
+                </section>
+            </article>
+        </settings-page>
     </template>
 
     <template id="pagePDF">
