@@ -45,6 +45,8 @@ export class App extends ui.events.Events {
                 this.#calendarPageSetup(page)
                 break;
             case "settings":
+                // @ts-expect-error
+                page.app = this;
                 this.#settingsPageSetup(page)
                 break;
             case "pdf":
