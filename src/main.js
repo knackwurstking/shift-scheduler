@@ -4,11 +4,12 @@ import "./styles.css";
 import ui from "ui";
 import { App } from "./app";
 import constants from "./lib/constants";
-import { CalendarPage } from "./pages";
+import { CalendarPage, SettingsPage } from "./pages";
 
 ui.define()
     .then(() => {
         customElements.define("calendar-page", CalendarPage);
+        customElements.define("settings-page", SettingsPage);
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
 
