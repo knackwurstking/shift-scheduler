@@ -1,5 +1,6 @@
 import ui from "ui"
 
+// TODO: language support: app-bar title, misc week-start checkbox (primary/secondary)
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
     #app = null;
