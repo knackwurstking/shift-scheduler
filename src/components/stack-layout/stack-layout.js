@@ -1,6 +1,15 @@
 import { constants } from "../../lib";
 import { StackLayoutPage } from "./stack-layout-page";
 
+/**
+ * @typedef Pages
+ * @type {{
+ *  calendar: import("../../pages/calendar").CalendarPage;
+ *  settings: import("../../pages/calendar").CalendarPage;
+ *  pdf: import("../../pages/calendar").CalendarPage;
+ * }}
+ */
+
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
@@ -26,7 +35,7 @@ export class StackLayout extends HTMLElement {
         this.app = null;
 
         /**
-         * @type {{ [key: string]: import("./stack-layout-page").StackLayoutPage }}
+         * @type {Pages}
          */
         this.pages = {
             calendar: document
@@ -59,6 +68,8 @@ export class StackLayout extends HTMLElement {
         this.stack = [...this.children].filter(
             (page) => page instanceof StackLayoutPage,
         );
+
+        this.#handleBackButtonVisibility();
     }
 
     disconnectedCallback() {
@@ -69,6 +80,7 @@ export class StackLayout extends HTMLElement {
     goBack() {
         if (!this.stack.length) return;
         this.removeChild(this.stack.pop());
+        this.#handleBackButtonVisibility()
     }
 
     /**
@@ -77,5 +89,12 @@ export class StackLayout extends HTMLElement {
     setPage(page) {
         this.stack.push(page);
         this.appendChild(page);
+        this.#handleBackButtonVisibility()
+    }
+
+    #handleBackButtonVisibility() {
+        if (this.stack.length <= 1 && !!this.app) {
+            this.app.backButton.style.display = "none";
+        }
     }
 }
