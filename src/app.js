@@ -150,7 +150,7 @@ export class App extends ui.events.Events {
     }
 
     #onBackButtonClick() {
-        // ...
+        this.stackLayout.goBack()
     }
 
     #onDatePickerButtonClick() {
@@ -162,14 +162,14 @@ export class App extends ui.events.Events {
     }
 
     #onTodayButtonClick() {
-        // ...
+        this.setMonth(new Date())
     }
 
     #onPDFButtonClick() {
-        // ...
+        this.stackLayout.setPage(this.stackLayout.pages.pdf)
     }
 
     #onSettingsButtonClick() {
-        // ...
+        this.stackLayout.setPage(this.stackLayout.pages.settings)
     }
 }
