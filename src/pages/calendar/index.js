@@ -211,7 +211,9 @@ export class CalendarPage extends StackLayoutPage {
         super();
 
         this.swipeHandler = new SwipeHandler(this);
+        /** @type {Date} */
         this.today;
+        /** @type {number[]} */
         this.order;
 
         /** @param {Date} date */
