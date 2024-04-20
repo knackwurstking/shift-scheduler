@@ -22,8 +22,8 @@ export class App extends ui.events.Events {
     #onDatePickerButtonClick = () => null; // TODO: Add date-picker onclick callback
     #onEditButtonClick = () => null; // TODO: Add edit onclick callback
     #onTodayButtonClick = () => this.setMonth(new Date());
-    #onPDFButtonClick = () => this.stackLayout.setPage(this.stackLayout.pages.pdf);
-    #onSettingsButtonClick = () => this.stackLayout.setPage(this.stackLayout.pages.settings);
+    #onPDFButtonClick = () => this.stackLayout.setPage("pdf");
+    #onSettingsButtonClick = () => this.stackLayout.setPage("settings");
 
     /**
      * @param {Element} app
@@ -129,7 +129,7 @@ export class App extends ui.events.Events {
     run() {
         // Setup pages
         this.stackLayout.app = this;
-        this.stackLayout.setPage(this.stackLayout.pages.calendar);
+        this.stackLayout.setPage("calendar");
 
         return this;
     }

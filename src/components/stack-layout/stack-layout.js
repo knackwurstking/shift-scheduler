@@ -1,12 +1,13 @@
 import { constants } from "../../lib";
 import { StackLayoutPage } from "./stack-layout-page";
+import * as utils from "./utils";
 
 /**
  * @typedef Pages
  * @type {{
- *  calendar: import("../../pages/calendar").CalendarPage;
- *  settings: import("../../pages/calendar").CalendarPage;
- *  pdf: import("../../pages/calendar").CalendarPage;
+ *  calendar: () => import("../../pages/calendar").CalendarPage;
+ *  settings: () => import(".").StackLayoutPage;
+ *  pdf: () => import(".").StackLayoutPage;
  * }}
  */
 
@@ -25,6 +26,23 @@ template.innerHTML = `
 `;
 
 export class StackLayout extends HTMLElement {
+    /**
+     * @type {Pages}
+     */
+    #pages = {
+        calendar: () => document.querySelector("template#pageCalendar")
+            // @ts-ignore
+            .content.cloneNode(true),
+
+        settings: () => document.querySelector("template#pageSettings")
+            // @ts-ignore
+            .content.cloneNode(true),
+
+        pdf: () => document.querySelector("template#pagePDF")
+            // @ts-ignore
+            .content.cloneNode(true),
+    };
+
     constructor() {
         super();
 
@@ -35,27 +53,9 @@ export class StackLayout extends HTMLElement {
         this.app = null;
 
         /**
-         * @type {Pages}
-         */
-        this.pages = {
-            calendar: document
-                .querySelector("template#pageCalendar")
-                // @ts-ignore
-                .content.cloneNode(true),
-            settings: document
-                .querySelector("template#pageSettings")
-                // @ts-ignore
-                .content.cloneNode(true),
-            pdf: document
-                .querySelector("template#pagePDF")
-                // @ts-ignore
-                .content.cloneNode(true),
-        };
-
-        /**
          * All rendered pages
          *
-         * @type {import("./stack-layout-page").StackLayoutPage[]}
+         * @type {Element[]}
          */
         this.stack = [];
     }
@@ -69,7 +69,7 @@ export class StackLayout extends HTMLElement {
             (page) => page instanceof StackLayoutPage,
         );
 
-        this.#handleBackButtonVisibility();
+        this.#handleAppBar();
     }
 
     disconnectedCallback() {
@@ -79,22 +79,24 @@ export class StackLayout extends HTMLElement {
 
     goBack() {
         if (!this.stack.length) return;
-        this.removeChild(this.stack.pop());
-        this.#handleBackButtonVisibility()
+        this.removeChild(this.stack.pop())
+        this.#handleAppBar()
+        this.app.title.innerHTML = utils.getTitleElement(this.children[this.children.length - 1].getAttribute("title"));
     }
 
     /**
-     * @param {import("./stack-layout-page").StackLayoutPage} page
+     * @param {"calendar" | "pdf" | "settings"} name
      */
-    setPage(page) {
-        this.stack.push(page);
-        this.appendChild(page);
-        this.#handleBackButtonVisibility()
+    setPage(name) {
+        this.stack.push(this.appendChild(this.#pages[name]().children[0]));
+        this.#handleAppBar();
     }
 
-    #handleBackButtonVisibility() {
+    #handleAppBar() {
         if (this.stack.length <= 1 && !!this.app) {
             this.app.backButton.style.display = "none";
+        } else {
+            this.app.backButton.style.display = "flex";
         }
     }
 }

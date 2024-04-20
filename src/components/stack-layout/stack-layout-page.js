@@ -1,5 +1,6 @@
 import { constants } from "../../lib";
 import { App } from "../../app";
+import * as utils from "./utils";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -50,7 +51,7 @@ export class StackLayoutPage extends HTMLElement {
         if (this.parentElement.app instanceof App) {
             // @ts-ignore
             this.app = this.parentElement.app;
-            this.app.title.innerText = `${this.getAttribute("title") || ""}`;
+            this.app.title.innerHTML = utils.getTitleElement(this.getAttribute("title"))
         }
     }
 
