@@ -174,8 +174,8 @@ export default class SwipeHandler extends ui.events.Events {
                 break;
             case "right":
                 // The last item will be the first
-                this.calendar.insertBefore(
-                    this.calendar.removeChild(items[2]),
+                this.calendar.shadowRoot.insertBefore(
+                    this.calendar.shadowRoot.removeChild(items[2]),
                     items[0]
                 );
                 break;
