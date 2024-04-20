@@ -321,11 +321,14 @@ export class CalendarPage extends StackLayoutPage {
             this.order = [...this.order.slice(weekStart), ...this.order.slice(0, weekStart)];
         }
 
-        this.#markWeekendItems(
-            ...this.shadowRoot.querySelectorAll(
-                ".week-days-row .week-day-item",
-            )
+        const items = this.shadowRoot.querySelectorAll(
+            ".week-days-row .week-day-item",
         )
+
+        this.#markWeekendItems(...items)
+        items.forEach((item, i) => {
+            item.innerHTML = `${this.app.language.get("calendar", this.order[i % 7].toString())}`
+        });
     }
 
     /**
