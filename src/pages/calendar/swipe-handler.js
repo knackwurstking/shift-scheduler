@@ -121,7 +121,6 @@ export default class SwipeHandler extends ui.events.Events {
      * @param {number} dX - always the value for the center item
      */
     moveX(dX) { // NOTE: -100% | 0% | 100%
-        console.log("move", dX)
         const items = this.calendar.getItems();
 
         // @ts-ignore
