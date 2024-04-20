@@ -263,7 +263,7 @@ export class CalendarPage extends StackLayoutPage {
         /** @param {import("../../lib/storage").StorageDataLang} _lang */
         this.onlang = (_lang) => {
             // This will update the week days
-            this.updateWeekDays(this.app.storage.get("week-start"));
+            this.updateWeekDays(this.app.storage.get("week-start", constants.weekStart));
         };
     }
 
@@ -310,7 +310,10 @@ export class CalendarPage extends StackLayoutPage {
      * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
      */
     updateWeekDays(weekStart) {
-        if (weekStart === null) throw `weekStart has to be a "0" or a "1"!`
+        if (weekStart === null) {
+            console.error(`weekStart has to be a "0" or a "1"!`);
+            return;
+        }
 
         this.order = [0, 1, 2, 3, 4, 5, 6];
 
