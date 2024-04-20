@@ -32,4 +32,5 @@ html {
 settings-page > ui-flex-grid {
     padding-top: var(--app-bar-height);
     overflow-y: auto; 
+    height: 100%;
 }
