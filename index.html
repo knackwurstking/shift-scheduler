@@ -83,19 +83,23 @@
                         <!-- week-start settings -->
                         <section>
                             <!-- checkbox if the week should start on monday or not -->
-                            <span data-replace="miscWeekStart"></span>
+                            <ui-label ripple>
+                                <ui-primary slot="primary">weekStartPrimary</ui-primary>
+                                <ui-secondary slot="secondary">weekStartSecondary</ui-secondary>
+                                <input slot="input" type="checkbox">
+                            </ui-label>
                         </section>
 
-                        <hr />
+                        <!--hr /-->
 
+                        <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
                         <!-- theme settings -->
-                        <section>
+                        <!--section>
                             <span data-replace="miscThemeMode"></span>
 
-                            <!--hr /-->
+                            <hr />
 
-                            <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
-                        </section>
+                        </section-->
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>
 
