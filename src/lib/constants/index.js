@@ -21,8 +21,8 @@ export default {
         name: "zinc",
     },
     storagePrefix: "shift-scheduler:",
-    language: "de",
-    weekStart: 1,
+    language: "en",
+    weekStart: 0,
     swipeRange: 75,
     debug: true,
 };
