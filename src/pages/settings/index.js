@@ -18,26 +18,30 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         this.misc.title.innerHTML =
             this.app.language.get("settings", "miscTitle");
-
         this.misc.weekStartPrimary.innerHTML =
             this.app.language.get("settings", "miscWeekStartPrimary");
-
         this.misc.weekStartSecondary.innerHTML =
+            this.misc.theme.innerHTML =
             this.app.language.get("settings", "miscWeekStartSecondary");
-
-        this.misc.theme.innerHTML =
-            this.app.language.get("settings", "miscTheme");
+        this.app.language.get("settings", "miscTheme");
 
         // Backup Section
 
         this.backup.title.innerHTML =
             this.app.language.get("settings", "backupTitle");
-
         this.backup.importButton.innerHTML =
             this.app.language.get("settings", "backupImportButton");
-
         this.backup.exportButton.innerHTML =
             this.app.language.get("settings", "backupExportButton");
+
+        // Shifts Section
+
+        this.shifts.title.innerHTML =
+            this.app.language.get("settings", "shiftsTitle");
+        this.shifts.tableHeaderName.innerHTML =
+            this.app.language.get("settings", "shiftsTableHeaderName");
+        this.shifts.tableHeaderShortName.innerHTML =
+            this.app.language.get("settings", "shiftsTableHeaderShortName");
     };
 
     #onWeekStartChange = (ev) => {
@@ -98,6 +102,14 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             /** @type {import("ui/src/wc/button").Button} */
             exportButton: this.querySelector("#backupExportButton"),
         }
+
+        this.shifts = {
+            title: this.querySelector("#shiftsTitle"),
+            /** @type {HTMLTableElement} */
+            tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
+            tableHeaderShortName: this.querySelector("#shiftsTableHeaderShortName"),
+            tableBody: this.querySelector("#shiftsTableBody"),
+        }
     }
 
     get app() {
@@ -141,6 +153,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             // Handle backup import/export
             this.backup.importButton.addEventListener("click", this.#onBackupImport);
             this.backup.exportButton.addEventListener("click", this.#onBackupExport);
+
+            // Handle the shifts table
+            this.#createShiftsTable()
         }
     }
 
@@ -163,5 +178,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.backup.importButton.removeEventListener("click", this.#onBackupImport);
             this.backup.exportButton.removeEventListener("click", this.#onBackupExport);
         }
+    }
+
+    #createShiftsTable() {
+        const tbody = this.shifts.tableBody;
+
+        // TODO: render body data...
+        // ...
     }
 }

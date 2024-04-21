@@ -16,6 +16,9 @@
         "miscTheme": "Theme",
         "backupTitle": "Backup",
         "backupImportButton": "Import",
-        "backupExportButton": "Export"
+        "backupExportButton": "Export",
+        "shiftsTitle": "Shift Settings",
+        "shiftsTableHeaderName": "Name",
+        "shiftsTableHeaderShortName": "Short"
     }
 }

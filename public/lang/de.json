@@ -14,7 +14,11 @@
         "miscWeekStartPrimary": "Die Woche beginnt am Montag",
         "miscWeekStartSecondary": "",
         "miscTheme": "Theme",
+        "backupTitle": "Backup",
         "backupImportButton": "Import",
-        "backupExportButton": "Export"
+        "backupExportButton": "Export",
+        "shiftsTitle": "Schichteinstellungen",
+        "shiftsTableHeaderName": "Name",
+        "shiftsTableHeaderShortName": "Kürzel"
     }
 }
