@@ -21,6 +21,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     };
 
     #onThemeModeSelectChange = async (ev) => {
+        // TODO: Store in app.storage
         /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
         const themeHandler = document.querySelector("#themeHandler")
 
@@ -50,6 +51,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             weekStartSecondary: this.querySelector("#miscWeekStartSecondary"),
             theme: this.querySelector("#miscTheme"),
 
+            weekStartInput: this.querySelector("#miscWeekStartInput"),
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
         };
     }
@@ -81,6 +83,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 }
             });
 
+            // TODO: Handle week-start change
+            // ...
+
+            // Handle theme change
             this.misc.themeModeSelect.addEventListener("change", this.#onThemeModeSelectChange);
         }
     }
