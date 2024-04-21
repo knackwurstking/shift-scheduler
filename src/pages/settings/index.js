@@ -58,7 +58,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             weekStartSecondary: this.querySelector("#miscWeekStartSecondary"),
             theme: this.querySelector("#miscTheme"),
 
+            /** @type {HTMLInputElement} */
             weekStartInput: this.querySelector("#miscWeekStartInput"),
+
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
         };
     }
@@ -91,7 +93,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             });
 
             // Select current week-start checked
-            // @ts-ignore
             this.misc.weekStartInput.checked = !!(
                 this.app.storage.get("week-start", constants.weekStart) === 1
             );
