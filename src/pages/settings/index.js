@@ -10,7 +10,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     #onLang = async () => {
         if (!this.app.language.getLanguage()) return;
 
+        // AppBar Section
+
         this.appBar.title.innerHTML = this.app.language.get("settings", "appBarTitle")
+
+        // Misc Section
 
         this.misc.title.innerHTML =
             this.app.language.get("settings", "miscTitle");
@@ -23,6 +27,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         this.misc.theme.innerHTML =
             this.app.language.get("settings", "miscTheme");
+
+        // Backup Section
+
+        this.backup.title.innerHTML =
+            this.app.language.get("settings", "backupTitle");
 
         this.backup.importButton.innerHTML =
             this.app.language.get("settings", "backupImportButton");
@@ -76,15 +85,14 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             weekStartPrimary: this.querySelector("#miscWeekStartPrimary"),
             weekStartSecondary: this.querySelector("#miscWeekStartSecondary"),
             theme: this.querySelector("#miscTheme"),
-
             /** @type {HTMLInputElement} */
             weekStartInput: this.querySelector("#miscWeekStartInput"),
-
             /** @type {import("ui/src/wc/input").Select} */
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
         };
 
         this.backup = {
+            title: this.querySelector("#backupTitle"),
             /** @type {import("ui/src/wc/button").Button} */
             importButton: this.querySelector("#backupImportButton"),
             /** @type {import("ui/src/wc/button").Button} */

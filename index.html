@@ -73,7 +73,7 @@
     <template id="pageSettings">
         <settings-page name="settings" title="Settings">
             <ui-flex-grid class="no-scrollbar" gap="0.25rem">
-                <ui-flex-grid-row>
+                <ui-flex-grid-row><!-- Miscellaneous Section -->
                     <ui-flex-grid-item class="ui-card">
                         <h3 id="miscTitle" class="title">Miscellaneous</h3>
 
@@ -105,27 +105,28 @@
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>
 
-                <ui-flex-grid-row>
+                <ui-flex-grid-row><!-- TODO: Shifts Section -->
                     <ui-flex-grid-item class="ui-card">
-                        <!-- TODO: "Shifts" is just a placeholder here -->
-                        <h3 id="shiftsTitle" class="title">Shifts</h3>
+                        <h3 id="shiftsTitle" class="title"></h3>
 
                         <hr />
 
-                        <!-- TDOO: Shifts settings here -->
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>
 
-                <ui-flex-grid-row><!-- TODO: Backup Section -->
+                <ui-flex-grid-row><!-- Backup Section -->
                     <ui-flex-grid-item class="ui-card backup">
                         <h3 id="backupTitle" class="title"></h3>
 
                         <hr />
 
                         <section>
-                            <ui-flex-grid-row>
+                            <ui-flex-grid-row gap="0.25rem">
                                 <ui-flex-grid-item>
                                     <ui-button id="backupImportButton"></ui-button>
+                                </ui-flex-grid-item>
+
+                                <ui-flex-grid-item>
                                     <ui-button id="backupExportButton"></ui-button>
                                 </ui-flex-grid-item>
                             </ui-flex-grid-row>
@@ -133,10 +134,9 @@
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>
 
-                <ui-flex-grid-row>
+                <ui-flex-grid-row><!-- TODO: Storage Section -->
                     <ui-flex-grid-item class="ui-card">
-                        <!-- TODO: "Storage" is just a placeholder here -->
-                        <h3 id="storageTitle" class="title">Storage</h3>
+                        <h3 id="storageTitle" class="title"></h3>
 
                         <hr />
 
