@@ -94,7 +94,7 @@
 
                         <!-- theme settings -->
                         <section>
-                            <label style="padding-left: .25em;"><ui-secondary>Theme (Mode)</ui-secondary></label>
+                            <ui-label><ui-secondary slot="secondary">Theme (Mode)</ui-secondary></ui-label>
                             <ui-select onchange="console.log('onchange:', event.detail)">
                                 <ui-select-option value="system">System</ui-select-option>
                                 <ui-select-option value="dark" selected>Dark</ui-select-option>
