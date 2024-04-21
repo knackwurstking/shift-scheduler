@@ -27,7 +27,7 @@ export class Storage extends ui.events.Events {
 
     /**
      * @param {StorageKeys} key
-     * @param {string} data
+     * @param {any} data
      */
     set(key, data) {
         window.localStorage.setItem(this.prefix + key, JSON.stringify(data));

@@ -1,5 +1,6 @@
 import { constants, DB, Language, Storage } from "./lib";
 import ui from "ui";
+import * as utils from "./utils";
 
 export const eventDatePickerChange = "datepickerchange"
 
@@ -67,6 +68,13 @@ export class App extends ui.events.Events {
         this.db;
         this.storage = new Storage();
         this.language = new Language(this);
+
+        /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
+        this.themeHandler = document.querySelector("#themeHandler")
+        utils.setTheme(
+            this.storage.get("theme", constants.theme),
+            this
+        );
 
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");

@@ -1,5 +1,6 @@
 import ui from "ui"
 import { constants } from "../../lib";
+import * as utils from "../../utils";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
@@ -20,23 +21,29 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.app.language.get("settings", "miscTheme");
     };
 
-    #onThemeModeSelectChange = async (ev) => {
-        // TODO: Store in app.storage
-        /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
-        const themeHandler = document.querySelector("#themeHandler")
+    #onWeekStartChange = (ev) => {
+        this.app.storage.set(
+            "week-start",
+            ev.currentTarget.checked
+                ? 1
+                : 0
+        );
+    }
 
-        if (!ev.detail?.value || ev.detail?.value === "system") {
-            // Enable auto mode
-            themeHandler.removeAttribute("mode")
-            themeHandler.setAttribute("auto", "");
-        } else {
-            // Disable auto mode and set theme manually
-            themeHandler.removeAttribute("auto")
-            themeHandler.setAttribute("mode", ev.detail.value)
-        }
-
-        themeHandler.connectedCallback()
-    };
+    /**
+     * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
+     */
+    #onThemeModeSelectChange = (ev) =>
+        utils.setTheme(
+            {
+                ...this.app.storage.get(
+                    "theme",
+                    constants.theme
+                ),
+                mode: ev.detail.value
+            },
+            this.app
+        );
 
     constructor() {
         super();
@@ -83,8 +90,14 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 }
             });
 
-            // TODO: Handle week-start change
-            // ...
+            // Select current week-start checked
+            // @ts-ignore
+            this.misc.weekStartInput.checked = !!(
+                this.app.storage.get("week-start", constants.weekStart) === 1
+            );
+
+            // Handle week-start change
+            this.misc.weekStartInput.addEventListener("click", this.#onWeekStartChange)
 
             // Handle theme change
             this.misc.themeModeSelect.addEventListener("change", this.#onThemeModeSelectChange);
@@ -105,7 +118,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         if (!!this.app) {
             this.#app.storage.removeListener("lang", this.#onLang);
-            this.misc.themeModeSelect.addEventListener("change", this.#onThemeModeSelectChange);
+            this.misc.weekStartInput.removeEventListener("click", this.#onWeekStartChange)
+            this.misc.themeModeSelect.removeEventListener("change", this.#onThemeModeSelectChange);
         }
     }
 }
