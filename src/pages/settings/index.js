@@ -5,7 +5,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     #app = null;
     #initialized = false;
 
-    #onLang = () => {
+    #onLang = async () => {
         if (!this.app.language.getLanguage()) return;
 
         this.appBar.title.innerHTML = this.app.language.get("settings", "appBarTitle")
@@ -19,7 +19,21 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.app.language.get("settings", "miscTheme");
     };
 
-    // TODO: handle theme (mode) picker
+    #onThemeModeSelectChange = async (ev) => {
+        /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
+        const themeHandler = document.querySelector("#themeHandler")
+
+        if (!!ev.detail?.value && ev.detail?.value !== "system") {
+            // Enable auto mode
+            themeHandler.setAttribute("auto", "");
+            return
+        }
+
+        // Disable auto mode and set theme manually
+        themeHandler.removeAttribute("auto")
+        themeHandler.setMode(ev.detail.value)
+    };
+
     constructor() {
         super();
 
@@ -32,6 +46,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             weekStartPrimary: this.querySelector("#miscWeekStartPrimary"),
             weekStartSecondary: this.querySelector("#miscWeekStartSecondary"),
             theme: this.querySelector("#miscTheme"),
+
+            themeModeSelect: this.querySelector("#miscThemeModeSelect"),
         };
     }
 
@@ -46,8 +62,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.#initialized = true;
 
             this.#app.storage.addListener("lang", this.#onLang);
+            this.#onLang();
 
-            this.#onLang()
+            this.misc.themeModeSelect.addEventListener("change", this.#onThemeModeSelectChange);
         }
     }
 
@@ -65,6 +82,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         if (!!this.app) {
             this.#app.storage.removeListener("lang", this.#onLang);
+            this.misc.themeModeSelect.addEventListener("change", this.#onThemeModeSelectChange);
         }
     }
 }

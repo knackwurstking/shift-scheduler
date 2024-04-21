@@ -9,7 +9,7 @@
 </head>
 
 <body class="has-save-area">
-    <ui-theme-handler auto></ui-theme-handler>
+    <ui-theme-handler id="themeHandler" auto></ui-theme-handler>
 
     <div id="app">
         <ui-container id="main" style="width: 100%; height: 100%;">
@@ -75,7 +75,6 @@
             <ui-flex-grid class="no-scrollbar" gap="0.25rem">
                 <ui-flex-grid-row>
                     <ui-flex-grid-item class="ui-card">
-                        <!-- TODO: "Miscellaneous" is just a placeholder here -->
                         <h3 id="miscTitle" class="title">Miscellaneous</h3>
 
                         <hr />
@@ -95,7 +94,7 @@
                         <!-- theme settings -->
                         <section>
                             <ui-label><ui-secondary slot="secondary" id="miscTheme"></ui-secondary></ui-label>
-                            <ui-select>
+                            <ui-select id="miscThemeModeSelect">
                                 <ui-select-option value="system">System</ui-select-option>
                                 <ui-select-option value="dark" selected>Dark</ui-select-option>
                                 <ui-select-option value="light">Light</ui-select-option>
