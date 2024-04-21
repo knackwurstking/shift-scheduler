@@ -6,6 +6,7 @@ import { eventDatePickerChange } from "../../app"
 
 const template = document.createElement("template");
 
+// TODO: remove ui-card class, and add some styling (using theme variables)
 const templateDayItem = `
 <ui-flex-grid-item class="day-item ui-card" style="position: relative;">
     <div class="day-item-date"></div>
@@ -73,15 +74,15 @@ template.innerHTML = `
     }
 
     :host .item1 ui-flex-grid-item {
-        background: yellow;
+        /*background: yellow;*/
     }
 
     :host .item2 ui-flex-grid-item {
-        background: green;
+        /*background: green;*/
     }
 
     :host .item3 ui-flex-grid-item {
-        background: blue;
+        /*background: blue;*/
     }
 
     :host .item .item-content {
@@ -114,12 +115,12 @@ template.innerHTML = `
 
     :host .item .item-content .week-days-row .week-day-item.is-saturday {
         /* TODO: Some special highlighting */
-        background: violet;
+        /*background: violet;*/
     }
 
     :host .item .item-content .week-days-row .week-day-item.is-sunday {
         /* TODO: Some special highlighting */
-        background: violet;
+        /*background: violet;*/
     }
 
     :host .item .item-content .days-row {
@@ -138,22 +139,22 @@ template.innerHTML = `
 
     :host .item .item-content .days-row .day-item.is-today {
         /* TODO: Add some highlighting here... */
-        background: orange;
+        /*background: orange;*/
     }
 
     :host .item .item-content .days-row .day-item.is-saturday {
         /* TODO: Some special highlighting */
-        background: violet;
+        /*background: violet;*/
     }
 
     :host .item .item-content .days-row  .day-item.is-sunday {
         /* TODO: Some special highlighting */
-        background: violet;
+        /*background: violet;*/
     }
 
     :host .item .item-content .days-row .day-item.has-note .day-item-date {
         /* TODO: Add some highlighting here... */
-        background: red; /* NOTE: Just a placeholder */
+        /*background: red; /* NOTE: Just a placeholder */
     }
 
     :host .item .item-content .days-row .day-item .day-item-date {
