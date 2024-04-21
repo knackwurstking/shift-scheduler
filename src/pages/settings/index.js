@@ -1,6 +1,7 @@
 import ui from "ui"
 
 // TODO: language support: app-bar title, misc week-start checkbox (primary/secondary)
+// TODO: handle theme (mode) picker
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
     #app = null;
