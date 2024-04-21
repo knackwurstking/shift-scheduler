@@ -90,16 +90,19 @@
                             </ui-label>
                         </section>
 
-                        <!--hr /-->
+                        <hr />
 
                         <!-- theme settings -->
-                        <ui-select onchange="console.log('onchange:', event.detail)">
-                            <ui-select-option value="system">System</ui-select-option>
-                            <ui-select-option value="dark" selected>Dark</ui-select-option>
-                            <ui-select-option value="light">Light</ui-select-option>
-                        </ui-select>
+                        <section>
+                            <label style="padding-left: .25em;"><ui-secondary>Theme (Mode)</ui-secondary></label>
+                            <ui-select onchange="console.log('onchange:', event.detail)">
+                                <ui-select-option value="system">System</ui-select-option>
+                                <ui-select-option value="dark" selected>Dark</ui-select-option>
+                                <ui-select-option value="light">Light</ui-select-option>
+                            </ui-select>
 
-                        <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
+                            <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
+                        </section>
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>
 
