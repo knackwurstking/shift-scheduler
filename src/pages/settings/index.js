@@ -11,14 +11,24 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         if (!this.app.language.getLanguage()) return;
 
         this.appBar.title.innerHTML = this.app.language.get("settings", "appBarTitle")
+
         this.misc.title.innerHTML =
             this.app.language.get("settings", "miscTitle");
+
         this.misc.weekStartPrimary.innerHTML =
             this.app.language.get("settings", "miscWeekStartPrimary");
+
         this.misc.weekStartSecondary.innerHTML =
             this.app.language.get("settings", "miscWeekStartSecondary");
+
         this.misc.theme.innerHTML =
             this.app.language.get("settings", "miscTheme");
+
+        this.backup.importButton.innerHTML =
+            this.app.language.get("settings", "backupImportButton");
+
+        this.backup.exportButton.innerHTML =
+            this.app.language.get("settings", "backupExportButton");
     };
 
     #onWeekStartChange = (ev) => {
@@ -33,7 +43,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     /**
      * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
      */
-    #onThemeModeSelectChange = (ev) =>
+    #onThemeModeSelectChange = (ev) => {
         utils.setTheme(
             {
                 ...this.app.storage.get(
@@ -44,6 +54,15 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             },
             this.app
         );
+    };
+
+    #onBackupImport = () => {
+        // TODO: Read json data backup
+    }
+
+    #onBackupExport = () => {
+        // TODO: Create json data for backup
+    }
 
     constructor() {
         super();
@@ -61,8 +80,16 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             /** @type {HTMLInputElement} */
             weekStartInput: this.querySelector("#miscWeekStartInput"),
 
+            /** @type {import("ui/src/wc/input").Select} */
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
         };
+
+        this.backup = {
+            /** @type {import("ui/src/wc/button").Button} */
+            importButton: this.querySelector("#backupImportButton"),
+            /** @type {import("ui/src/wc/button").Button} */
+            exportButton: this.querySelector("#backupExportButton"),
+        }
     }
 
     get app() {
@@ -102,6 +129,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             // Handle theme change
             this.misc.themeModeSelect.addEventListener("change", this.#onThemeModeSelectChange);
+
+            // Handle backup import/export
+            this.backup.importButton.addEventListener("click", this.#onBackupImport);
+            this.backup.exportButton.addEventListener("click", this.#onBackupExport);
         }
     }
 
@@ -121,6 +152,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.#app.storage.removeListener("lang", this.#onLang);
             this.misc.weekStartInput.removeEventListener("click", this.#onWeekStartChange)
             this.misc.themeModeSelect.removeEventListener("change", this.#onThemeModeSelectChange);
+            this.backup.importButton.removeEventListener("click", this.#onBackupImport);
+            this.backup.exportButton.removeEventListener("click", this.#onBackupExport);
         }
     }
 }

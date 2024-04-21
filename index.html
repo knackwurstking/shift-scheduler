@@ -116,19 +116,19 @@
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>
 
-                <ui-flex-grid-row>
+                <ui-flex-grid-row><!-- TODO: Backup Section -->
                     <ui-flex-grid-item class="ui-card backup">
-                        <!-- TODO: "Backup" is just a placeholder here -->
-                        <h3 id="backupTitle" class="title">Backup</h3>
+                        <h3 id="backupTitle" class="title"></h3>
 
                         <hr />
 
                         <section>
-                            <div class="ui-grid-row actions" style="--gap: 0.1em;">
-                                <span data-replace="backupImportButton"></span>
-
-                                <span data-replace="backupExportButton"></span>
-                            </div>
+                            <ui-flex-grid-row>
+                                <ui-flex-grid-item>
+                                    <ui-button id="backupImportButton"></ui-button>
+                                    <ui-button id="backupExportButton"></ui-button>
+                                </ui-flex-grid-item>
+                            </ui-flex-grid-row>
                         </section>
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>

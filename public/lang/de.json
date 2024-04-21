@@ -13,6 +13,8 @@
         "miscTitle": "Sonstiges",
         "miscWeekStartPrimary": "Die Woche beginnt am Montag",
         "miscWeekStartSecondary": "",
-        "miscTheme": "Theme"
+        "miscTheme": "Theme",
+        "backupImportButton": "Import",
+        "backupExportButton": "Export"
     }
 }
