@@ -4,7 +4,7 @@
  *    name: string;
  *    version: number | null;
  *  };
- *  theme: { name: string };
+ *  theme: import("../storage").StorageDataTheme;
  *  storagePrefix: string;
  *  language: import("../language").Languages;
  *  weekStart: import("../storage").StorageDataWeekStart;
@@ -18,6 +18,7 @@ export default {
         version: 1,
     },
     theme: {
+        mode: "system",
         name: "zinc",
     },
     storagePrefix: "shift-scheduler:",

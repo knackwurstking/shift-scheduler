@@ -1,4 +1,5 @@
 import ui from "ui"
+import { constants } from "../../lib";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
@@ -63,8 +64,22 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         if (super.isConnected && !this.#initialized) {
             this.#initialized = true;
 
+            // Handle language
             this.#app.storage.addListener("lang", this.#onLang);
             this.#onLang();
+
+            // Select current active theme
+            [...this.misc.themeModeSelect.children].forEach(c => {
+                const theme = this.app.storage.get("theme", constants.theme);
+                if (!!theme) {
+                    // @ts-ignore
+                    if (c.value === theme.mode) {
+                        c.setAttribute("selected", "")
+                    } else {
+                        c.removeAttribute("selected")
+                    }
+                }
+            });
 
             this.misc.themeModeSelect.addEventListener("change", this.#onThemeModeSelectChange);
         }

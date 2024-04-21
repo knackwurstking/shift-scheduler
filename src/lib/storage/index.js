@@ -16,7 +16,7 @@ import constants from "../constants";
  * @type {import("../language").Languages}
  *
  * @typedef StorageDataTheme
- * @type {{ mode: ("dark" | "light") | null }}
+ * @type {{ mode: ("system" | "dark" | "light"), name: "zinc" }}
  */
 
 export class Storage extends ui.events.Events {
