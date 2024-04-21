@@ -23,15 +23,17 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
         const themeHandler = document.querySelector("#themeHandler")
 
-        if (!!ev.detail?.value && ev.detail?.value !== "system") {
+        if (!ev.detail?.value || ev.detail?.value === "system") {
             // Enable auto mode
+            themeHandler.removeAttribute("mode")
             themeHandler.setAttribute("auto", "");
-            return
+        } else {
+            // Disable auto mode and set theme manually
+            themeHandler.removeAttribute("auto")
+            themeHandler.setAttribute("mode", ev.detail.value)
         }
 
-        // Disable auto mode and set theme manually
-        themeHandler.removeAttribute("auto")
-        themeHandler.setMode(ev.detail.value)
+        themeHandler.connectedCallback()
     };
 
     constructor() {
