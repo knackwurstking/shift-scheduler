@@ -201,7 +201,15 @@ export class App extends ui.events.Events {
         this.setMonth(date)
     }
 
+    /**
+     * @param {string} title
+     */
+    setTitle(title) {
+        this.title.innerHTML = `<h3>${title}</h3>`
+    }
+
     #noPageSetup() {
+        this.setTitle("")
         this.datePickerButton.style.display = "none"
         this.editButton.style.display = "none"
         this.todayButton.style.display = "none"
@@ -213,7 +221,7 @@ export class App extends ui.events.Events {
      * @param {import("ui/src/wc").StackLayoutPage} page
      */
     #calendarPageSetup(page) {
-        this.title.innerHTML = `<h3>${page.getAttribute("title") || ""}</h3>`
+        this.setTitle(page.getAttribute("title") || "")
         this.datePickerButton.style.display = "flex"
         this.editButton.style.display = "flex"
         this.todayButton.style.display = "flex"
@@ -225,7 +233,7 @@ export class App extends ui.events.Events {
      * @param {import("ui/src/wc").StackLayoutPage} page
      */
     #settingsPageSetup(page) {
-        this.title.innerHTML = `<h3>${page.getAttribute("title") || ""}</h3>`
+        this.setTitle(page.getAttribute("title") || "")
         this.datePickerButton.style.display = "none"
         this.editButton.style.display = "none"
         this.todayButton.style.display = "none"
@@ -237,7 +245,7 @@ export class App extends ui.events.Events {
      * @param {import("ui/src/wc").StackLayoutPage} page
      */
     #pdfPageSetup(page) {
-        this.title.innerHTML = `<h3>${page.getAttribute("title") || ""}</h3>`
+        this.setTitle(page.getAttribute("title") || "")
         this.datePickerButton.style.display = "none"
         this.editButton.style.display = "none"
         this.todayButton.style.display = "none"

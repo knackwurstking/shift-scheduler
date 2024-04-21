@@ -1,15 +1,18 @@
 {
-  "calendar": {
-    "0": "So",
-    "1": "Mo",
-    "2": "Di",
-    "3": "Mi",
-    "4": "Do",
-    "5": "Fr",
-    "6": "Sa"
-  },
-  "settings": {
-    "appBarTitle": "Einstellungen",
-    "miscTitle": "Sonstiges"
-  }
+    "calendar": {
+        "0": "So",
+        "1": "Mo",
+        "2": "Di",
+        "3": "Mi",
+        "4": "Do",
+        "5": "Fr",
+        "6": "Sa"
+    },
+    "settings": {
+        "appBarTitle": "Einstellungen",
+        "miscTitle": "Sonstiges",
+        "miscWeekStartPrimary": "Die Woche beginnt am Montag",
+        "miscWeekStartSecondary": "",
+        "miscTheme": "Theme"
+    }
 }
