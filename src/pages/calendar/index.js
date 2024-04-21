@@ -6,16 +6,15 @@ import { eventDatePickerChange } from "../../app"
 
 const template = document.createElement("template");
 
-// TODO: remove ui-card class, and add some styling (using theme variables)
 const templateDayItem = `
-<ui-flex-grid-item class="day-item ui-card" style="position: relative;">
+<ui-flex-grid-item class="day-item" style="position: relative;">
     <div class="day-item-date"></div>
     <div class="day-item-shift"></div>
 </ui-flex-grid-item>
 `;
 
 const templateDaysRow = `
-<ui-flex-grid-row class="days-row" gap="0.1rem">
+<ui-flex-grid-row class="days-row">
     ${templateDayItem}
     ${templateDayItem}
     ${templateDayItem}
@@ -27,19 +26,19 @@ const templateDaysRow = `
 `;
 
 const templateWeekDaysRow = `
-<ui-flex-grid-row class="week-days-row" gap="0.1rem">
-    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
-    <ui-flex-grid-item class="week-day-item ui-card"></ui-flex-grid-item>
+<ui-flex-grid-row class="week-days-row">
+    <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
+    <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
 </ui-flex-grid-row>
 `
 
 const templateItemContent = `
-<div class="item-content ui-grid">
+<ui-flex-grid>
     ${templateWeekDaysRow}
 
     ${templateDaysRow}
@@ -48,7 +47,7 @@ const templateItemContent = `
     ${templateDaysRow}
     ${templateDaysRow}
     ${templateDaysRow}
-</div>
+</ui-flex-grid>
 `;
 
 template.innerHTML = `
@@ -56,46 +55,53 @@ template.innerHTML = `
     :host {
         --header-height: 2.5em;
         display: flex;
+        position: relative;
         flex-direction: row;
         flex-wrap: nowrap;
         user-select: none;
         overflow: hidden;
     }
 
-    :host .item {
+    .item {
         position: absolute;
         top: var(--app-bar-height);
         bottom: 0;
         min-width: 100%;
     }
 
-    :host ui-flex-grid-item {
-        border-radius: var(--radius);
+    :host .item ui-flex-grid {
+        --gap: .1em;
+        width: calc(100% - 0.25rem);
+        height: calc(100% - 0.25rem);
     }
 
-    :host .item1 ui-flex-grid-item {
-        /*background: yellow;*/
-    }
-
-    :host .item2 ui-flex-grid-item {
-        /*background: green;*/
-    }
-
-    :host .item3 ui-flex-grid-item {
-        /*background: blue;*/
-    }
-
-    :host .item .item-content {
-        --gap: 0.1rem;
-        width: 100%;
-        height: 100%;
-    }
-
-    :host .item .item-content .week-days-row {
+    .week-days-row {
+        --row-gap: .1em;
         height: var(--header-height);
+        padding: var(--border-width) 0;
     }
 
-    :host .item .item-content .week-days-row > .week-day-item {
+    .days-row {
+        --row-gap: .1em;
+        height: 100%;
+        padding: var(--border-width) 0;
+    }
+
+    ui-flex-grid-item {
+        border-radius: var(--radius);
+        border: var(--border-width) var(--border-style) hsl(var(--border));
+
+        /*
+        border-radius: 0;
+        border: var(--border-width) var(--border-style) hsl(var(--border));
+        */
+    }
+
+    :host([no-border]) ui-flex-grid-item {
+        border: none;
+    }
+
+    .week-day-item {
         width: calc(100% / 7);
         overflow: hidden;
         height: 100%;
@@ -107,57 +113,22 @@ template.innerHTML = `
         justify-content: center;
     }
 
-    :host .item .item-content .week-days-row .week-day-item.is-saturday,
-    :host .item .item-content .week-days-row .week-day-item.is-sunday {
+    .week-day-item.is-saturday,
+    .week-day-item.is-sunday {
         /* TODO: Some special highlighting */
         font-weight: bolder;
     }
 
-    :host .item .item-content .week-days-row .week-day-item.is-saturday {
-        /* TODO: Some special highlighting */
-        /*background: violet;*/
-    }
-
-    :host .item .item-content .week-days-row .week-day-item.is-sunday {
-        /* TODO: Some special highlighting */
-        /*background: violet;*/
-    }
-
-    :host .item .item-content .days-row {
-        height: calc((100% - var(--header-height)) / 6 - var(--gap));
-    }
-
-    :host .item .item-content .days-row .day-item {
-        width: calc(100% / 7);
+    .day-item {
         height: 100%;
         overflow: hidden;
     }
 
-    :host .item .item-content .days-row .day-item.is-inactive {
+    .day-item.is-inactive {
         opacity: 0.2;
     }
 
-    :host .item .item-content .days-row .day-item.is-today {
-        /* TODO: Add some highlighting here... */
-        /*background: orange;*/
-    }
-
-    :host .item .item-content .days-row .day-item.is-saturday {
-        /* TODO: Some special highlighting */
-        /*background: violet;*/
-    }
-
-    :host .item .item-content .days-row  .day-item.is-sunday {
-        /* TODO: Some special highlighting */
-        /*background: violet;*/
-    }
-
-    :host .item .item-content .days-row .day-item.has-note .day-item-date {
-        /* TODO: Add some highlighting here... */
-        /*background: red; /* NOTE: Just a placeholder */
-    }
-
-    :host .item .item-content .days-row .day-item .day-item-date {
+    .day-item .day-item-date {
         position: absolute;
         top: 0;
         left: 0;
@@ -168,7 +139,7 @@ template.innerHTML = `
         border-radius: inherit;
     }
 
-    :host .item .item-content .days-row .day-item .day-item-shift {
+    .day-item-shift {
         position: absolute;
         top: 0;
         right: 0;
@@ -186,13 +157,13 @@ template.innerHTML = `
     }
 
     @media (orientation: landscape) {
-        :host .item .item-content .days-row .day-item .day-item-shift {
+        .day-item .day-item-shift {
             left: 4vmin;
         }
     }
 
     @media (orientation: portrait) {
-        :host .item .item-content .days-row .day-item .day-item-shift {
+        .day-item .day-item-shift {
             top: 5vmin;
         }
     }
