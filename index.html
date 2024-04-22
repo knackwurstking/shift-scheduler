@@ -1,191 +1,287 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+        />
+        <title>Shift Scheduler</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <title>Shift Scheduler</title>
-</head>
+    <body class="has-save-area">
+        <ui-theme-handler id="themeHandler" auto></ui-theme-handler>
 
-<body class="has-save-area">
-    <ui-theme-handler id="themeHandler" auto></ui-theme-handler>
+        <div id="app">
+            <ui-container id="main" style="width: 100%; height: 100%">
+                <ui-stack-layout></ui-stack-layout>
+            </ui-container>
 
-    <div id="app">
-        <ui-container id="main" style="width: 100%; height: 100%;">
-            <ui-stack-layout></ui-stack-layout>
-        </ui-container>
+            <ui-app-bar id="appBar" position="top" title="">
+                <ui-flex-grid-item
+                    slot="left"
+                    class="flex align-center justify-center"
+                >
+                    <!-- app bar back button -->
+                    <ui-icon-button id="appBarBackButton" color="primary" ghost>
+                        <ui-icon-back-arrow-navigation></ui-icon-back-arrow-navigation>
+                    </ui-icon-button>
+                </ui-flex-grid-item>
 
-        <ui-app-bar id="appBar" position="top" title="">
-            <ui-flex-grid-item slot="left" class="flex align-center justify-center">
-                <!-- app bar back button -->
-                <ui-icon-button id="appBarBackButton" color="primary" ghost>
-                    <ui-icon-back-arrow-navigation></ui-icon-back-arrow-navigation>
-                </ui-icon-button>
-            </ui-flex-grid-item>
+                <ui-flex-grid-item
+                    slot="left"
+                    class="flex align-center justify-center"
+                    style="padding: calc(var(--spacing) / 2)"
+                >
+                    <!-- app bar date picker button -->
+                    <ui-button
+                        id="appBarDatePickerButton"
+                        style="height: 100%; white-space: nowrap"
+                        variant="outline"
+                        color="primary"
+                    ></ui-button>
+                </ui-flex-grid-item>
 
-            <ui-flex-grid-item slot="left" class="flex align-center justify-center"
-                style="padding: calc(var(--spacing) / 2)">
-                <!-- app bar date picker button -->
-                <ui-button id="appBarDatePickerButton" style="height: 100%; white-space: nowrap;" variant="outline"
-                    color="primary"></ui-button>
-            </ui-flex-grid-item>
+                <ui-flex-grid-item
+                    id="appBarTitle"
+                    slot="center"
+                    class="flex align-center justify-center"
+                    style="white-space: nowrap"
+                    >#appBarTitle</ui-flex-grid-item
+                >
 
-            <ui-flex-grid-item id="appBarTitle" slot="center" class="flex align-center justify-center"
-                style="white-space: nowrap;">#appBarTitle</ui-flex-grid-item>
+                <ui-flex-grid-item
+                    slot="right"
+                    class="flex align-center justify-center"
+                >
+                    <!-- app bar edit mode (toggle) button -->
+                    <ui-icon-button id="appBarEditButton" color="primary" ghost>
+                        <ui-icon-edit2></ui-icon-edit2>
+                    </ui-icon-button>
+                </ui-flex-grid-item>
 
-            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
-                <!-- app bar edit mode (toggle) button -->
-                <ui-icon-button id="appBarEditButton" color="primary" ghost>
-                    <ui-icon-edit2></ui-icon-edit2>
-                </ui-icon-button>
-            </ui-flex-grid-item>
+                <ui-flex-grid-item
+                    slot="right"
+                    class="flex align-center justify-center"
+                >
+                    <!-- app bar go today button -->
+                    <ui-icon-button
+                        id="appBarTodayButton"
+                        color="primary"
+                        ghost
+                    >
+                        <ui-icon-today-outline></ui-icon-today-outline>
+                    </ui-icon-button>
+                </ui-flex-grid-item>
 
-            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
-                <!-- app bar go today button -->
-                <ui-icon-button id="appBarTodayButton" color="primary" ghost>
-                    <ui-icon-today-outline></ui-icon-today-outline>
-                </ui-icon-button>
-            </ui-flex-grid-item>
+                <ui-flex-grid-item
+                    slot="right"
+                    class="flex align-center justify-center"
+                >
+                    <!-- app bar pdf page button -->
+                    <ui-icon-button id="appBarPDFButton" color="primary" ghost>
+                        <ui-icon-pdf-document></ui-icon-pdf-document>
+                    </ui-icon-button>
+                </ui-flex-grid-item>
 
-            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
-                <!-- app bar pdf page button -->
-                <ui-icon-button id="appBarPDFButton" color="primary" ghost>
-                    <ui-icon-pdf-document></ui-icon-pdf-document>
-                </ui-icon-button>
-            </ui-flex-grid-item>
+                <ui-flex-grid-item
+                    slot="right"
+                    class="flex align-center justify-center"
+                >
+                    <!-- app bar settings page button -->
+                    <ui-icon-button
+                        id="appBarSettingsButton"
+                        color="primary"
+                        ghost
+                    >
+                        <ui-icon-settings></ui-icon-settings>
+                    </ui-icon-button>
+                </ui-flex-grid-item>
+            </ui-app-bar>
+        </div>
 
-            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
-                <!-- app bar settings page button -->
-                <ui-icon-button id="appBarSettingsButton" color="primary" ghost>
-                    <ui-icon-settings></ui-icon-settings>
-                </ui-icon-button>
-            </ui-flex-grid-item>
-        </ui-app-bar>
-    </div>
+        <template id="pageCalendar">
+            <calendar-page name="calendar" title=""></calendar-page>
+        </template>
 
-    <template id="pageCalendar">
-        <calendar-page name="calendar" title=""></calendar-page>
-    </template>
+        <template id="pageSettings">
+            <settings-page name="settings" title="Settings">
+                <ui-flex-grid class="no-scrollbar" gap="0.25rem">
+                    <!-- "Miscellaneous" Section -->
+                    <ui-flex-grid-row>
+                        <ui-flex-grid-item class="ui-card">
+                            <h3 id="miscTitle" class="title">#miscTitle</h3>
 
-    <template id="pageSettings">
-        <settings-page name="settings" title="Settings">
-            <ui-flex-grid class="no-scrollbar" gap="0.25rem">
-                <ui-flex-grid-row><!-- Miscellaneous Section -->
-                    <ui-flex-grid-item class="ui-card">
-                        <h3 id="miscTitle" class="title">#miscTitle</h3>
+                            <hr />
 
-                        <hr />
+                            <!-- week-start settings -->
+                            <section>
+                                <ui-label ripple>
+                                    <ui-primary
+                                        slot="primary"
+                                        id="miscWeekStartPrimary"
+                                        >#miscWeekStartPrimary</ui-primary
+                                    >
+                                    <ui-secondary
+                                        slot="secondary"
+                                        id="miscWeekStartSecondary"
+                                        >#miscWeekStartSecondary</ui-secondary
+                                    >
+                                    <input
+                                        slot="input"
+                                        id="miscWeekStartInput"
+                                        type="checkbox"
+                                    />
+                                </ui-label>
+                            </section>
 
-                        <!-- week-start settings -->
-                        <section>
-                            <!-- checkbox if the week should start on monday or not -->
-                            <ui-label ripple>
-                                <ui-primary slot="primary" id="miscWeekStartPrimary">#miscWeekStartPrimary</ui-primary>
-                                <ui-secondary slot="secondary"
-                                    id="miscWeekStartSecondary">#miscWeekStartSecondary</ui-secondary>
-                                <input slot="input" id="miscWeekStartInput" type="checkbox">
-                            </ui-label>
-                        </section>
+                            <hr />
 
-                        <hr />
+                            <!-- theme settings -->
+                            <section>
+                                <ui-label>
+                                    <ui-secondary
+                                        slot="secondary"
+                                        id="miscTheme"
+                                    >
+                                        #miscTheme
+                                    </ui-secondary>
+                                </ui-label>
 
-                        <!-- theme settings -->
-                        <section>
-                            <ui-label><ui-secondary slot="secondary" id="miscTheme">#miscTheme</ui-secondary></ui-label>
-                            <ui-select id="miscThemeModeSelect">
-                                <ui-select-option value="system">System</ui-select-option>
-                                <ui-select-option value="dark">Dark</ui-select-option>
-                                <ui-select-option value="light">Light</ui-select-option>
-                            </ui-select>
+                                <ui-select id="miscThemeModeSelect">
+                                    <ui-select-option value="system">
+                                        System
+                                    </ui-select-option>
 
-                            <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
-                        </section>
-                    </ui-flex-grid-item>
-                </ui-flex-grid-row>
+                                    <ui-select-option value="dark">
+                                        Dark
+                                    </ui-select-option>
 
-                <ui-flex-grid-row><!-- TODO: Shifts Section -->
-                    <ui-flex-grid-item class="ui-card">
-                        <h3 id="shiftsTitle" class="title">#shiftsTitle</h3>
+                                    <ui-select-option value="light">
+                                        Light
+                                    </ui-select-option>
+                                </ui-select>
 
-                        <hr />
+                                <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
+                            </section>
+                        </ui-flex-grid-item>
+                    </ui-flex-grid-row>
 
-                        <section>
-                            <table style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th id="shiftsTableHeaderName" class="is-text-left">
-                                            #shiftsTableHeaderName</th>
-                                        <th id="shiftsTableHeaderShortName" class="is-text-left">
-                                            #shiftsTableHeaderShortName</th>
-                                        <th class="is-text-right"></th>
-                                    </tr>
-                                </thead>
+                    <!-- "Shifts" Section -->
+                    <ui-flex-grid-row>
+                        <ui-flex-grid-item class="ui-card">
+                            <h3 id="shiftsTitle" class="title">#shiftsTitle</h3>
 
-                                <tbody id="shiftsTableBody"></tbody>
-                            </table>
-                        </section>
+                            <hr />
 
-                        <section>
-                            <ui-button id="shiftsAddButton" color="primary" variant="full">
-                                #shiftsAddButton
-                            </ui-button>
-                        </section>
+                            <!-- data table -->
+                            <section>
+                                <table style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                id="shiftsTableHeaderName"
+                                                class="is-text-left"
+                                            >
+                                                #shiftsTableHeaderName
+                                            </th>
 
-                        <hr />
+                                            <th
+                                                id="shiftsTableHeaderShortName"
+                                                class="is-text-left"
+                                            >
+                                                #shiftsTableHeaderShortName
+                                            </th>
 
-                        <section>
-                            TODO: Start Date (Picker)
-                        </section>
+                                            <th class="is-text-right"></th>
+                                        </tr>
+                                    </thead>
 
-                        <hr />
+                                    <tbody id="shiftsTableBody"></tbody>
+                                </table>
+                            </section>
 
-                        <section>
-                            TODO: Rhythm EDIT (button opens a fullscreen dialog)
-                        </section>
-                    </ui-flex-grid-item>
-                </ui-flex-grid-row>
+                            <!-- add a shift button -->
+                            <section>
+                                <ui-button
+                                    id="shiftsAddButton"
+                                    color="primary"
+                                    variant="full"
+                                >
+                                    #shiftsAddButton
+                                </ui-button>
+                            </section>
 
-                <ui-flex-grid-row><!-- Backup Section -->
-                    <ui-flex-grid-item class="ui-card backup">
-                        <h3 id="backupTitle" class="title">#backupTitle</h3>
+                            <hr />
 
-                        <hr />
+                            <!-- start date input -->
+                            <section>TODO: Start Date (Picker)</section>
 
-                        <section>
-                            <ui-flex-grid-row gap="0.25rem">
-                                <ui-flex-grid-item>
-                                    <ui-button variant="full" color="primary"
-                                        id="backupImportButton">#backupImportButton</ui-button>
-                                </ui-flex-grid-item>
+                            <hr />
 
-                                <ui-flex-grid-item>
-                                    <ui-button variant="full" color="primary"
-                                        id="backupExportButton">#backupExportButton</ui-button>
-                                </ui-flex-grid-item>
-                            </ui-flex-grid-row>
-                        </section>
-                    </ui-flex-grid-item>
-                </ui-flex-grid-row>
+                            <!-- edit rhythm (open dialog button) -->
+                            <section>
+                                TODO: Rhythm EDIT (button opens a fullscreen
+                                dialog)
+                            </section>
+                        </ui-flex-grid-item>
+                    </ui-flex-grid-row>
 
-                <ui-flex-grid-row style="display: none;"><!-- TODO: Storage Section -->
-                    <ui-flex-grid-item class="ui-card">
-                        <h3 id="storageTitle" class="title">#storageTitle</h3>
+                    <!-- "Backup" Section -->
+                    <ui-flex-grid-row>
+                        <ui-flex-grid-item class="ui-card backup">
+                            <h3 id="backupTitle" class="title">#backupTitle</h3>
 
-                        <hr />
+                            <hr />
 
-                        <!-- TDOO: Storage table here -->
-                    </ui-flex-grid-item>
-                </ui-flex-grid-row>
-            </ui-flex-grid>
-        </settings-page>
-    </template>
+                            <!-- import/export buttons -->
+                            <section>
+                                <ui-flex-grid-row gap="0.25rem">
+                                    <ui-flex-grid-item>
+                                        <ui-button
+                                            variant="full"
+                                            color="primary"
+                                            id="backupImportButton"
+                                        >
+                                            #backupImportButton
+                                        </ui-button>
+                                    </ui-flex-grid-item>
 
-    <template id="pagePDF">
-        <ui-stack-layout-page name="pdf" title="PDF"></ui-stack-layout-page>
-    </template>
+                                    <ui-flex-grid-item>
+                                        <ui-button
+                                            variant="full"
+                                            color="primary"
+                                            id="backupExportButton"
+                                        >
+                                            #backupExportButton
+                                        </ui-button>
+                                    </ui-flex-grid-item>
+                                </ui-flex-grid-row>
+                            </section>
+                        </ui-flex-grid-item>
+                    </ui-flex-grid-row>
 
-    <script type="module" src="/src/main.js"></script>
-</body>
+                    <!-- "Storage" Section -->
+                    <ui-flex-grid-row style="display: none">
+                        <ui-flex-grid-item class="ui-card">
+                            <h3 id="storageTitle" class="title">
+                                #storageTitle
+                            </h3>
 
+                            <hr />
+
+                            <!-- TDOO: storage table here, some reload or fetch data button -->
+                        </ui-flex-grid-item>
+                    </ui-flex-grid-row>
+                </ui-flex-grid>
+            </settings-page>
+        </template>
+
+        <template id="pagePDF">
+            <ui-stack-layout-page name="pdf" title="PDF"></ui-stack-layout-page>
+        </template>
+
+        <script type="module" src="/src/main.js"></script>
+    </body>
 </html>
