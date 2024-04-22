@@ -7,6 +7,7 @@ import constants from "../constants";
  *  | "theme"
  *  | "lang"
  *  | "week-start"
+ *  | "shift-settings"
  * )}
  *
  * @typedef StorageDataWeekStart
@@ -17,6 +18,9 @@ import constants from "../constants";
  *
  * @typedef StorageDataTheme
  * @type {{ mode: ("system" | "dark" | "light"), name: "zinc" }}
+ *
+ * @typedef StorageDataShiftSettings
+ * @type {import("../../types").ShiftSettings}
  */
 
 export class Storage extends ui.events.Events {

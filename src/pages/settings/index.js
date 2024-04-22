@@ -1,6 +1,9 @@
+import { Filesystem, Encoding, Directory } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
 import ui from "ui"
 import { constants } from "../../lib";
 import * as utils from "../../utils";
+import * as types from "../../types";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
@@ -69,13 +72,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         );
     };
 
-    #onBackupImport = () => {
-        // TODO: Read json data backup
-    }
+    #onBackupImport = () => this.importBackup();
+    #onBackupExport = () => this.exportBackup();
 
-    #onBackupExport = () => {
-        // TODO: Create json data for backup
-    }
 
     constructor() {
         super();
@@ -180,10 +179,94 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         }
     }
 
+    async importBackup() {
+        const input = document.createElement("input");
+
+        input.type = "file";
+
+        input.onchange = async () => {
+            const reader = new FileReader();
+            reader.onload = (ev) => this.#readerOnLoad(ev);
+            reader.onerror = (ev) => this.#readerOnError(ev);
+            reader.readAsText(input.files[0]);
+        };
+
+        input.click();
+    }
+
+    async exportBackup() {
+        /** @type {import("../../types").Backup} */
+        const backup = {
+            settings: this.app.storage.get("shift-settings", types.shiftSettings),
+            indexedDB: await this.app.db.getAll(),
+        };
+
+        if (utils.isAndroid()) this.#androidExport(backup);
+        else this.#browserExport(backup);
+    }
+
     #createShiftsTable() {
         const tbody = this.shifts.tableBody;
 
         // TODO: render body data...
         // ...
+    }
+
+    /**
+     * @param {ProgressEvent<FileReader>} ev
+     */
+    #readerOnLoad(ev) {
+        // TODO: handle data import
+    }
+
+    /**
+     * @param {ProgressEvent<FileReader>} ev
+     */
+    #readerOnError(ev) {
+        // TODO: handle data import error
+    }
+
+    /**
+     * @param {import("../../types").Backup} data
+     */
+    async #androidExport(data) {
+        const fileName = this.#getBackupFileName()
+        const today = new Date();
+        const pM = (today.getMonth() + 1).toString().padStart(2, "0");
+        const pD = today.getDate().toString().padStart(2, "0");
+
+        Share.share({
+            title: `${today.getFullYear()}-${pM}-${pD} Backup`,
+            url: (await Filesystem.writeFile({
+                path: fileName,
+                data: JSON.stringify(data),
+                encoding: Encoding.UTF8,
+                directory: Directory.Cache,
+            })).uri,
+            dialogTitle: `Backup "${fileName}"`,
+        });
+    }
+
+    /**
+     * @param {import("../../types").Backup} data
+     */
+    async #browserExport(data) {
+        const blob = new Blob([JSON.stringify(data)], {
+            type: "octet/stream",
+        });
+
+        const anchor = document.createElement("a");
+
+        anchor.setAttribute("href", window.URL.createObjectURL(blob));
+        anchor.setAttribute("download", this.#getBackupFileName());
+
+        anchor.click();
+    }
+
+    #getBackupFileName() {
+        const today = new Date();
+        const month = (today.getMonth() + 1).toString().padStart(2, "0");
+        const date = today.getDate().toString().padStart(2, "0");
+        return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     }
 }

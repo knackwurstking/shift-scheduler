@@ -28,7 +28,7 @@
    * Use global.d.ts instead of compilerOptions.types
    * to avoid limiting type declarations.
    */
+    "include": [
+        "src/**/*.js"
+    ]
 }
-  "include": [
-    "src/**/*.js"
-]

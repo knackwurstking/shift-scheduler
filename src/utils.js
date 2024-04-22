@@ -1,4 +1,4 @@
-import { constants } from "./lib";
+import ui from "ui";
 
 /**
  * @param {import("./lib/storage").StorageDataTheme} theme
@@ -19,3 +19,5 @@ export async function setTheme(theme, app) {
     app.themeHandler.connectedCallback();
     app.storage.set("theme", theme);
 }
+
+export const isAndroid = ui.utils.isAndroid

@@ -2,33 +2,6 @@ import constants from "../constants";
 
 const storeMonths = "months";
 
-/**
- * @typedef DBShift
- * @type {{
- *  id: number;
- *  name: string;
- *  shortName: string;
- *  visible: boolean;
- *  color?: string;
- * }}
- *
- * @typedef DBDay
- * @type {{
- *  date: Date;
- *  shift: DBShift | null;
- *  note: string;
- * }}
- *
- * @typedef DBMonth
- * @type {DBDay[]}
- *
- * @typedef DBEntry
- * @type {{
- *  id: string;
- *  data: DBMonth;
- * }}
- */
-
 export class DB {
     /** @type {IDBOpenDBRequest} */
     #request;
@@ -48,26 +21,23 @@ export class DB {
         this.#request?.result.close();
     }
 
-    #get() {
-        return this.#request.result
-            .transaction("months", "readonly")
-            .objectStore(storeMonths);
-    }
+    /**
+     * @returns {Promise<import("../../types").DBEntry[]>}
+     */
+    async getAll() {
+        // TODO: Get all database entries
 
-    #set() {
-        return this.#request.result
-            .transaction("months", "readwrite")
-            .objectStore(storeMonths);
+        return []
     }
 
     /**
      * @param {number} year
      * @param {number} month
-     * @returns {Promise<DBEntry | null>} - Returns null on error (no entry found)
+     * @returns {Promise<import("../../types").DBEntry | null>} - Returns null on error (no entry found)
      */
-    async getMonth(year, month) {
+    async get(year, month) {
         return await new Promise((resolve) => {
-            const r = this.#get().get(`${year}/${month}`);
+            const r = this.#roStore().get(`${year}/${month}`);
             r.onsuccess = () => {
                 resolve(r.result);
             };
@@ -85,12 +55,12 @@ export class DB {
     /**
      * @param {number} year
      * @param {number} month
-     * @param {DBMonth} data
+     * @param {import("../../types").DBEntryData} data
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
     async add(year, month, data) {
         return await new Promise((resolve, reject) => {
-            const r = this.#set().add({ id: `${year}/${month}`, data: data });
+            const r = this.#rwStore().add({ id: `${year}/${month}`, data: data });
 
             r.onsuccess = () => {
                 if (constants.debug)
@@ -115,12 +85,12 @@ export class DB {
     /**
      * @param {number} year
      * @param {number} month
-     * @param {DBMonth} data
+     * @param {import("../../types").DBEntryData} data
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
     async put(year, month, data) {
         return await new Promise((resolve, reject) => {
-            const r = this.#set().put({ id: `${year}/${month}`, data: data });
+            const r = this.#rwStore().put({ id: `${year}/${month}`, data: data });
 
             r.onsuccess = () => {
                 if (constants.debug)
@@ -150,7 +120,7 @@ export class DB {
      */
     async delete(year, month) {
         return await new Promise((resolve, reject) => {
-            const r = this.#set().delete(`${year}/${month}`);
+            const r = this.#rwStore().delete(`${year}/${month}`);
             r.onsuccess = () => {
                 if (constants.debug)
                     console.log(`[DB] Deleted entry for "${year}/${month}"`);
@@ -168,6 +138,18 @@ export class DB {
                 reject(r.error);
             };
         });
+    }
+
+    #roStore() {
+        return this.#request.result
+            .transaction("months", "readonly")
+            .objectStore(storeMonths);
+    }
+
+    #rwStore() {
+        return this.#request.result
+            .transaction("months", "readwrite")
+            .objectStore(storeMonths);
     }
 
     /**
