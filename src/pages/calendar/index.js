@@ -267,7 +267,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             this.app.storage.addListener("week-start", this.#onWeekStart);
             this.app.storage.addListener("lang", this.#onLang);
 
-            this.app.storage.dispatch("week-start");
+            this.app.storage.dispatchWithData("week-start", constants.weekStart);
         }
     }
 

@@ -1,10 +1,10 @@
 /**
  * @param {Date} month
  * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
- * @returns {Promise<import("../../lib/db").DBMonth>}
+ * @returns {Promise<import("../../types").DBEntryData>}
  */
 export async function getMonthArray(month, weekStart) {
-    /** @type {import("../../lib/db").DBMonth} */
+    /** @type {import("../../types").DBEntryData} */
     const data = [];
 
     for (let i = 0; i < 42; i++) {
@@ -25,8 +25,8 @@ export async function getMonthArray(month, weekStart) {
 /**
  * @param {import("../../lib/db").DB | null} db
  * @param {Date} month
- * @param {import("../../lib/db").DBMonth} days
- * @returns {Promise<import("../../lib/db").DBMonth>}
+ * @param {import("../../types").DBEntryData} days
+ * @returns {Promise<import("../../types").DBEntryData>}
  */
 export async function fillWithData(db, month, days) {
     // TODO: Fill days array with data from the database

@@ -52,14 +52,6 @@ export class Storage extends ui.events.Events {
 
     /**
      * @param {StorageKeys} key
-     */
-    dispatch(key) {
-        super.dispatchWithData(key, this.get(key));
-        return this;
-    }
-
-    /**
-     * @param {StorageKeys} key
      * @param {any} data
      */
     dispatchWithData(key, data) {

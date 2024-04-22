@@ -38,18 +38,4 @@
  * }}
  */
 
-/** @type {Shift} Just some empty `Shifts` object */
-export const shift = {
-    id: 0,
-    name: "",
-    shortName: "",
-    visible: true,
-    color: "",
-}
-
-/** @type {Settings} Just some empty `Settings` object */
-export const shiftSettings = {
-    shifts: [],
-    rhythm: [],
-    startDate: "", // ...
-}
+export { }

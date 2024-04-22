@@ -44,7 +44,7 @@ export class Language {
         const data = await request.json();
         this.#data = data;
 
-        this.#app.storage.dispatch("lang");
+        this.#app.storage.dispatchWithData("lang", this.#lang);
 
         return this;
     }

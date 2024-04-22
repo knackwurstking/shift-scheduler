@@ -3,7 +3,6 @@ import { Share } from "@capacitor/share";
 import ui from "ui"
 import { constants } from "../../lib";
 import * as utils from "../../utils";
-import * as types from "../../types";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("../../app").App | null} */
@@ -200,7 +199,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     async exportBackup() {
         /** @type {import("../../types").Backup} */
         const backup = {
-            settings: this.app.storage.get("settings", types.shiftSettings),
+            settings: this.app.storage.get("settings", constants.Settings),
             indexedDB: await this.app.db.getAll(),
         };
 
@@ -210,6 +209,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     #createShiftsTable() {
         const tbody = this.shifts.tableBody;
+        const settings = this.app.storage.get("settings", constants.Settings)
 
         // TODO: render body data... (get "shifts-settings" from the storage)
         // ...
@@ -343,10 +343,3 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     }
 }
-
-///**
-// * @param {import("../../types").DBEntryData} data
-// */
-//export async function mergeDataShiftsToSettings(data) {
-//    // TODO: Add shift(s) in data to storage "settings", if they are missing
-//}
