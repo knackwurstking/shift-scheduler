@@ -291,6 +291,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         for (shift of settings.shifts) {
             // @ts-ignore
             node = template.cloneNode(true);
+            // TODO: add shifts data to innerHTML
             node.querySelector("td:nth-child(1)").innerHTML = "1";
             node.querySelector("td:nth-child(2)").innerHTML = "2";
             node.querySelector("td:nth-child(3)").innerHTML = "3";
