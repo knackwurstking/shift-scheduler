@@ -121,13 +121,17 @@
                                     <ui-primary
                                         slot="primary"
                                         id="miscWeekStartPrimary"
-                                        >#miscWeekStartPrimary</ui-primary
                                     >
-                                    <ui-secondary
+                                        #miscWeekStartPrimary
+                                    </ui-primary>
+
+                                    <!--ui-secondary
                                         slot="secondary"
                                         id="miscWeekStartSecondary"
-                                        >#miscWeekStartSecondary</ui-secondary
                                     >
+                                        #miscWeekStartSecondary
+                                    </ui-secondary-->
+
                                     <input
                                         slot="input"
                                         id="miscWeekStartInput"
@@ -164,6 +168,26 @@
                                 </ui-select>
 
                                 <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
+                            </section>
+
+                            <hr />
+
+                            <!-- enable/disable debug mode (only for the ui) -->
+                            <section>
+                                <ui-label ripple>
+                                    <ui-primary
+                                        slot="primary"
+                                        id="miscDebugModePrimary"
+                                    >
+                                        #miscDebugModePrimary
+                                    </ui-primary>
+
+                                    <input
+                                        slot="input"
+                                        id="miscDebugModeInput"
+                                        type="checkbox"
+                                    />
+                                </ui-label>
                             </section>
                         </ui-flex-grid-item>
                     </ui-flex-grid-row>

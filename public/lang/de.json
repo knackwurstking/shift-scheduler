@@ -14,6 +14,7 @@
         "miscWeekStartPrimary": "Die Woche beginnt am Montag",
         "miscWeekStartSecondary": "",
         "miscTheme": "Theme",
+        "miscDebugModePrimary": "Dadurch wird der Debug-Modus aktiviert",
         "backupTitle": "Backup",
         "backupImportButton": "Import",
         "backupExportButton": "Export",

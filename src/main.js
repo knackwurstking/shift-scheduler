@@ -17,5 +17,11 @@ window.addEventListener("DOMContentLoaded", () => {
     const app = new App(document.querySelector("#app")).onMount().run(); // TODO: Run the onDestroy method?
 
     // Enable debugging borders
-    if (constants.debug) app.element.classList.add("is-debug");
+    if (
+        app.storage.get(
+            "debug-mode",
+            app.element.classList.contains("is-debug"),
+        )
+    )
+        app.element.classList.add("is-debug");
 });

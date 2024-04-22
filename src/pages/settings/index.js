@@ -29,9 +29,14 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             "settings",
             "miscWeekStartPrimary",
         );
-        this.misc.weekStartSecondary.innerHTML = this.misc.theme.innerHTML =
-            this.app.language.get("settings", "miscWeekStartSecondary");
-        this.app.language.get("settings", "miscTheme");
+        this.misc.theme.innerHTML = this.app.language.get(
+            "settings",
+            "miscTheme",
+        );
+        this.misc.debugModePrimary.innerHTML = this.app.language.get(
+            "settings",
+            "miscDebugModePrimary",
+        );
 
         // Backup Section
 
@@ -68,6 +73,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         );
     };
 
+    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
     #onWeekStartChange = (ev) => {
         this.app.storage.set("week-start", ev.currentTarget.checked ? 1 : 0);
     };
@@ -85,6 +91,17 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         );
     };
 
+    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
+    #onDebugModeChange = (ev) => {
+        this.app.storage.set("debug-mode", ev.currentTarget.checked);
+
+        if (ev.currentTarget.checked) {
+            this.app.element.classList.add("is-debug");
+        } else {
+            this.app.element.classList.remove("is-debug");
+        }
+    };
+
     #onBackupImport = () => this.importBackup();
     #onBackupExport = () => this.exportBackup();
 
@@ -98,12 +115,14 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.misc = {
             title: this.querySelector("#miscTitle"),
             weekStartPrimary: this.querySelector("#miscWeekStartPrimary"),
-            weekStartSecondary: this.querySelector("#miscWeekStartSecondary"),
             theme: this.querySelector("#miscTheme"),
             /** @type {HTMLInputElement} */
             weekStartInput: this.querySelector("#miscWeekStartInput"),
             /** @type {import("ui/src/wc/input").Select} */
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
+            debugModePrimary: this.querySelector("#miscDebugModePrimary"),
+            /** @type {HTMLInputElement} */
+            debugModeInput: this.querySelector("#miscDebugModeInput"),
         };
 
         this.backup = {
@@ -140,7 +159,17 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.#app.storage.addListener("lang", this.#onLang);
             this.#onLang();
 
-            // Select current active theme
+            // misc: week-start
+            this.misc.weekStartInput.checked = !!(
+                this.app.storage.get("week-start", constants.weekStart) === 1
+            );
+
+            this.misc.weekStartInput.addEventListener(
+                "click",
+                this.#onWeekStartChange,
+            );
+
+            // misc: theme
             [...this.misc.themeModeSelect.children].forEach((c) => {
                 const theme = this.app.storage.get("theme", constants.theme);
                 if (!!theme) {
@@ -153,35 +182,34 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 }
             });
 
-            // Select current week-start checked
-            this.misc.weekStartInput.checked = !!(
-                this.app.storage.get("week-start", constants.weekStart) === 1
-            );
-
-            // Handle week-start change
-            this.misc.weekStartInput.addEventListener(
-                "click",
-                this.#onWeekStartChange,
-            );
-
-            // Handle theme change
             this.misc.themeModeSelect.addEventListener(
                 "change",
                 this.#onThemeModeSelectChange,
             );
 
-            // Handle backup import/export
-            this.backup.importButton.addEventListener(
-                "click",
-                this.#onBackupImport,
+            // misc: Debug Mode
+            this.misc.debugModeInput.checked = this.app.storage.get(
+                "debug-mode",
+                this.app.element.classList.contains("is-debug"),
             );
-            this.backup.exportButton.addEventListener(
-                "click",
-                this.#onBackupExport,
+            this.misc.debugModeInput.addEventListener(
+                "change",
+                this.#onDebugModeChange,
             );
 
             // Handle the shifts table
             this.#createShiftsTable();
+
+            // backup: import/export
+            this.backup.importButton.addEventListener(
+                "click",
+                this.#onBackupImport,
+            );
+
+            this.backup.exportButton.addEventListener(
+                "click",
+                this.#onBackupExport,
+            );
         }
     }
 
@@ -206,6 +234,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.misc.themeModeSelect.removeEventListener(
                 "change",
                 this.#onThemeModeSelectChange,
+            );
+            this.misc.debugModeInput.removeEventListener(
+                "change",
+                this.#onDebugModeChange,
             );
             this.backup.importButton.removeEventListener(
                 "click",

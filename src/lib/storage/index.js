@@ -8,6 +8,7 @@ import constants from "../constants";
  *  | "lang"
  *  | "week-start"
  *  | "settings"
+ *  | "debug-mode"
  * )}
  *
  * @typedef StorageDataWeekStart
@@ -21,6 +22,9 @@ import constants from "../constants";
  *
  * @typedef StorageDataSettings
  * @type {import("../../types").Settings}
+
+ * @typedef StorageDataDebugMode
+ * @type {boolean}
  */
 
 export class Storage extends ui.events.Events {
