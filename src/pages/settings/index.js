@@ -230,7 +230,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     // Check all entries, and merge shifts into settings (storage: "shift-settings")
                     for (const entry of data.indexedDB) {
                         if (!this.app.db.validate(entry)) {
-                            alert(`Invalid data!`);
+                            alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
                             return;
                         }
 
