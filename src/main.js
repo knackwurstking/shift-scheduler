@@ -3,7 +3,6 @@ import "./styles.css";
 
 import ui from "ui";
 import { App } from "./app";
-import constants from "./lib/constants";
 import { CalendarPage, SettingsPage } from "./pages";
 
 ui.define()
