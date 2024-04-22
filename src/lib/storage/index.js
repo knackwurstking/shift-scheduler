@@ -39,14 +39,14 @@ export class Storage extends ui.events.Events {
 
     /**
      * @param {StorageKeys} key
-     * @param {any} [fallback]
+     * @param {any} fallbackData
      * @returns {any}
      */
-    get(key, fallback = null) {
+    get(key, fallbackData) {
         return (
             JSON.parse(
                 window.localStorage.getItem(this.prefix + key) || "null",
-            ) || fallback
+            ) || fallbackData
         );
     }
 
