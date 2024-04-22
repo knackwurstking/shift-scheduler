@@ -222,15 +222,15 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     /** @type {import("../../types").Backup} */
                     const data = JSON.parse(r.result);
 
+                    // Handle settings
                     if (data.settings) {
                         if (!this.#validateSettings(data.settings))
                             throw `invalid settings`;
 
-                        // TODO: upate storage "shift-settings" with data
-                        //shiftSetup.update((setup) => ({ ...setup, ...data.settings }));
+                        this.app.storage.set("shift-settings", data.settings)
                     }
 
-                    // Check all entries, and merge shifts into settings (storage: "shift-settings")
+                    // Handle indexedDB - validate all entries
                     for (const entry of (data.indexedDB || [])) {
                         if (!this.app.db.validate(entry)) {
                             alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
@@ -240,7 +240,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                         mergeDataShiftsToSettings(entry.data);
                     }
 
-                    // Add all entries to the database, (clear the database first)
+                    // Handle indexedDB - add/put to database
                     //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
                     let y, m, entry;
                     for (entry of data.indexedDB) {
@@ -249,7 +249,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                             .catch(() => this.app.db.put(y, m, entry.data));
                     }
 
-                    // TODO: Reload the setttings page storage table (last html section)
+                    // TODO: Trigger a reload the setttings page storage table (last html section)
                     // ...
                 } catch (err) {
                     alert(`Import data failed!\nerror: ${err}`);
