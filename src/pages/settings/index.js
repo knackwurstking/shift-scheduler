@@ -200,7 +200,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     async exportBackup() {
         /** @type {import("../../types").Backup} */
         const backup = {
-            settings: this.app.storage.get("shift-settings", types.shiftSettings),
+            settings: this.app.storage.get("settings", types.shiftSettings),
             indexedDB: await this.app.db.getAll(),
         };
 
@@ -211,7 +211,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     #createShiftsTable() {
         const tbody = this.shifts.tableBody;
 
-        // TODO: render body data...
+        // TODO: render body data... (get "shifts-settings" from the storage)
         // ...
     }
 
@@ -230,7 +230,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                         if (!this.#validateSettings(data.settings))
                             throw `invalid settings`;
 
-                        this.app.storage.set("shift-settings", data.settings)
+                        this.app.storage.set("settings", data.settings)
                     }
 
                     // Handle indexedDB - validate all entries
@@ -265,7 +265,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     /**
-     * @param {import("../../types").ShiftSettings} settings
+     * @param {import("../../types").Settings} settings
      */
     #validateSettings(settings) {
         if (!Array.isArray(settings?.shifts) || !Array.isArray(settings?.rhythm)) {
@@ -348,5 +348,5 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 // * @param {import("../../types").DBEntryData} data
 // */
 //export async function mergeDataShiftsToSettings(data) {
-//    // TODO: Add shift(s) in data to storage "shift-settings", if they are missing
+//    // TODO: Add shift(s) in data to storage "settings", if they are missing
 //}

@@ -8,7 +8,7 @@
  *  color?: string;
  * }}
  *
- * @typedef ShiftSettings
+ * @typedef Settings
  * @type {{
  *  shifts: Shift[];
  *  rhythm: number[];
@@ -33,7 +33,7 @@
  *
  * @typedef Backup
  * @type {{
- *  settings: ShiftSettings;
+ *  settings: Settings;
  *  indexedDB: DBEntry[];
  * }}
  */
@@ -47,7 +47,7 @@ export const shift = {
     color: "",
 }
 
-/** @type {ShiftSettings} Just some empty `ShiftSettings` object */
+/** @type {Settings} Just some empty `Settings` object */
 export const shiftSettings = {
     shifts: [],
     rhythm: [],
