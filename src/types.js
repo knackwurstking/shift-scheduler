@@ -2,7 +2,7 @@
  * @typedef Languages
  * @type {"en" | "de"}
  *
- * @typedef Shift 
+ * @typedef Shift
  * @type {{
  *  id: number; // Just a timestamp
  *  name: string;
@@ -41,4 +41,4 @@
  * }}
  */
 
-export { }
+export {};

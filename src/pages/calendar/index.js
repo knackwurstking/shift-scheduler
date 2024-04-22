@@ -1,8 +1,8 @@
+import ui from "ui";
+import { eventDatePickerChange } from "../../app";
 import { constants } from "../../lib";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
-import ui from "ui"
-import { eventDatePickerChange } from "../../app"
 
 const template = document.createElement("template");
 
@@ -35,7 +35,7 @@ const templateWeekDaysRow = `
     <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
     <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
 </ui-flex-grid-row>
-`
+`;
 
 const templateItemContent = `
 <ui-flex-grid>
@@ -215,10 +215,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.updateWeekDays(weekStart);
 
         // Crete days, note, shifts, ... if the week-start changes
-        this.app.dispatchWithData(
-            eventDatePickerChange,
-            this.app.getMonth(),
-        );
+        this.app.dispatchWithData(eventDatePickerChange, this.app.getMonth());
     };
 
     /** @param {"left" | "right"} direction */
@@ -236,7 +233,9 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     /** @param {import("../../lib/storage").StorageDataLang} _lang */
     #onLang = async (_lang) => {
         // This will update the week days
-        this.updateWeekDays(this.app.storage.get("week-start", constants.weekStart));
+        this.updateWeekDays(
+            this.app.storage.get("week-start", constants.weekStart),
+        );
     };
 
     constructor() {
@@ -250,14 +249,14 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     }
 
     get app() {
-        return this.#app
+        return this.#app;
     }
 
     set app(app) {
-        this.#app = app
+        this.#app = app;
 
         if (super.isConnected && !this.#initialized) {
-            this.#initialized = true
+            this.#initialized = true;
 
             this.app.addListener(
                 eventDatePickerChange,
@@ -267,7 +266,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             this.app.storage.addListener("week-start", this.#onWeekStart);
             this.app.storage.addListener("lang", this.#onLang);
 
-            this.app.storage.dispatchWithData("week-start", constants.weekStart);
+            this.app.storage.dispatchWithData(
+                "week-start",
+                constants.weekStart,
+            );
         }
     }
 
@@ -278,7 +280,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.swipeHandler.start();
 
         if (!!this.app) {
-            this.app = this.app
+            this.app = this.app;
         }
     }
 
@@ -318,16 +320,19 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.order = [0, 1, 2, 3, 4, 5, 6];
 
         if (weekStart > 0) {
-            this.order = [...this.order.slice(weekStart), ...this.order.slice(0, weekStart)];
+            this.order = [
+                ...this.order.slice(weekStart),
+                ...this.order.slice(0, weekStart),
+            ];
         }
 
         const items = this.shadowRoot.querySelectorAll(
             ".week-days-row .week-day-item",
-        )
+        );
 
-        this.#markWeekendItems(...items)
+        this.#markWeekendItems(...items);
         items.forEach((item, i) => {
-            item.innerHTML = `${this.app.language.get("calendar", this.order[i % 7].toString())}`
+            item.innerHTML = `${this.app.language.get("calendar", this.order[i % 7].toString())}`;
         });
     }
 
@@ -341,14 +346,13 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             this.app.storage.get("week-start", constants.weekStart),
         );
 
-        const cards = calendarItem.querySelectorAll(
-            ".days-row > .day-item",
-        );
+        const cards = calendarItem.querySelectorAll(".days-row > .day-item");
 
         const data = await utils.fillWithData(this.app.db, date, await promise);
 
         for (let i = 0; i < data.length; i++) {
-            if (this.isNope(data[i].date, date)) cards[i].classList.add("is-inactive");
+            if (this.isNope(data[i].date, date))
+                cards[i].classList.add("is-inactive");
             else cards[i].classList.remove("is-inactive");
 
             if (this.isToday(data[i].date)) cards[i].classList.add("is-today");
@@ -360,11 +364,13 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             cards[i].querySelector(".day-item-date").innerHTML =
                 `${data[i].date.getDate()}`;
 
-            cards[i].querySelector(".day-item-shift").innerHTML =
-                !!data[i].shift?.visible ? data[i].shift?.shortName || "" : "";
+            cards[i].querySelector(".day-item-shift").innerHTML = !!data[i]
+                .shift?.visible
+                ? data[i].shift?.shortName || ""
+                : "";
         }
 
-        this.#markWeekendItems(...cards)
+        this.#markWeekendItems(...cards);
     }
 
     /**
@@ -393,18 +399,18 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      * @param {Element[]} children
      */
     async #markWeekendItems(...children) {
-        const satIndex = this.order.findIndex(o => o === 6)
-        const sunIndex = this.order.findIndex(o => o === 0)
+        const satIndex = this.order.findIndex((o) => o === 6);
+        const sunIndex = this.order.findIndex((o) => o === 0);
         children.forEach((c, i) => {
             c.classList.remove("is-saturday");
             c.classList.remove("is-sunday");
 
-            if ((i % this.order.length) === satIndex) {
-                c.classList.add("is-saturday")
+            if (i % this.order.length === satIndex) {
+                c.classList.add("is-saturday");
             }
 
-            if ((i % this.order.length) === sunIndex) {
-                c.classList.add("is-sunday")
+            if (i % this.order.length === sunIndex) {
+                c.classList.add("is-sunday");
             }
         });
     }

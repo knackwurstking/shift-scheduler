@@ -8,7 +8,7 @@ export default {
         return {
             mode: "system",
             name: "zinc",
-        }
+        };
     },
 
     storagePrefix: "shift-scheduler:",
@@ -30,7 +30,7 @@ export default {
             shortName: "",
             visible: true,
             color: "",
-        }
+        };
     },
 
     /** @type {import("../../types").Settings} Just some empty `Settings` object */
@@ -39,8 +39,6 @@ export default {
             shifts: [],
             rhythm: [],
             startDate: "", // ...
-        }
-    }
+        };
+    },
 };
-
-

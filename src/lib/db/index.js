@@ -1,5 +1,5 @@
-import constants from "../constants";
 import * as utils from "../../utils";
+import constants from "../constants";
 
 const storeMonths = "months";
 
@@ -79,9 +79,8 @@ export class DB {
     async getAll() {
         // TODO: Get all database entries
 
-        return []
+        return [];
     }
-
 
     /**
      * @param {number} year
@@ -91,7 +90,10 @@ export class DB {
      */
     async add(year, month, data) {
         return await new Promise((resolve, reject) => {
-            const r = this.#rwStore().add({ id: `${year}/${month}`, data: data });
+            const r = this.#rwStore().add({
+                id: `${year}/${month}`,
+                data: data,
+            });
 
             r.onsuccess = () => {
                 if (constants.debug)
@@ -121,7 +123,10 @@ export class DB {
      */
     async put(year, month, data) {
         return await new Promise((resolve, reject) => {
-            const r = this.#rwStore().put({ id: `${year}/${month}`, data: data });
+            const r = this.#rwStore().put({
+                id: `${year}/${month}`,
+                data: data,
+            });
 
             r.onsuccess = () => {
                 if (constants.debug)

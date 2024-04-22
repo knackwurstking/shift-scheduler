@@ -37,9 +37,11 @@ export default class SwipeHandler extends ui.events.Events {
         }
 
         // @ts-ignore
-        const r = ev.currentTarget.getBoundingClientRect()
+        const r = ev.currentTarget.getBoundingClientRect();
         this.setTransition(`left ${0.3}s ease`);
-        this.moveX(this.#clientX > this.#startX ? +(r.width + 1) : -r.width + 1);
+        this.moveX(
+            this.#clientX > this.#startX ? +(r.width + 1) : -r.width + 1,
+        );
         setTimeout(() => this.#resetSwipe(), 300);
     };
 
@@ -66,8 +68,6 @@ export default class SwipeHandler extends ui.events.Events {
     constructor(calendar) {
         super(constants.debug);
         this.calendar = calendar;
-
-
     }
 
     start() {
@@ -116,7 +116,8 @@ export default class SwipeHandler extends ui.events.Events {
     /**
      * @param {number} dX - always the value for the center item
      */
-    moveX(dX) { // NOTE: -100% | 0% | 100%
+    moveX(dX) {
+        // NOTE: -100% | 0% | 100%
         const items = this.calendar.getItems();
 
         // @ts-ignore
@@ -134,7 +135,7 @@ export default class SwipeHandler extends ui.events.Events {
         const items = this.calendar.getItems();
 
         // @ts-ignore
-        items.forEach(c => c.style.transition = value);
+        items.forEach((c) => (c.style.transition = value));
     }
 
     isMinSwipe() {
@@ -159,8 +160,8 @@ export default class SwipeHandler extends ui.events.Events {
     }
 
     #reorderItems() {
-        const items = this.calendar.getItems()
-        const direction = this.#clientX > this.#startX ? "right" : "left"
+        const items = this.calendar.getItems();
+        const direction = this.#clientX > this.#startX ? "right" : "left";
         switch (direction) {
             case "left":
                 // The first item will be the last
@@ -172,7 +173,7 @@ export default class SwipeHandler extends ui.events.Events {
                 // The last item will be the first
                 this.calendar.shadowRoot.insertBefore(
                     this.calendar.shadowRoot.removeChild(items[2]),
-                    items[0]
+                    items[0],
                 );
                 break;
         }

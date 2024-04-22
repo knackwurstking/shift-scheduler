@@ -20,7 +20,7 @@ export async function setTheme(theme, app) {
     app.storage.set("theme", theme);
 }
 
-export const isAndroid = ui.utils.isAndroid
+export const isAndroid = ui.utils.isAndroid;
 
 /**
  * @param {import("./types").Shift} shift
@@ -31,10 +31,7 @@ export function validateShift(shift) {
         return false;
     }
 
-    if (
-        typeof shift.name !== "string" ||
-        typeof shift.shortName !== "string"
-    ) {
+    if (typeof shift.name !== "string" || typeof shift.shortName !== "string") {
         return false;
     }
 

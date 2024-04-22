@@ -1,13 +1,13 @@
-import { constants, DB, Language, Storage } from "./lib";
 import ui from "ui";
+import { constants, DB, Language, Storage } from "./lib";
 import * as utils from "./utils";
 
-export const eventDatePickerChange = "datepickerchange"
+export const eventDatePickerChange = "datepickerchange";
 
 /**
- * @typedef {import("ui/src/wc").Button} Button 
- * @typedef {import("ui/src/wc").IconButton} IconButton 
- * @typedef {import("ui/src/wc").StackLayout} StackLayout 
+ * @typedef {import("ui/src/wc").Button} Button
+ * @typedef {import("ui/src/wc").IconButton} IconButton
+ * @typedef {import("ui/src/wc").StackLayout} StackLayout
  */
 
 export class App extends ui.events.Events {
@@ -36,33 +36,33 @@ export class App extends ui.events.Events {
         }
 
         if (!page) {
-            this.#noPageSetup()
+            this.#noPageSetup();
         }
 
         switch (page.name) {
             case "calendar":
                 // @ts-expect-error
                 page.app = this;
-                this.#calendarPageSetup(page)
+                this.#calendarPageSetup(page);
                 break;
             case "settings":
                 // @ts-expect-error
                 page.app = this;
-                this.#settingsPageSetup(page)
+                this.#settingsPageSetup(page);
                 break;
             case "pdf":
-                this.#pdfPageSetup(page)
+                this.#pdfPageSetup(page);
                 break;
             default:
-                throw `unknown page "${page.name}"`
+                throw `unknown page "${page.name}"`;
         }
-    }
+    };
 
     /**
      * @param {Element} app
      */
     constructor(app) {
-        super(constants.debug) // NOTE: Events: `eventDatePickerChange`
+        super(constants.debug); // NOTE: Events: `eventDatePickerChange`
         this.#root = app;
 
         this.db;
@@ -70,15 +70,12 @@ export class App extends ui.events.Events {
         this.language = new Language(this);
 
         /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
-        this.themeHandler = document.querySelector("#themeHandler")
-        utils.setTheme(
-            this.storage.get("theme", constants.theme),
-            this
-        );
+        this.themeHandler = document.querySelector("#themeHandler");
+        utils.setTheme(this.storage.get("theme", constants.theme), this);
 
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
-        this.stackLayout.debug = constants.debug
+        this.stackLayout.debug = constants.debug;
 
         // AppBar left slot
         /** @type {IconButton} */
@@ -134,17 +131,27 @@ export class App extends ui.events.Events {
         // StackLayout
         this.stackLayout.registerPage("calendar", () =>
             // @ts-expect-error
-            document.querySelector("template#pageCalendar").content.cloneNode(true));
+            document
+                .querySelector("template#pageCalendar")
+                .content.cloneNode(true),
+        );
 
         this.stackLayout.registerPage("pdf", () =>
             // @ts-expect-error
-            document.querySelector("template#pagePDF").content.cloneNode(true));
+            document.querySelector("template#pagePDF").content.cloneNode(true),
+        );
 
         this.stackLayout.registerPage("settings", () =>
             // @ts-expect-error
-            document.querySelector("template#pageSettings").content.cloneNode(true));
+            document
+                .querySelector("template#pageSettings")
+                .content.cloneNode(true),
+        );
 
-        this.stackLayout.events.addListener("change", this.#onStackLayoutChange)
+        this.stackLayout.events.addListener(
+            "change",
+            this.#onStackLayoutChange,
+        );
 
         // TODO: Get the last used date from the local storage
         this.setMonth(new Date());
@@ -162,7 +169,10 @@ export class App extends ui.events.Events {
         this.storage.removeListener("lang", this.#onlang);
 
         // StackLayout event: "change"
-        this.stackLayout.events.removeListener("change", this.#onStackLayoutChange)
+        this.stackLayout.events.removeListener(
+            "change",
+            this.#onStackLayoutChange,
+        );
 
         return this;
     }
@@ -177,8 +187,7 @@ export class App extends ui.events.Events {
     getMonth() {
         let [year, month] = this.datePickerButton.innerText.split("/");
 
-        if (!year || !month)
-            throw `the date-picker button contains no date!`;
+        if (!year || !month) throw `the date-picker button contains no date!`;
 
         if (isNaN(Number(year)) || isNaN(Number(month)))
             throw `the date-picker button contains no date!`;
@@ -189,7 +198,7 @@ export class App extends ui.events.Events {
     /** @param {Date} date */
     setMonth(date) {
         this.datePickerButton.innerText = this.getMonthString(date);
-        this.dispatchWithData(eventDatePickerChange, date)
+        this.dispatchWithData(eventDatePickerChange, date);
     }
 
     /** @param {Date} date */
@@ -198,66 +207,66 @@ export class App extends ui.events.Events {
     }
 
     goNextMonth() {
-        const date = this.getMonth()
+        const date = this.getMonth();
         date.setMonth(date.getMonth() + 1);
-        this.setMonth(date)
+        this.setMonth(date);
     }
 
     goPrevMonth() {
-        const date = this.getMonth()
+        const date = this.getMonth();
         date.setMonth(date.getMonth() - 1);
-        this.setMonth(date)
+        this.setMonth(date);
     }
 
     /**
      * @param {string} title
      */
     setTitle(title) {
-        this.title.innerHTML = `<h3>${title}</h3>`
+        this.title.innerHTML = `<h3>${title}</h3>`;
     }
 
     #noPageSetup() {
-        this.setTitle("")
-        this.datePickerButton.style.display = "none"
-        this.editButton.style.display = "none"
-        this.todayButton.style.display = "none"
-        this.pdfButton.style.display = "none"
-        this.settingsButton.style.display = "none"
+        this.setTitle("");
+        this.datePickerButton.style.display = "none";
+        this.editButton.style.display = "none";
+        this.todayButton.style.display = "none";
+        this.pdfButton.style.display = "none";
+        this.settingsButton.style.display = "none";
     }
 
     /**
      * @param {import("ui/src/wc").StackLayoutPage} page
      */
     #calendarPageSetup(page) {
-        this.setTitle(page.getAttribute("title") || "")
-        this.datePickerButton.style.display = "flex"
-        this.editButton.style.display = "flex"
-        this.todayButton.style.display = "flex"
-        this.pdfButton.style.display = "flex"
-        this.settingsButton.style.display = "flex"
+        this.setTitle(page.getAttribute("title") || "");
+        this.datePickerButton.style.display = "flex";
+        this.editButton.style.display = "flex";
+        this.todayButton.style.display = "flex";
+        this.pdfButton.style.display = "flex";
+        this.settingsButton.style.display = "flex";
     }
 
     /**
      * @param {import("ui/src/wc").StackLayoutPage} page
      */
     #settingsPageSetup(page) {
-        this.setTitle(page.getAttribute("title") || "")
-        this.datePickerButton.style.display = "none"
-        this.editButton.style.display = "none"
-        this.todayButton.style.display = "none"
-        this.pdfButton.style.display = "none"
-        this.settingsButton.style.display = "none"
+        this.setTitle(page.getAttribute("title") || "");
+        this.datePickerButton.style.display = "none";
+        this.editButton.style.display = "none";
+        this.todayButton.style.display = "none";
+        this.pdfButton.style.display = "none";
+        this.settingsButton.style.display = "none";
     }
 
     /**
      * @param {import("ui/src/wc").StackLayoutPage} page
      */
     #pdfPageSetup(page) {
-        this.setTitle(page.getAttribute("title") || "")
-        this.datePickerButton.style.display = "none"
-        this.editButton.style.display = "none"
-        this.todayButton.style.display = "none"
-        this.pdfButton.style.display = "none"
-        this.settingsButton.style.display = "none"
+        this.setTitle(page.getAttribute("title") || "");
+        this.datePickerButton.style.display = "none";
+        this.editButton.style.display = "none";
+        this.todayButton.style.display = "none";
+        this.pdfButton.style.display = "none";
+        this.settingsButton.style.display = "none";
     }
 }
