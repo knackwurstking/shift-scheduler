@@ -186,8 +186,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         input.onchange = async () => {
             const reader = new FileReader();
-            reader.onload = (ev) => this.#readerOnLoad(ev);
-            reader.onerror = (ev) => this.#readerOnError(ev);
+            reader.onload = () => this.#readerOnLoad(reader);
+            reader.onerror = () => this.#readerOnError(reader);
             reader.readAsText(input.files[0]);
         };
 
@@ -213,24 +213,62 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     /**
-     * @param {ProgressEvent<FileReader>} ev
+     * @param {FileReader} r
      */
-    #readerOnLoad(ev) {
-        // TODO: handle data import
+    async #readerOnLoad(r) {
+        switch (typeof r.result) {
+            case "string":
+                try {
+                    /** @type {import("../../types").Backup} */
+                    const data = JSON.parse(r.result);
+
+                    if (data.settings) {
+                        // TODO: upate storage "shift-settings" with data
+                        //shiftSetup.update((setup) => ({ ...setup, ...data.settings }));
+                    }
+
+                    // Check all entries, and merge shifts into settings (storage: "shift-settings")
+                    for (const entry of data.indexedDB) {
+                        if (!this.app.db.validate(entry)) {
+                            alert(`Invalid data!`);
+                            return;
+                        }
+
+                        mergeDataShiftsToSettings(entry.data);
+                    }
+
+                    // Add all entries to the database, (clear the database first)
+                    await this.app.db.deleteAll()
+                    for (const entry of data.indexedDB) {
+                        const [yS, mS] = entry.id.split("/", 2)
+                        const y = parseInt(yS, 10);
+                        const m = parseInt(mS, 10);
+                        this.app.db.add(y, m, entry.data);
+                    }
+
+                    // TODO: Reload the setttings page storage table (last html section)
+                    // ...
+                } catch (err) {
+                    alert(`Import data failed!\nerror: ${err}`);
+                }
+                break;
+            default:
+                alert("Wrong data!");
+        }
     }
 
     /**
-     * @param {ProgressEvent<FileReader>} ev
+     * @param {FileReader} r
      */
-    #readerOnError(ev) {
-        // TODO: handle data import error
+    async #readerOnError(r) {
+        alert(`Import data: read file failed: ${r.error}`);
     }
 
     /**
      * @param {import("../../types").Backup} data
      */
     async #androidExport(data) {
-        const fileName = this.#getBackupFileName()
+        const fileName = await this.#getBackupFileName()
         const today = new Date();
         const pM = (today.getMonth() + 1).toString().padStart(2, "0");
         const pD = today.getDate().toString().padStart(2, "0");
@@ -258,15 +296,22 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         const anchor = document.createElement("a");
 
         anchor.setAttribute("href", window.URL.createObjectURL(blob));
-        anchor.setAttribute("download", this.#getBackupFileName());
+        anchor.setAttribute("download", await this.#getBackupFileName());
 
         anchor.click();
     }
 
-    #getBackupFileName() {
+    async #getBackupFileName() {
         const today = new Date();
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     }
+}
+
+/**
+ * @param {import("../../types").DBEntryData} data
+ */
+export async function mergeDataShiftsToSettings(data) {
+    // TODO: Add shift(s) in data to storage "shift-settings", if they are missing
 }
