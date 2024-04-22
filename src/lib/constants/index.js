@@ -20,7 +20,7 @@ export default {
     weekStart: 0,
 
     swipeRange: 75,
-    debug: false,
+    debug: true,
 
     /** @type {import("../../types").Shift} Just some empty `Shifts` object */
     get Shift() {

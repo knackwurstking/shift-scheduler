@@ -245,12 +245,25 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     #createShiftsTable() {
+        /** @type {HTMLTableCellElement} */
+        // @ts-ignore
+        const template = this.querySelector("template#shiftsTableData").content;
         const tbody = this.shifts.tableBody;
         /** @type {import("../../types").Settings} */
         const settings = this.app.storage.get("settings", constants.Settings);
 
-        // TODO: render body data... (get "shifts-settings" from the storage)
-        // ...
+        /** @type {import("../../types").Shift} */
+        let shift;
+        /** @type {HTMLElement} */
+        let node;
+        for (shift of settings.shifts) {
+            // @ts-ignore
+            node = template.cloneNode(true);
+            node.querySelector("td:nth-child(1)").innerHTML = "1";
+            node.querySelector("td:nth-child(2)").innerHTML = "2";
+            node.querySelector("td:nth-child(3)").innerHTML = "3";
+            tbody.appendChild(node);
+        }
     }
 
     /**

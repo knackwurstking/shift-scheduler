@@ -60,7 +60,10 @@ export class DB {
         return await new Promise((resolve) => {
             const r = this.#roStore().get(`${year}/${month}`);
             r.onsuccess = () => {
-                resolve(r.result);
+                resolve({
+                    id: r.result.id,
+                    data: JSON.parse(r.result.data),
+                });
             };
             r.onerror = (e) => {
                 if (constants.debug)
@@ -92,7 +95,7 @@ export class DB {
         return await new Promise((resolve, reject) => {
             const r = this.#rwStore().add({
                 id: `${year}/${month}`,
-                data: data,
+                data: JSON.stringify(data),
             });
 
             r.onsuccess = () => {
@@ -125,7 +128,7 @@ export class DB {
         return await new Promise((resolve, reject) => {
             const r = this.#rwStore().put({
                 id: `${year}/${month}`,
-                data: data,
+                data: JSON.stringify(data),
             });
 
             r.onsuccess = () => {
@@ -182,13 +185,13 @@ export class DB {
 
     #roStore() {
         return this.#request.result
-            .transaction("months", "readonly")
+            .transaction(storeMonths, "readonly")
             .objectStore(storeMonths);
     }
 
     #rwStore() {
         return this.#request.result
-            .transaction("months", "readwrite")
+            .transaction(storeMonths, "readwrite")
             .objectStore(storeMonths);
     }
 
@@ -229,11 +232,7 @@ export class DB {
 
             switch (e.oldVersion) {
                 case 0:
-                    if (constants.debug)
-                        console.log(`[DBCustom] Create database "${dbName}"`);
-
                     this.#createStore(this.#request.result);
-
                     break;
             }
         };
@@ -243,10 +242,13 @@ export class DB {
      * @param {IDBDatabase} db
      */
     #createStore(db) {
-        if (db.objectStoreNames.contains(storeMonths))
-            db.createObjectStore(storeMonths, {
+        if (!db.objectStoreNames.contains(storeMonths)) {
+            const o = db.createObjectStore(storeMonths, {
                 autoIncrement: false,
                 keyPath: "id",
             });
+            o.createIndex("id", "id", { unique: true });
+            o.createIndex("data", "data", { unique: false });
+        }
     }
 }
