@@ -1,4 +1,5 @@
 import constants from "../constants";
+import * as utils from "../../utils";
 
 const storeMonths = "months";
 
@@ -37,28 +38,8 @@ export class DB {
         for (e of entry.data) {
             // Check for "date", "shift" and "note"
             if (e.shift !== null) {
-                // Check for shift data
-                if (typeof e.shift.id !== "number") {
+                if (!utils.validateShift(e.shift)) {
                     return false;
-                }
-
-                if (
-                    typeof e.shift.name !== "string" ||
-                    typeof e.shift.shortName !== "string"
-                ) {
-                    return false;
-                }
-
-                if (typeof e.shift.visible !== "boolean") {
-                    return false;
-                }
-
-                if (typeof e.shift.color !== "string" && !!e.shift.color) {
-                    return false;
-                }
-
-                if (!e.shift.color) {
-                    e.shift.color = null;
                 }
             }
 

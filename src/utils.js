@@ -21,3 +21,34 @@ export async function setTheme(theme, app) {
 }
 
 export const isAndroid = ui.utils.isAndroid
+
+/**
+ * @param {import("./types").Shift} shift
+ */
+export function validateShift(shift) {
+    // Check for shift data
+    if (typeof shift.id !== "number") {
+        return false;
+    }
+
+    if (
+        typeof shift.name !== "string" ||
+        typeof shift.shortName !== "string"
+    ) {
+        return false;
+    }
+
+    if (typeof shift.color !== "string" && !!shift.color) {
+        return false;
+    }
+
+    if (typeof shift.visible !== "boolean") {
+        shift.visible = true;
+    }
+
+    if (!shift.color) {
+        shift.color = null;
+    }
+
+    return true;
+}

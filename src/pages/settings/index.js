@@ -243,7 +243,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     // Handle indexedDB - add/put to database
                     //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
                     let y, m, entry;
-                    for (entry of data.indexedDB) {
+                    for (entry of (data.indexedDB || [])) {
                         [y, m] = entry.id.split("/", 2).map(n => parseInt(n, 10))
                         this.app.db.add(y, m, entry.data)
                             .catch(() => this.app.db.put(y, m, entry.data));
@@ -271,6 +271,19 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         if (typeof settings.startDate !== "string") {
             return false;
+        }
+
+        let d;
+        for (d of settings.shifts) {
+            if (!utils.validateShift(d)) {
+                return false;
+            }
+        }
+
+        for (d of settings.rhythm) {
+            if (typeof d !== "number") {
+                return false;
+            }
         }
 
         return true;
