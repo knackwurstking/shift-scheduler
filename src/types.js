@@ -38,7 +38,7 @@
  * }}
  */
 
-/** @type {Shift} */
+/** @type {Shift} Just some empty `Shifts` object */
 export const shift = {
     id: 0,
     name: "",
@@ -47,7 +47,7 @@ export const shift = {
     color: "",
 }
 
-/** @type {ShiftSettings} */
+/** @type {ShiftSettings} Just some empty `ShiftSettings` object */
 export const shiftSettings = {
     shifts: [],
     rhythm: [],
