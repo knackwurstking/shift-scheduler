@@ -13,7 +13,7 @@ export default {
 
     storagePrefix: "shift-scheduler:",
 
-    /** @type {import("../language").Languages} */
+    /** @type {import("../../types").Languages} */
     language: "en",
 
     /** @type {import("../storage").StorageDataWeekStart} */

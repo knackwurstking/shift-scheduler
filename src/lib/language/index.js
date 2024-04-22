@@ -1,7 +1,4 @@
 /**
- * @typedef Languages
- * @type {"en" | "de"}
- *
  * @typedef LanguageDataGroups
  * @type {(
  *  | "calendar"
@@ -12,7 +9,7 @@
 export class Language {
     /** @type {import("../../app").App} */
     #app;
-    /** @type {Languages} */
+    /** @type {import("../../types").Languages} */
     #lang;
     /** @type {any} */
     #data;

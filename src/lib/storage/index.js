@@ -14,7 +14,7 @@ import ui from "ui";
  * @type {0 | 1}
  *
  * @typedef StorageDataLang
- * @type {import("../language").Languages}
+ * @type {import("../../types").Languages}
  *
  * @typedef StorageDataTheme
  * @type {{ mode: ("system" | "dark" | "light"), name: "zinc" }}

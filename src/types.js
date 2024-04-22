@@ -1,4 +1,7 @@
 /**
+ * @typedef Languages
+ * @type {"en" | "de"}
+ *
  * @typedef Shift 
  * @type {{
  *  id: number; // Just a timestamp
