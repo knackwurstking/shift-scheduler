@@ -19,6 +19,7 @@
         "backupExportButton": "Export",
         "shiftsTitle": "Shift Settings",
         "shiftsTableHeaderName": "Name",
-        "shiftsTableHeaderShortName": "Short"
+        "shiftsTableHeaderShortName": "Short",
+        "shiftsAddButton": "Add a new shift"
     }
 }

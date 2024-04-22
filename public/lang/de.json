@@ -19,6 +19,7 @@
         "backupExportButton": "Export",
         "shiftsTitle": "Schichteinstellungen",
         "shiftsTableHeaderName": "Name",
-        "shiftsTableHeaderShortName": "Kürzel"
+        "shiftsTableHeaderShortName": "Kürzel",
+        "shiftsAddButton": "Neue Schicht hinzufügen"
     }
 }

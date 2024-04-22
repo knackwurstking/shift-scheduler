@@ -45,6 +45,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             this.app.language.get("settings", "shiftsTableHeaderName");
         this.shifts.tableHeaderShortName.innerHTML =
             this.app.language.get("settings", "shiftsTableHeaderShortName");
+        this.shifts.addButton.innerHTML =
+            this.app.language.get("settings", "shiftsAddButton");
     };
 
     #onWeekStartChange = (ev) => {
@@ -108,6 +110,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
             tableHeaderShortName: this.querySelector("#shiftsTableHeaderShortName"),
             tableBody: this.querySelector("#shiftsTableBody"),
+            addButton: this.querySelector("#shiftsAddButton"),
         }
     }
 
