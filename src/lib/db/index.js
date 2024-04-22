@@ -22,12 +22,11 @@ export class DB {
     }
 
     /**
-     * @returns {Promise<import("../../types").DBEntry[]>}
+     * @param {import("../../types").DBEntry} entry
      */
-    async getAll() {
-        // TODO: Get all database entries
-
-        return []
+    validate(entry) {
+        // TODO: validate entry data
+        return true;
     }
 
     /**
@@ -51,6 +50,16 @@ export class DB {
             };
         });
     }
+
+    /**
+     * @returns {Promise<import("../../types").DBEntry[]>}
+     */
+    async getAll() {
+        // TODO: Get all database entries
+
+        return []
+    }
+
 
     /**
      * @param {number} year
@@ -138,6 +147,10 @@ export class DB {
                 reject(r.error);
             };
         });
+    }
+
+    async deleteAll() {
+        // ...
     }
 
     #roStore() {
