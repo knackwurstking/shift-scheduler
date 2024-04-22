@@ -237,7 +237,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                             return;
                         }
 
-                        mergeDataShiftsToSettings(entry.data);
+                        //mergeDataShiftsToSettings(entry.data);
                     }
 
                     // Handle indexedDB - add/put to database
@@ -341,9 +341,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 }
 
-/**
- * @param {import("../../types").DBEntryData} data
- */
-export async function mergeDataShiftsToSettings(data) {
-    // TODO: Add shift(s) in data to storage "shift-settings", if they are missing
-}
+///**
+// * @param {import("../../types").DBEntryData} data
+// */
+//export async function mergeDataShiftsToSettings(data) {
+//    // TODO: Add shift(s) in data to storage "shift-settings", if they are missing
+//}
