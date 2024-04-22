@@ -25,7 +25,48 @@ export class DB {
      * @param {import("../../types").DBEntry} entry
      */
     validate(entry) {
-        // TODO: validate entry data
+        if (typeof entry.id !== "string") {
+            return false;
+        }
+
+        if (!Array.isArray(entry.data)) {
+            return false;
+        }
+
+        let e;
+        for (e of entry.data) {
+            // Check for "date", "shift" and "note"
+            if (e.shift !== null) {
+                // Check for shift data
+                if (typeof e.shift.id !== "number") {
+                    return false;
+                }
+
+                if (
+                    typeof e.shift.name !== "string" ||
+                    typeof e.shift.shortName !== "string"
+                ) {
+                    return false;
+                }
+
+                if (typeof e.shift.visible !== "boolean") {
+                    return false;
+                }
+
+                if (typeof e.shift.color !== "string" && !!e.shift.color) {
+                    return false;
+                }
+
+                if (!e.shift.color) {
+                    e.shift.color = null;
+                }
+            }
+
+            if (typeof e.note !== "string") {
+                return false;
+            }
+        }
+
         return true;
     }
 

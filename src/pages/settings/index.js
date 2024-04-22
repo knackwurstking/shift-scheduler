@@ -223,6 +223,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     const data = JSON.parse(r.result);
 
                     if (data.settings) {
+                        if (!this.#validateSettings(data.settings))
+                            throw `invalid settings`;
+
                         // TODO: upate storage "shift-settings" with data
                         //shiftSetup.update((setup) => ({ ...setup, ...data.settings }));
                     }
@@ -256,6 +259,21 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             default:
                 alert("Wrong data!");
         }
+    }
+
+    /**
+     * @param {import("../../types").ShiftSettings} settings
+     */
+    #validateSettings(settings) {
+        if (!Array.isArray(settings?.shifts) || !Array.isArray(settings?.rhythm)) {
+            return false;
+        }
+
+        if (typeof settings.startDate !== "string") {
+            return false;
+        }
+
+        return true;
     }
 
     /**
