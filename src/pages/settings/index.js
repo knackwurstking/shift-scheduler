@@ -228,7 +228,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     }
 
                     // Check all entries, and merge shifts into settings (storage: "shift-settings")
-                    for (const entry of data.indexedDB) {
+                    for (const entry of (data.indexedDB || [])) {
                         if (!this.app.db.validate(entry)) {
                             alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
                             return;
@@ -238,12 +238,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     }
 
                     // Add all entries to the database, (clear the database first)
-                    await this.app.db.deleteAll()
-                    for (const entry of data.indexedDB) {
-                        const [yS, mS] = entry.id.split("/", 2)
-                        const y = parseInt(yS, 10);
-                        const m = parseInt(mS, 10);
-                        this.app.db.add(y, m, entry.data);
+                    //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
+                    let y, m, entry;
+                    for (entry of data.indexedDB) {
+                        [y, m] = entry.id.split("/", 2).map(n => parseInt(n, 10))
+                        this.app.db.add(y, m, entry.data)
+                            .catch(() => this.app.db.put(y, m, entry.data));
                     }
 
                     // TODO: Reload the setttings page storage table (last html section)
@@ -251,6 +251,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 } catch (err) {
                     alert(`Import data failed!\nerror: ${err}`);
                 }
+
                 break;
             default:
                 alert("Wrong data!");
