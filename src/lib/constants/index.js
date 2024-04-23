@@ -1,17 +1,10 @@
 export default {
-    db: {
-        name: "shift-scheduler",
-        version: 1,
-    },
-
     get theme() {
         return {
             mode: "system",
             name: "zinc",
         };
     },
-
-    storagePrefix: "shift-scheduler:",
 
     /** @type {import("../../types").Languages} */
     language: "en",
@@ -23,7 +16,7 @@ export default {
     debug: true,
 
     /** @type {import("../../types").Shift} Just some empty `Shifts` object */
-    get Shift() {
+    get shift() {
         return {
             id: 0,
             name: "",
@@ -34,7 +27,7 @@ export default {
     },
 
     /** @type {import("../../types").Settings} Just some empty `Settings` object */
-    get Settings() {
+    get settings() {
         return {
             shifts: [],
             rhythm: [],

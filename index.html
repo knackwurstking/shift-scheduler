@@ -8,10 +8,23 @@
             content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
         />
         <title>Shift Scheduler</title>
+
+        <script>
+            function createStore(ev) {
+                const store = ev.detail;
+                console.warn("[index.html] oncreate:", store);
+                // TODO: initialize states with defaults here here?
+            }
+        </script>
     </head>
 
     <body class="has-save-area">
         <ui-theme-handler id="themeHandler" auto></ui-theme-handler>
+
+        <ui-store
+            local-storage-prefix="shift-scheduler:"
+            enable-local-storage
+        ></ui-store>
 
         <div id="app">
             <ui-container id="main" style="width: 100%; height: 100%">
@@ -48,9 +61,7 @@
                     slot="center"
                     class="flex align-center justify-center"
                     style="white-space: nowrap"
-                    >#appBarTitle</ui-flex-grid-item
-                >
-
+                ></ui-flex-grid-item>
                 <ui-flex-grid-item
                     slot="right"
                     class="flex align-center justify-center"

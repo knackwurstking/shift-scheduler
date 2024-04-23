@@ -1,5 +1,11 @@
 /**
- * @typedef Languages
+ * @typedef ThemeStore
+ * @type {{
+ *  mode: "system" | "dark" | "light";
+ *  name: string;
+ * }}
+ *
+ * @typedef LangStore
  * @type {"en" | "de"}
  *
  * @typedef Shift

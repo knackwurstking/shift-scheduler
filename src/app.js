@@ -1,5 +1,5 @@
 import ui from "ui";
-import { constants, DB, Language, Storage } from "./lib";
+import { DB, Language } from "./lib";
 import * as utils from "./utils";
 
 export const eventDatePickerChange = "datepickerchange";
@@ -11,21 +11,6 @@ export const eventDatePickerChange = "datepickerchange";
  */
 
 export class App extends ui.events.Events {
-    /** @type {Element} */
-    #root;
-
-    /** @param {import("./lib/storage").StorageDataLang} data */
-    #onlang = async (data) => {
-        await this.language.setLanguage(data || constants.language);
-    };
-
-    #onBackButtonClick = async () => this.stackLayout.goBack();
-    #onDatePickerButtonClick = async () => null; // TODO: Add date-picker onclick callback
-    #onEditButtonClick = async () => null; // TODO: Add edit onclick callback
-    #onTodayButtonClick = async () => this.setMonth(new Date());
-    #onPDFButtonClick = async () => this.stackLayout.setPage("pdf");
-    #onSettingsButtonClick = async () => this.stackLayout.setPage("settings");
-
     /** @param {import("ui/src/wc").StackLayoutPage | null} page */
     #onStackLayoutChange = async (page) => {
         // Setup back button
@@ -60,87 +45,97 @@ export class App extends ui.events.Events {
 
     /**
      * @param {Element} app
+     * @param {import("ui/src/wc").Store} store
      */
-    constructor(app) {
-        super(constants.debug); // NOTE: Events: `eventDatePickerChange`
-        this.#root = app;
+    constructor(app, store) {
+        super(store.get("debug-mode")); // NOTE: Events: `eventDatePickerChange`
 
-        this.db;
-        this.storage = new Storage();
-        this.language = new Language(this);
+        this.element = app;
+        this.store = store;
+
+        /** @type {(() => void)[]} */
+        this.cleanup = [];
 
         /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
         this.themeHandler = document.querySelector("#themeHandler");
-        utils.setTheme(this.storage.get("theme", constants.theme), this);
+
+        this.db;
+
+        this.lang = new Language();
 
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
-        this.stackLayout.debug = constants.debug;
 
-        // AppBar left slot
-        /** @type {IconButton} */
-        this.backButton = document.querySelector("#appBarBackButton");
-        /** @type {Button} */
-        this.datePickerButton = document.querySelector(
-            "#appBarDatePickerButton",
-        );
+        // App Bar
+        this.appBar = {
+            // left slot
+            /** @type {IconButton} */
+            backButton: document.querySelector("#appBarBackButton"),
+            /** @type {Button} */
+            datePickerButton: document.querySelector("#appBarDatePickerButton"),
 
-        // AppBar center slot
-        /** @type {HTMLElement} */
-        this.title = document.querySelector("#appBarTitle");
+            // AppBar center slot
+            /** @type {HTMLElement} */
+            title: document.querySelector("#appBarTitle"),
 
-        // AppBar right slot
-        /** @type {IconButton} */
-        this.editButton = document.querySelector("#appBarEditButton");
-        /** @type {IconButton} */
-        this.todayButton = document.querySelector("#appBarTodayButton");
-        /** @type {IconButton} */
-        this.pdfButton = document.querySelector("#appBarPDFButton");
-        /** @type {IconButton} */
-        this.settingsButton = document.querySelector("#appBarSettingsButton");
-    }
+            // AppBar right slot
+            /** @type {IconButton} */
+            editButton: document.querySelector("#appBarEditButton"),
+            /** @type {IconButton} */
+            todayButton: document.querySelector("#appBarTodayButton"),
+            /** @type {IconButton} */
+            pdfButton: document.querySelector("#appBarPDFButton"),
+            /** @type {IconButton} */
+            settingsButton: document.querySelector("#appBarSettingsButton"),
+        };
 
-    get element() {
-        return this.#root;
+        this.appBar.backButton.onclick = async () => this.stackLayout.goBack();
+        this.appBar.datePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
+
+        this.appBar.editButton.onclick = async () => null; // TODO: Add edit onclick callback
+        this.appBar.todayButton.onclick = async () => this.setMonth(new Date());
+        this.appBar.pdfButton.onclick = async () =>
+            this.stackLayout.setPage("pdf");
+        this.appBar.settingsButton.onclick = async () =>
+            this.stackLayout.setPage("settings");
     }
 
     onMount() {
-        if (constants.debug) console.log("[app] onMount");
-
-        // Initialize the database, close if already exists
-        if (!!this.db) this.db.close();
-
-        this.db = new DB(constants.db.name, constants.db.version);
-
-        this.storage.addListener("lang", this.#onlang);
-
-        // Trigger (storage) language event - this will initially load the language data
-        this.storage.dispatchWithData(
-            "lang",
-            this.storage.get("lang", constants.language),
+        this.cleanup.push(
+            this.store.on(
+                "theme",
+                (/**@type{import("./types").ThemeStore}*/ data) => {
+                    utils.setTheme(data, this.themeHandler);
+                },
+            ),
+            this.store.on(
+                "lang",
+                (/**@type{import("./types").LangStore}*/ data) => {
+                    this.#onlang(data);
+                },
+            ),
         );
 
-        // Set on click handlers
-        this.backButton.onclick = () => this.#onBackButtonClick();
-        this.datePickerButton.onclick = () => this.#onDatePickerButtonClick();
-        this.editButton.onclick = () => this.#onEditButtonClick();
-        this.todayButton.onclick = () => this.#onTodayButtonClick();
-        this.pdfButton.onclick = () => this.#onPDFButtonClick();
-        this.settingsButton.onclick = () => this.#onSettingsButtonClick();
+        if (!!this.db) this.db.close();
+        this.db = new DB("shift-scheduler", 1);
+
+        // TODO: ...
 
         // StackLayout
+        // TODO: Move to constructor
         this.stackLayout.registerPage("calendar", () =>
-            // @ts-expect-error
             document
                 .querySelector("template#pageCalendar")
                 .content.cloneNode(true),
         );
 
+        // TODO: Move to constructor
         this.stackLayout.registerPage("pdf", () =>
             // @ts-expect-error
             document.querySelector("template#pagePDF").content.cloneNode(true),
         );
 
+        // TODO: Move to constructor
         this.stackLayout.registerPage("settings", () =>
             // @ts-expect-error
             document
@@ -160,13 +155,12 @@ export class App extends ui.events.Events {
     }
 
     onDestroy() {
-        if (constants.debug) console.log("[app] onDestroy");
-
         // Close database
         if (!!this.db) this.db.close();
 
-        // Storage event: "lang"
-        this.storage.removeListener("lang", this.#onlang);
+        this.cleanup.forEach((callback) => callback());
+
+        // TODO: ...
 
         // StackLayout event: "change"
         this.stackLayout.events.removeListener(
@@ -223,6 +217,11 @@ export class App extends ui.events.Events {
      */
     setTitle(title) {
         this.title.innerHTML = `<h3>${title}</h3>`;
+    }
+
+    /** @param {import("./types").LangStore} data */
+    async #onlang(data) {
+        await this.language.setLanguage(data);
     }
 
     #noPageSetup() {

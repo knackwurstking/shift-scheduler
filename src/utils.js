@@ -1,23 +1,22 @@
 import ui from "ui";
 
 /**
- * @param {import("./lib/storage").StorageDataTheme} theme
- * @param {import("./app").App} app
+ * @param {import("./types").ThemeStore} theme
+ * @param {import("ui/src/wc").ThemeHandler} themeHandler
  */
-export async function setTheme(theme, app) {
+export async function setTheme(theme, themeHandler) {
     // TODO: Handle theme name `ev.detail.name`
     if (theme.mode === "system") {
         // Enable auto mode
-        app.themeHandler.removeAttribute("mode");
-        app.themeHandler.setAttribute("auto", "");
+        themeHandler.removeAttribute("mode");
+        themeHandler.setAttribute("auto", "");
     } else {
         // Disable auto mode and set theme manually
-        app.themeHandler.removeAttribute("auto");
-        app.themeHandler.setAttribute("mode", theme.mode);
+        themeHandler.removeAttribute("auto");
+        themeHandler.setAttribute("mode", theme.mode);
     }
 
-    app.themeHandler.connectedCallback();
-    app.storage.set("theme", theme);
+    themeHandler.connectedCallback();
 }
 
 export const isAndroid = ui.utils.isAndroid;
