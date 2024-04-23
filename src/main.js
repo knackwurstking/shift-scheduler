@@ -3,8 +3,8 @@ import "./styles.css";
 
 import ui from "ui";
 import { App } from "./app";
+import { Language, constants } from "./lib";
 import { CalendarPage, SettingsPage } from "./pages";
-import { constants } from "./lib";
 
 ui.define()
     .then(() => {
@@ -23,5 +23,10 @@ window.addEventListener("DOMContentLoaded", () => {
     store.data.set("settings", constants.settings, true);
     store.data.set("debug-mode", constants.debug, true);
 
-    new App(document.querySelector("#app"), store).onMount().run();
+    const lang = new Language(store);
+    lang.setLanguage(store.data.get("lang"));
+
+    const app = new App(document.querySelector("#app"), store, lang);
+    app.onMount();
+    app.run();
 });

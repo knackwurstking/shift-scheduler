@@ -7,16 +7,14 @@
  */
 
 export class Language {
-    /** @type {import("../../app").App} */
-    #app;
-    /** @type {import("../../types").Languages} */
+    /** @type {import("../../types").LangStore} */
     #lang;
     /** @type {any} */
     #data;
 
-    /** @param {import("../../app").App} app */
-    constructor(app) {
-        this.#app = app;
+    /** @param {import("ui/src/wc").Store} store */
+    constructor(store) {
+        this.store = store;
     }
 
     getLanguage() {
@@ -38,10 +36,9 @@ export class Language {
         }
 
         const request = await fetch(`/lang/${this.#lang}.json`);
-        const data = await request.json();
-        this.#data = data;
+        this.#data = await request.json();
 
-        this.#app.storage.dispatchWithData("lang", this.#lang);
+        this.store.data.set("lang", this.#lang);
 
         return this;
     }
