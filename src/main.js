@@ -17,11 +17,11 @@ window.addEventListener("DOMContentLoaded", () => {
     /** @type {import("ui/src/wc").Store} */
     const store = document.querySelector("ui-store");
 
-    store.set("theme", constants.theme, true);
-    store.set("lang", constants.language, true);
-    store.set("week-start", constants.weekstart, true);
-    store.set("settings", constants.settings, true);
-    store.set("debug-mode", constants.debug, true);
+    store.data.set("theme", constants.theme, true);
+    store.data.set("lang", constants.language, true);
+    store.data.set("week-start", constants.weekstart, true);
+    store.data.set("settings", constants.settings, true);
+    store.data.set("debug-mode", constants.debug, true);
 
     new App(document.querySelector("#app"), store).onMount().run();
 });

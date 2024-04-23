@@ -48,7 +48,7 @@ export class App extends ui.events.Events {
      * @param {import("ui/src/wc").Store} store
      */
     constructor(app, store) {
-        super(store.get("debug-mode")); // NOTE: Events: `eventDatePickerChange`
+        super(store.data.get("debug-mode")); // NOTE: Events: `eventDatePickerChange`
 
         this.element = app;
         this.store = store;
@@ -102,13 +102,13 @@ export class App extends ui.events.Events {
 
     onMount() {
         this.cleanup.push(
-            this.store.on(
+            this.store.data.on(
                 "theme",
                 (/**@type{import("./types").ThemeStore}*/ data) => {
                     utils.setTheme(data, this.themeHandler);
                 },
             ),
-            this.store.on(
+            this.store.data.on(
                 "lang",
                 (/**@type{import("./types").LangStore}*/ data) => {
                     this.#onlang(data);
@@ -221,7 +221,7 @@ export class App extends ui.events.Events {
 
     /** @param {import("./types").LangStore} data */
     async #onlang(data) {
-        await this.language.setLanguage(data);
+        await this.lang.setLanguage(data);
     }
 
     #noPageSetup() {
