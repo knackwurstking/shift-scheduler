@@ -39,7 +39,7 @@ window.addEventListener("DOMContentLoaded", () => {
         store.data.set("lang", lt.name, true);
     }, true)
 
-    const app = new App(document.querySelector("#app"), store);
+    const app = new App(store);
     app.onMount();
     app.run();
 });
