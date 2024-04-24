@@ -80,6 +80,7 @@ export class App extends ui.events.Events {
 
     onDestroy() {
         this.cleanup.forEach((callback) => callback());
+        this.cleanup = []
     }
 
     run() {
@@ -157,7 +158,7 @@ export class App extends ui.events.Events {
     async #onStackLayoutChange(page) {
         console.log(`[app] stack layout changed:`, page)
 
-        // Setup back button
+        // Update the AppBar buttons...
         if (this.stackLayout.stack.length <= 1) {
             this.appBar.backButton.style.display = "none";
         } else {

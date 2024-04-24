@@ -220,11 +220,12 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             this.#store.data.on(
                 "date-picker",
                 this.handleDatePickerChangeEvent.bind(this),
+                true,
             ),
             // Handle a "week-start" change event
-            this.#store.data.on("week-start", this.#onWeekStart.bind(this)),
+            this.#store.data.on("week-start", this.#onWeekStart.bind(this), true),
             // Handle a "lang" change event
-            this.#store.data.on("lang", this.#onLang.bind(this)),
+            this.#store.data.on("lang", this.#onLang.bind(this), true),
         );
 
         this.swipeHandler.start();
@@ -236,6 +237,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         this.swipeHandler.stop();
         this.cleanup.forEach((fn) => fn());
+        this.cleanup = []
     }
 
     getItems() {
@@ -309,10 +311,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 // Go to next month
                 this.#store.data.update(
                     "date-picker",
-                    (/**@type{Date}*/ date) => {
+                    (/**@type{import("../../types").DatePickerStore}*/ dateString) => {
+                        const date = new Date(dateString)
                         date.setMonth(date.getMonth() + 1);
-                        return date;
-                        // TODO: Need to catch this in the app, and update the date-picker
+                        return date.toString();
                     },
                 );
                 break;
@@ -320,23 +322,24 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 // Go to prev month
                 this.#store.data.update(
                     "date-picker",
-                    (/**@type{Date}*/ date) => {
+                    (/**@type{import("../../types").DatePickerStore}*/ dateString) => {
+                        const date = new Date(dateString)
                         date.setMonth(date.getMonth() - 1);
-                        return date;
-                        // TODO: Need to catch this in the app, and update the date-picker
+                        return date.toString();
                     },
                 );
                 break;
         }
     }
 
-    /** @param {import("../../types").DatePickerStore} date */
-    async handleDatePickerChangeEvent(date) {
+    /** @param {import("../../types").DatePickerStore} dateString */
+    async handleDatePickerChangeEvent(dateString) {
         console.log(`[calendar] date-picker change event: update calendar items`)
 
         // Performance testing - start
         const start = new Date().getMilliseconds();
 
+        const date = new Date(dateString)
         date.setMonth(date.getMonth() - 1);
         this.today = new Date();
 
@@ -345,7 +348,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         }
 
         // Performance testing - end
-        console.log(`[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`);
+        console.log(`[calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`);
     }
 
     /**

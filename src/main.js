@@ -17,9 +17,9 @@ window.addEventListener("DOMContentLoaded", () => {
     /** @type {import("ui/src/wc").Store} */
     const store = document.querySelector("ui-store");
 
-    store.data.set("date-picker", new Date(), true);
+    store.data.set("date-picker", (new Date()).toString(), true);
     store.data.set("theme", constants.theme, true);
-    store.data.set("week-start", constants.weekstart, true);
+    store.data.set("week-start", constants.weekStart, true);
     store.data.set("settings", constants.settings, true);
     store.data.set("debug", constants.debug, true);
 
@@ -37,6 +37,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
         console.log(`[main] current language in use:`, lt)
         store.data.set("lang", lt.name, true);
+    }, true)
+
+    store.data.on("debug", (/**@type{import("./types").DebugStore}*/state) => {
+        if (state) {
+            document.querySelector("#app").classList.add("is-debug")
+        } else {
+            document.querySelector("#app").classList.remove("is-debug")
+        }
     }, true)
 
     const app = new App(store);

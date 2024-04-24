@@ -1,4 +1,7 @@
 /**
+ * @typedef DebugStore 
+ * @type {boolean}
+ *
  * @typedef ThemeStore
  * @type {{
  *  mode: "system" | "dark" | "light";
@@ -9,10 +12,13 @@
  * @type {"en" | "de"}
  *
  * @typedef DatePickerStore
- * @type {Date}
+ * @type {string}
  *
  * @typedef WeekStartStore
  * @type {0 | 1}
+ *
+ * @typedef SettingsStore
+ * @type {Settings}
  *
  * @typedef Shift
  * @type {{

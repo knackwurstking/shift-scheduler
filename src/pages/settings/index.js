@@ -60,7 +60,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     connectedCallback() {
         this.cleanup.push(
-            this.#store.data.on("lang", this.#onLang.bind(this))
+            this.#store.data.on("lang", this.#onLang.bind(this), true)
         );
 
 
@@ -127,6 +127,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     disconnectedCallback() {
         this.cleanup.forEach(fn => fn())
+        this.cleanup = []
     }
 
     async importBackup() {
@@ -153,14 +154,15 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         if (utils.isAndroid()) this.#androidExport(backup);
         else this.#browserExport(backup);
-    }
 
+    }
     async #createShiftsTable() {
         // @ts-expect-error
         const template = this.querySelector("template#shiftsTableData").content;
         const tbody = this.shifts.tableBody;
+        while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
-        /** @type {import("../../types").Settings} */
+        /** @type {import("../../types").SettingsStore} */
         const settings = this.#store.data.get("settings");
 
         /** @type {import("../../types").Shift} */
@@ -181,46 +183,47 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
      * @param {FileReader} r
      */
     async #readerOnLoad(r) {
-        switch (typeof r.result) {
-            case "string":
-                try {
-                    /** @type {import("../../types").Backup} */
-                    const data = JSON.parse(r.result);
+        if (typeof r.result !== "string") {
+            alert("Wrong data!");
+            return
+        }
 
-                    // Handle settings
-                    if (data.settings) {
-                        if (!this.#validateSettings(data.settings))
-                            throw `invalid settings`;
+        try {
+            /** @type {import("../../types").Backup} */
+            const data = JSON.parse(r.result);
 
-                        this.#store.data.set("settings", data.settings);
-                    }
+            // Handle settings
+            if (data.settings) {
+                if (!this.#validateSettings(data.settings))
+                    throw `invalid settings`;
 
-                    // Handle indexedDB - validate all entries
-                    for (const entry of data.indexedDB || []) {
-                        if (!db.validate(entry)) {
-                            alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
-                            return;
-                        }
+                this.#store.data.set("settings", data.settings);
+            }
 
-                        //mergeDataShiftsToSettings(entry.data);
-                    }
-
-                    // Handle indexedDB - add/put to database
-                    //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
-                    let y, m, entry;
-                    for (entry of data.indexedDB || []) {
-                        [y, m] = entry.id.split("/", 2).map((n) => parseInt(n, 10));
-                        db.add(y, m, entry.data).catch(() => db.put(y, m, entry.data));
-                    }
-
-                    // TODO: Trigger a settings page reload (storage table, misc section, ...)
-                } catch (err) {
-                    alert(`Import data failed!\nerror: ${err}`);
+            // Handle indexedDB - validate all entries
+            for (const entry of data.indexedDB || []) {
+                if (!db.validate(entry)) {
+                    alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
+                    return;
                 }
 
-                break;
-            default:
-                alert("Wrong data!");
+                //mergeDataShiftsToSettings(entry.data);
+            }
+
+            // Handle indexedDB - add/put to database
+            //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
+            let y, m, entry;
+            for (entry of data.indexedDB || []) {
+                [y, m] = entry.id.split("/", 2).map((n) => parseInt(n, 10));
+                db.add(y, m, entry.data).catch(() => db.put(y, m, entry.data));
+            }
+
+            // NOTE: Do a complete settings page reload, the easy way
+            //       to update everything :)
+            this.disconnectedCallback()
+            this.connectedCallback()
+        } catch (err) {
+            alert(`Import data failed!\nerror: ${err}`);
         }
     }
 
@@ -372,13 +375,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
     async #onDebugModeChange(ev) {
-        this.#store.data.set("debug");
-
-        if (ev.currentTarget.checked) {
-            document.querySelector("#app").classList.add("is-debug")
-        } else {
-            document.querySelector("#app").classList.remove("is-debug")
-        }
+        this.#store.data.set("debug", ev.currentTarget.checked);
     }
 
     async #onBackupImport() {
