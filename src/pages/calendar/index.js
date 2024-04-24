@@ -1,7 +1,7 @@
 import ui from "ui";
+import { db } from "../../lib";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
-import { db } from "../../lib"
 
 const template = document.createElement("template");
 
