@@ -5,7 +5,7 @@ import ui from "ui";
  * @param {import("ui/src/wc").ThemeHandler} themeHandler
  */
 export async function setTheme(theme, themeHandler) {
-    // TODO: Handle theme name `ev.detail.name`
+    // TODO: Handle theme name `theme.name`
     if (theme.mode === "system") {
         // Enable auto mode
         themeHandler.removeAttribute("mode");
