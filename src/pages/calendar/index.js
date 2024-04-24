@@ -222,9 +222,9 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 this.handleDatePickerChangeEvent.bind(this),
             ),
             // Handle a "week-start" change event
-            this.#store.data.on("week-start", this.onWeekStart.bind(this)),
+            this.#store.data.on("week-start", this.#onWeekStart.bind(this)),
             // Handle a "lang" change event
-            this.#store.data.on("lang", this.onLang.bind(this)),
+            this.#store.data.on("lang", this.#onLang.bind(this)),
         );
 
         this.swipeHandler.start();
@@ -391,13 +391,13 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     }
 
     /** @param {import("../../types").WeekStartStore} weekStart */
-    async onWeekStart(weekStart) {
+    async #onWeekStart(weekStart) {
         await this.#updateWeekDays(weekStart);
         await this.handleDatePickerChangeEvent(this.#store.data.get("date-picker"))
     }
 
     /** @param {import("../../types").LangStore} _lang */
-    async onLang(_lang) {
+    async #onLang(_lang) {
         // Update week days grid header row
         await this.#updateWeekDays(this.#store.data.get("week-start"));
     }

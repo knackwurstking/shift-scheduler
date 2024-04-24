@@ -1,112 +1,25 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import ui from "ui";
-import { constants } from "../../lib";
+import { db, constants } from "../../lib";
 import * as utils from "../../utils";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
-    /** @type {import("../../app").App | null} */
-    #app = null;
-    #initialized = false;
-
-    #onLang = async () => {
-        if (!this.app.language.getLanguage()) return;
-
-        // AppBar Section
-
-        this.appBar.title.innerHTML = this.app.language.get(
-            "settings",
-            "appBarTitle",
-        );
-
-        // Misc Section
-
-        this.misc.title.innerHTML = this.app.language.get(
-            "settings",
-            "miscTitle",
-        );
-        this.misc.weekStartPrimary.innerHTML = this.app.language.get(
-            "settings",
-            "miscWeekStartPrimary",
-        );
-        this.misc.theme.innerHTML = this.app.language.get(
-            "settings",
-            "miscTheme",
-        );
-        this.misc.debugModePrimary.innerHTML = this.app.language.get(
-            "settings",
-            "miscDebugModePrimary",
-        );
-
-        // Backup Section
-
-        this.backup.title.innerHTML = this.app.language.get(
-            "settings",
-            "backupTitle",
-        );
-        this.backup.importButton.innerHTML = this.app.language.get(
-            "settings",
-            "backupImportButton",
-        );
-        this.backup.exportButton.innerHTML = this.app.language.get(
-            "settings",
-            "backupExportButton",
-        );
-
-        // Shifts Section
-
-        this.shifts.title.innerHTML = this.app.language.get(
-            "settings",
-            "shiftsTitle",
-        );
-        this.shifts.tableHeaderName.innerHTML = this.app.language.get(
-            "settings",
-            "shiftsTableHeaderName",
-        );
-        this.shifts.tableHeaderShortName.innerHTML = this.app.language.get(
-            "settings",
-            "shiftsTableHeaderShortName",
-        );
-        this.shifts.addButton.innerHTML = this.app.language.get(
-            "settings",
-            "shiftsAddButton",
-        );
-    };
-
-    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
-    #onWeekStartChange = (ev) => {
-        this.app.storage.set("week-start", ev.currentTarget.checked ? 1 : 0);
-    };
-
-    /**
-     * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
-     */
-    #onThemeModeSelectChange = (ev) => {
-        utils.setTheme(
-            {
-                ...this.app.storage.get("theme", constants.theme),
-                mode: ev.detail.value,
-            },
-            this.app,
-        );
-    };
-
-    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
-    #onDebugModeChange = (ev) => {
-        this.app.storage.set("debug", ev.currentTarget.checked);
-
-        if (ev.currentTarget.checked) {
-            this.app.element.classList.add("is-debug");
-        } else {
-            this.app.element.classList.remove("is-debug");
-        }
-    };
-
-    #onBackupImport = () => this.importBackup();
-    #onBackupExport = () => this.exportBackup();
+    /** @type {import("ui/src/wc").Store} */
+    #store
+    /** @type {import("ui/src/wc").Lang} */
+    #lang
 
     constructor() {
         super();
+
+        /** @type {(() => void)[]} */
+        this.cleanup = []
+
+        /** @type {import("ui/src/wc").Store} */
+        this.#store = document.querySelector("ui-store")
+        /** @type {import("ui/src/wc").Lang} */
+        this.#lang = document.querySelector("ui-lang")
 
         this.appBar = {
             title: document.querySelector("#appBarTitle"),
@@ -145,106 +58,70 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         };
     }
 
-    get app() {
-        return this.#app;
-    }
+    connectedCallback() {
+        this.cleanup.push(
+            this.#store.data.on("lang", this.#onLang)
+        );
 
-    set app(app) {
-        this.#app = app;
 
-        if (super.isConnected && !this.#initialized) {
-            this.#initialized = true;
+        // Week Start 
+        (async () => {
+            const cb = this.#onWeekStartChange.bind(this);
 
-            // Handle language
-            this.#app.storage.addListener("lang", this.#onLang);
-            this.#onLang();
-
-            // misc: week-start
-            this.misc.weekStartInput.checked = !!(
-                this.app.storage.get("week-start", constants.weekStart) === 1
-            );
-
-            this.misc.weekStartInput.addEventListener(
-                "click",
-                this.#onWeekStartChange,
-            );
-
-            // misc: theme
-            [...this.misc.themeModeSelect.children].forEach((c) => {
-                const theme = this.app.storage.get("theme", constants.theme);
-                if (!!theme) {
-                    // @ts-ignore
-                    if (c.value === theme.mode) {
-                        c.setAttribute("selected", "");
-                    } else {
-                        c.removeAttribute("selected");
-                    }
-                }
+            this.misc.weekStartInput.checked = this.#store.data.get("week-start") === 1;
+            this.misc.weekStartInput.addEventListener("click", cb)
+            this.cleanup.push(() => {
+                this.misc.weekStartInput.removeEventListener("click", cb)
             });
+        })();
+
+        // Theme
+        /** @param {import("../../types").ThemeStore} theme */
+        (async (theme) => {
+            [...this.misc.themeModeSelect.children].forEach((c) => {
+                // @ts-expect-error
+                if (c.value === theme.mode) {
+                    c.setAttribute("selected", "")
+                } else {
+                    c.removeAttribute("selected")
+                }
+            })
 
             this.misc.themeModeSelect.addEventListener(
                 "change",
                 this.#onThemeModeSelectChange,
             );
+        })(this.#store.data.get("theme"));
 
-            // misc: Debug Mode
-            this.misc.debugModeInput.checked = this.app.storage.get(
-                "debug",
-                this.app.element.classList.contains("is-debug"),
-            );
-            this.misc.debugModeInput.addEventListener(
-                "change",
-                this.#onDebugModeChange,
-            );
 
-            // Handle the shifts table
-            this.#createShiftsTable();
+        // Debug
+        (async () => {
+            const cb = this.#onDebugModeChange.bind(this);
 
-            // backup: import/export
+            this.misc.debugModeInput.checked = this.#store.data.get("debug");
+            this.misc.debugModeInput.addEventListener("change", cb);
+            this.cleanup.push(() => {
+                this.misc.debugModeInput.removeEventListener("change", cb);
+            });
+        })();
+
+        // Backup
+        (async () => {
             this.backup.importButton.addEventListener(
-                "click",
-                this.#onBackupImport,
+                "click", this.#onBackupImport,
             );
 
             this.backup.exportButton.addEventListener(
-                "click",
-                this.#onBackupExport,
+                "click", this.#onBackupExport,
             );
-        }
-    }
+        })();
 
-    connectedCallback() {
-        if (!!this.app) {
-            this.app = this.app;
-        }
+        // Handle the shifts table
+        this.#createShiftsTable();
     }
 
     disconnectedCallback() {
-        this.#initialized = false;
-
-        if (!!this.app) {
-            this.#app.storage.removeListener("lang", this.#onLang);
-            this.misc.weekStartInput.removeEventListener(
-                "click",
-                this.#onWeekStartChange,
-            );
-            this.misc.themeModeSelect.removeEventListener(
-                "change",
-                this.#onThemeModeSelectChange,
-            );
-            this.misc.debugModeInput.removeEventListener(
-                "change",
-                this.#onDebugModeChange,
-            );
-            this.backup.importButton.removeEventListener(
-                "click",
-                this.#onBackupImport,
-            );
-            this.backup.exportButton.removeEventListener(
-                "click",
-                this.#onBackupExport,
-            );
-        }
+        this.cleanup.forEach(fn => fn())
     }
 
     async importBackup() {
@@ -265,28 +142,27 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     async exportBackup() {
         /** @type {import("../../types").Backup} */
         const backup = {
-            settings: this.app.storage.get("settings", constants.Settings),
-            indexedDB: await this.app.db.getAll(),
+            settings: this.#store.data.get("settings"),
+            indexedDB: await db.getAll(),
         };
 
         if (utils.isAndroid()) this.#androidExport(backup);
         else this.#browserExport(backup);
     }
 
-    #createShiftsTable() {
-        /** @type {HTMLTableCellElement} */
-        // @ts-ignore
+    async #createShiftsTable() {
+        // @ts-expect-error
         const template = this.querySelector("template#shiftsTableData").content;
         const tbody = this.shifts.tableBody;
+
         /** @type {import("../../types").Settings} */
-        const settings = this.app.storage.get("settings", constants.Settings);
+        const settings = this.#store.data.get("settings");
 
         /** @type {import("../../types").Shift} */
         let shift;
-        /** @type {HTMLElement} */
+        /** @type {HTMLTableCellElement} */
         let node;
         for (shift of settings.shifts) {
-            // @ts-ignore
             node = template.cloneNode(true);
             // TODO: add shifts data to innerHTML
             node.querySelector("td:nth-child(1)").innerHTML = "1";
@@ -311,15 +187,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                         if (!this.#validateSettings(data.settings))
                             throw `invalid settings`;
 
-                        this.app.storage.set("settings", data.settings);
+                        this.#store.data.set("settings", data.settings);
                     }
 
                     // Handle indexedDB - validate all entries
                     for (const entry of data.indexedDB || []) {
-                        if (!this.app.db.validate(entry)) {
-                            alert(
-                                `Data validation failed for:\n${JSON.stringify(entry, null, 4)}`,
-                            );
+                        if (!db.validate(entry)) {
+                            alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
                             return;
                         }
 
@@ -330,16 +204,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
                     let y, m, entry;
                     for (entry of data.indexedDB || []) {
-                        [y, m] = entry.id
-                            .split("/", 2)
-                            .map((n) => parseInt(n, 10));
-                        this.app.db
-                            .add(y, m, entry.data)
-                            .catch(() => this.app.db.put(y, m, entry.data));
+                        [y, m] = entry.id.split("/", 2).map((n) => parseInt(n, 10));
+                        db.add(y, m, entry.data).catch(() => db.put(y, m, entry.data));
                     }
 
-                    // TODO: Trigger a reload the setttings page storage table (last html section)
-                    // ...
+                    // TODO: Trigger a settings page reload (storage table, misc section, ...)
                 } catch (err) {
                     alert(`Import data failed!\nerror: ${err}`);
                 }
@@ -432,5 +301,94 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
+    }
+
+    async #onLang() {
+        if (!this.#lang.data.langType) return;
+
+        // AppBar Section
+
+        this.appBar.title.innerHTML = this.#lang.data.get(
+            "settings", "appBarTitle"
+        );
+
+        // Misc Section
+
+        this.misc.title.innerHTML = this.#lang.data.get(
+            "settings", "miscTitle"
+        );
+        this.misc.weekStartPrimary.innerHTML = this.#lang.data.get(
+            "settings", "miscWeekStartPrimary",
+        );
+        this.misc.theme.innerHTML = this.#lang.data.get(
+            "settings", "miscTheme",
+        );
+        this.misc.debugModePrimary.innerHTML = this.#lang.data.get(
+            "settings", "miscDebugModePrimary",
+        );
+
+        // Backup Section
+
+        this.backup.title.innerHTML = this.#lang.data.get(
+            "settings", "backupTitle",
+        );
+        this.backup.importButton.innerHTML = this.#lang.data.get(
+            "settings", "backupImportButton",
+        );
+        this.backup.exportButton.innerHTML = this.#lang.data.get(
+            "settings", "backupExportButton",
+        );
+
+        // Shifts Section
+
+        this.shifts.title.innerHTML = this.#lang.data.get(
+            "settings", "shiftsTitle",
+        );
+        this.shifts.tableHeaderName.innerHTML = this.#lang.data.get(
+            "settings", "shiftsTableHeaderName",
+        );
+        this.shifts.tableHeaderShortName.innerHTML = this.#lang.data.get(
+            "settings", "shiftsTableHeaderShortName",
+        );
+        this.shifts.addButton.innerHTML = this.#lang.data.get(
+            "settings", "shiftsAddButton",
+        );
+    }
+
+    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
+    async #onWeekStartChange(ev) {
+        this.#store.data.set("week-start", ev.currentTarget.checked ? 1 : 0);
+    }
+
+    /**
+     * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
+     */
+    async #onThemeModeSelectChange(ev) {
+        utils.setTheme(
+            {
+                ...this.#store.data.get("theme"),
+                mode: ev.detail.value,
+            },
+            document.querySelector("#themeHandler"),
+        );
+    }
+
+    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
+    async #onDebugModeChange(ev) {
+        this.#store.data.set("debug");
+
+        if (ev.currentTarget.checked) {
+            document.querySelector("#app").classList.add("is-debug")
+        } else {
+            document.querySelector("#app").classList.remove("is-debug")
+        }
+    }
+
+    async #onBackupImport() {
+        this.importBackup();
+    }
+
+    async #onBackupExport() {
+        this.exportBackup();
     }
 }
