@@ -89,7 +89,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             this.misc.themeModeSelect.addEventListener(
                 "change",
-                this.#onThemeModeSelectChange,
+                /**
+                 * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
+                 */
+                (ev) => {
+                    this.#store.data.update("theme", (theme) => ({ ...theme, mode: ev.detail.value }));
+                }
             );
         })(this.#store.data.get("theme"));
 
@@ -358,19 +363,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
     async #onWeekStartChange(ev) {
         this.#store.data.set("week-start", ev.currentTarget.checked ? 1 : 0);
-    }
-
-    /**
-     * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
-     */
-    async #onThemeModeSelectChange(ev) {
-        utils.setTheme(
-            {
-                ...this.#store.data.get("theme"),
-                mode: ev.detail.value,
-            },
-            document.querySelector("#themeHandler"),
-        );
     }
 
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
