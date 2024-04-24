@@ -14,14 +14,13 @@ export class App extends ui.events.Events {
     /**
      * @param {Element} app
      * @param {import("ui/src/wc").Store} store
-     * @param {import("./lib/language").Language} lang
      */
-    constructor(app, store, lang) {
+    constructor(app, store) {
         super();
 
         this.element = app;
         this.store = store;
-        this.lang = lang;
+        //this.lang = lang;
 
         /** @type {(() => void)[]} */
         this.cleanup = [];
