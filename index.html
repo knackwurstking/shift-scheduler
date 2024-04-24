@@ -171,15 +171,15 @@
                             <table style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th id="shiftsTableHeaderName" class="is-text-left">
+                                        <th id="shiftsTableHeaderName" style="text-align: left;">
                                             #shiftsTableHeaderName
                                         </th>
 
-                                        <th id="shiftsTableHeaderShortName" class="is-text-left">
+                                        <th id="shiftsTableHeaderShortName" style="text-align: left;">
                                             #shiftsTableHeaderShortName
                                         </th>
 
-                                        <th class="is-text-right"></th>
+                                        <th style="text-align: right;"></th>
                                     </tr>
                                 </thead>
 
@@ -188,9 +188,9 @@
 
                             <template id="shiftsTableData">
                                 <tr>
-                                    <td class="is-text-left"></td>
-                                    <td class="is-text-left"></td>
-                                    <td class="is-text-right"></td>
+                                    <td style="text-align: left;"></td>
+                                    <td style="text-align: left;"></td>
+                                    <td style="text-align: right;"></td>
                                 </tr>
                             </template>
                         </section>
@@ -214,31 +214,28 @@
                             TODO: Rhythm EDIT (button opens a fullscreen
                             dialog)
                         </section>
-                    </ui-flex-grid-item>
-                </ui-flex-grid-row>
-
-                <!-- "Backup" Section -->
-                <ui-flex-grid-row>
-                    <ui-flex-grid-item class="ui-card backup">
-                        <h3 id="backupTitle" class="title">#backupTitle</h3>
 
                         <hr />
 
-                        <!-- import/export buttons -->
                         <section>
-                            <ui-flex-grid-row gap="0.25rem">
-                                <ui-flex-grid-item>
-                                    <ui-button variant="full" color="primary" id="backupImportButton">
-                                        #backupImportButton
-                                    </ui-button>
-                                </ui-flex-grid-item>
+                            <ui-label>
+                                <ui-primary slot="primary"
+                                    id="shiftsBackupLabelPrimary">#shiftsBackupLabelPrimary</ui-primary>
 
-                                <ui-flex-grid-item>
-                                    <ui-button variant="full" color="primary" id="backupExportButton">
-                                        #backupExportButton
-                                    </ui-button>
-                                </ui-flex-grid-item>
-                            </ui-flex-grid-row>
+                                <ui-flex-grid-row gap="0.25rem">
+                                    <ui-flex-grid-item>
+                                        <ui-button variant="full" color="secondary" id="shiftsBackupImportButton">
+                                            #shiftsBackupImportButton
+                                        </ui-button>
+                                    </ui-flex-grid-item>
+
+                                    <ui-flex-grid-item>
+                                        <ui-button variant="full" color="secondary" id="shiftsBackupExportButton">
+                                            #shiftsBackupExportButton
+                                        </ui-button>
+                                    </ui-flex-grid-item>
+                                </ui-flex-grid-row>
+                            </ui-label>
                         </section>
                     </ui-flex-grid-item>
                 </ui-flex-grid-row>

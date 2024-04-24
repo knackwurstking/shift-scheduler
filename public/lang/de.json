@@ -15,12 +15,12 @@
         "miscWeekStartSecondary": "",
         "miscTheme": "Theme",
         "miscDebugModePrimary": "Dadurch wird der Debug-Modus aktiviert",
-        "backupTitle": "Backup",
-        "backupImportButton": "Import",
-        "backupExportButton": "Export",
         "shiftsTitle": "Schichteinstellungen",
         "shiftsTableHeaderName": "Name",
         "shiftsTableHeaderShortName": "Kürzel",
-        "shiftsAddButton": "Neue Schicht hinzufügen"
+        "shiftsAddButton": "Neue Schicht hinzufügen",
+        "shiftsBackupLabelPrimary": "Backup",
+        "shiftsBackupImportButton": "Import",
+        "shiftsBackupExportButton": "Export"
     }
 }

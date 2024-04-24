@@ -15,12 +15,12 @@
         "miscWeekStartSecondary": "",
         "miscTheme": "Theme",
         "miscDebugModePrimary": "This enables the debug mode",
-        "backupTitle": "Backup",
-        "backupImportButton": "Import",
-        "backupExportButton": "Export",
         "shiftsTitle": "Shift Settings",
         "shiftsTableHeaderName": "Name",
         "shiftsTableHeaderShortName": "Short",
-        "shiftsAddButton": "Add a new shift"
+        "shiftsAddButton": "Add a new shift",
+        "shiftsBackupLabelPrimary": "Backup",
+        "shiftsBackupImportButton": "Import",
+        "shiftsBackupExportButton": "Export"
     }
 }

@@ -38,14 +38,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             debugModeInput: this.querySelector("#miscDebugModeInput"),
         };
 
-        this.backup = {
-            title: this.querySelector("#backupTitle"),
-            /** @type {import("ui/src/wc/button").Button} */
-            importButton: this.querySelector("#backupImportButton"),
-            /** @type {import("ui/src/wc/button").Button} */
-            exportButton: this.querySelector("#backupExportButton"),
-        };
-
         this.shifts = {
             title: this.querySelector("#shiftsTitle"),
             /** @type {HTMLTableElement} */
@@ -55,6 +47,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             ),
             tableBody: this.querySelector("#shiftsTableBody"),
             addButton: this.querySelector("#shiftsAddButton"),
+
+            /** @type {import("ui/src/wc").Primary} */
+            backupLabelPrimary: this.querySelector("#shiftsBackupLabelPrimary"),
+            /** @type {import("ui/src/wc/button").Button} */
+            backupImportButton: this.querySelector("#shiftsBackupImportButton"),
+            /** @type {import("ui/src/wc/button").Button} */
+            backupExportButton: this.querySelector("#shiftsBackupExportButton"),
         };
     }
 
@@ -112,12 +111,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         // Backup
         (async () => {
-            this.backup.importButton.addEventListener(
-                "click", this.#onBackupImport,
+            this.shifts.backupImportButton.addEventListener(
+                "click", this.#onBackupImport.bind(this),
             );
 
-            this.backup.exportButton.addEventListener(
-                "click", this.#onBackupExport,
+            this.shifts.backupExportButton.addEventListener(
+                "click", this.#onBackupExport.bind(this),
             );
         })();
 
@@ -169,12 +168,18 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         let shift;
         /** @type {HTMLTableCellElement} */
         let node;
+        /** @type {HTMLElement} */
+        let child2
         for (shift of settings.shifts) {
             node = template.cloneNode(true);
-            // TODO: add shifts data to innerHTML
-            node.querySelector("td:nth-child(1)").innerHTML = "1";
-            node.querySelector("td:nth-child(2)").innerHTML = "2";
-            node.querySelector("td:nth-child(3)").innerHTML = "3";
+            node.querySelector("td:nth-child(1)").innerHTML = `${shift.name}`;
+
+            child2 = node.querySelector("td:nth-child(2)")
+            child2.innerHTML = `${shift.visible ? shift.shortName : ""}`;
+            child2.style.color = shift.color || "inherit"
+
+            node.querySelector("td:nth-child(3)").innerHTML = "[E] [D]";
+
             tbody.appendChild(node);
         }
     }
@@ -342,14 +347,14 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         // Backup Section
 
-        this.backup.title.innerHTML = this.#lang.data.get(
-            "settings", "backupTitle",
+        this.shifts.backupLabelPrimary.innerHTML = this.#lang.data.get(
+            "settings", "shiftsBackupLabelPrimary",
         );
-        this.backup.importButton.innerHTML = this.#lang.data.get(
-            "settings", "backupImportButton",
+        this.shifts.backupImportButton.innerHTML = this.#lang.data.get(
+            "settings", "shiftsBackupImportButton",
         );
-        this.backup.exportButton.innerHTML = this.#lang.data.get(
-            "settings", "backupExportButton",
+        this.shifts.backupExportButton.innerHTML = this.#lang.data.get(
+            "settings", "shiftsBackupExportButton",
         );
 
         // Shifts Section
@@ -379,10 +384,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     async #onBackupImport() {
-        this.importBackup();
+        await this.importBackup();
     }
 
     async #onBackupExport() {
-        this.exportBackup();
+        await this.exportBackup();
     }
 }
