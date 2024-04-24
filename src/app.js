@@ -70,6 +70,7 @@ export class App extends ui.events.Events {
                     console.log(`[app] current theme in use:`, data)
                     utils.setTheme(data, this.themeHandler);
                 },
+                true,
             ),
             this.stackLayout.events.addListener(
                 "change",
@@ -132,26 +133,23 @@ export class App extends ui.events.Events {
     }
 
     #registerPages() {
-        this.stackLayout.registerPage("calendar", () =>
-            document
-                .querySelector("template#pageCalendar")
-                // @ts-ignore
-                .content.cloneNode(true),
-        );
+        this.stackLayout.registerPage("calendar", () => {
+            return document.querySelector("template#pageCalendar")
+                // @ts-expect-error
+                .content.cloneNode(true);
+        });
 
-        this.stackLayout.registerPage("pdf", () =>
-            document
-                .querySelector("template#pagePDF")
-                // @ts-ignore
-                .content.cloneNode(true),
-        );
+        this.stackLayout.registerPage("pdf", () => {
+            return document.querySelector("template#pagePDF")
+                // @ts-expect-error
+                .content.cloneNode(true)
+        });
 
-        this.stackLayout.registerPage("settings", () =>
-            document
-                .querySelector("template#pageSettings")
-                // @ts-ignore
-                .content.cloneNode(true),
-        );
+        this.stackLayout.registerPage("settings", () => {
+            return document.querySelector("template#pageSettings")
+                // @ts-expect-error
+                .content.cloneNode(true)
+        });
     }
 
     /** @param {import("ui/src/wc").StackLayoutPage | null} page */
