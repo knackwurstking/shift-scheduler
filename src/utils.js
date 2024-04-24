@@ -8,15 +8,12 @@ export async function setTheme(theme, themeHandler) {
     // TODO: Handle theme name `theme.name`
     if (theme.mode === "system") {
         // Enable auto mode
-        themeHandler.removeAttribute("mode");
-        themeHandler.setAttribute("auto", "");
+        themeHandler.auto = true
     } else {
         // Disable auto mode and set theme manually
-        themeHandler.removeAttribute("auto");
-        themeHandler.setAttribute("mode", theme.mode);
+        themeHandler.mode = theme.mode
+        themeHandler.auto = false
     }
-
-    themeHandler.connectedCallback();
 }
 
 export const isAndroid = ui.utils.isAndroid;
