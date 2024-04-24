@@ -12,13 +12,11 @@ export const eventDatePickerChange = "datepickerchange";
 
 export class App extends ui.events.Events {
     /**
-     * @param {Element} app
      * @param {import("ui/src/wc").Store} store
      */
-    constructor(app, store) {
+    constructor(store) {
         super();
 
-        this.element = app;
         this.store = store;
 
         /** @type {(() => void)[]} */
@@ -72,6 +70,7 @@ export class App extends ui.events.Events {
             this.store.data.on(
                 "theme",
                 (/**@type{import("./types").ThemeStore}*/ data) => {
+                    console.log(`[app] current theme in use:`, data)
                     utils.setTheme(data, this.themeHandler);
                 },
             ),
