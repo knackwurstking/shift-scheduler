@@ -1,5 +1,4 @@
 import ui from "ui";
-import { DB } from "./lib";
 import * as utils from "./utils";
 
 export const eventDatePickerChange = "datepickerchange";
@@ -24,8 +23,6 @@ export class App extends ui.events.Events {
 
         /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
         this.themeHandler = document.querySelector("#themeHandler");
-
-        this.db;
 
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
@@ -79,13 +76,9 @@ export class App extends ui.events.Events {
                 this.#onStackLayoutChange.bind(this),
             ),
         );
-
-        if (!!this.db) this.db.close();
-        this.db = new DB("shift-scheduler", 1); // TODO: Create some custom component?
     }
 
     onDestroy() {
-        if (!!this.db) this.db.close();
         this.cleanup.forEach((callback) => callback());
     }
 
@@ -162,6 +155,8 @@ export class App extends ui.events.Events {
 
     /** @param {import("ui/src/wc").StackLayoutPage | null} page */
     async #onStackLayoutChange(page) {
+        console.log(`[app] stack layout changed:`, page)
+
         // Setup back button
         if (this.stackLayout.stack.length <= 1) {
             this.appBar.backButton.style.display = "none";
