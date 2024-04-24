@@ -181,7 +181,10 @@ template.innerHTML = `
 `;
 
 export class CalendarPage extends ui.wc.StackLayoutPage {
-
+    /** @type {import("ui/src/wc").Store} */
+    #store
+    /** @type {import("ui/src/wc").Lang} */
+    #lang
 
     constructor() {
         super();
@@ -190,9 +193,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         /** @type {(() => void)[]} */
         this.cleanup = [];
 
-        /** @type {import("ui/src/wc").Store} */
-        this.store = document.querySelector("ui-store");
-        // TODO: Missing language object
+        this.#store = document.querySelector("ui-store");
+        this.#lang = document.querySelector("ui-lang");
         // TODO: Missing database object
 
         /** @type {Date} */
@@ -215,14 +217,14 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 this.handleSwipeEvent.bind(this),
             ),
             // Handle the "date-picker" state change, update calendar items
-            this.store.data.on(
+            this.#store.data.on(
                 "date-picker",
                 this.handleDatePickerChangeEvent.bind(this),
             ),
             // Handle a "week-start" change event
-            this.store.data.on("week-start", this.onWeekStart.bind(this)),
+            this.#store.data.on("week-start", this.onWeekStart.bind(this)),
             // Handle a "lang" change event
-            this.store.data.on("lang", this.onLang.bind(this)),
+            this.#store.data.on("lang", this.onLang.bind(this)),
         );
 
         this.swipeHandler.start();
@@ -245,7 +247,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      *  @param {Element} calendarItem
      */
     async updateItem(date, calendarItem) {
-        const promise = utils.getMonthArray(date, this.store.data.get("week-start"));
+        const promise = utils.getMonthArray(date, this.#store.data.get("week-start"));
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
         const data = await utils.fillWithData(this.app.db, date, await promise);
 
@@ -301,7 +303,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         switch (direction) {
             case "left":
                 // Go to next month
-                this.store.data.update(
+                this.#store.data.update(
                     "date-picker",
                     (/**@type{Date}*/ date) => {
                         date.setMonth(date.getMonth() + 1);
@@ -312,7 +314,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 break;
             case "right":
                 // Go to prev month
-                this.store.data.update(
+                this.#store.data.update(
                     "date-picker",
                     (/**@type{Date}*/ date) => {
                         date.setMonth(date.getMonth() - 1);
@@ -343,13 +345,13 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     /** @param {import("../../types").WeekStartStore} weekStart */
     async onWeekStart(weekStart) {
         await this.#updateWeekDays(weekStart);
-        await this.handleDatePickerChangeEvent(this.store.data.get("date-picker"))
+        await this.handleDatePickerChangeEvent(this.#store.data.get("date-picker"))
     }
 
     /** @param {import("../../types").LangStore} _lang */
     async onLang(_lang) {
         // Update week days grid header row
-        await this.#updateWeekDays(this.store.data.get("week-start"));
+        await this.#updateWeekDays(this.#store.data.get("week-start"));
     };
 
     /**
@@ -376,7 +378,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         this.#markWeekendItems(...items);
         items.forEach((item, i) => {
-            item.innerHTML = `${this.app.language.get("calendar", this.order[i % 7].toString())}`;
+            item.innerHTML = `${this.#lang.data.get("calendar", this.order[i % 7].toString())}`;
         });
     }
 
