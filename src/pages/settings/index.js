@@ -1,7 +1,7 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import ui from "ui";
-import { db, constants } from "../../lib";
+import { db } from "../../lib";
 import * as utils from "../../utils";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
