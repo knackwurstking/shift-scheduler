@@ -205,29 +205,28 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.swipeHandler = new SwipeHandler(this);
     }
 
-
     connectedCallback() {
-        console.log("[calendar] connected callback running...");
+        setTimeout(() => {
+            this.cleanup.push(
+                // The "swipe" event will update the date-picker store, base on the swiped direction
+                this.swipeHandler.addListener(
+                    "swipe",
+                    this.handleSwipeEvent.bind(this),
+                ),
+                // Handle the "date-picker" state change, update calendar items
+                this.#store.data.on(
+                    "date-picker",
+                    this.handleDatePickerChangeEvent.bind(this),
+                    true,
+                ),
+                // Handle a "week-start" change event
+                this.#store.data.on("week-start", this.#onWeekStart.bind(this), true),
+                // Handle a "lang" change event
+                this.#store.data.on("lang", this.#onLang.bind(this), true),
+            );
 
-        this.cleanup.push(
-            // The "swipe" event will update the date-picker store, base on the swiped direction
-            this.swipeHandler.addListener(
-                "swipe",
-                this.handleSwipeEvent.bind(this),
-            ),
-            // Handle the "date-picker" state change, update calendar items
-            this.#store.data.on(
-                "date-picker",
-                this.handleDatePickerChangeEvent.bind(this),
-                true,
-            ),
-            // Handle a "week-start" change event
-            this.#store.data.on("week-start", this.#onWeekStart.bind(this), true),
-            // Handle a "lang" change event
-            this.#store.data.on("lang", this.#onLang.bind(this), true),
-        );
-
-        this.swipeHandler.start();
+            this.swipeHandler.start();
+        });
     }
 
     disconnectedCallback() {

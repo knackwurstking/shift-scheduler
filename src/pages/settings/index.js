@@ -58,70 +58,69 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     connectedCallback() {
-        this.cleanup.push(
-            this.#store.data.on("lang", this.#onLang.bind(this), true)
-        );
-
-
-        // Week Start 
-        (async () => {
-            const cb = this.#onWeekStartChange.bind(this);
-
-            this.misc.weekStartInput.checked = this.#store.data.get("week-start") === 1;
-            this.misc.weekStartInput.addEventListener("click", cb)
-            this.cleanup.push(() => {
-                this.misc.weekStartInput.removeEventListener("click", cb)
-            });
-        })();
-
-        // Theme
-        /** @param {import("../../types").ThemeStore} theme */
-        (async (theme) => {
-            [...this.misc.themeModeSelect.children].forEach((c) => {
-                // @ts-expect-error
-                if (c.value === theme.mode) {
-                    c.setAttribute("selected", "")
-                } else {
-                    c.removeAttribute("selected")
-                }
-            })
-
-            this.misc.themeModeSelect.addEventListener(
-                "change",
-                /**
-                 * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
-                 */
-                (ev) => {
-                    this.#store.data.update("theme", (theme) => ({ ...theme, mode: ev.detail.value }));
-                }
-            );
-        })(this.#store.data.get("theme"));
-
-
-        // Debug
-        (async () => {
-            const cb = this.#onDebugModeChange.bind(this);
-
-            this.misc.debugModeInput.checked = this.#store.data.get("debug");
-            this.misc.debugModeInput.addEventListener("change", cb);
-            this.cleanup.push(() => {
-                this.misc.debugModeInput.removeEventListener("change", cb);
-            });
-        })();
-
-        // Backup
-        (async () => {
-            this.shifts.backupImportButton.addEventListener(
-                "click", this.#onBackupImport.bind(this),
+        setTimeout(() => {
+            this.cleanup.push(
+                this.#store.data.on("lang", this.#onLang.bind(this), true)
             );
 
-            this.shifts.backupExportButton.addEventListener(
-                "click", this.#onBackupExport.bind(this),
-            );
-        })();
 
-        // Handle the shifts table
-        this.#createShiftsTable();
+            // Week Start 
+            (async () => {
+                const cb = this.#onWeekStartChange.bind(this);
+
+                this.misc.weekStartInput.checked = this.#store.data.get("week-start") === 1;
+                this.misc.weekStartInput.addEventListener("click", cb)
+                this.cleanup.push(() => {
+                    this.misc.weekStartInput.removeEventListener("click", cb)
+                });
+            })();
+
+            // Theme
+            /** @param {import("../../types").ThemeStore} theme */
+            (async (theme) => {
+                [...this.misc.themeModeSelect.items].forEach(
+                    (/** @type {import("ui/src/wc").SelectOption} */ c) => {
+                        c.selected = (c.value === theme.mode)
+                    }
+                )
+
+                this.misc.themeModeSelect.addEventListener(
+                    "change",
+                    /**
+                     * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
+                     */
+                    (ev) => {
+                        this.#store.data.update("theme", (theme) => ({ ...theme, mode: ev.detail.value }));
+                    }
+                );
+            })(this.#store.data.get("theme"));
+
+
+            // Debug
+            (async () => {
+                const cb = this.#onDebugModeChange.bind(this);
+
+                this.misc.debugModeInput.checked = this.#store.data.get("debug");
+                this.misc.debugModeInput.addEventListener("change", cb);
+                this.cleanup.push(() => {
+                    this.misc.debugModeInput.removeEventListener("change", cb);
+                });
+            })();
+
+            // Backup
+            (async () => {
+                this.shifts.backupImportButton.addEventListener(
+                    "click", this.#onBackupImport.bind(this),
+                );
+
+                this.shifts.backupExportButton.addEventListener(
+                    "click", this.#onBackupExport.bind(this),
+                );
+            })();
+
+            // Handle the shifts table
+            this.#createShiftsTable();
+        });
     }
 
     disconnectedCallback() {
