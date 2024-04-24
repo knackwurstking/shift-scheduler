@@ -6,9 +6,6 @@ export default {
         };
     },
 
-    /** @type {import("../../types").LangStore} */
-    language: "en",
-
     /** @type {import("../../types").WeekStartStore} */
     weekStart: 0,
 
