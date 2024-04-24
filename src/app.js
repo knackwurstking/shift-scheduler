@@ -20,7 +20,6 @@ export class App extends ui.events.Events {
 
         this.element = app;
         this.store = store;
-        //this.lang = lang;
 
         /** @type {(() => void)[]} */
         this.cleanup = [];
