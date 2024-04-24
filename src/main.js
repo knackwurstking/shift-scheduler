@@ -41,5 +41,5 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const app = new App(document.querySelector("#app"), store);
     app.onMount();
-    app.run();
 });
+app.run();

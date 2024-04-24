@@ -1,6 +1,7 @@
 import ui from "ui";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
+import { db } from "../../lib"
 
 const template = document.createElement("template");
 
@@ -195,7 +196,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         this.#store = document.querySelector("ui-store");
         this.#lang = document.querySelector("ui-lang");
-        // TODO: Missing database object
 
         /** @type {Date} */
         this.today;
@@ -249,7 +249,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     async updateItem(date, calendarItem) {
         const promise = utils.getMonthArray(date, this.#store.data.get("week-start"));
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
-        const data = await utils.fillWithData(this.app.db, date, await promise);
+        const data = await utils.fillWithData(db, date, await promise);
 
         for (let i = 0; i < data.length; i++) {
             if (this.isNope(data[i].date, date))

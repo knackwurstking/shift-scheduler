@@ -23,7 +23,7 @@ export async function getMonthArray(month, weekStart) {
 }
 
 /**
- * @param {import("../../lib/db").DB | null} db
+ * @param {import("../../lib").DB | null} db
  * @param {Date} month
  * @param {import("../../types").DBEntryData} days
  * @returns {Promise<import("../../types").DBEntryData>}
