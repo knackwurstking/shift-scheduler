@@ -1,6 +1,11 @@
 import ui from "ui";
 import { constants } from "../../lib";
 
+/**
+ * @typedef Direction
+ * @type {"left" | "right"}
+ */
+
 export default class SwipeHandler extends ui.events.Events {
     /** @type {boolean} */
     #kill = false;
@@ -88,7 +93,7 @@ export default class SwipeHandler extends ui.events.Events {
 
     /**
      * @param {"swipe"} key
-     * @param {"left" | "right" | "none"} data
+     * @param {Direction} data
      */
     dispatchWithData(key, data) {
         super.dispatchWithData(key, data);
@@ -97,7 +102,7 @@ export default class SwipeHandler extends ui.events.Events {
 
     /**
      * @param {"swipe"} key
-     * @param {(data: "left" | "right" | "none") => void|Promise<void>} listener
+     * @param {(data: Direction) => void|Promise<void>} listener
      * @returns {() => void} clean up function
      */
     addListener(key, listener) {

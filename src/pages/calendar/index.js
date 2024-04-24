@@ -183,57 +183,22 @@ template.innerHTML = `
 `;
 
 export class CalendarPage extends ui.wc.StackLayoutPage {
-    /** @type {import("../../app").App | null} */
-    #app = null;
-    #initialized = false;
-
-    /** @param {Date} date */
-    #onDatePickerChange = async (date) => {
-        // Performance testing - start
-        const start = new Date().getMilliseconds();
-
-        date.setMonth(date.getMonth() - 1);
-        this.today = new Date();
-
-        for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
-            this.updateItem(new Date(date), this.getItems()[i]);
-        }
-
-        // Performance testing - end
-        if (constants.debug)
-            console.log(
-                `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
-            );
-    };
-
     /** @param {import("../../lib/storage").StorageDataWeekStart | null} weekStart */
     #onWeekStart = async (weekStart) => {
         if (weekStart !== 0 && weekStart !== 1) {
             weekStart = constants.weekStart;
         }
 
-        this.updateWeekDays(weekStart);
+        this.#updateWeekDays(weekStart);
 
         // Crete days, note, shifts, ... if the week-start changes
         this.app.dispatchWithData(eventDatePickerChange, this.app.getMonth());
     };
 
-    /** @param {"left" | "right"} direction */
-    #onSwipe = async (direction) => {
-        switch (direction) {
-            case "left":
-                this.app.goNextMonth();
-                break;
-            case "right":
-                this.app.goPrevMonth();
-                break;
-        }
-    };
-
     /** @param {import("../../lib/storage").StorageDataLang} _lang */
     #onLang = async (_lang) => {
         // This will update the week days
-        this.updateWeekDays(
+        this.#updateWeekDays(
             this.app.storage.get("week-start", constants.weekStart),
         );
     };
@@ -241,28 +206,46 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     constructor() {
         super();
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.swipeHandler = new SwipeHandler(this);
+
+        /** @type {(() => void)[]} */
+        this.cleanup = [];
+
+        /** @type {import("ui/src/wc").Store} */
+        this.store = document.querySelector("ui-store");
         /** @type {Date} */
         this.today;
         /** @type {number[]} */
         this.order;
+
+        this.swipeHandler = new SwipeHandler(this);
     }
 
-    get app() {
-        return this.#app;
-    }
 
-    set app(app) {
-        this.#app = app;
+    connectedCallback() {
+        super.connectedCallback();
 
-        if (super.isConnected && !this.#initialized) {
-            this.#initialized = true;
+        // TODO: remove this after testing, need to know how the stack layout will call the (dis-)connected callback(s)
+        if (!!this.store.data.get("debug-mode"))
+            console.log("[calendar] connected callback running...");
 
-            this.app.addListener(
-                eventDatePickerChange,
-                this.#onDatePickerChange,
-            );
+        this.cleanup.push(
+            // The "swipe" event will update the date-picker store, base on the swiped direction
+            this.swipeHandler.addListener(
+                "swipe",
+                this.handleSwipeEvent.bind(this),
+            ),
+            // Handle the "date-picker" state change, update calendar items
+            this.store.data.on(
+                "date-picker",
+                this.handleDatePickerChangeEvent.bind(this),
+            ),
+        );
 
+        this.swipeHandler.start();
+
+        // TODO: ...
+
+        if (!!this.app) {
             this.app.storage.addListener("week-start", this.#onWeekStart);
             this.app.storage.addListener("lang", this.#onLang);
 
@@ -273,30 +256,19 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         }
     }
 
-    connectedCallback() {
-        super.connectedCallback();
-
-        this.swipeHandler.addListener("swipe", this.#onSwipe);
-        this.swipeHandler.start();
-
-        if (!!this.app) {
-            this.app = this.app;
-        }
-    }
-
     disconnectedCallback() {
-        super.connectedCallback();
-        this.#initialized = false;
+        super.disconnectedCallback();
 
-        this.swipeHandler.removeListener("swipe", this.#onSwipe);
+        // TODO: remove this after testing, need to know how the stack layout will call the (dis-)connected callback(s)
+        if (!!this.store.data.get("debug-mode"))
+            console.log("[calendar] disconnected callback running...");
+
         this.swipeHandler.stop();
+        this.cleanup.forEach((fn) => fn());
+
+        // TODO: ...
 
         if (!!this.app) {
-            this.app.removeListener(
-                eventDatePickerChange,
-                this.#onDatePickerChange,
-            );
-
             this.app.storage.removeListener("week-start", this.#onWeekStart);
             this.app.storage.removeListener("lang", this.#onLang);
         }
@@ -306,34 +278,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         return [...this.shadowRoot.children].filter((c) =>
             c.classList.contains("item"),
         );
-    }
-
-    /**
-     * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
-     */
-    updateWeekDays(weekStart) {
-        if (weekStart === null) {
-            console.error(`weekStart has to be a "0" or a "1"!`);
-            return;
-        }
-
-        this.order = [0, 1, 2, 3, 4, 5, 6];
-
-        if (weekStart > 0) {
-            this.order = [
-                ...this.order.slice(weekStart),
-                ...this.order.slice(0, weekStart),
-            ];
-        }
-
-        const items = this.shadowRoot.querySelectorAll(
-            ".week-days-row .week-day-item",
-        );
-
-        this.#markWeekendItems(...items);
-        items.forEach((item, i) => {
-            item.innerHTML = `${this.app.language.get("calendar", this.order[i % 7].toString())}`;
-        });
     }
 
     /**
@@ -393,6 +337,83 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             d1.getFullYear() !== d2.getFullYear() ||
             d1.getMonth() !== d2.getMonth()
         );
+    }
+
+    /**
+     * @param {import("./swipe-handler").Direction} direction
+     */
+    async handleSwipeEvent(direction) {
+        switch (direction) {
+            case "left":
+                // Go to next month
+                this.store.data.update(
+                    "date-picker",
+                    (/**@type{Date}*/ date) => {
+                        date.setMonth(date.getMonth() + 1);
+                        return date;
+                        // TODO: Need to catch this in the app, and update the date-picker
+                    },
+                );
+                break;
+            case "right":
+                // Go to prev month
+                this.store.data.update(
+                    "date-picker",
+                    (/**@type{Date}*/ date) => {
+                        date.setMonth(date.getMonth() - 1);
+                        return date;
+                        // TODO: Need to catch this in the app, and update the date-picker
+                    },
+                );
+                break;
+        }
+    }
+
+    /** @param {import("../../types").DatePickerStore} date */
+    async handleDatePickerChangeEvent(date) {
+        // Performance testing - start
+        const start = new Date().getMilliseconds();
+
+        date.setMonth(date.getMonth() - 1);
+        this.today = new Date();
+
+        for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
+            this.updateItem(new Date(date), this.getItems()[i]);
+        }
+
+        // Performance testing - end
+        if (constants.debug)
+            console.log(
+                `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
+            );
+    }
+
+    /**
+     * @param {import("../../types").WeekStartStore} weekStart
+     */
+    #updateWeekDays(weekStart) {
+        if (weekStart === null) {
+            console.error(`weekStart has to be a "0" or a "1"!`);
+            return;
+        }
+
+        this.order = [0, 1, 2, 3, 4, 5, 6];
+
+        if (weekStart > 0) {
+            this.order = [
+                ...this.order.slice(weekStart),
+                ...this.order.slice(0, weekStart),
+            ];
+        }
+
+        const items = this.shadowRoot.querySelectorAll(
+            ".week-days-row .week-day-item",
+        );
+
+        this.#markWeekendItems(...items);
+        items.forEach((item, i) => {
+            item.innerHTML = `${this.app.language.get("calendar", this.order[i % 7].toString())}`;
+        });
     }
 
     /**

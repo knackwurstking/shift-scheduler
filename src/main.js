@@ -17,6 +17,7 @@ window.addEventListener("DOMContentLoaded", () => {
     /** @type {import("ui/src/wc").Store} */
     const store = document.querySelector("ui-store");
 
+    store.data.set("date-picker", new Date(), true);
     store.data.set("theme", constants.theme, true);
     store.data.set("lang", constants.language, true);
     store.data.set("week-start", constants.weekstart, true);

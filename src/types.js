@@ -8,6 +8,12 @@
  * @typedef LangStore
  * @type {"en" | "de"}
  *
+ * @typedef DatePickerStore
+ * @type {Date}
+ *
+ * @typedef WeekStartStore
+ * @type {0 | 1}
+ *
  * @typedef Shift
  * @type {{
  *  id: number; // Just a timestamp
@@ -47,4 +53,4 @@
  * }}
  */
 
-export {};
+export { };
