@@ -1,6 +1,6 @@
 /**
  * @param {Date} month
- * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
+ * @param {import("../../types").WeekStartStore} weekStart
  * @returns {Promise<import("../../types").DBEntryData>}
  */
 export async function getMonthArray(month, weekStart) {
@@ -37,7 +37,7 @@ export async function fillWithData(db, month, days) {
 
 /**
  * @param {Date} month
- * @param {import("../../lib/storage").StorageDataWeekStart} weekStart
+ * @param {import("../../types").WeekStartStore} weekStart
  * @returns {number}
  */
 function getStartDay(month, weekStart) {

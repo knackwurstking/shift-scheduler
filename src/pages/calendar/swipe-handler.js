@@ -1,5 +1,6 @@
 import ui from "ui";
-import { constants } from "../../lib";
+
+export const swipeRange = 75;
 
 /**
  * @typedef Direction
@@ -31,8 +32,7 @@ export default class SwipeHandler extends ui.events.Events {
         this.#finalTransform = true;
 
         // Start final transform
-        if (constants.debug)
-            console.log(`[Calendar SwipeHandler] transform lock`);
+        console.log(`[Calendar SwipeHandler] transform lock`);
 
         if (!this.isMinSwipe()) {
             this.setTransition(`left ${0.15}s ease`);
@@ -71,7 +71,8 @@ export default class SwipeHandler extends ui.events.Events {
      * @param {import(".").CalendarPage} calendar
      */
     constructor(calendar) {
-        super(constants.debug);
+        super();
+
         this.calendar = calendar;
     }
 
@@ -146,7 +147,7 @@ export default class SwipeHandler extends ui.events.Events {
     isMinSwipe() {
         return (
             Math.abs(this.#startX - this.#clientX) >
-            constants.swipeRange * (window.innerWidth / 1080)
+            swipeRange * (window.innerWidth / 1080)
         );
     }
 
@@ -160,8 +161,7 @@ export default class SwipeHandler extends ui.events.Events {
         this.#clientX = null;
         this.#finalTransform = false;
 
-        if (constants.debug)
-            console.log(`[Calendar SwipeHandler] release transform lock`);
+        console.log(`[Calendar SwipeHandler] release transform lock`);
     }
 
     #reorderItems() {

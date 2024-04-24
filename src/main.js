@@ -22,9 +22,9 @@ window.addEventListener("DOMContentLoaded", () => {
     store.data.set("lang", constants.language, true);
     store.data.set("week-start", constants.weekstart, true);
     store.data.set("settings", constants.settings, true);
-    store.data.set("debug-mode", constants.debug, true);
+    store.data.set("debug", constants.debug, true);
 
-    const lang = new Language(store);
+    const lang = new Language(store); // TODO: Create some custom component
     lang.setLanguage(store.data.get("lang"));
 
     const app = new App(document.querySelector("#app"), store, lang);

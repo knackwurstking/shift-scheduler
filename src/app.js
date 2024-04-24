@@ -84,7 +84,7 @@ export class App extends ui.events.Events {
         );
 
         if (!!this.db) this.db.close();
-        this.db = new DB("shift-scheduler", 1);
+        this.db = new DB("shift-scheduler", 1); // TODO: Create some custom component?
     }
 
     onDestroy() {

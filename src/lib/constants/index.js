@@ -6,13 +6,12 @@ export default {
         };
     },
 
-    /** @type {import("../../types").Languages} */
+    /** @type {import("../../types").LangStore} */
     language: "en",
 
-    /** @type {import("../storage").StorageDataWeekStart} */
+    /** @type {import("../../types").WeekStartStore} */
     weekStart: 0,
 
-    swipeRange: 75,
     debug: true,
 
     /** @type {import("../../types").Shift} Just some empty `Shifts` object */

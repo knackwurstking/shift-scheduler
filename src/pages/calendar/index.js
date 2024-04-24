@@ -1,6 +1,4 @@
 import ui from "ui";
-import { eventDatePickerChange } from "../../app";
-import { constants } from "../../lib";
 import SwipeHandler from "./swipe-handler";
 import * as utils from "./utils";
 
@@ -183,25 +181,7 @@ template.innerHTML = `
 `;
 
 export class CalendarPage extends ui.wc.StackLayoutPage {
-    /** @param {import("../../lib/storage").StorageDataWeekStart | null} weekStart */
-    #onWeekStart = async (weekStart) => {
-        if (weekStart !== 0 && weekStart !== 1) {
-            weekStart = constants.weekStart;
-        }
 
-        this.#updateWeekDays(weekStart);
-
-        // Crete days, note, shifts, ... if the week-start changes
-        this.app.dispatchWithData(eventDatePickerChange, this.app.getMonth());
-    };
-
-    /** @param {import("../../lib/storage").StorageDataLang} _lang */
-    #onLang = async (_lang) => {
-        // This will update the week days
-        this.#updateWeekDays(
-            this.app.storage.get("week-start", constants.weekStart),
-        );
-    };
 
     constructor() {
         super();
@@ -212,6 +192,9 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         /** @type {import("ui/src/wc").Store} */
         this.store = document.querySelector("ui-store");
+        // TODO: Missing language object
+        // TODO: Missing database object
+
         /** @type {Date} */
         this.today;
         /** @type {number[]} */
@@ -225,8 +208,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         super.connectedCallback();
 
         // TODO: remove this after testing, need to know how the stack layout will call the (dis-)connected callback(s)
-        if (!!this.store.data.get("debug-mode"))
-            console.log("[calendar] connected callback running...");
+        console.log("[calendar] connected callback running...");
 
         this.cleanup.push(
             // The "swipe" event will update the date-picker store, base on the swiped direction
@@ -239,39 +221,20 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 "date-picker",
                 this.handleDatePickerChangeEvent.bind(this),
             ),
+            // Handle a "week-start" change event
+            this.store.data.on("week-start", this.onWeekStart.bind(this)),
+            // Handle a "lang" change event
+            this.store.data.on("lang", this.onLang.bind(this)),
         );
 
         this.swipeHandler.start();
-
-        // TODO: ...
-
-        if (!!this.app) {
-            this.app.storage.addListener("week-start", this.#onWeekStart);
-            this.app.storage.addListener("lang", this.#onLang);
-
-            this.app.storage.dispatchWithData(
-                "week-start",
-                constants.weekStart,
-            );
-        }
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
-
-        // TODO: remove this after testing, need to know how the stack layout will call the (dis-)connected callback(s)
-        if (!!this.store.data.get("debug-mode"))
-            console.log("[calendar] disconnected callback running...");
-
+        console.log("[calendar] disconnected callback running...");
         this.swipeHandler.stop();
         this.cleanup.forEach((fn) => fn());
-
-        // TODO: ...
-
-        if (!!this.app) {
-            this.app.storage.removeListener("week-start", this.#onWeekStart);
-            this.app.storage.removeListener("lang", this.#onLang);
-        }
     }
 
     getItems() {
@@ -285,13 +248,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      *  @param {Element} calendarItem
      */
     async updateItem(date, calendarItem) {
-        const promise = utils.getMonthArray(
-            date,
-            this.app.storage.get("week-start", constants.weekStart),
-        );
-
+        const promise = utils.getMonthArray(date, this.store.data.get("week-start"));
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
-
         const data = await utils.fillWithData(this.app.db, date, await promise);
 
         for (let i = 0; i < data.length; i++) {
@@ -382,16 +340,25 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         }
 
         // Performance testing - end
-        if (constants.debug)
-            console.log(
-                `[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
-            );
+        console.log(`[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`);
     }
+
+    /** @param {import("../../types").WeekStartStore} weekStart */
+    async onWeekStart(weekStart) {
+        await this.#updateWeekDays(weekStart);
+        await this.handleDatePickerChangeEvent(this.store.data.get("date-picker"))
+    }
+
+    /** @param {import("../../types").LangStore} _lang */
+    async onLang(_lang) {
+        // Update week days grid header row
+        await this.#updateWeekDays(this.store.data.get("week-start"));
+    };
 
     /**
      * @param {import("../../types").WeekStartStore} weekStart
      */
-    #updateWeekDays(weekStart) {
+    async #updateWeekDays(weekStart) {
         if (weekStart === null) {
             console.error(`weekStart has to be a "0" or a "1"!`);
             return;

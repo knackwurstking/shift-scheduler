@@ -1,5 +1,4 @@
 import * as utils from "../../utils";
-import constants from "../constants";
 
 const storeMonths = "months";
 
@@ -66,11 +65,7 @@ export class DB {
                 });
             };
             r.onerror = (e) => {
-                if (constants.debug)
-                    console.warn(
-                        `[DB] Error while getting "${year}/${month}" from the database!`,
-                        e,
-                    );
+                console.warn(`[DB] Error while getting "${year}/${month}" from the database!`, e);
                 resolve(null);
             };
         });
@@ -99,19 +94,12 @@ export class DB {
             });
 
             r.onsuccess = () => {
-                if (constants.debug)
-                    console.log(
-                        `[DB] Add data for "${year}/${month}" was a success.`,
-                    );
+                console.log(`[DB] Add data for "${year}/${month}" was a success.`);
                 resolve();
             };
 
             r.onerror = async (e) => {
-                if (constants.debug)
-                    console.warn(
-                        `[DB] Error while adding "${year}/${month}" to the database! Try put now...`,
-                        e,
-                    );
+                console.warn(`[DB] Error while adding "${year}/${month}" to the database! Try put now...`, e);
 
                 reject(r.error);
             };
@@ -132,20 +120,12 @@ export class DB {
             });
 
             r.onsuccess = () => {
-                if (constants.debug)
-                    console.log(
-                        `[DB] Put data for "${year}/${month}" was a success.`,
-                    );
-
+                console.log(`[DB] Put data for "${year}/${month}" was a success.`);
                 resolve();
             };
 
             r.onerror = async (e) => {
-                if (constants.debug)
-                    console.warn(
-                        `[DB] Error while putting "${year}/${month}" to the database!`,
-                        e,
-                    );
+                console.warn(`[DB] Error while putting "${year}/${month}" to the database!`, e);
 
                 reject(r.error);
             };
@@ -161,18 +141,13 @@ export class DB {
         return await new Promise((resolve, reject) => {
             const r = this.#rwStore().delete(`${year}/${month}`);
             r.onsuccess = () => {
-                if (constants.debug)
-                    console.log(`[DB] Deleted entry for "${year}/${month}"`);
+                console.log(`[DB] Deleted entry for "${year}/${month}"`);
 
                 resolve();
             };
 
             r.onerror = (e) => {
-                if (constants.debug)
-                    console.log(
-                        `[DB] Deleting entry "${year}/${month}" failed!`,
-                        e,
-                    );
+                console.log(`[DB] Deleting entry "${year}/${month}" failed!`, e);
 
                 reject(r.error);
             };
@@ -219,16 +194,11 @@ export class DB {
         };
 
         this.#request.onsuccess = (e) => {
-            if (constants.debug)
-                console.log(`[DBCustom] Handle request success: ${dbName}`, e);
+            console.log(`[DBCustom] Handle request success: ${dbName}`, e);
         };
 
         this.#request.onupgradeneeded = (e) => {
-            if (constants.debug)
-                console.log(
-                    `[DBCustom] Handle request upgradeneeded: ${dbName}`,
-                    e,
-                );
+            console.log(`[DBCustom] Handle request upgradeneeded: ${dbName}`, e);
 
             switch (e.oldVersion) {
                 case 0:

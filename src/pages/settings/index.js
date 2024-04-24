@@ -93,7 +93,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
     #onDebugModeChange = (ev) => {
-        this.app.storage.set("debug-mode", ev.currentTarget.checked);
+        this.app.storage.set("debug", ev.currentTarget.checked);
 
         if (ev.currentTarget.checked) {
             this.app.element.classList.add("is-debug");
@@ -189,7 +189,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             // misc: Debug Mode
             this.misc.debugModeInput.checked = this.app.storage.get(
-                "debug-mode",
+                "debug",
                 this.app.element.classList.contains("is-debug"),
             );
             this.misc.debugModeInput.addEventListener(
