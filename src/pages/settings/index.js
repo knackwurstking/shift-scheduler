@@ -60,7 +60,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     connectedCallback() {
         this.cleanup.push(
-            this.#store.data.on("lang", this.#onLang)
+            this.#store.data.on("lang", this.#onLang.bind(this))
         );
 
 
@@ -308,7 +308,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     }
 
-    async #onLang() {
+    /**
+     * @param {import("../../types").LangStore} lang
+     */
+    async #onLang(lang) {
+        console.log(`[settings] language update`, lang)
+
         if (!this.#lang.data.langType) return;
 
         // AppBar Section

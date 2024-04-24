@@ -231,7 +231,9 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     }
 
     disconnectedCallback() {
+        // TODO: remove this after testing, need to know how the stack layout will call the (dis-)connected callback(s)
         console.log("[calendar] disconnected callback running...");
+
         this.swipeHandler.stop();
         this.cleanup.forEach((fn) => fn());
     }
@@ -300,6 +302,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      * @param {import("./swipe-handler").Direction} direction
      */
     async handleSwipeEvent(direction) {
+        console.log(`[calendar] handle swipe event: direction=${direction}`)
+
         switch (direction) {
             case "left":
                 // Go to next month
@@ -328,6 +332,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     /** @param {import("../../types").DatePickerStore} date */
     async handleDatePickerChangeEvent(date) {
+        console.log(`[calendar] date-picker change event: update calendar items`)
+
         // Performance testing - start
         const start = new Date().getMilliseconds();
 
@@ -392,12 +398,16 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     /** @param {import("../../types").WeekStartStore} weekStart */
     async #onWeekStart(weekStart) {
+        console.log(`[calendar] week-start event: update week days and run the handleDatePickerChangeEvent callback`)
+
         await this.#updateWeekDays(weekStart);
         await this.handleDatePickerChangeEvent(this.#store.data.get("date-picker"))
     }
 
-    /** @param {import("../../types").LangStore} _lang */
-    async #onLang(_lang) {
+    /** @param {import("../../types").LangStore} lang */
+    async #onLang(lang) {
+        console.log(`[calendar] language update`, lang)
+
         // Update week days grid header row
         await this.#updateWeekDays(this.#store.data.get("week-start"));
     }
