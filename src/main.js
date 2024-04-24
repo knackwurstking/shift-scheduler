@@ -3,7 +3,7 @@ import "./styles.css";
 
 import ui from "ui";
 import { App } from "./app";
-import { Language, constants } from "./lib";
+import { constants } from "./lib";
 import { CalendarPage, SettingsPage } from "./pages";
 
 ui.define()
@@ -19,15 +19,27 @@ window.addEventListener("DOMContentLoaded", () => {
 
     store.data.set("date-picker", new Date(), true);
     store.data.set("theme", constants.theme, true);
-    store.data.set("lang", constants.language, true);
     store.data.set("week-start", constants.weekstart, true);
     store.data.set("settings", constants.settings, true);
     store.data.set("debug", constants.debug, true);
 
-    const lang = new Language(store); // TODO: Create some custom component
-    lang.setLanguage(store.data.get("lang"));
+    /** @type {import("ui/src/wc").Lang} */
+    const lang = document.querySelector("ui-lang")
 
-    const app = new App(document.querySelector("#app"), store, lang);
+    // TODO: auto language detection handler here...
+    // ...
+
+    lang.data.on("change", (lt) => {
+        if (!lt) {
+            console.log("[main] No language set for now!")
+            return
+        }
+
+        console.log(`[main] current language in use:`, lt)
+        store.data.set("lang", lt.name, true);
+    }, true)
+
+    const app = new App(document.querySelector("#app"), store);
     app.onMount();
     app.run();
 });
