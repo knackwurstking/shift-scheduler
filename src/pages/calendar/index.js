@@ -342,18 +342,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         console.log(`[Calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`);
     }
 
-    /** @param {import("../../types").WeekStartStore} weekStart */
-    async onWeekStart(weekStart) {
-        await this.#updateWeekDays(weekStart);
-        await this.handleDatePickerChangeEvent(this.#store.data.get("date-picker"))
-    }
-
-    /** @param {import("../../types").LangStore} _lang */
-    async onLang(_lang) {
-        // Update week days grid header row
-        await this.#updateWeekDays(this.#store.data.get("week-start"));
-    };
-
     /**
      * @param {import("../../types").WeekStartStore} weekStart
      */
@@ -400,5 +388,17 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 c.classList.add("is-sunday");
             }
         });
+    }
+
+    /** @param {import("../../types").WeekStartStore} weekStart */
+    async onWeekStart(weekStart) {
+        await this.#updateWeekDays(weekStart);
+        await this.handleDatePickerChangeEvent(this.#store.data.get("date-picker"))
+    }
+
+    /** @param {import("../../types").LangStore} _lang */
+    async onLang(_lang) {
+        // Update week days grid header row
+        await this.#updateWeekDays(this.#store.data.get("week-start"));
     }
 }
