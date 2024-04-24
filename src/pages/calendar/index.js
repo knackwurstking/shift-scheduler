@@ -205,8 +205,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
 
     connectedCallback() {
-        super.connectedCallback();
-
         // TODO: remove this after testing, need to know how the stack layout will call the (dis-)connected callback(s)
         console.log("[calendar] connected callback running...");
 
@@ -231,7 +229,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     }
 
     disconnectedCallback() {
-        super.disconnectedCallback();
         console.log("[calendar] disconnected callback running...");
         this.swipeHandler.stop();
         this.cleanup.forEach((fn) => fn());

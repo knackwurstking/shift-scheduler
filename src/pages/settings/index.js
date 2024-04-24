@@ -214,15 +214,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     connectedCallback() {
-        super.connectedCallback();
-
         if (!!this.app) {
             this.app = this.app;
         }
     }
 
     disconnectedCallback() {
-        super.connectedCallback();
         this.#initialized = false;
 
         if (!!this.app) {
