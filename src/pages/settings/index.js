@@ -32,7 +32,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             /** @type {import("ui/src/wc/input").Select} */
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
             /** @type {import("ui/src/wc/input").Select} */
-            themeSelect: this.querySelector("#miscThemeSelect"), // TODO: Initialize this shit
+            themeSelect: this.querySelector("#miscThemeSelect"),
 
             debugModePrimary: this.querySelector("#miscDebugModePrimary"),
             /** @type {HTMLInputElement} */
