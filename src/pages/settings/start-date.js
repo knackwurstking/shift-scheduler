@@ -13,6 +13,8 @@ export class StartDate extends HTMLElement {
     #store
     /** @type {import("ui/src/wc").Lang} */
     #lang
+    /** @type {HTMLInputElement} */
+    #input
 
     /**
      * @param {import("ui/src/wc").Store} store
@@ -23,6 +25,7 @@ export class StartDate extends HTMLElement {
         this.appendChild(t.content.cloneNode(true))
         this.#store = store
         this.#lang = lang
+        this.#input = this.querySelector("input")
         this.cleanup = []
     }
 
@@ -35,7 +38,7 @@ export class StartDate extends HTMLElement {
     }
 
     connectedCallback() {
-        this.querySelector("input").oninput = ({ currentTarget }) => {
+        this.#input.oninput = ({ currentTarget }) => {
             this.#store.data.update("settings", (/**@type{import("../../types").SettingsStore}*/settings) => {
                 // NOTE: value format: "YYYY-MM-DD"
                 // @ts-expect-error
@@ -48,6 +51,10 @@ export class StartDate extends HTMLElement {
             this.cleanup.push(
                 this.#store.data.on("lang", () => {
                     this.primary = this.#lang.data.get("settings", "shiftsStartDatePrimary");
+                }, true),
+                this.#store.data.on("settings", (settings) => {
+                    if (settings.startDate === this.#input.value) return;
+                    this.#input.value = settings.startDate
                 }, true),
             );
         });
