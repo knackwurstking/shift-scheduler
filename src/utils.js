@@ -5,7 +5,11 @@ import ui from "ui";
  * @param {import("ui/src/wc").ThemeHandler} themeHandler
  */
 export async function setTheme(theme, themeHandler) {
-    themeHandler.loadTheme(theme.name)
+    try {
+        themeHandler.loadTheme(theme.name)
+    } catch {
+        themeHandler.loadTheme("zinc") // default theme (original)
+    }
 
     if (theme.mode === "system") {
         // Enable auto mode
