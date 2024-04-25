@@ -152,9 +152,10 @@ export class App extends ui.events.Events {
 
         // Update the AppBar buttons...
         if (this.stackLayout.stack.length <= 1) {
-            this.appBar.backButton.style.display = "none";
+            this.appBar.backButtonParent = this.appBar.backButton.parentElement.parentElement
+            this.appBar.backButtonParent.removeChild(this.appBar.backButton.parentElement)
         } else {
-            this.appBar.backButton.style.display = "flex";
+            this.appBar.backButtonParent.insertBefore(this.appBar.backButton.parentElement, this.appBar.backButtonParent.children[0])
         }
 
         if (!page) {
