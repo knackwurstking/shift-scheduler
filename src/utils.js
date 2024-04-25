@@ -5,7 +5,7 @@ import ui from "ui";
  * @param {import("ui/src/wc").ThemeHandler} themeHandler
  */
 export async function setTheme(theme, themeHandler) {
-    themeHandler.loadTheme("experimental")
+    themeHandler.loadTheme(theme.name)
 
     if (theme.mode === "system") {
         // Enable auto mode

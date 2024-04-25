@@ -31,7 +31,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             theme: this.querySelector("#miscTheme"),
             /** @type {import("ui/src/wc/input").Select} */
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
-            // TODO: Add a second theme select for switching themes available ("zinc", "experimental")
+            /** @type {import("ui/src/wc/input").Select} */
+            themeSelect: this.querySelector("#miscThemeSelect"), // TODO: Initialize this shit
 
             debugModePrimary: this.querySelector("#miscDebugModePrimary"),
             /** @type {HTMLInputElement} */
@@ -82,17 +83,37 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     (/** @type {import("ui/src/wc").SelectOption} */ c) => {
                         c.selected = (c.value === theme.mode)
                     }
-                )
+                );
 
-                this.misc.themeModeSelect.addEventListener(
-                    "change",
-                    /**
-                     * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev
-                     */
-                    (ev) => {
-                        this.#store.data.update("theme", (theme) => ({ ...theme, mode: ev.detail.value }));
+                [...this.misc.themeSelect.children].forEach(
+                    (/** @type {import("ui/src/wc").SelectOption} */ c) => {
+                        c.selected = (c.value === theme.name)
                     }
                 );
+
+                /**
+                 * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev 
+                 */
+                const cbMode = (ev) => {
+                    console.log(`[settings] update theme mode:`, ev.detail);
+                    this.#store.data.update("theme", (theme) => ({ ...theme, mode: ev.detail.value }));
+                };
+                this.misc.themeModeSelect.addEventListener("change", cbMode);
+                this.cleanup.push(() => {
+                    this.misc.themeModeSelect.removeEventListener("change", cbMode);
+                })
+
+                /**
+                 * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev 
+                 */
+                const cbName = (ev) => {
+                    console.log(`[settings] update theme name:`, ev.detail);
+                    this.#store.data.update("theme", (theme) => ({ ...theme, name: ev.detail.value }));
+                };
+                this.misc.themeSelect.addEventListener("change", cbName);
+                this.cleanup.push(() => {
+                    this.misc.themeSelect.removeEventListener("change", cbName);
+                })
             })(this.#store.data.get("theme"));
 
 

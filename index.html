@@ -120,21 +120,35 @@
                                 </ui-secondary>
                             </ui-label>
 
-                            <ui-select id="miscThemeModeSelect">
-                                <ui-select-option value="system">
-                                    System
-                                </ui-select-option>
+                            <ui-flex-grid-row gap="0.25rem">
+                                <ui-flex-grid-item>
+                                    <ui-select id="miscThemeModeSelect">
+                                        <ui-select-option value="system">
+                                            System
+                                        </ui-select-option>
 
-                                <ui-select-option value="dark">
-                                    Dark
-                                </ui-select-option>
+                                        <ui-select-option value="dark">
+                                            Dark
+                                        </ui-select-option>
 
-                                <ui-select-option value="light">
-                                    Light
-                                </ui-select-option>
-                            </ui-select>
+                                        <ui-select-option value="light">
+                                            Light
+                                        </ui-select-option>
+                                    </ui-select>
+                                </ui-flex-grid-item>
 
-                            <!-- TODO: maybe add some theme picker select box for "zinc" and some future themes available -->
+                                <ui-flex-grid-item>
+                                    <ui-select id="miscThemeSelect">
+                                        <ui-select-option value="zinc">
+                                            Original
+                                        </ui-select-option>
+
+                                        <ui-select-option value="experimental">
+                                            Experimental
+                                        </ui-select-option>
+                                    </ui-select>
+                                </ui-flex-grid-item>
+                            </ui-flex-grid-row>
                         </section>
 
                         <hr />
