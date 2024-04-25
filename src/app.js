@@ -1,8 +1,6 @@
 import ui from "ui";
 import * as utils from "./utils";
 
-export const eventDatePickerChange = "datepickerchange";
-
 /**
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").IconButton} IconButton
@@ -58,7 +56,7 @@ export class App extends ui.events.Events {
         this.appBar.backButton.onclick = async () => this.stackLayout.goBack();
         this.appBar.datePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
         this.appBar.editButton.onclick = async () => null; // TODO: Add edit onclick callback
-        this.appBar.todayButton.onclick = async () => this.setMonth(new Date());
+        this.appBar.todayButton.onclick = async () => this.store.data.set("date-picker", new Date());
         this.appBar.pdfButton.onclick = async () => this.stackLayout.setPage("pdf");
         this.appBar.settingsButton.onclick = async () => this.stackLayout.setPage("settings");
     }
@@ -77,6 +75,11 @@ export class App extends ui.events.Events {
                 "change",
                 this.#onStackLayoutChange.bind(this),
             ),
+            this.store.data.on("date-picker", (dateString) => {
+                const date = new Date(dateString);
+                this.appBar.datePickerButton.innerText =
+                    `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+            }, true)
         );
     }
 
@@ -86,44 +89,7 @@ export class App extends ui.events.Events {
     }
 
     run() {
-        // Set the initial month for the calendar page
-        this.setMonth(new Date());
-
         this.stackLayout.setPage("calendar");
-    }
-
-    getMonth() {
-        let [year, month] = this.appBar.datePickerButton.innerText.split("/");
-
-        if (!year || !month) throw `the date-picker button contains no date!`;
-
-        if (isNaN(Number(year)) || isNaN(Number(month)))
-            throw `the date-picker button contains no date!`;
-
-        return new Date(Number(year), Number(month) - 1, 1);
-    }
-
-    /** @param {Date} date */
-    setMonth(date) {
-        this.appBar.datePickerButton.innerText = this.getMonthString(date);
-        this.dispatchWithData(eventDatePickerChange, date);
-    }
-
-    /** @param {Date} date */
-    getMonthString(date) {
-        return `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-    }
-
-    goNextMonth() {
-        const date = this.getMonth();
-        date.setMonth(date.getMonth() + 1);
-        this.setMonth(date);
-    }
-
-    goPrevMonth() {
-        const date = this.getMonth();
-        date.setMonth(date.getMonth() - 1);
-        this.setMonth(date);
     }
 
     #registerPages() {
