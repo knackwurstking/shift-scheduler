@@ -19,6 +19,7 @@
         "shiftsTableHeaderName": "Name",
         "shiftsTableHeaderShortName": "Kürzel",
         "shiftsAddButton": "Neue Schicht hinzufügen",
+        "shiftsStartDatePrimary": "@TODO: shiftsStartDatePrimary",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"

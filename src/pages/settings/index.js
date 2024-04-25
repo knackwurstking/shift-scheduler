@@ -51,7 +51,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             tableBody: this.querySelector("#shiftsTableBody"),
             addButton: this.querySelector("#shiftsAddButton"),
 
-            startDate: new StartDate(),
+            startDate: new StartDate(this.#store, this.#lang),
 
             /** @type {import("ui/src/wc").Primary} */
             backupLabelPrimary: this.querySelector("#shiftsBackupLabelPrimary"),
