@@ -52,8 +52,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
     /** @type {import("ui/src/wc").ThemeHandler} */
     const th = document.querySelector("#themeHandler")
-    th.addTheme("zinc", `/public/themes/zinc.css`);
-    th.addTheme("green", `/public/themes/green.css`);
+    th.addTheme("zinc", `/themes/zinc.css`);
+    th.addTheme("green", `/themes/green.css`);
 
     const app = new App(store);
     app.onMount();
