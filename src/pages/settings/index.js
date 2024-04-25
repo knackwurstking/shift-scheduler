@@ -4,12 +4,15 @@ import ui from "ui";
 import { db } from "../../lib";
 import * as utils from "../../utils";
 import { StartDate } from "./start-date";
+import { EditRhythm } from "./edit-rhythm";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("ui/src/wc").Store} */
     #store
     /** @type {import("ui/src/wc").Lang} */
     #lang
+
+    static register = () => customElements.define("settings-page", SettingsPage)
 
     constructor() {
         super();
@@ -52,6 +55,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             addButton: this.querySelector("#shiftsAddButton"),
 
             startDate: new StartDate(this.#store, this.#lang),
+            editRhythm: new EditRhythm(this.#store, this.#lang),
 
             /** @type {import("ui/src/wc").Primary} */
             backupLabelPrimary: this.querySelector("#shiftsBackupLabelPrimary"),
@@ -62,6 +66,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         };
 
         this.querySelector("#shiftsStartDateSection").appendChild(this.shifts.startDate)
+        this.querySelector("#shiftsEditRhythmSection").appendChild(this.shifts.editRhythm)
     }
 
     connectedCallback() {

@@ -3,13 +3,14 @@ import "./styles.css";
 import ui from "ui";
 import { App } from "./app";
 import { constants } from "./lib";
-import { CalendarPage, SettingsPage, StartDate } from "./pages";
+import { CalendarPage, SettingsPage, StartDate, EditRhythm } from "./pages";
 
 ui.define()
     .then(() => {
-        customElements.define("calendar-page", CalendarPage);
-        customElements.define("settings-page", SettingsPage);
-        customElements.define("settings-start-date", StartDate);
+        CalendarPage.register()
+        SettingsPage.register()
+        StartDate.register()
+        EditRhythm.register()
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
 

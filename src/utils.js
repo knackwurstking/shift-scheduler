@@ -13,11 +13,11 @@ export async function setTheme(theme, themeHandler) {
 
     if (theme.mode === "system") {
         // Enable auto mode
-        themeHandler.auto = true
+        themeHandler.enableAutoMode()
     } else {
         // Disable auto mode and set theme manually
-        themeHandler.mode = theme.mode
-        themeHandler.auto = false
+        themeHandler.setMode(theme.mode)
+        themeHandler.disableAutoMode()
     }
 }
 

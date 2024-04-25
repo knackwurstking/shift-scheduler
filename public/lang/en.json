@@ -20,6 +20,8 @@
         "shiftsTableHeaderShortName": "Short",
         "shiftsAddButton": "Add a new shift",
         "shiftsStartDatePrimary": "Start Date",
+        "shiftsEditRhythmPrimary": "Rhythm",
+        "shiftsEditRhythmButton": "Edit",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"

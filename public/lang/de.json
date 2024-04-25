@@ -20,6 +20,8 @@
         "shiftsTableHeaderShortName": "Kürzel",
         "shiftsAddButton": "Neue Schicht hinzufügen",
         "shiftsStartDatePrimary": "Start Datum",
+        "shiftsEditRhythmPrimary": "Rhythmus",
+        "shiftsEditRhythmButton": "Bearbeiten",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"
