@@ -52,15 +52,15 @@ export class App extends ui.events.Events {
             settingsButton: document.querySelector("#appBarSettingsButton"),
         };
 
+        this.appBar.leftSlot = this.appBar.backButton.parentElement.parentElement
+        this.appBar.rightSlot = this.appBar.settingsButton.parentElement.parentElement
+
         this.appBar.backButton.onclick = async () => this.stackLayout.goBack();
         this.appBar.datePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
-
         this.appBar.editButton.onclick = async () => null; // TODO: Add edit onclick callback
         this.appBar.todayButton.onclick = async () => this.setMonth(new Date());
-        this.appBar.pdfButton.onclick = async () =>
-            this.stackLayout.setPage("pdf");
-        this.appBar.settingsButton.onclick = async () =>
-            this.stackLayout.setPage("settings");
+        this.appBar.pdfButton.onclick = async () => this.stackLayout.setPage("pdf");
+        this.appBar.settingsButton.onclick = async () => this.stackLayout.setPage("settings");
     }
 
     onMount() {
@@ -152,11 +152,13 @@ export class App extends ui.events.Events {
 
         // Update the AppBar buttons...
         if (this.stackLayout.stack.length <= 1) {
-            // NOTE: Need to grep the parent of the item element here
-            this.appBar.backButtonParent = this.appBar.backButton.parentElement.parentElement
-            this.appBar.backButtonParent.removeChild(this.appBar.backButton.parentElement)
+            this.appBar.leftSlot.removeChild(this.appBar.backButton.parentElement)
         } else {
-            this.appBar.backButtonParent.insertBefore(this.appBar.backButton.parentElement, this.appBar.backButtonParent.children[0])
+            if (!!this.appBar.leftSlot.children.length) {
+                this.appBar.leftSlot.insertBefore(this.appBar.backButton.parentElement, this.appBar.leftSlot.children[0])
+            } else {
+                this.appBar.leftSlot.appendChild(this.appBar.backButton.parentElement)
+            }
         }
 
         if (!page) {
@@ -183,37 +185,34 @@ export class App extends ui.events.Events {
     }
 
     #noPageSetup() {
-        // TODO: Remove unused buttons from the app bar
-        this.appBar.datePickerButton.style.display = "none";
-        this.appBar.editButton.style.display = "none";
-        this.appBar.todayButton.style.display = "none";
-        this.appBar.pdfButton.style.display = "none";
-        this.appBar.settingsButton.style.display = "none";
+        this.appBar.leftSlot.removeChild(this.appBar.datePickerButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.editButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.todayButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.pdfButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.settingsButton.parentElement)
     }
 
     #calendarPageSetup() {
-        this.appBar.datePickerButton.style.display = "flex";
-        this.appBar.editButton.style.display = "flex";
-        this.appBar.todayButton.style.display = "flex";
-        this.appBar.pdfButton.style.display = "flex";
-        this.appBar.settingsButton.style.display = "flex";
+        this.appBar.leftSlot.appendChild(this.appBar.datePickerButton.parentElement)
+        this.appBar.rightSlot.appendChild(this.appBar.editButton.parentElement)
+        this.appBar.rightSlot.appendChild(this.appBar.todayButton.parentElement)
+        this.appBar.rightSlot.appendChild(this.appBar.pdfButton.parentElement)
+        this.appBar.rightSlot.appendChild(this.appBar.settingsButton.parentElement)
     }
 
     #settingsPageSetup() {
-        // TODO: Remove unused buttons from the app bar
-        this.appBar.datePickerButton.style.display = "none";
-        this.appBar.editButton.style.display = "none";
-        this.appBar.todayButton.style.display = "none";
-        this.appBar.pdfButton.style.display = "none";
-        this.appBar.settingsButton.style.display = "none";
+        this.appBar.leftSlot.removeChild(this.appBar.datePickerButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.editButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.todayButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.pdfButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.settingsButton.parentElement)
     }
 
     #pdfPageSetup() {
-        // TODO: Remove unused buttons from the app bar
-        this.appBar.datePickerButton.style.display = "none";
-        this.appBar.editButton.style.display = "none";
-        this.appBar.todayButton.style.display = "none";
-        this.appBar.pdfButton.style.display = "none";
-        this.appBar.settingsButton.style.display = "none";
+        this.appBar.leftSlot.removeChild(this.appBar.datePickerButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.editButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.todayButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.pdfButton.parentElement)
+        this.appBar.rightSlot.removeChild(this.appBar.settingsButton.parentElement)
     }
 }
