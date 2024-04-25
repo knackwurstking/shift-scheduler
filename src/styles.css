@@ -1,3 +1,5 @@
+@import "../node_modules/ui/css/main.css";
+
 :root {
     --edit-mode-height: 4.5em;
 }

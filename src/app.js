@@ -61,34 +61,27 @@ export class App extends ui.events.Events {
         this.appBar.settingsButton.onclick = async () => this.stackLayout.setPage("settings");
     }
 
-    onMount() {
-        this.cleanup.push(
-            this.store.data.on(
-                "theme",
-                (/**@type{import("./types").ThemeStore}*/ data) => {
-                    console.log(`[app] current theme in use:`, data)
-                    utils.setTheme(data, this.themeHandler);
-                },
-                true,
-            ),
-            this.stackLayout.events.addListener(
-                "change",
-                this.#onStackLayoutChange.bind(this),
-            ),
-            this.store.data.on("date-picker", (dateString) => {
-                const date = new Date(dateString);
-                this.appBar.datePickerButton.innerText =
-                    `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-            }, true)
-        );
-    }
-
-    onDestroy() {
-        this.cleanup.forEach((callback) => callback());
-        this.cleanup = []
-    }
-
     run() {
+        this.store.data.on(
+            "theme",
+            (/**@type{import("./types").ThemeStore}*/ data) => {
+                console.log(`[app] current theme in use:`, data)
+                utils.setTheme(data, this.themeHandler);
+            },
+            true,
+        );
+
+        this.stackLayout.events.addListener(
+            "change",
+            this.#onStackLayoutChange.bind(this),
+        );
+
+        this.store.data.on("date-picker", (dateString) => {
+            const date = new Date(dateString);
+            this.appBar.datePickerButton.innerText =
+                `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+        }, true);
+
         this.stackLayout.setPage("calendar");
     }
 

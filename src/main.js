@@ -1,11 +1,9 @@
-import "../node_modules/ui/css/main.css";
 import "./styles.css";
 
 import ui from "ui";
 import { App } from "./app";
 import { constants } from "./lib";
-import { CalendarPage, SettingsPage } from "./pages";
-import { StartDate } from "./pages/settings/start-date";
+import { CalendarPage, SettingsPage, StartDate } from "./pages";
 
 ui.define()
     .then(() => {
@@ -55,7 +53,5 @@ window.addEventListener("DOMContentLoaded", () => {
     th.addTheme("zinc", `/themes/zinc.css`);
     th.addTheme("green", `/themes/green.css`);
 
-    const app = new App(store);
-    app.onMount();
-    app.run();
+    new App(store).run();
 });
