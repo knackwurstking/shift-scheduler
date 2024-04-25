@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "vite --host",
         "build": "vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "build:android": "npm run build && npx cap sync android && npx cap open android"
     },
     "devDependencies": {
         "@capacitor/cli": "^6.0.0",
