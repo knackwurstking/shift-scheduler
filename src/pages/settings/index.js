@@ -3,6 +3,7 @@ import { Share } from "@capacitor/share";
 import ui from "ui";
 import { db } from "../../lib";
 import * as utils from "../../utils";
+import { StartDate } from "./start-date";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("ui/src/wc").Store} */
@@ -41,6 +42,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         this.shifts = {
             title: this.querySelector("#shiftsTitle"),
+
             /** @type {HTMLTableElement} */
             tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
             tableHeaderShortName: this.querySelector(
@@ -49,6 +51,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             tableBody: this.querySelector("#shiftsTableBody"),
             addButton: this.querySelector("#shiftsAddButton"),
 
+            startDate: new StartDate(),
+
             /** @type {import("ui/src/wc").Primary} */
             backupLabelPrimary: this.querySelector("#shiftsBackupLabelPrimary"),
             /** @type {import("ui/src/wc/button").Button} */
@@ -56,6 +60,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             /** @type {import("ui/src/wc/button").Button} */
             backupExportButton: this.querySelector("#shiftsBackupExportButton"),
         };
+
+        this.querySelector("#shiftsStartDateSection").appendChild(this.shifts.startDate)
     }
 
     connectedCallback() {
