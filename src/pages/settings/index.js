@@ -23,12 +23,16 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         this.misc = {
             title: this.querySelector("#miscTitle"),
+
             weekStartPrimary: this.querySelector("#miscWeekStartPrimary"),
-            theme: this.querySelector("#miscTheme"),
             /** @type {HTMLInputElement} */
             weekStartInput: this.querySelector("#miscWeekStartInput"),
+
+            theme: this.querySelector("#miscTheme"),
             /** @type {import("ui/src/wc/input").Select} */
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
+            // TODO: Add a second theme select for switching themes available ("zinc", "experimental")
+
             debugModePrimary: this.querySelector("#miscDebugModePrimary"),
             /** @type {HTMLInputElement} */
             debugModeInput: this.querySelector("#miscDebugModeInput"),
