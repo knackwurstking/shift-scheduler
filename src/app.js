@@ -152,6 +152,7 @@ export class App extends ui.events.Events {
 
         // Update the AppBar buttons...
         if (this.stackLayout.stack.length <= 1) {
+            // NOTE: Need to grep the parent of the item element here
             this.appBar.backButtonParent = this.appBar.backButton.parentElement.parentElement
             this.appBar.backButtonParent.removeChild(this.appBar.backButton.parentElement)
         } else {
