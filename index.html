@@ -12,8 +12,8 @@
     <ui-theme-handler id="themeHandler" auto></ui-theme-handler>
     <ui-store local-storage-prefix="shift-scheduler:" enable-local-storage></ui-store>
     <ui-lang>
-        <ui-lang-type name="en" href="/public/lang/en.json" fallback></ui-lang-type>
-        <ui-lang-type name="de" href="/public/lang/de.json"></ui-lang-type>
+        <ui-lang-type name="en" href="/lang/en.json" fallback></ui-lang-type>
+        <ui-lang-type name="de" href="/lang/de.json"></ui-lang-type>
     </ui-lang>
 
     <div id="app">
@@ -117,9 +117,8 @@
                             </ui-label>
 
                             <ui-flex-grid-row gap="0.25rem">
-                                <ui-flex-grid-item>
-                                    <ui-select id="miscThemeModeSelect">
-                                        <ui-select-option value="system">
+                                <ui-flex-grid-item style="width: 50%;">
+                                    <ui-select id="miscThemeModeSelect"> <ui-select-option value="system">
                                             System
                                         </ui-select-option>
 
@@ -133,7 +132,7 @@
                                     </ui-select>
                                 </ui-flex-grid-item>
 
-                                <ui-flex-grid-item>
+                                <ui-flex-grid-item style="width: 50%;">
                                     <ui-select id="miscThemeSelect">
                                         <ui-select-option value="zinc">
                                             Original
