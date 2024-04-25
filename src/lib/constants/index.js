@@ -9,8 +9,6 @@ export default {
     /** @type {import("../../types").WeekStartStore} */
     weekStart: 0,
 
-    debug: true,
-
     /** @type {import("../../types").Shift} Just some empty `Shifts` object */
     get shift() {
         return {

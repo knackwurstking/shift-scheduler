@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
     store.data.set("theme", constants.theme, true);
     store.data.set("week-start", constants.weekStart, true);
     store.data.set("settings", constants.settings, true);
-    store.data.set("debug", constants.debug, true);
+    store.data.set("debug", false, true);
 
     /** @type {import("ui/src/wc").Lang} */
     const lang = document.querySelector("ui-lang")
