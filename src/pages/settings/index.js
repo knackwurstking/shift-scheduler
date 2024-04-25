@@ -21,10 +21,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {import("ui/src/wc").Lang} */
         this.#lang = document.querySelector("ui-lang")
 
-        this.appBar = {
-            title: document.querySelector("#appBarTitle"),
-        };
-
         this.misc = {
             title: this.querySelector("#miscTitle"),
             weekStartPrimary: this.querySelector("#miscWeekStartPrimary"),
@@ -322,12 +318,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         console.log(`[settings] language update`, lang)
 
         if (!this.#lang.data.langType) return;
-
-        // AppBar Section
-
-        this.appBar.title.innerHTML = this.#lang.data.get(
-            "settings", "appBarTitle"
-        );
 
         // Misc Section
 

@@ -10,16 +10,21 @@ export const eventDatePickerChange = "datepickerchange";
  */
 
 export class App extends ui.events.Events {
+    /** @type {import("ui/src/wc").Lang} */
+    #lang
+
     /**
      * @param {import("ui/src/wc").Store} store
      */
     constructor(store) {
         super();
 
-        this.store = store;
-
         /** @type {(() => void)[]} */
         this.cleanup = [];
+
+        this.store = store;
+        /** @type {import("ui/src/wc").Lang} */
+        this.#lang = document.querySelector("ui-lang")
 
         /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
         this.themeHandler = document.querySelector("#themeHandler");
@@ -35,10 +40,6 @@ export class App extends ui.events.Events {
             backButton: document.querySelector("#appBarBackButton"),
             /** @type {Button} */
             datePickerButton: document.querySelector("#appBarDatePickerButton"),
-
-            // AppBar center slot
-            /** @type {HTMLElement} */
-            title: document.querySelector("#appBarTitle"),
 
             // AppBar right slot
             /** @type {IconButton} */
@@ -125,13 +126,6 @@ export class App extends ui.events.Events {
         this.setMonth(date);
     }
 
-    /**
-     * @param {string} title
-     */
-    setTitle(title) {
-        this.appBar.title.innerHTML = `<h3>${title}</h3>`;
-    }
-
     #registerPages() {
         this.stackLayout.registerPage("calendar", () => {
             return document.querySelector("template#pageCalendar")
@@ -164,22 +158,22 @@ export class App extends ui.events.Events {
         }
 
         if (!page) {
+            utils.setAppBarTitle("")
             this.#noPageSetup();
         }
 
         switch (page.name) {
             case "calendar":
-                // @ts-expect-error
-                page.app = this;
-                this.#calendarPageSetup(page);
+                utils.setAppBarTitle("")
+                this.#calendarPageSetup();
                 break;
             case "settings":
-                // @ts-expect-error
-                page.app = this;
-                this.#settingsPageSetup(page);
+                utils.setAppBarTitle(this.#lang.data.get("settings", "appBarTitle"))
+                this.#settingsPageSetup();
                 break;
             case "pdf":
-                this.#pdfPageSetup(page);
+                utils.setAppBarTitle("@TODO: PDF Page")
+                this.#pdfPageSetup();
                 break;
             default:
                 throw `unknown page "${page.name}"`;
@@ -187,7 +181,6 @@ export class App extends ui.events.Events {
     }
 
     #noPageSetup() {
-        this.setTitle("");
         this.appBar.datePickerButton.style.display = "none";
         this.appBar.editButton.style.display = "none";
         this.appBar.todayButton.style.display = "none";
@@ -195,11 +188,7 @@ export class App extends ui.events.Events {
         this.appBar.settingsButton.style.display = "none";
     }
 
-    /**
-     * @param {import("ui/src/wc").StackLayoutPage} page
-     */
-    #calendarPageSetup(page) {
-        this.setTitle(page.getAttribute("title") || "");
+    #calendarPageSetup() {
         this.appBar.datePickerButton.style.display = "flex";
         this.appBar.editButton.style.display = "flex";
         this.appBar.todayButton.style.display = "flex";
@@ -207,11 +196,7 @@ export class App extends ui.events.Events {
         this.appBar.settingsButton.style.display = "flex";
     }
 
-    /**
-     * @param {import("ui/src/wc").StackLayoutPage} page
-     */
-    #settingsPageSetup(page) {
-        this.setTitle(page.getAttribute("title") || "");
+    #settingsPageSetup() {
         this.appBar.datePickerButton.style.display = "none";
         this.appBar.editButton.style.display = "none";
         this.appBar.todayButton.style.display = "none";
@@ -219,11 +204,7 @@ export class App extends ui.events.Events {
         this.appBar.settingsButton.style.display = "none";
     }
 
-    /**
-     * @param {import("ui/src/wc").StackLayoutPage} page
-     */
-    #pdfPageSetup(page) {
-        this.setTitle(page.getAttribute("title") || "");
+    #pdfPageSetup() {
         this.appBar.datePickerButton.style.display = "none";
         this.appBar.editButton.style.display = "none";
         this.appBar.todayButton.style.display = "none";

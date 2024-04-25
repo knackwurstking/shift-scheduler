@@ -47,6 +47,11 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }, true)
 
+
+    /** @type {import("ui/src/wc").ThemeHandler} */
+    const th = document.querySelector("#themeHandler")
+    th.addTheme("zinc", `/public/themes/zinc.css`);
+
     const app = new App(store);
     app.onMount();
     app.run();

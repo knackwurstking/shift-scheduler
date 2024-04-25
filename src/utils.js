@@ -5,7 +5,8 @@ import ui from "ui";
  * @param {import("ui/src/wc").ThemeHandler} themeHandler
  */
 export async function setTheme(theme, themeHandler) {
-    // TODO: Handle theme name `theme.name`
+    themeHandler.loadTheme(theme.name)
+
     if (theme.mode === "system") {
         // Enable auto mode
         themeHandler.auto = true
@@ -44,4 +45,11 @@ export function validateShift(shift) {
     }
 
     return true;
+}
+
+/**
+ * @param {string} title
+ */
+export async function setAppBarTitle(title) {
+    document.querySelector("#appBarTitle").innerHTML = `<h3>${title}</h3>`;
 }
