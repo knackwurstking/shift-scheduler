@@ -139,13 +139,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             // Backup
             (async () => {
-                this.shifts.backupImportButton.addEventListener(
-                    "click", this.#onBackupImport.bind(this),
-                );
+                this.shifts.backupImportButton.onclick = async () => {
+                    this.#onBackupImport()
+                };
 
-                this.shifts.backupExportButton.addEventListener(
-                    "click", this.#onBackupExport.bind(this),
-                );
+                this.shifts.backupExportButton.onclick = async () => {
+                    this.#onBackupExport()
+                };
             })();
 
             // Handle the shifts table
