@@ -19,7 +19,7 @@
         "shiftsTableHeaderName": "Name",
         "shiftsTableHeaderShortName": "Short",
         "shiftsAddButton": "Add a new shift",
-        "shiftsStartDatePrimary": "@TODO: shiftsStartDatePrimary",
+        "shiftsStartDatePrimary": "Start Date",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"

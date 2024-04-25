@@ -5,11 +5,13 @@ import ui from "ui";
 import { App } from "./app";
 import { constants } from "./lib";
 import { CalendarPage, SettingsPage } from "./pages";
+import { StartDate } from "./pages/settings/start-date";
 
 ui.define()
     .then(() => {
         customElements.define("calendar-page", CalendarPage);
         customElements.define("settings-page", SettingsPage);
+        customElements.define("settings-start-date", StartDate);
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
 
