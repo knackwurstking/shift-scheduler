@@ -146,9 +146,13 @@ export class App extends ui.events.Events {
         });
     }
 
-    /** @param {import("ui/src/wc").StackLayoutPage | null} page */
-    async #onStackLayoutChange(page) {
-        console.log(`[app] stack layout changed:`, page)
+    /**
+     * @param {Object} data
+     * @param {import("ui/src/wc").StackLayoutPage | null} data.newPage 
+     * @param {import("ui/src/wc").StackLayoutPage | null} data.oldPage 
+     */
+    async #onStackLayoutChange({ newPage, oldPage }) {
+        console.log(`[app] stack layout changed:`, { newPage, oldPage })
 
         // Update the AppBar buttons...
         if (this.stackLayout.stack.length <= 1) {
@@ -161,12 +165,13 @@ export class App extends ui.events.Events {
             }
         }
 
-        if (!page) {
+        if (!newPage) {
             utils.setAppBarTitle("")
             this.#noPageSetup();
+            return
         }
 
-        switch (page.name) {
+        switch (newPage.name) {
             case "calendar":
                 utils.setAppBarTitle("")
                 this.#calendarPageSetup();
@@ -180,7 +185,7 @@ export class App extends ui.events.Events {
                 this.#pdfPageSetup();
                 break;
             default:
-                throw `unknown page "${page.name}"`;
+                throw `unknown page "${newPage.name}"`;
         }
     }
 

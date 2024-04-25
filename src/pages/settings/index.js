@@ -65,6 +65,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     connectedCallback() {
+        super.connectedCallback()
+        console.log("[settings] connect...")
+
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.data.on("lang", this.#onLang.bind(this), true)
@@ -151,6 +154,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     }
 
     disconnectedCallback() {
+        super.disconnectedCallback()
+        console.log("[settings] disconnect...")
+
         this.cleanup.forEach(fn => fn())
         this.cleanup = []
     }

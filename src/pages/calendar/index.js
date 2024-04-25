@@ -206,6 +206,9 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     }
 
     connectedCallback() {
+        super.connectedCallback()
+        console.log("[calendar] connect...")
+
         setTimeout(() => {
             this.cleanup.push(
                 // The "swipe" event will update the date-picker store, base on the swiped direction
@@ -230,7 +233,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     }
 
     disconnectedCallback() {
-        console.log("[calendar] disconnected callback running...");
+        super.disconnectedCallback()
+        console.log("[calendar] disconnect...")
 
         this.swipeHandler.stop();
         this.cleanup.forEach((fn) => fn());

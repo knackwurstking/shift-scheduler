@@ -33,7 +33,7 @@
  * @type {{
  *  shifts: Shift[];
  *  rhythm: number[];
- *  startDate: string; // "yyyy-mm-dd", padStart with "0"
+ *  startDate: string; // "yyyy-mm-dd"
  * }}
  *
  * @typedef DBEntryDataItem

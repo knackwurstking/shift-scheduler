@@ -35,6 +35,15 @@ export class StartDate extends HTMLElement {
     }
 
     connectedCallback() {
+        this.querySelector("input").oninput = ({ currentTarget }) => {
+            this.#store.data.update("settings", (/**@type{import("../../types").SettingsStore}*/settings) => {
+                // NOTE: value format: "YYYY-MM-DD"
+                // @ts-expect-error
+                settings.startDate = currentTarget.value;
+                return settings;
+            })
+        }
+
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.data.on("lang", () => {
