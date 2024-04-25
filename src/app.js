@@ -183,6 +183,7 @@ export class App extends ui.events.Events {
     }
 
     #noPageSetup() {
+        // TODO: Remove unused buttons from the app bar
         this.appBar.datePickerButton.style.display = "none";
         this.appBar.editButton.style.display = "none";
         this.appBar.todayButton.style.display = "none";
@@ -199,6 +200,7 @@ export class App extends ui.events.Events {
     }
 
     #settingsPageSetup() {
+        // TODO: Remove unused buttons from the app bar
         this.appBar.datePickerButton.style.display = "none";
         this.appBar.editButton.style.display = "none";
         this.appBar.todayButton.style.display = "none";
@@ -207,6 +209,7 @@ export class App extends ui.events.Events {
     }
 
     #pdfPageSetup() {
+        // TODO: Remove unused buttons from the app bar
         this.appBar.datePickerButton.style.display = "none";
         this.appBar.editButton.style.display = "none";
         this.appBar.todayButton.style.display = "none";
