@@ -56,6 +56,7 @@ const lang = document.querySelector("ui-lang")
 
 // TODO: Auto language detection handler here...
 // ...
+lang.setAttribute("current", "en") // NOTE: placeholder
 
 lang.data.on("change", (lt) => {
     if (!lt) {
