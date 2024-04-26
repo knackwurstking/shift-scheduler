@@ -3,10 +3,15 @@ import ui from "ui";
 /**
  * @typedef {"left" | "right"} Direction
  * @typedef {import(".").CalendarPage} CalendarPage 
+ *
+ * @typedef {{
+ *  swipe: Direction
+ * }} _Events
  */
 
 export const swipeRange = 75;
 
+/** @extends {ui.events.Events<_Events>} */
 export class SwipeHandler extends ui.events.Events {
     /** @type {number | null} */
     #startX = null;
@@ -164,36 +169,5 @@ export class SwipeHandler extends ui.events.Events {
 
         this.moveX(0);
         this.dispatchWithData("swipe", direction);
-    } // }}}
-
-    /*
-     * Events setup for completion
-     */
-
-    /**
-     * @param {"swipe"} key
-     * @param {Direction} data
-     */
-    dispatchWithData(key, data) { // {{{
-        super.dispatchWithData(key, data);
-        return this;
-    } // }}}
-
-    /**
-     * @param {"swipe"} key
-     * @param {(data: Direction) => void|Promise<void>} listener
-     * @returns {() => void} clean up function
-     */
-    addListener(key, listener) { // {{{
-        return super.addListener(key, listener);
-    } // }}}
-
-    /**
-     * @param {"swipe"} key
-     * @param {(data: "left" | "right" | "none") => void|Promise<void>} listener
-     */
-    removeListener(key, listener) { // {{{
-        super.removeListener(key, listener);
-        return this;
     } // }}}
 }

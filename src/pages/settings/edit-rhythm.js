@@ -50,9 +50,9 @@ export class EditRhythm extends HTMLElement {
     connectedCallback() { // {{{
         setTimeout(() => {
             this.cleanup.push(
-                this.#store.data.on("lang", async () => {
-                    this.#primary.innerHTML = this.#lang.data.get("settings", "shiftsEditRhythmPrimary");
-                    this.#button.innerHTML = this.#lang.data.get("settings", "shiftsEditRhythmButton")
+                this.#store.ui.on("lang", async () => {
+                    this.#primary.innerHTML = this.#lang.ui.get("settings", "shiftsEditRhythmPrimary");
+                    this.#button.innerHTML = this.#lang.ui.get("settings", "shiftsEditRhythmButton")
                 }, true),
             );
         });

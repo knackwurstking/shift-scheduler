@@ -82,7 +82,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         setTimeout(() => {
             this.cleanup.push(
-                this.#store.data.on("lang", this.#onLang.bind(this), true)
+                this.#store.ui.on("lang", this.#onLang.bind(this), true)
             );
 
 
@@ -91,7 +91,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             (async () => {
                 const cb = this.#onWeekStartChange.bind(this);
 
-                this.misc.weekStartInput.checked = this.#store.data.get("week-start") === 1;
+                this.misc.weekStartInput.checked = this.#store.ui.get("week-start") === 1;
                 this.misc.weekStartInput.addEventListener("click", cb)
                 this.cleanup.push(() => {
                     this.misc.weekStartInput.removeEventListener("click", cb)
@@ -106,13 +106,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             (async (theme) => {
                 [...this.misc.themeModeSelect.children].forEach(
                     (/** @type {import("ui/src/wc").SelectOption} */ c) => {
-                        c.selected = (c.value === theme.mode)
+                        c.ui.selected = (c.ui.value === theme.mode)
                     }
                 );
 
                 [...this.misc.themeSelect.children].forEach(
                     (/** @type {import("ui/src/wc").SelectOption} */ c) => {
-                        c.selected = (c.value === theme.name)
+                        c.ui.selected = (c.ui.value === theme.name)
                     }
                 );
 
@@ -121,7 +121,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                  */
                 const cbMode = (ev) => {
                     console.log(`[settings] update theme mode:`, ev.detail);
-                    this.#store.data.update("theme", (theme) => ({ ...theme, mode: ev.detail.value }));
+                    this.#store.ui.update("theme", (theme) => ({ ...theme, mode: ev.detail.ui.value }));
                 };
                 this.misc.themeModeSelect.addEventListener("change", cbMode);
                 this.cleanup.push(() => {
@@ -133,13 +133,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                  */
                 const cbName = (ev) => {
                     console.log(`[settings] update theme name:`, ev.detail);
-                    this.#store.data.update("theme", (theme) => ({ ...theme, name: ev.detail.value }));
+                    this.#store.ui.update("theme", (theme) => ({ ...theme, name: ev.detail.ui.value }));
                 };
                 this.misc.themeSelect.addEventListener("change", cbName);
                 this.cleanup.push(() => {
                     this.misc.themeSelect.removeEventListener("change", cbName);
                 })
-            })(this.#store.data.get("theme"));
+            })(this.#store.ui.get("theme"));
 
             // }}}
 
@@ -148,7 +148,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             (async () => {
                 const cb = this.#onDebugModeChange.bind(this);
 
-                this.misc.debugModeInput.checked = this.#store.data.get("debug");
+                this.misc.debugModeInput.checked = this.#store.ui.get("debug");
                 this.misc.debugModeInput.addEventListener("change", cb);
                 this.cleanup.push(() => {
                     this.misc.debugModeInput.removeEventListener("change", cb);
@@ -179,7 +179,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
             /** @type {import("../../types").SettingsStore} */
-            const settings = this.#store.data.get("settings");
+            const settings = this.#store.ui.get("settings");
 
             /** @type {import("../../types").Shift} */
             let shift;
@@ -244,7 +244,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 if (!validateSettings(data.settings))
                     throw `invalid settings`;
 
-                this.#store.data.set("settings", data.settings);
+                this.#store.ui.set("settings", data.settings);
             }
 
             // Handle indexedDB - validate all entries
@@ -277,7 +277,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     async exportBackup() { // {{{
         /** @type {import("../../types").Backup} */
         const backup = {
-            settings: this.#store.data.get("settings"),
+            settings: this.#store.ui.get("settings"),
             indexedDB: await db.getAll(),
         };
 
@@ -332,59 +332,59 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     async #onLang(lang) { // {{{
         console.log(`[settings] language update`, lang)
 
-        if (!this.#lang.data.langType) return;
+        if (!this.#lang.ui.langType) return;
 
         // Misc Section
 
-        this.misc.title.innerHTML = this.#lang.data.get(
+        this.misc.title.innerHTML = this.#lang.ui.get(
             "settings", "miscTitle"
         );
-        this.misc.weekStartPrimary.innerHTML = this.#lang.data.get(
+        this.misc.weekStartPrimary.innerHTML = this.#lang.ui.get(
             "settings", "miscWeekStartPrimary",
         );
-        this.misc.theme.innerHTML = this.#lang.data.get(
+        this.misc.theme.innerHTML = this.#lang.ui.get(
             "settings", "miscTheme",
         );
-        this.misc.debugModePrimary.innerHTML = this.#lang.data.get(
+        this.misc.debugModePrimary.innerHTML = this.#lang.ui.get(
             "settings", "miscDebugModePrimary",
         );
 
         // Backup Section
 
-        this.shifts.backupLabelPrimary.innerHTML = this.#lang.data.get(
+        this.shifts.backupLabelPrimary.innerHTML = this.#lang.ui.get(
             "settings", "shiftsBackupLabelPrimary",
         );
-        this.shifts.backupImportButton.innerHTML = this.#lang.data.get(
+        this.shifts.backupImportButton.innerHTML = this.#lang.ui.get(
             "settings", "shiftsBackupImportButton",
         );
-        this.shifts.backupExportButton.innerHTML = this.#lang.data.get(
+        this.shifts.backupExportButton.innerHTML = this.#lang.ui.get(
             "settings", "shiftsBackupExportButton",
         );
 
         // Shifts Section
 
-        this.shifts.title.innerHTML = this.#lang.data.get(
+        this.shifts.title.innerHTML = this.#lang.ui.get(
             "settings", "shiftsTitle",
         );
-        this.shifts.tableHeaderName.innerHTML = this.#lang.data.get(
+        this.shifts.tableHeaderName.innerHTML = this.#lang.ui.get(
             "settings", "shiftsTableHeaderName",
         );
-        this.shifts.tableHeaderShortName.innerHTML = this.#lang.data.get(
+        this.shifts.tableHeaderShortName.innerHTML = this.#lang.ui.get(
             "settings", "shiftsTableHeaderShortName",
         );
-        this.shifts.addButton.innerHTML = this.#lang.data.get(
+        this.shifts.addButton.innerHTML = this.#lang.ui.get(
             "settings", "shiftsAddButton",
         );
     } // }}}
 
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
     async #onWeekStartChange(ev) { // {{{
-        this.#store.data.set("week-start", ev.currentTarget.checked ? 1 : 0);
+        this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
     } // }}}
 
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
     async #onDebugModeChange(ev) { // {{{
-        this.#store.data.set("debug", ev.currentTarget.checked);
+        this.#store.ui.set("debug", ev.currentTarget.checked);
     } // }}}
 }
 

@@ -5,7 +5,7 @@ import App from "./app";
 import { CalendarPage, EditRhythm, SettingsPage, StartDate } from "./pages";
 
 /**
- * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc/store/store").Store<import("./types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler 
  *
@@ -33,13 +33,13 @@ ui.define()
 /** @type {Store} */
 const store = document.querySelector("ui-store");
 
-store.data.set("date-picker", (new Date()).toString(), true);
-store.data.set("theme", { mode: "system", name: "zinc" }, true);
-store.data.set("week-start", 0, true);
-store.data.set("settings", { shifts: [], rhythm: [], startDate: "" }, true);
-store.data.set("debug", false, true);
+store.ui.set("date-picker", (new Date()).toString(), true);
+store.ui.set("theme", { mode: "system", name: "zinc" }, true);
+store.ui.set("week-start", 0, true);
+store.ui.set("settings", { shifts: [], rhythm: [], startDate: "" }, true);
+store.ui.set("debug", false, true);
 
-store.data.on("debug", (/** @type{DebugStore} */ state) => {
+store.ui.on("debug", (/** @type{DebugStore} */ state) => {
     if (state) {
         document.querySelector("#app").classList.add("is-debug")
     } else {
@@ -58,14 +58,15 @@ const lang = document.querySelector("ui-lang")
 // ...
 lang.setAttribute("current", "en") // NOTE: placeholder
 
-lang.data.on("change", (lt) => {
-    if (!lt) {
+lang.ui.on("change", (langTypeElement) => {
+    if (!langTypeElement) {
         console.log("[main] No language set for now!")
         return
     }
 
-    console.log(`[main] current language in use:`, lt)
-    store.data.set("lang", lt.name, true);
+    console.log(`[main] current language in use:`, langTypeElement)
+    // @ts-expect-error - `langTypeElement.ui.name` is from type string, not `LangStore`
+    store.ui.set("lang", langTypeElement.ui.name, true);
 }, true)
 
 // }}}
@@ -74,8 +75,8 @@ lang.data.on("change", (lt) => {
 
 /** @type {ThemeHandler} */
 const th = document.querySelector("#themeHandler")
-th.addTheme("zinc", `/themes/zinc.css`);
-th.addTheme("green", `/themes/green.css`);
+th.ui.addTheme("zinc", `/themes/zinc.css`);
+th.ui.addTheme("green", `/themes/green.css`);
 
 // }}}
 

@@ -42,7 +42,7 @@ export class StartDate extends HTMLElement {
         this.#primary = this.querySelector("ui-primary");
 
         this.#input.oninput = ({ currentTarget }) => {
-            this.#store.data.update(
+            this.#store.ui.update(
                 "settings",
                 (/**@type{SettingsStore}*/ settings) => {
                     // NOTE: value format: "YYYY-MM-DD"
@@ -57,10 +57,10 @@ export class StartDate extends HTMLElement {
     connectedCallback() { // {{{
         setTimeout(() => {
             this.cleanup.push(
-                this.#store.data.on(
+                this.#store.ui.on(
                     "lang",
                     () => {
-                        this.#primary.innerHTML = this.#lang.data.get(
+                        this.#primary.innerHTML = this.#lang.ui.get(
                             "settings",
                             "shiftsStartDatePrimary",
                         );
@@ -68,7 +68,7 @@ export class StartDate extends HTMLElement {
                     true,
                 ),
 
-                this.#store.data.on(
+                this.#store.ui.on(
                     "settings",
                     (/** @type {SettingsStore} */ settings) => {
                         if (settings.startDate === this.#input.value) return;

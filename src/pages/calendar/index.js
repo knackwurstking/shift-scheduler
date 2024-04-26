@@ -5,7 +5,7 @@ import { fillWithData, getMonthArray } from "./utils";
 
 /**
  * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc").Store<import("../../types").StoreEvents>} Store
  *
  * @typedef {import("./swipe-handler").Direction} Direction
  *
@@ -13,6 +13,7 @@ import { fillWithData, getMonthArray } from "./utils";
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
  * @typedef {import("../../types").LangStore} LangStore 
  * @typedef {import("../../types").DBEntryData} DBEntryData 
+ *
  * @typedef {import("../../db").DB} DB 
  */
 
@@ -236,21 +237,21 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 ),
 
                 // Handle the "date-picker" state change, update calendar items
-                this.#store.data.on(
+                this.#store.ui.on(
                     "date-picker",
                     this.handleDatePickerChangeEvent.bind(this),
                     true,
                 ),
 
                 // Handle a "week-start" change event
-                this.#store.data.on(
+                this.#store.ui.on(
                     "week-start",
                     this.#onWeekStart.bind(this),
                     true,
                 ),
 
                 // Handle a "lang" change event
-                this.#store.data.on("lang", this.#onLang.bind(this), true),
+                this.#store.ui.on("lang", this.#onLang.bind(this), true),
             );
 
             this.swipeHandler.start();
@@ -279,7 +280,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         const data = await fillWithData(
             db,
             date,
-            await getMonthArray(date, this.#store.data.get("week-start")),
+            await getMonthArray(date, this.#store.ui.get("week-start")),
         );
 
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
@@ -338,7 +339,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         switch (direction) {
             case "left":
                 // Go to next month
-                this.#store.data.update(
+                this.#store.ui.update(
                     "date-picker",
                     (/** @type {DatePickerStore} */ dateString) => {
                         const date = new Date(dateString);
@@ -349,7 +350,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 break;
             case "right":
                 // Go to prev month
-                this.#store.data.update(
+                this.#store.ui.update(
                     "date-picker",
                     (/** @type {DatePickerStore} */ dateString) => {
                         const date = new Date(dateString);
@@ -410,7 +411,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.#markWeekendItems(...items);
 
         items.forEach((item, i) => {
-            item.innerHTML = `${this.#lang.data.get("calendar", this.order[i % 7].toString())}`;
+            item.innerHTML = `${this.#lang.ui.get("calendar", this.order[i % 7].toString())}`;
         });
     } // }}}
 
@@ -442,7 +443,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         await this.#updateWeekDays(weekStart);
         await this.handleDatePickerChangeEvent(
-            this.#store.data.get("date-picker"),
+            this.#store.ui.get("date-picker"),
         );
     } // }}}
 
@@ -451,6 +452,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         console.log(`[calendar] language update`, lang);
 
         // Update week days grid header row
-        await this.#updateWeekDays(this.#store.data.get("week-start"));
+        await this.#updateWeekDays(this.#store.ui.get("week-start"));
     } // }}}
 }

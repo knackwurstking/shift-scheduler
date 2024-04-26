@@ -13,18 +13,18 @@ import ui from "ui";
  */
 async function setTheme(theme, themeHandler) { // {{{
     try {
-        themeHandler.loadTheme(theme.name)
+        themeHandler.ui.loadTheme(theme.name)
     } catch {
-        themeHandler.loadTheme("zinc") // default theme (original)
+        themeHandler.ui.loadTheme("zinc") // default theme (original)
     }
 
     if (theme.mode === "system") {
         // Enable auto mode
-        themeHandler.enableAutoMode()
+        themeHandler.ui.enableAutoMode()
     } else {
         // Disable auto mode and set theme manually
-        themeHandler.setMode(theme.mode)
-        themeHandler.disableAutoMode()
+        themeHandler.ui.setMode(theme.mode)
+        themeHandler.ui.disableAutoMode()
     }
 } // }}}
 

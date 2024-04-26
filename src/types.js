@@ -1,6 +1,6 @@
 /**
- * @typedef DebugStore 
- * @type {boolean}
+ * @typedef DatePickerStore
+ * @type {string}
  *
  * @typedef ThemeStore
  * @type {{
@@ -8,17 +8,27 @@
  *  name: string;
  * }}
  *
- * @typedef LangStore
- * @type {"en" | "de"}
- *
- * @typedef DatePickerStore
- * @type {string}
- *
  * @typedef WeekStartStore
  * @type {0 | 1}
  *
  * @typedef SettingsStore
  * @type {Settings}
+ *
+ * @typedef DebugStore 
+ * @type {boolean}
+ *
+ * @typedef LangStore
+ * @type {"en" | "de"}
+ *
+ * @typedef StoreEvents
+ * @type {{
+ *  "date-picker": DatePickerStore;
+ *  "theme": ThemeStore;
+ *  "week-start": WeekStartStore;
+ *  "settings": SettingsStore;
+ *  "debug": DebugStore;
+ *  "lang": LangStore;
+ * }}
  *
  * @typedef Shift
  * @type {{

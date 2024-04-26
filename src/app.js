@@ -8,7 +8,7 @@ import utils from "./utils";
  * @typedef {import("ui/src/wc").StackLayout} StackLayout
  * @typedef {import("ui/src/wc").Lang} Lang 
  * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler 
- * @typedef {import("ui/src/wc").Store} Store 
+ * @typedef {import("ui/src/wc").Store<import("./types").StoreEvents>} Store 
  * @typedef {import("ui/src/wc").StackLayoutPage} StackLayoutPage 
  *
  * @typedef {import("./types").ThemeStore} ThemeStore 
@@ -40,19 +40,19 @@ export default class App extends ui.events.Events {
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
-        this.stackLayout.registerPage("calendar", () => {
+        this.stackLayout.ui.registerPage("calendar", () => {
             return document.querySelector("template#pageCalendar")
                 // @ts-expect-error
                 .content.cloneNode(true);
         });
 
-        this.stackLayout.registerPage("pdf", () => {
+        this.stackLayout.ui.registerPage("pdf", () => {
             return document.querySelector("template#pagePDF")
                 // @ts-expect-error
                 .content.cloneNode(true)
         });
 
-        this.stackLayout.registerPage("settings", () => {
+        this.stackLayout.ui.registerPage("settings", () => {
             return document.querySelector("template#pageSettings")
                 // @ts-expect-error
                 .content.cloneNode(true)
@@ -67,7 +67,7 @@ export default class App extends ui.events.Events {
 
         /** @type {IconButton} */
         this.appBarBackButton = this.appBar.querySelector("#appBarBackButton")
-        this.appBarBackButton.onclick = async () => this.stackLayout.goBack();
+        this.appBarBackButton.onclick = async () => this.stackLayout.ui.goBack();
 
         /** @type {Button} */
         this.appBarDatePickerButton = this.appBar.querySelector("#appBarDatePickerButton")
@@ -79,22 +79,22 @@ export default class App extends ui.events.Events {
 
         /** @type {IconButton} */
         this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
-        this.appBarTodayButton.onclick = async () => this.#store.data.set("date-picker", new Date());
+        this.appBarTodayButton.onclick = async () => this.#store.ui.set("date-picker", new Date().toString());
 
         /** @type {IconButton} */
         this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")
-        this.appBarPDFButton.onclick = async () => this.stackLayout.setPage("pdf");
+        this.appBarPDFButton.onclick = async () => this.stackLayout.ui.setPage("pdf");
 
         /** @type {IconButton} */
         this.appBarSettingsButton = this.appBar.querySelector("#appBarSettingsButton")
-        this.appBarSettingsButton.onclick = async () => this.stackLayout.setPage("settings");
+        this.appBarSettingsButton.onclick = async () => this.stackLayout.ui.setPage("settings");
 
         // }}}
     } // }}}
 
     run() { // {{{
         setTimeout(() => {
-            this.#store.data.on(
+            this.#store.ui.on(
                 "theme",
                 (/** @type {ThemeStore} */ data) => {
                     console.log(`[app] current theme in use:`, data)
@@ -103,18 +103,18 @@ export default class App extends ui.events.Events {
                 true,
             );
 
-            this.stackLayout.events.addListener(
+            this.stackLayout.ui.events.addListener(
                 "change",
                 this.#onStackLayoutChange.bind(this),
             );
 
-            this.#store.data.on("date-picker", (dateString) => {
+            this.#store.ui.on("date-picker", (dateString) => {
                 const date = new Date(dateString);
                 this.appBarDatePickerButton.innerText =
                     `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
             }, true);
 
-            this.stackLayout.setPage("calendar");
+            this.stackLayout.ui.setPage("calendar");
         });
     } // }}}
 
@@ -127,13 +127,14 @@ export default class App extends ui.events.Events {
         console.log(`[app] stack layout changed:`, { newPage, oldPage });
 
         // Update the AppBar buttons...
-        if (this.stackLayout.stack.length <= 1) {
+        if (this.stackLayout.ui.stack.length <= 1) {
             this.appBar.removeChild(this.appBarBackButton.parentElement)
         } else {
-            if (!!this.appBar.leftSlotChildren.length) {
+            const leftSlot = this.appBar.ui.getLeftSlot()
+            if (leftSlot.length > 0) {
                 this.appBar.insertBefore(
                     this.appBarBackButton.parentElement,
-                    this.appBar.leftSlotChildren[0]
+                    leftSlot[0]
                 );
             } else {
                 this.appBar.appendChild(
@@ -148,13 +149,13 @@ export default class App extends ui.events.Events {
             return
         }
 
-        switch (newPage.name) {
+        switch (newPage.ui.name) {
             case "calendar":
                 utils.setAppBarTitle("")
                 this.#calendarPageSetup();
                 break;
             case "settings":
-                utils.setAppBarTitle(this.#lang.data.get("settings", "appBarTitle"))
+                utils.setAppBarTitle(this.#lang.ui.get("settings", "appBarTitle"))
                 this.#settingsPageSetup();
                 break;
             case "pdf":
@@ -162,7 +163,7 @@ export default class App extends ui.events.Events {
                 this.#pdfPageSetup();
                 break;
             default:
-                throw `unknown page "${newPage.name}"`;
+                throw `unknown page "${newPage.ui.name}"`;
         }
     } // }}}
 
