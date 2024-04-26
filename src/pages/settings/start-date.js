@@ -1,3 +1,9 @@
+/**
+ * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("../../types").SettingsStore} SettingsStore
+ */
+
 const innerHTML = `
 <ui-label>
     <ui-primary slot="primary"></ui-primary>
@@ -8,9 +14,9 @@ const innerHTML = `
 
 /** NOTE: This element need to be appended to "#shiftsStartDateSection" */
 export class StartDate extends HTMLElement {
-    /** @type {import("ui/src/wc").Store} */
+    /** @type {Store} */
     #store;
-    /** @type {import("ui/src/wc").Lang} */
+    /** @type {Lang} */
     #lang;
     /** @type {HTMLInputElement} */
     #input;
@@ -20,10 +26,10 @@ export class StartDate extends HTMLElement {
     static register = () => customElements.define("settings-start-date", StartDate)
 
     /**
-     * @param {import("ui/src/wc").Store} store
-     * @param {import("ui/src/wc").Lang} lang
+     * @param {Store} store
+     * @param {Lang} lang
      */
-    constructor(store, lang) {
+    constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
@@ -39,7 +45,7 @@ export class StartDate extends HTMLElement {
         this.#input.oninput = ({ currentTarget }) => {
             this.#store.data.update(
                 "settings",
-                (/**@type{import("../../types").SettingsStore}*/ settings) => {
+                (/**@type{SettingsStore}*/ settings) => {
                     // NOTE: value format: "YYYY-MM-DD"
                     // @ts-expect-error
                     settings.startDate = currentTarget.value;
@@ -47,9 +53,9 @@ export class StartDate extends HTMLElement {
                 },
             );
         };
-    }
+    } // }}}
 
-    connectedCallback() {
+    connectedCallback() { // {{{
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.data.on(
@@ -62,9 +68,10 @@ export class StartDate extends HTMLElement {
                     },
                     true,
                 ),
+
                 this.#store.data.on(
                     "settings",
-                    (settings) => {
+                    (/** @type {SettingsStore} */ settings) => {
                         if (settings.startDate === this.#input.value) return;
                         this.#input.value = settings.startDate;
                     },
@@ -72,10 +79,10 @@ export class StartDate extends HTMLElement {
                 ),
             );
         });
-    }
+    } // }}}
 
-    diconnectedCallback() {
+    diconnectedCallback() { // {{{
         this.cleanup.forEach((fn) => fn());
         this.cleanup = [];
-    }
+    } // }}}
 }
