@@ -4,6 +4,14 @@ import ui from "ui";
 import { App } from "./app";
 import { CalendarPage, EditRhythm, SettingsPage, StartDate } from "./pages";
 
+/**
+ * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler 
+ *
+ * @typedef {import("./types").DebugStore} DebugStore
+ */
+
 // Initialize Web Components {{{
 
 ui.defineSVG()
@@ -22,7 +30,7 @@ ui.define()
 
 // Initialize Store {{{
 
-/** @type {import("ui/src/wc").Store} */
+/** @type {Store} */
 const store = document.querySelector("ui-store");
 
 store.data.set("date-picker", (new Date()).toString(), true);
@@ -31,7 +39,7 @@ store.data.set("week-start", 0, true);
 store.data.set("settings", { shifts: [], rhythm: [], startDate: "" }, true);
 store.data.set("debug", false, true);
 
-store.data.on("debug", (/**@type{import("./types").DebugStore}*/state) => {
+store.data.on("debug", (/** @type{DebugStore} */ state) => {
     if (state) {
         document.querySelector("#app").classList.add("is-debug")
     } else {
@@ -43,7 +51,7 @@ store.data.on("debug", (/**@type{import("./types").DebugStore}*/state) => {
 
 // {{{ Initialize Language
 
-/** @type {import("ui/src/wc").Lang} */
+/** @type {Lang} */
 const lang = document.querySelector("ui-lang")
 
 // TODO: Auto language detection handler here...
@@ -63,7 +71,7 @@ lang.data.on("change", (lt) => {
 
 // {{{ Initialize Theme
 
-/** @type {import("ui/src/wc").ThemeHandler} */
+/** @type {ThemeHandler} */
 const th = document.querySelector("#themeHandler")
 th.addTheme("zinc", `/themes/zinc.css`);
 th.addTheme("green", `/themes/green.css`);
