@@ -12,7 +12,6 @@ const innerHTML = `
 </ui-label>
 `;
 
-/** NOTE: This element need to be appended to "#shiftsStartDateSection" */
 export class StartDate extends HTMLElement {
     /** @type {Store} */
     #store;
