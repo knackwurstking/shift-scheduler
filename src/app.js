@@ -66,54 +66,56 @@ export default class App extends ui.events.Events {
         this.appBar = document.querySelector("ui-app-bar");
 
         /** @type {IconButton} */
-        this.appBarBackButton = this.appBar.leftSlot.querySelector("#appBarBackButton")
+        this.appBarBackButton = this.appBar.querySelector("#appBarBackButton")
         this.appBarBackButton.onclick = async () => this.stackLayout.goBack();
 
         /** @type {Button} */
-        this.appBarDatePickerButton = document.querySelector("#appBarDatePickerButton")
+        this.appBarDatePickerButton = this.appBar.querySelector("#appBarDatePickerButton")
         this.appBarDatePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
 
         /** @type {IconButton} */
-        this.appBarEditButton = document.querySelector("#appBarEditButton")
+        this.appBarEditButton = this.appBar.querySelector("#appBarEditButton")
         this.appBarEditButton.onclick = async () => null; // TODO: Add edit onclick callback
 
         /** @type {IconButton} */
-        this.appBarTodayButton = document.querySelector("#appBarTodayButton")
+        this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
         this.appBarTodayButton.onclick = async () => this.#store.data.set("date-picker", new Date());
 
         /** @type {IconButton} */
-        this.appBarPDFButton = document.querySelector("#appBarPDFButton")
+        this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")
         this.appBarPDFButton.onclick = async () => this.stackLayout.setPage("pdf");
 
         /** @type {IconButton} */
-        this.appBarSettingsButton = document.querySelector("#appBarSettingsButton")
+        this.appBarSettingsButton = this.appBar.querySelector("#appBarSettingsButton")
         this.appBarSettingsButton.onclick = async () => this.stackLayout.setPage("settings");
 
         // }}}
     } // }}}
 
     run() { // {{{
-        this.#store.data.on(
-            "theme",
-            (/** @type {ThemeStore} */ data) => {
-                console.log(`[app] current theme in use:`, data)
-                utils.setTheme(data, this.themeHandler);
-            },
-            true,
-        );
+        setTimeout(() => {
+            this.#store.data.on(
+                "theme",
+                (/** @type {ThemeStore} */ data) => {
+                    console.log(`[app] current theme in use:`, data)
+                    utils.setTheme(data, this.themeHandler);
+                },
+                true,
+            );
 
-        this.stackLayout.events.addListener(
-            "change",
-            this.#onStackLayoutChange.bind(this),
-        );
+            this.stackLayout.events.addListener(
+                "change",
+                this.#onStackLayoutChange.bind(this),
+            );
 
-        this.#store.data.on("date-picker", (dateString) => {
-            const date = new Date(dateString);
-            this.appBarDatePickerButton.innerText =
-                `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-        }, true);
+            this.#store.data.on("date-picker", (dateString) => {
+                const date = new Date(dateString);
+                this.appBarDatePickerButton.innerText =
+                    `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+            }, true);
 
-        this.stackLayout.setPage("calendar");
+            this.stackLayout.setPage("calendar");
+        });
     } // }}}
 
     /**
@@ -122,21 +124,19 @@ export default class App extends ui.events.Events {
      * @param {StackLayoutPage | null} data.oldPage 
      */
     async #onStackLayoutChange({ newPage, oldPage }) { // {{{
-        console.log(`[app] stack layout changed:`, { newPage, oldPage })
+        console.log(`[app] stack layout changed:`, { newPage, oldPage });
 
         // Update the AppBar buttons...
         if (this.stackLayout.stack.length <= 1) {
-            this.appBar.leftSlot.removeChild(
-                this.appBarBackButton.parentElement
-            );
+            this.appBar.removeChild(this.appBarBackButton.parentElement)
         } else {
-            if (!!this.appBar.leftSlot.children.length) {
-                this.appBar.leftSlot.insertBefore(
+            if (!!this.appBar.leftSlotChildren.length) {
+                this.appBar.insertBefore(
                     this.appBarBackButton.parentElement,
-                    this.appBar.leftSlot.children[0]
+                    this.appBar.leftSlotChildren[0]
                 );
             } else {
-                this.appBar.leftSlot.appendChild(
+                this.appBar.appendChild(
                     this.appBarBackButton.parentElement
                 );
             }
@@ -167,34 +167,34 @@ export default class App extends ui.events.Events {
     } // }}}
 
     #noPageSetup() { // {{{
-        this.appBar.leftSlot.removeChild(this.appBarDatePickerButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarEditButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarTodayButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarPDFButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarSettingsButton.parentElement)
+        this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
+        this.appBar.removeChild(this.appBarEditButton.parentElement)
+        this.appBar.removeChild(this.appBarTodayButton.parentElement)
+        this.appBar.removeChild(this.appBarPDFButton.parentElement)
+        this.appBar.removeChild(this.appBarSettingsButton.parentElement)
     } // }}}
 
     #calendarPageSetup() { // {{{
-        this.appBar.leftSlot.appendChild(this.appBarDatePickerButton.parentElement)
-        this.appBar.rightSlot.appendChild(this.appBarEditButton.parentElement)
-        this.appBar.rightSlot.appendChild(this.appBarTodayButton.parentElement)
-        this.appBar.rightSlot.appendChild(this.appBarPDFButton.parentElement)
-        this.appBar.rightSlot.appendChild(this.appBarSettingsButton.parentElement)
+        this.appBar.appendChild(this.appBarDatePickerButton.parentElement)
+        this.appBar.appendChild(this.appBarEditButton.parentElement)
+        this.appBar.appendChild(this.appBarTodayButton.parentElement)
+        this.appBar.appendChild(this.appBarPDFButton.parentElement)
+        this.appBar.appendChild(this.appBarSettingsButton.parentElement)
     } // }}}
 
     #settingsPageSetup() { // {{{
-        this.appBar.leftSlot.removeChild(this.appBarDatePickerButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarEditButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarTodayButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarPDFButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarSettingsButton.parentElement)
+        this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
+        this.appBar.removeChild(this.appBarEditButton.parentElement)
+        this.appBar.removeChild(this.appBarTodayButton.parentElement)
+        this.appBar.removeChild(this.appBarPDFButton.parentElement)
+        this.appBar.removeChild(this.appBarSettingsButton.parentElement)
     } // }}}
 
     #pdfPageSetup() { // {{{
-        this.appBar.leftSlot.removeChild(this.appBarDatePickerButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarEditButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarTodayButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarPDFButton.parentElement)
-        this.appBar.rightSlot.removeChild(this.appBarSettingsButton.parentElement)
+        this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
+        this.appBar.removeChild(this.appBarEditButton.parentElement)
+        this.appBar.removeChild(this.appBarTodayButton.parentElement)
+        this.appBar.removeChild(this.appBarPDFButton.parentElement)
+        this.appBar.removeChild(this.appBarSettingsButton.parentElement)
     } // }}}
 }
