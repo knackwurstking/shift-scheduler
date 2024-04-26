@@ -1,4 +1,9 @@
-import * as utils from "../../utils";
+import utils from "./utils";
+
+/**
+ * @typedef {import("./types").DBEntry} DBEntry
+ * @typedef {import("./types").DBEntryData} DBEntryData
+ */
 
 const storeMonths = "months";
 
@@ -13,18 +18,16 @@ export class DB {
      * @param {string} dbName
      * @param {number} version
      */
-    constructor(dbName, version) {
+    constructor(dbName, version) { // {{{
         this.#open(dbName, version);
-    }
+    } // }}}
 
-    close() {
+    close() { // {{{
         this.#request?.result.close();
-    }
+    } // }}}
 
-    /**
-     * @param {import("../../types").DBEntry} entry
-     */
-    validate(entry) {
+    /** @param {DBEntry} entry */
+    validate(entry) { // {{{
         if (typeof entry.id !== "string") {
             return false;
         }
@@ -48,14 +51,14 @@ export class DB {
         }
 
         return true;
-    }
+    } // }}}
 
     /**
      * @param {number} year
      * @param {number} month
-     * @returns {Promise<import("../../types").DBEntry | null>} - Returns null on error (no entry found)
+     * @returns {Promise<DBEntry | null>} - Returns null on error (no entry found)
      */
-    async get(year, month) {
+    async get(year, month) { // {{{
         return await new Promise((resolve) => {
             const r = this.#roStore().get(`${year}/${month}`);
             r.onsuccess = () => {
@@ -69,24 +72,22 @@ export class DB {
                 resolve(null);
             };
         });
-    }
+    } // }}}
 
-    /**
-     * @returns {Promise<import("../../types").DBEntry[]>}
-     */
-    async getAll() {
+    /** @returns {Promise<DBEntry[]>} */
+    async getAll() { // {{{
         // TODO: Get all database entries
 
         return [];
-    }
+    } // }}}
 
     /**
      * @param {number} year
      * @param {number} month
-     * @param {import("../../types").DBEntryData} data
+     * @param {DBEntryData} data
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
-    async add(year, month, data) {
+    async add(year, month, data) { // {{{
         return await new Promise((resolve, reject) => {
             const r = this.#rwStore().add({
                 id: `${year}/${month}`,
@@ -104,15 +105,15 @@ export class DB {
                 reject(r.error);
             };
         });
-    }
+    } // }}}
 
     /**
      * @param {number} year
      * @param {number} month
-     * @param {import("../../types").DBEntryData} data
+     * @param {DBEntryData} data
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
-    async put(year, month, data) {
+    async put(year, month, data) { // {{{
         return await new Promise((resolve, reject) => {
             const r = this.#rwStore().put({
                 id: `${year}/${month}`,
@@ -130,14 +131,14 @@ export class DB {
                 reject(r.error);
             };
         });
-    }
+    } // }}}
 
     /**
      * @param {number} year
      * @param {number} month
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
-    async delete(year, month) {
+    async delete(year, month) { // {{{
         return await new Promise((resolve, reject) => {
             const r = this.#rwStore().delete(`${year}/${month}`);
             r.onsuccess = () => {
@@ -152,29 +153,17 @@ export class DB {
                 reject(r.error);
             };
         });
-    }
+    } // }}}
 
-    async deleteAll() {
+    async deleteAll() { // {{{
         // ...
-    }
-
-    #roStore() {
-        return this.#request.result
-            .transaction(storeMonths, "readonly")
-            .objectStore(storeMonths);
-    }
-
-    #rwStore() {
-        return this.#request.result
-            .transaction(storeMonths, "readwrite")
-            .objectStore(storeMonths);
-    }
+    } // }}}
 
     /**
      * @param {string} dbName
      * @param {number | null} version
      */
-    #open(dbName, version) {
+    #open(dbName, version) { // {{{
         this.#request = window.indexedDB.open(dbName, version);
 
         this.#request.onerror = (e) => {
@@ -206,12 +195,10 @@ export class DB {
                     break;
             }
         };
-    }
+    } // }}}
 
-    /**
-     * @param {IDBDatabase} db
-     */
-    #createStore(db) {
+    /** @param {IDBDatabase} db */
+    #createStore(db) { // {{{
         if (!db.objectStoreNames.contains(storeMonths)) {
             const o = db.createObjectStore(storeMonths, {
                 autoIncrement: false,
@@ -220,7 +207,19 @@ export class DB {
             o.createIndex("id", "id", { unique: true });
             o.createIndex("data", "data", { unique: false });
         }
-    }
+    } // }}}
+
+    #roStore() { // {{{
+        return this.#request.result
+            .transaction(storeMonths, "readonly")
+            .objectStore(storeMonths);
+    } // }}}
+
+    #rwStore() { // {{{
+        return this.#request.result
+            .transaction(storeMonths, "readwrite")
+            .objectStore(storeMonths);
+    } // }}}
 }
 
 export default new DB("shift-scheduler", 1)
