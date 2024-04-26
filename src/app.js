@@ -5,41 +5,48 @@ import * as utils from "./utils";
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").IconButton} IconButton
  * @typedef {import("ui/src/wc").StackLayout} StackLayout
+ * @typedef {import("ui/src/wc").Lang} Lang 
+ * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler 
+ * @typedef {import("ui/src/wc").Store} Store 
+ * @typedef {import("ui/src/wc").StackLayoutPage} StackLayoutPage 
+ *
+ * @typedef {import("./types").ThemeStore} ThemeStore 
  */
 
 export class App extends ui.events.Events {
-    /** @type {import("ui/src/wc").Lang} */
+    /** @type {Store} */
+    #store
+    /** @type {Lang} */
     #lang
 
     /**
-     * @param {import("ui/src/wc").Store} store
+     * @param {Store} store
      */
-    constructor(store) {
+    constructor(store) { // {{{
         super();
 
         /** @type {(() => void)[]} */
         this.cleanup = [];
 
-        this.store = store;
-        /** @type {import("ui/src/wc").Lang} */
+        this.#store = store;
         this.#lang = document.querySelector("ui-lang")
 
-        /** @type {import("ui/src/wc/theme-handler").ThemeHandler} */
+        /** @type {ThemeHandler} */
         this.themeHandler = document.querySelector("#themeHandler");
-
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
+
         this.#registerPages();
 
-        // App Bar
+        // TODO: Query select the AppBar component and fix this mess
         this.appBar = {
-            // left slot
+            // {{{ Left Slot
             /** @type {IconButton} */
             backButton: document.querySelector("#appBarBackButton"),
             /** @type {Button} */
             datePickerButton: document.querySelector("#appBarDatePickerButton"),
-
-            // AppBar right slot
+            // }}}
+            // {{{ Right Slot
             /** @type {IconButton} */
             editButton: document.querySelector("#appBarEditButton"),
             /** @type {IconButton} */
@@ -48,6 +55,7 @@ export class App extends ui.events.Events {
             pdfButton: document.querySelector("#appBarPDFButton"),
             /** @type {IconButton} */
             settingsButton: document.querySelector("#appBarSettingsButton"),
+            // }}}
         };
 
         this.appBar.leftSlot = this.appBar.backButton.parentElement.parentElement
@@ -56,15 +64,15 @@ export class App extends ui.events.Events {
         this.appBar.backButton.onclick = async () => this.stackLayout.goBack();
         this.appBar.datePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
         this.appBar.editButton.onclick = async () => null; // TODO: Add edit onclick callback
-        this.appBar.todayButton.onclick = async () => this.store.data.set("date-picker", new Date());
+        this.appBar.todayButton.onclick = async () => this.#store.data.set("date-picker", new Date());
         this.appBar.pdfButton.onclick = async () => this.stackLayout.setPage("pdf");
         this.appBar.settingsButton.onclick = async () => this.stackLayout.setPage("settings");
-    }
+    } // }}}
 
-    run() {
-        this.store.data.on(
+    run() { // {{{
+        this.#store.data.on(
             "theme",
-            (/**@type{import("./types").ThemeStore}*/ data) => {
+            (/** @type {ThemeStore} */ data) => {
                 console.log(`[app] current theme in use:`, data)
                 utils.setTheme(data, this.themeHandler);
             },
@@ -76,16 +84,16 @@ export class App extends ui.events.Events {
             this.#onStackLayoutChange.bind(this),
         );
 
-        this.store.data.on("date-picker", (dateString) => {
+        this.#store.data.on("date-picker", (dateString) => {
             const date = new Date(dateString);
             this.appBar.datePickerButton.innerText =
                 `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
         }, true);
 
         this.stackLayout.setPage("calendar");
-    }
+    } // }}}
 
-    #registerPages() {
+    #registerPages() { // {{{
         this.stackLayout.registerPage("calendar", () => {
             return document.querySelector("template#pageCalendar")
                 // @ts-expect-error
@@ -103,14 +111,14 @@ export class App extends ui.events.Events {
                 // @ts-expect-error
                 .content.cloneNode(true)
         });
-    }
+    } // }}}
 
     /**
      * @param {Object} data
-     * @param {import("ui/src/wc").StackLayoutPage | null} data.newPage 
-     * @param {import("ui/src/wc").StackLayoutPage | null} data.oldPage 
+     * @param {StackLayoutPage | null} data.newPage 
+     * @param {StackLayoutPage | null} data.oldPage 
      */
-    async #onStackLayoutChange({ newPage, oldPage }) {
+    async #onStackLayoutChange({ newPage, oldPage }) { // {{{
         console.log(`[app] stack layout changed:`, { newPage, oldPage })
 
         // Update the AppBar buttons...
@@ -146,37 +154,37 @@ export class App extends ui.events.Events {
             default:
                 throw `unknown page "${newPage.name}"`;
         }
-    }
+    } // }}}
 
-    #noPageSetup() {
+    #noPageSetup() { // {{{
         this.appBar.leftSlot.removeChild(this.appBar.datePickerButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.editButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.todayButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.pdfButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.settingsButton.parentElement)
-    }
+    } // }}}
 
-    #calendarPageSetup() {
+    #calendarPageSetup() { // {{{
         this.appBar.leftSlot.appendChild(this.appBar.datePickerButton.parentElement)
         this.appBar.rightSlot.appendChild(this.appBar.editButton.parentElement)
         this.appBar.rightSlot.appendChild(this.appBar.todayButton.parentElement)
         this.appBar.rightSlot.appendChild(this.appBar.pdfButton.parentElement)
         this.appBar.rightSlot.appendChild(this.appBar.settingsButton.parentElement)
-    }
+    } // }}}
 
-    #settingsPageSetup() {
+    #settingsPageSetup() { // {{{
         this.appBar.leftSlot.removeChild(this.appBar.datePickerButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.editButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.todayButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.pdfButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.settingsButton.parentElement)
-    }
+    } // }}}
 
-    #pdfPageSetup() {
+    #pdfPageSetup() { // {{{
         this.appBar.leftSlot.removeChild(this.appBar.datePickerButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.editButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.todayButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.pdfButton.parentElement)
         this.appBar.rightSlot.removeChild(this.appBar.settingsButton.parentElement)
-    }
+    } // }}}
 }
