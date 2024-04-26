@@ -1,10 +1,10 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import ui from "ui";
-import { db } from "../../lib";
-import * as utils from "../../utils";
-import { StartDate } from "./start-date";
+import db from "../../db";
+import utils from "../../utils";
 import { EditRhythm } from "./edit-rhythm";
+import { StartDate } from "./start-date";
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {import("ui/src/wc").Store} */
@@ -14,7 +14,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     static register = () => customElements.define("settings-page", SettingsPage)
 
-    constructor() {
+    constructor() { // {{{
         super();
 
         /** @type {(() => void)[]} */
@@ -25,6 +25,14 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {import("ui/src/wc").Lang} */
         this.#lang = document.querySelector("ui-lang")
 
+        this.misc;
+        this.shifts;
+
+        this.#initializeChildren()
+
+    } // }}}
+
+    async #initializeChildren() { // {{{
         this.misc = {
             title: this.querySelector("#miscTitle"),
 
@@ -67,10 +75,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         this.querySelector("#shiftsStartDateSection").appendChild(this.shifts.startDate)
         this.querySelector("#shiftsEditRhythmSection").appendChild(this.shifts.editRhythm)
-    }
+    } // }}}
 
-    connectedCallback() {
-        super.connectedCallback()
+    connectedCallback() { // {{{
         console.log("[settings] connect...")
 
         setTimeout(() => {
@@ -79,7 +86,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             );
 
 
-            // Week Start 
+            // {{{ Week Start Section (Misc)
+
             (async () => {
                 const cb = this.#onWeekStartChange.bind(this);
 
@@ -90,7 +98,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 });
             })();
 
-            // Theme
+            // }}}
+
+            // {{{ Theme Section (Misc)
+
             /** @param {import("../../types").ThemeStore} theme */
             (async (theme) => {
                 [...this.misc.themeModeSelect.children].forEach(
@@ -130,8 +141,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 })
             })(this.#store.data.get("theme"));
 
+            // }}}
 
-            // Debug
+            // {{{ Debug Section (Misc) - NOTE: Should be remove in production
+
             (async () => {
                 const cb = this.#onDebugModeChange.bind(this);
 
@@ -142,31 +155,63 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 });
             })();
 
-            // Backup
+            // }}}
+
+            // {{{ Backup Section (Shifts) 
+
             (async () => {
                 this.shifts.backupImportButton.onclick = async () => {
-                    this.#onBackupImport()
+                    this.importBackup()
                 };
 
                 this.shifts.backupExportButton.onclick = async () => {
-                    this.#onBackupExport()
+                    this.exportBackup()
                 };
             })();
 
-            // Handle the shifts table
-            this.#createShiftsTable();
-        });
-    }
+            // }}}
 
-    disconnectedCallback() {
-        super.disconnectedCallback()
+            // {{{ Shifts Table Section (Shifts)
+
+            // @ts-expect-error
+            const template = this.querySelector("template#shiftsTableData").content;
+            const tbody = this.shifts.tableBody;
+            while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
+
+            /** @type {import("../../types").SettingsStore} */
+            const settings = this.#store.data.get("settings");
+
+            /** @type {import("../../types").Shift} */
+            let shift;
+            /** @type {HTMLTableCellElement} */
+            let node;
+            /** @type {HTMLElement} */
+            let child2
+            for (shift of settings.shifts) {
+                node = template.cloneNode(true);
+                node.querySelector("td:nth-child(1)").innerHTML = `${shift.name}`;
+
+                child2 = node.querySelector("td:nth-child(2)")
+                child2.innerHTML = `${shift.visible ? shift.shortName : ""}`;
+                child2.style.color = shift.color || "inherit"
+
+                node.querySelector("td:nth-child(3)").innerHTML = "[E] [D]";
+
+                tbody.appendChild(node);
+            }
+
+            // }}}
+        });
+    } // }}}
+
+    disconnectedCallback() { // {{{
         console.log("[settings] disconnect...")
 
         this.cleanup.forEach(fn => fn())
         this.cleanup = []
-    }
+    } // }}}
 
-    async importBackup() {
+    async importBackup() { // {{{
         const input = document.createElement("input");
 
         input.type = "file";
@@ -174,57 +219,17 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         input.onchange = async () => {
             const reader = new FileReader();
             reader.onload = () => this.#readerOnLoad(reader);
-            reader.onerror = () => this.#readerOnError(reader);
+            reader.onerror = () => {
+                alert(`Import data: read file failed: ${reader.error}`);
+            }
             reader.readAsText(input.files[0]);
         };
 
         input.click();
-    }
+    } // }}}
 
-    async exportBackup() {
-        /** @type {import("../../types").Backup} */
-        const backup = {
-            settings: this.#store.data.get("settings"),
-            indexedDB: await db.getAll(),
-        };
-
-        if (utils.isAndroid()) this.#androidExport(backup);
-        else this.#browserExport(backup);
-
-    }
-    async #createShiftsTable() {
-        // @ts-expect-error
-        const template = this.querySelector("template#shiftsTableData").content;
-        const tbody = this.shifts.tableBody;
-        while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
-
-        /** @type {import("../../types").SettingsStore} */
-        const settings = this.#store.data.get("settings");
-
-        /** @type {import("../../types").Shift} */
-        let shift;
-        /** @type {HTMLTableCellElement} */
-        let node;
-        /** @type {HTMLElement} */
-        let child2
-        for (shift of settings.shifts) {
-            node = template.cloneNode(true);
-            node.querySelector("td:nth-child(1)").innerHTML = `${shift.name}`;
-
-            child2 = node.querySelector("td:nth-child(2)")
-            child2.innerHTML = `${shift.visible ? shift.shortName : ""}`;
-            child2.style.color = shift.color || "inherit"
-
-            node.querySelector("td:nth-child(3)").innerHTML = "[E] [D]";
-
-            tbody.appendChild(node);
-        }
-    }
-
-    /**
-     * @param {FileReader} r
-     */
-    async #readerOnLoad(r) {
+    /** @param {FileReader} r */
+    async #readerOnLoad(r) { // {{{
         if (typeof r.result !== "string") {
             alert("Wrong data!");
             return
@@ -236,7 +241,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             // Handle settings
             if (data.settings) {
-                if (!this.#validateSettings(data.settings))
+                if (!validateSettings(data.settings))
                     throw `invalid settings`;
 
                 this.#store.data.set("settings", data.settings);
@@ -267,50 +272,22 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         } catch (err) {
             alert(`Import data failed!\nerror: ${err}`);
         }
-    }
+    } // }}}
 
-    /**
-     * @param {import("../../types").Settings} settings
-     */
-    #validateSettings(settings) {
-        if (
-            !Array.isArray(settings?.shifts) ||
-            !Array.isArray(settings?.rhythm)
-        ) {
-            return false;
-        }
+    async exportBackup() { // {{{
+        /** @type {import("../../types").Backup} */
+        const backup = {
+            settings: this.#store.data.get("settings"),
+            indexedDB: await db.getAll(),
+        };
 
-        if (typeof settings.startDate !== "string") {
-            return false;
-        }
+        if (utils.isAndroid()) this.#androidExport(backup);
+        else this.#browserExport(backup);
 
-        let d;
-        for (d of settings.shifts) {
-            if (!utils.validateShift(d)) {
-                return false;
-            }
-        }
+    } // }}}
 
-        for (d of settings.rhythm) {
-            if (typeof d !== "number") {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param {FileReader} r
-     */
-    async #readerOnError(r) {
-        alert(`Import data: read file failed: ${r.error}`);
-    }
-
-    /**
-     * @param {import("../../types").Backup} data
-     */
-    async #androidExport(data) {
+    /** @param {import("../../types").Backup} data */
+    async #androidExport(data) { // {{{
         const fileName = await this.#getBackupFileName();
         const today = new Date();
         const pM = (today.getMonth() + 1).toString().padStart(2, "0");
@@ -328,12 +305,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             ).uri,
             dialogTitle: `Backup "${fileName}"`,
         });
-    }
+    } // }}}
 
-    /**
-     * @param {import("../../types").Backup} data
-     */
-    async #browserExport(data) {
+    /** @param {import("../../types").Backup} data */
+    async #browserExport(data) { // {{{
         const blob = new Blob([JSON.stringify(data)], {
             type: "octet/stream",
         });
@@ -344,19 +319,17 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         anchor.setAttribute("download", await this.#getBackupFileName());
 
         anchor.click();
-    }
+    } // }}}
 
-    async #getBackupFileName() {
+    async #getBackupFileName() { // {{{
         const today = new Date();
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
-    }
+    } // }}}
 
-    /**
-     * @param {import("../../types").LangStore} lang
-     */
-    async #onLang(lang) {
+    /** @param {import("../../types").LangStore} lang */
+    async #onLang(lang) { // {{{
         console.log(`[settings] language update`, lang)
 
         if (!this.#lang.data.langType) return;
@@ -402,23 +375,44 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.shifts.addButton.innerHTML = this.#lang.data.get(
             "settings", "shiftsAddButton",
         );
-    }
+    } // }}}
 
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
-    async #onWeekStartChange(ev) {
+    async #onWeekStartChange(ev) { // {{{
         this.#store.data.set("week-start", ev.currentTarget.checked ? 1 : 0);
-    }
+    } // }}}
 
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
-    async #onDebugModeChange(ev) {
+    async #onDebugModeChange(ev) { // {{{
         this.#store.data.set("debug", ev.currentTarget.checked);
-    }
-
-    async #onBackupImport() {
-        await this.importBackup();
-    }
-
-    async #onBackupExport() {
-        await this.exportBackup();
-    }
+    } // }}}
 }
+
+/** @param {import("../../types").Settings} settings */
+function validateSettings(settings) { // {{{
+    if (
+        !Array.isArray(settings?.shifts) ||
+        !Array.isArray(settings?.rhythm)
+    ) {
+        return false;
+    }
+
+    if (typeof settings.startDate !== "string") {
+        return false;
+    }
+
+    let d;
+    for (d of settings.shifts) {
+        if (!utils.validateShift(d)) {
+            return false;
+        }
+    }
+
+    for (d of settings.rhythm) {
+        if (typeof d !== "number") {
+            return false;
+        }
+    }
+
+    return true;
+} // }}}
