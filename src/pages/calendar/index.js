@@ -265,6 +265,12 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.cleanup = [];
     } // }}}
 
+    getItems() { // {{{
+        return [...this.shadowRoot.children].filter((c) =>
+            c.classList.contains("item"),
+        );
+    } // }}}
+
     /**
      *  @param {Date} date
      *  @param {Element} calendarItem
@@ -368,10 +374,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         date.setMonth(date.getMonth() - 1);
         this.today = new Date();
 
-        const items = [...this.shadowRoot.children].filter((c) =>
-            c.classList.contains("item"),
-        );
-
+        const items = this.getItems()
         for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
             this.updateItem(new Date(date), items[i]);
         }
@@ -400,11 +403,12 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             ];
         }
 
-        const items = this.shadowRoot.querySelectorAll(
+        const items = [...this.shadowRoot.querySelectorAll(
             ".week-days-row .week-day-item",
-        );
+        )];
 
         this.#markWeekendItems(...items);
+
         items.forEach((item, i) => {
             item.innerHTML = `${this.#lang.data.get("calendar", this.order[i % 7].toString())}`;
         });
