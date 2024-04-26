@@ -1,3 +1,10 @@
+/**
+ * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").Primary} Primary
+ * @typedef {import("ui/src/wc").Button} Button
+ */
+
 const innerHTML = `
 <ui-label>
     <ui-primary slot="primary"></ui-primary>
@@ -7,22 +14,22 @@ const innerHTML = `
 `;
 
 export class EditRhythm extends HTMLElement {
-    /** @type {import("ui/src/wc").Store} */
+    /** @type {Store} */
     #store;
-    /** @type {import("ui/src/wc").Lang} */
+    /** @type {Lang} */
     #lang;
-    /** @type {import("ui/src/wc").Primary} */
+    /** @type {Primary} */
     #primary;
-    /** @type {import("ui/src/wc").Button} */
+    /** @type {Button} */
     #button
 
     static register = () => customElements.define("settings-edit-rhythm", EditRhythm)
 
     /**
-     * @param {import("ui/src/wc").Store} store
-     * @param {import("ui/src/wc").Lang} lang
+     * @param {Store} store
+     * @param {Lang} lang
      */
-    constructor(store, lang) {
+    constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
@@ -38,9 +45,9 @@ export class EditRhythm extends HTMLElement {
         this.#button.onclick = () => {
             // TODO: open a (fullscreen) dialog page (add callback function for handling data on submit)
         }
-    }
+    } // }}}
 
-    connectedCallback() {
+    connectedCallback() { // {{{
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.data.on("lang", async () => {
@@ -49,10 +56,10 @@ export class EditRhythm extends HTMLElement {
                 }, true),
             );
         });
-    }
+    } // }}}
 
-    disconnectedCallback() {
+    disconnectedCallback() { // {{{
         this.cleanup.forEach((fn) => fn());
         this.cleanup = [];
-    }
+    } // }}}
 }
