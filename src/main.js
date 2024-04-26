@@ -80,4 +80,4 @@ th.ui.addTheme("green", `/themes/green.css`);
 
 // }}}
 
-new App(store).run();
+window.addEventListener("DOMContentLoaded", () => new App(store).run());
