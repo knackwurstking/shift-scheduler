@@ -1,10 +1,17 @@
 import ui from "ui";
 
 /**
- * @param {import("./types").ThemeStore} theme
- * @param {import("ui/src/wc").ThemeHandler} themeHandler
+ * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler
+ *
+ * @typedef {import("./types").ThemeStore} ThemeStore
+ * @typedef {import("./types").Shift} Shift
  */
-export async function setTheme(theme, themeHandler) {
+
+/**
+ * @param {ThemeStore} theme
+ * @param {ThemeHandler} themeHandler
+ */
+async function setTheme(theme, themeHandler) { // {{{
     try {
         themeHandler.loadTheme(theme.name)
     } catch {
@@ -19,14 +26,14 @@ export async function setTheme(theme, themeHandler) {
         themeHandler.setMode(theme.mode)
         themeHandler.disableAutoMode()
     }
-}
+} // }}}
 
-export const isAndroid = ui.utils.isAndroid;
+const isAndroid = ui.utils.isAndroid;
 
 /**
- * @param {import("./types").Shift} shift
+ * @param {Shift} shift
  */
-export function validateShift(shift) {
+function validateShift(shift) { // {{{
     // Check for shift data
     if (typeof shift.id !== "number") {
         return false;
@@ -49,11 +56,18 @@ export function validateShift(shift) {
     }
 
     return true;
-}
+} // }}}
 
 /**
  * @param {string} title
  */
-export async function setAppBarTitle(title) {
+async function setAppBarTitle(title) { // {{{
     document.querySelector("#appBarTitle").innerHTML = `<h3>${title}</h3>`;
+} // }}}
+
+export default {
+    setTheme,
+    isAndroid,
+    validateShift,
+    setAppBarTitle,
 }

@@ -1,7 +1,7 @@
 import "./styles.css";
 
 import ui from "ui";
-import { App } from "./app";
+import App from "./app";
 import { CalendarPage, EditRhythm, SettingsPage, StartDate } from "./pages";
 
 /**

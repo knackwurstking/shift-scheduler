@@ -1,5 +1,5 @@
 import ui from "ui";
-import * as utils from "./utils";
+import utils from "./utils";
 
 /**
  * @typedef {import("ui/src/wc").Button} Button
@@ -13,7 +13,7 @@ import * as utils from "./utils";
  * @typedef {import("./types").ThemeStore} ThemeStore 
  */
 
-export class App extends ui.events.Events {
+export default class App extends ui.events.Events {
     /** @type {Store} */
     #store
     /** @type {Lang} */
