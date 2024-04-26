@@ -2,6 +2,7 @@ import ui from "ui";
 import utils from "./utils";
 
 /**
+ * @typedef {import("ui/src/wc").AppBar} AppBar
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").IconButton} IconButton
  * @typedef {import("ui/src/wc").StackLayout} StackLayout
@@ -33,40 +34,62 @@ export default class App extends ui.events.Events {
 
         /** @type {ThemeHandler} */
         this.themeHandler = document.querySelector("#themeHandler");
+
+        // {{{ Stack Layout Initialization
+
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
-        this.#registerPages();
+        this.stackLayout.registerPage("calendar", () => {
+            return document.querySelector("template#pageCalendar")
+                // @ts-expect-error
+                .content.cloneNode(true);
+        });
 
-        // TODO: Query select the AppBar component and fix this mess
-        this.appBar = {
-            // {{{ Left Slot
-            /** @type {IconButton} */
-            backButton: document.querySelector("#appBarBackButton"),
-            /** @type {Button} */
-            datePickerButton: document.querySelector("#appBarDatePickerButton"),
-            // }}}
-            // {{{ Right Slot
-            /** @type {IconButton} */
-            editButton: document.querySelector("#appBarEditButton"),
-            /** @type {IconButton} */
-            todayButton: document.querySelector("#appBarTodayButton"),
-            /** @type {IconButton} */
-            pdfButton: document.querySelector("#appBarPDFButton"),
-            /** @type {IconButton} */
-            settingsButton: document.querySelector("#appBarSettingsButton"),
-            // }}}
-        };
+        this.stackLayout.registerPage("pdf", () => {
+            return document.querySelector("template#pagePDF")
+                // @ts-expect-error
+                .content.cloneNode(true)
+        });
 
-        this.appBar.leftSlot = this.appBar.backButton.parentElement.parentElement
-        this.appBar.rightSlot = this.appBar.settingsButton.parentElement.parentElement
+        this.stackLayout.registerPage("settings", () => {
+            return document.querySelector("template#pageSettings")
+                // @ts-expect-error
+                .content.cloneNode(true)
+        });
 
-        this.appBar.backButton.onclick = async () => this.stackLayout.goBack();
-        this.appBar.datePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
-        this.appBar.editButton.onclick = async () => null; // TODO: Add edit onclick callback
-        this.appBar.todayButton.onclick = async () => this.#store.data.set("date-picker", new Date());
-        this.appBar.pdfButton.onclick = async () => this.stackLayout.setPage("pdf");
-        this.appBar.settingsButton.onclick = async () => this.stackLayout.setPage("settings");
+        // }}}
+
+        // {{{ App Bar Initialization 
+
+        /** @type {AppBar} */
+        this.appBar = document.querySelector("ui-app-bar");
+
+        /** @type {IconButton} */
+        this.appBarBackButton = this.appBar.leftSlot.querySelector("#appBarBackButton")
+        this.appBarBackButton.onclick = async () => this.stackLayout.goBack();
+
+        /** @type {Button} */
+        this.appBarDatePickerButton = document.querySelector("#appBarDatePickerButton")
+        this.appBarDatePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
+
+        /** @type {IconButton} */
+        this.appBarEditButton = document.querySelector("#appBarEditButton")
+        this.appBarEditButton.onclick = async () => null; // TODO: Add edit onclick callback
+
+        /** @type {IconButton} */
+        this.appBarTodayButton = document.querySelector("#appBarTodayButton")
+        this.appBarTodayButton.onclick = async () => this.#store.data.set("date-picker", new Date());
+
+        /** @type {IconButton} */
+        this.appBarPDFButton = document.querySelector("#appBarPDFButton")
+        this.appBarPDFButton.onclick = async () => this.stackLayout.setPage("pdf");
+
+        /** @type {IconButton} */
+        this.appBarSettingsButton = document.querySelector("#appBarSettingsButton")
+        this.appBarSettingsButton.onclick = async () => this.stackLayout.setPage("settings");
+
+        // }}}
     } // }}}
 
     run() { // {{{
@@ -94,23 +117,7 @@ export default class App extends ui.events.Events {
     } // }}}
 
     #registerPages() { // {{{
-        this.stackLayout.registerPage("calendar", () => {
-            return document.querySelector("template#pageCalendar")
-                // @ts-expect-error
-                .content.cloneNode(true);
-        });
 
-        this.stackLayout.registerPage("pdf", () => {
-            return document.querySelector("template#pagePDF")
-                // @ts-expect-error
-                .content.cloneNode(true)
-        });
-
-        this.stackLayout.registerPage("settings", () => {
-            return document.querySelector("template#pageSettings")
-                // @ts-expect-error
-                .content.cloneNode(true)
-        });
     } // }}}
 
     /**
