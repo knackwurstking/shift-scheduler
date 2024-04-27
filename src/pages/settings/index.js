@@ -102,8 +102,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             // {{{ Theme Section (Misc)
 
-            /** @param {import("../../types").ThemeStore} theme */
-            (async (theme) => {
+            (async (/** @type {import("../../types").ThemeStore} */theme) => {
                 [...this.misc.themeModeSelect.children].forEach(
                     (/** @type {import("ui/src/wc").SelectOption} */ c) => {
                         c.ui.selected = (c.ui.value === theme.mode)
