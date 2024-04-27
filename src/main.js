@@ -80,4 +80,7 @@ th.ui.addTheme("green", `/themes/green.css`);
 
 // }}}
 
-window.addEventListener("DOMContentLoaded", () => new App(store).run());
+window.addEventListener("DOMContentLoaded", () => {
+    new App(store).run()
+    document.body.style.display = "block"
+});
