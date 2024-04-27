@@ -3,6 +3,7 @@ import "./styles.css";
 import ui from "ui";
 import App from "./app";
 import { CalendarPage, EditRhythm, SettingsPage, StartDate } from "./pages";
+import utils from "./utils";
 
 /**
  * @typedef {import("ui/src/wc/store/store").Store<import("./types").StoreEvents>} Store
@@ -10,6 +11,7 @@ import { CalendarPage, EditRhythm, SettingsPage, StartDate } from "./pages";
  * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler 
  *
  * @typedef {import("./types").DebugStore} DebugStore
+ * @typedef {import("./types").ThemeStore} ThemeStore 
  */
 
 // Initialize Web Components {{{
@@ -25,6 +27,15 @@ ui.define()
         EditRhythm.register()
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
+
+// }}}
+
+// {{{ Initialize Theme
+
+/** @type {ThemeHandler} */
+const th = document.querySelector("#themeHandler")
+th.ui.addTheme("zinc", `/themes/zinc.css`);
+th.ui.addTheme("green", `/themes/green.css`);
 
 // }}}
 
@@ -46,6 +57,11 @@ store.ui.on("debug", (/** @type{DebugStore} */ state) => {
         document.querySelector("#app").classList.remove("is-debug")
     }
 }, true)
+
+store.ui.on("theme", (/** @type {ThemeStore} */ data) => {
+    console.log(`[app] current theme in use:`, data)
+    utils.setTheme(data, th);
+}, true);
 
 // }}}
 
@@ -71,16 +87,6 @@ lang.ui.on("change", (langTypeElement) => {
 
 // }}}
 
-// {{{ Initialize Theme
-
-/** @type {ThemeHandler} */
-const th = document.querySelector("#themeHandler")
-th.ui.addTheme("zinc", `/themes/zinc.css`);
-th.ui.addTheme("green", `/themes/green.css`);
-
-// }}}
-
 window.addEventListener("DOMContentLoaded", () => {
     new App(store).run()
-    document.body.style.display = "block"
 });

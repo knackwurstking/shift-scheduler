@@ -10,8 +10,6 @@ import utils from "./utils";
  * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler 
  * @typedef {import("ui/src/wc").Store<import("./types").StoreEvents>} Store 
  * @typedef {import("ui/src/wc").StackLayoutPage} StackLayoutPage 
- *
- * @typedef {import("./types").ThemeStore} ThemeStore 
  */
 
 export default class App extends ui.events.Events {
@@ -94,15 +92,6 @@ export default class App extends ui.events.Events {
 
     run() { // {{{
         setTimeout(() => {
-            this.#store.ui.on(
-                "theme",
-                (/** @type {ThemeStore} */ data) => {
-                    console.log(`[app] current theme in use:`, data)
-                    utils.setTheme(data, this.themeHandler);
-                },
-                true,
-            );
-
             this.stackLayout.ui.events.addListener(
                 "change",
                 this.#onStackLayoutChange.bind(this),
@@ -115,6 +104,7 @@ export default class App extends ui.events.Events {
             }, true);
 
             this.stackLayout.ui.setPage("calendar");
+            document.body.style.display = "block"
         });
     } // }}}
 
