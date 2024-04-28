@@ -22,6 +22,7 @@
         "shiftsStartDatePrimary": "Start Date",
         "shiftsEditRhythmPrimary": "Rhythm",
         "shiftsEditRhythmButton": "Edit",
+        "shiftsEditRhythmDialogTitle": "Shift Rhythm",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"

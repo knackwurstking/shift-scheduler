@@ -1,7 +1,7 @@
 import { EditRhythmDialog } from "./dialogs"
 
 /**
- * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc").Store<import("../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Primary} Primary
  * @typedef {import("ui/src/wc").Button} Button
@@ -51,7 +51,7 @@ export class EditRhythm extends HTMLElement {
             this.#dialog.ui.open(true)
         }
 
-        this.#dialog = new EditRhythmDialog()
+        this.#dialog = new EditRhythmDialog(this.#store, this.#lang)
         this.#dialog.ui.events.addListener("close", async () => {
             document.body.removeChild(this.#dialog)
         })
