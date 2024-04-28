@@ -1,3 +1,5 @@
+import { EditRhythmDialog } from "./dialogs"
+
 /**
  * @typedef {import("ui/src/wc").Store} Store
  * @typedef {import("ui/src/wc").Lang} Lang
@@ -9,7 +11,7 @@ const innerHTML = `
 <ui-label>
     <ui-primary slot="primary"></ui-primary>
 
-    <ui-button color="primary" variant="full"></ui-button>
+    <ui-button slot="input" color="primary" variant="full"></ui-button>
 </ui-label>
 `;
 
@@ -22,6 +24,8 @@ export class EditRhythm extends HTMLElement {
     #primary;
     /** @type {Button} */
     #button
+    /** @type {EditRhythmDialog} */
+    #dialog
 
     static register = () => customElements.define("settings-edit-rhythm", EditRhythm)
 
@@ -40,11 +44,17 @@ export class EditRhythm extends HTMLElement {
         this.#lang = lang;
 
         this.#primary = this.querySelector("ui-primary");
-        this.#button = this.querySelector("ui-button")
 
-        this.#button.onclick = () => {
-            // TODO: open a (fullscreen) dialog page (add callback function for handling data on submit)
+        this.#button = this.querySelector("ui-button")
+        this.#button.onclick = async () => {
+            document.body.appendChild(this.#dialog)
+            this.#dialog.ui.open(true)
         }
+
+        this.#dialog = new EditRhythmDialog()
+        this.#dialog.ui.events.addListener("close", async () => {
+            document.body.removeChild(this.#dialog)
+        })
     } // }}}
 
     connectedCallback() { // {{{

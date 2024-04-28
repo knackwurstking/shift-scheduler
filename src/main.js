@@ -2,7 +2,7 @@ import "./styles.css";
 
 import ui from "ui";
 import App from "./app";
-import { CalendarPage, EditRhythm, SettingsPage, StartDate } from "./pages";
+import { CalendarPage, EditRhythm, SettingsPage, StartDate, EditRhythmDialog } from "./pages";
 import utils from "./utils";
 
 /**
@@ -25,6 +25,7 @@ ui.define()
         SettingsPage.register()
         StartDate.register()
         EditRhythm.register()
+        EditRhythmDialog.register()
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
 

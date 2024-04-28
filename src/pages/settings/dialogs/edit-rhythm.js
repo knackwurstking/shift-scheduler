@@ -9,5 +9,6 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
     constructor() {
         super()
+        this.ui.fullscreen = true
     }
 }
