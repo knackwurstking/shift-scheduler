@@ -10,8 +10,6 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     #store
     /** @type {Lang} */
     #lang
-    /** @type {HTMLSpanElement} */
-    #title = document.createElement("span")
 
     static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog)
 
@@ -26,9 +24,6 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
         this.ui.fullscreen = true
 
-        this.#title.slot = "title"
-        this.appendChild(this.#title)
-
         this.#createActionButtons()
         this.#createContent()
 
@@ -41,7 +36,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", () => {
-                    this.#title.innerText = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle")
+                    this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle")
                 }, true),
             )
         })
