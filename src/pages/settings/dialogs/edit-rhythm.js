@@ -29,8 +29,8 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.#title.slot = "title"
         this.appendChild(this.#title)
 
-        // TODO: Add Submit button to the "actions" slot
-        // TODO: add rhythm edit table and shift picker
+        this.#createActionButtons()
+        this.#createContent()
 
         this.cleanup = []
     }
@@ -52,5 +52,13 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
         this.cleanup.forEach(fn => fn())
         this.cleanup = []
+    }
+
+    #createActionButtons() {
+        // TODO: Add Submit button to the "actions" slot
+    }
+
+    #createContent() {
+        // TODO: add rhythm edit table and shift picker
     }
 }
