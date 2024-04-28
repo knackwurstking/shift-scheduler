@@ -1,4 +1,4 @@
-package com.knackwurstking.shiftscheduler;
+package com.knackwurstking.shiftscheduler_dev;
 
 import com.getcapacitor.BridgeActivity;
 
