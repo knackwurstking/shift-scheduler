@@ -61,9 +61,12 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", () => {
-                    this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle")
-                    this.#submitButton.innerText = this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton")
-                    // TODO: set `this.#content` table header "name" (first child) and "shortName" (second child)
+                    this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle");
+                    this.#submitButton.innerText = this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton");
+                    this.#content.querySelector("table thead tr th:nth-child(1)").innerHTML =
+                        this.#lang.ui.get("settings", "shiftsTableHeaderName");
+                    this.#content.querySelector("table thead tr th:nth-child(2)").innerHTML =
+                        this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
                 }, true),
             )
         })
