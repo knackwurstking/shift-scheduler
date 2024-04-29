@@ -106,11 +106,6 @@ template.innerHTML = `
     ui-flex-grid-item {
         border-radius: var(--radius);
         border: var(--border-width) var(--border-style) hsl(var(--border));
-
-        /*
-        border-radius: 0;
-        border: var(--border-width) var(--border-style) hsl(var(--border));
-        */
     }
 
     :host([no-border]) ui-flex-grid-item {
@@ -129,10 +124,17 @@ template.innerHTML = `
         justify-content: center;
     }
 
-    .week-day-item.is-saturday,
+    .week-day-item.is-saturday {
+        font-weight: 500;
+    }
+
     .week-day-item.is-sunday {
-        /* TODO: Some special highlighting */
-        font-weight: bolder;
+        font-weight: 800;
+    }
+
+    .is-saturday,
+    .is-sunday {
+        background-color: hsla(var(--fg), 0.05);
     }
 
     .day-item {
