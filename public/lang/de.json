@@ -23,6 +23,7 @@
         "shiftsEditRhythmPrimary": "Rhythmus",
         "shiftsEditRhythmButton": "Bearbeiten",
         "shiftsEditRhythmDialogTitle": "Schicht Rhythmus",
+        "shiftsEditRhythmDialogSubmitButton": "OK",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"

@@ -3,6 +3,7 @@ import ui from "ui"
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").Button} Button
  */
 
 export class EditRhythmDialog extends ui.wc.Dialog {
@@ -10,6 +11,9 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     #store
     /** @type {Lang} */
     #lang
+
+    /** @type {Button} */
+    #submitButton
 
     static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog)
 
@@ -37,6 +41,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             this.cleanup.push(
                 this.#store.ui.on("lang", () => {
                     this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle")
+                    this.#submitButton.innerText = this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton")
                 }, true),
             )
         })
@@ -50,7 +55,16 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     }
 
     #createActionButtons() {
-        // TODO: Add Submit button to the "actions" slot
+        // Add Submit button to the "actions" slot
+        this.#submitButton = new ui.wc.Button()
+        this.#submitButton.slot = "actions"
+        this.#submitButton.setAttribute("variant", "full")
+        this.#submitButton.setAttribute("color", "primary")
+        this.#submitButton.innerText = "" // set text in "lang" event handler
+
+        // TODO: Adding "click" handler, save rhythm to settings (store)
+
+        this.appendChild(this.#submitButton)
     }
 
     #createContent() {
