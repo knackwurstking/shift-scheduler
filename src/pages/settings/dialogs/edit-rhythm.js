@@ -6,6 +6,21 @@ import ui from "ui"
  * @typedef {import("ui/src/wc").Button} Button
  */
 
+const contentHTML = `
+<table>
+    <thead>
+        <tr>
+            <th style="text-align: left;"></th>
+            <th style="text-align: left;"></th>
+            <th style="text-align: right;"></ht>
+        </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+</table>
+`
+
 export class EditRhythmDialog extends ui.wc.Dialog {
     /** @type {Store} */
     #store
@@ -14,6 +29,13 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
     /** @type {Button} */
     #submitButton
+    /** @type {() => void|Promise<void>} */
+    #onSubmit = () => {
+        // TODO: save rhythm to settings (store)
+    }
+
+    /** @type {HTMLDivElement} */
+    #content
 
     static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog)
 
@@ -28,10 +50,9 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
         this.ui.fullscreen = true
 
+        this.cleanup = []
         this.#createActionButtons()
         this.#createContent()
-
-        this.cleanup = []
     }
 
     connectedCallback() {
@@ -42,6 +63,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                 this.#store.ui.on("lang", () => {
                     this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle")
                     this.#submitButton.innerText = this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton")
+                    // TODO: set `this.#content` table header "name" (first child) and "shortName" (second child)
                 }, true),
             )
         })
@@ -62,12 +84,21 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.#submitButton.setAttribute("color", "primary")
         this.#submitButton.innerText = "" // set text in "lang" event handler
 
-        // TODO: Adding "click" handler, save rhythm to settings (store)
+        this.#submitButton.addEventListener("click", this.#onSubmit)
+        this.cleanup.push(() => this.#submitButton.removeEventListener("click", this.#onSubmit))
 
         this.appendChild(this.#submitButton)
     }
 
     #createContent() {
-        // TODO: add rhythm edit table and shift picker
+        this.#content = document.createElement("div")
+        this.#content.style.width = "100%"
+        this.#content.style.height = "100%"
+        this.#content.innerHTML = contentHTML
+
+        const tbody = this.#content.querySelector("tbody")
+        // TODO: render table - current shift rhythm
+
+        this.appendChild(this.#content)
     }
 }
