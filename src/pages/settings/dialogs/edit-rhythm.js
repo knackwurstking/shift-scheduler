@@ -26,7 +26,7 @@ const contentHTML = `
 </ui-flex-grid-item>
 
 <ui-flex-grid-item
-    class="shifts-picker"
+    class="picker"
     flex="0"
     style="min-height: 4.5em; position: relative;"
 >
@@ -53,8 +53,7 @@ const contentHTML = `
         "
     >...</ui-secondary>
 
-    <!-- TODO: shift picker -->
-    <div class="picker"></div>
+    <div></div>
 </ui-flex-grid-item>
 `
 
@@ -99,11 +98,12 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             this.cleanup.push(
                 this.#store.ui.on("lang", () => {
                     this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle");
-                    this.#submitButton.innerText = this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton");
+                    this.#submitButton.innerText =
+                        this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton");
 
-                    this.#content.querySelector("table thead tr th:nth-child(1)").innerHTML =
+                    this.#content.querySelector("thead th:nth-child(1)").innerHTML =
                         this.#lang.ui.get("settings", "shiftsTableHeaderName");
-                    this.#content.querySelector("table thead tr th:nth-child(2)").innerHTML =
+                    this.#content.querySelector("thead th:nth-child(2)").innerHTML =
                         this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
 
                     this.#content.querySelector("#shiftsEditRhythmDialogPickerSecondary").innerHTML =
@@ -169,7 +169,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
      */
     #renderShiftsPicker(settings) {
         // TODO: Add shift card to the picker element
-        const shiftsPicker = this.#content.querySelector(".shifts-picker")
+        const shiftsPicker = this.#content.querySelector(".picker")
     }
 
     #createActionButtons() {
