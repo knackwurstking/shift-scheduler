@@ -4,6 +4,8 @@ import ui from "ui"
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
+ *
+ * @typedef {import("../../../types").Settings} Settings
  */
 
 const contentHTML = `
@@ -68,6 +70,10 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                     this.#content.querySelector("table thead tr th:nth-child(2)").innerHTML =
                         this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
                 }, true),
+
+                this.#store.ui.on("settings", (settings) => {
+                    this.#renderTable(settings)
+                }),
             )
         })
     }
@@ -77,6 +83,45 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
         this.cleanup.forEach(fn => fn())
         this.cleanup = []
+    }
+
+    /**
+     * @param {Settings} settings
+     */
+    #renderTable(settings) {
+        settings?.rhythm.forEach((id) => {
+            const tbody = this.#content.querySelector("tbody")
+            while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
+
+            const shift = settings.shifts.find(shift => shift.id === id)
+            if (!shift) {
+                console.error(`shift with id of "${id}" is missing in shifts`)
+                return
+            }
+
+            // Create a table entry for this shift
+            const tr = document.createElement("tr")
+            // TODO: Make table entries draggable?
+
+            // Table Data Name
+            const tdName = document.createElement("td")
+            tdName.innerText = shift.name
+            tr.appendChild(tdName)
+
+            // Table Data Short Name
+            const tdShortName = document.createElement("td")
+            tdShortName.innerText = !!shift.visible ? shift.shortName : ""
+            tdShortName.style.color = shift.color || "inherit"
+            tr.appendChild(tdShortName)
+
+            // Table Data Actions
+            const tdActions = document.createElement("td")
+            // TODO: Add remove button (X or Trash icon) to actions
+
+            tr.appendChild(tdActions)
+
+            tbody.appendChild(tr)
+        })
     }
 
     #createActionButtons() {
@@ -98,9 +143,6 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.#content.style.width = "100%"
         this.#content.style.height = "100%"
         this.#content.innerHTML = contentHTML
-
-        const tbody = this.#content.querySelector("tbody")
-        // TODO: render table - current shift rhythm
 
         this.appendChild(this.#content)
     }
