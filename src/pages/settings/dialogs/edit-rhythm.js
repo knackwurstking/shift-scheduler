@@ -1,4 +1,5 @@
 import ui from "ui"
+import { ShiftCard } from "../../../components"
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
@@ -53,7 +54,7 @@ const contentHTML = `
         "
     >...</ui-secondary>
 
-    <div></div>
+    <div class="shifts"></div>
 </ui-flex-grid-item>
 `
 
@@ -165,11 +166,21 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     }
 
     /**
+     * Add a `ShiftCard` for each shift in `settings.shifts` to the `shiftsPicker` element
+     *
      * @param {Settings} settings
      */
     #renderShiftsPicker(settings) {
-        // TODO: Add shift card to the picker element
-        const shiftsPicker = this.#content.querySelector(".picker")
+        settings.shifts.forEach(shift => {
+            const picker = this.#content.querySelector(".picker .shifts")
+            const card = new ShiftCard()
+            card.setAttribute("color", shift.color || "transparent")
+            card.innerHTML = `
+                <span slot="name">${shift.name}</span>
+                <span slot="short-name">${shift.shortName}</span>
+            `
+            picker.appendChild(card)
+        })
     }
 
     #createActionButtons() {
