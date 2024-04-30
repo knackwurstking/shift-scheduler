@@ -4,23 +4,58 @@ import ui from "ui"
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
+ * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  *
  * @typedef {import("../../../types").Settings} Settings
  */
 
 const contentHTML = `
-<table>
-    <thead>
-        <tr>
-            <th style="text-align: left;"></th>
-            <th style="text-align: left;"></th>
-            <th style="text-align: right;"></ht>
-        </tr>
-    </thead>
+<ui-flex-grid-item style="height: 100%;">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left;"></th>
+                <th style="text-align: left;"></th>
+                <th style="text-align: right;"></ht>
+            </tr>
+        </thead>
 
-    <tbody>
-    </tbody>
-</table>
+        <tbody>
+        </tbody>
+    </table>
+</ui-flex-grid-item>
+
+<ui-flex-grid-item
+    class="shifts-picker"
+    flex="0"
+    style="min-height: 4.5em; position: relative;"
+>
+    <hr
+        style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        "
+    />
+
+    <ui-secondary
+        id="shiftsEditRhythmDialogPickerSecondary"
+        style="
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: block;
+            text-align: center;
+            background-color: hsl(var(--bg));
+            padding: 0 var(--spacing);
+        "
+    >...</ui-secondary>
+
+    <!-- TODO: shift picker -->
+    <div class="picker"></div>
+</ui-flex-grid-item>
 `
 
 export class EditRhythmDialog extends ui.wc.Dialog {
@@ -36,7 +71,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         // TODO: save rhythm to settings (store)
     }
 
-    /** @type {HTMLDivElement} */
+    /** @type {FlexGrid} */
     #content
 
     static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog)
@@ -65,15 +100,20 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                 this.#store.ui.on("lang", () => {
                     this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle");
                     this.#submitButton.innerText = this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton");
+
                     this.#content.querySelector("table thead tr th:nth-child(1)").innerHTML =
                         this.#lang.ui.get("settings", "shiftsTableHeaderName");
                     this.#content.querySelector("table thead tr th:nth-child(2)").innerHTML =
                         this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
+
+                    this.#content.querySelector("#shiftsEditRhythmDialogPickerSecondary").innerHTML =
+                        this.#lang.ui.get("settings", "shiftsEditRhythmDialogPickerSecondary");
                 }, true),
 
                 this.#store.ui.on("settings", (settings) => {
                     this.#renderTable(settings)
-                }),
+                    this.#renderShiftsPicker(settings)
+                }, true),
             )
         })
     }
@@ -124,6 +164,14 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         })
     }
 
+    /**
+     * @param {Settings} settings
+     */
+    #renderShiftsPicker(settings) {
+        // TODO: Add shift card to the picker element
+        const shiftsPicker = this.#content.querySelector(".shifts-picker")
+    }
+
     #createActionButtons() {
         // Add Submit button to the "actions" slot
         this.#submitButton = new ui.wc.Button()
@@ -139,11 +187,10 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     }
 
     #createContent() {
-        this.#content = document.createElement("div")
+        this.#content = new ui.wc.FlexGrid()
         this.#content.style.width = "100%"
         this.#content.style.height = "100%"
         this.#content.innerHTML = contentHTML
-
         this.appendChild(this.#content)
     }
 }

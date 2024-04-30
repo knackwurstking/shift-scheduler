@@ -24,6 +24,7 @@
         "shiftsEditRhythmButton": "Bearbeiten",
         "shiftsEditRhythmDialogTitle": "Schicht Rhythmus",
         "shiftsEditRhythmDialogSubmitButton": "OK",
+        "shiftsEditRhythmDialogPickerSecondary": "Klicken , um eine neue Schicht hinzuzufügen",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"

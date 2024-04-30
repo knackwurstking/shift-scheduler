@@ -24,6 +24,7 @@
         "shiftsEditRhythmButton": "Edit",
         "shiftsEditRhythmDialogTitle": "Shift Rhythm",
         "shiftsEditRhythmDialogSubmitButton": "OK",
+        "shiftsEditRhythmDialogPickerSecondary": "Click to add a new shift",
         "shiftsBackupLabelPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export"
