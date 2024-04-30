@@ -1,5 +1,4 @@
 import ui from "ui"
-import { ShiftCard } from "../../../components"
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
@@ -29,7 +28,10 @@ const contentHTML = `
 <ui-flex-grid-item
     class="picker"
     flex="0"
-    style="min-height: 4.5em; position: relative;"
+    style="
+        min-height: 4.5em;
+        position: relative;
+    "
 >
     <hr
         style="
@@ -54,7 +56,17 @@ const contentHTML = `
         "
     >...</ui-secondary>
 
-    <div class="shifts"></div>
+    <ui-flex-grid-row
+        class="shifts no-scrollbar"
+        style="
+            width: 100%;
+            height: 3.5em;
+            transform: translateY(1em);
+            overflow: hidden;
+            overflow-x: scroll;
+        "
+        gap="0.25em"
+    ></ui-flex-grid-row>
 </ui-flex-grid-item>
 `
 
@@ -173,13 +185,19 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     #renderShiftsPicker(settings) {
         settings.shifts.forEach(shift => {
             const picker = this.#content.querySelector(".picker .shifts")
-            const card = new ShiftCard()
-            card.setAttribute("color", shift.color || "transparent")
-            card.innerHTML = `
-                <span slot="name">${shift.name}</span>
-                <span slot="short-name">${shift.shortName}</span>
+
+            const item = new ui.wc.FlexGridItem()
+            item.innerHTML = `
+                <shift-card
+                    color="${shift.color || "transparent"}"
+                    style="width: fit-content; height: 100%;"
+                >
+                    <span slot="name">${shift.name}</span>
+                    <span slot="short-name">${shift.shortName}</span>
+                </shift-card>
             `
-            picker.appendChild(card)
+
+            picker.appendChild(item)
         })
     }
 

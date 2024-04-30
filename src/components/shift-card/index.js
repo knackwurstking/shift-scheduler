@@ -23,7 +23,7 @@ export class ShiftCard extends HTMLElement {
     /** @type {HTMLElement} */
     #shortName
 
-    static register = () => customElements.define("edit-shift-card", ShiftCard)
+    static register = () => customElements.define("shift-card", ShiftCard)
     static observedAttributes = ["color"]
 
     constructor() {
