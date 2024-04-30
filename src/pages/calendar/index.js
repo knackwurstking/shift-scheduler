@@ -117,19 +117,15 @@ template.innerHTML = `
         overflow: hidden;
         height: 100%;
         font-family: var(--font-family-heading);
-        font-size: 1.15em;
-        font-weight: normal;
+        font-size: 115%;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    .week-day-item.is-saturday {
-        font-weight: 500;
-    }
-
+    .week-day-item.is-saturday,
     .week-day-item.is-sunday {
-        font-weight: 800;
+        font-weight: bold;
     }
 
     .is-saturday,
@@ -151,9 +147,8 @@ template.innerHTML = `
         top: 0;
         left: 0;
         padding: 0.5vmin;
-        /*font-size: 3vmin;*/
+        font-size: 3vmin;
         font-size: clamp(0em, 3vmin, 1em);
-        font-weight: normal;
         border-radius: inherit;
     }
 
@@ -166,7 +161,7 @@ template.innerHTML = `
         display: flex;
         justify-content: center;
         align-items: center;
-        /*font-size: 4vmin;*/
+        font-size: 4vmin;
         font-size: clamp(0em, 4vmin, 1.5em);
         font-weight: bold;
         color: var(--shift-color, var(--color-fg));
