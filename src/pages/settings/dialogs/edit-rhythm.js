@@ -186,7 +186,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         settings.shifts.forEach(shift => {
             const picker = this.#content.querySelector(".picker .shifts")
 
-            const item = new ui.wc.FlexGridItem()
+            const item = new ui.wc.FlexGridItem() // TODO: Need to handle the overflow?
             item.innerHTML = `
                 <shift-card
                     color="${shift.color || "transparent"}"
