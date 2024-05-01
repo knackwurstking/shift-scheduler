@@ -8,7 +8,7 @@ const innerHTML = `
 <ui-label>
     <ui-primary slot="primary"></ui-primary>
 
-    <input slot="input" type="date" />
+    <input slot="input" style="width: fit-content" type="date" />
 </ui-label>
 `;
 
