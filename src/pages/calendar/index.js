@@ -69,7 +69,7 @@ const templateItemContent = `
 template.innerHTML = `
 <style>
     :host {
-        --header-height: 2.5em;
+        --header-height: 2.5rem;
         display: flex;
         position: relative;
         flex-direction: row;
@@ -145,7 +145,7 @@ template.innerHTML = `
         left: 0;
         padding: 0.5vmin;
         font-size: 3vmin;
-        font-size: clamp(0em, 3vmin, 1em);
+        font-size: clamp(0rem, 3vmin, 1rem);
         border-radius: inherit;
     }
 
@@ -159,10 +159,9 @@ template.innerHTML = `
         justify-content: center;
         align-items: center;
         font-size: 4vmin;
-        font-size: clamp(0em, 4vmin, 1.5em);
+        font-size: clamp(0rem, 4vmin, 1.5rem);
         font-weight: bold;
         color: var(--shift-color, var(--color-fg));
-        text-shadow: 0.1em 0.1em 0.1em hsla(var(--shift-color, var(--card-fg)), 0.2);
         border-radius: inherit;
     }
 
