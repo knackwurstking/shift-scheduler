@@ -29,14 +29,14 @@ const contentHTML = `
     class="picker"
     flex="0"
     style="
-        min-height: 4.5em;
+        min-height: 5rem;
         position: relative;
     "
 >
     <hr
         style="
             position: absolute;
-            top: 0;
+            top: var(--spacing);
             left: 0;
             width: 100%;
         "
@@ -60,12 +60,12 @@ const contentHTML = `
         class="shifts no-scrollbar"
         style="
             width: 100%;
-            height: 3.5em;
-            transform: translateY(1em);
+            height: 3.5rem;
+            transform: translateY(1.5rem);
             overflow: hidden;
             overflow-x: scroll;
         "
-        gap="0.25em"
+        gap="0.25rem"
     ></ui-flex-grid-row>
 </ui-flex-grid-item>
 `
@@ -186,12 +186,9 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         settings.shifts.forEach(shift => {
             const picker = this.#content.querySelector(".picker .shifts")
 
-            const item = new ui.wc.FlexGridItem() // TODO: Need to handle the overflow?
+            const item = new ui.wc.FlexGridItem()
             item.innerHTML = `
-                <shift-card
-                    color="${shift.color || "transparent"}"
-                    style="width: fit-content; height: 100%;"
-                >
+                <shift-card color="${shift.color || "transparent"}">
                     <span slot="name">${shift.name}</span>
                     <span slot="short-name">${shift.shortName}</span>
                 </shift-card>

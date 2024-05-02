@@ -1,17 +1,29 @@
 const t = document.createElement("template")
 
+// TODO: styles: border, positioning (name, short-name)
 t.innerHTML = `
-<style></style>
+<style>
+    :host {
+        display: inline-block;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
 
-<div>
-    <span class="name">
-        <slot name="name"></slot>
-    </span>
+    .name {
+    }
 
-    <span class="short-name">
-        <slot name="short-name"></slot>
-    </span>
-</div>
+    .short-name {
+    }
+</style>
+
+<span class="name">
+    <slot name="name"></slot>
+</span>
+
+<span class="short-name">
+    <slot name="short-name"></slot>
+</span>
 `
 
 /**
