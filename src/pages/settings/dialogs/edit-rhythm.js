@@ -53,6 +53,7 @@ const contentHTML = `
             text-align: center;
             background-color: hsl(var(--bg));
             padding: 0 var(--spacing);
+            white-space: nowrap;
         "
     >...</ui-secondary>
 
