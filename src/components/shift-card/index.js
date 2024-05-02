@@ -7,7 +7,14 @@ t.innerHTML = `
         display: inline-block;
         overflow: hidden;
         width: 100%;
-        height: 100%;
+        min-height: calc(1.6rem * 2 + var(--spacing) * 2);
+        padding: var(--spacing);
+        border: var(--border-width) var(--border-style) hsl(var(--border));
+        border-radius: var(--radius);
+    }
+
+    span {
+        display: block;
     }
 
     .name {

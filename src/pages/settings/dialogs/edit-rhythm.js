@@ -25,14 +25,7 @@ const contentHTML = `
     </table>
 </ui-flex-grid-item>
 
-<ui-flex-grid-item
-    class="picker"
-    flex="0"
-    style="
-        min-height: 5rem;
-        position: relative;
-    "
->
+<ui-flex-grid-item style="position: relative; max-height: 1.6rem;">
     <hr
         style="
             position: absolute;
@@ -56,13 +49,21 @@ const contentHTML = `
             white-space: nowrap;
         "
     >...</ui-secondary>
+</ui-flex-grid-item>
 
+<ui-flex-grid-item
+    class="picker"
+    flex="0"
+    style="
+        max-height: fit-content;
+        position: relative;
+    "
+>
     <ui-flex-grid-row
         class="shifts no-scrollbar"
         style="
             width: 100%;
-            height: 3.5rem;
-            transform: translateY(1.5rem);
+            height: fit-content;
             overflow: hidden;
             overflow-x: scroll;
         "
