@@ -49,7 +49,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     } // }}}
 
-    async #initializeChildren() { // {{{
+    async #initializeChildren() { // {{{ query: misc, shifts
         this.misc = {
             title: this.querySelector("#miscTitle"),
 
@@ -91,7 +91,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.querySelector("#shiftsEditRhythmSection").appendChild(this.shifts.editRhythm)
     } // }}}
 
-    connectedCallback() { // {{{
+    connectedCallback() { // {{{ store: "lang"
         console.log("[settings] connect...")
 
         setTimeout(() => {
@@ -203,7 +203,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         });
     } // }}}
 
-    disconnectedCallback() { // {{{
+    disconnectedCallback() { // {{{ cleanup
         console.log("[settings] disconnect...")
 
         this.cleanup.forEach(fn => fn())

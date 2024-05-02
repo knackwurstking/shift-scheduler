@@ -10,6 +10,8 @@ import { ShiftCard } from "../../../components"
  * @typedef {import("../../../types").Settings} Settings
  */
 
+// {{{ Content HTML
+
 const contentHTML = `
 <ui-flex-grid-item style="height: 100%;">
     <table>
@@ -73,6 +75,8 @@ const contentHTML = `
 </ui-flex-grid-item>
 `
 
+// }}}
+
 export class EditRhythmDialog extends ui.wc.Dialog {
     /** @type {Store} */
     #store
@@ -98,7 +102,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
      * @param {Store} store
      * @param {Lang} lang
      */
-    constructor(store, lang) {
+    constructor(store, lang) { // {{{
         super()
         this.#store = store
         this.#lang = lang
@@ -108,9 +112,9 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.cleanup = []
         this.#createActionButtons()
         this.#createContent()
-    }
+    } // }}}
 
-    connectedCallback() {
+    connectedCallback() { // {{{ store: "lang", "settings"
         super.connectedCallback()
 
         setTimeout(() => {
@@ -136,19 +140,19 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                 }, true),
             )
         })
-    }
+    } // }}}
 
-    disconnectedCallback() {
+    disconnectedCallback() { // {{{
         super.disconnectedCallback()
 
         this.cleanup.forEach(fn => fn())
         this.cleanup = []
-    }
+    } // }}}
 
     /**
      * @param {Settings} settings
      */
-    #renderTable(settings) {
+    #renderTable(settings) { // {{{
         const tbody = this.#content.querySelector("tbody");
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild);
 
@@ -181,14 +185,14 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             tr.appendChild(tdActions)
             tbody.appendChild(tr)
         });
-    }
+    } // }}}
 
     /**
      * Add a `ShiftCard` for each shift in `settings.shifts` to the `shiftsPicker` element
      *
      * @param {Settings} settings
      */
-    #renderShiftsPicker(settings) {
+    #renderShiftsPicker(settings) { // {{{
         const picker = this.#content.querySelector(".picker .shifts");
         while (picker.firstChild) picker.removeChild(picker.firstChild);
 
@@ -207,9 +211,9 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             item.appendChild(shiftCard);
             picker.appendChild(item);
         });
-    }
+    } // }}}
 
-    #createActionButtons() {
+    #createActionButtons() { // {{{
         // Add Submit button to the "actions" slot
         this.#submitButton = new ui.wc.Button()
         this.#submitButton.slot = "actions"
@@ -221,13 +225,13 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.cleanup.push(() => this.#submitButton.removeEventListener("click", this.#onSubmit))
 
         this.appendChild(this.#submitButton)
-    }
+    } // }}}
 
-    #createContent() {
+    #createContent() { // {{{
         this.#content = new ui.wc.FlexGrid()
         this.#content.style.width = "100%"
         this.#content.style.height = "100%"
         this.#content.innerHTML = contentHTML
         this.appendChild(this.#content)
-    }
+    } // }}}
 }
