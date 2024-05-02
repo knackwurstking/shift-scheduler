@@ -185,9 +185,10 @@ export class EditRhythmDialog extends ui.wc.Dialog {
      * @param {Settings} settings
      */
     #renderShiftsPicker(settings) {
-        settings.shifts.forEach(shift => {
-            const picker = this.#content.querySelector(".picker .shifts")
+        const picker = this.#content.querySelector(".picker .shifts")
+        while (picker.firstChild) picker.removeChild(picker.firstChild)
 
+        settings.shifts.forEach(shift => {
             const item = new ui.wc.FlexGridItem()
             item.innerHTML = `
                 <shift-card color="${shift.color || "transparent"}">
