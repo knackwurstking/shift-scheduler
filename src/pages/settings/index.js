@@ -63,11 +63,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
             /** @type {Select} */
             themeSelect: this.querySelector("#miscThemeSelect"),
-
-            /** @type {Label} */
-            debugMode: this.querySelector("#miscDebugMode"),
-            /** @type {HTMLInputElement} */
-            debugModeInput: this.querySelector("#miscDebugModeInput"),
         };
 
         this.shifts = {
@@ -158,20 +153,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     this.misc.themeSelect.removeEventListener("change", cbName);
                 })
             })(this.#store.ui.get("theme"));
-
-            // }}}
-
-            // {{{ Debug Section (Misc) - NOTE: Should be remove in production
-
-            (async () => {
-                const cb = this.#onDebugModeChange.bind(this);
-
-                this.misc.debugModeInput.checked = this.#store.ui.get("debug");
-                this.misc.debugModeInput.addEventListener("change", cb);
-                this.cleanup.push(() => {
-                    this.misc.debugModeInput.removeEventListener("change", cb);
-                });
-            })();
 
             // }}}
 
@@ -363,9 +344,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.misc.theme.innerHTML = this.#lang.ui.get(
             "settings", "miscTheme",
         );
-        this.misc.debugMode.ui.primary = this.#lang.ui.get(
-            "settings", "miscDebugModePrimary",
-        );
 
         // Backup Section
 
@@ -398,11 +376,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @param {Event & { currentTarget: HTMLInputElement }} ev */
     async #onWeekStartChange(ev) { // {{{
         this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
-    } // }}}
-
-    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
-    async #onDebugModeChange(ev) { // {{{
-        this.#store.ui.set("debug", ev.currentTarget.checked);
     } // }}}
 }
 
