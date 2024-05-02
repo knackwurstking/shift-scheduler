@@ -1,6 +1,5 @@
 const t = document.createElement("template")
 
-// TODO: styles: border, positioning (name, short-name)
 t.innerHTML = `
 <style>
     :host {
