@@ -10,6 +10,8 @@ t.innerHTML = `
         padding: var(--spacing);
         border: var(--border-width) var(--border-style) hsl(var(--border));
         border-radius: var(--radius);
+        background-color: hsl(var(--card));
+        color: hsl(var(--card-fg));
     }
 
     span {
