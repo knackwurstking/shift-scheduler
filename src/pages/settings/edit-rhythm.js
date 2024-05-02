@@ -3,15 +3,13 @@ import { EditRhythmDialog } from "./dialogs"
 /**
  * @typedef {import("ui/src/wc").Store<import("../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Primary} Primary
+ * @typedef {import("ui/src/wc").Label} Label
  * @typedef {import("ui/src/wc").Button} Button
  */
 
 const innerHTML = `
 <ui-label>
-    <ui-primary slot="primary"></ui-primary>
-
-    <ui-button slot="input" color="primary" variant="full"></ui-button>
+    <ui-button color="primary" variant="full"></ui-button>
 </ui-label>
 `;
 
@@ -20,8 +18,8 @@ export class EditRhythm extends HTMLElement {
     #store;
     /** @type {Lang} */
     #lang;
-    /** @type {Primary} */
-    #primary;
+    /** @type {Label} */
+    #label;
     /** @type {Button} */
     #button
     /** @type {EditRhythmDialog} */
@@ -43,7 +41,7 @@ export class EditRhythm extends HTMLElement {
         this.#store = store;
         this.#lang = lang;
 
-        this.#primary = this.querySelector("ui-primary");
+        this.#label = this.querySelector("ui-label");
 
         this.#button = this.querySelector("ui-button")
         this.#button.onclick = async () => {
@@ -61,7 +59,7 @@ export class EditRhythm extends HTMLElement {
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", async () => {
-                    this.#primary.innerHTML = this.#lang.ui.get("settings", "shiftsEditRhythmPrimary");
+                    this.#label.ui.primary = this.#lang.ui.get("settings", "shiftsEditRhythmPrimary");
                     this.#button.innerHTML = this.#lang.ui.get("settings", "shiftsEditRhythmButton")
                 }, true),
             );

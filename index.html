@@ -101,10 +101,8 @@
 
                         <!-- week-start settings -->
                         <section>
-                            <ui-label ripple>
-                                <ui-primary slot="primary" id="miscWeekStartPrimary"></ui-primary>
-
-                                <input slot="input" id="miscWeekStartInput" type="checkbox" />
+                            <ui-label id="miscWeekStart" ripple>
+                                <input slot="input" id="miscWeekStartInput" type="checkbox">
                             </ui-label>
                         </section>
 
@@ -112,9 +110,7 @@
 
                         <!-- theme settings -->
                         <section>
-                            <ui-label>
-                                <ui-secondary slot="secondary" id="miscTheme" style="font-weight: 300;"></ui-secondary>
-                            </ui-label>
+                            <ui-secondary id="miscTheme" style="display: block; font-weight: 300;"></ui-secondary>
 
                             <ui-flex-grid-row gap="0.25rem">
                                 <ui-flex-grid-item style="width: 50%;">
@@ -158,10 +154,8 @@
 
                         <!-- enable/disable debug mode (only for the ui) -->
                         <section>
-                            <ui-label ripple>
-                                <ui-primary slot="primary" id="miscDebugModePrimary"></ui-primary>
-
-                                <input slot="input" id="miscDebugModeInput" type="checkbox" />
+                            <ui-label id="miscDebugMode" ripple>
+                                <input slot="input" id="miscDebugModeInput" type="checkbox">
                             </ui-label>
                         </section>
                     </ui-flex-grid-item>
@@ -216,16 +210,17 @@
 
                         <hr />
 
+                        <!-- backup import/export -->
                         <section>
-                            <ui-label>
-                                <ui-primary slot="primary" id="shiftsBackupLabelPrimary"></ui-primary>
-
-                                <ui-flex-grid-row slot="input" gap="0.25rem">
+                            <ui-label id="shiftsBackup">
+                                <ui-flex-grid-row gap="0.25rem">
+                                    <!-- import -->
                                     <ui-flex-grid-item>
                                         <ui-button variant="full" color="secondary"
                                             id="shiftsBackupImportButton"></ui-button>
                                     </ui-flex-grid-item>
 
+                                    <!-- export -->
                                     <ui-flex-grid-item>
                                         <ui-button variant="full" color="secondary"
                                             id="shiftsBackupExportButton"></ui-button>

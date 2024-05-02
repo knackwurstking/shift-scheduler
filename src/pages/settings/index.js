@@ -6,10 +6,27 @@ import utils from "../../utils";
 import { EditRhythm } from "./edit-rhythm";
 import { StartDate } from "./start-date";
 
+/**
+ * @typedef {import("ui/src/wc").Label} Label
+ * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").Select} Select
+ * @typedef {import("ui/src/wc").Primary} Primary
+ * @typedef {import("ui/src/wc").Button} Button 
+ * @typedef {import("ui/src/wc").SelectOption} SelectOption
+ *
+ * @typedef {import("../../types").ThemeStore} ThemeStore 
+ * @typedef {import("../../types").SettingsStore} SettingsStore 
+ * @typedef {import("../../types").LangStore} LangStore 
+ * @typedef {import("../../types").Shift} Shift 
+ * @typedef {import("../../types").Backup} Backup
+ * @typedef {import("../../types").Settings} Settings
+ */
+
 export class SettingsPage extends ui.wc.StackLayoutPage {
-    /** @type {import("ui/src/wc").Store} */
+    /** @type {Store} */
     #store
-    /** @type {import("ui/src/wc").Lang} */
+    /** @type {Lang} */
     #lang
 
     static register = () => customElements.define("settings-page", SettingsPage)
@@ -20,9 +37,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {(() => void)[]} */
         this.cleanup = []
 
-        /** @type {import("ui/src/wc").Store} */
+        /** @type {Store} */
         this.#store = document.querySelector("ui-store")
-        /** @type {import("ui/src/wc").Lang} */
+        /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
 
         this.misc;
@@ -36,17 +53,19 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.misc = {
             title: this.querySelector("#miscTitle"),
 
-            weekStartPrimary: this.querySelector("#miscWeekStartPrimary"),
+            /** @type {Label} */
+            weekStart: this.querySelector("#miscWeekStart"),
             /** @type {HTMLInputElement} */
             weekStartInput: this.querySelector("#miscWeekStartInput"),
 
             theme: this.querySelector("#miscTheme"),
-            /** @type {import("ui/src/wc/input").Select} */
+            /** @type {Select} */
             themeModeSelect: this.querySelector("#miscThemeModeSelect"),
-            /** @type {import("ui/src/wc/input").Select} */
+            /** @type {Select} */
             themeSelect: this.querySelector("#miscThemeSelect"),
 
-            debugModePrimary: this.querySelector("#miscDebugModePrimary"),
+            /** @type {Label} */
+            debugMode: this.querySelector("#miscDebugMode"),
             /** @type {HTMLInputElement} */
             debugModeInput: this.querySelector("#miscDebugModeInput"),
         };
@@ -65,11 +84,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             startDate: new StartDate(this.#store, this.#lang),
             editRhythm: new EditRhythm(this.#store, this.#lang),
 
-            /** @type {import("ui/src/wc").Primary} */
-            backupLabelPrimary: this.querySelector("#shiftsBackupLabelPrimary"),
-            /** @type {import("ui/src/wc/button").Button} */
+            /** @type {Label} */
+            backup: this.querySelector("#shiftsBackup"),
+            /** @type {Button} */
             backupImportButton: this.querySelector("#shiftsBackupImportButton"),
-            /** @type {import("ui/src/wc/button").Button} */
+            /** @type {Button} */
             backupExportButton: this.querySelector("#shiftsBackupExportButton"),
         };
 
@@ -102,21 +121,21 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             // {{{ Theme Section (Misc)
 
-            (async (/** @type {import("../../types").ThemeStore} */theme) => {
+            (async (/** @type {ThemeStore} */theme) => {
                 [...this.misc.themeModeSelect.children].forEach(
-                    (/** @type {import("ui/src/wc").SelectOption} */ c) => {
+                    (/** @type {SelectOption} */ c) => {
                         c.ui.selected = (c.ui.value === theme.mode)
                     }
                 );
 
                 [...this.misc.themeSelect.children].forEach(
-                    (/** @type {import("ui/src/wc").SelectOption} */ c) => {
+                    (/** @type {SelectOption} */ c) => {
                         c.ui.selected = (c.ui.value === theme.name)
                     }
                 );
 
                 /**
-                 * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev 
+                 * @param {CustomEvent<SelectOption>} ev 
                  */
                 const cbMode = (ev) => {
                     console.log(`[settings] update theme mode:`, ev.detail);
@@ -128,7 +147,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 })
 
                 /**
-                 * @param {CustomEvent<import("ui/src/wc/input").SelectOption>} ev 
+                 * @param {CustomEvent<SelectOption>} ev 
                  */
                 const cbName = (ev) => {
                     console.log(`[settings] update theme name:`, ev.detail);
@@ -177,10 +196,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             const tbody = this.shifts.tableBody;
             while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
-            /** @type {import("../../types").SettingsStore} */
+            /** @type {SettingsStore} */
             const settings = this.#store.ui.get("settings");
 
-            /** @type {import("../../types").Shift} */
+            /** @type {Shift} */
             let shift;
             /** @type {HTMLTableCellElement} */
             let node;
@@ -235,7 +254,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         }
 
         try {
-            /** @type {import("../../types").Backup} */
+            /** @type {Backup} */
             const data = JSON.parse(r.result);
 
             // Handle settings
@@ -274,7 +293,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     async exportBackup() { // {{{
-        /** @type {import("../../types").Backup} */
+        /** @type {Backup} */
         const backup = {
             settings: this.#store.ui.get("settings"),
             indexedDB: await db.getAll(),
@@ -285,7 +304,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     } // }}}
 
-    /** @param {import("../../types").Backup} data */
+    /** @param {Backup} data */
     async #androidExport(data) { // {{{
         const fileName = await this.#getBackupFileName();
         const today = new Date();
@@ -306,7 +325,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         });
     } // }}}
 
-    /** @param {import("../../types").Backup} data */
+    /** @param {Backup} data */
     async #browserExport(data) { // {{{
         const blob = new Blob([JSON.stringify(data)], {
             type: "octet/stream",
@@ -327,7 +346,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     } // }}}
 
-    /** @param {import("../../types").LangStore} lang */
+    /** @param {LangStore} lang */
     async #onLang(lang) { // {{{
         console.log(`[settings] language update`, lang)
 
@@ -338,20 +357,20 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.misc.title.innerHTML = this.#lang.ui.get(
             "settings", "miscTitle"
         );
-        this.misc.weekStartPrimary.innerHTML = this.#lang.ui.get(
+        this.misc.weekStart.ui.primary = this.#lang.ui.get(
             "settings", "miscWeekStartPrimary",
         );
         this.misc.theme.innerHTML = this.#lang.ui.get(
             "settings", "miscTheme",
         );
-        this.misc.debugModePrimary.innerHTML = this.#lang.ui.get(
+        this.misc.debugMode.ui.primary = this.#lang.ui.get(
             "settings", "miscDebugModePrimary",
         );
 
         // Backup Section
 
-        this.shifts.backupLabelPrimary.innerHTML = this.#lang.ui.get(
-            "settings", "shiftsBackupLabelPrimary",
+        this.shifts.backup.ui.primary = this.#lang.ui.get(
+            "settings", "shiftsBackupPrimary",
         );
         this.shifts.backupImportButton.innerHTML = this.#lang.ui.get(
             "settings", "shiftsBackupImportButton",
@@ -387,7 +406,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     } // }}}
 }
 
-/** @param {import("../../types").Settings} settings */
+/** @param {Settings} settings */
 function validateSettings(settings) { // {{{
     if (
         !Array.isArray(settings?.shifts) ||
