@@ -1,4 +1,5 @@
 import ui from "ui"
+import { ShiftCard } from "../../../components"
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
@@ -88,6 +89,9 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     /** @type {FlexGrid} */
     #content
 
+    /** @type {number[]} */
+    #rhythm
+
     static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog)
 
     /**
@@ -126,6 +130,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                 }, true),
 
                 this.#store.ui.on("settings", (settings) => {
+                    this.#rhythm = settings.rhythm
                     this.#renderTable(settings)
                     this.#renderShiftsPicker(settings)
                 }, true),
@@ -144,10 +149,10 @@ export class EditRhythmDialog extends ui.wc.Dialog {
      * @param {Settings} settings
      */
     #renderTable(settings) {
-        settings?.rhythm.forEach((id) => {
-            const tbody = this.#content.querySelector("tbody")
-            while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
+        const tbody = this.#content.querySelector("tbody");
+        while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild);
 
+        this.#rhythm.forEach((id) => {
             const shift = settings.shifts.find(shift => shift.id === id)
             if (!shift) {
                 console.error(`shift with id of "${id}" is missing in shifts`)
@@ -174,9 +179,8 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             // TODO: Add remove button (X or Trash icon) to actions
 
             tr.appendChild(tdActions)
-
             tbody.appendChild(tr)
-        })
+        });
     }
 
     /**
@@ -185,20 +189,24 @@ export class EditRhythmDialog extends ui.wc.Dialog {
      * @param {Settings} settings
      */
     #renderShiftsPicker(settings) {
-        const picker = this.#content.querySelector(".picker .shifts")
-        while (picker.firstChild) picker.removeChild(picker.firstChild)
+        const picker = this.#content.querySelector(".picker .shifts");
+        while (picker.firstChild) picker.removeChild(picker.firstChild);
 
         settings.shifts.forEach(shift => {
-            const item = new ui.wc.FlexGridItem()
-            item.innerHTML = `
-                <shift-card color="${shift.color || "transparent"}">
-                    <span slot="name">${shift.name}</span>
-                    <span slot="short-name">${shift.shortName}</span>
-                </shift-card>
-            `
-
-            picker.appendChild(item)
-        })
+            const item = new ui.wc.FlexGridItem();
+            const shiftCard = new ShiftCard();
+            shiftCard.setAttribute("color", shift.color || "transparent");
+            shiftCard.innerHTML = `
+                <span slot="name">${shift.name}</span>
+                <span slot="short-name">${shift.shortName}</span>
+            `;
+            shiftCard.onclick = () => {
+                this.#rhythm.push(shift.id);
+                this.#renderTable(settings)
+            };
+            item.appendChild(shiftCard);
+            picker.appendChild(item);
+        });
     }
 
     #createActionButtons() {
