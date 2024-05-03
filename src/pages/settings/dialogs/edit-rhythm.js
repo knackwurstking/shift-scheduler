@@ -186,9 +186,17 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
             // Table Data Actions
             const tdActions = document.createElement("td")
-            // TODO: Add remove button (X or Trash icon) to actions
+            const btnDelete = new ui.wc.Button()
+            btnDelete.appendChild(new ui.wc.svg.DeleteRecycleBin())
+            btnDelete.onclick = async () => {
+                tbody.removeChild(tr);
+                this.#rhythm = this.#rhythm.filter(n => n !== shift.id);
+                this.#renderTable(settings)
+            };
+            tdActions.appendChild(btnDelete)
 
             tr.appendChild(tdActions)
+
             tbody.appendChild(tr)
         });
     } // }}}
