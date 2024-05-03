@@ -87,7 +87,13 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     #submitButton
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
-        // TODO: save rhythm to settings (store)
+        this.#store.ui.update("settings", (settings) => {
+            return {
+                ...settings,
+                rhythm: this.#rhythm,
+            };
+        });
+        this.ui.close();
     }
 
     /** @type {FlexGrid} */
@@ -222,7 +228,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.#submitButton.innerText = "" // set text in "lang" event handler
 
         this.#submitButton.addEventListener("click", this.#onSubmit)
-        this.cleanup.push(() => this.#submitButton.removeEventListener("click", this.#onSubmit))
+        this.cleanup.push(() => this.#submitButton.onclick = this.#onSubmit)
 
         this.appendChild(this.#submitButton)
     } // }}}
