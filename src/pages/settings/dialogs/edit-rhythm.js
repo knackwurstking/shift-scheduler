@@ -116,8 +116,8 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.ui.fullscreen = true
 
         this.cleanup = []
-        this.#createActionButtons()
-        this.#createContent()
+        this._createActionButtons()
+        this._createContent()
     } // }}}
 
     connectedCallback() { // {{{ store: "lang", "settings"
@@ -141,8 +141,8 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
                 this.#store.ui.on("settings", (settings) => {
                     this.#rhythm = settings.rhythm
-                    this.#renderTable(settings)
-                    this.#renderShiftsPicker(settings)
+                    this._renderTable(settings)
+                    this._renderShiftsPicker(settings)
                 }, true),
             )
         })
@@ -158,7 +158,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     /**
      * @param {Settings} settings
      */
-    #renderTable(settings) { // {{{
+    _renderTable(settings) { // {{{
         const tbody = this.#content.querySelector("tbody");
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild);
 
@@ -191,7 +191,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             btnDelete.onclick = async () => {
                 tbody.removeChild(tr);
                 this.#rhythm = this.#rhythm.filter(n => n !== shift.id);
-                this.#renderTable(settings)
+                this._renderTable(settings)
             };
             tdActions.appendChild(btnDelete)
 
@@ -206,7 +206,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
      *
      * @param {Settings} settings
      */
-    #renderShiftsPicker(settings) { // {{{
+    _renderShiftsPicker(settings) { // {{{
         const picker = this.#content.querySelector(".picker .shifts");
         while (picker.firstChild) picker.removeChild(picker.firstChild);
 
@@ -220,14 +220,14 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             `;
             shiftCard.onclick = () => {
                 this.#rhythm.push(shift.id);
-                this.#renderTable(settings)
+                this._renderTable(settings)
             };
             item.appendChild(shiftCard);
             picker.appendChild(item);
         });
     } // }}}
 
-    #createActionButtons() { // {{{
+    _createActionButtons() { // {{{
         // Add Submit button to the "actions" slot
         this.#submitButton = new ui.wc.Button()
         this.#submitButton.slot = "actions"
@@ -241,7 +241,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.appendChild(this.#submitButton)
     } // }}}
 
-    #createContent() { // {{{
+    _createContent() { // {{{
         this.#content = new ui.wc.FlexGrid()
         this.#content.style.width = "100%"
         this.#content.style.height = "100%"
