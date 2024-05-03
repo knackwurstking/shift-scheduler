@@ -162,6 +162,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         const tbody = this.#content.querySelector("tbody");
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild);
 
+        let draggedIndex = null;
         this.#rhythm.forEach((id, index) => {
             const shift = settings.shifts.find(shift => shift.id === id)
             if (!shift) {
@@ -202,16 +203,50 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
             ui.js.draggable.create(tr, {
                 ondragstart: async () => {
-                    // TODO: ...
-                    console.debug("ondragstart", id)
+                    draggedIndex = index
                 },
+
                 ondragging: async () => {
-                    // TODO: ...
-                    console.debug("ondragging", id)
+                    [...tbody.children].forEach((child, ci) => {
+                        if (ci !== index) {
+                            // @ts-ignore
+                            child.style.background = "inherit"
+                            // @ts-ignore
+                            child.style.color = "inherit"
+                            return
+                        }
+
+                        // @ts-ignore
+                        child.style.background = "hsl(var(--primary))"
+                        // @ts-ignore
+                        child.style.color = "hsl(var(--primary-fg))"
+                    });
                 },
+
                 ondragend: async () => {
-                    // TODO: ...
-                    console.debug("ondragend", id)
+                    if (draggedIndex === null) return
+
+                    if (draggedIndex < index) { // moved down
+                        this.#rhythm = [
+                            ...this.#rhythm.slice(0, draggedIndex),
+                            ...this.#rhythm.slice(draggedIndex + 1, index + 1),
+                            this.#rhythm[draggedIndex],
+                            ...this.#rhythm.slice(index + 1),
+                        ];
+
+                        this._renderTable(settings)
+                    } else if (draggedIndex > index) { // moved up
+                        this.#rhythm = [
+                            ...this.#rhythm.slice(0, index),
+                            this.#rhythm[draggedIndex],
+                            ...this.#rhythm.slice(index, draggedIndex),
+                            ...this.#rhythm.slice(draggedIndex + 1),
+                        ]
+
+                        this._renderTable(settings)
+                    }
+
+                    draggedIndex = null
                 },
             });
         });
