@@ -239,12 +239,12 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 // Handle a "week-start" change event
                 this.#store.ui.on(
                     "week-start",
-                    this.#onWeekStart.bind(this),
+                    this._onWeekStart.bind(this),
                     true,
                 ),
 
                 // Handle a "lang" change event
-                this.#store.ui.on("lang", this.#onLang.bind(this), true),
+                this.#store.ui.on("lang", this._onLang.bind(this), true),
             );
 
             this.swipeHandler.start();
@@ -298,7 +298,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 : "";
         }
 
-        this.#markWeekendItems(...cards);
+        this._markWeekendItems(...cards);
     } // }}}
 
     /**
@@ -382,7 +382,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     /**
      * @param {WeekStartStore} weekStart
      */
-    async #updateWeekDays(weekStart) { // {{{
+    async _updateWeekDays(weekStart) { // {{{
         if (weekStart === null) {
             console.error(`weekStart has to be a "0" or a "1"!`);
             return;
@@ -401,7 +401,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             ".week-days-row .week-day-item",
         )];
 
-        this.#markWeekendItems(...items);
+        this._markWeekendItems(...items);
 
         items.forEach((item, i) => {
             item.innerHTML = `${this.#lang.ui.get("calendar", this.order[i % 7].toString())}`;
@@ -411,7 +411,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     /**
      * @param {Element[]} children
      */
-    async #markWeekendItems(...children) { // {{{
+    async _markWeekendItems(...children) { // {{{
         const satIndex = this.order.findIndex((o) => o === 6);
         const sunIndex = this.order.findIndex((o) => o === 0);
         children.forEach((c, i) => {
@@ -429,22 +429,22 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     /** @param {WeekStartStore} weekStart */
-    async #onWeekStart(weekStart) { // {{{
+    async _onWeekStart(weekStart) { // {{{
         console.log(
             `[calendar] week-start event: update week days and run the handleDatePickerChangeEvent callback`,
         );
 
-        await this.#updateWeekDays(weekStart);
+        await this._updateWeekDays(weekStart);
         await this.handleDatePickerChangeEvent(
             this.#store.ui.get("date-picker"),
         );
     } // }}}
 
     /** @param {LangStore} lang */
-    async #onLang(lang) { // {{{
+    async _onLang(lang) { // {{{
         console.log(`[calendar] language update`, lang);
 
         // Update week days grid header row
-        await this.#updateWeekDays(this.#store.ui.get("week-start"));
+        await this._updateWeekDays(this.#store.ui.get("week-start"));
     } // }}}
 }

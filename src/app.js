@@ -94,7 +94,7 @@ export default class App extends ui.events.Events {
         setTimeout(() => {
             this.stackLayout.ui.events.addListener(
                 "change",
-                this.#onStackLayoutChange.bind(this),
+                this._onStackLayoutChange.bind(this),
             );
 
             this.#store.ui.on("date-picker", (dateString) => {
@@ -113,7 +113,7 @@ export default class App extends ui.events.Events {
      * @param {StackLayoutPage | null} data.newPage 
      * @param {StackLayoutPage | null} data.oldPage 
      */
-    async #onStackLayoutChange({ newPage, oldPage }) { // {{{
+    async _onStackLayoutChange({ newPage, oldPage }) { // {{{
         console.log(`[app] stack layout changed:`, { newPage, oldPage });
 
         // Update the AppBar buttons...
@@ -135,29 +135,29 @@ export default class App extends ui.events.Events {
 
         if (!newPage) {
             utils.setAppBarTitle("")
-            this.#noPageSetup();
+            this._noPageSetup();
             return
         }
 
         switch (newPage.ui.name) {
             case "calendar":
                 utils.setAppBarTitle("")
-                this.#calendarPageSetup();
+                this._calendarPageSetup();
                 break;
             case "settings":
                 utils.setAppBarTitle(this.#lang.ui.get("settings", "appBarTitle"))
-                this.#settingsPageSetup();
+                this._settingsPageSetup();
                 break;
             case "pdf":
                 utils.setAppBarTitle("@TODO: PDF Page")
-                this.#pdfPageSetup();
+                this._pdfPageSetup();
                 break;
             default:
                 throw `unknown page "${newPage.ui.name}"`;
         }
     } // }}}
 
-    #noPageSetup() { // {{{
+    _noPageSetup() { // {{{
         this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
         this.appBar.removeChild(this.appBarEditButton.parentElement)
         this.appBar.removeChild(this.appBarTodayButton.parentElement)
@@ -165,7 +165,7 @@ export default class App extends ui.events.Events {
         this.appBar.removeChild(this.appBarSettingsButton.parentElement)
     } // }}}
 
-    #calendarPageSetup() { // {{{
+    _calendarPageSetup() { // {{{
         this.appBar.appendChild(this.appBarDatePickerButton.parentElement)
         this.appBar.appendChild(this.appBarEditButton.parentElement)
         this.appBar.appendChild(this.appBarTodayButton.parentElement)
@@ -173,7 +173,7 @@ export default class App extends ui.events.Events {
         this.appBar.appendChild(this.appBarSettingsButton.parentElement)
     } // }}}
 
-    #settingsPageSetup() { // {{{
+    _settingsPageSetup() { // {{{
         this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
         this.appBar.removeChild(this.appBarEditButton.parentElement)
         this.appBar.removeChild(this.appBarTodayButton.parentElement)
@@ -181,7 +181,7 @@ export default class App extends ui.events.Events {
         this.appBar.removeChild(this.appBarSettingsButton.parentElement)
     } // }}}
 
-    #pdfPageSetup() { // {{{
+    _pdfPageSetup() { // {{{
         this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
         this.appBar.removeChild(this.appBarEditButton.parentElement)
         this.appBar.removeChild(this.appBarTodayButton.parentElement)

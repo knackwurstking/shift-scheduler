@@ -55,7 +55,7 @@ export class SwipeHandler extends ui.events.Events {
             if (!this.isMinSwipe()) {
                 this.setTransition(`left ${0.15}s ease`);
                 this.moveX(0);
-                setTimeout(() => this.#resetSwipe(), 150);
+                setTimeout(() => this._resetSwipe(), 150);
                 return;
             }
 
@@ -65,7 +65,7 @@ export class SwipeHandler extends ui.events.Events {
             this.moveX(
                 this.#clientX > this.#startX ? +(r.width + 1) : -r.width + 1,
             );
-            setTimeout(() => this.#resetSwipe(), 300);
+            setTimeout(() => this._resetSwipe(), 300);
         }; // }}}
 
         /** @type {((ev: TouchEvent) => void|Promise<void>)} */
@@ -135,11 +135,11 @@ export class SwipeHandler extends ui.events.Events {
         items.forEach((c) => (c.style.transition = value));
     } // }}}
 
-    #resetSwipe() { // {{{
+    _resetSwipe() { // {{{
         // Reset final transform
         this.setTransition("none");
         if (this.isMinSwipe()) {
-            this.#reorderItems();
+            this._reorderItems();
         }
         this.#startX = null;
         this.#clientX = null;
@@ -148,7 +148,7 @@ export class SwipeHandler extends ui.events.Events {
         console.log(`[Calendar SwipeHandler] release transform lock`);
     } // }}}
 
-    #reorderItems() { // {{{
+    _reorderItems() { // {{{
         const items = this.calendar.getItems();
         const direction = this.#clientX > this.#startX ? "right" : "left";
         switch (direction) {
@@ -169,5 +169,5 @@ export class SwipeHandler extends ui.events.Events {
 
         this.moveX(0);
         this.dispatchWithData("swipe", direction);
-    } // }}}
-}
+    }
+} // }}}

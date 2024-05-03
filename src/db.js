@@ -19,7 +19,7 @@ export class DB {
      * @param {number} version
      */
     constructor(dbName, version) { // {{{
-        this.#open(dbName, version);
+        this._open(dbName, version);
     } // }}}
 
     close() { // {{{
@@ -60,7 +60,7 @@ export class DB {
      */
     async get(year, month) { // {{{
         return await new Promise((resolve) => {
-            const r = this.#roStore().get(`${year}/${month}`);
+            const r = this._roStore().get(`${year}/${month}`);
             r.onsuccess = () => {
                 resolve({
                     id: r.result.id,
@@ -89,7 +89,7 @@ export class DB {
      */
     async add(year, month, data) { // {{{
         return await new Promise((resolve, reject) => {
-            const r = this.#rwStore().add({
+            const r = this._rwStore().add({
                 id: `${year}/${month}`,
                 data: JSON.stringify(data),
             });
@@ -115,7 +115,7 @@ export class DB {
      */
     async put(year, month, data) { // {{{
         return await new Promise((resolve, reject) => {
-            const r = this.#rwStore().put({
+            const r = this._rwStore().put({
                 id: `${year}/${month}`,
                 data: JSON.stringify(data),
             });
@@ -140,7 +140,7 @@ export class DB {
      */
     async delete(year, month) { // {{{
         return await new Promise((resolve, reject) => {
-            const r = this.#rwStore().delete(`${year}/${month}`);
+            const r = this._rwStore().delete(`${year}/${month}`);
             r.onsuccess = () => {
                 console.log(`[DB] Deleted entry for "${year}/${month}"`);
 
@@ -163,7 +163,7 @@ export class DB {
      * @param {string} dbName
      * @param {number | null} version
      */
-    #open(dbName, version) { // {{{
+    _open(dbName, version) { // {{{
         this.#request = window.indexedDB.open(dbName, version);
 
         this.#request.onerror = (e) => {
@@ -191,14 +191,14 @@ export class DB {
 
             switch (e.oldVersion) {
                 case 0:
-                    this.#createStore(this.#request.result);
+                    this._createStore(this.#request.result);
                     break;
             }
         };
     } // }}}
 
     /** @param {IDBDatabase} db */
-    #createStore(db) { // {{{
+    _createStore(db) { // {{{
         if (!db.objectStoreNames.contains(storeMonths)) {
             const o = db.createObjectStore(storeMonths, {
                 autoIncrement: false,
@@ -209,13 +209,13 @@ export class DB {
         }
     } // }}}
 
-    #roStore() { // {{{
+    _roStore() { // {{{
         return this.#request.result
             .transaction(storeMonths, "readonly")
             .objectStore(storeMonths);
     } // }}}
 
-    #rwStore() { // {{{
+    _rwStore() { // {{{
         return this.#request.result
             .transaction(storeMonths, "readwrite")
             .objectStore(storeMonths);
