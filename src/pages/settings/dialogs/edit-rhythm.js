@@ -226,7 +226,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                 ondragend: async () => {
                     if (draggedIndex === null) return
 
-                    if (draggedIndex < index) { // moved down
+                    if (draggedIndex < index) { // dragged down
                         this.#rhythm = [
                             ...this.#rhythm.slice(0, draggedIndex),
                             ...this.#rhythm.slice(draggedIndex + 1, index + 1),
@@ -235,7 +235,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                         ];
 
                         this._renderTable(settings)
-                    } else if (draggedIndex > index) { // moved up
+                    } else if (draggedIndex > index) { // dragged up
                         this.#rhythm = [
                             ...this.#rhythm.slice(0, index),
                             this.#rhythm[draggedIndex],
