@@ -11,8 +11,8 @@ import ui from "ui";
 
 export const swipeRange = 75;
 
-/** @extends {ui.events.Events<_Events>} */
-export class SwipeHandler extends ui.events.Events {
+/** @extends {ui.js.events.Events<_Events>} */
+export class SwipeHandler extends ui.js.events.Events {
     /** @type {number | null} */
     #startX = null;
     /** @type {number | null} */
@@ -50,7 +50,7 @@ export class SwipeHandler extends ui.events.Events {
             this.#finalTransform = true;
 
             // Start final transform
-            console.log(`[Calendar SwipeHandler] transform lock`);
+            console.debug(`[Calendar SwipeHandler] transform lock`);
 
             if (!this.isMinSwipe()) {
                 this.setTransition(`left ${0.15}s ease`);
@@ -145,7 +145,7 @@ export class SwipeHandler extends ui.events.Events {
         this.#clientX = null;
         this.#finalTransform = false;
 
-        console.log(`[Calendar SwipeHandler] release transform lock`);
+        console.debug(`[Calendar SwipeHandler] release transform lock`);
     } // }}}
 
     _reorderItems() { // {{{

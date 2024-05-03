@@ -95,7 +95,7 @@ export class DB {
             });
 
             r.onsuccess = () => {
-                console.log(`[DB] Add data for "${year}/${month}" was a success.`);
+                console.debug(`[DB] Add data for "${year}/${month}" was a success.`);
                 resolve();
             };
 
@@ -121,7 +121,7 @@ export class DB {
             });
 
             r.onsuccess = () => {
-                console.log(`[DB] Put data for "${year}/${month}" was a success.`);
+                console.debug(`[DB] Put data for "${year}/${month}" was a success.`);
                 resolve();
             };
 
@@ -142,13 +142,13 @@ export class DB {
         return await new Promise((resolve, reject) => {
             const r = this._rwStore().delete(`${year}/${month}`);
             r.onsuccess = () => {
-                console.log(`[DB] Deleted entry for "${year}/${month}"`);
+                console.debug(`[DB] Deleted entry for "${year}/${month}"`);
 
                 resolve();
             };
 
             r.onerror = (e) => {
-                console.log(`[DB] Deleting entry "${year}/${month}" failed!`, e);
+                console.debug(`[DB] Deleting entry "${year}/${month}" failed!`, e);
 
                 reject(r.error);
             };
@@ -183,11 +183,11 @@ export class DB {
         };
 
         this.#request.onsuccess = (e) => {
-            console.log(`[DBCustom] Handle request success: ${dbName}`, e);
+            console.debug(`[DBCustom] Handle request success: ${dbName}`, e);
         };
 
         this.#request.onupgradeneeded = (e) => {
-            console.log(`[DBCustom] Handle request upgradeneeded: ${dbName}`, e);
+            console.debug(`[DBCustom] Handle request upgradeneeded: ${dbName}`, e);
 
             switch (e.oldVersion) {
                 case 0:

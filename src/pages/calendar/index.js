@@ -219,7 +219,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     connectedCallback() { // {{{
-        console.log("[calendar] connect...");
+        console.debug("[calendar] connect...");
 
         setTimeout(() => {
             this.cleanup.push(
@@ -252,7 +252,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     disconnectedCallback() { // {{{
-        console.log("[calendar] disconnect...");
+        console.debug("[calendar] disconnect...");
 
         this.swipeHandler.stop();
         this.cleanup.forEach((fn) => fn());
@@ -327,7 +327,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      * @param {Direction} direction
      */
     async handleSwipeEvent(direction) { // {{{
-        console.log(`[calendar] handle swipe event: direction=${direction}`);
+        console.debug(`[calendar] handle swipe event: direction=${direction}`);
 
         switch (direction) {
             case "left":
@@ -357,7 +357,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     /** @param {DatePickerStore} dateString */
     async handleDatePickerChangeEvent(dateString) { // {{{
-        console.log(
+        console.debug(
             `[calendar] date-picker change event: update calendar items`,
         );
 
@@ -374,7 +374,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         }
 
         // Performance testing - end
-        console.log(
+        console.debug(
             `[calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
         );
     } // }}}
@@ -430,7 +430,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     /** @param {WeekStartStore} weekStart */
     async _onWeekStart(weekStart) { // {{{
-        console.log(
+        console.debug(
             `[calendar] week-start event: update week days and run the handleDatePickerChangeEvent callback`,
         );
 
@@ -442,7 +442,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     /** @param {LangStore} lang */
     async _onLang(lang) { // {{{
-        console.log(`[calendar] language update`, lang);
+        console.debug(`[calendar] language update`, lang);
 
         // Update week days grid header row
         await this._updateWeekDays(this.#store.ui.get("week-start"));

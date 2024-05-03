@@ -66,7 +66,7 @@ store.ui.on("debug", (/** @type{DebugStore} */ state) => {
 }, true)
 
 store.ui.on("theme", (/** @type {ThemeStore} */ data) => {
-    console.log(`[app] current theme in use:`, data)
+    console.debug(`[app] current theme in use:`, data)
     utils.setTheme(data, th);
 }, true);
 
@@ -83,11 +83,11 @@ lang.setAttribute("current", "en") // NOTE: placeholder
 
 lang.ui.on("change", (langTypeElement) => {
     if (!langTypeElement) {
-        console.log("[main] No language set for now!")
+        console.debug("[main] No language set for now!")
         return
     }
 
-    console.log(`[main] current language in use:`, langTypeElement)
+    console.debug(`[main] current language in use:`, langTypeElement)
     // @ts-expect-error - `langTypeElement.ui.name` is from type string, not `LangStore`
     store.ui.set("lang", langTypeElement.ui.name, true);
 }, true)

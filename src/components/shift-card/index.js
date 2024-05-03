@@ -53,6 +53,11 @@ export class ShiftCard extends HTMLElement {
         this.#shortName = this.shadowRoot.querySelector(".short-name")
     }
 
+    /**
+     * @param {string} name
+     * @param {string | null} _oldValue
+     * @param {string | null} newValue
+     */
     attributeChangedCallback(name, _oldValue, newValue) {
         switch (name) {
             case "color":

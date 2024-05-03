@@ -50,7 +50,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     connectedCallback() { // {{{ store: "lang"
-        console.log("[settings] connect...")
+        console.debug("[settings] connect...")
 
         setTimeout(() => {
             this.cleanup.push(
@@ -91,7 +91,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                  * @param {CustomEvent<SelectOption>} ev 
                  */
                 const cbMode = (ev) => {
-                    console.log(`[settings] update theme mode:`, ev.detail);
+                    console.debug(`[settings] update theme mode:`, ev.detail);
                     this.#store.ui.update("theme", (theme) => ({ ...theme, mode: ev.detail.ui.value }));
                 };
                 this.misc.themeModeSelect.addEventListener("change", cbMode);
@@ -103,7 +103,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                  * @param {CustomEvent<SelectOption>} ev 
                  */
                 const cbName = (ev) => {
-                    console.log(`[settings] update theme name:`, ev.detail);
+                    console.debug(`[settings] update theme name:`, ev.detail);
                     this.#store.ui.update("theme", (theme) => ({ ...theme, name: ev.detail.ui.value }));
                 };
                 this.misc.themeSelect.addEventListener("change", cbName);
@@ -162,7 +162,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     disconnectedCallback() { // {{{ cleanup
-        console.log("[settings] disconnect...")
+        console.debug("[settings] disconnect...")
 
         this.cleanup.forEach(fn => fn())
         this.cleanup = []
@@ -329,7 +329,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @param {LangStore} lang */
     async _onLang(lang) { // {{{
-        console.log(`[settings] language update`, lang)
+        console.debug(`[settings] language update`, lang)
 
         if (!this.#lang.ui.langType) return;
 

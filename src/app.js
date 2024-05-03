@@ -12,7 +12,7 @@ import utils from "./utils";
  * @typedef {import("ui/src/wc").StackLayoutPage} StackLayoutPage 
  */
 
-export default class App extends ui.events.Events {
+export default class App extends ui.js.events.Events {
     /** @type {Store} */
     #store
     /** @type {Lang} */
@@ -114,7 +114,7 @@ export default class App extends ui.events.Events {
      * @param {StackLayoutPage | null} data.oldPage 
      */
     async _onStackLayoutChange({ newPage, oldPage }) { // {{{
-        console.log(`[app] stack layout changed:`, { newPage, oldPage });
+        console.debug(`[app] stack layout changed:`, { newPage, oldPage });
 
         // Update the AppBar buttons...
         if (this.stackLayout.ui.stack.length <= 1) {

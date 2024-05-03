@@ -162,7 +162,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         const tbody = this.#content.querySelector("tbody");
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild);
 
-        this.#rhythm.forEach((id) => {
+        this.#rhythm.forEach((id, index) => {
             const shift = settings.shifts.find(shift => shift.id === id)
             if (!shift) {
                 console.error(`shift with id of "${id}" is missing in shifts`)
@@ -171,7 +171,6 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
             // Create a table entry for this shift
             const tr = document.createElement("tr")
-            // TODO: Make table entries draggable?
 
             // Table Data Name
             const tdName = document.createElement("td")
@@ -186,11 +185,13 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
             // Table Data Actions
             const tdActions = document.createElement("td")
-            const btnDelete = new ui.wc.Button()
+            const btnDelete = new ui.wc.IconButton()
+            btnDelete.setAttribute("color", "destructive")
+            btnDelete.setAttribute("ghost", "")
             btnDelete.appendChild(new ui.wc.svg.DeleteRecycleBin())
             btnDelete.onclick = async () => {
                 tbody.removeChild(tr);
-                this.#rhythm = this.#rhythm.filter(n => n !== shift.id);
+                this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
                 this._renderTable(settings)
             };
             tdActions.appendChild(btnDelete)
@@ -198,6 +199,21 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             tr.appendChild(tdActions)
 
             tbody.appendChild(tr)
+
+            ui.js.draggable.create(tr, {
+                ondragstart: async () => {
+                    // TODO: ...
+                    console.debug("ondragstart", id)
+                },
+                ondragging: async () => {
+                    // TODO: ...
+                    console.debug("ondragging", id)
+                },
+                ondragend: async () => {
+                    // TODO: ...
+                    console.debug("ondragend", id)
+                },
+            });
         });
     } // }}}
 

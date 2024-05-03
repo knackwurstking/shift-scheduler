@@ -28,7 +28,7 @@ async function setTheme(theme, themeHandler) { // {{{
     }
 } // }}}
 
-const isAndroid = ui.utils.isAndroid;
+const isAndroid = ui.js.utils.isAndroid;
 
 /**
  * @param {Shift} shift
