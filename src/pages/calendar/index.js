@@ -224,7 +224,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         setTimeout(() => {
             this.cleanup.push(
                 // The "swipe" event will update the date-picker store, base on the swiped direction
-                this.swipeHandler.addListener(
+                this.swipeHandler.on(
                     "swipe",
                     this.handleSwipeEvent.bind(this),
                 ),

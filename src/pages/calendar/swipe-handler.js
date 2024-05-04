@@ -168,6 +168,6 @@ export class SwipeHandler extends ui.js.events.Events {
         }
 
         this.moveX(0);
-        this.dispatchWithData("swipe", direction);
+        this.dispatch("swipe", direction);
     }
 } // }}}

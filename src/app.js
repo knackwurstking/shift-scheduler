@@ -92,7 +92,7 @@ export default class App extends ui.js.events.Events {
 
     run() { // {{{
         setTimeout(() => {
-            this.stackLayout.ui.events.addListener(
+            this.stackLayout.ui.events.on(
                 "change",
                 this._onStackLayoutChange.bind(this),
             );

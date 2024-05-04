@@ -142,7 +142,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                         const dialog = new EditShiftDialog(this.#store, this.#lang)
                         document.body.appendChild(dialog)
                         dialog.ui.open(true)
-                        dialog.ui.events.addListener("close", () => {
+                        dialog.ui.events.on("close", () => {
                             document.body.removeChild(dialog)
                         })
                     };
@@ -322,7 +322,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Select} */
         const themeModeSelect = this.querySelector("#miscThemeModeSelect");
         this.cleanup.push(
-            themeModeSelect.ui.events.addListener("change", (option) => {
+            themeModeSelect.ui.events.on("change", (option) => {
                 console.debug(`[settings] update theme mode:`, option);
                 this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
             })
@@ -331,7 +331,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Select} */
         const themeSelect = this.querySelector("#miscThemeSelect");
         this.cleanup.push(
-            themeModeSelect.ui.events.addListener("change", (option) => {
+            themeModeSelect.ui.events.on("change", (option) => {
                 console.debug(`[settings] update theme name:`, option);
                 this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
             })

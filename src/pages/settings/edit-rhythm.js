@@ -72,7 +72,7 @@ export class EditRhythm extends HTMLElement {
     /** @private */
     createDialog() { // {{{
         this.#dialog = new EditRhythmDialog(this.#store, this.#lang)
-        this.#dialog.ui.events.addListener("close", async () => {
+        this.#dialog.ui.events.on("close", async () => {
             document.body.removeChild(this.#dialog)
         })
     } // }}}
