@@ -7,8 +7,10 @@ import { EditRhythm } from "./edit-rhythm";
 import { StartDate } from "./start-date";
 
 /**
+ * @typedef {import("../../types").StoreEvents} StoreEvents
+ *
  * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Select} Select
  * @typedef {import("ui/src/wc").Primary} Primary
@@ -20,7 +22,6 @@ import { StartDate } from "./start-date";
  * @typedef {import("../../types").LangStore} LangStore 
  * @typedef {import("../../types").Shift} Shift 
  * @typedef {import("../../types").Backup} Backup
- * @typedef {import("../../types").Settings} Settings
  */
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
@@ -45,16 +46,58 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.misc;
         this.shifts;
 
-        this._initializeChildren()
+        { // {{{ query: misc, shifts
+            this.misc = {
+                title: this.querySelector("#miscTitle"),
 
+                /** @type {Label} */
+                weekStart: this.querySelector("#miscWeekStart"),
+                /** @type {HTMLInputElement} */
+                weekStartInput: this.querySelector("#miscWeekStartInput"),
+
+                theme: this.querySelector("#miscTheme"),
+                /** @type {Select} */
+                themeModeSelect: this.querySelector("#miscThemeModeSelect"),
+                /** @type {Select} */
+                themeSelect: this.querySelector("#miscThemeSelect"),
+            };
+
+            this.shifts = {
+                title: this.querySelector("#shiftsTitle"),
+
+                /** @type {HTMLTableElement} */
+                tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
+                tableHeaderShortName: this.querySelector(
+                    "#shiftsTableHeaderShortName",
+                ),
+                tableBody: this.querySelector("#shiftsTableBody"),
+                addButton: this.querySelector("#shiftsAddButton"),
+
+                startDate: new StartDate(this.#store, this.#lang),
+                editRhythm: new EditRhythm(this.#store, this.#lang),
+
+                /** @type {Label} */
+                backup: this.querySelector("#shiftsBackup"),
+                /** @type {Button} */
+                backupImportButton: this.querySelector("#shiftsBackupImportButton"),
+                /** @type {Button} */
+                backupExportButton: this.querySelector("#shiftsBackupExportButton"),
+            };
+
+            this.querySelector("#shiftsStartDateSection").appendChild(this.shifts.startDate)
+            this.querySelector("#shiftsEditRhythmSection").appendChild(this.shifts.editRhythm)
+        } // }}}
     } // }}}
 
-    connectedCallback() { // {{{ store: "lang"
+    connectedCallback() { // {{{ store: "lang", "settings"
         console.debug("[settings] connect...")
 
         setTimeout(() => {
             this.cleanup.push(
-                this.#store.ui.on("lang", this._onLang.bind(this), true)
+                this.#store.ui.on("lang", this._onLang.bind(this), true),
+                this.#store.ui.on("settings", (settings) => {
+                    this._renderShiftsTable(settings)
+                }, true),
             );
 
 
@@ -127,37 +170,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             })();
 
             // }}}
-
-            // {{{ Shifts Table Section (Shifts)
-
-            // @ts-expect-error
-            const template = this.querySelector("template#shiftsTableData").content;
-            const tbody = this.shifts.tableBody;
-            while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
-
-            /** @type {SettingsStore} */
-            const settings = this.#store.ui.get("settings");
-
-            /** @type {Shift} */
-            let shift;
-            /** @type {HTMLTableCellElement} */
-            let node;
-            /** @type {HTMLElement} */
-            let child2
-            for (shift of settings.shifts) {
-                node = template.cloneNode(true);
-                node.querySelector("td:nth-child(1)").innerHTML = `${shift.name}`;
-
-                child2 = node.querySelector("td:nth-child(2)")
-                child2.innerHTML = `${shift.visible ? shift.shortName : ""}`;
-                child2.style.color = shift.color || "inherit"
-
-                node.querySelector("td:nth-child(3)").innerHTML = "[E] [D]";
-
-                tbody.appendChild(node);
-            }
-
-            // }}}
         });
     } // }}}
 
@@ -197,46 +209,75 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     } // }}}
 
-    async _initializeChildren() { // {{{ query: misc, shifts
-        this.misc = {
-            title: this.querySelector("#miscTitle"),
+    /** @param {SettingsStore} settings */
+    _renderShiftsTable(settings) { // {{{
+        /** @type {HTMLTemplateElement} */
+        const template = this.querySelector("template#shiftsTableData");
+        const tbody = this.shifts.tableBody;
+        while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
-            /** @type {Label} */
-            weekStart: this.querySelector("#miscWeekStart"),
-            /** @type {HTMLInputElement} */
-            weekStartInput: this.querySelector("#miscWeekStartInput"),
+        let dStart = null
+        settings.shifts.forEach((shift, index) => {
+            /** @type {HTMLElement} */
+            // @ts-expect-error whatever, node, bla bla...
+            const node = template.content.cloneNode(true);
+            node.querySelector("td:nth-child(1)").innerHTML = `${shift.name}`;
 
-            theme: this.querySelector("#miscTheme"),
-            /** @type {Select} */
-            themeModeSelect: this.querySelector("#miscThemeModeSelect"),
-            /** @type {Select} */
-            themeSelect: this.querySelector("#miscThemeSelect"),
-        };
+            /** @type {HTMLElement} */
+            const child2 = node.querySelector("td:nth-child(2)")
+            child2.innerHTML = `${shift.visible ? shift.shortName : ""}`;
+            child2.style.color = shift.color || "inherit"
 
-        this.shifts = {
-            title: this.querySelector("#shiftsTitle"),
+            node.querySelector("td:nth-child(3)").innerHTML = "[E] [D]";
 
-            /** @type {HTMLTableElement} */
-            tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
-            tableHeaderShortName: this.querySelector(
-                "#shiftsTableHeaderShortName",
-            ),
-            tableBody: this.querySelector("#shiftsTableBody"),
-            addButton: this.querySelector("#shiftsAddButton"),
+            tbody.appendChild(node);
 
-            startDate: new StartDate(this.#store, this.#lang),
-            editRhythm: new EditRhythm(this.#store, this.#lang),
+            ui.js.draggable.create(node, {
+                onDragStart: async () => {
+                    dStart = index;
+                },
 
-            /** @type {Label} */
-            backup: this.querySelector("#shiftsBackup"),
-            /** @type {Button} */
-            backupImportButton: this.querySelector("#shiftsBackupImportButton"),
-            /** @type {Button} */
-            backupExportButton: this.querySelector("#shiftsBackupExportButton"),
-        };
+                onDragging: async () => {
+                    if (dStart === null) return;
 
-        this.querySelector("#shiftsStartDateSection").appendChild(this.shifts.startDate)
-        this.querySelector("#shiftsEditRhythmSection").appendChild(this.shifts.editRhythm)
+                    [...tbody.children].forEach((/**@type{HTMLElement}*/child) => {
+                        if (dStart !== index) {
+                            child.style.background = "inherit";
+                            child.style.color = "inherit";
+                        }
+
+                        child.style.background = "hsl(var(--primary))";
+                        child.style.color = "hsl(var(--primary-fg))";
+                    });
+                },
+
+                onDragEnd: async () => {
+                    if (dStart === null) return;
+
+                    if (dStart < index) { // dragged down
+                        settings.shifts = [
+                            ...settings.shifts.slice(0, dStart),
+                            ...settings.shifts.slice(dStart + 1, index + 1),
+                            settings.shifts[dStart],
+                            ...settings.shifts.slice(index + 1),
+                        ];
+
+                        this.#store.ui.set("settings", settings);
+                    } else if (dStart > index) { // dragged up 
+                        settings.shifts = [
+                            ...settings.shifts.slice(0, index),
+                            settings.shifts[dStart],
+                            ...settings.shifts.slice(index, dStart),
+                            ...settings.shifts.slice(dStart + 1),
+                        ];
+
+                        this.#store.ui.set("settings", settings);
+                    }
+
+                    dStart = null;
+                },
+            });
+        })
     } // }}}
 
     /** @param {FileReader} r */
@@ -379,7 +420,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     } // }}}
 }
 
-/** @param {Settings} settings */
+/** @param {SettingsStore} settings */
 function validateSettings(settings) { // {{{
     if (
         !Array.isArray(settings?.shifts) ||
