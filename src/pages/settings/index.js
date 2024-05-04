@@ -321,33 +321,21 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         /** @type {Select} */
         const themeModeSelect = this.querySelector("#miscThemeModeSelect");
-        {
-            /** @param {CustomEvent<SelectOption>} ev */
-            const cbMode = (ev) => {
-                console.debug(`[settings] update theme mode:`, ev.detail);
-                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: ev.detail.ui.value }));
-            };
-            themeModeSelect.addEventListener("change", cbMode);
-            this.cleanup.push(() => {
-                themeModeSelect.removeEventListener("change", cbMode);
+        this.cleanup.push(
+            themeModeSelect.ui.events.addListener("change", (option) => {
+                console.debug(`[settings] update theme mode:`, option);
+                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
             })
-        }
+        );
 
         /** @type {Select} */
         const themeSelect = this.querySelector("#miscThemeSelect");
-        {
-            /**
-             * @param {CustomEvent<SelectOption>} ev 
-             */
-            const cbName = (ev) => {
-                console.debug(`[settings] update theme name:`, ev.detail);
-                this.#store.ui.update("theme", (theme) => ({ ...theme, name: ev.detail.ui.value }));
-            };
-            themeSelect.addEventListener("change", cbName);
-            this.cleanup.push(() => {
-                themeSelect.removeEventListener("change", cbName);
+        this.cleanup.push(
+            themeModeSelect.ui.events.addListener("change", (option) => {
+                console.debug(`[settings] update theme name:`, option);
+                this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
             })
-        }
+        );
 
         return {
             title: this.querySelector("#miscTitle"),
