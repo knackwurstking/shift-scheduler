@@ -12,7 +12,11 @@
  * @type {0 | 1}
  *
  * @typedef SettingsStore
- * @type {Settings}
+ * @type {{
+ *  shifts: Shift[];
+ *  rhythm: number[];
+ *  startDate: string; // "yyyy-mm-dd"
+ * }}
  *
  * @typedef DebugStore 
  * @type {boolean}
@@ -39,13 +43,6 @@
  *  color?: string;
  * }}
  *
- * @typedef Settings
- * @type {{
- *  shifts: Shift[];
- *  rhythm: number[];
- *  startDate: string; // "yyyy-mm-dd"
- * }}
- *
  * @typedef DBEntryDataItem
  * @type {{
  *  date: Date;
@@ -64,7 +61,7 @@
  *
  * @typedef Backup
  * @type {{
- *  settings: Settings;
+ *  settings: SettingsStore;
  *  indexedDB: DBEntry[];
  * }}
  */

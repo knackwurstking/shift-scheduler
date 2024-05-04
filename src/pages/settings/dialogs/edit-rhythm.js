@@ -7,7 +7,7 @@ import { ShiftCard } from "../../../components"
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  *
- * @typedef {import("../../../types").Settings} Settings
+ * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
 // {{{ Content HTML
@@ -156,7 +156,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     } // }}}
 
     /**
-     * @param {Settings} settings
+     * @param {SettingsStore} settings
      */
     _renderTable(settings) { // {{{
         const tbody = this.#content.querySelector("tbody");
@@ -202,28 +202,26 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             tbody.appendChild(tr)
 
             ui.js.draggable.create(tr, {
-                ondragstart: async () => {
+                onDragStart: async () => {
                     draggedIndex = index
                 },
 
-                ondragging: async () => {
-                    [...tbody.children].forEach((child, ci) => {
+                onDragging: async () => {
+                    if (draggedIndex === null) return;
+
+                    [...tbody.children].forEach((/**@type{HTMLElement}*/child, ci) => {
                         if (ci !== index) {
-                            // @ts-ignore
                             child.style.background = "inherit"
-                            // @ts-ignore
                             child.style.color = "inherit"
                             return
                         }
 
-                        // @ts-ignore
                         child.style.background = "hsl(var(--primary))"
-                        // @ts-ignore
                         child.style.color = "hsl(var(--primary-fg))"
                     });
                 },
 
-                ondragend: async () => {
+                onDragEnd: async () => {
                     if (draggedIndex === null) return
 
                     if (draggedIndex < index) { // dragged down
@@ -255,7 +253,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     /**
      * Add a `ShiftCard` for each shift in `settings.shifts` to the `shiftsPicker` element
      *
-     * @param {Settings} settings
+     * @param {SettingsStore} settings
      */
     _renderShiftsPicker(settings) { // {{{
         const picker = this.#content.querySelector(".picker .shifts");
