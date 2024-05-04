@@ -1,12 +1,12 @@
 import ui from "ui";
 
+/**
+ * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
+ * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
+ */
+
 export class EditShiftDialog extends ui.wc.Dialog {
-
-    /**
-     * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
-     * @typedef {import("ui/src/wc").Lang} Lang
-     */
-
     /** @type {Store} */
     #store
     /** @type {Lang} */
@@ -27,24 +27,13 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.#lang = lang
 
         this.cleanup = []
-
-        /** @private */
-        this.onLang = async () => { // {{{
-            this.ui.title = this.#lang.ui.get("settings", "dialogEditShiftTitle");
-
-            this.querySelector("ui-flex-grid-item:nth-child(1) ui-secondary").innerHTML =
-                this.#lang.ui.get("settings", "dialogEditShiftName");
-
-            this.querySelector("ui-flex-grid-item:nth-child(2) ui-secondary").innerHTML =
-                this.#lang.ui.get("settings", "dialogEditShiftShortName");
-        } // }}}
     } // }}}
 
     connectedCallback() { // {{{
         super.connectedCallback();
 
         setTimeout(() => {
-            this.#store.ui.on("lang", this.onLang, true);
+            this.#store.ui.on("lang", this.onLang.bind(this), true);
         });
     } // }}}
 
@@ -58,30 +47,52 @@ export class EditShiftDialog extends ui.wc.Dialog {
     createContent() { // {{{
         const content = new ui.wc.FlexGrid();
         content.setAttribute("gap", "0.5rem");
-        {
-            // Name
-            let item = new ui.wc.FlexGridItem();
-            item.innerHTML = `
-                <ui-secondary></ui-secondary>
-                <input type="text">
-            `;
-            // TODO: Adding the input on change handler
-            content.appendChild(item);
-
-            // Short Name
-            item = new ui.wc.FlexGridItem();
-            item.innerHTML = `
-                <ui-secondary></ui-secondary>
-                <input type="text">
-            `;
-            // TODO: Adding the input on change handler
-            content.appendChild(item);
-        }
-
+        this.createContentName(content)
+        this.createContentShortName(content)
         this.appendChild(content);
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} container 
+     */
+    createContentName(container) { // {{{
+        // Name
+        let item = new ui.wc.FlexGridItem();
+        item.innerHTML = `
+                <ui-secondary></ui-secondary>
+                <input type="text">
+            `;
+        // TODO: Adding the input on change handler
+        container.appendChild(item);
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} container 
+     */
+    createContentShortName(container) { // {{{
+        const item = new ui.wc.FlexGridItem();
+        item.innerHTML = `
+                <ui-secondary></ui-secondary>
+                <input type="text">
+            `;
+        // TODO: Adding the input on change handler
+        container.appendChild(item);
     } // }}}
 
     /** @private */
     createActionButtons() { // {{{ TODO: "cancel", "submit"
+    } // }}}
+
+    /** @private */
+    async onLang() { // {{{
+        this.ui.title = this.#lang.ui.get("settings", "dialogEditShiftTitle");
+
+        this.querySelector("ui-flex-grid-item:nth-child(1) ui-secondary").innerHTML =
+            this.#lang.ui.get("settings", "dialogEditShiftName");
+
+        this.querySelector("ui-flex-grid-item:nth-child(2) ui-secondary").innerHTML =
+            this.#lang.ui.get("settings", "dialogEditShiftShortName");
     } // }}}
 }

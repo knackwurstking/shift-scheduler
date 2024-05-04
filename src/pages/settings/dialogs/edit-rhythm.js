@@ -1,6 +1,15 @@
 import ui from "ui"
 import { ShiftCard } from "../../../components"
 
+/**
+ * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
+ * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").Button} Button
+ * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
+ *
+ * @typedef {import("../../../types").SettingsStore} SettingsStore
+ */
+
 // {{{ Content HTML
 
 const contentHTML = `
@@ -69,16 +78,6 @@ const contentHTML = `
 // }}}
 
 export class EditRhythmDialog extends ui.wc.Dialog {
-
-    /**
-     * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
-     * @typedef {import("ui/src/wc").Lang} Lang
-     * @typedef {import("ui/src/wc").Button} Button
-     * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
-     *
-     * @typedef {import("../../../types").SettingsStore} SettingsStore
-     */
-
     /** @type {Store} */
     #store
     /** @type {Lang} */
@@ -117,34 +116,17 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.ui.fullscreen = true
 
         this.cleanup = []
-        this._createActionButtons()
-        this._createContent()
+        this.createActionButtons()
+        this.createContent()
     } // }}}
 
-    connectedCallback() { // {{{ store: "lang", "settings"
+    connectedCallback() { // {{{
         super.connectedCallback()
 
         setTimeout(() => {
             this.cleanup.push(
-                this.#store.ui.on("lang", () => {
-                    this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle");
-                    this.#submitButton.innerText =
-                        this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton");
-
-                    this.#content.querySelector("thead th:nth-child(1)").innerHTML =
-                        this.#lang.ui.get("settings", "shiftsTableHeaderName");
-                    this.#content.querySelector("thead th:nth-child(2)").innerHTML =
-                        this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
-
-                    this.#content.querySelector("#shiftsEditRhythmDialogPickerSecondary").innerHTML =
-                        this.#lang.ui.get("settings", "shiftsEditRhythmDialogPickerSecondary");
-                }, true),
-
-                this.#store.ui.on("settings", (settings) => {
-                    this.#rhythm = settings.rhythm
-                    this._renderTable(settings)
-                    this._renderShiftsPicker(settings)
-                }, true),
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
+                this.#store.ui.on("settings", this.onSettings.bind(this), true),
             )
         })
     } // }}}
@@ -157,9 +139,10 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     } // }}}
 
     /**
+     * @private
      * @param {SettingsStore} settings
      */
-    _renderTable(settings) { // {{{
+    renderTable(settings) { // {{{
         const tbody = this.#content.querySelector("tbody");
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild);
 
@@ -199,7 +182,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                     btnDelete.onclick = async () => {
                         tbody.removeChild(tr);
                         this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
-                        this._renderTable(settings)
+                        this.renderTable(settings)
                     };
 
                     td.appendChild(btnDelete)
@@ -240,7 +223,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                             ...this.#rhythm.slice(index + 1),
                         ];
 
-                        this._renderTable(settings)
+                        this.renderTable(settings)
                     } else if (draggedIndex > index) { // dragged up
                         this.#rhythm = [
                             ...this.#rhythm.slice(0, index),
@@ -249,10 +232,10 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                             ...this.#rhythm.slice(draggedIndex + 1),
                         ]
 
-                        this._renderTable(settings)
+                        this.renderTable(settings)
                     }
 
-                    [...tbody.children].forEach((/**@type{HTMLElement}*/child, ci) => {
+                    [...tbody.children].forEach((/**@type{HTMLElement}*/child) => {
                         child.style.background = "inherit"
                         child.style.color = "inherit"
                         return
@@ -267,9 +250,10 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     /**
      * Add a `ShiftCard` for each shift in `settings.shifts` to the `shiftsPicker` element
      *
+     * @private
      * @param {SettingsStore} settings
      */
-    _renderShiftsPicker(settings) { // {{{
+    renderShiftsPicker(settings) { // {{{
         const picker = this.#content.querySelector(".picker .shifts");
         while (picker.firstChild) picker.removeChild(picker.firstChild);
 
@@ -283,14 +267,15 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             `;
             shiftCard.onclick = () => {
                 this.#rhythm.push(shift.id);
-                this._renderTable(settings)
+                this.renderTable(settings)
             };
             item.appendChild(shiftCard);
             picker.appendChild(item);
         });
     } // }}}
 
-    _createActionButtons() { // {{{
+    /** @private */
+    createActionButtons() { // {{{
         // Add Submit button to the "actions" slot
         this.#submitButton = new ui.wc.Button()
         this.#submitButton.slot = "actions"
@@ -304,11 +289,37 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.appendChild(this.#submitButton)
     } // }}}
 
-    _createContent() { // {{{
+    /** @private */
+    createContent() { // {{{
         this.#content = new ui.wc.FlexGrid()
         this.#content.style.width = "100%"
         this.#content.style.height = "100%"
         this.#content.innerHTML = contentHTML
         this.appendChild(this.#content)
+    } // }}}
+
+    /** @private */
+    async onLang() { // {{{
+        this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle");
+        this.#submitButton.innerText =
+            this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton");
+
+        this.#content.querySelector("thead th:nth-child(1)").innerHTML =
+            this.#lang.ui.get("settings", "shiftsTableHeaderName");
+        this.#content.querySelector("thead th:nth-child(2)").innerHTML =
+            this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
+
+        this.#content.querySelector("#shiftsEditRhythmDialogPickerSecondary").innerHTML =
+            this.#lang.ui.get("settings", "shiftsEditRhythmDialogPickerSecondary");
+    } // }}}
+
+    /**
+     * @private
+     * @param {SettingsStore} settings
+     */
+    async onSettings(settings) { // {{{
+        this.#rhythm = settings.rhythm
+        this.renderTable(settings)
+        this.renderShiftsPicker(settings)
     } // }}}
 }

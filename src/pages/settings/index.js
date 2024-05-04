@@ -21,6 +21,7 @@ import { StartDate } from "./start-date";
  * @typedef {import("../../types").ThemeStore} ThemeStore 
  * @typedef {import("../../types").SettingsStore} SettingsStore 
  * @typedef {import("../../types").LangStore} LangStore 
+ * @typedef {import("../../types").WeekStartStore} WeekStartStore
  * @typedef {import("../../types").Shift} Shift 
  * @typedef {import("../../types").Backup} Backup
  */
@@ -44,133 +45,20 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
 
-        this.misc;
-        this.shifts;
-
-        { // {{{ query: misc, shifts
-            this.misc = {
-                title: this.querySelector("#miscTitle"),
-
-                /** @type {Label} */
-                weekStart: this.querySelector("#miscWeekStart"),
-                /** @type {HTMLInputElement} */
-                weekStartInput: this.querySelector("#miscWeekStartInput"),
-
-                theme: this.querySelector("#miscTheme"),
-                /** @type {Select} */
-                themeModeSelect: this.querySelector("#miscThemeModeSelect"),
-                /** @type {Select} */
-                themeSelect: this.querySelector("#miscThemeSelect"),
-            };
-
-            this.shifts = {
-                title: this.querySelector("#shiftsTitle"),
-
-                /** @type {HTMLTableElement} */
-                tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
-                tableHeaderShortName: this.querySelector(
-                    "#shiftsTableHeaderShortName",
-                ),
-                tableBody: this.querySelector("#shiftsTableBody"),
-                addButton: this.querySelector("#shiftsAddButton"),
-
-                startDate: new StartDate(this.#store, this.#lang),
-                editRhythm: new EditRhythm(this.#store, this.#lang),
-
-                /** @type {Label} */
-                backup: this.querySelector("#shiftsBackup"),
-                /** @type {Button} */
-                backupImportButton: this.querySelector("#shiftsBackupImportButton"),
-                /** @type {Button} */
-                backupExportButton: this.querySelector("#shiftsBackupExportButton"),
-            };
-
-            this.querySelector("#shiftsStartDateSection").appendChild(this.shifts.startDate)
-            this.querySelector("#shiftsEditRhythmSection").appendChild(this.shifts.editRhythm)
-        } // }}}
+        this.misc = this.createMiscElements();
+        this.shifts = this.createShiftElements();
     } // }}}
 
-    connectedCallback() { // {{{ store: "lang", "settings"
+    connectedCallback() { // {{{
         console.debug("[settings] connect...")
 
         setTimeout(() => {
             this.cleanup.push(
-                this.#store.ui.on("lang", this._onLang.bind(this), true),
-                this.#store.ui.on("settings", async (settings) => {
-                    this._renderShiftsTable(settings)
-                }, true),
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
+                this.#store.ui.on("settings", this.onSettings.bind(this), true),
+                this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
+                this.#store.ui.on("theme", this.onTheme.bind(this), true),
             );
-
-
-            // {{{ Week Start Section (Misc)
-
-            (async () => {
-                const cb = this._onWeekStartChange.bind(this);
-
-                this.misc.weekStartInput.checked = this.#store.ui.get("week-start") === 1;
-                this.misc.weekStartInput.addEventListener("click", cb)
-                this.cleanup.push(() => {
-                    this.misc.weekStartInput.removeEventListener("click", cb)
-                });
-            })();
-
-            // }}}
-
-            // {{{ Theme Section (Misc)
-
-            (async (/** @type {ThemeStore} */theme) => {
-                [...this.misc.themeModeSelect.children].forEach(
-                    (/** @type {SelectOption} */ c) => {
-                        c.ui.selected = (c.ui.value === theme.mode)
-                    }
-                );
-
-                [...this.misc.themeSelect.children].forEach(
-                    (/** @type {SelectOption} */ c) => {
-                        c.ui.selected = (c.ui.value === theme.name)
-                    }
-                );
-
-                /**
-                 * @param {CustomEvent<SelectOption>} ev 
-                 */
-                const cbMode = (ev) => {
-                    console.debug(`[settings] update theme mode:`, ev.detail);
-                    this.#store.ui.update("theme", (theme) => ({ ...theme, mode: ev.detail.ui.value }));
-                };
-                this.misc.themeModeSelect.addEventListener("change", cbMode);
-                this.cleanup.push(() => {
-                    this.misc.themeModeSelect.removeEventListener("change", cbMode);
-                })
-
-                /**
-                 * @param {CustomEvent<SelectOption>} ev 
-                 */
-                const cbName = (ev) => {
-                    console.debug(`[settings] update theme name:`, ev.detail);
-                    this.#store.ui.update("theme", (theme) => ({ ...theme, name: ev.detail.ui.value }));
-                };
-                this.misc.themeSelect.addEventListener("change", cbName);
-                this.cleanup.push(() => {
-                    this.misc.themeSelect.removeEventListener("change", cbName);
-                })
-            })(this.#store.ui.get("theme"));
-
-            // }}}
-
-            // {{{ Backup Section (Shifts) 
-
-            (async () => {
-                this.shifts.backupImportButton.onclick = async () => {
-                    this.importBackup()
-                };
-
-                this.shifts.backupExportButton.onclick = async () => {
-                    this.exportBackup()
-                };
-            })();
-
-            // }}}
         });
     } // }}}
 
@@ -424,10 +312,99 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
     } // }}}
 
-    /** @param {LangStore} lang */
-    async _onLang(lang) { // {{{
-        console.debug(`[settings] language update`, lang)
+    /** @private */
+    createMiscElements() { // {{{
+        /** @type {HTMLInputElement} */
+        const weekStartInput = this.querySelector("#miscWeekStartInput");
+        weekStartInput.onclick = (/**@type{MouseEvent & { currentTarget: HTMLInputElement }}*/ev) =>
+            this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
 
+        /** @type {Select} */
+        const themeModeSelect = this.querySelector("#miscThemeModeSelect");
+        {
+            /** @param {CustomEvent<SelectOption>} ev */
+            const cbMode = (ev) => {
+                console.debug(`[settings] update theme mode:`, ev.detail);
+                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: ev.detail.ui.value }));
+            };
+            themeModeSelect.addEventListener("change", cbMode);
+            this.cleanup.push(() => {
+                themeModeSelect.removeEventListener("change", cbMode);
+            })
+        }
+
+        /** @type {Select} */
+        const themeSelect = this.querySelector("#miscThemeSelect");
+        {
+            /**
+             * @param {CustomEvent<SelectOption>} ev 
+             */
+            const cbName = (ev) => {
+                console.debug(`[settings] update theme name:`, ev.detail);
+                this.#store.ui.update("theme", (theme) => ({ ...theme, name: ev.detail.ui.value }));
+            };
+            themeSelect.addEventListener("change", cbName);
+            this.cleanup.push(() => {
+                themeSelect.removeEventListener("change", cbName);
+            })
+        }
+
+        return {
+            title: this.querySelector("#miscTitle"),
+
+            /** @type {Label} */
+            weekStart: this.querySelector("#miscWeekStart"),
+            weekStartInput: weekStartInput,
+
+            theme: this.querySelector("#miscTheme"),
+            themeModeSelect,
+            themeSelect,
+        };
+    } // }}}
+
+    /** @private */
+    createShiftElements() { // {{{
+        const startDate = new StartDate(this.#store, this.#lang);
+        this.querySelector("#shiftsStartDateSection").appendChild(startDate);
+
+        const editRhythm = new EditRhythm(this.#store, this.#lang);
+        this.querySelector("#shiftsEditRhythmSection").appendChild(editRhythm);
+
+        /** @type {Button} */
+        const backupImportButton = this.querySelector("#shiftsBackupImportButton");
+        backupImportButton.onclick = async () => {
+            this.importBackup()
+        };
+
+        /** @type {Button} */
+        const backupExportButton = this.querySelector("#shiftsBackupExportButton");
+        backupExportButton.onclick = async () => {
+            this.exportBackup()
+        };
+
+        return {
+            title: this.querySelector("#shiftsTitle"),
+
+            /** @type {HTMLTableElement} */
+            tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
+            tableHeaderShortName: this.querySelector(
+                "#shiftsTableHeaderShortName",
+            ),
+            tableBody: this.querySelector("#shiftsTableBody"),
+            addButton: this.querySelector("#shiftsAddButton"),
+
+            startDate,
+            editRhythm,
+
+            /** @type {Label} */
+            backup: this.querySelector("#shiftsBackup"),
+            backupImportButton,
+            backupExportButton,
+        };
+    } // }}}
+
+    /** @private */
+    async onLang() { // {{{
         if (!this.#lang.ui.langType) return;
 
         // Misc Section
@@ -470,9 +447,40 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         );
     } // }}}
 
-    /** @param {Event & { currentTarget: HTMLInputElement }} ev */
-    async _onWeekStartChange(ev) { // {{{
-        this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
+    /**
+     * @private
+     * @param {SettingsStore} settings
+     */
+    async onSettings(settings) { // {{{
+        this._renderShiftsTable(settings)
+    } // }}}
+
+    /**
+     * @private
+     * @param {WeekStartStore} weekStart
+     */
+    async onWeekStart(weekStart) { // {{{
+        this.misc.weekStartInput.checked = weekStart === 1;
+    } // }}}
+
+    /**
+     * @private
+     * @param {ThemeStore} theme
+     */
+    async onTheme(theme) { // {{{
+        console.debug(`[settings] onTheme`, theme);
+
+        [...this.misc.themeModeSelect.children].forEach(
+            (/** @type {SelectOption} */ c) => {
+                c.ui.selected = (c.ui.value === theme.mode)
+            }
+        );
+
+        [...this.misc.themeSelect.children].forEach(
+            (/** @type {SelectOption} */ c) => {
+                c.ui.selected = (c.ui.value === theme.name)
+            }
+        );
     } // }}}
 }
 

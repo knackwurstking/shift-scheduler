@@ -18,6 +18,7 @@ export class EditRhythm extends HTMLElement {
     #store;
     /** @type {Lang} */
     #lang;
+
     /** @type {Label} */
     #label;
     /** @type {Button} */
@@ -42,26 +43,14 @@ export class EditRhythm extends HTMLElement {
         this.#lang = lang;
 
         this.#label = this.querySelector("ui-label");
-
-        this.#button = this.querySelector("ui-button")
-        this.#button.onclick = async () => {
-            document.body.appendChild(this.#dialog)
-            this.#dialog.ui.open(true)
-        }
-
-        this.#dialog = new EditRhythmDialog(this.#store, this.#lang)
-        this.#dialog.ui.events.addListener("close", async () => {
-            document.body.removeChild(this.#dialog)
-        })
+        this.createButton()
+        this.createDialog()
     } // }}}
 
     connectedCallback() { // {{{
         setTimeout(() => {
             this.cleanup.push(
-                this.#store.ui.on("lang", async () => {
-                    this.#label.ui.primary = this.#lang.ui.get("settings", "shiftsEditRhythmPrimary");
-                    this.#button.innerHTML = this.#lang.ui.get("settings", "shiftsEditRhythmButton")
-                }, true),
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
             );
         });
     } // }}}
@@ -69,5 +58,28 @@ export class EditRhythm extends HTMLElement {
     disconnectedCallback() { // {{{
         this.cleanup.forEach((fn) => fn());
         this.cleanup = [];
+    } // }}}
+
+    /** @private */
+    createButton() { // {{{
+        this.#button = this.querySelector("ui-button");
+        this.#button.onclick = async () => {
+            document.body.appendChild(this.#dialog);
+            this.#dialog.ui.open(true);
+        };
+    } // }}}
+
+    /** @private */
+    createDialog() { // {{{
+        this.#dialog = new EditRhythmDialog(this.#store, this.#lang)
+        this.#dialog.ui.events.addListener("close", async () => {
+            document.body.removeChild(this.#dialog)
+        })
+    } // }}}
+
+    /** @private */
+    async onLang() { // {{{
+        this.#label.ui.primary = this.#lang.ui.get("settings", "shiftsEditRhythmPrimary");
+        this.#button.innerHTML = this.#lang.ui.get("settings", "shiftsEditRhythmButton")
     } // }}}
 }
