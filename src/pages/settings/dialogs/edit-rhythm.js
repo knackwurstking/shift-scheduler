@@ -172,32 +172,39 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
             // Create a table entry for this shift
             const tr = document.createElement("tr")
+            {
+                // Table Data Name
+                let td = document.createElement("td")
+                td.style.textAlign = "left"
+                td.innerText = shift.name
+                tr.appendChild(td)
 
-            // Table Data Name
-            const tdName = document.createElement("td")
-            tdName.innerText = shift.name
-            tr.appendChild(tdName)
+                // Table Data Short Name
+                td = document.createElement("td")
+                td.style.textAlign = "left"
+                td.style.color = shift.color || "inherit"
+                td.innerText = !!shift.visible ? shift.shortName : ""
+                tr.appendChild(td)
 
-            // Table Data Short Name
-            const tdShortName = document.createElement("td")
-            tdShortName.innerText = !!shift.visible ? shift.shortName : ""
-            tdShortName.style.color = shift.color || "inherit"
-            tr.appendChild(tdShortName)
+                // Table Data Actions
+                td = document.createElement("td")
+                td.classList.add("flex", "row", "align-center", "justify-end")
+                td.style.textAlign = "right"
+                {
+                    const btnDelete = new ui.wc.IconButton()
+                    btnDelete.setAttribute("color", "destructive")
+                    btnDelete.setAttribute("ghost", "")
+                    btnDelete.appendChild(new ui.wc.svg.DeleteRecycleBin())
+                    btnDelete.onclick = async () => {
+                        tbody.removeChild(tr);
+                        this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
+                        this._renderTable(settings)
+                    };
 
-            // Table Data Actions
-            const tdActions = document.createElement("td")
-            const btnDelete = new ui.wc.IconButton()
-            btnDelete.setAttribute("color", "destructive")
-            btnDelete.setAttribute("ghost", "")
-            btnDelete.appendChild(new ui.wc.svg.DeleteRecycleBin())
-            btnDelete.onclick = async () => {
-                tbody.removeChild(tr);
-                this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
-                this._renderTable(settings)
-            };
-            tdActions.appendChild(btnDelete)
-
-            tr.appendChild(tdActions)
+                    td.appendChild(btnDelete)
+                }
+                tr.appendChild(td)
+            }
 
             tbody.appendChild(tr)
 
@@ -243,6 +250,12 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
                         this._renderTable(settings)
                     }
+
+                    [...tbody.children].forEach((/**@type{HTMLElement}*/child, ci) => {
+                        child.style.background = "inherit"
+                        child.style.color = "inherit"
+                        return
+                    });
 
                     draggedIndex = null
                 },

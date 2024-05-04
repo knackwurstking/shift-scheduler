@@ -95,7 +95,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", this._onLang.bind(this), true),
-                this.#store.ui.on("settings", (settings) => {
+                this.#store.ui.on("settings", async (settings) => {
                     this._renderShiftsTable(settings)
                 }, true),
             );
@@ -211,28 +211,70 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @param {SettingsStore} settings */
     _renderShiftsTable(settings) { // {{{
-        /** @type {HTMLTemplateElement} */
-        const template = this.querySelector("template#shiftsTableData");
         const tbody = this.shifts.tableBody;
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
         let dStart = null
         settings.shifts.forEach((shift, index) => {
-            /** @type {HTMLElement} */
-            // @ts-expect-error whatever, node, bla bla...
-            const node = template.content.cloneNode(true);
-            node.querySelector("td:nth-child(1)").innerHTML = `${shift.name}`;
+            const tr = document.createElement("tr")
+            {
+                // Shift Name
+                /** @type {HTMLElement} */
+                let td = document.createElement("td")
+                td.style.textAlign = "left"
+                td.innerText = `${shift.name}`
+                tr.appendChild(td)
 
-            /** @type {HTMLElement} */
-            const child2 = node.querySelector("td:nth-child(2)")
-            child2.innerHTML = `${shift.visible ? shift.shortName : ""}`;
-            child2.style.color = shift.color || "inherit"
+                // Shift Short Name
+                td = document.createElement("td")
+                td.style.textAlign = "left"
+                td.style.color = shift.color || "inherit"
+                td.innerText = `${shift.visible ? shift.shortName : ""}`;
+                tr.appendChild(td)
 
-            node.querySelector("td:nth-child(3)").innerHTML = "[E] [D]";
+                // Shift Actions 
+                td = document.createElement("td");
+                td.style.textAlign = "right"
+                {
+                    const container = new ui.wc.FlexGridRow();
+                    container.style.justifyContent = "flex-end";
+                    container.setAttribute("gap", "0.25rem")
 
-            tbody.appendChild(node);
+                    // Edit Button
+                    let item = new ui.wc.FlexGridItem()
+                    item.setAttribute("flex", "0")
+                    container.appendChild(item)
+                    let btn = new ui.wc.IconButton()
+                    btn.setAttribute("color", "primary")
+                    btn.setAttribute("ghost", "")
+                    btn.appendChild(new ui.wc.svg.Edit2())
+                    btn.onclick = async () => {
+                        // TODO: Open edit shift dialog for this table entry
+                    };
+                    item.appendChild(btn)
 
-            ui.js.draggable.create(node, {
+                    // Delete Button
+                    item = new ui.wc.FlexGridItem()
+                    item.setAttribute("flex", "0")
+                    container.appendChild(item)
+                    btn = new ui.wc.IconButton()
+                    btn.setAttribute("color", "destructive")
+                    btn.setAttribute("ghost", "")
+                    btn.appendChild(new ui.wc.svg.DeleteRecycleBin())
+                    btn.onclick = async () => {
+                        // TODO: Delete this shift from settings data, and rerender the table?
+                    };
+                    item.appendChild(btn)
+
+                    td.appendChild(container)
+                }
+                tr.appendChild(td)
+            }
+
+            tbody.appendChild(tr);
+
+            // Draggable Setup
+            ui.js.draggable.create(tr, {
                 onDragStart: async () => {
                     dStart = index;
                 },
@@ -240,14 +282,15 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 onDragging: async () => {
                     if (dStart === null) return;
 
-                    [...tbody.children].forEach((/**@type{HTMLElement}*/child) => {
-                        if (dStart !== index) {
-                            child.style.background = "inherit";
-                            child.style.color = "inherit";
+                    [...tbody.children].forEach((/**@type{HTMLElement}*/c, ci) => {
+                        if (index !== ci) {
+                            c.style.background = "inherit";
+                            c.style.color = "inherit";
+                            return
                         }
 
-                        child.style.background = "hsl(var(--primary))";
-                        child.style.color = "hsl(var(--primary-fg))";
+                        c.style.background = "hsl(var(--primary))";
+                        c.style.color = "hsl(var(--primary-fg))";
                     });
                 },
 
@@ -273,6 +316,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
                         this.#store.ui.set("settings", settings);
                     }
+
+                    [...tbody.children].forEach((/**@type{HTMLElement}*/c) => {
+                        c.style.background = "inherit";
+                        c.style.color = "inherit";
+                        return
+                    });
 
                     dStart = null;
                 },
