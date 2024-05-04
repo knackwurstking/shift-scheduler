@@ -55,7 +55,7 @@ export class SwipeHandler extends ui.js.events.Events {
             if (!this.isMinSwipe()) {
                 this.setTransition(`left ${0.15}s ease`);
                 this.moveX(0);
-                setTimeout(() => this._resetSwipe(), 150);
+                setTimeout(() => this.resetSwipe(), 150);
                 return;
             }
 
@@ -65,7 +65,7 @@ export class SwipeHandler extends ui.js.events.Events {
             this.moveX(
                 this.#clientX > this.#startX ? +(r.width + 1) : -r.width + 1,
             );
-            setTimeout(() => this._resetSwipe(), 300);
+            setTimeout(() => this.resetSwipe(), 300);
         }; // }}}
 
         /** @type {((ev: TouchEvent) => void|Promise<void>)} */
@@ -135,11 +135,12 @@ export class SwipeHandler extends ui.js.events.Events {
         items.forEach((c) => (c.style.transition = value));
     } // }}}
 
-    _resetSwipe() { // {{{
+    /** @private */
+    resetSwipe() { // {{{
         // Reset final transform
         this.setTransition("none");
         if (this.isMinSwipe()) {
-            this._reorderItems();
+            this.reorderItems();
         }
         this.#startX = null;
         this.#clientX = null;
@@ -148,7 +149,8 @@ export class SwipeHandler extends ui.js.events.Events {
         console.debug(`[Calendar SwipeHandler] release transform lock`);
     } // }}}
 
-    _reorderItems() { // {{{
+    /** @private */
+    reorderItems() { // {{{
         const items = this.calendar.getItems();
         const direction = this.#clientX > this.#startX ? "right" : "left";
         switch (direction) {

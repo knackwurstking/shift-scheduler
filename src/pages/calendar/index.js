@@ -224,27 +224,18 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         setTimeout(() => {
             this.cleanup.push(
                 // The "swipe" event will update the date-picker store, base on the swiped direction
-                this.swipeHandler.on(
-                    "swipe",
-                    this.handleSwipeEvent.bind(this),
-                ),
+                this.swipeHandler.on("swipe", this.handleSwipeEvent.bind(this)),
 
                 // Handle the "date-picker" state change, update calendar items
-                this.#store.ui.on(
-                    "date-picker",
-                    this.handleDatePickerChangeEvent.bind(this),
-                    true,
-                ),
+                this.#store.ui.on("date-picker",
+                    this.handleDatePickerChangeEvent.bind(this), true),
 
                 // Handle a "week-start" change event
-                this.#store.ui.on(
-                    "week-start",
-                    this._onWeekStart.bind(this),
-                    true,
-                ),
+                this.#store.ui.on("week-start",
+                    this.onWeekStart.bind(this), true),
 
                 // Handle a "lang" change event
-                this.#store.ui.on("lang", this._onLang.bind(this), true),
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
             );
 
             this.swipeHandler.start();
@@ -298,7 +289,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 : "";
         }
 
-        this._markWeekendItems(...cards);
+        this.markWeekendItems(...cards);
     } // }}}
 
     /**
@@ -380,9 +371,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     /**
+     * @private
      * @param {WeekStartStore} weekStart
      */
-    async _updateWeekDays(weekStart) { // {{{
+    async updateWeekDays(weekStart) { // {{{
         if (weekStart === null) {
             console.error(`weekStart has to be a "0" or a "1"!`);
             return;
@@ -401,7 +393,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             ".week-days-row .week-day-item",
         )];
 
-        this._markWeekendItems(...items);
+        this.markWeekendItems(...items);
 
         items.forEach((item, i) => {
             item.innerHTML = `${this.#lang.ui.get("calendar", this.order[i % 7].toString())}`;
@@ -409,9 +401,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     /**
+     * @private
      * @param {Element[]} children
      */
-    async _markWeekendItems(...children) { // {{{
+    async markWeekendItems(...children) { // {{{
         const satIndex = this.order.findIndex((o) => o === 6);
         const sunIndex = this.order.findIndex((o) => o === 0);
         children.forEach((c, i) => {
@@ -428,23 +421,29 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         });
     } // }}}
 
-    /** @param {WeekStartStore} weekStart */
-    async _onWeekStart(weekStart) { // {{{
+    /**
+     * @private
+     * @param {WeekStartStore} weekStart
+     */
+    async onWeekStart(weekStart) { // {{{
         console.debug(
             `[calendar] week-start event: update week days and run the handleDatePickerChangeEvent callback`,
         );
 
-        await this._updateWeekDays(weekStart);
+        await this.updateWeekDays(weekStart);
         await this.handleDatePickerChangeEvent(
             this.#store.ui.get("date-picker"),
         );
     } // }}}
 
-    /** @param {LangStore} lang */
-    async _onLang(lang) { // {{{
+    /**
+     * @private
+     * @param {LangStore} lang
+     */
+    async onLang(lang) { // {{{
         console.debug(`[calendar] language update`, lang);
 
         // Update week days grid header row
-        await this._updateWeekDays(this.#store.ui.get("week-start"));
+        await this.updateWeekDays(this.#store.ui.get("week-start"));
     } // }}}
 }
