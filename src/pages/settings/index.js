@@ -76,7 +76,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         input.onchange = async () => {
             const reader = new FileReader();
-            reader.onload = () => this._readerOnLoad(reader);
+            reader.onload = () => this.readerOnLoad(reader);
             reader.onerror = () => {
                 alert(`Import data: read file failed: ${reader.error}`);
             }
@@ -93,13 +93,16 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             indexedDB: await db.getAll(),
         };
 
-        if (utils.isAndroid()) this._androidExport(backup);
-        else this._browserExport(backup);
+        if (utils.isAndroid()) this.androidExport(backup);
+        else this.browserExport(backup);
 
     } // }}}
 
-    /** @param {SettingsStore} settings */
-    _renderShiftsTable(settings) { // {{{
+    /**
+     * @private
+     * @param {SettingsStore} settings
+     */
+    renderShiftsTable(settings) { // {{{
         const tbody = this.shifts.tableBody;
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
@@ -224,8 +227,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         })
     } // }}}
 
-    /** @param {FileReader} r */
-    async _readerOnLoad(r) { // {{{
+    /**
+     * @private
+     * @param {FileReader} r
+     * */
+    async readerOnLoad(r) { // {{{
         if (typeof r.result !== "string") {
             alert("Wrong data!");
             return
@@ -270,9 +276,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         }
     } // }}}
 
-    /** @param {Backup} data */
-    async _androidExport(data) { // {{{
-        const fileName = await this._getBackupFileName();
+    /**
+     * @private
+     * @param {Backup} data
+     */
+    async androidExport(data) { // {{{
+        const fileName = await this.getBackupFileName();
         const today = new Date();
         const pM = (today.getMonth() + 1).toString().padStart(2, "0");
         const pD = today.getDate().toString().padStart(2, "0");
@@ -291,8 +300,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         });
     } // }}}
 
-    /** @param {Backup} data */
-    async _browserExport(data) { // {{{
+    /**
+     * @private
+     * @param {Backup} data
+     */
+    async browserExport(data) { // {{{
         const blob = new Blob([JSON.stringify(data)], {
             type: "octet/stream",
         });
@@ -300,12 +312,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         const anchor = document.createElement("a");
 
         anchor.setAttribute("href", window.URL.createObjectURL(blob));
-        anchor.setAttribute("download", await this._getBackupFileName());
+        anchor.setAttribute("download", await this.getBackupFileName());
 
         anchor.click();
     } // }}}
 
-    async _getBackupFileName() { // {{{
+    /** @private */
+    async getBackupFileName() { // {{{
         const today = new Date();
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
@@ -440,7 +453,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
      * @param {SettingsStore} settings
      */
     async onSettings(settings) { // {{{
-        this._renderShiftsTable(settings)
+        this.renderShiftsTable(settings)
     } // }}}
 
     /**
