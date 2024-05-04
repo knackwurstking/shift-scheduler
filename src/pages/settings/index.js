@@ -3,6 +3,7 @@ import { Share } from "@capacitor/share";
 import ui from "ui";
 import db from "../../db";
 import utils from "../../utils";
+import { EditShiftDialog } from "./dialogs";
 import { EditRhythm } from "./edit-rhythm";
 import { StartDate } from "./start-date";
 
@@ -250,6 +251,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     btn.appendChild(new ui.wc.svg.Edit2())
                     btn.onclick = async () => {
                         // TODO: Open edit shift dialog for this table entry
+                        const dialog = new EditShiftDialog(this.#store, this.#lang)
+                        document.body.appendChild(dialog)
+                        dialog.ui.open(true)
+                        dialog.ui.events.addListener("close", () => {
+                            document.body.removeChild(dialog)
+                        })
                     };
                     item.appendChild(btn)
 

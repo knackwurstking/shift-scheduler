@@ -3,7 +3,7 @@ import "./styles.css";
 import ui from "ui";
 import App from "./app";
 import { ShiftCard } from "./components";
-import { CalendarPage, EditRhythm, EditRhythmDialog, SettingsPage, StartDate } from "./pages";
+import { CalendarPage, EditRhythm, EditRhythmDialog, EditShiftDialog, SettingsPage, StartDate } from "./pages";
 import utils from "./utils";
 
 /**
@@ -29,6 +29,7 @@ ui.define()
         StartDate.register()
         EditRhythmDialog.register()
         EditRhythm.register()
+        EditShiftDialog.register()
         SettingsPage.register()
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));

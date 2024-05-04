@@ -27,6 +27,9 @@
         "shiftsEditRhythmDialogPickerSecondary": "Click to add a new shift",
         "shiftsBackupPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
-        "shiftsBackupExportButton": "Export"
+        "shiftsBackupExportButton": "Export",
+        "dialogEditShiftTitle": "Edit Shift",
+        "dialogEditShiftName": "Shift Name (ex.: Night)",
+        "dialogEditShiftShortName": "Short (ex.: N)"
     }
 }
