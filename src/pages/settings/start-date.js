@@ -1,13 +1,12 @@
 /**
  * @typedef {import("ui/src/wc").Store} Store
  * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").Label} Label
  * @typedef {import("../../types").SettingsStore} SettingsStore
  */
 
 const innerHTML = `
 <ui-label>
-    <ui-primary slot="primary"></ui-primary>
-
     <input slot="input" style="width: fit-content" type="date" />
 </ui-label>
 `;
@@ -19,8 +18,8 @@ export class StartDate extends HTMLElement {
     #lang;
     /** @type {HTMLInputElement} */
     #input;
-    /** @type {HTMLElement} */
-    #primary;
+    /** @type {Label} */
+    #label;
 
     static register = () => customElements.define("settings-start-date", StartDate)
 
@@ -39,7 +38,7 @@ export class StartDate extends HTMLElement {
         this.#lang = lang;
 
         this.#input = this.querySelector("input");
-        this.#primary = this.querySelector("ui-primary");
+        this.#label = this.querySelector("ui-label");
 
         this.#input.oninput = ({ currentTarget }) => {
             this.#store.ui.update(
@@ -60,7 +59,7 @@ export class StartDate extends HTMLElement {
                 this.#store.ui.on(
                     "lang",
                     () => {
-                        this.#primary.innerHTML = this.#lang.ui.get(
+                        this.#label.ui.primary = this.#lang.ui.get(
                             "settings",
                             "shiftsStartDatePrimary",
                         );
