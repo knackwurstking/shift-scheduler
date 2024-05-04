@@ -8,9 +8,17 @@ const contentHTML = `
 // }}}
 
 export class EditShift extends ui.wc.Dialog {
-    constructor() { // {{{ TODO: create action buttons and content
+    constructor() { // {{{
         super()
-        this._createActionButtons()
-        this._createContent()
+        this.createActionButtons()
+        this.createContent()
     } // }}}
+
+    /** @private */
+    createContent() { // TODO: ...
+    }
+
+    /** @private */
+    createActionButtons() { // TODO: ...
+    }
 }
