@@ -172,20 +172,29 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
                 // Table Data Actions
                 td = document.createElement("td")
-                td.classList.add("flex", "row", "align-center", "justify-end")
                 td.style.textAlign = "right"
                 {
-                    const btnDelete = new ui.wc.IconButton()
-                    btnDelete.setAttribute("color", "destructive")
-                    btnDelete.setAttribute("ghost", "")
-                    btnDelete.appendChild(new ui.wc.svg.DeleteRecycleBin())
-                    btnDelete.onclick = async () => {
-                        tbody.removeChild(tr);
-                        this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
-                        this.renderTable(settings)
-                    };
+                    const container = new ui.wc.FlexGridRow()
+                    container.style.justifyContent = "flex-end";
+                    container.setAttribute("gap", "0.25rem");
+                    { // Delete Button
+                        let item = new ui.wc.FlexGridItem();
+                        item.setAttribute("flex", "0");
 
-                    td.appendChild(btnDelete)
+                        const btn = new ui.wc.IconButton()
+                        btn.setAttribute("color", "destructive")
+                        btn.setAttribute("ghost", "")
+                        btn.appendChild(new ui.wc.svg.DeleteRecycleBin())
+                        btn.onclick = async () => {
+                            tbody.removeChild(tr);
+                            this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
+                            this.renderTable(settings)
+                        };
+                        item.appendChild(btn)
+
+                        container.appendChild(item);
+                    }
+                    td.appendChild(container)
                 }
                 tr.appendChild(td)
             }
