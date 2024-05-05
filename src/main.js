@@ -40,10 +40,7 @@ ui.define()
 
 /** @type {ThemeHandler} */
 const th = document.querySelector("#themeHandler")
-th.ui.addTheme("black-and-white", `/themes/black-and-white.css`);
 th.ui.addTheme("zinc", `/themes/zinc.css`);
-th.ui.addTheme("green", `/themes/green.css`);
-th.ui.addTheme("violet", `/themes/violet.css`);
 
 // }}}
 
