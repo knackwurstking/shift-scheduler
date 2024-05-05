@@ -107,68 +107,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
         let dStart = null
-        settings.shifts.forEach((shift, index) => {
+        settings.shifts.forEach((shift, index) => { // {{{
             const tr = document.createElement("tr")
-            {
-                // Shift Name
-                /** @type {HTMLElement} */
-                let td = document.createElement("td")
-                td.style.textAlign = "left"
-                td.innerText = `${shift.name}`
-                tr.appendChild(td)
-
-                // Shift Short Name
-                td = document.createElement("td")
-                td.style.textAlign = "left"
-                td.style.color = shift.color || "inherit"
-                td.innerText = `${shift.visible ? shift.shortName : ""}`;
-                tr.appendChild(td)
-
-                // Shift Actions 
-                td = document.createElement("td");
-                td.style.textAlign = "right"
-                {
-                    const container = new ui.wc.FlexGridRow();
-                    container.style.justifyContent = "flex-end";
-                    container.setAttribute("gap", "0.25rem")
-
-                    // Edit Button
-                    let item = new ui.wc.FlexGridItem()
-                    item.setAttribute("flex", "0")
-                    container.appendChild(item)
-                    let btn = new ui.wc.IconButton()
-                    btn.setAttribute("color", "primary")
-                    btn.setAttribute("ghost", "")
-                    btn.appendChild(new ui.wc.svg.Edit2())
-                    btn.onclick = async () => {
-                        // TODO: Open edit shift dialog for this table entry
-                        const dialog = new EditShiftDialog(this.#store, this.#lang)
-                        document.body.appendChild(dialog)
-                        dialog.ui.open(true)
-                        dialog.ui.events.on("close", () => {
-                            document.body.removeChild(dialog)
-                        })
-                    };
-                    item.appendChild(btn)
-
-                    // Delete Button
-                    item = new ui.wc.FlexGridItem()
-                    item.setAttribute("flex", "0")
-                    container.appendChild(item)
-                    btn = new ui.wc.IconButton()
-                    btn.setAttribute("color", "destructive")
-                    btn.setAttribute("ghost", "")
-                    btn.appendChild(new ui.wc.svg.DeleteRecycleBin())
-                    btn.onclick = async () => {
-                        // TODO: Delete this shift from settings data, and rerender the table?
-                    };
-                    item.appendChild(btn)
-
-                    td.appendChild(container)
-                }
-                tr.appendChild(td)
-            }
-
+            tr.appendChild(createTableName())
+            tr.appendChild(createTableShortName())
+            tr.appendChild(createTableActions())
             tbody.appendChild(tr);
 
             // Draggable Setup
@@ -224,7 +167,67 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     dStart = null;
                 },
             });
-        })
+
+            function createTableActions() { // {{{
+                const td = document.createElement("td");
+                td.style.textAlign = "right";
+
+                const container = new ui.wc.FlexGridRow();
+                container.style.justifyContent = "flex-end";
+                container.setAttribute("gap", "0.25rem");
+
+                // Edit Button
+                let item = new ui.wc.FlexGridItem();
+                item.setAttribute("flex", "0");
+                container.appendChild(item);
+                let btn = new ui.wc.IconButton();
+                btn.setAttribute("color", "primary");
+                btn.setAttribute("ghost", "");
+                btn.appendChild(new ui.wc.svg.Edit2());
+                btn.onclick = async () => {
+                    // TODO: Open edit shift dialog for this table entry
+                    const dialog = new EditShiftDialog(this.#store, this.#lang);
+                    document.body.appendChild(dialog);
+                    dialog.ui.open(true);
+                    dialog.ui.events.on("close", () => {
+                        document.body.removeChild(dialog);
+                    });
+                };
+                item.appendChild(btn);
+
+                // Delete Button
+                item = new ui.wc.FlexGridItem();
+                item.setAttribute("flex", "0");
+                container.appendChild(item);
+                btn = new ui.wc.IconButton();
+                btn.setAttribute("color", "destructive");
+                btn.setAttribute("ghost", "");
+                btn.appendChild(new ui.wc.svg.DeleteRecycleBin());
+                btn.onclick = async () => {
+                    // TODO: Delete this shift from settings data, and rerender the table?
+                };
+                item.appendChild(btn);
+
+                td.appendChild(container);
+
+                return td;
+            } // }}}
+
+            function createTableShortName() { // {{{
+                const td = document.createElement("td");
+                td.style.textAlign = "left";
+                td.style.color = shift.color || "inherit";
+                td.innerText = `${shift.visible ? shift.shortName : ""}`;
+                return td;
+            } // }}}
+
+            function createTableName() { // {{{
+                let td = document.createElement("td");
+                td.style.textAlign = "left";
+                td.innerText = `${shift.name}`;
+                return td;
+            } // }}}
+        }); // }}}
     } // }}}
 
     /**
