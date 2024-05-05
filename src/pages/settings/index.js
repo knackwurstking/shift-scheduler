@@ -103,89 +103,24 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
      * @param {SettingsStore} settings
      */
     renderShiftsTable(settings) { // {{{
-        /** @param {Shift} shift */
-        const createTableActions = (shift) => { // {{{
-            const td = document.createElement("td");
-            td.style.textAlign = "right";
-
-            const container = new ui.wc.FlexGridRow();
-            container.style.justifyContent = "flex-end";
-            container.setAttribute("gap", "0.25rem");
-
-            // Edit Button
-            let item = new ui.wc.FlexGridItem();
-            item.setAttribute("flex", "0");
-            container.appendChild(item);
-
-            let btn = new ui.wc.IconButton();
-            btn.setAttribute("color", "primary");
-            btn.setAttribute("ghost", "");
-            btn.onclick = async () => {
-                // TODO: Open edit shift dialog for this table entry
-                const dialog = new EditShiftDialog(this.#store, this.#lang);
-                document.body.appendChild(dialog);
-                dialog.ui.open(true);
-                dialog.ui.events.on("close", () => {
-                    document.body.removeChild(dialog);
-                });
-            };
-            btn.appendChild(new ui.wc.svg.Edit2());
-            item.appendChild(btn);
-
-            // Delete Button
-            item = new ui.wc.FlexGridItem();
-            item.setAttribute("flex", "0");
-            container.appendChild(item);
-
-            btn = new ui.wc.IconButton();
-            btn.setAttribute("color", "destructive");
-            btn.setAttribute("ghost", "");
-            btn.onclick = async () => {
-                // TODO: Delete this shift from settings data, and rerender the table?
-            };
-            btn.appendChild(new ui.wc.svg.DeleteRecycleBin());
-            item.appendChild(btn);
-
-            td.appendChild(container);
-
-            return td;
-        }; // }}}
-
-        /** @param {Shift} shift */
-        const createTableShortName = (shift) => { // {{{
-            const td = document.createElement("td");
-            td.style.textAlign = "left";
-            td.style.color = shift.color || "inherit";
-            td.innerText = `${shift.visible ? shift.shortName : ""}`;
-            return td;
-        }; // }}}
-
-        /** @param {Shift} shift */
-        const createTableName = (shift) => { // {{{
-            let td = document.createElement("td");
-            td.style.textAlign = "left";
-            td.innerText = `${shift.name}`;
-            return td;
-        }; // }}}
-
         const tbody = this.shifts.tableBody;
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
 
         let dStart = null
-        settings.shifts.forEach((shift, index) => { // {{{
+        settings.shifts.forEach((shift, index) => {
             const tr = document.createElement("tr")
-            tr.appendChild(createTableName(shift))
-            tr.appendChild(createTableShortName(shift))
-            tr.appendChild(createTableActions(shift))
+            tr.appendChild(this.createTableName(shift))
+            tr.appendChild(this.createTableShortName(shift))
+            tr.appendChild(this.createTableActions(shift))
             tbody.appendChild(tr);
 
             // Draggable Setup
             ui.js.draggable.create(tr, {
-                onDragStart: async () => {
+                onDragStart: async () => { // {{{
                     dStart = index;
-                },
+                }, // }}}
 
-                onDragging: async () => {
+                onDragging: async () => { // {{{
                     if (dStart === null) return;
 
                     [...tbody.children].forEach((/**@type{HTMLElement}*/c, ci) => {
@@ -198,9 +133,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                         c.style.background = "var(--ui-primary-bgColor)";
                         c.style.color = "var(--ui-primary-color)";
                     });
-                },
+                }, // }}}
 
-                onDragEnd: async () => {
+                onDragEnd: async () => { // {{{
                     if (dStart === null) return;
 
                     if (dStart < index) { // dragged down
@@ -230,9 +165,83 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                     });
 
                     dStart = null;
-                },
+                }, // }}}
             });
-        }); // }}}
+        });
+    } // }}}
+
+    /** 
+     * @private
+     * @param {Shift} shift
+     */
+    createTableActions(shift) { // {{{
+        const td = document.createElement("td");
+        td.style.textAlign = "right";
+
+        const container = new ui.wc.FlexGridRow();
+        container.style.justifyContent = "flex-end";
+        container.setAttribute("gap", "0.25rem");
+
+        // Edit Button
+        let item = new ui.wc.FlexGridItem();
+        item.setAttribute("flex", "0");
+        container.appendChild(item);
+
+        let btn = new ui.wc.IconButton();
+        btn.setAttribute("color", "primary");
+        btn.setAttribute("ghost", "");
+        btn.onclick = async () => {
+            // TODO: Open edit shift dialog for this table entry
+            const dialog = new EditShiftDialog(this.#store, this.#lang);
+            document.body.appendChild(dialog);
+            dialog.ui.open(true);
+            dialog.ui.events.on("close", () => {
+                document.body.removeChild(dialog);
+            });
+        };
+        btn.appendChild(new ui.wc.svg.Edit2());
+        item.appendChild(btn);
+
+        // Delete Button
+        item = new ui.wc.FlexGridItem();
+        item.setAttribute("flex", "0");
+        container.appendChild(item);
+
+        btn = new ui.wc.IconButton();
+        btn.setAttribute("color", "destructive");
+        btn.setAttribute("ghost", "");
+        btn.onclick = async () => {
+            // TODO: Delete this shift from settings data, and rerender the table?
+        };
+        btn.appendChild(new ui.wc.svg.DeleteRecycleBin());
+        item.appendChild(btn);
+
+        td.appendChild(container);
+
+        return td;
+    } // }}}
+
+    /**
+     * @private
+     * @param {Shift} shift
+     */
+    createTableShortName(shift) { // {{{
+        const td = document.createElement("td");
+        td.style.textAlign = "left";
+        td.style.color = shift.color || "inherit";
+        td.innerText = `${shift.visible ? shift.shortName : ""}`;
+        return td;
+    } // }}}
+
+    /**
+     * @private
+     * @param {Shift} shift
+     */
+    createTableName(shift) { // {{{
+        let td = document.createElement("td");
+        td.style.textAlign = "left";
+        td.innerText = `${shift.name}`;
+        return td;
     } // }}}
 
     /**
