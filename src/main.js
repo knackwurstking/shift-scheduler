@@ -40,7 +40,7 @@ ui.define()
 
 /** @type {ThemeHandler} */
 const th = document.querySelector("#themeHandler")
-th.ui.addTheme("zinc", `/themes/zinc.css`);
+//th.ui.addTheme("zinc", `/themes/zinc.css`);
 
 // }}}
 
@@ -93,5 +93,5 @@ lang.ui.on("change", (langTypeElement) => {
 // }}}
 
 window.addEventListener("DOMContentLoaded", () => {
-    new App(store).run()
 });
+new App(store).run()

@@ -12,11 +12,11 @@ import ui from "ui";
  * @param {ThemeHandler} themeHandler
  */
 async function setTheme(theme, themeHandler) { // {{{
-    try {
-        themeHandler.ui.loadTheme(theme.name)
-    } catch {
-        themeHandler.ui.loadTheme("zinc") // default theme (original)
-    }
+    //try {
+    //    themeHandler.ui.loadTheme(theme.name)
+    //} catch {
+    //    themeHandler.ui.loadTheme("zinc") // default theme (original)
+    //}
 
     if (theme.mode === "system") {
         // Enable auto mode
