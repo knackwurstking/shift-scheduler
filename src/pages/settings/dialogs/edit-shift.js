@@ -20,11 +20,12 @@ export class EditShiftDialog extends ui.wc.Dialog {
      */
     constructor(store, lang) { // {{{
         super();
-        this.createActionButtons();
-        this.createContent();
 
         this.#store = store;
         this.#lang = lang
+
+        this.createActionButtons();
+        this.createContent();
 
         this.cleanup = []
     } // }}}
