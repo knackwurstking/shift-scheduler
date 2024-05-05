@@ -44,15 +44,15 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.#store = document.querySelector("ui-store")
         /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
-
-        this.misc = this.createMiscElements();
-        this.shifts = this.createShiftElements();
     } // }}}
 
     connectedCallback() { // {{{
         console.debug("[settings] connect...")
 
         setTimeout(() => {
+            this.misc = this.createMiscElements();
+            this.shifts = this.createShiftElements();
+
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
                 this.#store.ui.on("settings", this.onSettings.bind(this), true),
