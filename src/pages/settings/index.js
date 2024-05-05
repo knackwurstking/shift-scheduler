@@ -180,10 +180,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 let item = new ui.wc.FlexGridItem();
                 item.setAttribute("flex", "0");
                 container.appendChild(item);
+
                 let btn = new ui.wc.IconButton();
                 btn.setAttribute("color", "primary");
                 btn.setAttribute("ghost", "");
-                btn.appendChild(new ui.wc.svg.Edit2());
                 btn.onclick = async () => {
                     // TODO: Open edit shift dialog for this table entry
                     const dialog = new EditShiftDialog(this.#store, this.#lang);
@@ -193,19 +193,21 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                         document.body.removeChild(dialog);
                     });
                 };
+                btn.appendChild(new ui.wc.svg.Edit2());
                 item.appendChild(btn);
 
                 // Delete Button
                 item = new ui.wc.FlexGridItem();
                 item.setAttribute("flex", "0");
                 container.appendChild(item);
+
                 btn = new ui.wc.IconButton();
                 btn.setAttribute("color", "destructive");
                 btn.setAttribute("ghost", "");
-                btn.appendChild(new ui.wc.svg.DeleteRecycleBin());
                 btn.onclick = async () => {
                     // TODO: Delete this shift from settings data, and rerender the table?
                 };
+                btn.appendChild(new ui.wc.svg.DeleteRecycleBin());
                 item.appendChild(btn);
 
                 td.appendChild(container);
@@ -347,7 +349,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Select} */
         const themeSelect = this.querySelector("#miscThemeSelect");
         this.cleanup.push(
-            themeModeSelect.ui.events.on("change", (option) => {
+            themeSelect.ui.events.on("change", (option) => {
                 console.debug(`[settings] update theme name:`, option);
                 this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
             })
