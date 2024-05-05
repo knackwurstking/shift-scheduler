@@ -188,7 +188,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         container.appendChild(item);
 
         let btn = new ui.wc.IconButton();
-        btn.setAttribute("color", "primary");
         btn.setAttribute("ghost", "");
         btn.onclick = async () => {
             // TODO: Open edit shift dialog for this table entry
