@@ -80,7 +80,7 @@ template.innerHTML = `
 
     .item {
         position: absolute;
-        top: var(--app-bar-height);
+        top: var(--ui-app-bar-height);
         bottom: 0;
         min-width: 100%;
     }
@@ -92,17 +92,17 @@ template.innerHTML = `
 
     .week-days-row {
         height: var(--header-height);
-        padding: var(--border-width) 0;
+        padding: 1px 0;
     }
 
     .days-row {
         height: 100%;
-        padding: var(--border-width) 0;
+        padding: 1px 0;
     }
 
     ui-flex-grid-item {
-        border-radius: var(--radius);
-        border: var(--border-width) var(--border-style) hsl(var(--border));
+        border-radius: var(--ui-radius);
+        border: 1px solid var(--ui-borderColor);
     }
 
     :host([no-border]) ui-flex-grid-item {
@@ -113,7 +113,6 @@ template.innerHTML = `
         width: calc(100% / 7);
         overflow: hidden;
         height: 100%;
-        font-family: var(--font-family-heading);
         font-size: 115%;
         display: flex;
         align-items: center;
@@ -127,7 +126,7 @@ template.innerHTML = `
 
     .is-saturday,
     .is-sunday {
-        background-color: hsla(var(--fg), 0.05);
+        background-color: hsla(var(--ui-color-hsl), 0.05);
     }
 
     .day-item {
@@ -161,7 +160,7 @@ template.innerHTML = `
         font-size: 4vmin;
         font-size: clamp(0rem, 4vmin, 1.5rem);
         font-weight: bold;
-        color: var(--shift-color, var(--color-fg));
+        color: var(--shift-color, var(--ui-color));
         border-radius: inherit;
     }
 

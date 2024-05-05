@@ -6,12 +6,7 @@ t.innerHTML = `
         display: inline-block;
         overflow: hidden;
         width: 100%;
-        min-height: calc(1.6rem * 2 + var(--spacing) * 2);
-        padding: var(--spacing);
-        border: var(--border-width) var(--border-style) hsl(var(--border));
-        border-radius: var(--radius);
-        background-color: hsl(var(--card));
-        color: hsl(var(--card-fg));
+        min-height: calc(1.6rem * 2 + var(--ui-spacing) * 2);
     }
 
     span {
@@ -50,6 +45,7 @@ export class ShiftCard extends HTMLElement {
         super()
         this.attachShadow({ mode: "open" })
         this.shadowRoot.appendChild(t.content.cloneNode(true))
+        this.classList.add("is-card")
         this.#shortName = this.shadowRoot.querySelector(".short-name")
     }
 

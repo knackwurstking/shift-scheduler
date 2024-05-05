@@ -32,7 +32,7 @@ const contentHTML = `
     <hr
         style="
             position: absolute;
-            top: var(--spacing);
+            top: var(--ui-spacing);
             left: 0;
             width: 100%;
         "
@@ -47,8 +47,8 @@ const contentHTML = `
             transform: translateX(-50%);
             display: block;
             text-align: center;
-            background-color: hsl(var(--bg));
-            padding: 0 var(--spacing);
+            background-color: var(--ui-bgColor);
+            padding: 0 var(--ui-spacing);
             white-space: nowrap;
         "
     >...</ui-secondary>
@@ -207,8 +207,8 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                             return
                         }
 
-                        child.style.background = "hsl(var(--primary))"
-                        child.style.color = "hsl(var(--primary-fg))"
+                        child.style.background = "var(--ui-primary-bgColor)"
+                        child.style.color = "var(--ui-primary-color)"
                     });
                 },
 
@@ -260,7 +260,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         settings.shifts.forEach(shift => {
             const item = new ui.wc.FlexGridItem();
             const shiftCard = new ShiftCard();
-            shiftCard.setAttribute("color", !!shift.visible ? (shift.color || "hsl(var(--card-fg))") : "transparent");
+            shiftCard.setAttribute("color", !!shift.visible ? (shift.color || "inherit") : "transparent");
             shiftCard.innerHTML = `
                 <span slot="name">${shift.name}</span>
                 <span slot="short-name">${shift.shortName}</span>

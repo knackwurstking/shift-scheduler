@@ -195,8 +195,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                             return
                         }
 
-                        c.style.background = "hsl(var(--primary))";
-                        c.style.color = "hsl(var(--primary-fg))";
+                        c.style.background = "var(--ui-primary-bgColor)";
+                        c.style.color = "var(--ui-primary-color)";
                     });
                 },
 
@@ -274,11 +274,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
                 [y, m] = entry.id.split("/", 2).map((n) => parseInt(n, 10));
                 db.add(y, m, entry.data).catch(() => db.put(y, m, entry.data));
             }
-
-            // NOTE: Do a complete settings page reload, the easy way
-            //       to update everything :)
-            this.disconnectedCallback()
-            this.connectedCallback()
         } catch (err) {
             alert(`Import data failed!\nerror: ${err}`);
         }

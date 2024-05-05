@@ -1,7 +1,7 @@
 @import "../node_modules/ui/css/main.css";
 
 :root {
-    --edit-mode-height: 4.5em;
+    --edit-mode-height: 4.5rem;
 
 }
 
@@ -34,7 +34,7 @@ html {
 
 settings-page > ui-flex-grid {
     padding: 0.25rem;
-    padding-top: var(--app-bar-height);
+    padding-top: var(--ui-app-bar-height);
     overflow-y: auto;
     height: 100%;
 }
