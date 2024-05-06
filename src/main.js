@@ -3,7 +3,7 @@ import "./styles.css";
 import ui from "ui";
 import App from "./app";
 import { ShiftCard } from "./components";
-import { CalendarPage, EditRhythm, EditRhythmDialog, EditShiftDialog, SettingsPage, StartDate } from "./pages";
+import { CalendarPage, SettingsPage } from "./pages";
 import utils from "./utils";
 
 /**

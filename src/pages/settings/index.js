@@ -3,9 +3,8 @@ import { Share } from "@capacitor/share";
 import ui from "ui";
 import db from "../../db";
 import utils from "../../utils";
-import { EditShiftDialog } from "./dialogs";
-import { EditRhythm } from "./edit-rhythm";
-import { StartDate } from "./start-date";
+import * as dialogs from "./dialogs";
+import * as sections from "./sections";
 
 /**
  * @typedef {import("../../types").StoreEvents} StoreEvents
@@ -32,7 +31,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     /** @type {Lang} */
     #lang
 
-    static register = () => customElements.define("settings-page", SettingsPage)
+    static register = () => {
+        customElements.define("settings-page", SettingsPage);
+        dialogs.EditRhythmDialog.register();
+        dialogs.EditShiftDialog.register();
+        sections.StartDate.register();
+        sections.EditRhythm.register();
+    };
 
     constructor() { // {{{
         super();
@@ -191,7 +196,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         btn.setAttribute("ghost", "");
         btn.onclick = async () => {
             // TODO: Open edit shift dialog for this table entry
-            const dialog = new EditShiftDialog(this.#store, this.#lang);
+            const dialog = new dialogs.EditShiftDialog(this.#store, this.#lang);
             document.body.appendChild(dialog);
             dialog.ui.open(true);
             dialog.ui.events.on("close", () => {
@@ -376,10 +381,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @private */
     createShiftElements() { // {{{
-        const startDate = new StartDate(this.#store, this.#lang);
+        const startDate = new sections.StartDate(this.#store, this.#lang);
         this.querySelector("#shiftsStartDateSection").appendChild(startDate);
 
-        const editRhythm = new EditRhythm(this.#store, this.#lang);
+        const editRhythm = new sections.EditRhythm(this.#store, this.#lang);
         this.querySelector("#shiftsEditRhythmSection").appendChild(editRhythm);
 
         /** @type {Button} */

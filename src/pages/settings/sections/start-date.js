@@ -2,7 +2,7 @@
  * @typedef {import("ui/src/wc").Store} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("../../types").SettingsStore} SettingsStore
+ * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
 const innerHTML = `
