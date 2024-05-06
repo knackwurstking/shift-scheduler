@@ -1,4 +1,5 @@
 import ui from "ui"
+import { html } from "ui/src/js/utils"
 import { ShiftCard } from "../../../components"
 
 /**
@@ -12,8 +13,8 @@ import { ShiftCard } from "../../../components"
 
 // {{{ Content HTML
 
-const contentHTML = `
-<ui-flex-grid-item style="height: 100%;">
+const contentHTML = html`
+<ui-flex-grid-item class="no-scrollbar" style="height: 100%; overflow-y: scroll;">
     <table>
         <thead>
             <tr>
