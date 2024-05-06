@@ -103,6 +103,82 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     } // }}}
 
+    /** @private */
+    createMiscElements() { // {{{
+        /** @type {HTMLInputElement} */
+        const weekStartInput = this.querySelector("#miscWeekStartInput");
+        weekStartInput.onclick = (/**@type{MouseEvent & { currentTarget: HTMLInputElement }}*/ev) =>
+            this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
+
+        /** @type {Select} */
+        const themeModeSelect = this.querySelector("#miscThemeModeSelect");
+        this.cleanup.push(
+            themeModeSelect.ui.events.on("change", (option) => {
+                console.debug(`[settings] update theme mode:`, option);
+                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
+            })
+        );
+
+        /** @type {Select} */
+        const themeSelect = this.querySelector("#miscThemeSelect");
+        this.cleanup.push(
+            themeSelect.ui.events.on("change", (option) => {
+                console.debug(`[settings] update theme name:`, option);
+                this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
+            })
+        );
+
+        return {
+            title: this.querySelector("#miscTitle"),
+
+            /** @type {Label} */
+            weekStart: this.querySelector("#miscWeekStart"),
+            weekStartInput: weekStartInput,
+
+            theme: this.querySelector("#miscTheme"),
+            themeModeSelect,
+            themeSelect,
+        };
+    } // }}}
+
+    /** @private */
+    createShiftElements() { // {{{
+        this.querySelector("#shiftsStartDateSection").appendChild(
+            new sections.StartDate(this.#store, this.#lang)
+        );
+
+        this.querySelector("#shiftsEditRhythmSection").appendChild(
+            new sections.EditRhythm(this.#store, this.#lang)
+        );
+
+        this.querySelector("#shiftsTable").appendChild(
+            new sections.ShiftsTable(this.#store, this.#lang)
+        );
+
+        /** @type {Button} */
+        const backupImportButton = this.querySelector("#shiftsBackupImportButton");
+        backupImportButton.onclick = async () => {
+            this.importBackup()
+        };
+
+        /** @type {Button} */
+        const backupExportButton = this.querySelector("#shiftsBackupExportButton");
+        backupExportButton.onclick = async () => {
+            this.exportBackup()
+        };
+
+        return {
+            title: this.querySelector("#shiftsTitle"),
+
+            addButton: this.querySelector("#shiftsAddButton"),
+
+            /** @type {Label} */
+            backup: this.querySelector("#shiftsBackup"),
+            backupImportButton,
+            backupExportButton,
+        };
+    } // }}}
+
     /**
      * @private
      * @param {FileReader} r
@@ -194,82 +270,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
         return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
-    } // }}}
-
-    /** @private */
-    createMiscElements() { // {{{
-        /** @type {HTMLInputElement} */
-        const weekStartInput = this.querySelector("#miscWeekStartInput");
-        weekStartInput.onclick = (/**@type{MouseEvent & { currentTarget: HTMLInputElement }}*/ev) =>
-            this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
-
-        /** @type {Select} */
-        const themeModeSelect = this.querySelector("#miscThemeModeSelect");
-        this.cleanup.push(
-            themeModeSelect.ui.events.on("change", (option) => {
-                console.debug(`[settings] update theme mode:`, option);
-                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
-            })
-        );
-
-        /** @type {Select} */
-        const themeSelect = this.querySelector("#miscThemeSelect");
-        this.cleanup.push(
-            themeSelect.ui.events.on("change", (option) => {
-                console.debug(`[settings] update theme name:`, option);
-                this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
-            })
-        );
-
-        return {
-            title: this.querySelector("#miscTitle"),
-
-            /** @type {Label} */
-            weekStart: this.querySelector("#miscWeekStart"),
-            weekStartInput: weekStartInput,
-
-            theme: this.querySelector("#miscTheme"),
-            themeModeSelect,
-            themeSelect,
-        };
-    } // }}}
-
-    /** @private */
-    createShiftElements() { // {{{
-        this.querySelector("#shiftsStartDateSection").appendChild(
-            new sections.StartDate(this.#store, this.#lang)
-        );
-
-        this.querySelector("#shiftsEditRhythmSection").appendChild(
-            new sections.EditRhythm(this.#store, this.#lang)
-        );
-
-        this.querySelector("#shiftsTable").appendChild(
-            new sections.ShiftsTable(this.#store, this.#lang)
-        );
-
-        /** @type {Button} */
-        const backupImportButton = this.querySelector("#shiftsBackupImportButton");
-        backupImportButton.onclick = async () => {
-            this.importBackup()
-        };
-
-        /** @type {Button} */
-        const backupExportButton = this.querySelector("#shiftsBackupExportButton");
-        backupExportButton.onclick = async () => {
-            this.exportBackup()
-        };
-
-        return {
-            title: this.querySelector("#shiftsTitle"),
-
-            addButton: this.querySelector("#shiftsAddButton"),
-
-            /** @type {Label} */
-            backup: this.querySelector("#shiftsBackup"),
-            backupImportButton,
-            backupExportButton,
-        };
     } // }}}
 
     /** @private */
