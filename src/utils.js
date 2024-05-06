@@ -7,6 +7,9 @@ import ui from "ui";
  * @typedef {import("./types").Shift} Shift
  */
 
+export const html = String.raw;
+export const css = String.raw;
+
 /**
  * @param {ThemeStore} theme
  * @param {ThemeHandler} themeHandler

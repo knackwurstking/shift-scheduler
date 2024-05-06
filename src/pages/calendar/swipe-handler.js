@@ -88,7 +88,7 @@ export class SwipeHandler extends ui.js.events.Events {
             requestAnimationFrame(this.animationFrameHandler);
         }; // }}}
 
-        this.calendar.addEventListener("touchmove", this.onTouchMove);
+        this.calendar.addEventListener("touchmove", this.onTouchMove, { passive: true });
         this.calendar.addEventListener("touchend", this.onTouchEnd);
         this.calendar.addEventListener("touchcancel", this.onTouchCancel);
 

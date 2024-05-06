@@ -37,6 +37,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         dialogs.EditShiftDialog.register();
         sections.StartDate.register();
         sections.EditRhythm.register();
+        sections.ShiftsTable.register();
     };
 
     constructor() { // {{{
@@ -60,14 +61,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
-                this.#store.ui.on("settings", this.onSettings.bind(this), true),
                 this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
                 this.#store.ui.on("theme", this.onTheme.bind(this), true),
             );
         });
     } // }}}
 
-    disconnectedCallback() { // {{{ cleanup
+    disconnectedCallback() { // {{{
         console.debug("[settings] disconnect...")
 
         this.cleanup.forEach(fn => fn())
@@ -101,151 +101,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         if (utils.isAndroid()) this.androidExport(backup);
         else this.browserExport(backup);
 
-    } // }}}
-
-    /**
-     * @private
-     * @param {SettingsStore} settings
-     */
-    renderShiftsTable(settings) { // {{{
-        const tbody = this.shifts.tableBody;
-        while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild)
-
-        let dStart = null
-        settings.shifts.forEach((shift, index) => {
-            const tr = document.createElement("tr")
-            tr.appendChild(this.createTableName(shift))
-            tr.appendChild(this.createTableShortName(shift))
-            tr.appendChild(this.createTableActions(shift))
-            tbody.appendChild(tr);
-
-            // Draggable Setup
-            ui.js.draggable.create(tr, {
-                onDragStart: async () => { // {{{
-                    dStart = index;
-                }, // }}}
-
-                onDragging: async () => { // {{{
-                    if (dStart === null) return;
-
-                    [...tbody.children].forEach((/**@type{HTMLElement}*/c, ci) => {
-                        if (index !== ci) {
-                            c.style.background = "inherit";
-                            c.style.color = "inherit";
-                            return
-                        }
-
-                        c.style.background = "var(--ui-primary-bgColor)";
-                        c.style.color = "var(--ui-primary-color)";
-                    });
-                }, // }}}
-
-                onDragEnd: async () => { // {{{
-                    if (dStart === null) return;
-
-                    if (dStart < index) { // dragged down
-                        settings.shifts = [
-                            ...settings.shifts.slice(0, dStart),
-                            ...settings.shifts.slice(dStart + 1, index + 1),
-                            settings.shifts[dStart],
-                            ...settings.shifts.slice(index + 1),
-                        ];
-
-                        this.#store.ui.set("settings", settings);
-                    } else if (dStart > index) { // dragged up 
-                        settings.shifts = [
-                            ...settings.shifts.slice(0, index),
-                            settings.shifts[dStart],
-                            ...settings.shifts.slice(index, dStart),
-                            ...settings.shifts.slice(dStart + 1),
-                        ];
-
-                        this.#store.ui.set("settings", settings);
-                    }
-
-                    [...tbody.children].forEach((/**@type{HTMLElement}*/c) => {
-                        c.style.background = "inherit";
-                        c.style.color = "inherit";
-                        return
-                    });
-
-                    dStart = null;
-                }, // }}}
-            });
-        });
-    } // }}}
-
-    /** 
-     * @private
-     * @param {Shift} shift
-     */
-    createTableActions(shift) { // {{{
-        const td = document.createElement("td");
-        td.style.textAlign = "right";
-
-        const container = new ui.wc.FlexGridRow();
-        container.style.justifyContent = "flex-end";
-        container.setAttribute("gap", "0.25rem");
-
-        // Edit Button
-        let item = new ui.wc.FlexGridItem();
-        item.setAttribute("flex", "0");
-        container.appendChild(item);
-
-        let btn = new ui.wc.IconButton();
-        btn.setAttribute("ghost", "");
-        btn.onclick = async () => {
-            // TODO: Open edit shift dialog for this table entry
-            const dialog = new dialogs.EditShiftDialog(this.#store, this.#lang);
-            document.body.appendChild(dialog);
-            dialog.ui.open(true);
-            dialog.ui.events.on("close", () => {
-                document.body.removeChild(dialog);
-            });
-        };
-        btn.appendChild(new ui.wc.svg.Edit2());
-        item.appendChild(btn);
-
-        // Delete Button
-        item = new ui.wc.FlexGridItem();
-        item.setAttribute("flex", "0");
-        container.appendChild(item);
-
-        btn = new ui.wc.IconButton();
-        btn.setAttribute("color", "destructive");
-        btn.setAttribute("ghost", "");
-        btn.onclick = async () => {
-            // TODO: Delete this shift from settings data, and rerender the table?
-        };
-        btn.appendChild(new ui.wc.svg.DeleteRecycleBin());
-        item.appendChild(btn);
-
-        td.appendChild(container);
-
-        return td;
-    } // }}}
-
-    /**
-     * @private
-     * @param {Shift} shift
-     */
-    createTableShortName(shift) { // {{{
-        const td = document.createElement("td");
-        td.style.textAlign = "left";
-        td.style.color = shift.color || "inherit";
-        td.innerText = `${shift.visible ? shift.shortName : ""}`;
-        return td;
-    } // }}}
-
-    /**
-     * @private
-     * @param {Shift} shift
-     */
-    createTableName(shift) { // {{{
-        let td = document.createElement("td");
-        td.style.textAlign = "left";
-        td.innerText = `${shift.name}`;
-        return td;
     } // }}}
 
     /**
@@ -381,11 +236,17 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @private */
     createShiftElements() { // {{{
-        const startDate = new sections.StartDate(this.#store, this.#lang);
-        this.querySelector("#shiftsStartDateSection").appendChild(startDate);
+        this.querySelector("#shiftsStartDateSection").appendChild(
+            new sections.StartDate(this.#store, this.#lang)
+        );
 
-        const editRhythm = new sections.EditRhythm(this.#store, this.#lang);
-        this.querySelector("#shiftsEditRhythmSection").appendChild(editRhythm);
+        this.querySelector("#shiftsEditRhythmSection").appendChild(
+            new sections.EditRhythm(this.#store, this.#lang)
+        );
+
+        this.querySelector("#shiftsTable").appendChild(
+            new sections.ShiftsTable(this.#store, this.#lang)
+        );
 
         /** @type {Button} */
         const backupImportButton = this.querySelector("#shiftsBackupImportButton");
@@ -402,16 +263,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         return {
             title: this.querySelector("#shiftsTitle"),
 
-            /** @type {HTMLTableElement} */
-            tableHeaderName: this.querySelector("#shiftsTableHeaderName"),
-            tableHeaderShortName: this.querySelector(
-                "#shiftsTableHeaderShortName",
-            ),
-            tableBody: this.querySelector("#shiftsTableBody"),
             addButton: this.querySelector("#shiftsAddButton"),
-
-            startDate,
-            editRhythm,
 
             /** @type {Label} */
             backup: this.querySelector("#shiftsBackup"),
@@ -453,23 +305,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.shifts.title.innerHTML = this.#lang.ui.get(
             "settings", "shiftsTitle",
         );
-        this.shifts.tableHeaderName.innerHTML = this.#lang.ui.get(
-            "settings", "shiftsTableHeaderName",
-        );
-        this.shifts.tableHeaderShortName.innerHTML = this.#lang.ui.get(
-            "settings", "shiftsTableHeaderShortName",
-        );
         this.shifts.addButton.innerHTML = this.#lang.ui.get(
             "settings", "shiftsAddButton",
         );
-    } // }}}
-
-    /**
-     * @private
-     * @param {SettingsStore} settings
-     */
-    async onSettings(settings) { // {{{
-        this.renderShiftsTable(settings)
     } // }}}
 
     /**

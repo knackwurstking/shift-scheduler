@@ -23,13 +23,7 @@ ui.defineSVG()
 ui.define()
     .then(() => {
         ShiftCard.register()
-
         CalendarPage.register()
-
-        StartDate.register()
-        EditRhythmDialog.register()
-        EditRhythm.register()
-        EditShiftDialog.register()
         SettingsPage.register()
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
