@@ -146,8 +146,7 @@ export class ShiftsTable extends HTMLTableElement {
         let btn = new ui.wc.IconButton();
         btn.setAttribute("ghost", "");
         btn.onclick = async () => {
-            // TODO: Open edit shift dialog for this table entry
-            const dialog = new dialogs.EditShiftDialog(this.#store, this.#lang);
+            const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
             document.body.appendChild(dialog);
             dialog.ui.open(true);
             dialog.ui.events.on("close", () => {

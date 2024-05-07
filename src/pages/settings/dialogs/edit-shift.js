@@ -4,6 +4,8 @@ import ui from "ui";
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
+ *
+ * @typedef {import("../../../types").Shift} Shift
  */
 
 export class EditShiftDialog extends ui.wc.Dialog {
@@ -15,17 +17,20 @@ export class EditShiftDialog extends ui.wc.Dialog {
     static register = () => customElements.define("edit-shift-dialog", EditShiftDialog)
 
     /**
+     * @param {Shift} shift
      * @param {Store} store
      * @param {Lang} lang
      */
-    constructor(store, lang) { // {{{
+    constructor(shift, store, lang) { // {{{
         super();
 
         this.#store = store;
         this.#lang = lang
+        /** @type {Shift} */
+        this.shift = shift
 
-        this.createActionButtons();
         this.createContent();
+        this.createActionButtons();
 
         this.cleanup = []
     } // }}}
@@ -48,8 +53,8 @@ export class EditShiftDialog extends ui.wc.Dialog {
     createContent() { // {{{
         const content = new ui.wc.FlexGrid();
         content.setAttribute("gap", "0.5rem");
-        this.createContentName(content)
-        this.createContentShortName(content)
+        this.createContentSectionName(content)
+        this.createContentSectionShortName(content)
         this.appendChild(content);
     } // }}}
 
@@ -57,9 +62,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @private
      * @param {FlexGrid} container 
      */
-    createContentName(container) { // {{{
+    createContentSectionName(container) { // {{{
         // Name
         let item = new ui.wc.FlexGridItem();
+        // TODO: Add initial value from this.shift
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
                 <input type="text">
@@ -72,8 +78,9 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @private
      * @param {FlexGrid} container 
      */
-    createContentShortName(container) { // {{{
+    createContentSectionShortName(container) { // {{{
         const item = new ui.wc.FlexGridItem();
+        // TODO: Add initial value from `this.shift`
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
                 <input type="text">
@@ -95,5 +102,5 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         this.querySelector("ui-flex-grid-item:nth-child(2) ui-secondary").innerHTML =
             this.#lang.ui.get("settings", "dialogEditShiftShortName");
-    } // }}}
-}
+    }
+} // }}}
