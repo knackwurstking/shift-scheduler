@@ -1,12 +1,15 @@
-const t = document.createElement("template")
+import ui from "ui";
+import { html } from "../../utils";
 
-t.innerHTML = `
+const innerHTML = html`
 <style>
     :host {
+        position: relative;
         display: inline-block;
         overflow: hidden;
         width: 100%;
         min-height: calc(1.6rem * 2 + var(--ui-spacing) * 2);
+        cursor: pointer;
     }
 
     span {
@@ -27,6 +30,8 @@ t.innerHTML = `
 <span class="short-name">
     <slot name="short-name"></slot>
 </span>
+
+<slot></slot>
 `
 
 /**
@@ -44,9 +49,10 @@ export class ShiftCard extends HTMLElement {
     constructor() {
         super()
         this.attachShadow({ mode: "open" })
-        this.shadowRoot.appendChild(t.content.cloneNode(true))
+        this.shadowRoot.innerHTML = innerHTML
         this.classList.add("is-card")
         this.#shortName = this.shadowRoot.querySelector(".short-name")
+        ui.js.ripple.create(this)
     }
 
     /**
