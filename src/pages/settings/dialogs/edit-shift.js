@@ -71,12 +71,14 @@ export class EditShiftDialog extends ui.wc.Dialog {
     createContentSectionName(container) { // {{{
         // Name
         let item = new ui.wc.FlexGridItem();
-        // TODO: Add initial value from this.shift
+
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
-                <input type="text">
+                <input type="text" value="${this.shift.name}">
             `;
+
         // TODO: Adding the input on change handler
+
         container.appendChild(item);
     } // }}}
 
@@ -86,12 +88,14 @@ export class EditShiftDialog extends ui.wc.Dialog {
      */
     createContentSectionShortName(container) { // {{{
         const item = new ui.wc.FlexGridItem();
-        // TODO: Add initial value from `this.shift`
+
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
-                <input type="text">
+                <input style="color: ${this.shift.color || 'inherit'};" type="text" value="${this.shift.shortName}">
             `;
+
         // TODO: Adding the input on change handler
+
         container.appendChild(item);
     } // }}}
 
