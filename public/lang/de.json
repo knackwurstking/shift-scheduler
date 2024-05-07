@@ -23,13 +23,16 @@
         "shiftsEditRhythmPrimary": "Rhythmus",
         "shiftsEditRhythmButton": "Bearbeiten",
         "shiftsEditRhythmDialogTitle": "Schicht Rhythmus",
-        "shiftsEditRhythmDialogSubmitButton": "OK",
-        "shiftsEditRhythmDialogPickerSecondary": "Klicken , um eine neue Schicht hinzuzufügen",
+        "shiftsEditRhythmDialogPicker": "Klicken , um eine neue Schicht hinzuzufügen",
         "shiftsBackupPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export",
         "dialogEditShiftTitle": "Schicht Bearbeiten",
         "dialogEditShiftName": "Schicht Name (Bsp.: Nacht)",
         "dialogEditShiftShortName": "Kürzel (Bsp.: N)"
+    },
+    "general": {
+        "submitButton": "OK",
+        "cancelButton": "Abbrechen"
     }
 }

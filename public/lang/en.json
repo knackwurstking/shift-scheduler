@@ -23,13 +23,16 @@
         "shiftsEditRhythmPrimary": "Rhythm",
         "shiftsEditRhythmButton": "Edit",
         "shiftsEditRhythmDialogTitle": "Shift Rhythm",
-        "shiftsEditRhythmDialogSubmitButton": "OK",
-        "shiftsEditRhythmDialogPickerSecondary": "Click to add a new shift",
+        "shiftsEditRhythmDialogPicker": "Click to add a new shift",
         "shiftsBackupPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export",
         "dialogEditShiftTitle": "Edit Shift",
         "dialogEditShiftName": "Shift Name (ex.: Night)",
         "dialogEditShiftShortName": "Short (ex.: N)"
+    },
+    "general": {
+        "submitButton": "OK",
+        "cancelButton": "Cancel"
     }
 }

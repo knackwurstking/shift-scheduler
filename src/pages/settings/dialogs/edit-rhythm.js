@@ -40,7 +40,6 @@ const contentHTML = html`
     />
 
     <ui-secondary
-        id="shiftsEditRhythmDialogPickerSecondary"
         style="
             position: absolute;
             top: 0;
@@ -311,16 +310,20 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     /** @private */
     async onLang() { // {{{
         this.ui.title = this.#lang.ui.get("settings", "shiftsEditRhythmDialogTitle");
-        this.#submitButton.innerText =
-            this.#lang.ui.get("settings", "shiftsEditRhythmDialogSubmitButton");
 
+        // Name
         this.#content.querySelector("thead th:nth-child(1)").innerHTML =
             this.#lang.ui.get("settings", "shiftsTableHeaderName");
+
+        // Short
         this.#content.querySelector("thead th:nth-child(2)").innerHTML =
             this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
 
-        this.#content.querySelector("#shiftsEditRhythmDialogPickerSecondary").innerHTML =
-            this.#lang.ui.get("settings", "shiftsEditRhythmDialogPickerSecondary");
+        // Dialog Picker Line
+        this.#content.querySelector("ui-secondary").innerHTML =
+            this.#lang.ui.get("settings", "shiftsEditRhythmDialogPicker");
+
+        this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
     } // }}}
 
     /**
