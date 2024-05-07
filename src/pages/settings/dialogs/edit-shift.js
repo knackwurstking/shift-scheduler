@@ -91,7 +91,11 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
-                <input style="color: ${this.shift.color || 'inherit'};" type="text" value="${this.shift.shortName}">
+                <input
+                    style="color: ${this.shift.color || 'inherit'};"
+                    type="text"
+                    value="${this.shift.shortName}"
+                >
             `;
 
         // TODO: Adding the input on change handler
