@@ -97,21 +97,33 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /** @private */
     createActionButtons() { // {{{
+        // Cancel Button
         let item = new ui.wc.FlexGridItem()
         item.slot = "actions"
+
         this.cancelButton = new ui.wc.Button()
         this.cancelButton.setAttribute("color", "secondary")
         this.cancelButton.setAttribute("variant", "full")
         this.cancelButton.innerText = "Cancel"
+        this.cancelButton.onclick = () => {
+            // TODO: Close dialog without saving
+        }
+
         item.appendChild(this.cancelButton)
         this.appendChild(item)
 
+        // Submit Button
         item = new ui.wc.FlexGridItem()
         item.slot = "actions"
+
         this.submitButton = new ui.wc.Button()
         this.submitButton.setAttribute("color", "primary")
         this.submitButton.setAttribute("variant", "full")
         this.submitButton.innerText = "Submit"
+        this.submitButton.onclick = () => {
+            // TODO: Save and close dialog
+        }
+
         item.appendChild(this.submitButton)
         this.appendChild(item)
     } // }}}
