@@ -10,6 +10,7 @@ const innerHTML = html`
         width: 100%;
         min-height: calc(1.6rem * 2 + var(--ui-spacing) * 2);
         cursor: pointer;
+        user-select: none;
     }
 
     span {
