@@ -11,11 +11,34 @@ import ui from "ui";
 
 export class EditShiftDialog extends ui.wc.Dialog {
     /** @type {Store} */
-    #store
+    #store;
     /** @type {Lang} */
-    #lang
+    #lang;
 
-    static register = () => customElements.define("edit-shift-dialog", EditShiftDialog)
+    /** @type {Button} */
+    #cancelButton;
+    #onCancel = () => this.ui.close();
+
+    /** @type {Button} */
+    #submitButton;
+    #onSubmit = () => {
+        this.#store.ui.update("settings", (settings) => {
+            return {
+                ...settings,
+                shifts: settings.shifts.map(shift => {
+                    if (shift.id === this.shift.id) {
+                        return this.shift;
+                    }
+
+                    return shift;
+                }),
+            };
+        });
+
+        this.ui.close();
+    };
+
+    static register = () => customElements.define("edit-shift-dialog", EditShiftDialog);
 
     /**
      * @param {Shift} shift
@@ -28,15 +51,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.#store = store;
         this.#lang = lang
         /** @type {Shift} */
-        this.shift = shift
-        this.modShift = {
-            ...shift
-        }
-
-        /** @type {Button} */
-        this.cancelButton;
-        /** @type {Button} */
-        this.submitButton;
+        this.shift = { ...shift }
 
         this.createContent();
         this.createActionButtons();
@@ -77,11 +92,11 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
-                <input type="text" value="${this.modShift.name}">
+                <input type="text" value="${this.shift.name}">
             `;
 
         item.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
-            this.modShift.name = ev.currentTarget.value;
+            this.shift.name = ev.currentTarget.value;
         };
 
         container.appendChild(item);
@@ -97,14 +112,14 @@ export class EditShiftDialog extends ui.wc.Dialog {
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
                 <input
-                    style="color: ${this.modShift.color || 'inherit'};"
+                    style="color: ${this.shift.color || 'inherit'};"
                     type="text"
-                    value="${this.modShift.shortName}"
+                    value="${this.shift.shortName}"
                 >
             `;
 
         item.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
-            this.modShift.shortName = ev.currentTarget.value;
+            this.shift.shortName = ev.currentTarget.value;
         };
 
         container.appendChild(item);
@@ -115,21 +130,19 @@ export class EditShiftDialog extends ui.wc.Dialog {
         // Cancel Button
         let item = new ui.wc.FlexGridItem()
         item.slot = "actions"
+        item.setAttribute("flex", "0")
         item.innerHTML = `<ui-button color="secondary" variant="full"></ui-button>`
-        this.cancelButton = item.querySelector("ui-button")
-        this.cancelButton.onclick = () => {
-            // TODO: Close dialog without saving
-        }
+        this.#cancelButton = item.querySelector("ui-button")
+        this.#cancelButton.onclick = this.#onCancel;
         this.appendChild(item)
 
         // Submit Button
         item = new ui.wc.FlexGridItem()
         item.slot = "actions"
+        item.setAttribute("flex", "0")
         item.innerHTML = `<ui-button color="primary" variant="full"></ui-button>`
-        this.submitButton = item.querySelector("ui-button")
-        this.submitButton.onclick = () => {
-            // TODO: Save and close dialog
-        }
+        this.#submitButton = item.querySelector("ui-button")
+        this.#submitButton.onclick = this.#onSubmit;
         this.appendChild(item)
     } // }}}
 
@@ -145,7 +158,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.querySelector("ui-flex-grid-item:nth-child(2) ui-secondary").innerHTML =
             this.#lang.ui.get("settings", "dialogEditShiftShortName");
 
-        this.submitButton.innerText = this.#lang.ui.get("general", "submitButton")
-        this.cancelButton.innerText = this.#lang.ui.get("general", "cancelButton")
-    }
-} // }}}
+        this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton")
+        this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton")
+    } // }}}
+}

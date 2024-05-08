@@ -23,8 +23,6 @@ export class EditRhythm extends HTMLElement {
     #label;
     /** @type {Button} */
     #button
-    /** @type {EditRhythmDialog} */
-    #dialog
 
     static register = () => customElements.define("settings-edit-rhythm", EditRhythm)
 
@@ -44,7 +42,6 @@ export class EditRhythm extends HTMLElement {
 
         this.#label = this.querySelector("ui-label");
         this.createButton()
-        this.createDialog()
     } // }}}
 
     connectedCallback() { // {{{
@@ -64,17 +61,13 @@ export class EditRhythm extends HTMLElement {
     createButton() { // {{{
         this.#button = this.querySelector("ui-button");
         this.#button.onclick = async () => {
-            document.body.appendChild(this.#dialog);
-            this.#dialog.ui.open(true);
+            const dialog = new EditRhythmDialog(this.#store, this.#lang)
+            dialog.ui.events.on("close", async () => {
+                document.body.removeChild(dialog)
+            })
+            document.body.appendChild(dialog);
+            dialog.ui.open(true);
         };
-    } // }}}
-
-    /** @private */
-    createDialog() { // {{{
-        this.#dialog = new EditRhythmDialog(this.#store, this.#lang)
-        this.#dialog.ui.events.on("close", async () => {
-            document.body.removeChild(this.#dialog)
-        })
     } // }}}
 
     /** @private */

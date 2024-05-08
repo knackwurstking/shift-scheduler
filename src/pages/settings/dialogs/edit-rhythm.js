@@ -79,12 +79,17 @@ const contentHTML = html`
 
 export class EditRhythmDialog extends ui.wc.Dialog {
     /** @type {Store} */
-    #store
+    #store;
     /** @type {Lang} */
-    #lang
+    #lang;
 
     /** @type {Button} */
-    #submitButton
+    #cancelButton;
+    /** @type {() => void|Promise<void>} */
+    #onCancel = () => this.ui.close();
+
+    /** @type {Button} */
+    #submitButton;
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
         this.#store.ui.update("settings", (settings) => {
@@ -94,15 +99,15 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             };
         });
         this.ui.close();
-    }
+    };
 
     /** @type {FlexGrid} */
-    #content
+    #content;
 
     /** @type {number[]} */
-    #rhythm
+    #rhythm;
 
-    static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog)
+    static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog);
 
     /**
      * @param {Store} store
@@ -155,58 +160,38 @@ export class EditRhythmDialog extends ui.wc.Dialog {
             }
 
             // Create a table entry for this shift
-            const tr = document.createElement("tr")
-            {
-                // Table Data Name
-                let td = document.createElement("td")
-                td.style.textAlign = "left"
-                td.innerText = shift.name
-                tr.appendChild(td)
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td style="text-align: left;">${shift.name}</td>
+                <td
+                    style="text-align: left; color: ${shift.color || 'inherit'};"
+                >${!!shift.visible ? shift.shortName : ""}</td>
+                <td style="text-align: right;">
+                    <ui-flex-grid-row style="justify-content: flex-end;" gap="0.25rem">
+                        <ui-flex-grid-item flex="0">
+                            <ui-icon-button color="destructive" ghost>
+                                <ui-svg-delete-recycle-bin></ui-svg-delete-recycle-bin>
+                            </ui-icon-button>
+                        </ui-flex-grid-item>
+                    </ui-flex-grid-row>
+                </td>
+            `;
 
-                // Table Data Short Name
-                td = document.createElement("td")
-                td.style.textAlign = "left"
-                td.style.color = shift.color || "inherit"
-                td.innerText = !!shift.visible ? shift.shortName : ""
-                tr.appendChild(td)
-
-                // Table Data Actions
-                td = document.createElement("td")
-                td.style.textAlign = "right"
-                {
-                    const container = new ui.wc.FlexGridRow()
-                    container.style.justifyContent = "flex-end";
-                    container.setAttribute("gap", "0.25rem");
-                    { // Delete Button
-                        let item = new ui.wc.FlexGridItem();
-                        item.setAttribute("flex", "0");
-
-                        const btn = new ui.wc.IconButton()
-                        btn.setAttribute("color", "destructive")
-                        btn.setAttribute("ghost", "")
-                        btn.appendChild(new ui.wc.svg.DeleteRecycleBin())
-                        btn.onclick = async () => {
-                            tbody.removeChild(tr);
-                            this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
-                            this.renderTable(settings)
-                        };
-                        item.appendChild(btn)
-
-                        container.appendChild(item);
-                    }
-                    td.appendChild(container)
-                }
-                tr.appendChild(td)
-            }
+            // @ts-ignore
+            tr.querySelector("ui-icon-button:nth-child(1)").onclick = async () => {
+                tbody.removeChild(tr);
+                this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
+                this.renderTable(settings)
+            };
 
             tbody.appendChild(tr)
 
             ui.js.draggable.create(tr, {
-                onDragStart: async () => {
+                onDragStart: async () => { // {{{
                     draggedIndex = index
-                },
+                }, // }}}
 
-                onDragging: async () => {
+                onDragging: async () => { // {{{
                     if (draggedIndex === null) return;
 
                     [...tbody.children].forEach((/**@type{HTMLElement}*/child, ci) => {
@@ -219,9 +204,9 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                         child.style.background = "var(--ui-primary-bgColor)"
                         child.style.color = "var(--ui-primary-color)"
                     });
-                },
+                }, // }}}
 
-                onDragEnd: async () => {
+                onDragEnd: async () => { // {{{
                     if (draggedIndex === null) return
 
                     if (draggedIndex < index) { // dragged down
@@ -251,7 +236,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
                     });
 
                     draggedIndex = null
-                },
+                }, // }}}
             });
         });
     } // }}}
@@ -268,34 +253,46 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
         settings.shifts.forEach(shift => {
             const item = new ui.wc.FlexGridItem();
-            const shiftCard = new ShiftCard();
-            shiftCard.setAttribute("color", !!shift.visible ? (shift.color || "inherit") : "transparent");
-            shiftCard.innerHTML = `
-                <span slot="name">${shift.name}</span>
-                <span slot="short-name">${shift.shortName}</span>
+            item.innerHTML = `
+                <shift-card color="${!!shift.visible ? (shift.color || 'inherit') : 'transparent'}">
+                    <span slot="name">${shift.name}</span>
+                    <span slot="short-name">${shift.shortName}</span>
+                </shift-card>
             `;
-            shiftCard.onclick = () => {
+
+            // @ts-ignore
+            item.querySelector("shift-card").onclick = () => {
                 this.#rhythm.push(shift.id);
                 this.renderTable(settings)
             };
-            item.appendChild(shiftCard);
+
             picker.appendChild(item);
         });
     } // }}}
 
     /** @private */
     createActionButtons() { // {{{
-        // Add Submit button to the "actions" slot
-        this.#submitButton = new ui.wc.Button()
-        this.#submitButton.slot = "actions"
-        this.#submitButton.setAttribute("variant", "full")
-        this.#submitButton.setAttribute("color", "primary")
-        this.#submitButton.innerText = "" // set text in "lang" event handler
+        // Cancel
+        let item = new ui.wc.FlexGridItem();
+        item.slot = "actions"
+        item.setAttribute("flex", "0")
+        item.innerHTML = `
+            <ui-button variant="full" color="secondary"></ui-button>
+        `;
+        this.#cancelButton = item.querySelector("ui-button");
+        this.#cancelButton.onclick = this.#onCancel;
+        this.appendChild(item)
 
-        this.#submitButton.addEventListener("click", this.#onSubmit)
-        this.cleanup.push(() => this.#submitButton.onclick = this.#onSubmit)
-
-        this.appendChild(this.#submitButton)
+        // Submit
+        item = new ui.wc.FlexGridItem();
+        item.slot = "actions"
+        item.setAttribute("flex", "0")
+        item.innerHTML = `
+            <ui-button variant="full" color="primary"></ui-button>
+        `;
+        this.#submitButton = item.querySelector("ui-button");
+        this.#submitButton.onclick = this.#onSubmit;
+        this.appendChild(item)
     } // }}}
 
     /** @private */
@@ -323,6 +320,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.#content.querySelector("ui-secondary").innerHTML =
             this.#lang.ui.get("settings", "shiftsEditRhythmDialogPicker");
 
+        this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
     } // }}}
 
@@ -331,7 +329,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
      * @param {SettingsStore} settings
      */
     async onSettings(settings) { // {{{
-        this.#rhythm = settings.rhythm
+        this.#rhythm = [...settings.rhythm]
         this.renderTable(settings)
         this.renderShiftsPicker(settings)
     } // }}}
