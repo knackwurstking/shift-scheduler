@@ -3,6 +3,7 @@ import { html } from "../../../utils";
 import * as dialogs from "../dialogs";
 
 /**
+ * @typedef {import("ui/src/wc").IconButton} IconButton
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  *
@@ -133,19 +134,22 @@ export class ShiftsTable extends HTMLTableElement {
     createTableActions(shift) { // {{{
         const td = document.createElement("td");
         td.style.textAlign = "right";
+        td.innerHTML = html`
+            <ui-flex-grid-row style="justify-content: flex-end;" gap="0.25rem">
+                <ui-flex-grid-item flex="0">
+                    <ui-icon-button ghost><ui-svg-edit2></ui-svg-edit2></ui-icon-button>
+                </ui-flex-grid-item>
 
-        const container = new ui.wc.FlexGridRow();
-        container.style.justifyContent = "flex-end";
-        container.setAttribute("gap", "0.25rem");
+                <ui-flex-grid-item flex="0">
+                    <ui-icon-button color="destructive" ghost><ui-svg-delete-recycle-bin></ui-svg-edit2></ui-icon-button>
+                </ui-flex-grid-item>
+            </ui-flex-grid-row>
+        `;
 
-        // Edit Button
-        let item = new ui.wc.FlexGridItem();
-        item.setAttribute("flex", "0");
-        container.appendChild(item);
-
-        let btn = new ui.wc.IconButton();
-        btn.setAttribute("ghost", "");
-        btn.onclick = async () => {
+        /** @type {IconButton[]} */
+        // @ts-ignore
+        const [editButton, deleteButton] = [...td.querySelectorAll("ui-icon-button")]
+        editButton.onclick = async () => {
             const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
             document.body.appendChild(dialog);
             dialog.ui.open(true);
@@ -153,24 +157,10 @@ export class ShiftsTable extends HTMLTableElement {
                 document.body.removeChild(dialog);
             });
         };
-        btn.appendChild(new ui.wc.svg.Edit2());
-        item.appendChild(btn);
 
-        // Delete Button
-        item = new ui.wc.FlexGridItem();
-        item.setAttribute("flex", "0");
-        container.appendChild(item);
-
-        btn = new ui.wc.IconButton();
-        btn.setAttribute("color", "destructive");
-        btn.setAttribute("ghost", "");
-        btn.onclick = async () => {
+        deleteButton.onclick = async () => {
             // TODO: Delete this shift from settings data, and rerender the table?
         };
-        btn.appendChild(new ui.wc.svg.DeleteRecycleBin());
-        item.appendChild(btn);
-
-        td.appendChild(container);
 
         return td;
     } // }}}
