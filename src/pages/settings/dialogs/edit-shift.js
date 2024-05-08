@@ -29,6 +29,9 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.#lang = lang
         /** @type {Shift} */
         this.shift = shift
+        this.modShift = {
+            ...shift
+        }
 
         /** @type {Button} */
         this.cancelButton;
@@ -74,10 +77,12 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
-                <input type="text" value="${this.shift.name}">
+                <input type="text" value="${this.modShift.name}">
             `;
 
-        // TODO: Adding the input on change handler
+        item.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
+            this.modShift.name = ev.currentTarget.value;
+        };
 
         container.appendChild(item);
     } // }}}
@@ -92,13 +97,15 @@ export class EditShiftDialog extends ui.wc.Dialog {
         item.innerHTML = `
                 <ui-secondary></ui-secondary>
                 <input
-                    style="color: ${this.shift.color || 'inherit'};"
+                    style="color: ${this.modShift.color || 'inherit'};"
                     type="text"
-                    value="${this.shift.shortName}"
+                    value="${this.modShift.shortName}"
                 >
             `;
 
-        // TODO: Adding the input on change handler
+        item.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
+            this.modShift.shortName = ev.currentTarget.value;
+        };
 
         container.appendChild(item);
     } // }}}
@@ -108,31 +115,21 @@ export class EditShiftDialog extends ui.wc.Dialog {
         // Cancel Button
         let item = new ui.wc.FlexGridItem()
         item.slot = "actions"
-
-        this.cancelButton = new ui.wc.Button()
-        this.cancelButton.setAttribute("color", "secondary")
-        this.cancelButton.setAttribute("variant", "full")
-        this.cancelButton.innerText = "Cancel"
+        item.innerHTML = `<ui-button color="secondary" variant="full"></ui-button>`
+        this.cancelButton = item.querySelector("ui-button")
         this.cancelButton.onclick = () => {
             // TODO: Close dialog without saving
         }
-
-        item.appendChild(this.cancelButton)
         this.appendChild(item)
 
         // Submit Button
         item = new ui.wc.FlexGridItem()
         item.slot = "actions"
-
-        this.submitButton = new ui.wc.Button()
-        this.submitButton.setAttribute("color", "primary")
-        this.submitButton.setAttribute("variant", "full")
-        this.submitButton.innerText = "Submit"
+        item.innerHTML = `<ui-button color="primary" variant="full"></ui-button>`
+        this.submitButton = item.querySelector("ui-button")
         this.submitButton.onclick = () => {
             // TODO: Save and close dialog
         }
-
-        item.appendChild(this.submitButton)
         this.appendChild(item)
     } // }}}
 
