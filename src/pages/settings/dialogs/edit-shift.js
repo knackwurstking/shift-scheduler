@@ -79,6 +79,9 @@ export class EditShiftDialog extends ui.wc.Dialog {
         content.setAttribute("gap", "0.5rem");
         this.createContentSectionName(content)
         this.createContentSectionShortName(content)
+        // TODO: color picker
+        // TODO: use default color (this sets color to "inherit")
+        // TODO: visible checkbox
         this.appendChild(content);
     } // }}}
 
