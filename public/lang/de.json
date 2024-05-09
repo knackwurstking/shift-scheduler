@@ -28,7 +28,7 @@
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export",
         "dialogEditShiftTitle": "Schicht Bearbeiten",
-        "dialogEditShiftName": "Schicht Name (Bsp.: Nacht)",
+        "dialogEditShiftName": "Name (Bsp.: Nacht)",
         "dialogEditShiftShortName": "Kürzel (Bsp.: N)"
     },
     "general": {

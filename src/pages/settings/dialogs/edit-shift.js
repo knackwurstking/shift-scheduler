@@ -76,12 +76,15 @@ export class EditShiftDialog extends ui.wc.Dialog {
     /** @private */
     createContent() { // {{{
         const content = new ui.wc.FlexGrid();
+
         content.setAttribute("gap", "0.5rem");
+
         this.createContentSectionName(content)
         this.createContentSectionShortName(content)
-        // TODO: color picker
-        // TODO: use default color (this sets color to "inherit")
-        // TODO: visible checkbox
+        this.createContentColorPicker(content);
+        this.createContentUseDefaultColorCheckbox(content)
+        this.createContentVisibleCheckbox(content)
+
         this.appendChild(content);
     } // }}}
 
@@ -94,7 +97,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         let item = new ui.wc.FlexGridItem();
 
         item.innerHTML = `
-                <ui-secondary></ui-secondary>
+                <ui-secondary id="dialogEditShiftName"></ui-secondary>
                 <input type="text" value="${this.shift.name}">
             `;
 
@@ -110,22 +113,62 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container 
      */
     createContentSectionShortName(container) { // {{{
+        if (!this.shift.visible) return;
+
         const item = new ui.wc.FlexGridItem();
 
         item.innerHTML = `
-                <ui-secondary></ui-secondary>
-                <input
-                    style="color: ${this.shift.color || 'inherit'};"
-                    type="text"
-                    value="${this.shift.shortName}"
-                >
-            `;
+            <ui-secondary id="dialogEditShiftShortName">
+                ${this.#lang.ui.get("settings", "dialogEditShiftShortName")}
+            </ui-secondary>
+            <input
+                style="color: ${this.shift.color || 'inherit'};"
+                type="text"
+                value="${this.shift.shortName}"
+            >
+        `;
 
         item.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
             this.shift.shortName = ev.currentTarget.value;
         };
 
         container.appendChild(item);
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} container 
+     */
+    createContentColorPicker(container) { // {{{
+        const item = new ui.wc.FlexGridItem();
+
+        // TODO: color picker
+
+        container.appendChild(item)
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} container 
+     */
+    createContentUseDefaultColorCheckbox(container) { // {{{
+        const item = new ui.wc.FlexGridItem();
+
+        // TODO: use default color (this sets color to "inherit")
+
+        container.appendChild(item)
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} container 
+     */
+    createContentVisibleCheckbox(container) { // {{{
+        const item = new ui.wc.FlexGridItem();
+
+        // TODO: visible checkbox
+
+        container.appendChild(item)
     } // }}}
 
     /** @private */
@@ -154,14 +197,14 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.ui.title = this.#lang.ui.get("settings", "dialogEditShiftTitle");
 
         // Name
-        this.querySelector("ui-flex-grid-item:nth-child(1) ui-secondary").innerHTML =
+        this.querySelector("#dialogEditShiftName").innerHTML =
             this.#lang.ui.get("settings", "dialogEditShiftName");
 
         // Short
-        this.querySelector("ui-flex-grid-item:nth-child(2) ui-secondary").innerHTML =
-            this.#lang.ui.get("settings", "dialogEditShiftShortName");
+        const el = this.querySelector("#dialogEditShiftShortName");
+        if (el !== null) el.innerHTML = this.#lang.ui.get("settings", "dialogEditShiftShortName");
 
-        this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton")
-        this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton")
-    } // }}}
-}
+        this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
+        this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
+    }
+} // }}}

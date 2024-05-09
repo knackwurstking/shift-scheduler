@@ -28,7 +28,7 @@
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export",
         "dialogEditShiftTitle": "Edit Shift",
-        "dialogEditShiftName": "Shift Name (ex.: Night)",
+        "dialogEditShiftName": "Name (ex.: Night)",
         "dialogEditShiftShortName": "Short (ex.: N)"
     },
     "general": {
