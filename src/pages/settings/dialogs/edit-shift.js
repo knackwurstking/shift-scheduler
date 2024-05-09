@@ -214,23 +214,14 @@ export class EditShiftDialog extends ui.wc.Dialog {
         input.checked = !this.shift.visible;
         input.onchange = async () => {
             if (input.checked) {
-                this.updateShiftColor("transparent")
-                this.disableContentSection(this.shortNameItem);
-                this.disableContentSection(this.colorPickerItem);
-                this.disableContentSection(this.useDefaultColorItem);
+                this.setVisible(false)
             } else {
-                this.updateShiftColor(null)
-                this.enableContentSection(this.shortNameItem);
-                this.enableContentSection(this.colorPickerItem);
-                this.enableContentSection(this.useDefaultColorItem);
+                this.setVisible(true)
             }
         };
 
         if (input.checked) {
-            this.updateShiftColor("transparent")
-            this.disableContentSection(this.shortNameItem);
-            this.disableContentSection(this.colorPickerItem);
-            this.disableContentSection(this.useDefaultColorItem);
+            this.setVisible(false)
         }
 
         container.appendChild(this.visibleItem);
@@ -265,6 +256,24 @@ export class EditShiftDialog extends ui.wc.Dialog {
     async updateShiftColor(color) { // {{{
         this.shift.color = color;
         this.shortNameItem.querySelector("input").style.color = this.shift.color || "inherit";
+    } // }}}
+
+    /**
+     * @private 
+     * @param {boolean} state
+     */
+    async setVisible(state) { // {{{
+        if (state) {
+            this.enableContentSection(this.shortNameItem);
+            this.enableContentSection(this.colorPickerItem);
+            this.enableContentSection(this.useDefaultColorItem);
+        } else {
+            this.disableContentSection(this.shortNameItem);
+            this.disableContentSection(this.colorPickerItem);
+            this.disableContentSection(this.useDefaultColorItem);
+        }
+
+        this.shift.visible = state;
     } // }}}
 
     /** @private */
