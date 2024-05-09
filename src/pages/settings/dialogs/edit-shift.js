@@ -19,7 +19,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /** @type {Button} */
     #cancelButton;
-    #onCancel = () => this.ui.close();
+    #onCancel = async () => this.ui.close();
 
     /** @type {Button} */
     #submitButton;
@@ -101,9 +101,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
                 <input type="text" value="${this.shift.name}">
             `;
 
-        this.nameItem.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
-            this.shift.name = ev.currentTarget.value;
-        };
+        this.nameItem.querySelector("input").oninput =
+            async (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
+                this.shift.name = ev.currentTarget.value;
+            };
 
         container.appendChild(this.nameItem);
     } // }}}
@@ -125,14 +126,15 @@ export class EditShiftDialog extends ui.wc.Dialog {
             >
         `;
 
-        this.shortNameItem.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
-            this.shift.shortName = ev.currentTarget.value;
-        };
+        this.shortNameItem.querySelector("input").oninput =
+            async (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
+                this.shift.shortName = ev.currentTarget.value;
+            };
 
         if (!this.shift.visible) {
-            this.disableContentSection(this.colorPickerItem);
+            this.disableContentSection(this.shortNameItem);
         } else {
-            this.enableContentSection(this.colorPickerItem);
+            this.enableContentSection(this.shortNameItem);
         }
 
         container.appendChild(this.shortNameItem);
@@ -146,14 +148,14 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.colorPickerItem = new ui.wc.FlexGridItem();
         this.colorPickerItem.innerHTML = `
             <ui-label>
-                <input style="width: 100%;" type="color" value="${this.shift.color}">
+                <input slot="input" style="width: 100%;" type="color" value="${this.shift.color}">
             </ui-label>
         `;
 
-        this.colorPickerItem.querySelector("input").onchange = (/**@type{Event & { currentTarget:  HTMLInputElement }}*/ev) => {
-            this.shift.color = ev.currentTarget.value;
-            this.shortNameItem.style.color = this.shift.color || "inherit";
-        }
+        this.colorPickerItem.querySelector("input").onchange =
+            async (/**@type{Event & { currentTarget:  HTMLInputElement }}*/ev) => {
+                this.updateShiftColor(ev.currentTarget.value || null)
+            };
 
         if (!this.shift.visible) {
             this.disableContentSection(this.colorPickerItem);
@@ -169,11 +171,27 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container 
      */
     createContentUseDefaultColorCheckbox(container) { // {{{
-        const item = new ui.wc.FlexGridItem();
+        this.useDefaultColorItem = new ui.wc.FlexGridItem();
+        this.useDefaultColorItem.innerHTML = `
+            <ui-label ripple>
+                <input slot="input" type="checkbox">
+            </ui-label>
+        `;
 
-        // TODO: use default color (this sets color to "inherit")
+        /** @type {HTMLInputElement} */
+        const input = this.useDefaultColorItem.querySelector("input");
+        input.checked = !this.shift.color;
+        input.onchange = async () => {
+            this.updateShiftColor(null)
 
-        container.appendChild(item)
+            if (input.checked) {
+                this.disableContentSection(this.colorPickerItem);
+            } else {
+                this.enableContentSection(this.colorPickerItem);
+            }
+        };
+
+        container.appendChild(this.useDefaultColorItem);
     } // }}}
 
     /**
@@ -181,11 +199,30 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container 
      */
     createContentVisibleCheckbox(container) { // {{{
-        const item = new ui.wc.FlexGridItem();
+        this.visibleItem = new ui.wc.FlexGridItem();
+        this.visibleItem.innerHTML = `
+            <ui-label ripple>
+                <input slot="input" type="checkbox">
+            </ui-label>
+        `;
 
-        // TODO: visible checkbox
+        const input = this.visibleItem.querySelector("input");
+        input.checked = !this.shift.visible;
+        input.onchange = async () => {
+            this.updateShiftColor("transparent")
 
-        container.appendChild(item)
+            if (input.checked) {
+                this.disableContentSection(this.shortNameItem);
+                this.disableContentSection(this.colorPickerItem);
+                this.disableContentSection(this.useDefaultColorItem);
+            } else {
+                this.enableContentSection(this.shortNameItem);
+                this.enableContentSection(this.colorPickerItem);
+                this.enableContentSection(this.useDefaultColorItem);
+            }
+        };
+
+        container.appendChild(this.visibleItem);
     } // }}}
 
     /**
@@ -193,9 +230,9 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @param {FlexGridItem} item
      */
     enableContentSection(item) { // {{{
-        item.style.opacity = "1"
+        item.style.opacity = "1";
         item.style.userSelect = "auto";
-        const input = this.colorPickerItem.querySelector("input");
+        const input = item.querySelector("input");
         if (!!input) input.disabled = false;
     } // }}}
 
@@ -206,9 +243,18 @@ export class EditShiftDialog extends ui.wc.Dialog {
     disableContentSection(item) { // {{{
         item.style.opacity = "0.25";
         item.style.userSelect = "none";
-        const input = this.colorPickerItem.querySelector("input");
+        const input = item.querySelector("input");
         if (!!input) input.disabled = true;
     } // }}}
+
+    /**
+     * @private 
+     * @param {string | null} color
+     */
+    async updateShiftColor(color) {
+        this.shift.color = color;
+        this.shortNameItem.style.color = this.shift.color || "inherit";
+    }
 
     /** @private */
     createActionButtons() { // {{{
@@ -246,6 +292,14 @@ export class EditShiftDialog extends ui.wc.Dialog {
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.colorPickerItem.querySelector("ui-label").ui.primary =
             this.#lang.ui.get("settings", "dialogEditShiftColorPicker");
+
+        // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
+        this.useDefaultColorItem.querySelector("ui-label").ui.primary =
+            this.#lang.ui.get("settings", "dialogEditShiftUseDefaultColor");
+
+        // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
+        this.visibleItem.querySelector("ui-label").ui.primary =
+            this.#lang.ui.get("settings", "dialogEditShiftVisibleItem");
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");

@@ -22,14 +22,17 @@
         "shiftsStartDatePrimary": "Start Date",
         "shiftsEditRhythmPrimary": "Rhythm",
         "shiftsEditRhythmButton": "Edit",
-        "shiftsEditRhythmDialogTitle": "Shift Rhythm",
         "shiftsEditRhythmDialogPicker": "Click to add a new shift",
         "shiftsBackupPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
         "shiftsBackupExportButton": "Export",
+        "dialogEditRhythmTitle": "Shift Rhythm",
         "dialogEditShiftTitle": "Edit Shift",
         "dialogEditShiftName": "Name (ex.: Night)",
-        "dialogEditShiftShortName": "Short (ex.: N)"
+        "dialogEditShiftShortName": "Short (ex.: N)",
+        "dialogEditShiftColorPicker": "Pick a color",
+        "dialogEditShiftUseDefaultColor": "Disable color",
+        "dialogEditShiftVisibleItem": "Hide shift"
     },
     "general": {
         "submitButton": "OK",
