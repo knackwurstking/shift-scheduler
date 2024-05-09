@@ -4,7 +4,9 @@ import ui from "ui";
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
+ * @typedef {import("ui/src/wc").FlexGridItem} FlexGridItem
  * @typedef {import("ui/src/wc").Button} Button
+ * @typedef {import("ui/src/wc").Label} Label
  *
  * @typedef {import("../../../types").Shift} Shift
  */
@@ -93,19 +95,17 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container 
      */
     createContentSectionName(container) { // {{{
-        // Name
-        let item = new ui.wc.FlexGridItem();
-
-        item.innerHTML = `
-                <ui-secondary id="dialogEditShiftName"></ui-secondary>
+        this.nameItem = new ui.wc.FlexGridItem();
+        this.nameItem.innerHTML = `
+                <ui-secondary></ui-secondary>
                 <input type="text" value="${this.shift.name}">
             `;
 
-        item.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
+        this.nameItem.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
             this.shift.name = ev.currentTarget.value;
         };
 
-        container.appendChild(item);
+        container.appendChild(this.nameItem);
     } // }}}
 
     /**
@@ -113,12 +113,9 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container 
      */
     createContentSectionShortName(container) { // {{{
-        if (!this.shift.visible) return;
-
-        const item = new ui.wc.FlexGridItem();
-
-        item.innerHTML = `
-            <ui-secondary id="dialogEditShiftShortName">
+        this.shortNameItem = new ui.wc.FlexGridItem();
+        this.shortNameItem.innerHTML = `
+            <ui-secondary>
                 ${this.#lang.ui.get("settings", "dialogEditShiftShortName")}
             </ui-secondary>
             <input
@@ -128,11 +125,17 @@ export class EditShiftDialog extends ui.wc.Dialog {
             >
         `;
 
-        item.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
+        this.shortNameItem.querySelector("input").oninput = (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
             this.shift.shortName = ev.currentTarget.value;
         };
 
-        container.appendChild(item);
+        if (!this.shift.visible) {
+            this.disableContentSection(this.colorPickerItem);
+        } else {
+            this.enableContentSection(this.colorPickerItem);
+        }
+
+        container.appendChild(this.shortNameItem);
     } // }}}
 
     /**
@@ -140,11 +143,25 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container 
      */
     createContentColorPicker(container) { // {{{
-        const item = new ui.wc.FlexGridItem();
+        this.colorPickerItem = new ui.wc.FlexGridItem();
+        this.colorPickerItem.innerHTML = `
+            <ui-label>
+                <input style="width: 100%;" type="color" value="${this.shift.color}">
+            </ui-label>
+        `;
 
-        // TODO: color picker
+        this.colorPickerItem.querySelector("input").onchange = (/**@type{Event & { currentTarget:  HTMLInputElement }}*/ev) => {
+            this.shift.color = ev.currentTarget.value;
+            this.shortNameItem.style.color = this.shift.color || "inherit";
+        }
 
-        container.appendChild(item)
+        if (!this.shift.visible) {
+            this.disableContentSection(this.colorPickerItem);
+        } else {
+            this.enableContentSection(this.colorPickerItem);
+        }
+
+        container.appendChild(this.colorPickerItem);
     } // }}}
 
     /**
@@ -169,6 +186,28 @@ export class EditShiftDialog extends ui.wc.Dialog {
         // TODO: visible checkbox
 
         container.appendChild(item)
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGridItem} item
+     */
+    enableContentSection(item) { // {{{
+        item.style.opacity = "1"
+        item.style.userSelect = "auto";
+        const input = this.colorPickerItem.querySelector("input");
+        if (!!input) input.disabled = false;
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGridItem} item
+     */
+    disableContentSection(item) { // {{{
+        item.style.opacity = "0.25";
+        item.style.userSelect = "none";
+        const input = this.colorPickerItem.querySelector("input");
+        if (!!input) input.disabled = true;
     } // }}}
 
     /** @private */
@@ -197,12 +236,16 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.ui.title = this.#lang.ui.get("settings", "dialogEditShiftTitle");
 
         // Name
-        this.querySelector("#dialogEditShiftName").innerHTML =
+        this.nameItem.querySelector("ui-secondary").innerHTML =
             this.#lang.ui.get("settings", "dialogEditShiftName");
 
-        // Short - NOTE: This element is missing if the shift was set to be not visible.
-        const el = this.querySelector("#dialogEditShiftShortName");
-        if (el !== null) el.innerHTML = this.#lang.ui.get("settings", "dialogEditShiftShortName");
+        // Short
+        this.shortNameItem.querySelector("ui-secondary").innerHTML =
+            this.#lang.ui.get("settings", "dialogEditShiftShortName");
+
+        // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
+        this.colorPickerItem.querySelector("ui-label").ui.primary =
+            this.#lang.ui.get("settings", "dialogEditShiftColorPicker");
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
