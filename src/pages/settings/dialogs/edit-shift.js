@@ -182,14 +182,18 @@ export class EditShiftDialog extends ui.wc.Dialog {
         const input = this.useDefaultColorItem.querySelector("input");
         input.checked = !this.shift.color;
         input.onchange = async () => {
-            this.updateShiftColor(null)
-
             if (input.checked) {
+                this.updateShiftColor(null)
                 this.disableContentSection(this.colorPickerItem);
             } else {
                 this.enableContentSection(this.colorPickerItem);
             }
         };
+
+        if (input.checked) {
+            this.updateShiftColor(null)
+            this.disableContentSection(this.colorPickerItem);
+        }
 
         container.appendChild(this.useDefaultColorItem);
     } // }}}
@@ -209,18 +213,25 @@ export class EditShiftDialog extends ui.wc.Dialog {
         const input = this.visibleItem.querySelector("input");
         input.checked = !this.shift.visible;
         input.onchange = async () => {
-            this.updateShiftColor("transparent")
-
             if (input.checked) {
+                this.updateShiftColor("transparent")
                 this.disableContentSection(this.shortNameItem);
                 this.disableContentSection(this.colorPickerItem);
                 this.disableContentSection(this.useDefaultColorItem);
             } else {
+                this.updateShiftColor(null)
                 this.enableContentSection(this.shortNameItem);
                 this.enableContentSection(this.colorPickerItem);
                 this.enableContentSection(this.useDefaultColorItem);
             }
         };
+
+        if (input.checked) {
+            this.updateShiftColor("transparent")
+            this.disableContentSection(this.shortNameItem);
+            this.disableContentSection(this.colorPickerItem);
+            this.disableContentSection(this.useDefaultColorItem);
+        }
 
         container.appendChild(this.visibleItem);
     } // }}}
@@ -251,10 +262,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
      * @private 
      * @param {string | null} color
      */
-    async updateShiftColor(color) {
+    async updateShiftColor(color) { // {{{
         this.shift.color = color;
-        this.shortNameItem.style.color = this.shift.color || "inherit";
-    }
+        this.shortNameItem.querySelector("input").style.color = this.shift.color || "inherit";
+    } // }}}
 
     /** @private */
     createActionButtons() { // {{{
