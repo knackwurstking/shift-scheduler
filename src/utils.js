@@ -50,6 +50,11 @@ function validateShift(shift) { // {{{
         return false;
     }
 
+    if (shift.color === "transparent") {
+        shift.visible = false;
+        shift.color = null;
+    }
+
     if (typeof shift.visible !== "boolean") {
         shift.visible = true;
     }
