@@ -200,7 +200,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.querySelector("#dialogEditShiftName").innerHTML =
             this.#lang.ui.get("settings", "dialogEditShiftName");
 
-        // Short
+        // Short - NOTE: This element is missing if the shift was set to be not visible.
         const el = this.querySelector("#dialogEditShiftShortName");
         if (el !== null) el.innerHTML = this.#lang.ui.get("settings", "dialogEditShiftShortName");
 
