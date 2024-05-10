@@ -149,7 +149,7 @@ export class ShiftsTable extends HTMLTableElement {
         /** @type {IconButton[]} */
         // @ts-ignore
         const [editButton, deleteButton] = [...td.querySelectorAll("ui-icon-button")]
-        editButton.onclick = async () => {
+        editButton.onclick = async () => { // {{{
             const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
             document.body.appendChild(dialog);
 
@@ -172,11 +172,17 @@ export class ShiftsTable extends HTMLTableElement {
                     };
                 });
             })
-        };
+        }; // }}}
 
-        deleteButton.onclick = async () => {
+        deleteButton.onclick = async () => { // {{{
             // TODO: Delete this shift from settings data, and rerender the table?
-        };
+            this.#store.ui.update("settings", (settings) => {
+                return {
+                    ...settings,
+                    shifts: settings.shifts.filter(s => s.id !== shift.id),
+                };
+            });
+        }; // }}}
 
         return td;
     } // }}}
