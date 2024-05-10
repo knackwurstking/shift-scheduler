@@ -22,8 +22,8 @@ export class ShiftAddButton extends ui.wc.Button {
      */
     constructor(store, lang) { // {{{
         super();
-        this.color = "primary";
-        this.variant = "full";
+        super.setAttribute("color", "primary")
+        super.setAttribute("variant", "full")
 
         this.#store = store;
         this.#lang = lang;
