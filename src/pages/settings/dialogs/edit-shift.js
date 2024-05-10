@@ -50,10 +50,13 @@ export class EditShiftDialog extends ui.wc.Dialog {
     constructor(shift, store, lang) { // {{{
         super();
 
-        this.#store = store;
-        this.#lang = lang
         /** @type {Shift} */
         this.shift = { ...shift }
+
+        this.#store = store;
+        this.#lang = lang
+
+        this.colorReset = null;
 
         this.createContent();
         this.createActionButtons();
@@ -183,14 +186,18 @@ export class EditShiftDialog extends ui.wc.Dialog {
         input.checked = !this.shift.color;
         input.onchange = async () => {
             if (input.checked) {
-                this.updateShiftColor(null)
+                this.colorReset = this.shift.color;
+                this.updateShiftColor(null);
                 this.disableContentSection(this.colorPickerItem);
             } else {
+                this.shift.color = this.colorReset;
+                this.updateShiftColor(this.shift.color);
                 this.enableContentSection(this.colorPickerItem);
             }
         };
 
         if (input.checked) {
+            this.colorReset = this.shift.color;
             this.updateShiftColor(null)
             this.disableContentSection(this.colorPickerItem);
         }
