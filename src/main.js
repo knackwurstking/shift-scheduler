@@ -69,10 +69,6 @@ store.ui.on("theme", (/** @type {ThemeStore} */ data) => {
 /** @type {Lang} */
 const lang = document.querySelector("ui-lang")
 
-// TODO: Auto language detection handler here...
-// ...
-lang.setAttribute("current", "en") // NOTE: placeholder
-
 lang.ui.on("change", (langTypeElement) => {
     if (!langTypeElement) {
         console.debug("[main] No language set for now!")
@@ -82,7 +78,20 @@ lang.ui.on("change", (langTypeElement) => {
     console.debug(`[main] current language in use:`, langTypeElement)
     // @ts-expect-error - `langTypeElement.ui.name` is from type string, not `LangStore`
     store.ui.set("lang", langTypeElement.ui.name, true);
-}, true)
+});
+
+// Auto language detection handler here...
+for (const l of ["en", "de"]) {
+    if (navigator.language.match(new RegExp(`^${l}`, "i"))) {
+        console.debug(`Got a match here for "${l}":`, navigator.language);
+        lang.setAttribute("current", l);
+        break;
+    }
+    // NOTE: No need for iterating through `navigator.languages`, only two languages are supported for now.
+}
+if (!lang.hasAttribute("current")) {
+    lang.setAttribute("current", lang.ui.getFallbackElement().ui.name);
+}
 
 // }}}
 
