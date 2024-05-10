@@ -1,4 +1,5 @@
-import { EditRhythmDialog } from "../dialogs"
+import { html } from "ui/src/js/utils";
+import { EditRhythmDialog } from "../dialogs";
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
@@ -7,7 +8,7 @@ import { EditRhythmDialog } from "../dialogs"
  * @typedef {import("ui/src/wc").Button} Button
  */
 
-const innerHTML = `
+const innerHTML = html`
 <ui-label>
     <ui-button color="primary" variant="full"></ui-button>
 </ui-label>
