@@ -33,7 +33,7 @@
         "dialogEditShiftColorPicker": "Pick a color",
         "dialogEditShiftUseDefaultColor": "Disable color",
         "dialogEditShiftVisibleItem": "Hide shift",
-        "dialogErrorMissingShiftName": "Missing shift name!",
+        "dialogErrorMissingShiftName": "Missing shift name!"
     },
     "general": {
         "submitButton": "OK",
