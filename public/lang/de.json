@@ -33,7 +33,8 @@
         "dialogEditShiftColorPicker": "Farbe wählen",
         "dialogEditShiftUseDefaultColor": "Farbe deaktivieren",
         "dialogEditShiftVisibleItem": "Schicht ausblenden",
-        "dialogErrorMissingShiftName": "Fehlender Schichtname!"
+        "dialogErrorMissingShiftName": "Fehlender Schichtname!",
+        "deleteShiftConfirationDialog": "Shicht \"%s\" löschen?"
     },
     "general": {
         "submitButton": "OK",

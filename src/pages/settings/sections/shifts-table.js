@@ -175,6 +175,16 @@ export class ShiftsTable extends HTMLTableElement {
         }; // }}}
 
         deleteButton.onclick = async () => { // {{{
+            if (
+                !window.confirm(
+                    this.#lang.ui.get(
+                        "settings", "deleteShiftConfirationDialog"
+                    ).replace("%s", shift.name)
+                )
+            ) {
+                return
+            };
+
             this.#store.ui.update("settings", (settings) => {
                 return {
                     ...settings,

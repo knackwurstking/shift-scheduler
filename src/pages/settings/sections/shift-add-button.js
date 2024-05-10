@@ -40,7 +40,7 @@ export class ShiftAddButton extends ui.wc.Button {
 
     /** @private */
     handleEvents() { // {{{
-        const onClose = (/**@type{dialogs.EditShiftDialog}*/dialog) => { // {{{
+        const onClose = async (/**@type{dialogs.EditShiftDialog}*/dialog) => { // {{{
             document.body.removeChild(dialog);
         } // }}}
 
@@ -63,7 +63,7 @@ export class ShiftAddButton extends ui.wc.Button {
             /**
              * @param {Shift} newShift
              */
-            const onSubmit = (newShift) => { // {{{
+            const onSubmit = async (newShift) => { // {{{
                 if (!newShift.name) {
                     alert(this.#lang.ui.get("settings", "dialogErrorMissingShiftName"));
 
