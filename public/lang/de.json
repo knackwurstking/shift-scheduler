@@ -32,7 +32,8 @@
         "dialogEditShiftShortName": "Kürzel (Bsp.: N)",
         "dialogEditShiftColorPicker": "Farbe wählen",
         "dialogEditShiftUseDefaultColor": "Farbe deaktivieren",
-        "dialogEditShiftVisibleItem": "Schicht ausblenden"
+        "dialogEditShiftVisibleItem": "Schicht ausblenden",
+        "dialogErrorMissingShiftName": "Fehlender Schichtname!",
     },
     "general": {
         "submitButton": "OK",

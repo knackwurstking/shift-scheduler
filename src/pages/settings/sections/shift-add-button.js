@@ -29,38 +29,74 @@ export class ShiftAddButton extends ui.wc.Button {
         this.#lang = lang;
     } // }}}
 
-    connectedCallback() {
+    connectedCallback() { // {{{
         super.connectedCallback()
+        this.handleEvents()
+
+        setTimeout(() => {
+            this.#store.ui.on("lang", this.onLang.bind(this), true);
+        });
+    } // }}}
+
+    /** @private */
+    handleEvents() { // {{{
+        const onClose = (/**@type{dialogs.EditShiftDialog}*/dialog) => { // {{{
+            document.body.removeChild(dialog);
+        } // }}}
 
         this.addEventListener("click", () => {
             /** @type {Shift} */
-            const shift = {
+            let shift = {
                 id: new Date().getTime(),
                 name: "",
                 shortName: "",
                 visible: true,
                 color: null,
             };
+
             const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
             document.body.appendChild(dialog)
 
             dialog.ui.open(true);
-            dialog.ui.events.on("close", () => {
-                document.body.removeChild(dialog);
-            });
+            dialog.ui.events.on("close", () => onClose(dialog));
 
-            dialog.ui.events.on("submit", (shift) => {
-                console.warn(`@TODO: Add new shift:`, shift);
-            })
-        });
+            /**
+             * @param {Shift} newShift
+             */
+            const onSubmit = (newShift) => { // {{{
+                if (!newShift.name) {
+                    alert(this.#lang.ui.get("settings", "dialogErrorShiftNameMissing"));
 
-        setTimeout(() => {
-            this.#store.ui.on("lang", this.onLang.bind(this), true);
+                    shift = newShift;
+
+                    const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
+                    document.body.appendChild(dialog)
+
+                    dialog.ui.open(true);
+                    dialog.ui.events.on("close", () => onClose(dialog));
+                    dialog.ui.events.on("submit", onSubmit);
+
+                    return;
+                }
+
+                if (!newShift.shortName) {
+                    newShift.shortName = newShift.name.slice(0, 2)
+                }
+
+                this.#store.ui.update("settings", (settings) => {
+                    return {
+                        ...settings,
+                        shifts: [settings.shifts, newShift],
+                    };
+                });
+            }; // }}}
+
+            dialog.ui.events.on("submit", onSubmit);
         });
-    }
+    } // }}}
 
     /** @private */
-    async onLang() {
+    async onLang() { // {{{
         this.innerHTML = this.#lang.ui.get("settings", "shiftsAddButton");
-    }
+    } // }}}
 } // }}}
