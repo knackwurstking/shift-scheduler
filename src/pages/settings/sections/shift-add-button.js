@@ -65,7 +65,7 @@ export class ShiftAddButton extends ui.wc.Button {
              */
             const onSubmit = (newShift) => { // {{{
                 if (!newShift.name) {
-                    alert(this.#lang.ui.get("settings", "dialogErrorShiftNameMissing"));
+                    alert(this.#lang.ui.get("settings", "dialogErrorMissingShiftName"));
 
                     shift = newShift;
 
@@ -86,7 +86,7 @@ export class ShiftAddButton extends ui.wc.Button {
                 this.#store.ui.update("settings", (settings) => {
                     return {
                         ...settings,
-                        shifts: [settings.shifts, newShift],
+                        shifts: [...settings.shifts, newShift],
                     };
                 });
             }; // }}}
