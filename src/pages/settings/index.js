@@ -38,6 +38,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         sections.StartDate.register();
         sections.EditRhythm.register();
         sections.ShiftsTable.register();
+        sections.ShiftAddButton.register();
     };
 
     constructor() { // {{{
