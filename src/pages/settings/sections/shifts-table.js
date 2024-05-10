@@ -175,7 +175,6 @@ export class ShiftsTable extends HTMLTableElement {
         }; // }}}
 
         deleteButton.onclick = async () => { // {{{
-            // TODO: Delete this shift from settings data, and rerender the table?
             this.#store.ui.update("settings", (settings) => {
                 return {
                     ...settings,
