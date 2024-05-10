@@ -155,6 +155,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             new sections.ShiftsTable(this.#store, this.#lang)
         );
 
+        this.querySelector("#shiftsAddButton").appendChild(
+            new sections.ShiftAddButton(this.#store, this.#lang)
+        )
+
         /** @type {Button} */
         const backupImportButton = this.querySelector("#shiftsBackupImportButton");
         backupImportButton.onclick = async () => {
@@ -169,8 +173,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         return {
             title: this.querySelector("#shiftsTitle"),
-
-            addButton: this.querySelector("#shiftsAddButton"),
 
             /** @type {Label} */
             backup: this.querySelector("#shiftsBackup"),
@@ -304,9 +306,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         this.shifts.title.innerHTML = this.#lang.ui.get(
             "settings", "shiftsTitle",
-        );
-        this.shifts.addButton.innerHTML = this.#lang.ui.get(
-            "settings", "shiftsAddButton",
         );
     } // }}}
 

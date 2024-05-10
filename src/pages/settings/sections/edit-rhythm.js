@@ -63,11 +63,13 @@ export class EditRhythm extends HTMLElement {
         this.#button = this.querySelector("ui-button");
         this.#button.onclick = async () => {
             const dialog = new EditRhythmDialog(this.#store, this.#lang)
+            document.body.appendChild(dialog);
+
+            dialog.ui.open(true);
+
             dialog.ui.events.on("close", async () => {
                 document.body.removeChild(dialog)
             })
-            document.body.appendChild(dialog);
-            dialog.ui.open(true);
         };
     } // }}}
 

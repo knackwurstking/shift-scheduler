@@ -152,10 +152,26 @@ export class ShiftsTable extends HTMLTableElement {
         editButton.onclick = async () => {
             const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
             document.body.appendChild(dialog);
+
             dialog.ui.open(true);
             dialog.ui.events.on("close", () => {
                 document.body.removeChild(dialog);
             });
+
+            dialog.ui.events.on("submit", (shift) => {
+                this.#store.ui.update("settings", (settings) => {
+                    return {
+                        ...settings,
+                        shifts: settings.shifts.map(s => {
+                            if (s.id === shift.id) {
+                                return shift;
+                            }
+
+                            return s;
+                        }),
+                    };
+                });
+            })
         };
 
         deleteButton.onclick = async () => {

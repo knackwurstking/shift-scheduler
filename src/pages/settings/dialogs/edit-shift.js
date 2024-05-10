@@ -1,16 +1,20 @@
 import ui from "ui";
 
 /**
+ * @typedef {import("../../../types").Shift} Shift
+ *
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc").FlexGridItem} FlexGridItem
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").Label} Label
- *
- * @typedef {import("../../../types").Shift} Shift
+ * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
  */
 
+/**
+ * @extends {ui.wc.Dialog<DialogEvents & { submit: Shift }>}
+ */
 export class EditShiftDialog extends ui.wc.Dialog {
     /** @type {Store} */
     #store;
@@ -24,19 +28,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
     /** @type {Button} */
     #submitButton;
     #onSubmit = () => {
-        this.#store.ui.update("settings", (settings) => {
-            return {
-                ...settings,
-                shifts: settings.shifts.map(shift => {
-                    if (shift.id === this.shift.id) {
-                        return this.shift;
-                    }
-
-                    return shift;
-                }),
-            };
-        });
-
+        this.ui.events.dispatch("submit", this.shift);
         this.ui.close();
     };
 
