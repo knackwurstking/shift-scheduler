@@ -7,6 +7,7 @@ import ui from "ui";
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc").FlexGridItem} FlexGridItem
+ * @typedef {import("ui/src/wc").StackLayout} StackLayout
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").Label} Label
  * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
@@ -20,6 +21,8 @@ export class EditShiftDialog extends ui.wc.Dialog {
     #store;
     /** @type {Lang} */
     #lang;
+    /** @type {StackLayout} */
+    #stackLayout;
 
     /** @type {Button} */
     #cancelButton;
@@ -47,6 +50,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         this.#store = store;
         this.#lang = lang
+        this.#stackLayout = document.querySelector("ui-stack-layout")
 
         this.colorReset = null;
 
@@ -58,6 +62,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     connectedCallback() { // {{{
         super.connectedCallback();
+        this.#stackLayout.ui.lock()
 
         setTimeout(() => {
             this.#store.ui.on("lang", this.onLang.bind(this), true);
@@ -66,6 +71,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     disconnectedCallback() { // {{{
         super.disconnectedCallback();
+        this.#stackLayout.ui.unlock()
         this.cleanup.forEach(fn => fn());
         this.cleanup = [];
     } // }}}
