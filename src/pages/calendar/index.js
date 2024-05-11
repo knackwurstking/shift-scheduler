@@ -263,7 +263,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         const data = await fillWithData(
             db,
             date,
-            await getMonthArray(date, this.#store.ui.get("week-start")),
+            await getMonthArray(date, this.#store),
         );
 
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");

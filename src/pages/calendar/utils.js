@@ -1,26 +1,34 @@
 /**
+ * @typedef {import("ui/src/wc").Store<import("../../types").StoreEvents>} Store
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
  * @typedef {import("../../types").DBEntryData} DBEntryData 
+ * @typedef {import("../../types").SettingsStore} SettingsStore
  * @typedef {import("../../db").DB} DB 
  */
 
 /**
  * @param {Date} month
- * @param {WeekStartStore} weekStart
+ * @param {Store} store
  * @returns {Promise<DBEntryData>}
  */
-export async function getMonthArray(month, weekStart) { // {{{
+export async function getMonthArray(month, store) { // {{{
     /** @type {DBEntryData} */
     const data = [];
+    const weekStart = store.ui.get("week-start");
+    const settings = store.ui.get("settings");
 
+    /** @type {Date} */
+    let date;
     for (let i = 0; i < 42; i++) {
+        date = new Date(
+            month.getFullYear(),
+            month.getMonth(),
+            i + 1 - getStartDay(month, weekStart),
+        );
+
         data.push({
-            date: new Date(
-                month.getFullYear(),
-                month.getMonth(),
-                i + 1 - getStartDay(month, weekStart),
-            ),
-            shift: null, // TODO: Calc the current shift (rhythm)
+            date,
+            shift: calcShiftForDay(date, settings),
             note: "",
         });
     }
@@ -34,7 +42,7 @@ export async function getMonthArray(month, weekStart) { // {{{
  * @param {DBEntryData} days
  * @returns {Promise<DBEntryData>}
  */
-export async function fillWithData(db, month, days) { // {{{
+export async function getData(db, month, days) { // {{{
     // TODO: Fill days array with data from the database
     // ...
 
@@ -42,11 +50,21 @@ export async function fillWithData(db, month, days) { // {{{
 } // }}}
 
 /**
+ * @param {Date} date 
+ * @param {SettingsStore} settings
+ */
+function calcShiftForDay(date, settings) { // {{{
+    // TODO: ...
+
+    return null;
+} // }}}
+
+/**
  * @param {Date} month
  * @param {WeekStartStore} weekStart
  * @returns {number}
  */
-export function getStartDay(month, weekStart) { // {{{
+function getStartDay(month, weekStart) { // {{{
     // NOTE: if month starts on sunday (0), but the week start is set to monday (1), than set it to 6 (sunday becomes 6)
     month.setDate(1); // 0-6 Sun-Sat
     const d = month.getDay();
