@@ -197,8 +197,8 @@ export default class App extends ui.js.events.Events {
      */
     async onBack() { // {{{
         if (this.stackLayout.ui.stack.length <= 1) return;
-        if (!!document.body.querySelector("ui-dialog")?.hasAttribute("open")) {
-            this.stackLayout.ui.goBack();
-        }
+        // FIXME: Need some lock method for disabling
+        //        the back button handling if a dialog is open
+        this.stackLayout.ui.goBack();
     } // }}}
 } // }}}
