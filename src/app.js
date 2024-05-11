@@ -122,7 +122,7 @@ export default class App extends ui.js.events.Events {
      * @private
      */
     initializeAndroidHandlers() { // {{{
-        if (utils.isAndroid()) return;
+        if (!utils.isAndroid()) return;
         CapApp.addListener("backButton", this.onBack.bind(this))
     } // }}}
 
@@ -198,5 +198,5 @@ export default class App extends ui.js.events.Events {
     async onBack() { // {{{
         if (!this.appBarBackButton.parentElement) return;
         this.stackLayout.ui.goBack()
-    } // }}}
-}
+    }
+} // }}}
