@@ -196,7 +196,7 @@ export default class App extends ui.js.events.Events {
      * @private
      */
     async onBack() { // {{{
-        if (!this.appBarBackButton.parentElement) return;
+        if (this.stackLayout.ui.stack.length <= 1) return;
         this.stackLayout.ui.goBack()
     }
 } // }}}
