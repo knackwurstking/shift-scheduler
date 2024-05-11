@@ -1,7 +1,7 @@
 import ui from "ui";
 import db from "../../db";
 import { SwipeHandler } from "./swipe-handler";
-import { fillWithData, getMonthArray } from "./utils";
+import * as utils from "./utils";
 
 /**
  * @typedef {import("ui/src/wc").Lang} Lang
@@ -260,10 +260,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      *  @param {Element} calendarItem
      */
     async updateItem(date, calendarItem) { // {{{
-        const data = await fillWithData(
+        const data = await utils.getData(
             db,
             date,
-            await getMonthArray(date, this.#store),
+            await utils.getMonthArray(date, this.#store),
         );
 
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
