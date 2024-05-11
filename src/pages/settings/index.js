@@ -51,19 +51,33 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.#store = document.querySelector("ui-store")
         /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
+
+        this.misc = this.createMiscElements();
+        this.shifts = this.createShiftElements();
     } // }}}
 
     connectedCallback() { // {{{
         console.debug("[settings] connect...")
 
         setTimeout(() => {
-            this.misc = this.createMiscElements();
-            this.shifts = this.createShiftElements();
-
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
                 this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
                 this.#store.ui.on("theme", this.onTheme.bind(this), true),
+            );
+
+            this.cleanup.push(
+                this.misc.themeModeSelect.ui.events.on("change", (option) => {
+                    console.debug(`[settings] update theme mode:`, option);
+                    this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
+                })
+            );
+
+            this.cleanup.push(
+                this.misc.themeSelect.ui.events.on("change", (option) => {
+                    console.debug(`[settings] update theme name:`, option);
+                    this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
+                })
             );
         });
     } // }}}
@@ -111,24 +125,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         weekStartInput.onclick = (/**@type{MouseEvent & { currentTarget: HTMLInputElement }}*/ev) =>
             this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
 
-        /** @type {Select} */
-        const themeModeSelect = this.querySelector("#miscThemeModeSelect");
-        this.cleanup.push(
-            themeModeSelect.ui.events.on("change", (option) => {
-                console.debug(`[settings] update theme mode:`, option);
-                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
-            })
-        );
-
-        /** @type {Select} */
-        const themeSelect = this.querySelector("#miscThemeSelect");
-        this.cleanup.push(
-            themeSelect.ui.events.on("change", (option) => {
-                console.debug(`[settings] update theme name:`, option);
-                this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
-            })
-        );
-
         return {
             title: this.querySelector("#miscTitle"),
 
@@ -137,8 +133,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             weekStartInput: weekStartInput,
 
             theme: this.querySelector("#miscTheme"),
-            themeModeSelect,
-            themeSelect,
+            /** @type {Select} */
+            themeModeSelect: this.querySelector("#miscThemeModeSelect"),
+            /** @type {Select} */
+            themeSelect: this.querySelector("#miscThemeSelect"),
         };
     } // }}}
 
