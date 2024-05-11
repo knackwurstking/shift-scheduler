@@ -3,6 +3,7 @@
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
  * @typedef {import("../../types").DBEntryData} DBEntryData 
  * @typedef {import("../../types").SettingsStore} SettingsStore
+ * @typedef {import("../../types").Shift} Shift
  * @typedef {import("../../db").DB} DB 
  */
 
@@ -50,13 +51,28 @@ export async function getData(db, month, days) { // {{{
 } // }}}
 
 /**
- * @param {Date} date 
+ * @param {Date} current
  * @param {SettingsStore} settings
+ * @returns {Shift| null}
  */
-function calcShiftForDay(date, settings) { // {{{
-    // TODO: ...
+function calcShiftForDay(current, settings) { // {{{
+    if (!settings.startDate || !settings.rhythm.length) return;
 
-    return null;
+    const sDate = new Date(settings.startDate);
+
+    if (sDate.getTime() > current.getTime()) {
+        const diffInDays = Math.round((sDate.getTime() - current.getTime()) / (1000 * 60 * 60 * 24));
+        return (settings.shifts.find(
+            (shift) =>
+                shift.id === settings.rhythm[settings.rhythm.length + (diffInDays % settings.rhythm.length)]
+        )) || null;
+    }
+
+    const diffInDays = Math.round((current.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24));
+    return (settings.shifts.find(
+        (shift) =>
+            shift.id === settings.rhythm[diffInDays % settings.rhythm.length]
+    )) || null;
 } // }}}
 
 /**
