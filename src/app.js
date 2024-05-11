@@ -198,5 +198,5 @@ export default class App extends ui.js.events.Events {
     async onBack() { // {{{
         if (this.stackLayout.ui.stack.length <= 1) return;
         this.stackLayout.ui.goBack()
-    }
+    } // }}}
 } // }}}
