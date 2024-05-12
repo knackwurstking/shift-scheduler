@@ -232,6 +232,27 @@ export class EditShiftDialog extends ui.wc.Dialog {
         container.appendChild(this.visibleItem);
     } // }}}
 
+    /** @private */
+    createActionButtons() { // {{{
+        // Cancel Button
+        let item = new ui.wc.FlexGridItem()
+        item.slot = "actions"
+        item.setAttribute("flex", "0")
+        item.innerHTML = `<ui-button color="secondary" variant="full"></ui-button>`
+        this.#cancelButton = item.querySelector("ui-button")
+        this.#cancelButton.onclick = this.#onCancel;
+        this.appendChild(item)
+
+        // Submit Button
+        item = new ui.wc.FlexGridItem()
+        item.slot = "actions"
+        item.setAttribute("flex", "0")
+        item.innerHTML = `<ui-button color="primary" variant="full"></ui-button>`
+        this.#submitButton = item.querySelector("ui-button")
+        this.#submitButton.onclick = this.#onSubmit;
+        this.appendChild(item)
+    } // }}}
+
     /**
      * @private
      * @param {FlexGridItem} item
@@ -279,27 +300,6 @@ export class EditShiftDialog extends ui.wc.Dialog {
         }
 
         this.shift.visible = state;
-    } // }}}
-
-    /** @private */
-    createActionButtons() { // {{{
-        // Cancel Button
-        let item = new ui.wc.FlexGridItem()
-        item.slot = "actions"
-        item.setAttribute("flex", "0")
-        item.innerHTML = `<ui-button color="secondary" variant="full"></ui-button>`
-        this.#cancelButton = item.querySelector("ui-button")
-        this.#cancelButton.onclick = this.#onCancel;
-        this.appendChild(item)
-
-        // Submit Button
-        item = new ui.wc.FlexGridItem()
-        item.slot = "actions"
-        item.setAttribute("flex", "0")
-        item.innerHTML = `<ui-button color="primary" variant="full"></ui-button>`
-        this.#submitButton = item.querySelector("ui-button")
-        this.#submitButton.onclick = this.#onSubmit;
-        this.appendChild(item)
     } // }}}
 
     /** @private */

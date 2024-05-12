@@ -151,6 +151,15 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.cleanup = []
     } // }}}
 
+    /** @private */
+    createContent() { // {{{
+        this.#content = new ui.wc.FlexGrid()
+        this.#content.style.width = "100%"
+        this.#content.style.height = "100%"
+        this.#content.innerHTML = contentHTML
+        this.appendChild(this.#content)
+    } // }}}
+
     /**
      * @private
      * @param {SettingsStore} settings
@@ -301,15 +310,6 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.#submitButton = item.querySelector("ui-button");
         this.#submitButton.onclick = this.#onSubmit;
         this.appendChild(item)
-    } // }}}
-
-    /** @private */
-    createContent() { // {{{
-        this.#content = new ui.wc.FlexGrid()
-        this.#content.style.width = "100%"
-        this.#content.style.height = "100%"
-        this.#content.innerHTML = contentHTML
-        this.appendChild(this.#content)
     } // }}}
 
     /** @private */
