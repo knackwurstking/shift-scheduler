@@ -292,10 +292,24 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
             // Set date and shift
             cards[idx].querySelector(".day-item-date").innerHTML = `${item.date.getDate()}`
-            cards[idx].querySelector(".day-item-shift").innerHTML =
-                !!item.shift?.visible
-                    ? item.shift?.shortName || ""
-                    : "";
+
+            /** @type {HTMLElement} */
+            const itemShift = cards[idx].querySelector(".day-item-shift");
+
+            if (!item.shift) {
+                itemShift.style.removeProperty("--shift-color");
+                itemShift.innerHTML = "";
+                return;
+            }
+
+            itemShift.style.setProperty(
+                "--shift-color",
+                item.shift.visible
+                    ? (item.shift.color || "inherit")
+                    : "transparent"
+            );
+
+            itemShift.innerHTML = item.shift.shortName || "";
         });
 
         this.markWeekendItems(...cards);
