@@ -115,7 +115,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         if (utils.isAndroid()) this.androidExport(backup);
         else this.browserExport(backup);
-
     } // }}}
 
     /** @private */
