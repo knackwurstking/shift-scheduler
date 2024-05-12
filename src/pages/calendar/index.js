@@ -268,25 +268,35 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
 
-        for (let i = 0; i < data.length; i++) {
-            if (this.isNope(data[i].date, date))
-                cards[i].classList.add("is-inactive");
-            else cards[i].classList.remove("is-inactive");
+        data.forEach((item, idx) => {
+            // Inactive Item
+            if (this.isNope(item.date, date)) {
+                cards[idx].classList.add("is-inactive");
+            } else {
+                cards[idx].classList.remove("is-inactive");
+            }
 
-            if (this.isToday(data[i].date)) cards[i].classList.add("is-today");
-            else cards[i].classList.remove("is-today");
+            // Today Item
+            if (this.isToday(item.date)) {
+                cards[idx].classList.add("is-today");
+            } else {
+                cards[idx].classList.remove("is-today");
+            }
 
-            if (!!data[i].note) cards[i].classList.add("has-note");
-            else cards[i].classList.remove("has-note");
+            // Has Note
+            if (!!item.note) {
+                cards[idx].classList.add("is-today");
+            } else {
+                cards[idx].classList.remove("is-today");
+            }
 
-            cards[i].querySelector(".day-item-date").innerHTML =
-                `${data[i].date.getDate()}`;
-
-            cards[i].querySelector(".day-item-shift").innerHTML = !!data[i]
-                .shift?.visible
-                ? data[i].shift?.shortName || ""
-                : "";
-        }
+            // Set date and shift
+            cards[idx].querySelector(".day-item-date").innerHTML = `${item.date.getDate()}`
+            cards[idx].querySelector(".day-item-shift").innerHTML =
+                !!item.shift?.visible
+                    ? item.shift?.shortName || ""
+                    : "";
+        });
 
         this.markWeekendItems(...cards);
     } // }}}
