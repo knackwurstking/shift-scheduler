@@ -76,9 +76,19 @@ export class DB {
 
     /** @returns {Promise<DBEntry[]>} */
     async getAll() { // {{{
-        // TODO: Get all database entries
-
-        return [];
+        return await new Promise((resolve) => {
+            const r = this._roStore().getAll()
+            r.onsuccess = () => {
+                resolve(r.result.map((data) => {
+                    data.data = JSON.parse(data.data);
+                    return data;
+                }));
+            };
+            r.onerror = (e) => {
+                console.warn(`[DB] Error while getting all data from the store: "${storeMonths}"`, e);
+                resolve([]);
+            };
+        });
     } // }}}
 
     /**
