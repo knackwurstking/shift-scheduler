@@ -58,7 +58,7 @@
         "startDate": "2023-09-05"
     },
     "indexedDB": {
-        "version": 2,
+        "version": 1,
         "data": [
             {
                 "year": 2024,

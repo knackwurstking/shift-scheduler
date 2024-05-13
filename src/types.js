@@ -43,26 +43,22 @@
  *  color?: string;
  * }}
  *
- * @typedef DBEntryDataItem
+ * @typedef DBDataEntry
  * @type {{
- *  date: Date;
- *  shift: Shift | null;
- *  note: string;
- * }}
- *
- * @typedef DBEntryData
- * @type {DBEntryDataItem[]}
- *
- * @typedef DBEntry
- * @type {{
- *  id: string; // "YYYY/MM"
- *  data: DBEntryData;
+ *  "year": number;
+ *  "month": number;
+ *  "date": number;
+ *  "shift": Shift | null;
+ *  "note": string;
  * }}
  *
  * @typedef Backup
  * @type {{
  *  settings: SettingsStore;
- *  indexedDB: DBEntry[];
+ *  indexedDB: {
+ *      version: number;
+ *      data: DBDataEntry[];
+ *  };
  * }}
  */
 

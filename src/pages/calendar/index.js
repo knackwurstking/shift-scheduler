@@ -12,7 +12,7 @@ import * as utils from "./utils";
  * @typedef {import("../../types").DatePickerStore} DatePickerStore 
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
  * @typedef {import("../../types").LangStore} LangStore 
- * @typedef {import("../../types").DBEntryData} DBEntryData 
+ * @typedef {import("../../types").DBDataEntry} DBDataEntry
  *
  * @typedef {import("../../db").DB} DB 
  */
@@ -256,28 +256,25 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     /**
-     *  @param {Date} date
+     *  @param {Date} current
      *  @param {Element} calendarItem
      */
-    async updateItem(date, calendarItem) { // {{{
-        const data = await utils.getData(
-            db,
-            date,
-            await utils.getMonthArray(date, this.#store),
-        );
-
+    async updateItem(current, calendarItem) { // {{{
+        let dataEntries = await utils.getArray(current.getFullYear(), current.getMonth(), this.#store);
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
 
-        data.forEach((item, idx) => {
+        dataEntries.forEach(async (item, idx) => {
             // Inactive Item
-            if (this.isNope(item.date, date)) {
+            if (item.year !== current.getFullYear() || item.month !== current.getMonth()) {
                 cards[idx].classList.add("is-inactive");
             } else {
+                const data = await db.get(item.year, item.month, item.date);
+                if (data !== null) (item = data);
                 cards[idx].classList.remove("is-inactive");
             }
 
             // Today Item
-            if (this.isToday(item.date)) {
+            if (this.isToday(item.year, item.month, item.date)) {
                 cards[idx].classList.add("is-today");
             } else {
                 cards[idx].classList.remove("is-today");
@@ -291,7 +288,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             }
 
             // Set date and shift
-            cards[idx].querySelector(".day-item-date").innerHTML = `${item.date.getDate()}`
+            cards[idx].querySelector(".day-item-date").innerHTML = `${item.date}`
 
             /** @type {HTMLElement} */
             const itemShift = cards[idx].querySelector(".day-item-shift");
@@ -316,24 +313,15 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     /**
-     * @param {Date} date
+     * @param {number} year
+     * @param {number} month
+     * @param {number} date
      */
-    isToday(date) { // {{{
+    isToday(year, month, date) { // {{{
         return (
-            this.today.getFullYear() === date.getFullYear() &&
-            this.today.getMonth() === date.getMonth() &&
-            this.today.getDate() === date.getDate()
-        );
-    } // }}}
-
-    /**
-     * @param {Date} d1
-     * @param {Date} d2
-     */
-    isNope(d1, d2) { // {{{
-        return (
-            d1.getFullYear() !== d2.getFullYear() ||
-            d1.getMonth() !== d2.getMonth()
+            this.today.getFullYear() === year &&
+            this.today.getMonth() === month &&
+            this.today.getDate() === date
         );
     } // }}}
 

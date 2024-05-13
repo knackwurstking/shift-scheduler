@@ -1,74 +1,40 @@
 /**
  * @typedef {import("ui/src/wc").Store<import("../../types").StoreEvents>} Store
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
- * @typedef {import("../../types").DBEntryData} DBEntryData 
+ * @typedef {import("../../types").DBDataEntry} DBDataEntry
  * @typedef {import("../../types").SettingsStore} SettingsStore
  * @typedef {import("../../types").Shift} Shift
- * @typedef {import("../../types").DBEntry} DBEntry
  * @typedef {import("../../db").DB} DB 
  */
 
 /**
- * @param {Date} month
+ * @param {number} year
+ * @param {number} month
  * @param {Store} store
- * @returns {Promise<DBEntryData>}
+ * @returns {Promise<DBDataEntry[]>}
  */
-export async function getMonthArray(month, store) { // {{{
-    /** @type {DBEntryData} */
+export async function getArray(year, month, store) { // {{{
+    /** @type {DBDataEntry[]} */
     const data = [];
     const weekStart = store.ui.get("week-start");
     const settings = store.ui.get("settings");
 
-    /** @type {Date} */
-    let date;
     for (let i = 0; i < 42; i++) {
-        date = new Date(
-            month.getFullYear(),
-            month.getMonth(),
-            i + 1 - getStartDay(month, weekStart),
+        const date = new Date(
+            year, month,
+            i + 1 - getStartDay(year, month, weekStart),
         );
 
         data.push({
-            date,
+            year: date.getFullYear(),
+            month: date.getMonth(),
+            date: date.getDate(),
             shift: calcShiftForDay(date, settings),
             note: "",
         });
     }
 
     return data;
-} // }}}
-
-/**
- * @param {DB} db
- * @param {Date} month
- * @param {DBEntryData} days
- * @returns {Promise<DBEntryData>}
- */
-export async function getData(db, month, days) { // {{{
-    /** @type {DBEntry} */
-    let data = null
-
-    try {
-        data = await db.get(month.getFullYear(), month.getMonth());
-    } catch (err) {
-        console.warn(err);
-    }
-
-    if (data === null) return days;
-
-    for (let idx = 0; idx < days.length; idx++) {
-        if (month.getFullYear() !== days[idx].date.getFullYear() || month.getMonth() !== days[idx].date.getMonth()) {
-            continue;
-        }
-
-        const dayData = data.data.find(d => new Date(d.date).getDate() === days[idx].date.getDate());
-        if (dayData !== undefined) {
-            days[idx].note = dayData.note;
-            days[idx].shift = dayData.shift || days[idx].shift;
-        }
-    }
-
-    return days;
 } // }}}
 
 /**
@@ -97,14 +63,16 @@ function calcShiftForDay(current, settings) { // {{{
 } // }}}
 
 /**
- * @param {Date} month
+ * @param {number} year
+ * @param {number} month
  * @param {WeekStartStore} weekStart
  * @returns {number}
  */
-function getStartDay(month, weekStart) { // {{{
+function getStartDay(year, month, weekStart) { // {{{
     // NOTE: if month starts on sunday (0), but the week start is set to monday (1), than set it to 6 (sunday becomes 6)
-    month.setDate(1); // 0-6 Sun-Sat
-    const d = month.getDay();
-    if (weekStart === 0) return d;
-    else if (weekStart === 1) return d === 0 ? 6 : d - 1; // NOTE: This works as long the weekStart is a 0 or a 1
+    const date = new Date(year, month, 1)
+    const weekDay = date.getDay();
+
+    if (weekStart === 0) return weekDay;
+    return weekDay === 0 ? 6 : weekDay - 1;
 } // }}}

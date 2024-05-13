@@ -110,7 +110,10 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Backup} */
         const backup = {
             settings: this.#store.ui.get("settings"),
-            indexedDB: await db.getAll(),
+            indexedDB: {
+                version: db.version,
+                data: await db.getAll(),
+            },
         };
 
         if (utils.isAndroid()) this.androidExport(backup);
@@ -202,7 +205,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             }
 
             // Handle indexedDB - validate all entries
-            for (const entry of data.indexedDB || []) {
+            for (const entry of data.indexedDB.data || []) {
                 if (!db.validate(entry)) {
                     alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
                     return;
@@ -213,10 +216,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
             // Handle indexedDB - add/put to database
             //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
-            let y, m, entry;
-            for (entry of data.indexedDB || []) {
-                [y, m] = entry.id.split("/", 2).map((n) => parseInt(n, 10));
-                db.add(y, m, entry.data).catch(() => db.put(y, m, entry.data));
+            for (const entry of data.indexedDB.data || []) {
+                db.add(entry).catch(() => db.put(entry));
             }
         } catch (err) {
             alert(`Import data failed!\nerror: ${err}`);
