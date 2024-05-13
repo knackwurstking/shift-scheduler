@@ -62,7 +62,8 @@ export class DB {
         return await new Promise((resolve) => {
             const r = this._roStore().get(`${year}/${month}`);
             r.onsuccess = () => {
-                resolve({
+                if (r.result === undefined) resolve(null);
+                else resolve({
                     id: r.result.id,
                     data: JSON.parse(r.result.data),
                 });
