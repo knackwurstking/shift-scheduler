@@ -1,4 +1,5 @@
 import { App as CapApp } from "@capacitor/app";
+import db from "./db";
 import ui from "ui";
 import utils from "./utils";
 
@@ -52,7 +53,7 @@ export default class App extends ui.js.events.Events {
                     `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
             }, true);
 
-            this.stackLayout.ui.setPage("calendar");
+            db.open(async () => this.stackLayout.ui.setPage("calendar"));
             document.body.style.display = "block"
         });
     } // }}}
@@ -87,6 +88,7 @@ export default class App extends ui.js.events.Events {
      * @private
      */
     createAppBar() { // {{{
+        // TODO: Initially set no page setup
         /** @type {AppBar} */
         this.appBar = document.querySelector("ui-app-bar");
 
@@ -113,6 +115,8 @@ export default class App extends ui.js.events.Events {
         /** @type {IconButton} */
         this.appBarSettingsButton = this.appBar.querySelector("#appBarSettingsButton")
         this.appBarSettingsButton.onclick = async () => this.stackLayout.ui.setPage("settings");
+
+        this.noPageSetup();
     } // }}}
 
     /**
@@ -126,6 +130,17 @@ export default class App extends ui.js.events.Events {
         CapApp.addListener("backButton", this.onBack.bind(this))
     } // }}}
 
+    /** @private */
+    noPageSetup() { // {{{
+        utils.setAppBarTitle("")
+        this.appBar.removeChild(this.appBarBackButton.parentElement)
+        this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
+        this.appBar.removeChild(this.appBarEditButton.parentElement)
+        this.appBar.removeChild(this.appBarTodayButton.parentElement)
+        this.appBar.removeChild(this.appBarPDFButton.parentElement)
+        this.appBar.removeChild(this.appBarSettingsButton.parentElement)
+    } // }}}
+
     /**
      * @private
      * @param {Object} data
@@ -137,7 +152,11 @@ export default class App extends ui.js.events.Events {
 
         // Update the AppBar buttons...
         if (this.stackLayout.ui.stack.length <= 1) {
-            this.appBar.removeChild(this.appBarBackButton.parentElement)
+            try {
+                this.appBar.removeChild(this.appBarBackButton.parentElement);
+            } catch (err) {
+                console.warn("Back button already removed from the app bar!\n", err);
+            }
         } else {
             const leftSlot = this.appBar.ui.getLeftSlot()
             if (leftSlot.length > 0) {
@@ -153,13 +172,8 @@ export default class App extends ui.js.events.Events {
         }
 
         if (!newPage) {
-            utils.setAppBarTitle("")
-            this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
-            this.appBar.removeChild(this.appBarEditButton.parentElement)
-            this.appBar.removeChild(this.appBarTodayButton.parentElement)
-            this.appBar.removeChild(this.appBarPDFButton.parentElement)
-            this.appBar.removeChild(this.appBarSettingsButton.parentElement)
-            return
+            this.noPageSetup();
+            return;
         }
 
         switch (newPage.ui.name) {

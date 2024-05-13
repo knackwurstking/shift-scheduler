@@ -19,7 +19,20 @@ export class DB {
         this.dbName = dbName
         this.version = version
         this.storeName = "user"
-        this.open();
+    } // }}}
+
+    /**
+     * @param {() => void|Promise<void>} cb
+     */
+    open(cb = null) { // {{{
+        this.#request = window.indexedDB.open(this.dbName, this.version);
+        this.#request.onerror = this.onError.bind(this);
+        this.#request.onblocked = this.onBlocked.bind(this);
+        this.#request.onsuccess = (ev) => {
+            this.onSuccess(ev);
+            if (cb) cb();
+        };
+        this.#request.onupgradeneeded = this.onUpgradeNeeded.bind(this);
     } // }}}
 
     close() { // {{{
@@ -128,15 +141,6 @@ export class DB {
 
     async deleteAll() { // {{{
         // TODO: Delete all database entries
-    } // }}}
-
-    /** @private */
-    open() { // {{{
-        this.#request = window.indexedDB.open(this.dbName, this.version);
-        this.#request.onerror = this.onError.bind(this);
-        this.#request.onblocked = this.onBlocked.bind(this);
-        this.#request.onsuccess = this.onSuccess.bind(this);
-        this.#request.onupgradeneeded = this.onUpgradeNeeded.bind(this);
     } // }}}
 
     /** @private */

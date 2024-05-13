@@ -96,5 +96,5 @@ if (!lang.hasAttribute("current")) {
 // }}}
 
 window.addEventListener("DOMContentLoaded", () => {
+    new App(store).run();
 });
-new App(store).run()
