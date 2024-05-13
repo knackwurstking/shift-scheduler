@@ -272,7 +272,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                     const data = await db.get(item.year, item.month, item.date);
                     if (data !== null) (item = data);
                 } catch (err) {
-                    console.error(err);
+                    console.error(err); // TODO: First render will fail because db is not ready at this time
                 }
                 cards[idx].classList.remove("is-inactive");
             }
