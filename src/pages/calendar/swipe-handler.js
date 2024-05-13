@@ -29,6 +29,7 @@ export class SwipeHandler extends ui.js.events.Events {
 
         this.calendar = calendar;
 
+        this.onMouseMove;
         this.onTouchMove;
         this.onTouchEnd;
         this.onTouchCancel;
@@ -37,14 +38,25 @@ export class SwipeHandler extends ui.js.events.Events {
     } // }}}
 
     start() { // {{{
+        /** @type {((ev: MouseEvent) => void|Promise<void>)} */
+        this.onMouseMove = async (ev) => { // {{{
+            if (this.#finalTransform) return;
+
+            if (ev.buttons === 1) { // primary button
+                if (this.#startX === null) this.#startX = ev.clientX;
+                this.#clientX = ev.clientX;
+            }
+        }; // }}}
+
         /** @type {((ev: TouchEvent) => void|Promise<void>)} */
         this.onTouchMove = async (ev) => { // {{{
             if (this.#finalTransform) return;
+
             if (this.#startX === null) this.#startX = ev.touches[0].clientX;
             this.#clientX = ev.touches[0].clientX;
         }; // }}}
 
-        /** @type {((ev: TouchEvent) => void|Promise<void>)} */
+        /** @type {((ev: TouchEvent | MouseEvent) => void|Promise<void>)} */
         this.onTouchEnd = async (ev) => { // {{{
             if (this.#startX === null || this.#finalTransform) return;
             this.#finalTransform = true;
@@ -68,7 +80,7 @@ export class SwipeHandler extends ui.js.events.Events {
             setTimeout(() => this.resetSwipe(), 300);
         }; // }}}
 
-        /** @type {((ev: TouchEvent) => void|Promise<void>)} */
+        /** @type {((ev: TouchEvent | MouseEvent) => void|Promise<void>)} */
         this.onTouchCancel = async (ev) => { // {{{
             if (this.#startX !== null) await this.onTouchEnd(ev);
         }; // }}}
@@ -87,6 +99,10 @@ export class SwipeHandler extends ui.js.events.Events {
             this.moveX(this.#clientX - this.#startX);
             requestAnimationFrame(this.animationFrameHandler);
         }; // }}}
+
+        this.calendar.addEventListener("mousemove", this.onMouseMove, { passive: true });
+        this.calendar.addEventListener("mouseup", this.onTouchEnd);
+        this.calendar.addEventListener("mouseout", this.onTouchEnd);
 
         this.calendar.addEventListener("touchmove", this.onTouchMove, { passive: true });
         this.calendar.addEventListener("touchend", this.onTouchEnd);
