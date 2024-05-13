@@ -32,7 +32,7 @@ export class DB {
             return false;
         }
 
-        if (typeof entry.note !== "number") {
+        if (typeof entry.note !== "string") {
             entry.note = ""
         }
 
@@ -55,11 +55,7 @@ export class DB {
         return await new Promise((resolve) => {
             const r = this.roStore().get([year, month, date]);
 
-            r.onsuccess = () => {
-                if (r.result === undefined) resolve(null);
-                else resolve(r.result.data);
-            };
-
+            r.onsuccess = () => resolve(r.result || null);
             r.onerror = (ev) => {
                 console.warn(`[DB] Error while getting "${year}-${month}-${date}" from the "${this.storeName}" store!`, ev);
                 resolve(null);

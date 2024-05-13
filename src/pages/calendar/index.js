@@ -268,8 +268,12 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             if (item.year !== current.getFullYear() || item.month !== current.getMonth()) {
                 cards[idx].classList.add("is-inactive");
             } else {
-                const data = await db.get(item.year, item.month, item.date);
-                if (data !== null) (item = data);
+                try {
+                    const data = await db.get(item.year, item.month, item.date);
+                    if (data !== null) (item = data);
+                } catch (err) {
+                    console.error(err);
+                }
                 cards[idx].classList.remove("is-inactive");
             }
 
