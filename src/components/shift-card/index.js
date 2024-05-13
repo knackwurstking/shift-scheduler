@@ -53,7 +53,7 @@ export class ShiftCard extends HTMLElement {
         this.shadowRoot.innerHTML = innerHTML
         this.classList.add("is-card")
         this.#shortName = this.shadowRoot.querySelector(".short-name")
-        ui.js.ripple.create(this)
+        ui.js.ripple.create(this, { useClick: true });
     }
 
     /**
