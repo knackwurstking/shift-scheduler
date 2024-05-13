@@ -26,16 +26,13 @@ export default class App extends ui.js.events.Events {
     constructor(store) { // {{{
         super();
 
-        /** @type {(() => void)[]} */
-        this.cleanup = [];
-
         this.#store = store;
         this.#lang = document.querySelector("ui-lang")
 
         /** @type {ThemeHandler} */
         this.themeHandler = document.querySelector("#themeHandler");
 
-        this.registerPages()
+        this.createStackLayout()
         this.createAppBar()
         this.initializeAndroidHandlers()
     } // }}}
@@ -48,9 +45,22 @@ export default class App extends ui.js.events.Events {
             );
 
             this.#store.ui.on("date-picker", (dateString) => {
-                const date = new Date(dateString);
+                const today = new Date();
+                const current = new Date(dateString);
+
                 this.appBarDatePickerButton.innerText =
-                    `${date.getFullYear()} / ${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+                    `${current.getFullYear()} / ${(current.getMonth() + 1).toString().padStart(2, "0")}`;
+
+                // disable/enable this button based on the current date
+                if (
+                    today.getFullYear() === current.getFullYear() &&
+                    today.getMonth() === current.getMonth() &&
+                    today.getDate() === current.getDate()
+                ) {
+                    this.appBarTodayButton.ui.disable();
+                } else {
+                    this.appBarTodayButton.ui.enable();
+                }
             }, true);
 
             db.open(async () => this.stackLayout.ui.setPage("calendar"));
@@ -61,7 +71,7 @@ export default class App extends ui.js.events.Events {
     /**
      * @private
      */
-    registerPages() { // {{{
+    createStackLayout() { // {{{
         /** @type {StackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
@@ -88,7 +98,6 @@ export default class App extends ui.js.events.Events {
      * @private
      */
     createAppBar() { // {{{
-        // TODO: Initially set no page setup
         /** @type {AppBar} */
         this.appBar = document.querySelector("ui-app-bar");
 
@@ -154,9 +163,7 @@ export default class App extends ui.js.events.Events {
         if (this.stackLayout.ui.stack.length <= 1) {
             try {
                 this.appBar.removeChild(this.appBarBackButton.parentElement);
-            } catch (err) {
-                console.warn("Back button already removed from the app bar!\n", err);
-            }
+            } catch { }
         } else {
             const leftSlot = this.appBar.ui.getLeftSlot()
             if (leftSlot.length > 0) {
