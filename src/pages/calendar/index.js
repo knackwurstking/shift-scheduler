@@ -215,6 +215,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.today;
         /** @type {number[]} */
         this.order;
+
+        // TODO: Add onclick handlers to each ".days-row > .day-item" - open note and shift change dialog
     } // }}}
 
     connectedCallback() { // {{{
