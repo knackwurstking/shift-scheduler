@@ -4,6 +4,7 @@
  * @typedef {import("../../types").DBEntryData} DBEntryData 
  * @typedef {import("../../types").SettingsStore} SettingsStore
  * @typedef {import("../../types").Shift} Shift
+ * @typedef {import("../../types").DBEntry} DBEntry
  * @typedef {import("../../db").DB} DB 
  */
 
@@ -38,14 +39,34 @@ export async function getMonthArray(month, store) { // {{{
 } // }}}
 
 /**
- * @param {DB | null} db
+ * @param {DB} db
  * @param {Date} month
  * @param {DBEntryData} days
  * @returns {Promise<DBEntryData>}
  */
 export async function getData(db, month, days) { // {{{
-    // TODO: Fill days array with data from the database
-    // ...
+    /** @type {DBEntry} */
+    let data = null
+
+    try {
+        data = await db.get(month.getFullYear(), month.getMonth());
+    } catch (err) {
+        console.warn(err);
+    }
+
+    if (data === null) return days;
+
+    for (let idx = 0; idx < days.length; idx++) {
+        if (month.getFullYear() !== days[idx].date.getFullYear() || month.getMonth() !== days[idx].date.getMonth()) {
+            continue;
+        }
+
+        const dayData = data.data.find(d => new Date(d.date).getDate() === days[idx].date.getDate());
+        if (dayData !== undefined) {
+            days[idx].note = dayData.note;
+            days[idx].shift = dayData.shift || days[idx].shift;
+        }
+    }
 
     return days;
 } // }}}
