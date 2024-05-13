@@ -1,6 +1,6 @@
 import { App as CapApp } from "@capacitor/app";
-import db from "./db";
 import ui from "ui";
+import db from "./db";
 import utils from "./utils";
 
 /**
