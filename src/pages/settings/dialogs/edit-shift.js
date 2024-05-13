@@ -222,6 +222,8 @@ export class EditShiftDialog extends ui.wc.Dialog {
                 this.setVisible(false)
             } else {
                 this.setVisible(true)
+                const input = this.useDefaultColorItem.querySelector("input");
+                input.onchange(null);
             }
         };
 
