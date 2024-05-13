@@ -264,12 +264,13 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
 
         dataEntries.forEach(async (item, idx) => {
+            const data = await db.get(item.year, item.month, item.date);
+            if (data !== null) (item = data);
+
             // Inactive Item
             if (item.year !== current.getFullYear() || item.month !== current.getMonth()) {
                 cards[idx].classList.add("is-inactive");
             } else {
-                const data = await db.get(item.year, item.month, item.date);
-                if (data !== null) (item = data);
                 cards[idx].classList.remove("is-inactive");
             }
 
