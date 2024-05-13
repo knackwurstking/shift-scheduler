@@ -46,16 +46,17 @@ function calcShiftForDay(current, settings) { // {{{
     if (!settings.startDate || !settings.rhythm.length) return;
 
     const sDate = new Date(settings.startDate);
+    const diffInDays = Math.round((current.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24));
 
-    if (sDate.getTime() > current.getTime()) {
-        const diffInDays = Math.round((sDate.getTime() - current.getTime()) / (1000 * 60 * 60 * 24));
+    if (diffInDays <= 0) {
         return (settings.shifts.find(
             (shift) =>
-                shift.id === settings.rhythm[settings.rhythm.length + (diffInDays % settings.rhythm.length)]
+                shift.id === settings.rhythm[
+                settings.rhythm.length + ((diffInDays % settings.rhythm.length) || -settings.rhythm.length)
+                ]
         )) || null;
     }
 
-    const diffInDays = Math.round((current.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24));
     return (settings.shifts.find(
         (shift) =>
             shift.id === settings.rhythm[diffInDays % settings.rhythm.length]
