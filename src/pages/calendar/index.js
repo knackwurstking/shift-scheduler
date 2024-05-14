@@ -267,7 +267,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         dataEntries.forEach(async (item, idx) => {
             const data = await db.get(item.year, item.month, item.date);
-            if (data !== null) (item = data);
+            if (data !== null) {
+                item.note = data.note;
+                item.shift = data.shift || item.shift;
+            }
 
             // Inactive Item
             if (item.year !== current.getFullYear() || item.month !== current.getMonth()) {
