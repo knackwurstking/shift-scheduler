@@ -216,7 +216,14 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         /** @type {number[]} */
         this.order;
 
-        // TODO: Add onclick handlers to each ".days-row > .day-item" - open note and shift change dialog
+        this.querySelectorAll(".days-row > .day-item").forEach(child => {
+            child.addEventListener("click",
+                (/** @type {Event & { currentTarget: HTMLElement }} */ev) => {
+                    // TODO: get data year, month and date from this element `data-year`, `data-month`, `data-day`
+                    // TODO: open dialog here - edit note and change shift
+                }
+            );
+        });
     } // }}}
 
     connectedCallback() { // {{{
@@ -313,6 +320,11 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             );
 
             itemShift.innerHTML = item.shift.shortName || "";
+
+            // Needed for the dialog to add a note or modify the shift
+            cards[idx].setAttribute("data-year", item.year.toString());
+            cards[idx].setAttribute("data-month", item.month.toString());
+            cards[idx].setAttribute("data-date", item.date.toString());
         });
 
         this.markWeekendItems(...cards);
