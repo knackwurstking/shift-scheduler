@@ -39,20 +39,6 @@ const contentHTML = html`
             width: 100%;
         "
     />
-
-    <ui-secondary
-        style="
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            display: block;
-            text-align: center;
-            background-color: var(--ui-bgColor);
-            padding: 0 var(--ui-spacing);
-            white-space: nowrap;
-        "
-    >...</ui-secondary>
 </ui-flex-grid-item>
 
 <ui-flex-grid-item
@@ -323,10 +309,6 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         // Short
         this.#content.querySelector("thead th:nth-child(2)").innerHTML =
             this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
-
-        // Dialog Picker Line
-        this.#content.querySelector("ui-secondary").innerHTML =
-            this.#lang.ui.get("settings", "shiftsEditRhythmDialogPicker");
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
