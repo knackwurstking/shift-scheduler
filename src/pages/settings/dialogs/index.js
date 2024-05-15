@@ -1,2 +1,2 @@
-export { EditRhythmDialog } from "./edit-rhythm"
-export { EditShiftDialog } from "./edit-shift"
+export { EditRhythmDialog } from "./edit-rhythm-dialog";
+export { EditShiftDialog } from "./edit-shift-dialog";
