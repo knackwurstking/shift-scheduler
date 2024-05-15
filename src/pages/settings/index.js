@@ -156,7 +156,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             new sections.ShiftsTable(this.#store, this.#lang)
         );
 
-        this.querySelector("#shiftsAddButton").appendChild(
+        this.querySelector("#shiftsAddSection").appendChild(
             new sections.ShiftAddButton(this.#store, this.#lang)
         )
 
