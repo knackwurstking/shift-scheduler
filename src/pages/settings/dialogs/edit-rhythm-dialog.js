@@ -12,9 +12,9 @@ import { html } from "ui/src/js/utils";
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
-// {{{ Content HTML
+// {{{ Flex Grid Content
 
-const contentHTML = html`
+const flexGridContent = html`
 <ui-flex-grid-item class="no-scrollbar" style="height: 100%; overflow-y: scroll;">
     <table>
         <thead>
@@ -139,11 +139,11 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
     /** @private */
     createContent() { // {{{
-        this.#content = new ui.wc.FlexGrid()
-        this.#content.style.width = "100%"
-        this.#content.style.height = "100%"
-        this.#content.innerHTML = contentHTML
-        this.appendChild(this.#content)
+        this.#content = new ui.wc.FlexGrid();
+        this.#content.style.width = "100%";
+        this.#content.style.height = "100%";
+        this.#content.innerHTML = flexGridContent;
+        this.appendChild(this.#content);
     } // }}}
 
     /**
