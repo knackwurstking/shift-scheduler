@@ -1,5 +1,7 @@
 import ui from "ui";
 import { html } from "ui/src/js/utils";
+import db from "../../../db";
+import * as utils from "../utils";
 
 // {{{ Flex Grid Content
 const flexGridContent = html`
@@ -12,6 +14,7 @@ const flexGridContent = html`
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
+ * @typedef {import("../../../types").DBDataEntry} DBDataEntry
  */
 
 /** @extends {ui.wc.Dialog<DialogEvents>} */
@@ -31,6 +34,7 @@ export class EditDayDialog extends ui.wc.Dialog {
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
         // TODO: Save note and shift, close the dialog
+        this.ui.close();
     };
 
     /** @type {FlexGrid} */
@@ -49,6 +53,8 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.#lang = lang;
 
         this.cleanup = [];
+        /** @type {DBDataEntry | null} */
+        this.data = null;
 
         this.createContent();
         this.createActions();
@@ -75,8 +81,16 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {number} month
      * @param {number} date
      */
-    set(year, month, date) { // {{{
-        // TODO: ...
+    async set(year, month, date) { // {{{
+        this.data = await db.get(year, month, date);
+        this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
+        if (this.data === null) {
+            this.data = {
+                year, month, date,
+                shift: null,
+                note: "",
+            };
+        }
     } // }}}
 
     /** @private */
