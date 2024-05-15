@@ -42,7 +42,7 @@ export async function getArray(year, month, store) { // {{{
  * @param {SettingsStore} settings
  * @returns {Shift| null}
  */
-function calcShiftForDay(current, settings) { // {{{
+export function calcShiftForDay(current, settings) { // {{{
     if (!settings.startDate || !settings.rhythm.length) return;
 
     const sDate = new Date(settings.startDate);
