@@ -1,5 +1,6 @@
 import ui from "ui";
 import db from "../../db";
+import * as dialogs from "./dialogs";
 import { SwipeHandler } from "./swipe-handler";
 import * as utils from "./utils";
 
@@ -198,7 +199,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     /** @type {Lang} */
     #lang;
 
-    static register = () => customElements.define("calendar-page", CalendarPage)
+    static register = () => {
+        customElements.define("calendar-page", CalendarPage);
+        dialogs.EditDayDialog.register();
+    };
 
     constructor() { // {{{
         super();
@@ -216,11 +220,21 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         /** @type {number[]} */
         this.order;
 
-        this.querySelectorAll(".days-row > .day-item").forEach(child => {
+        this.shadowRoot.querySelectorAll(".days-row > .day-item").forEach(child => {
             child.addEventListener("click",
-                (/** @type {Event & { currentTarget: HTMLElement }} */ev) => {
-                    // TODO: get data year, month and date from this element `data-year`, `data-month`, `data-day`
-                    // TODO: open dialog here - edit note and change shift
+                async (/** @type {Event & { currentTarget: HTMLElement }} */ev) => {
+                    const dialog = new dialogs.EditDayDialog(this.#store, this.#lang);
+                    document.body.appendChild(dialog);
+                    dialog.set(
+                        parseInt(ev.currentTarget.getAttribute("data-year")),
+                        parseInt(ev.currentTarget.getAttribute("data-month")),
+                        parseInt(ev.currentTarget.getAttribute("data-date"))
+                    );
+
+                    dialog.ui.open(true);
+                    dialog.ui.events.on("close", () => {
+                        document.body.removeChild(dialog);
+                    });
                 }
             );
         });
