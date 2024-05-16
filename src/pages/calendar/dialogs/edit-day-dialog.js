@@ -67,7 +67,7 @@ export class EditDayDialog extends ui.wc.Dialog {
     connectedCallback() { // {{{
         super.connectedCallback();
 
-        // TODO: ... (`this.#shiftsSelect`)
+        // TODO: ... (`this.#shiftsSelect`), or just use this.#store.ui.get("settings") without a event listener for this dialog 
         //  ...Get all shifts from settings
         //  ...Add shifts to ui-select element 
         //  ...set current active shift (`this.rhythmShift` or `this.data.shift` or undefined)
