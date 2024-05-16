@@ -8,6 +8,9 @@
         "5": "Fr",
         "6": "Sa"
     },
+    "calendarDialog": {
+        "editDayNotes": "Notiz"
+    },
     "settings": {
         "appBarTitle": "Einstellungen",
         "miscTitle": "Sonstiges",

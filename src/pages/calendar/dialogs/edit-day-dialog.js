@@ -5,6 +5,7 @@ import * as utils from "../utils";
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").Select} Select
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
@@ -24,6 +25,11 @@ export class EditDayDialog extends ui.wc.Dialog {
     #month = 0;
     /** @type {number} */
     #date = 0;
+
+    /** @type {Select} */
+    #shiftSelect;
+    /** @type {HTMLTextAreaElement} */
+    #notes;
 
     /** @type {Button} */
     #cancelButton;
@@ -61,6 +67,12 @@ export class EditDayDialog extends ui.wc.Dialog {
     connectedCallback() { // {{{
         super.connectedCallback();
 
+        // TODO: ... (`this.#shiftsSelect`)
+        //  ...Get all shifts from settings
+        //  ...Add shifts to ui-select element 
+        //  ...set current active shift (`this.rhythmShift` or `this.data.shift` or undefined)
+        //  ...Do a database add/put/delete based on selection, delete if rhythmShift was choosen
+        //  ...Mark the rhythmShift somehow
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
@@ -112,12 +124,13 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container
      */
     createShiftsPicker(container) { // {{{
-        // TODO: ...
-        //  ...Get all shifts from settings
-        //  ...Add shifts to ui-select element 
-        //  ...set current active shift (`this.rhythmShift` or `this.data.shift` or undefined)
-        //  ...Do a database add/put/delete based on selection, delete if rhythmShift was choosen
-        //  ...Mark the rhythmShift somehow
+        const item = new ui.wc.FlexGridItem();
+
+        this.#shiftSelect = new ui.wc.Select();
+
+        item.appendChild(this.#shiftSelect);
+        container.appendChild(item);
+
     } // }}}
 
     /**
@@ -125,7 +138,15 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {FlexGrid} container
      */
     createNotes(container) { // {{{
-        // TODO: ...
+        this.notesItem = new ui.wc.FlexGridItem();
+        this.notesItem.innerHTML = `
+            <ui-secondary><ui-secondary>
+            <textfield></textfield>
+        `;
+
+        this.#notes = this.notesItem.querySelector("textfield")
+
+        container.appendChild(this.notesItem);
     } // }}}
 
     /** @private */
@@ -157,6 +178,9 @@ export class EditDayDialog extends ui.wc.Dialog {
     onLang() { // {{{
         //const weekDay = this.#lang.ui.get("calendar", new Date(this.#year, this.#month, this.#date).getDay().toString());
         this.ui.title = `${this.#year}/${this.#month}/${this.#date}`;
+
+        this.notesItem.querySelector("ui-secondary").innerHTML =
+            this.#lang.ui.get("calendarDialog", "editDayNotes");
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
