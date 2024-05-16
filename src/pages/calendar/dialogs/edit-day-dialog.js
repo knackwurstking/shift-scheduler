@@ -155,8 +155,8 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /** @private */
     onLang() { // {{{
-        const weekDay = this.#lang.ui.get("calendar", new Date(this.#year, this.#month, this.#date).getDay().toString());
-        this.ui.title = `${this.#year}/${this.#month}/${this.#date} - ${weekDay}`;
+        //const weekDay = this.#lang.ui.get("calendar", new Date(this.#year, this.#month, this.#date).getDay().toString());
+        this.ui.title = `${this.#year}/${this.#month}/${this.#date}`;
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
