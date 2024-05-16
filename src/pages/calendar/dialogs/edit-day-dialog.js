@@ -3,7 +3,7 @@ import { html } from "ui/src/js/utils";
 import db from "../../../db";
 import * as utils from "../utils";
 
-// {{{ Flex Grid Content
+// {{{ Flex Grid Content TODO: shift change slect & textfield for notes
 const flexGridContent = html`
 `;
 // }}}
