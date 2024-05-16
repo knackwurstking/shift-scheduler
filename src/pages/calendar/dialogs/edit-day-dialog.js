@@ -114,7 +114,10 @@ export class EditDayDialog extends ui.wc.Dialog {
         /** @type {SelectOption[]} */
         // @ts-ignore
         const children = [...this.#shiftSelect.children];
-        children.forEach(child => child.ui.selected = shift?.id.toString() === child.ui.value);
+        children.forEach(child => {
+            child.ui.selected = shift?.id.toString() === child.ui.value;
+            // TODO: Mark default (rhythm) shift if possible or use emty select (special) option 
+        });
     } // }}}
 
     /**
@@ -150,10 +153,11 @@ export class EditDayDialog extends ui.wc.Dialog {
         });
 
         const shifts = this.#store.ui.get("settings").shifts;
+        // TODO: append special child empty or none or whatever
         shifts.forEach((shift) => {
             const option = new ui.wc.SelectOption();
             option.ui.value = shift.id.toString();
-            option.innerText = shift.name; // TODO: mark rhythm shift with `(default)`
+            option.innerText = shift.name;
             this.#shiftSelect.appendChild(option);
         });
 
