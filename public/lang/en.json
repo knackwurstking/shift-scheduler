@@ -23,16 +23,22 @@
         "shiftsEditRhythmButton": "Edit",
         "shiftsBackupPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
-        "shiftsBackupExportButton": "Export",
-        "dialogEditRhythmTitle": "Shift Rhythm",
-        "dialogEditShiftTitle": "Edit Shift",
-        "dialogEditShiftName": "Name (ex.: Night)",
-        "dialogEditShiftShortName": "Short (ex.: N)",
-        "dialogEditShiftColorPicker": "Pick a color",
-        "dialogEditShiftUseDefaultColor": "Disable color",
-        "dialogEditShiftVisibleItem": "Hide shift",
-        "dialogErrorMissingShiftName": "Missing shift name!",
-        "deleteShiftConfirationDialog": "Delete shift \"%s\"?"
+        "shiftsBackupExportButton": "Export"
+    },
+    "settings_format": {
+        "deleteShiftConfirmationDialog": "Delete shift \"%s\"?"
+    },
+    "settingsDialog": {
+        "editRhythmTitle": "Shift Rhythm",
+        "editShiftTitle": "Edit Shift",
+        "editShiftName": "Name (ex.: Night)",
+        "editShiftShortName": "Short (ex.: N)",
+        "editShiftColorPicker": "Pick a color",
+        "editShiftUseDefaultColor": "Disable color",
+        "editShiftVisibleItem": "Hide shift"
+    },
+    "error": {
+        "missingShiftName": "Missing shift name!"
     },
     "general": {
         "submitButton": "OK",

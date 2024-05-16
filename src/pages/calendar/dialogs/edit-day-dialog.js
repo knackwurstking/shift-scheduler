@@ -24,6 +24,13 @@ export class EditDayDialog extends ui.wc.Dialog {
     /** @type {Lang} */
     #lang;
 
+    /** @type {number} */
+    #year = 0;
+    /** @type {number} */
+    #month = 0;
+    /** @type {number} */
+    #date = 0;
+
     /** @type {Button} */
     #cancelButton;
     /** @type {() => void|Promise<void>} */
@@ -82,6 +89,10 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {number} date
      */
     async set(year, month, date) { // {{{
+        this.#year = year;
+        this.#month = month;
+        this.#date = date;
+
         this.data = await db.get(year, month, date);
         this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
         if (this.data === null) {
@@ -129,8 +140,8 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /** @private */
     onLang() { // {{{
-        // TODO: "title", ...
-        //this.ui.title = ...
+        const weekDay = this.#lang.ui.get("calendar", new Date(this.#year, this.#month, this.#date).getDay().toString());
+        this.ui.title = `${this.#year}/${this.#month}/${this.#date} - ${weekDay}`;
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");

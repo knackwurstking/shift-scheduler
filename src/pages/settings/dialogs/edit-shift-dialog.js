@@ -118,7 +118,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.shortNameItem = new ui.wc.FlexGridItem();
         this.shortNameItem.innerHTML = `
             <ui-secondary>
-                ${this.#lang.ui.get("settings", "dialogEditShiftShortName")}
+                ${this.#lang.ui.get("settingsDialog", "editShiftShortName")}
             </ui-secondary>
             <input
                 style="color: ${this.shift.color || 'inherit'};"
@@ -149,7 +149,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.colorPickerItem = new ui.wc.FlexGridItem();
         this.colorPickerItem.innerHTML = `
             <ui-label>
-                <input slot="input" style="width: 100%;" type="color" value="${this.shift.color}">
+                <input slot="input" style="width: 100%; min-width: 4rem;" type="color" value="${this.shift.color}">
             </ui-label>
         `;
 
@@ -306,27 +306,27 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /** @private */
     async onLang() { // {{{
-        this.ui.title = this.#lang.ui.get("settings", "dialogEditShiftTitle");
+        this.ui.title = this.#lang.ui.get("settingsDialog", "editShiftTitle");
 
         // Name
         this.nameItem.querySelector("ui-secondary").innerHTML =
-            this.#lang.ui.get("settings", "dialogEditShiftName");
+            this.#lang.ui.get("settingsDialog", "editShiftName");
 
         // Short
         this.shortNameItem.querySelector("ui-secondary").innerHTML =
-            this.#lang.ui.get("settings", "dialogEditShiftShortName");
+            this.#lang.ui.get("settingsDialog", "editShiftShortName");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.colorPickerItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("settings", "dialogEditShiftColorPicker");
+            this.#lang.ui.get("settingsDialog", "editShiftColorPicker");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.useDefaultColorItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("settings", "dialogEditShiftUseDefaultColor");
+            this.#lang.ui.get("settingsDialog", "editShiftUseDefaultColor");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.visibleItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("settings", "dialogEditShiftVisibleItem");
+            this.#lang.ui.get("settingsDialog", "editShiftVisibleItem");
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");

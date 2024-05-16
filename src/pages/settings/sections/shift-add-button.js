@@ -65,7 +65,7 @@ export class ShiftAddButton extends ui.wc.Button {
              */
             const onSubmit = async (newShift) => { // {{{
                 if (!newShift.name) {
-                    alert(this.#lang.ui.get("settings", "dialogErrorMissingShiftName"));
+                    alert(this.#lang.ui.get("error", "missingShiftName"));
 
                     shift = newShift;
 

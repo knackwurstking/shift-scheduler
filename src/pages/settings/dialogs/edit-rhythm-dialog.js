@@ -300,7 +300,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
     /** @private */
     async onLang() { // {{{
-        this.ui.title = this.#lang.ui.get("settings", "dialogEditRhythmTitle");
+        this.ui.title = this.#lang.ui.get("settingsDialog", "editRhythmTitle");
 
         // Name
         this.#content.querySelector("thead th:nth-child(1)").innerHTML =

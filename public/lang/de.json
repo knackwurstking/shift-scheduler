@@ -23,16 +23,22 @@
         "shiftsEditRhythmButton": "Bearbeiten",
         "shiftsBackupPrimary": "Backup",
         "shiftsBackupImportButton": "Import",
-        "shiftsBackupExportButton": "Export",
-        "dialogEditRhythmTitle": "Schicht Rhythmus",
-        "dialogEditShiftTitle": "Schicht Bearbeiten",
-        "dialogEditShiftName": "Name (Bsp.: Nacht)",
-        "dialogEditShiftShortName": "Kürzel (Bsp.: N)",
-        "dialogEditShiftColorPicker": "Farbe wählen",
-        "dialogEditShiftUseDefaultColor": "Farbe deaktivieren",
-        "dialogEditShiftVisibleItem": "Schicht ausblenden",
-        "dialogErrorMissingShiftName": "Fehlender Schichtname!",
-        "deleteShiftConfirationDialog": "Shicht \"%s\" löschen?"
+        "shiftsBackupExportButton": "Export"
+    },
+    "settings_format": {
+        "deleteShiftConfirmationDialog": "Shicht \"%s\" löschen?"
+    },
+    "settingsDialog": {
+        "editRhythmTitle": "Schicht Rhythmus",
+        "editShiftTitle": "Schicht Bearbeiten",
+        "editShiftName": "Name (Bsp.: Nacht)",
+        "editShiftShortName": "Kürzel (Bsp.: N)",
+        "editShiftColorPicker": "Farbe wählen",
+        "editShiftUseDefaultColor": "Farbe deaktivieren",
+        "editShiftVisibleItem": "Schicht ausblenden"
+    },
+    "error": {
+        "missingShiftName": "Fehlender Schichtname!",
     },
     "general": {
         "submitButton": "OK",

@@ -178,7 +178,7 @@ export class ShiftsTable extends HTMLTableElement {
             if (
                 !window.confirm(
                     this.#lang.ui.get(
-                        "settings", "deleteShiftConfirationDialog"
+                        "settings_format", "deleteShiftConfirmationDialog"
                     ).replace("%s", shift.name)
                 )
             ) {
