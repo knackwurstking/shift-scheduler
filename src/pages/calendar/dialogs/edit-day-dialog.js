@@ -1,12 +1,6 @@
 import ui from "ui";
-import { html } from "ui/src/js/utils";
 import db from "../../../db";
 import * as utils from "../utils";
-
-// {{{ Flex Grid Content TODO: shift change slect & textfield for notes
-const flexGridContent = html`
-`;
-// }}}
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
@@ -43,9 +37,6 @@ export class EditDayDialog extends ui.wc.Dialog {
         // TODO: Save note and shift, close the dialog
         this.ui.close();
     };
-
-    /** @type {FlexGrid} */
-    #content;
 
     static register = () => customElements.define("edit-day-dialog", EditDayDialog);
 
@@ -106,11 +97,35 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /** @private */
     createContent() { // {{{
-        this.#content = new ui.wc.FlexGrid();
-        this.#content.style.width = "100%";
-        this.#content.style.height = "100%";
-        this.#content.innerHTML = flexGridContent;
-        this.appendChild(this.#content)
+        const content = new ui.wc.FlexGrid();
+
+        content.setAttribute("gap", "0.5rem");
+
+        this.createShiftsPicker(content);
+        this.createNotes(content);
+
+        this.appendChild(content);
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} container
+     */
+    createShiftsPicker(container) { // {{{
+        // TODO: ...
+        //  ...Get all shifts from settings
+        //  ...Add shifts to ui-select element 
+        //  ...set current active shift (`this.rhythmShift` or `this.data.shift` or undefined)
+        //  ...Do a database add/put/delete based on selection, delete if rhythmShift was choosen
+        //  ...Mark the rhythmShift somehow
+    } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} container
+     */
+    createNotes(container) { // {{{
+        // TODO: ...
     } // }}}
 
     /** @private */
