@@ -43,7 +43,7 @@ export async function getArray(year, month, store) { // {{{
  * @returns {Shift| null}
  */
 export function calcShiftForDay(current, settings) { // {{{
-    if (!settings.startDate || !settings.rhythm.length) return;
+    if (!settings.startDate || !settings.rhythm.length) return null;
 
     const sDate = new Date(settings.startDate);
     const diffInDays = Math.round((current.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24));

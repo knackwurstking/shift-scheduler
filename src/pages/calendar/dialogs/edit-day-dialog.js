@@ -6,10 +6,12 @@ import * as utils from "../utils";
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Select} Select
+ * @typedef {import("ui/src/wc").SelectOption} SelectOption
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
  * @typedef {import("../../../types").DBDataEntry} DBDataEntry
+ * @typedef {import("../../../types").Shift} Shift
  */
 
 /** @extends {ui.wc.Dialog<DialogEvents>} */
@@ -41,6 +43,7 @@ export class EditDayDialog extends ui.wc.Dialog {
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
         // TODO: Save note and shift, close the dialog
+        console.warn("store data", { note: this.data.note, shift: this.data.shift });
         this.ui.close();
     };
 
@@ -67,12 +70,6 @@ export class EditDayDialog extends ui.wc.Dialog {
     connectedCallback() { // {{{
         super.connectedCallback();
 
-        // TODO: ... (`this.#shiftsSelect`), or just use this.#store.ui.get("settings") without a event listener for this dialog 
-        //  ...Get all shifts from settings
-        //  ...Add shifts to ui-select element 
-        //  ...set current active shift (`this.rhythmShift` or `this.data.shift` or undefined)
-        //  ...Do a database add/put/delete based on selection, delete if rhythmShift was choosen
-        //  ...Mark the rhythmShift somehow
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
@@ -96,7 +93,6 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.#month = month;
         this.#date = date;
 
-        // TODO: update select and notes elements
         this.data = await db.get(year, month, date);
         this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
         if (this.data === null) {
@@ -106,6 +102,26 @@ export class EditDayDialog extends ui.wc.Dialog {
                 note: "",
             };
         }
+
+        this.selectShift(this.data.shift || this.rhythmShift);
+        this.updateNotes(this.data.note || "");
+    } // }}}
+
+    /**
+     * @param {Shift | null} shift
+     */
+    selectShift(shift) { // {{{
+        /** @type {SelectOption[]} */
+        // @ts-ignore
+        const children = [...this.#shiftSelect.children];
+        children.forEach(child => child.ui.selected = shift?.id.toString() === child.ui.value);
+    } // }}}
+
+    /**
+     * @param {string} note
+     */
+    updateNotes(note) { // {{{
+        this.#notes.value = note;
     } // }}}
 
     /** @private */
@@ -128,6 +144,18 @@ export class EditDayDialog extends ui.wc.Dialog {
         const item = new ui.wc.FlexGridItem();
 
         this.#shiftSelect = new ui.wc.Select();
+        this.#shiftSelect.ui.events.on("change", (selectOption) => {
+            this.data.shift = this.#store.ui.get("settings").shifts
+                .find(shift => shift.id.toString() === selectOption.ui.value) || null;
+        });
+
+        const shifts = this.#store.ui.get("settings").shifts;
+        shifts.forEach((shift) => {
+            const option = new ui.wc.SelectOption();
+            option.ui.value = shift.id.toString();
+            option.innerText = shift.name; // TODO: mark rhythm shift with `(default)`
+            this.#shiftSelect.appendChild(option);
+        });
 
         item.appendChild(this.#shiftSelect);
         container.appendChild(item);
@@ -144,7 +172,7 @@ export class EditDayDialog extends ui.wc.Dialog {
             <textarea rows="6"></textarea>
         `;
 
-        this.#notes = this.notesItem.querySelector("textfield")
+        this.#notes = this.notesItem.querySelector("textarea")
 
         container.appendChild(this.notesItem);
     } // }}}
