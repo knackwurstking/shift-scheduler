@@ -96,6 +96,7 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.#month = month;
         this.#date = date;
 
+        // TODO: update select and notes elements
         this.data = await db.get(year, month, date);
         this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
         if (this.data === null) {
@@ -130,7 +131,6 @@ export class EditDayDialog extends ui.wc.Dialog {
 
         item.appendChild(this.#shiftSelect);
         container.appendChild(item);
-
     } // }}}
 
     /**
@@ -140,8 +140,8 @@ export class EditDayDialog extends ui.wc.Dialog {
     createNotes(container) { // {{{
         this.notesItem = new ui.wc.FlexGridItem();
         this.notesItem.innerHTML = `
-            <ui-secondary><ui-secondary>
-            <textfield></textfield>
+            <ui-secondary></ui-secondary>
+            <textarea rows="6"></textarea>
         `;
 
         this.#notes = this.notesItem.querySelector("textfield")
