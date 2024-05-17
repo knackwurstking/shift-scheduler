@@ -107,7 +107,9 @@ export default class App extends ui.js.events.Events {
 
         /** @type {Button} */
         this.appBarDatePickerButton = this.appBar.querySelector("#appBarDatePickerButton")
-        this.appBarDatePickerButton.onclick = async () => null; // TODO: Add date-picker onclick callback
+        this.appBarDatePickerButton.onclick = async () => {
+            // TODO: Open a system date picker for android or browser
+        };
 
         /** @type {IconButton} */
         this.appBarEditButton = this.appBar.querySelector("#appBarEditButton")
