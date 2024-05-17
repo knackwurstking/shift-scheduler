@@ -106,8 +106,11 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {number} date
      */
     async set(year, month, date) { // {{{
+        this.ui.title = `${year}/${month + 1}/${date}`;
+
         this.data = await db.get(year, month, date);
         this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
+
         if (this.data === null) {
             this.data = {
                 year, month, date,
@@ -229,9 +232,6 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /** @private */
     onLang() { // {{{
-        //const weekDay = this.#lang.ui.get("calendar", new Date(this.#year, this.#month, this.#date).getDay().toString());
-        this.ui.title = `${this.data.year}/${this.data.month}/${this.data.date}`;
-
         this.notesItem.querySelector("ui-secondary").innerHTML =
             this.#lang.ui.get("calendarDialog", "editDayNotes");
 
