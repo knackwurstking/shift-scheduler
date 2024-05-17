@@ -42,7 +42,16 @@ export class EditDayDialog extends ui.wc.Dialog {
     #submitButton;
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
-        // TODO: Save note and shift, close the dialog
+        if (this.data.shift === this.rhythmShift) {
+            this.data.shift = null;
+        }
+
+        if (!this.data.note && !this.data.shift) {
+            // TODO: Delete db entry here...
+        } else {
+            // TODO: Add or put db entry
+        }
+
         console.warn("store data", { note: this.data.note, shift: this.data.shift });
         this.ui.close();
     };
@@ -115,7 +124,9 @@ export class EditDayDialog extends ui.wc.Dialog {
         // @ts-ignore
         const children = [...this.#shiftSelect.children];
         children.forEach(child => {
-            child.ui.selected = shift?.id.toString() === child.ui.value;
+            child.ui.selected = (shift?.id.toString() === child.ui.value)
+                || (!shift && child.ui.value === "0");
+
             // TODO: Mark default (rhythm) shift if possible or use emty select (special) option 
         });
     } // }}}
