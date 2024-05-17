@@ -14,19 +14,12 @@ import * as utils from "../utils";
  * @typedef {import("../../../types").Shift} Shift
  */
 
-/** @extends {ui.wc.Dialog<DialogEvents>} */
+/** @extends {ui.wc.Dialog<DialogEvents & { submit: DBDataEntry }>} */
 export class EditDayDialog extends ui.wc.Dialog {
     /** @type {Store} */
     #store;
     /** @type {Lang} */
     #lang;
-
-    /** @type {number} */
-    #year = 0;
-    /** @type {number} */
-    #month = 0;
-    /** @type {number} */
-    #date = 0;
 
     /** @type {Select} */
     #shiftSelect;
@@ -64,6 +57,7 @@ export class EditDayDialog extends ui.wc.Dialog {
             }
         }
 
+        this.ui.events.dispatch("submit", { ...this.data, shift: this.data.shift || this.rhythmShift });
         this.ui.close();
     };
 
@@ -80,8 +74,11 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.#lang = lang;
 
         this.cleanup = [];
+
         /** @type {DBDataEntry | null} */
         this.data = null;
+        /** @type {Shift} */
+        this.rhythmShift;
 
         this.createContent();
         this.createActions();
@@ -109,10 +106,6 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {number} date
      */
     async set(year, month, date) { // {{{
-        this.#year = year;
-        this.#month = month;
-        this.#date = date;
-
         this.data = await db.get(year, month, date);
         this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
         if (this.data === null) {
@@ -237,7 +230,7 @@ export class EditDayDialog extends ui.wc.Dialog {
     /** @private */
     onLang() { // {{{
         //const weekDay = this.#lang.ui.get("calendar", new Date(this.#year, this.#month, this.#date).getDay().toString());
-        this.ui.title = `${this.#year}/${this.#month}/${this.#date}`;
+        this.ui.title = `${this.data.year}/${this.data.month}/${this.data.date}`;
 
         this.notesItem.querySelector("ui-secondary").innerHTML =
             this.#lang.ui.get("calendarDialog", "editDayNotes");

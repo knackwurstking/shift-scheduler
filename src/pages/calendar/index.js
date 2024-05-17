@@ -235,10 +235,11 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                     dialog.ui.events.on("close", () => {
                         document.body.removeChild(dialog);
                     });
-                    // TODO: Add on "submit" handler for rerender calendar
-                    //dialog.ui.events.on("submit", async () => {
-                    //    this.updateDayItem(child, db.get(year, month, date))
-                    //})
+                    dialog.ui.events.on("submit", async (data) => {
+                        if (data) {
+                            this.updateDayItem(child, data);
+                        }
+                    })
                 }
             );
         });
@@ -291,13 +292,13 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
 
         dataEntries.forEach(async (item, idx) => {
-            //this.updateDayItem(cards[idx], item)
-            // TODO: move this code block to `this.updateDayItem(...)`
             const data = await db.get(item.year, item.month, item.date);
             if (data !== null) {
                 item.note = data.note;
                 item.shift = data.shift || item.shift;
             }
+
+            this.updateDayItem(cards[idx], item)
 
             // Inactive Item
             if (item.year !== current.getFullYear() || item.month !== current.getMonth()) {
@@ -305,50 +306,56 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             } else {
                 cards[idx].classList.remove("is-inactive");
             }
-
-            // Today Item
-            if (this.isToday(item.year, item.month, item.date)) {
-                cards[idx].classList.add("is-today");
-            } else {
-                cards[idx].classList.remove("is-today");
-            }
-
-            // Has Note
-            if (!!item.note) {
-                cards[idx].classList.add("is-today");
-            } else {
-                cards[idx].classList.remove("is-today");
-            }
-
-            // Set date and shift
-            cards[idx].querySelector(".day-item-date").innerHTML = `${item.date}`
-
-            /** @type {HTMLElement} */
-            const itemShift = cards[idx].querySelector(".day-item-shift");
-
-            if (!item.shift) {
-                itemShift.style.removeProperty("--shift-color");
-                itemShift.innerHTML = "";
-                return;
-            }
-
-            itemShift.style.setProperty(
-                "--shift-color",
-                item.shift.visible
-                    ? (item.shift.color || "inherit")
-                    : "transparent"
-            );
-
-            itemShift.innerHTML = item.shift.shortName || "";
-
-            // Needed for the dialog to add a note or modify the shift
-            cards[idx].setAttribute("data-year", item.year.toString());
-            cards[idx].setAttribute("data-month", item.month.toString());
-            cards[idx].setAttribute("data-date", item.date.toString());
         });
 
         this.markWeekendItems(...cards);
     } // }}}
+
+    /**
+     * @param {Element} el
+     * @param {DBDataEntry} data
+     */
+    async updateDayItem(el, data) {
+        // Today Item
+        if (this.isToday(data.year, data.month, data.date)) {
+            el.classList.add("is-today");
+        } else {
+            el.classList.remove("is-today");
+        }
+
+        // Has Note
+        if (!!data.note) {
+            el.classList.add("is-today");
+        } else {
+            el.classList.remove("is-today");
+        }
+
+        // Set date and shift
+        el.querySelector(".day-item-date").innerHTML = `${data.date}`
+
+        /** @type {HTMLElement} */
+        const itemShift = el.querySelector(".day-item-shift");
+
+        if (!data.shift) {
+            itemShift.style.removeProperty("--shift-color");
+            itemShift.innerHTML = "";
+            return;
+        }
+
+        itemShift.style.setProperty(
+            "--shift-color",
+            data.shift.visible
+                ? (data.shift.color || "inherit")
+                : "transparent"
+        );
+
+        itemShift.innerHTML = data.shift.shortName || "";
+
+        // Needed for the dialog to add a note or modify the shift
+        el.setAttribute("data-year", data.year.toString());
+        el.setAttribute("data-month", data.month.toString());
+        el.setAttribute("data-date", data.date.toString());
+    }
 
     /**
      * @param {number} year
