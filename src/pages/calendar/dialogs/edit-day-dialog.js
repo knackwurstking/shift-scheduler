@@ -126,8 +126,6 @@ export class EditDayDialog extends ui.wc.Dialog {
         children.forEach(child => {
             child.ui.selected = (shift?.id.toString() === child.ui.value)
                 || (!shift && child.ui.value === "0");
-
-            // TODO: Mark default (rhythm) shift if possible or use emty select (special) option 
         });
     } // }}}
 
