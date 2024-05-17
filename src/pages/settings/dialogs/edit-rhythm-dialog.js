@@ -156,10 +156,16 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
         let draggedIndex = null;
         this.#rhythm.forEach((id, index) => {
-            const shift = settings.shifts.find(shift => shift.id === id)
+            let shift = settings.shifts.find(shift => shift.id === id)
             if (!shift) {
-                console.error(`shift with id of "${id}" is missing in shifts`)
-                return
+                console.warn(`shift with id of "${id}" is missing in shifts`)
+                shift = {
+                    id: id,
+                    name: "",
+                    shortName: "",
+                    color: "var(--destructive)",
+                    visible: false,
+                }
             }
 
             // Create a table entry for this shift
