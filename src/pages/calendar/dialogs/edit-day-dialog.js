@@ -40,19 +40,30 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /** @type {Button} */
     #submitButton;
-    /** @type {() => void|Promise<void>} */
-    #onSubmit = () => {
+    /** @type {(() => void|Promise<void>)} */
+    #onSubmit = async () => {
         if (this.data.shift === this.rhythmShift) {
             this.data.shift = null;
         }
 
         if (!this.data.note && !this.data.shift) {
-            // TODO: Delete db entry here...
+            try {
+                db.delete(this.data.year, this.data.month, this.data.date);
+            } catch (err) {
+                alert(err);
+            }
         } else {
-            // TODO: Add or put db entry
+            try {
+                await db.add(this.data);
+            } catch {
+                try {
+                    await db.put(this.data);
+                } catch (err) {
+                    alert(err);
+                }
+            }
         }
 
-        console.warn("store data", { note: this.data.note, shift: this.data.shift });
         this.ui.close();
     };
 
@@ -191,6 +202,9 @@ export class EditDayDialog extends ui.wc.Dialog {
         `;
 
         this.#notes = this.notesItem.querySelector("textarea")
+        this.#notes.oninput = () => {
+            this.data.note = this.#notes.value;
+        };
 
         container.appendChild(this.notesItem);
     } // }}}
