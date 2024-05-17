@@ -153,9 +153,14 @@ export class EditDayDialog extends ui.wc.Dialog {
         });
 
         const shifts = this.#store.ui.get("settings").shifts;
-        // TODO: append special child empty or none or whatever
+
+        let option = new ui.wc.SelectOption();
+        option.ui.value = "0"
+        option.innerHTML = "&nbsp;"
+        this.#shiftSelect.appendChild(option);
+
         shifts.forEach((shift) => {
-            const option = new ui.wc.SelectOption();
+            option = new ui.wc.SelectOption();
             option.ui.value = shift.id.toString();
             option.innerText = shift.name;
             this.#shiftSelect.appendChild(option);
