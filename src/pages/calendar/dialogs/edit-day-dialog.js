@@ -106,7 +106,7 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {number} date
      */
     async set(year, month, date) { // {{{
-        this.ui.title = `${year}/${month + 1}/${date}`;
+        this.ui.title = `${year}/${(month + 1).toString().padStart(2, "0")}/${(date).toString().padStart(2, "0")}`;
 
         this.data = await db.get(year, month, date);
         this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
