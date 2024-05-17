@@ -223,18 +223,22 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.shadowRoot.querySelectorAll(".days-row > .day-item").forEach(child => {
             child.addEventListener("click",
                 async (/** @type {Event & { currentTarget: HTMLElement }} */ev) => {
+                    const year = parseInt(ev.currentTarget.getAttribute("data-year"));
+                    const month = parseInt(ev.currentTarget.getAttribute("data-month"));
+                    const date = parseInt(ev.currentTarget.getAttribute("data-date"));
+
                     const dialog = new dialogs.EditDayDialog(this.#store, this.#lang);
                     document.body.appendChild(dialog);
-                    dialog.set(
-                        parseInt(ev.currentTarget.getAttribute("data-year")),
-                        parseInt(ev.currentTarget.getAttribute("data-month")),
-                        parseInt(ev.currentTarget.getAttribute("data-date"))
-                    );
+                    dialog.set(year, month, date);
 
                     dialog.ui.open(true);
                     dialog.ui.events.on("close", () => {
                         document.body.removeChild(dialog);
                     });
+                    // TODO: Add on "submit" handler for rerender calendar
+                    //dialog.ui.events.on("submit", async () => {
+                    //    this.updateDayItem(child, db.get(year, month, date))
+                    //})
                 }
             );
         });
@@ -282,11 +286,13 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      *  @param {Date} current
      *  @param {Element} calendarItem
      */
-    async updateItem(current, calendarItem) { // {{{
+    async updateCalendarItem(current, calendarItem) { // {{{
         let dataEntries = await utils.getArray(current.getFullYear(), current.getMonth(), this.#store);
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
 
         dataEntries.forEach(async (item, idx) => {
+            //this.updateDayItem(cards[idx], item)
+            // TODO: move this code block to `this.updateDayItem(...)`
             const data = await db.get(item.year, item.month, item.date);
             if (data !== null) {
                 item.note = data.note;
@@ -404,7 +410,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         const items = this.getItems()
         for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
-            this.updateItem(new Date(date), items[i]);
+            this.updateCalendarItem(new Date(date), items[i]);
         }
 
         // Performance testing - end
