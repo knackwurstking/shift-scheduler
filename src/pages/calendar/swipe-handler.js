@@ -43,7 +43,11 @@ export class SwipeHandler extends ui.js.events.Events {
             if (this.#finalTransform) return;
 
             if (ev.buttons === 1) { // primary button
-                if (this.startX === null) this.startX = ev.clientX;
+                if (this.startX === null) {
+                    this.startX = ev.clientX;
+                    this.calendar.getItems().forEach(item => item.classList.add("moving"));
+                }
+
                 this.clientX = ev.clientX;
             }
         }; // }}}
@@ -52,7 +56,11 @@ export class SwipeHandler extends ui.js.events.Events {
         this.onTouchMove = async (ev) => { // {{{
             if (this.#finalTransform) return;
 
-            if (this.startX === null) this.startX = ev.touches[0].clientX;
+            if (this.startX === null) {
+                this.startX = ev.touches[0].clientX;
+                this.calendar.getItems().forEach(item => item.classList.add("moving"));
+            }
+
             this.clientX = ev.touches[0].clientX;
         }; // }}}
 
@@ -161,6 +169,7 @@ export class SwipeHandler extends ui.js.events.Events {
         this.startX = null;
         this.clientX = null;
         this.#finalTransform = false;
+        this.calendar.getItems().forEach(item => item.classList.remove("moving"));
 
         console.debug(`[Calendar SwipeHandler] release transform lock`);
     } // }}}

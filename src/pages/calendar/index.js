@@ -147,9 +147,10 @@ template.innerHTML = `
         border-bottom-right-radius: 50%;
         background-color: orange;
         filter: blur(1em);
+        animation: fade-in .5s;
     }
 
-    .day-item.note::before {
+    .item:not(.moving) .day-item.note::before {
         content: "";
         position: absolute;
         z-index: 8;
@@ -161,6 +162,7 @@ template.innerHTML = `
         border-top-left-radius: var(--ui-radius);
         background-color: red;
         filter: blur(1em);
+        animation: fade-in .5s;
     }
 
     .day-item.inactive {
@@ -192,18 +194,6 @@ template.innerHTML = `
         border-radius: inherit;
     }
 
-    .day-item-shift::before {
-        content: "";
-        position: absolute;
-        z-index: 10;
-        top: calc(50% - 0.5em);
-        left: calc(50% - 0.5em);
-        width: 0.75em;
-        height: 0.75em;
-        background-color: currentColor;
-        filter: blur(0.75em);
-    }
-
     @media (orientation: landscape) {
         .day-item .day-item-shift {
             left: 4vmin;
@@ -214,6 +204,11 @@ template.innerHTML = `
         .day-item .day-item-shift {
             top: 5vmin;
         }
+    }
+
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 </style>
 
