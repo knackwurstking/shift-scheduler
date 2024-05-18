@@ -185,8 +185,7 @@ template.innerHTML = `
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 4vmin;
-        font-size: clamp(0rem, 4vmin, 1.5rem);
+        font-size: 5vmin;
         font-weight: bold;
         color: var(--shift-color, var(--ui-color));
         border-radius: inherit;
