@@ -145,12 +145,21 @@ template.innerHTML = `
         height: 150%;
         border-radius: var(--ui-radius);
         border-bottom-right-radius: 50%;
-        background-color: red;
-        filter: blur(8px);
+        background-color: orange;
+        filter: blur(1em);
     }
 
-    .day-item.note {
-        /* TODO: ... */
+    .day-item.note::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        bottom: -50%;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        border-radius: var(--ui-radius);
+        background-color: red;
+        filter: blur(2em);
     }
 
     .day-item.inactive {
