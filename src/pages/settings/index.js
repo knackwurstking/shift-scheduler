@@ -126,6 +126,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             new sections.WeekStart(this.#store, this.#lang)
         );
 
+        // TODO: outsource theme section to sections/theme.js
+
         return {
             title: this.querySelector("#miscTitle"),
 
@@ -155,6 +157,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             new sections.ShiftAddButton(this.#store, this.#lang)
         )
 
+        // TODO: outsource backup section to sections/backup.js
         /** @type {Button} */
         const backupImportButton = this.querySelector("#shiftsBackupImportButton");
         backupImportButton.onclick = async () => {
