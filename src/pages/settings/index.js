@@ -39,6 +39,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         sections.EditRhythm.register();
         sections.ShiftsTable.register();
         sections.ShiftAddButton.register();
+        sections.WeekStart.register();
     };
 
     constructor() { // {{{
@@ -62,7 +63,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
-                this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
                 this.#store.ui.on("theme", this.onTheme.bind(this), true),
             );
 
@@ -122,17 +122,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @private */
     createMiscElements() { // {{{
-        /** @type {HTMLInputElement} */
-        const weekStartInput = this.querySelector("#miscWeekStartInput");
-        weekStartInput.onclick = (/**@type{MouseEvent & { currentTarget: HTMLInputElement }}*/ev) =>
-            this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
+        this.querySelector("#weekStart").appendChild(
+            new sections.WeekStart(this.#store, this.#lang)
+        );
 
         return {
             title: this.querySelector("#miscTitle"),
-
-            /** @type {Label} */
-            weekStart: this.querySelector("#miscWeekStart"),
-            weekStartInput: weekStartInput,
 
             theme: this.querySelector("#miscTheme"),
             /** @type {Select} */
@@ -282,9 +277,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.misc.title.innerHTML = this.#lang.ui.get(
             "settings", "miscTitle"
         );
-        this.misc.weekStart.ui.primary = this.#lang.ui.get(
-            "settings", "miscWeekStartPrimary",
-        );
         this.misc.theme.innerHTML = this.#lang.ui.get(
             "settings", "miscTheme",
         );
@@ -306,14 +298,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.shifts.title.innerHTML = this.#lang.ui.get(
             "settings", "shiftsTitle",
         );
-    } // }}}
-
-    /**
-     * @private
-     * @param {WeekStartStore} weekStart
-     */
-    async onWeekStart(weekStart) { // {{{
-        this.misc.weekStartInput.checked = weekStart === 1;
     } // }}}
 
     /**
