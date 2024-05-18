@@ -135,8 +135,18 @@ template.innerHTML = `
         overflow: hidden;
     }
 
-    .day-item.today {
-        /* TODO: ... */
+    .day-item.today .day-item-date::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--ui-radius);
+        border-bottom-right-radius: 50%;
+        background-color: red;
+        filter: blur(8px);
     }
 
     .day-item.note {
@@ -146,8 +156,6 @@ template.innerHTML = `
     .day-item.inactive {
         opacity: 0.2;
     }
-
-
 
     .day-item .day-item-date {
         position: absolute;
