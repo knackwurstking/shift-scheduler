@@ -223,6 +223,10 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.shadowRoot.querySelectorAll(".days-row > .day-item").forEach(child => {
             child.addEventListener("click",
                 async (/** @type {Event & { currentTarget: HTMLElement }} */ev) => {
+                    if (this.swipeHandler.startX !== null) {
+                        return;
+                    }
+
                     const year = parseInt(ev.currentTarget.getAttribute("data-year"));
                     const month = parseInt(ev.currentTarget.getAttribute("data-month"));
                     const date = parseInt(ev.currentTarget.getAttribute("data-date"));
