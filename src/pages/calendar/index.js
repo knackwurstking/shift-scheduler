@@ -135,9 +135,19 @@ template.innerHTML = `
         overflow: hidden;
     }
 
-    .day-item.is-inactive {
+    .day-item.today {
+        /* TODO: ... */
+    }
+
+    .day-item.note {
+        /* TODO: ... */
+    }
+
+    .day-item.inactive {
         opacity: 0.2;
     }
+
+
 
     .day-item .day-item-date {
         position: absolute;
@@ -306,9 +316,9 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
             // Inactive Item
             if (item.year !== current.getFullYear() || item.month !== current.getMonth()) {
-                cards[idx].classList.add("is-inactive");
+                cards[idx].classList.add("inactive");
             } else {
-                cards[idx].classList.remove("is-inactive");
+                cards[idx].classList.remove("inactive");
             }
         });
 
@@ -322,16 +332,16 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     async updateDayItem(el, data) {
         // Today Item
         if (this.isToday(data.year, data.month, data.date)) {
-            el.classList.add("is-today");
+            el.classList.add("today");
         } else {
-            el.classList.remove("is-today");
+            el.classList.remove("today");
         }
 
         // Has Note
         if (!!data.note) {
-            el.classList.add("is-today");
+            el.classList.add("note");
         } else {
-            el.classList.remove("is-today");
+            el.classList.remove("note");
         }
 
         // Set date and shift
