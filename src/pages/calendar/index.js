@@ -139,10 +139,10 @@ template.innerHTML = `
         content: "";
         position: absolute;
         z-index: 9;
-        top: -50%;
-        left: -50%;
-        width: 150%;
-        height: 150%;
+        top: -1em;
+        left: -1em;
+        width: 2em;
+        height: 2em;
         border-radius: var(--ui-radius);
         border-bottom-right-radius: 50%;
         background-color: orange;
@@ -153,13 +153,14 @@ template.innerHTML = `
         content: "";
         position: absolute;
         z-index: 8;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 0.5em;
+        bottom: -1em;
+        right: -1em;
+        width: 2em;
+        height: 2em;
         border-radius: var(--ui-radius);
+        border-top-left-radius: var(--ui-radius);
         background-color: red;
-        filter: blur(0.5em);
+        filter: blur(1em);
     }
 
     .day-item.inactive {
@@ -197,10 +198,10 @@ template.innerHTML = `
         z-index: 10;
         top: calc(50% - 0.5em);
         left: calc(50% - 0.5em);
-        width: 1em;
-        height: 1em;
+        width: 0.75em;
+        height: 0.75em;
         background-color: currentColor;
-        filter: blur(1em);
+        filter: blur(0.75em);
     }
 
     @media (orientation: landscape) {
