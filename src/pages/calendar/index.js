@@ -138,7 +138,7 @@ template.innerHTML = `
     .day-item.today .day-item-date::before {
         content: "";
         position: absolute;
-        z-index: -1;
+        z-index: 9;
         top: -50%;
         left: -50%;
         width: 150%;
@@ -152,14 +152,14 @@ template.innerHTML = `
     .day-item.note::before {
         content: "";
         position: absolute;
-        z-index: -1;
-        bottom: -50%;
+        z-index: 8;
+        bottom: 0;
         left: 0;
         width: 100%;
-        height: 50%;
+        height: 0.5em;
         border-radius: var(--ui-radius);
         background-color: red;
-        filter: blur(2em);
+        filter: blur(0.5em);
     }
 
     .day-item.inactive {
@@ -189,6 +189,18 @@ template.innerHTML = `
         font-weight: bold;
         color: var(--shift-color, var(--ui-color));
         border-radius: inherit;
+    }
+
+    .day-item-shift::before {
+        content: "";
+        position: absolute;
+        z-index: 10;
+        top: calc(50% - 0.5em);
+        left: calc(50% - 0.5em);
+        width: 1em;
+        height: 1em;
+        background-color: currentColor;
+        filter: blur(1em);
     }
 
     @media (orientation: landscape) {
