@@ -12,16 +12,9 @@ import * as sections from "./sections";
  * @typedef {import("ui/src/wc").Label} Label
  * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Select} Select
- * @typedef {import("ui/src/wc").Primary} Primary
  * @typedef {import("ui/src/wc").Button} Button 
- * @typedef {import("ui/src/wc").SelectOption} SelectOption
  *
- * @typedef {import("../../types").ThemeStore} ThemeStore 
  * @typedef {import("../../types").SettingsStore} SettingsStore 
- * @typedef {import("../../types").LangStore} LangStore 
- * @typedef {import("../../types").WeekStartStore} WeekStartStore
- * @typedef {import("../../types").Shift} Shift 
  * @typedef {import("../../types").Backup} Backup
  */
 
@@ -40,6 +33,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         sections.ShiftsTable.register();
         sections.ShiftAddButton.register();
         sections.WeekStart.register();
+        sections.ThemePicker.register();
     };
 
     constructor() { // {{{
@@ -63,21 +57,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
-                this.#store.ui.on("theme", this.onTheme.bind(this), true),
-            );
-
-            this.cleanup.push(
-                this.misc.themeModeSelect.ui.events.on("change", (option) => {
-                    console.debug(`[settings] update theme mode:`, option);
-                    this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
-                })
-            );
-
-            this.cleanup.push(
-                this.misc.themeSelect.ui.events.on("change", (option) => {
-                    console.debug(`[settings] update theme name:`, option);
-                    this.#store.ui.update("theme", (theme) => ({ ...theme, name: option.ui.value }));
-                })
             );
         });
     } // }}}
@@ -126,16 +105,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             new sections.WeekStart(this.#store, this.#lang)
         );
 
-        // TODO: outsource theme section to sections/theme.js
+        this.querySelector("#themePicker").appendChild(
+            new sections.ThemePicker(this.#store, this.#lang)
+        );
 
         return {
             title: this.querySelector("#miscTitle"),
-
-            theme: this.querySelector("#miscTheme"),
-            /** @type {Select} */
-            themeModeSelect: this.querySelector("#miscThemeModeSelect"),
-            /** @type {Select} */
-            themeSelect: this.querySelector("#miscThemeSelect"),
         };
     } // }}}
 
@@ -280,9 +255,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.misc.title.innerHTML = this.#lang.ui.get(
             "settings", "miscTitle"
         );
-        this.misc.theme.innerHTML = this.#lang.ui.get(
-            "settings", "miscTheme",
-        );
 
         // Backup Section
 
@@ -303,25 +275,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         );
     } // }}}
 
-    /**
-     * @private
-     * @param {ThemeStore} theme
-     */
-    async onTheme(theme) { // {{{
-        console.debug(`[settings] onTheme`, theme);
 
-        [...this.misc.themeModeSelect.children].forEach(
-            (/** @type {SelectOption} */ c) => {
-                c.ui.selected = (c.ui.value === theme.mode)
-            }
-        );
-
-        [...this.misc.themeSelect.children].forEach(
-            (/** @type {SelectOption} */ c) => {
-                c.ui.selected = (c.ui.value === theme.name)
-            }
-        );
-    } // }}}
 }
 
 /** @param {SettingsStore} settings */

@@ -1,15 +1,17 @@
 import { html } from "ui/src/js/utils";
 
 /**
- * @typedef {import("ui/src/wc").Store} Store
+ * @typedef {import("../../../types").StoreEvents} StoreEvents
+ *
+ * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Label} Label
  * @typedef {import("../../../types").WeekStartStore} WeekStartStore
  */
 
 const innerHTML = html`
-    <ui-label id="miscWeekStart" ripple>
-        <input slot="input" id="miscWeekStartInput" type="checkbox">
+    <ui-label ripple>
+        <input slot="input" type="checkbox">
     </ui-label>
 `;
 
