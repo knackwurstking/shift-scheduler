@@ -182,7 +182,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             }
 
             // Handle indexedDB - add/put to database
-            //await this.app.db.deleteAll() // TODO: merge or delete all indexedDB data?
+            await db.deleteAll();
             for (const entry of data.indexedDB.data || []) {
                 db.add(entry).catch(() => db.put(entry));
             }
@@ -242,9 +242,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @private */
     async onLang() { // {{{
-        if (!this.#lang.ui.langType) return;
-
-        // Misc Section
+        // Misc Title 
 
         this.querySelector("#miscTitle").innerHTML = this.#lang.ui.get(
             "settings", "miscTitle"
@@ -262,14 +260,12 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             "settings", "shiftsBackupExportButton",
         );
 
-        // Shifts Section
+        // Shifts Title 
 
         this.querySelector("#shiftsTitle").innerHTML = this.#lang.ui.get(
             "settings", "shiftsTitle",
         );
     } // }}}
-
-
 }
 
 /** @param {SettingsStore} settings */
