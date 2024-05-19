@@ -64,7 +64,7 @@ export class DB {
      * @param {number} date
      * @returns {Promise<DBDataEntry | null>} - Returns null on error (no entry found)
      */
-    async get(year, month, date) { // {{{
+    get(year, month, date) { // {{{
         return new Promise((resolve) => {
             const r = this.roStore().get([year, month, date]);
 
@@ -77,7 +77,7 @@ export class DB {
     } // }}}
 
     /** @returns {Promise<DBDataEntry[]>} */
-    async getAll() { // {{{
+    getAll() { // {{{
         return new Promise((resolve) => {
             const r = this.roStore().getAll()
 
@@ -93,7 +93,7 @@ export class DB {
      * @param {DBDataEntry} data
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
-    async add(data) { // {{{
+    add(data) { // {{{
         return new Promise((resolve, reject) => {
             const r = this.rwStore().add(data);
 
@@ -109,7 +109,7 @@ export class DB {
      * @param {DBDataEntry} data
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
-    async put(data) { // {{{
+    put(data) { // {{{
         return new Promise((resolve, reject) => {
             const r = this.rwStore().put(data);
 
@@ -127,7 +127,7 @@ export class DB {
      * @param {number} date
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
-    async delete(year, month, date) { // {{{
+    delete(year, month, date) { // {{{
         return new Promise((resolve, reject) => {
             const r = this.rwStore().delete([year, month, date]);
 
@@ -145,7 +145,7 @@ export class DB {
     /**
      * @returns {Promise<void>}
      */
-    async deleteAll() { // {{{
+    deleteAll() { // {{{
         return new Promise((resolve, reject) => {
             const r = this.rwStore().clear()
 
