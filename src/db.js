@@ -65,7 +65,7 @@ export class DB {
      * @returns {Promise<DBDataEntry | null>} - Returns null on error (no entry found)
      */
     async get(year, month, date) { // {{{
-        return await new Promise((resolve) => {
+        return new Promise((resolve) => {
             const r = this.roStore().get([year, month, date]);
 
             r.onsuccess = () => resolve(r.result || null);
@@ -78,7 +78,7 @@ export class DB {
 
     /** @returns {Promise<DBDataEntry[]>} */
     async getAll() { // {{{
-        return await new Promise((resolve) => {
+        return new Promise((resolve) => {
             const r = this.roStore().getAll()
 
             r.onsuccess = () => resolve(r.result);
@@ -94,7 +94,7 @@ export class DB {
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
     async add(data) { // {{{
-        return await new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const r = this.rwStore().add(data);
 
             r.onsuccess = () => resolve();
@@ -110,7 +110,7 @@ export class DB {
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
     async put(data) { // {{{
-        return await new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const r = this.rwStore().put(data);
 
             r.onsuccess = () => resolve();
@@ -128,19 +128,33 @@ export class DB {
      * @returns {Promise<void>} - Returns null on error (no entry found)
      */
     async delete(year, month, date) { // {{{
-        return await new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const r = this.rwStore().delete([year, month, date]);
 
             r.onsuccess = () => resolve();
-            r.onerror = (ev) => {
-                console.debug(`[DB] Deleting entry "${year}-${month}-${date}" from "${this.storeName}" failed!`, ev);
+            r.onerror = () => {
+                console.debug(
+                    `[DB] Deleting entry "${year}-${month}-${date}" from "${this.storeName}" failed!`,
+                    r.error
+                );
                 reject(r.error);
             };
         });
     } // }}}
 
+    /**
+     * @returns {Promise<void>}
+     */
     async deleteAll() { // {{{
-        // TODO: Delete all database entries
+        return new Promise((resolve, reject) => {
+            const r = this.rwStore().clear()
+
+            r.onsuccess = () => resolve();
+            r.onerror = () => {
+                console.debug(`[DB] Clear all records in "${this.storeName}" failed!`, r.error);
+                reject(r.error);
+            }
+        });
     } // }}}
 
     /** @private */
