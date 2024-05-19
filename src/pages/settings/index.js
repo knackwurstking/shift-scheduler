@@ -47,7 +47,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
 
-        this.misc = this.createMiscElements();
+        this.createMiscElements();
         this.shifts = this.createShiftElements();
     } // }}}
 
@@ -108,10 +108,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.querySelector("#themePicker").appendChild(
             new sections.ThemePicker(this.#store, this.#lang)
         );
-
-        return {
-            title: this.querySelector("#miscTitle"),
-        };
     } // }}}
 
     /** @private */
@@ -146,8 +142,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         };
 
         return {
-            title: this.querySelector("#shiftsTitle"),
-
             /** @type {Label} */
             backup: this.querySelector("#shiftsBackup"),
             backupImportButton,
@@ -252,7 +246,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         // Misc Section
 
-        this.misc.title.innerHTML = this.#lang.ui.get(
+        this.querySelector("#miscTitle").innerHTML = this.#lang.ui.get(
             "settings", "miscTitle"
         );
 
@@ -270,7 +264,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         // Shifts Section
 
-        this.shifts.title.innerHTML = this.#lang.ui.get(
+        this.querySelector("#shiftsTitle").innerHTML = this.#lang.ui.get(
             "settings", "shiftsTitle",
         );
     } // }}}
