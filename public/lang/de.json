@@ -11,6 +11,10 @@
     "calendarDialog": {
         "editDayNotes": "Notiz"
     },
+    "date-picker-dialog": {
+        "slot:title": "slot:title",
+        ".input-label": ".input-label"
+    },
     "settings": {
         "appBarTitle": "Einstellungen",
         "miscTitle": "Sonstiges",
