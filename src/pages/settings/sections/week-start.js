@@ -21,7 +21,7 @@ export class WeekStart extends HTMLElement {
     /** @type {Lang} */
     #lang;
 
-    static register = () => customElements.define("week-start", WeekStart)
+    static register = () => customElements.define("settings-week-start", WeekStart)
 
     /**
      * @param {Store} store

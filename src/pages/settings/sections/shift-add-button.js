@@ -14,7 +14,7 @@ export class ShiftAddButton extends ui.wc.Button {
     /** @type {Lang} */
     #lang;
 
-    static register = () => customElements.define("shift-add-button", ShiftAddButton)
+    static register = () => customElements.define("settings-shift-add-button", ShiftAddButton)
 
     /**
      * @param {Store} store

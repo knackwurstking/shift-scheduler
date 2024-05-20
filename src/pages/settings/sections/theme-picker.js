@@ -40,7 +40,7 @@ export class ThemePicker extends HTMLElement {
     /** @type {Lang} */
     #lang;
 
-    static register = () => customElements.define("theme-picker", ThemePicker);
+    static register = () => customElements.define("settings-theme-picker", ThemePicker);
 
     /**
      * @param {Store} store
