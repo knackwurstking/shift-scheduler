@@ -21,12 +21,12 @@ const innerHTML = html`
         <ui-flex-grid-row gap="0.25rem">
             <!-- import -->
             <ui-flex-grid-item>
-                <ui-button variant="full" color="secondary"></ui-button>
+                <ui-button name="import" variant="full" color="secondary"></ui-button>
             </ui-flex-grid-item>
 
             <!-- export -->
             <ui-flex-grid-item>
-                <ui-button variant="full" color="secondary"></ui-button>
+                <ui-button name="export" variant="full" color="secondary"></ui-button>
             </ui-flex-grid-item>
         </ui-flex-grid-row>
     </ui-label>
@@ -57,11 +57,11 @@ export class ShiftsBackup extends HTMLElement {
         this.label = this.querySelector("ui-label")
 
         /** @type {Button} */
-        this.importButton = this.querySelector("ui-button:nth-child(1)")
+        this.importButton = this.querySelector(`ui-button[name="import"]`)
         this.importButton.onclick = async () => this.importBackup();
 
         /** @type {Button} */
-        this.exportButton = this.querySelector("ui-button:nth-child(1)")
+        this.exportButton = this.querySelector(`ui-button[name="export"]`)
         this.exportButton.onclick = async () => this.exportBackup();
     } // }}}
 
