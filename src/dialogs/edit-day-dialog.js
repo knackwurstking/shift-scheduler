@@ -88,6 +88,8 @@ export class EditDayDialog extends ui.wc.Dialog {
         super.connectedCallback();
 
         setTimeout(() => {
+            this.notesItem.querySelector("textarea").blur();
+
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
             );

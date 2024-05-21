@@ -65,6 +65,8 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.#stackLayout.ui.lock()
 
         setTimeout(() => {
+            this.querySelectorAll("input").forEach(child => child.blur());
+
             this.#store.ui.on("lang", this.onLang.bind(this), true);
         });
     } // }}}
