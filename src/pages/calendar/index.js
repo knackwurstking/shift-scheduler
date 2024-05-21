@@ -71,12 +71,34 @@ template.innerHTML = `
 <style>
     :host {
         --header-height: 2.5rem;
+        position: relative;
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+
+    ui-flex-grid.container {
+        height: 100%;
+        width: 100%;
+    }
+
+    ui-flex-grid.container > ui-flex-grid-item:nth-child(1) {
         display: flex;
         position: relative;
         flex-direction: row;
         flex-wrap: nowrap;
         user-select: none;
         overflow: hidden;
+    }
+
+    ui-flex-grid.container > ui-flex-grid-item:nth-child(2) {
+        /* TODO: edit-mode container */
+        border: 1px solid red;
+    }
+
+    ui-flex-grid.container > ui-flex-grid-item:nth-child(2) * {
+        /* TODO: remove */
+        border: 1px solid red;
     }
 
     .item {
@@ -86,7 +108,7 @@ template.innerHTML = `
         min-width: 100%;
     }
 
-    :host .item ui-flex-grid {
+    .container .item ui-flex-grid {
         width: calc(100% - 0.25rem);
         height: calc(100% - 0.25rem);
     }
@@ -212,17 +234,25 @@ template.innerHTML = `
     }
 </style>
 
-<div class="item item1" style="left: -100%;">
-    ${templateItemContent}
-</div>
+<ui-flex-grid class="container">
+    <ui-flex-grid-item style="height: 100%;">
+        <div class="item item1" style="left: -100%;">
+            ${templateItemContent}
+        </div>
 
-<div class="item item2" style="left: 0;">
-    ${templateItemContent}
-</div>
+        <div class="item item2" style="left: 0;">
+            ${templateItemContent}
+        </div>
 
-<div class="item item3" style="left: 100%;">
-    ${templateItemContent}
-</div>
+        <div class="item item3" style="left: 100%;">
+            ${templateItemContent}
+        </div>
+    </ui-flex-grid-item>
+
+    <ui-flex-grid-item style="max-height: fit-content;" flex="0">
+        <ui-flex-grid-row class="shit-card-container"></ui-flex-grid-row>
+    </ui-flex-grid-item>
+</ui-flex-grid>
 `;
 
 // }}}
@@ -301,6 +331,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
                 // Handle a "lang" change event
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
+
+                this.#store.ui.on("edit-mode", this.onEditMode.bind(this), true),
             );
 
             this.swipeHandler.start();
@@ -316,9 +348,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     getItems() { // {{{
-        return [...this.shadowRoot.children].filter((c) =>
-            c.classList.contains("item"),
-        );
+        return [...this.shadowRoot.querySelectorAll(".item")];
     } // }}}
 
     /**
@@ -336,7 +366,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 item.shift = data.shift || item.shift;
             }
 
-            this.updateDayItem(cards[idx], item)
+            this.updateDayItem(cards[idx], item);
 
             // Inactive Item
             if (item.year !== current.getFullYear() || item.month !== current.getMonth()) {
@@ -353,7 +383,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      * @param {Element} el
      * @param {DBDataEntry} data
      */
-    async updateDayItem(el, data) {
+    async updateDayItem(el, data) { // {{{
         // Today Item
         if (this.isToday(data.year, data.month, data.date)) {
             el.classList.add("today");
@@ -393,7 +423,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         el.setAttribute("data-year", data.year.toString());
         el.setAttribute("data-month", data.month.toString());
         el.setAttribute("data-date", data.date.toString());
-    }
+    } // }}}
 
     /**
      * @param {number} year
@@ -514,6 +544,14 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             }
         });
     } // }}}
+
+    /**
+     * @private
+     * @param {boolean} state
+     */
+    onEditMode(state) {
+        // TODO: render shift cards, clear first (the first item will be the reset item)
+    }
 
     /**
      * @private

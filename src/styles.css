@@ -1,10 +1,5 @@
 @import "../node_modules/ui/css/main.css";
 
-:root {
-    --edit-mode-height: 4.5rem;
-
-}
-
 html,
 body,
 #app {
@@ -26,10 +21,6 @@ html {
     bottom: 0;
     left: 0;
     transition: bottom 0.15s ease-out;
-}
-
-#app.edit-mode {
-    bottom: var(--edit-mode-height);
 }
 
 settings-page > ui-flex-grid {

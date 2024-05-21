@@ -24,6 +24,9 @@
  * @typedef LangStore
  * @type {"en" | "de"}
  *
+ * @typedef EditModeStore
+ * @type {boolean}
+ *
  * @typedef StoreEvents
  * @type {{
  *  "date-picker": DatePickerStore;
@@ -32,6 +35,7 @@
  *  "settings": SettingsStore;
  *  "debug": DebugStore;
  *  "lang": LangStore;
+ *  "edit-mode": EditModeStore;
  * }}
  *
  * @typedef Shift

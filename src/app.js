@@ -123,7 +123,9 @@ export default class App extends ui.js.events.Events {
 
         /** @type {IconButton} */
         this.appBarEditButton = this.appBar.querySelector("#appBarEditButton")
-        this.appBarEditButton.onclick = async () => null; // TODO: Add edit onclick callbac
+        this.appBarEditButton.onclick = async () => {
+            this.#store.ui.set("edit-mode", !this.#store.ui.get("edit-mode"));
+        };
 
         /** @type {IconButton} */
         this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
