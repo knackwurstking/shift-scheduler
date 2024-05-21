@@ -21,6 +21,8 @@ export default class App extends ui.js.events.Events {
     /** @type {Lang} */
     #lang
 
+    static register = () => dialogs.DatePickerDialog.register();
+
     /**
      * @param {Store} store
      */

@@ -22,6 +22,7 @@ ui.defineSVG()
 
 ui.define()
     .then(() => {
+        App.register();
         ShiftCard.register()
         CalendarPage.register()
         SettingsPage.register()
