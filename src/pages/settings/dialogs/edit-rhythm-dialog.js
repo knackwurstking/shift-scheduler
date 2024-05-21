@@ -306,15 +306,15 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
     /** @private */
     async onLang() { // {{{
-        this.ui.title = this.#lang.ui.get("settingsDialog", "editRhythmTitle");
+        this.ui.title = this.#lang.ui.get("edit-rhythm-dialog", "title");
 
         // Name
         this.#content.querySelector("thead th:nth-child(1)").innerHTML =
-            this.#lang.ui.get("settings", "shiftsTableHeaderName");
+            this.#lang.ui.get("edit-rhythm-dialog", "table-header-name");
 
         // Short
         this.#content.querySelector("thead th:nth-child(2)").innerHTML =
-            this.#lang.ui.get("settings", "shiftsTableHeaderShortName");
+            this.#lang.ui.get("edit-rhythm-dialog", "table-header-short-name");
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");

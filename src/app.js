@@ -195,7 +195,7 @@ export default class App extends ui.js.events.Events {
                 this.appBar.appendChild(this.appBarSettingsButton.parentElement)
                 break;
             case "settings":
-                utils.setAppBarTitle(this.#lang.ui.get("settings", "appBarTitle"))
+                utils.setAppBarTitle(this.#lang.ui.get("page:settings", "app-bar-title"))
                 this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
                 this.appBar.removeChild(this.appBarEditButton.parentElement)
                 this.appBar.removeChild(this.appBarTodayButton.parentElement)

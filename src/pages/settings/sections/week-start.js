@@ -70,7 +70,7 @@ export class WeekStart extends HTMLElement {
     /** @private */
     onLang() { // {{{
         this.label.ui.primary = this.#lang.ui.get(
-            "settings", "miscWeekStartPrimary",
+            "page:settings", "misc-week-start-primary",
         );
     } // }}}
 }

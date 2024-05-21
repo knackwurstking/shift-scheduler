@@ -118,7 +118,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.shortNameItem = new ui.wc.FlexGridItem();
         this.shortNameItem.innerHTML = `
             <ui-secondary>
-                ${this.#lang.ui.get("settingsDialog", "editShiftShortName")}
+                ${this.#lang.ui.get("edit-shift-dialog", "input-title-short-name")}
             </ui-secondary>
             <input
                 style="color: ${this.shift.color || 'inherit'};"
@@ -306,27 +306,27 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /** @private */
     async onLang() { // {{{
-        this.ui.title = this.#lang.ui.get("settingsDialog", "editShiftTitle");
+        this.ui.title = this.#lang.ui.get("edit-shift-dialog", "title");
 
         // Name
         this.nameItem.querySelector("ui-secondary").innerHTML =
-            this.#lang.ui.get("settingsDialog", "editShiftName");
+            this.#lang.ui.get("edit-shift-dialog", "input-title-name");
 
         // Short
         this.shortNameItem.querySelector("ui-secondary").innerHTML =
-            this.#lang.ui.get("settingsDialog", "editShiftShortName");
+            this.#lang.ui.get("edit-shift-dialog", "input-title-short-name");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.colorPickerItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("settingsDialog", "editShiftColorPicker");
+            this.#lang.ui.get("edit-shift-dialog", "color-picker-label-primary");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.useDefaultColorItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("settingsDialog", "editShiftUseDefaultColor");
+            this.#lang.ui.get("edit-shift-dialog", "use-default-color-label-primary");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.visibleItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("settingsDialog", "editShiftVisibleItem");
+            this.#lang.ui.get("edit-shift-dialog", "visible-item-label-primary");
 
         this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
         this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");

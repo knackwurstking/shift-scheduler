@@ -1,5 +1,5 @@
 {
-    "calendar": {
+    "page:calendar": {
         "0": "Sun",
         "1": "Mon",
         "2": "Tue",
@@ -8,41 +8,42 @@
         "5": "Fri",
         "6": "Sat"
     },
-    "calendarDialog": {
-        "editDayNotes": "Note"
+    "page:settings": {
+        "app-bar-title": "Settings",
+        "delete-shift-confirmation-dialog": "Delete shift \"%s\"?",
+        "misc-title": "Miscellaneous",
+        "misc-week-start-primary": "The week starts on Monday",
+        "misc-theme": "Theme",
+        "shifts-title": "Shift Settings",
+        "shifts-table-header-name": "Name",
+        "shifts-table-header-short-name": "Short",
+        "shifts-add-button": "Add a new shift",
+        "shifts-start-date-primary": "Start Date",
+        "shifts-edit-rhythm-primary": "Rhythm",
+        "shifts-edit-rhythm-button": "Edit",
+        "shifts-backup-primary": "Backup",
+        "shifts-backup-import-button": "Import",
+        "shifts-backup-export-button": "Export"
+    },
+    "edit-day-dialog": {
+        "textarea-title-notes": "Note"
     },
     "date-picker-dialog": {
-        "slot:title": "slot:title",
-        ".input-label": ".input-label"
+        "title": "title",
+        "input-title-month": "input-title-month"
     },
-    "settings": {
-        "appBarTitle": "Settings",
-        "miscTitle": "Miscellaneous",
-        "miscWeekStartPrimary": "The week starts on Monday",
-        "miscWeekStartSecondary": "",
-        "miscTheme": "Theme",
-        "shiftsTitle": "Shift Settings",
-        "shiftsTableHeaderName": "Name",
-        "shiftsTableHeaderShortName": "Short",
-        "shiftsAddButton": "Add a new shift",
-        "shiftsStartDatePrimary": "Start Date",
-        "shiftsEditRhythmPrimary": "Rhythm",
-        "shiftsEditRhythmButton": "Edit",
-        "shiftsBackupPrimary": "Backup",
-        "shiftsBackupImportButton": "Import",
-        "shiftsBackupExportButton": "Export"
+    "edit-shift-dialog": {
+        "title": "Edit Shift",
+        "input-title-name": "Name (ex.: Night)",
+        "input-title-short-name": "Short (ex.: N)",
+        "label-primary-color-picker": "Pick a color",
+        "label-primary-use-default-color": "Disable color",
+        "label-primary-visible-item": "Hide shift"
     },
-    "settings_format": {
-        "deleteShiftConfirmationDialog": "Delete shift \"%s\"?"
-    },
-    "settingsDialog": {
-        "editRhythmTitle": "Shift Rhythm",
-        "editShiftTitle": "Edit Shift",
-        "editShiftName": "Name (ex.: Night)",
-        "editShiftShortName": "Short (ex.: N)",
-        "editShiftColorPicker": "Pick a color",
-        "editShiftUseDefaultColor": "Disable color",
-        "editShiftVisibleItem": "Hide shift"
+    "edit-rhythm-dialog": {
+        "title": "Shift Rhythm",
+        "table-header-name": "Name",
+        "table-header-short-name": "Short"
     },
     "error": {
         "missingShiftName": "Missing shift name!"

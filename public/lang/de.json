@@ -1,5 +1,5 @@
 {
-    "calendar": {
+    "page:calendar": {
         "0": "So",
         "1": "Mo",
         "2": "Di",
@@ -8,44 +8,45 @@
         "5": "Fr",
         "6": "Sa"
     },
-    "calendarDialog": {
-        "editDayNotes": "Notiz"
+    "page:settings": {
+        "app-bar-title": "Einstellungen",
+        "delete-shift-confirmation-dialog": "Shicht \"%s\" löschen?",
+        "misc-title": "Sonstiges",
+        "misc-week-start-primary": "Wochen start am Montag",
+        "misc-theme": "Theme",
+        "shifts-title": "Schichteinstellungen",
+        "shifts-table-header-name": "Name",
+        "shifts-table-header-short-name": "Kürzel",
+        "shifts-add-button": "Neue Schicht hinzufügen",
+        "shifts-start-date-primary": "Start Datum",
+        "shifts-edit-rhythm-primary": "Rhythmus",
+        "shifts-edit-rhythm-button": "Bearbeiten",
+        "shifts-backup-primary": "Backup",
+        "shifts-backup-import-button": "Import",
+        "shifts-backup-export-button": "Export"
+    },
+    "edit-day-dialog": {
+        "textarea-title-notes": "Notiz"
     },
     "date-picker-dialog": {
-        "slot:title": "slot:title",
-        ".input-label": ".input-label"
+        "title": "title",
+        "input-title-month": "input-title-month"
     },
-    "settings": {
-        "appBarTitle": "Einstellungen",
-        "miscTitle": "Sonstiges",
-        "miscWeekStartPrimary": "Wochen start am Montag",
-        "miscWeekStartSecondary": "",
-        "miscTheme": "Theme",
-        "shiftsTitle": "Schichteinstellungen",
-        "shiftsTableHeaderName": "Name",
-        "shiftsTableHeaderShortName": "Kürzel",
-        "shiftsAddButton": "Neue Schicht hinzufügen",
-        "shiftsStartDatePrimary": "Start Datum",
-        "shiftsEditRhythmPrimary": "Rhythmus",
-        "shiftsEditRhythmButton": "Bearbeiten",
-        "shiftsBackupPrimary": "Backup",
-        "shiftsBackupImportButton": "Import",
-        "shiftsBackupExportButton": "Export"
+    "edit-shift-dialog": {
+        "title": "Schicht Bearbeiten",
+        "input-title-name": "Name (Bsp.: Nacht)",
+        "input-title-short-name": "Kürzel (Bsp.: N)",
+        "label-primary-color-picker": "Farbe wählen",
+        "label-primary-use-default-color": "Farbe deaktivieren",
+        "label-primary-visible-item": "Schicht ausblenden"
     },
-    "settings_format": {
-        "deleteShiftConfirmationDialog": "Shicht \"%s\" löschen?"
-    },
-    "settingsDialog": {
-        "editRhythmTitle": "Schicht Rhythmus",
-        "editShiftTitle": "Schicht Bearbeiten",
-        "editShiftName": "Name (Bsp.: Nacht)",
-        "editShiftShortName": "Kürzel (Bsp.: N)",
-        "editShiftColorPicker": "Farbe wählen",
-        "editShiftUseDefaultColor": "Farbe deaktivieren",
-        "editShiftVisibleItem": "Schicht ausblenden"
+    "edit-rhythm-dialog": {
+        "title": "Schicht Rhythmus",
+        "table-header-name": "Name",
+        "table-header-short-name": "Kürzel"
     },
     "error": {
-        "missingShiftName": "Fehlender Schichtname!",
+        "missingShiftName": "Fehlender Schichtname!"
     },
     "general": {
         "submitButton": "OK",

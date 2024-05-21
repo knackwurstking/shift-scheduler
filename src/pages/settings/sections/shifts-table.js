@@ -178,7 +178,7 @@ export class ShiftsTable extends HTMLTableElement {
             if (
                 !window.confirm(
                     this.#lang.ui.get(
-                        "settings_format", "deleteShiftConfirmationDialog"
+                        "page:settings", "delete-shift-confirmation-dialog"
                     ).replace("%s", shift.name)
                 )
             ) {
@@ -227,11 +227,11 @@ export class ShiftsTable extends HTMLTableElement {
             switch (i) {
                 case 0:
                     th.innerHTML = this.#lang.ui.get(
-                        "settings", "shiftsTableHeaderName");
+                        "page:settings", "shifts-table-header-name");
                     break
                 case 1:
                     th.innerHTML = this.#lang.ui.get(
-                        "settings", "shiftsTableHeaderShortName");
+                        "page:settings", "shifts-table-header-short-name");
                     break
             }
         });

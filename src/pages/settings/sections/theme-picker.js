@@ -95,6 +95,6 @@ export class ThemePicker extends HTMLElement {
 
     /** @private */
     onLang() { // {{{
-        this.querySelector("ui-secondary").innerHTML = this.#lang.ui.get("settings", "miscTheme");
+        this.querySelector("ui-secondary").innerHTML = this.#lang.ui.get("page:settings", "misc-theme");
     } // }}}
 }

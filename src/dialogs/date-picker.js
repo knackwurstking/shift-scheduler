@@ -68,7 +68,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
 
     /** @private */
     onLang() {
-        this.ui.title = this.#lang.ui.get("date-picker-dialog", "slot:title");
-        this.inputLabel.innerHTML = this.#lang.ui.get("date-picker-dialog", ".input-label");
+        this.ui.title = this.#lang.ui.get("date-picker-dialog", "title");
+        this.inputLabel.innerHTML = this.#lang.ui.get("date-picker-dialog", "input-title-month");
     }
 }

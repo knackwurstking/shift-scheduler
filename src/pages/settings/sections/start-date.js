@@ -76,7 +76,7 @@ export class StartDate extends HTMLElement {
     /** @private */
     async onLang() { // {{{
         this.#label.ui.primary = this.#lang.ui.get(
-            "settings", "shiftsStartDatePrimary"
+            "page:settings", "shifts-start-date-primary"
         );
     } // }}}
 
