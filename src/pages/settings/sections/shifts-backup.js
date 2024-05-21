@@ -207,11 +207,11 @@ export class ShiftsBackup extends HTMLElement {
         );
 
         this.importButton.innerHTML = this.#lang.ui.get(
-            "page:settings", "import-button",
+            "page:settings", "button-import",
         );
 
         this.exportButton.innerHTML = this.#lang.ui.get(
-            "page:settings", "export-button",
+            "page:settings", "button-export",
         );
     } // }}}
 }
