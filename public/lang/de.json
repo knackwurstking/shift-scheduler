@@ -31,8 +31,8 @@
         "button-cancel": "Abbrechen"
     },
     "date-picker-dialog": {
-        "title": "title",
-        "input-title-month": "input-title-month"
+        "title": "Datumsauswahl",
+        "input-title-month": "Wähle ein Datum"
     },
     "edit-shift-dialog": {
         "title": "Schicht Bearbeiten",
