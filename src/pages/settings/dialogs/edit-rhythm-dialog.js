@@ -316,8 +316,8 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.#content.querySelector("thead th:nth-child(2)").innerHTML =
             this.#lang.ui.get("edit-rhythm-dialog", "table-header-short-name");
 
-        this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
-        this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
+        this.#cancelButton.innerText = this.#lang.ui.get("edit-rhythm-dialog", "button-cancel");
+        this.#submitButton.innerText = this.#lang.ui.get("edit-rhythm-dialog", "button-submit");
     } // }}}
 
     /**

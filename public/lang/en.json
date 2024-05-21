@@ -12,21 +12,23 @@
         "app-bar-title": "Settings",
         "delete-shift-confirmation-dialog": "Delete shift \"%s\"?",
         "misc-title": "Miscellaneous",
-        "misc-week-start-primary": "The week starts on Monday",
-        "misc-theme": "Theme",
+        "label-primary-week-start": "The week starts on Monday",
+        "select-theme-title": "Theme",
         "shifts-title": "Shift Settings",
         "shifts-table-header-name": "Name",
         "shifts-table-header-short-name": "Short",
-        "shifts-add-button": "Add a new shift",
-        "shifts-start-date-primary": "Start Date",
-        "shifts-edit-rhythm-primary": "Rhythm",
-        "shifts-edit-rhythm-button": "Edit",
-        "shifts-backup-primary": "Backup",
-        "shifts-backup-import-button": "Import",
-        "shifts-backup-export-button": "Export"
+        "add-shift-button": "Add a new shift",
+        "label-primary-start-date": "Start Date",
+        "label-primary-edit-rhythm": "Rhythm",
+        "edit-rhythm-button": "Edit",
+        "label-primary-shifts-backup": "Backup",
+        "import-button": "Import",
+        "export-button": "Export"
     },
     "edit-day-dialog": {
-        "textarea-title-notes": "Note"
+        "textarea-title-notes": "Note",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
     },
     "date-picker-dialog": {
         "title": "title",
@@ -38,18 +40,18 @@
         "input-title-short-name": "Short (ex.: N)",
         "label-primary-color-picker": "Pick a color",
         "label-primary-use-default-color": "Disable color",
-        "label-primary-visible-item": "Hide shift"
+        "label-primary-visible-item": "Hide shift",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
     },
     "edit-rhythm-dialog": {
         "title": "Shift Rhythm",
         "table-header-name": "Name",
-        "table-header-short-name": "Short"
+        "table-header-short-name": "Short",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
     },
     "error": {
-        "missingShiftName": "Missing shift name!"
-    },
-    "general": {
-        "submitButton": "OK",
-        "cancelButton": "Cancel"
+        "missing-shift-name": "Missing shift name!"
     }
 }

@@ -12,21 +12,23 @@
         "app-bar-title": "Einstellungen",
         "delete-shift-confirmation-dialog": "Shicht \"%s\" löschen?",
         "misc-title": "Sonstiges",
-        "misc-week-start-primary": "Wochen start am Montag",
-        "misc-theme": "Theme",
+        "label-primary-week-start": "Wochen start am Montag",
+        "select-theme-title": "Theme",
         "shifts-title": "Schichteinstellungen",
         "shifts-table-header-name": "Name",
         "shifts-table-header-short-name": "Kürzel",
-        "shifts-add-button": "Neue Schicht hinzufügen",
-        "shifts-start-date-primary": "Start Datum",
-        "shifts-edit-rhythm-primary": "Rhythmus",
-        "shifts-edit-rhythm-button": "Bearbeiten",
-        "shifts-backup-primary": "Backup",
-        "shifts-backup-import-button": "Import",
-        "shifts-backup-export-button": "Export"
+        "add-shift-button": "Neue Schicht hinzufügen",
+        "label-primary-start-date": "Start Datum",
+        "label-primary-edit-rhythm": "Rhythmus",
+        "edit-rhythm-button": "Bearbeiten",
+        "label-primary-shifts-backup": "Backup",
+        "import-button": "Import",
+        "export-button": "Export"
     },
     "edit-day-dialog": {
-        "textarea-title-notes": "Notiz"
+        "textarea-title-notes": "Notiz",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen"
     },
     "date-picker-dialog": {
         "title": "title",
@@ -38,18 +40,18 @@
         "input-title-short-name": "Kürzel (Bsp.: N)",
         "label-primary-color-picker": "Farbe wählen",
         "label-primary-use-default-color": "Farbe deaktivieren",
-        "label-primary-visible-item": "Schicht ausblenden"
+        "label-primary-visible-item": "Schicht ausblenden",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen"
     },
     "edit-rhythm-dialog": {
         "title": "Schicht Rhythmus",
         "table-header-name": "Name",
-        "table-header-short-name": "Kürzel"
+        "table-header-short-name": "Kürzel",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen"
     },
     "error": {
-        "missingShiftName": "Fehlender Schichtname!"
-    },
-    "general": {
-        "submitButton": "OK",
-        "cancelButton": "Abbrechen"
+        "missing-shift-name": "Fehlender Schichtname!"
     }
 }

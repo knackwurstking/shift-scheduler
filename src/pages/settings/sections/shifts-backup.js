@@ -203,15 +203,15 @@ export class ShiftsBackup extends HTMLElement {
     /** @private */
     onLang() { // {{{
         this.label.ui.primary = this.#lang.ui.get(
-            "page:settings", "shifts-backup-primary",
+            "page:settings", "label-primary-shifts-backup",
         );
 
         this.importButton.innerHTML = this.#lang.ui.get(
-            "page:settings", "shifts-backup-import-button",
+            "page:settings", "import-button",
         );
 
         this.exportButton.innerHTML = this.#lang.ui.get(
-            "page:settings", "shifts-backup-export-button",
+            "page:settings", "export-button",
         );
     } // }}}
 }

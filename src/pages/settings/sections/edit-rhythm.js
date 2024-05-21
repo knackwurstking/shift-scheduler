@@ -75,7 +75,7 @@ export class EditRhythm extends HTMLElement {
 
     /** @private */
     async onLang() { // {{{
-        this.#label.ui.primary = this.#lang.ui.get("page:settings", "shifts-edit-rhythm-primary");
-        this.#button.innerHTML = this.#lang.ui.get("page:settings", "shifts-edit-rhythm-button")
+        this.#label.ui.primary = this.#lang.ui.get("page:settings", "label-primary-edit-rhythm");
+        this.#button.innerHTML = this.#lang.ui.get("page:settings", "edit-rhythm-button")
     } // }}}
 }

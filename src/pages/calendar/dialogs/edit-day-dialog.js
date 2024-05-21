@@ -235,7 +235,7 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.notesItem.querySelector("ui-secondary").innerHTML =
             this.#lang.ui.get("edit-day-dialog", "textarea-title-notes");
 
-        this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
-        this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
+        this.#cancelButton.innerText = this.#lang.ui.get("edit-day-dialog", "button-cancel");
+        this.#submitButton.innerText = this.#lang.ui.get("edit-day-dialog", "button-submit");
     } // }}}
 }

@@ -318,17 +318,17 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.colorPickerItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("edit-shift-dialog", "color-picker-label-primary");
+            this.#lang.ui.get("edit-shift-dialog", "label-primary-color-picker");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.useDefaultColorItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("edit-shift-dialog", "use-default-color-label-primary");
+            this.#lang.ui.get("edit-shift-dialog", "label-primary-use-default-color");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.visibleItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("edit-shift-dialog", "visible-item-label-primary");
+            this.#lang.ui.get("edit-shift-dialog", "label-primary-visible-item");
 
-        this.#cancelButton.innerText = this.#lang.ui.get("general", "cancelButton");
-        this.#submitButton.innerText = this.#lang.ui.get("general", "submitButton");
+        this.#cancelButton.innerText = this.#lang.ui.get("edit-shift-dialog", "button-cancel");
+        this.#submitButton.innerText = this.#lang.ui.get("edit-shift-dialog", "button-submit");
     }
 } // }}}
