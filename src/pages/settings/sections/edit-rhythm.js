@@ -1,5 +1,5 @@
 import { html } from "ui/src/js/utils";
-import { EditRhythmDialog } from "../dialogs";
+import { EditRhythmDialog } from "../../../dialogs";
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store

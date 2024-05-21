@@ -1,6 +1,6 @@
 import ui from "ui";
 import { html } from "../../../utils";
-import * as dialogs from "../dialogs";
+import * as dialogs from "../../../dialogs";
 
 /**
  * @typedef {import("ui/src/wc").IconButton} IconButton

@@ -1,6 +1,6 @@
 import ui from "ui";
 import db from "../../db";
-import * as dialogs from "./dialogs";
+import * as dialogs from "../../dialogs";
 import { SwipeHandler } from "./swipe-handler";
 import * as utils from "./utils";
 

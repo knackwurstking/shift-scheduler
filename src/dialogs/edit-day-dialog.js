@@ -1,17 +1,17 @@
 import ui from "ui";
-import db from "../../../db";
-import * as utils from "../utils";
+import db from "../db";
+import * as utils from "../pages/calendar/utils";
 
 /**
- * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
+ * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Select} Select
  * @typedef {import("ui/src/wc").SelectOption} SelectOption
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
- * @typedef {import("../../../types").DBDataEntry} DBDataEntry
- * @typedef {import("../../../types").Shift} Shift
+ * @typedef {import("../types").DBDataEntry} DBDataEntry
+ * @typedef {import("../types").Shift} Shift
  */
 
 /** @extends {ui.wc.Dialog<DialogEvents & { submit: DBDataEntry }>} */

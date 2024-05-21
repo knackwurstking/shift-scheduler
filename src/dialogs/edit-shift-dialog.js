@@ -1,9 +1,9 @@
 import ui from "ui";
 
 /**
- * @typedef {import("../../../types").Shift} Shift
+ * @typedef {import("../types").Shift} Shift
  *
- * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
+ * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc").FlexGridItem} FlexGridItem

@@ -2,14 +2,14 @@ import ui from "ui";
 import { html } from "ui/src/js/utils";
 
 /**
- * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
+ * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").StackLayout} StackLayout
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
  *
- * @typedef {import("../../../types").SettingsStore} SettingsStore
+ * @typedef {import("../types").SettingsStore} SettingsStore
  */
 
 // {{{ Flex Grid Content

@@ -1,5 +1,5 @@
 import ui from "ui";
-import * as dialogs from "../dialogs";
+import * as dialogs from "../../../dialogs";
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store

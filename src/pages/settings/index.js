@@ -1,5 +1,5 @@
 import ui from "ui";
-import * as dialogs from "./dialogs";
+import * as dialogs from "../../dialogs";
 import * as sections from "./sections";
 
 /**
