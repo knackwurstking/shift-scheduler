@@ -135,18 +135,18 @@ template.innerHTML = `
         overflow: hidden;
     }
 
-    .day-item.today .day-item-date::before {
+    .day-item.today::after {
         content: "";
         position: absolute;
         z-index: 9;
-        top: -1em;
-        left: -1em;
-        width: 2em;
-        height: 2em;
+        top: -1rem;
+        left: -1rem;
+        width: 2rem;
+        height: 2rem;
         border-radius: var(--ui-radius);
         border-bottom-right-radius: 50%;
         background-color: orange;
-        filter: blur(1em);
+        filter: blur(1rem);
         animation: fade-in .5s;
     }
 
@@ -154,14 +154,14 @@ template.innerHTML = `
         content: "";
         position: absolute;
         z-index: 8;
-        bottom: -1em;
-        right: -1em;
-        width: 2em;
-        height: 2em;
+        bottom: -1rem;
+        right: -1rem;
+        width: 2rem;
+        height: 2rem;
         border-radius: var(--ui-radius);
-        border-top-left-radius: var(--ui-radius);
+        border-top-left-radius: 50%;
         background-color: red;
-        filter: blur(1em);
+        filter: blur(1rem);
         animation: fade-in .5s;
     }
 
