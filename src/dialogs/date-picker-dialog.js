@@ -1,5 +1,5 @@
-import { html } from "../utils";
 import ui from "ui";
+import { html } from "../utils";
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
