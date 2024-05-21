@@ -30,7 +30,9 @@
     },
     "date-picker-dialog": {
         "title": "Date Picker",
-        "input-title-month": "Pick a Date"
+        "input-title-month": "Pick a Date",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
     },
     "edit-day-dialog": {
         "textarea-title-notes": "Note",
