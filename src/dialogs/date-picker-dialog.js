@@ -6,6 +6,7 @@ import ui from "ui";
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").Secondary} Secondary
+ * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
  */
 
 const flexGridContent = html`
@@ -15,6 +16,7 @@ const flexGridContent = html`
     </ui-flex-grid-item>
 `;
 
+/** @extends {ui.wc.Dialog<DialogEvents>} */
 export class DatePickerDialog extends ui.wc.Dialog {
     /** @type {Store} */
     #store;
@@ -49,6 +51,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
         this.cleanup = [];
 
         this.createContent();
+        this.createActions();
 
         /** @type {Secondary} */
         this.inputLabel = this.querySelector(".input-label");

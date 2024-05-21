@@ -1,6 +1,7 @@
 import { App as CapApp } from "@capacitor/app";
 import ui from "ui";
 import db from "./db";
+import * as dialogs from "./dialogs";
 import utils from "./utils";
 
 /**
@@ -108,7 +109,14 @@ export default class App extends ui.js.events.Events {
         /** @type {Button} */
         this.appBarDatePickerButton = this.appBar.querySelector("#appBarDatePickerButton")
         this.appBarDatePickerButton.onclick = async () => {
-            // TODO: Open a system date picker dialog for android or browser
+            const dialog = new dialogs.DatePickerDialog(this.#store, this.#lang);
+            document.body.appendChild(dialog);
+
+            dialog.ui.open(true);
+
+            dialog.ui.events.on("close", () => {
+                document.body.removeChild(dialog)
+            });
         };
 
         /** @type {IconButton} */
