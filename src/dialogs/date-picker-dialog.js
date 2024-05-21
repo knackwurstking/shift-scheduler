@@ -40,7 +40,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
      * @param {Store} store
      * @param {Lang} lang
      */
-    constructor(store, lang) {
+    constructor(store, lang) { // {{{
         super();
 
         this.#store = store;
@@ -48,27 +48,39 @@ export class DatePickerDialog extends ui.wc.Dialog {
 
         this.cleanup = [];
 
+        this.createContent();
+
         /** @type {Secondary} */
         this.inputLabel = this.querySelector(".input-label");
 
         /** @type {HTMLInputElement} */
         this.monthInput = this.querySelector("input");
-    }
+    } // }}}
 
-    connectedCallback() {
+    connectedCallback() { // {{{
         setTimeout(() => {
             this.#store.ui.on("lang", this.onLang.bind(this), true);
         });
-    }
+    } // }}}
 
-    disconnectedCallback() {
+    disconnectedCallback() { // {{{
         this.cleanup.forEach(fn => fn());
         this.cleanup = [];
-    }
+    } // }}}
 
     /** @private */
-    onLang() {
+    createContent() { // {{{
+        const content = new ui.wc.FlexGrid();
+
+        content.setAttribute("gap", "0.5rem");
+        content.innerHTML = flexGridContent;
+
+        this.appendChild(content);
+    } // }}}
+
+    /** @private */
+    onLang() { // {{{
         this.ui.title = this.#lang.ui.get("date-picker-dialog", "title");
         this.inputLabel.innerHTML = this.#lang.ui.get("date-picker-dialog", "input-title-month");
-    }
+    } // }}}
 }
