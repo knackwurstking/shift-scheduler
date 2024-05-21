@@ -50,23 +50,23 @@ export class DatePickerDialog extends ui.wc.Dialog {
 
         this.cleanup = [];
 
-        this.createContent();
-        this.createActions();
-
-        /** @type {Secondary} */
-        this.inputLabel = this.querySelector(".input-label");
-
         /** @type {HTMLInputElement} */
         this.monthInput = this.querySelector("input");
+
+        this.createContent();
+        this.createActions();
     } // }}}
 
     connectedCallback() { // {{{
+        super.connectedCallback();
+
         setTimeout(() => {
             this.#store.ui.on("lang", this.onLang.bind(this), true);
         });
     } // }}}
 
     disconnectedCallback() { // {{{
+        super.disconnectedCallback();
         this.cleanup.forEach(fn => fn());
         this.cleanup = [];
     } // }}}
@@ -109,7 +109,8 @@ export class DatePickerDialog extends ui.wc.Dialog {
     /** @private */
     onLang() { // {{{
         this.ui.title = this.#lang.ui.get("date-picker-dialog", "title");
-        this.inputLabel.innerHTML = this.#lang.ui.get("date-picker-dialog", "input-title-month");
+        this.querySelector("ui-secondary").innerHTML =
+            this.#lang.ui.get("date-picker-dialog", "input-title-month");
 
         this.#cancelButton.innerText = this.#lang.ui.get("date-picker-dialog", "button-cancel");
         this.#submitButton.innerText = this.#lang.ui.get("date-picker-dialog", "button-submit");

@@ -117,13 +117,13 @@ export default class App extends ui.js.events.Events {
             dialog.ui.open(true);
 
             dialog.ui.events.on("close", () => {
-                document.body.removeChild(dialog)
+                document.body.removeChild(dialog);
             });
         };
 
         /** @type {IconButton} */
         this.appBarEditButton = this.appBar.querySelector("#appBarEditButton")
-        this.appBarEditButton.onclick = async () => null; // TODO: Add edit onclick callback
+        this.appBarEditButton.onclick = async () => null; // TODO: Add edit onclick callbac
 
         /** @type {IconButton} */
         this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
