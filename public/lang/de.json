@@ -1,5 +1,8 @@
 {
-    "page:calendar": {
+    "error": {
+        "missing-shift-name": "Fehlender Schichtname!"
+    },
+    "calendar": {
         "0": "So",
         "1": "Mo",
         "2": "Di",
@@ -8,7 +11,7 @@
         "5": "Fr",
         "6": "Sa"
     },
-    "page:settings": {
+    "settings": {
         "app-bar-title": "Einstellungen",
         "confirm-delete-shift": "Shicht \"%s\" löschen?",
         "title-misc": "Sonstiges",
@@ -25,22 +28,12 @@
         "button-import": "Import",
         "button-export": "Export"
     },
-    "edit-day-dialog": {
-        "textarea-title-notes": "Notiz",
-        "button-submit": "OK",
-        "button-cancel": "Abbrechen"
-    },
     "date-picker-dialog": {
         "title": "Datumsauswahl",
         "input-title-month": "Wähle ein Datum"
     },
-    "edit-shift-dialog": {
-        "title": "Schicht Bearbeiten",
-        "input-title-name": "Name (Bsp.: Nacht)",
-        "input-title-short-name": "Kürzel (Bsp.: N)",
-        "label-primary-color-picker": "Farbe wählen",
-        "label-primary-use-default-color": "Farbe deaktivieren",
-        "label-primary-visible-item": "Schicht ausblenden",
+    "edit-day-dialog": {
+        "textarea-title-notes": "Notiz",
         "button-submit": "OK",
         "button-cancel": "Abbrechen"
     },
@@ -51,7 +44,14 @@
         "button-submit": "OK",
         "button-cancel": "Abbrechen"
     },
-    "error": {
-        "missing-shift-name": "Fehlender Schichtname!"
+    "edit-shift-dialog": {
+        "title": "Schicht Bearbeiten",
+        "input-title-name": "Name (Bsp.: Nacht)",
+        "input-title-short-name": "Kürzel (Bsp.: N)",
+        "label-primary-color-picker": "Farbe wählen",
+        "label-primary-use-default-color": "Farbe deaktivieren",
+        "label-primary-visible-item": "Schicht ausblenden",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen"
     }
 }

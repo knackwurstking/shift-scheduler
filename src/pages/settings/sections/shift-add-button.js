@@ -97,6 +97,6 @@ export class ShiftAddButton extends ui.wc.Button {
 
     /** @private */
     async onLang() { // {{{
-        this.innerHTML = this.#lang.ui.get("page:settings", "button-add-shift");
+        this.innerHTML = this.#lang.ui.get("settings", "button-add-shift");
     } // }}}
 } // }}}

@@ -1,5 +1,8 @@
 {
-    "page:calendar": {
+    "error": {
+        "missing-shift-name": "Missing shift name!"
+    },
+    "calendar": {
         "0": "Sun",
         "1": "Mon",
         "2": "Tue",
@@ -8,7 +11,7 @@
         "5": "Fri",
         "6": "Sat"
     },
-    "page:settings": {
+    "settings": {
         "app-bar-title": "Settings",
         "confirm-delete-shift": "Delete shift \"%s\"?",
         "title-misc": "Miscellaneous",
@@ -25,22 +28,12 @@
         "button-import": "Import",
         "button-export": "Export"
     },
-    "edit-day-dialog": {
-        "textarea-title-notes": "Note",
-        "button-submit": "OK",
-        "button-cancel": "Cancel"
-    },
     "date-picker-dialog": {
         "title": "Date Picker",
         "input-title-month": "Pick a Date"
     },
-    "edit-shift-dialog": {
-        "title": "Edit Shift",
-        "input-title-name": "Name (ex.: Night)",
-        "input-title-short-name": "Short (ex.: N)",
-        "label-primary-color-picker": "Pick a color",
-        "label-primary-use-default-color": "Disable color",
-        "label-primary-visible-item": "Hide shift",
+    "edit-day-dialog": {
+        "textarea-title-notes": "Note",
         "button-submit": "OK",
         "button-cancel": "Cancel"
     },
@@ -51,7 +44,14 @@
         "button-submit": "OK",
         "button-cancel": "Cancel"
     },
-    "error": {
-        "missing-shift-name": "Missing shift name!"
+    "edit-shift-dialog": {
+        "title": "Edit Shift",
+        "input-title-name": "Name (ex.: Night)",
+        "input-title-short-name": "Short (ex.: N)",
+        "label-primary-color-picker": "Pick a color",
+        "label-primary-use-default-color": "Disable color",
+        "label-primary-visible-item": "Hide shift",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
     }
 }

@@ -99,13 +99,13 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         // Misc Title 
 
         this.querySelector("#miscTitle").innerHTML = this.#lang.ui.get(
-            "page:settings", "title-misc"
+            "settings", "title-misc"
         );
 
         // Shifts Title 
 
         this.querySelector("#shiftsTitle").innerHTML = this.#lang.ui.get(
-            "page:settings", "title-shifts",
+            "settings", "title-shifts",
         );
     } // }}}
 }
