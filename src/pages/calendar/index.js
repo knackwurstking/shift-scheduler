@@ -575,20 +575,27 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         }
 
         // TODO: reset item
-        for (const shift of (this.#store.ui.get("settings").shifts || [])) {
+        const shifts = (this.#store.ui.get("settings").shifts || [])
+        for (let i = 0; i < shifts.length; i++) {
             const item = new ui.wc.FlexGridItem();
             item.slot = "shifts";
             item.innerHTML = `
-                <shift-card color="${shift.color || 'inherit'}" ${!!shift.visible ? 'visible' : ''}>
-                    <span slot="name">${shift.name}</span>
-                    <span slot="short-name">${shift.shortName}</span>
+                <shift-card color="${shifts[i].color || 'inherit'}" ${!!shifts[i].visible ? 'visible' : ''}>
+                    <span slot="name">${shifts[i].name}</span>
+                    <span slot="short-name">${shifts[i].shortName}</span>
                 </shift-card>
             `;
 
             /** @type {HTMLElement} */
             const card = item.querySelector("shift-card");
-            card.onclick = () => {
-                // TODO: toggle active
+            card.onclick = async () => {
+                [...this.children].forEach((child, idx) => {
+                    if (idx !== i) {
+                        child.querySelector("shift-card").removeAttribute("active");
+                    }
+                });
+
+                card.setAttribute("active", "");
             };
 
             this.appendChild(item);
