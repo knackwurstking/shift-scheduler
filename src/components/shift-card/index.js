@@ -29,8 +29,8 @@ const innerHTML = html`
         bottom: 0;
         left: 0;
         transition:
-            opacity .5s linear,
-            background-color .5s linear;
+            opacity .25s linear,
+            background-color .25s linear;
     }
 </style>
 
