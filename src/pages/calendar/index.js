@@ -601,8 +601,24 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                     }
                 });
 
+                if (card.hasAttribute("active")) {
+                    card.removeAttribute("active");
+                    this.#store.ui.update(
+                        "edit-mode", (data) => ({
+                            ...data,
+                            active: null,
+                        })
+                    );
+                    return;
+                }
+
                 card.setAttribute("active", "");
-                this.#store.ui.update("edit-mode", (data) => ({ ...data, active: shifts[i] }));
+                this.#store.ui.update(
+                    "edit-mode", (data) => ({
+                        ...data,
+                        active: shifts[i]
+                    })
+                );
             };
 
             this.appendChild(item);
