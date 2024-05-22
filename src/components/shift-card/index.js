@@ -17,10 +17,9 @@ const innerHTML = html`
         display: block;
     }
 
-    .name {
-    }
-
+    .name,
     .short-name {
+        text-wrap: nowrap;
     }
 </style>
 
