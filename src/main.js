@@ -49,7 +49,7 @@ store.ui.set("theme", { mode: "system", name: "zinc" }, true);
 store.ui.set("week-start", 0, true);
 store.ui.set("settings", { shifts: [], rhythm: [], startDate: "" }, true);
 store.ui.set("debug", false, true);
-store.ui.set("edit-mode", false, true);
+store.ui.set("edit-mode", false, true); // TODO: data type: { open: boolean; active: (Shift | null) }
 
 store.ui.on("debug", (/** @type{DebugStore} */ state) => {
     if (state) {
