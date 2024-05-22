@@ -71,34 +71,48 @@ template.innerHTML = `
 <style>
     :host {
         --header-height: 2.5rem;
+        --edit-mode-height: 4.5rem;
         position: relative;
         display: block;
         height: 100%;
         width: 100%;
     }
 
-    ui-flex-grid.container {
-        height: 100%;
-        width: 100%;
-    }
-
-    ui-flex-grid.container > ui-flex-grid-item:nth-child(1) {
+    .calendar {
         display: flex;
         position: relative;
         flex-direction: row;
         flex-wrap: nowrap;
         user-select: none;
         overflow: hidden;
+        width: 100%;
+        height: 100%;
+        transition: height 0.25s ease;
     }
 
-    ui-flex-grid.container > ui-flex-grid-item:nth-child(2) {
-        /* TODO: edit-mode container */
-        border: 1px solid red;
+    :host([edit]) .calendar {
+        height: calc(100% - var(--edit-mode-height));
     }
 
-    ui-flex-grid.container > ui-flex-grid-item:nth-child(2) * {
-        /* TODO: remove */
-        border: 1px solid red;
+    .edit-mode {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: var(--edit-mode-height);
+        transform: translateY(100%);
+        transition: transform 0.25s ease;
+        overflow-x: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .edit-mode::-webkit-scrollbar {
+        display: none;
+    }
+
+    :host([edit]) .edit-mode {
+        transform: translateY(0);
     }
 
     .item {
@@ -108,7 +122,7 @@ template.innerHTML = `
         min-width: 100%;
     }
 
-    .container .item ui-flex-grid {
+    .calendar .item ui-flex-grid {
         width: calc(100% - 0.25rem);
         height: calc(100% - 0.25rem);
     }
@@ -234,25 +248,21 @@ template.innerHTML = `
     }
 </style>
 
-<ui-flex-grid class="container">
-    <ui-flex-grid-item style="height: 100%;">
-        <div class="item item1" style="left: -100%;">
-            ${templateItemContent}
-        </div>
+<div class="calendar">
+    <div class="item item1" style="left: -100%;">
+        ${templateItemContent}
+    </div>
 
-        <div class="item item2" style="left: 0;">
-            ${templateItemContent}
-        </div>
+    <div class="item item2" style="left: 0;">
+        ${templateItemContent}
+    </div>
 
-        <div class="item item3" style="left: 100%;">
-            ${templateItemContent}
-        </div>
-    </ui-flex-grid-item>
+    <div class="item item3" style="left: 100%;">
+        ${templateItemContent}
+    </div>
+</div>
 
-    <ui-flex-grid-item style="max-height: fit-content;" flex="0">
-        <ui-flex-grid-row class="shit-card-container"></ui-flex-grid-row>
-    </ui-flex-grid-item>
-</ui-flex-grid>
+<ui-flex-grid-row class="edit-mode" gap="0.25rem"><slot name="shifts"></slot></ui-flex-grid-row>
 `;
 
 // }}}
@@ -550,7 +560,50 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      * @param {boolean} state
      */
     onEditMode(state) {
-        // TODO: render shift cards, clear first (the first item will be the reset item)
+        /** @type {HTMLElement} */
+        const container = this.shadowRoot.querySelector(".edit-mode");
+
+        if (state) {
+            this.setAttribute("edit", "");
+        } else {
+            if (!this.hasAttribute("edit")) {
+                return;
+            }
+
+            container.ontransitionend = () => {
+                container.ontransitionend = null;
+                while (!!this.firstChild) {
+                    this.removeChild(this.firstChild);
+                }
+            };
+
+            this.removeAttribute("edit");
+            return;
+        }
+
+        while (!!this.firstChild) {
+            this.removeChild(this.firstChild);
+        }
+
+        // TODO: reset item
+        for (const shift of (this.#store.ui.get("settings").shifts || [])) {
+            const item = new ui.wc.FlexGridItem();
+            item.slot = "shifts";
+            item.innerHTML = `
+                <shift-card color="${!!shift.visible ? (shift.color || 'inherit') : 'transparent'}">
+                    <span slot="name">${shift.name}</span>
+                    <span slot="short-name">${shift.shortName}</span>
+                </shift-card>
+            `;
+
+            /** @type {HTMLElement} */
+            const card = item.querySelector("shift-card");
+            card.onclick = () => {
+                // TODO: toggle active
+            };
+
+            this.appendChild(item);
+        }
     }
 
     /**
