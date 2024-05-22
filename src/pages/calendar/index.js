@@ -580,8 +580,17 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             this.removeChild(this.firstChild);
         }
 
-        // TODO: reset item
-        const shifts = (this.#store.ui.get("settings").shifts || [])
+        let shifts = (this.#store.ui.get("settings").shifts || [])
+        shifts = [
+            {
+                id: 0,
+                name: "Reset",
+                shortName: "",
+                visible: false
+            },
+            ...shifts
+        ];
+
         for (let i = 0; i < shifts.length; i++) {
             const item = new ui.wc.FlexGridItem();
             item.slot = "shifts";
@@ -616,7 +625,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 this.#store.ui.update(
                     "edit-mode", (data) => ({
                         ...data,
-                        active: shifts[i]
+                        active: (shifts[i].id === 0) ? null : shifts[i],
                     })
                 );
             };
