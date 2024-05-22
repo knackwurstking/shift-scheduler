@@ -566,17 +566,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         if (state) {
             this.setAttribute("edit", "");
         } else {
-            if (!this.hasAttribute("edit")) {
-                return;
-            }
-
-            container.ontransitionend = () => {
-                container.ontransitionend = null;
-                while (!!this.firstChild) {
-                    this.removeChild(this.firstChild);
-                }
-            };
-
             this.removeAttribute("edit");
             return;
         }
