@@ -263,7 +263,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         settings.shifts.forEach(shift => {
             const item = new ui.wc.FlexGridItem();
             item.innerHTML = `
-                <shift-card color="${!!shift.visible ? (shift.color || 'inherit') : 'transparent'}">
+                <shift-card color="${shift.color || 'inherit'}" ${!!shift.visible ? 'visible' : ''}>
                     <span slot="name">${shift.name}</span>
                     <span slot="short-name">${shift.shortName}</span>
                 </shift-card>

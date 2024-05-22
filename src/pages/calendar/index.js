@@ -590,7 +590,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             const item = new ui.wc.FlexGridItem();
             item.slot = "shifts";
             item.innerHTML = `
-                <shift-card color="${!!shift.visible ? (shift.color || 'inherit') : 'transparent'}">
+                <shift-card color="${shift.color || 'inherit'}" ${!!shift.visible ? 'visible' : ''}>
                     <span slot="name">${shift.name}</span>
                     <span slot="short-name">${shift.shortName}</span>
                 </shift-card>

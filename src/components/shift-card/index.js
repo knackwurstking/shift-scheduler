@@ -63,8 +63,15 @@ export class ShiftCard extends HTMLElement {
     attributeChangedCallback(name, _oldValue, newValue) {
         switch (name) {
             case "color":
-                this.#shortName.style.color = newValue || "transparent"
-                break
+                if (this.hasAttribute("visible")) {
+                    this.#shortName.style.color = newValue || "inherit";
+                } else {
+                    this.#shortName.style.color = "transparent";
+                }
+                break;
+            case "visible":
+                this.#shortName.style.color = newValue === null ? "transparent" : (this.getAttribute("color") || "inherit");
+                break;
         }
     }
 }
