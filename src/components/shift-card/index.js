@@ -21,7 +21,17 @@ const innerHTML = html`
     .short-name {
         text-wrap: nowrap;
     }
+
+    .active-background {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
 </style>
+
+<div class="active-background"></div>
 
 <span class="name">
     <slot name="name"></slot>
@@ -42,16 +52,23 @@ const innerHTML = html`
 export class ShiftCard extends HTMLElement {
     /** @type {HTMLElement} */
     #shortName
+    /** @type {HTMLElement} */
+    #rippleBackground
 
     static register = () => customElements.define("shift-card", ShiftCard)
-    static observedAttributes = ["color"]
+    static observedAttributes = ["color", "visible", "active"]
 
     constructor() {
-        super()
-        this.attachShadow({ mode: "open" })
-        this.shadowRoot.innerHTML = innerHTML
-        this.classList.add("is-card")
-        this.#shortName = this.shadowRoot.querySelector(".short-name")
+        super();
+
+        this.attachShadow({ mode: "open" });
+        this.shadowRoot.innerHTML = innerHTML;
+
+        this.classList.add("is-card");
+
+        this.#shortName = this.shadowRoot.querySelector(".short-name");
+        this.#rippleBackground = this.shadowRoot.querySelector(".active-background");
+
         ui.js.ripple.create(this, { useClick: true });
     }
 
@@ -71,6 +88,14 @@ export class ShiftCard extends HTMLElement {
                 break;
             case "visible":
                 this.#shortName.style.color = newValue === null ? "transparent" : (this.getAttribute("color") || "inherit");
+                break;
+            case "active":
+                if (newValue === null) {
+                    this.#rippleBackground.style.opacity = "0";
+                } else {
+                    this.#rippleBackground.style.backgroundColor = `${ui.js.ripple.defaultOptions.color}`;
+                    this.#rippleBackground.style.opacity = `${ui.js.ripple.defaultOptions.opacity}`;
+                }
                 break;
         }
     }
