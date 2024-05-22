@@ -25,7 +25,10 @@
  * @type {"en" | "de"}
  *
  * @typedef EditModeStore
- * @type {boolean}
+ * @type {{
+ *  open: boolean;
+ *  active: Shift | null;
+ * }}
  *
  * @typedef StoreEvents
  * @type {{

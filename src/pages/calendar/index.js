@@ -14,6 +14,7 @@ import * as utils from "./utils";
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
  * @typedef {import("../../types").LangStore} LangStore 
  * @typedef {import("../../types").DBDataEntry} DBDataEntry
+ * @typedef {import("../../types").EditModeStore} EditModeStore
  *
  * @typedef {import("../../db").DB} DB 
  */
@@ -557,13 +558,18 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
     /**
      * @private
-     * @param {boolean} state
+     * @param {EditModeStore} data 
      */
-    onEditMode(state) {
-        /** @type {HTMLElement} */
-        const container = this.shadowRoot.querySelector(".edit-mode");
+    onEditMode(data) {
+        if (this.hasAttribute("edit") && !!data.open) {
+            return;
+        }
 
-        if (state) {
+        if (!this.hasAttribute("edit") && !data.open) {
+            return;
+        }
+
+        if (data.open) {
             this.setAttribute("edit", "");
         } else {
             this.removeAttribute("edit");
@@ -596,6 +602,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 });
 
                 card.setAttribute("active", "");
+                this.#store.ui.update("edit-mode", (data) => ({ ...data, active: shifts[i] }));
             };
 
             this.appendChild(item);

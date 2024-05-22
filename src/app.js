@@ -124,7 +124,7 @@ export default class App extends ui.js.events.Events {
         /** @type {IconButton} */
         this.appBarEditButton = this.appBar.querySelector("#appBarEditButton")
         this.appBarEditButton.onclick = async () => {
-            this.#store.ui.set("edit-mode", !this.#store.ui.get("edit-mode"));
+            this.#store.ui.update("edit-mode", (data) => ({ ...data, open: !data.open }));
         };
 
         /** @type {IconButton} */
