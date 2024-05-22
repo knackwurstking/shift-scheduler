@@ -28,6 +28,9 @@ const innerHTML = html`
         right: 0;
         bottom: 0;
         left: 0;
+        transition:
+            opacity .5s linear,
+            background-color .5s linear;
     }
 </style>
 
