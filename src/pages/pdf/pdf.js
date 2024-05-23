@@ -34,6 +34,7 @@ export async function create({ year = null, month = null }) {
         }
 
         const mA = await calendarUtils.getArray(year, month, document.querySelector("ui-store"));
+        // TODO: Add database stuff using map
 
         autoTable(doc, {
             // TODO: Handle week start
