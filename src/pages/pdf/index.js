@@ -15,13 +15,9 @@ t.innerHTML = `
         gap="0.25rem"
     >
         <ui-flex-grid-row style="align-items: center;" gap="0.25rem">
-            <ui-flex-grid-item class="picker">
-                <!-- TODO: year picker -->
-            </ui-flex-grid-item>
+            <ui-flex-grid-item class="picker"></ui-flex-grid-item>
 
-            <ui-flex-grid-item class="download">
-                <!-- TODO: preview -->
-            </ui-flex-grid-item>
+            <ui-flex-grid-item class="download"></ui-flex-grid-item>
         </ui-flex-grid-row>
     </ui-flex-grid>
 `;
