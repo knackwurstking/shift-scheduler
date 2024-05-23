@@ -21,11 +21,12 @@ export async function create({ year = null, month = null }) {
     if (year === null) year = today.getFullYear();
 
     const doc = new jspdf.jsPDF();
+    doc.setFont("Courier");
 
     const months = month !== null ? [month] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     let pageIndex = 0;
     for (const month of months) {
-        if (pageIndex === 3) {
+        if (pageIndex === 2) {
             doc.addPage();
             pageIndex = 1;
         } else {
@@ -33,9 +34,22 @@ export async function create({ year = null, month = null }) {
         }
 
         const mA = await calendarUtils.getArray(year, month, document.querySelector("ui-store"));
+
         autoTable(doc, {
-            // TODO: handle week start
-            head: [['Sun', 'Mon', 'Thu', "Wed", "Thu", "Fri", "Ä, Ö"]],
+            // TODO: Handle week start
+            head: [
+                [
+                    {
+                        // TODO: Add table header showing the current month
+                        content: "Jannuar",
+                        colSpan: 7,
+                        styles: {
+                            fillColor: [0, 0, 0],
+                            textColor: [255, 255, 255]
+                        }
+                    }
+                ], ['Sun', 'Mon', 'Thu', "Wed", "Thu", "Fri", "Ä, Ö"],
+            ],
             body: [
                 getRow(month, mA.slice(0, 7)),
                 getRow(month, mA.slice(7, 14)),
@@ -44,9 +58,16 @@ export async function create({ year = null, month = null }) {
                 getRow(month, mA.slice(28, 35)),
                 getRow(month, mA.slice(35, 42)),
             ],
+            theme: "grid",
             styles: {
+                valign: "middle",
                 halign: "center",
+                font: "Courier",
             },
+            headStyles: {
+                fillColor: [0, 0, 0],
+                textColor: [255, 255, 255],
+            }
         });
     }
 
@@ -58,11 +79,18 @@ export async function create({ year = null, month = null }) {
  * @param {DBDataEntry[]} a
  */
 function getRow(month, a) {
+    // TODO: Add options like `useLongName`
     return a.slice(0, 7).map(a => {
         const name = a.shift?.visible
-            ? (a.shift?.name || "")
+            ? (a.shift?.shortName || "")
             : "";
-        return a.month === month ? `${a.date}\n${name}` : "";
+
+        return a.month === month
+            ? (
+                !name
+                    ? `\n${a.date}\n`
+                    : `${a.date}\n--\n${name}`
+            ) : "\n\n";
     });
 }
 
