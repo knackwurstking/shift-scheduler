@@ -302,23 +302,51 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                         return;
                     }
 
-                    const year = parseInt(ev.currentTarget.getAttribute("data-year"));
-                    const month = parseInt(ev.currentTarget.getAttribute("data-month"));
-                    const date = parseInt(ev.currentTarget.getAttribute("data-date"));
+                    const target = ev.currentTarget;
+                    const year = parseInt(target.getAttribute("data-year"));
+                    const month = parseInt(target.getAttribute("data-month"));
+                    const date = parseInt(target.getAttribute("data-date"));
+
+                    const { open, active } = this.#store.ui.get("edit-mode");
+                    if (!!open) {
+                        if (!active) return;
+
+                        const rhythmStift = utils.calcShiftForDay(
+                            new Date(year, month, date), this.#store.ui.get("settings")
+                        );
+
+                        const dbEntry = {
+                            year, month, date,
+                            shift: active.id === 0 ? null : active,
+                            note: (await db.get(year, month, date))?.note || "",
+                        };
+                        if (rhythmStift?.id === dbEntry.shift?.id) dbEntry.shift = null;
+
+                        if (!dbEntry.shift && !dbEntry.note) {
+                            db.delete(year, month, date)
+                        } else {
+                            db.add(dbEntry).catch(() => db.put(dbEntry));
+                        }
+
+                        this.updateDayItem(target, { ...dbEntry, shift: dbEntry.shift || rhythmStift });
+                        return;
+                    }
 
                     const dialog = new dialogs.EditDayDialog(this.#store, this.#lang);
                     document.body.appendChild(dialog);
                     dialog.set(year, month, date);
 
                     dialog.ui.open(true);
+
                     dialog.ui.events.on("close", () => {
                         document.body.removeChild(dialog);
                     });
+
                     dialog.ui.events.on("submit", async (data) => {
                         if (data) {
                             this.updateDayItem(child, data);
                         }
-                    })
+                    });
                 }
             );
         });
@@ -560,7 +588,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      * @private
      * @param {EditModeStore} data 
      */
-    onEditMode(data) {
+    onEditMode(data) { // {{{
         if (this.hasAttribute("edit") && !!data.open) {
             return;
         }
@@ -625,14 +653,14 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
                 this.#store.ui.update(
                     "edit-mode", (data) => ({
                         ...data,
-                        active: (shifts[i].id === 0) ? null : shifts[i],
+                        active: shifts[i],
                     })
                 );
             };
 
             this.appendChild(item);
         }
-    }
+    } // }}}
 
     /**
      * @private
