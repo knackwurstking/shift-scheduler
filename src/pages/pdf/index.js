@@ -77,13 +77,14 @@ export class PDFPage extends ui.wc.StackLayoutPage {
             >
         `;
 
-        // TODO: do a validation check, set `aria-invalid=true`
         this.#year = container.querySelector("input");
         this.#year.oninput = () => {
             if (isNaN(parseInt(this.#year.value, 10))) {
                 this.#year.setAttribute("aria-invalid", "");
+                this.#downloadButton.setAttribute("disabled", "");
             } else {
                 this.#year.removeAttribute("aria-invalid");
+                this.#downloadButton.removeAttribute("disabled");
             }
         }
     }
