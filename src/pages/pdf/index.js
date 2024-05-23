@@ -8,7 +8,25 @@ import ui from "ui";
  */
 
 const t = document.createElement("template");
-t.innerHTML = ``;
+t.innerHTML = `
+    <style>
+        * { border: 1px solid red; }
+
+        :host {
+            padding-top: var(--ui-app-bar-height);
+        }
+    </style>
+
+    <ui-flex-grid gap="0.25rem">
+        <ui-flex-grid-item>
+            <!-- TODO: year picker -->
+        </ui-flex-grid-item>
+
+        <ui-flex-grid-item>
+            <!-- TODO: preview -->
+        </ui-flex-grid-item>
+    </ui-flex-grid>
+`;
 
 export class PDFPage extends ui.wc.StackLayoutPage {
     /** @type {Store} */
@@ -22,11 +40,11 @@ export class PDFPage extends ui.wc.StackLayoutPage {
 
     constructor() {
         super();
-        this.shadowRoot.appendChild(t.cloneNode(true));
+        this.shadowRoot.appendChild(t.content.cloneNode(true));
 
         /** @type {Store} */
-        this.#store = document.querySelector("ui-store")
+        this.#store = document.querySelector("ui-store");
         /** @type {Lang} */
-        this.#lang = document.querySelector("ui-lang")
+        this.#lang = document.querySelector("ui-lang");
     }
 }
