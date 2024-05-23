@@ -133,7 +133,10 @@ export default class App extends ui.js.events.Events {
 
         /** @type {IconButton} */
         this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")
-        this.appBarPDFButton.onclick = async () => this.stackLayout.ui.setPage("pdf");
+        this.appBarPDFButton.onclick = async () => {
+            // TODO: Open a pdf dialog instead of a page
+            this.stackLayout.ui.setPage("pdf");
+        };
 
         /** @type {IconButton} */
         this.appBarSettingsButton = this.appBar.querySelector("#appBarSettingsButton")

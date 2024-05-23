@@ -101,7 +101,7 @@ export class PDFPage extends ui.wc.StackLayoutPage {
         this.#downloadButton.setAttribute("color", "primary");
         this.#downloadButton.setAttribute("variant", "full");
         this.#downloadButton.onclick = () => {
-            // TODO: create pdf and download
+            // TODO: Add fullscreen spinner until export pdf is done
             const c = new Date(this.#store.ui.get("date-picker"));
             pdf.create({
                 year: c.getFullYear(),
