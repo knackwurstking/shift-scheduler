@@ -140,9 +140,12 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     /** @private */
     createContent() { // {{{
         this.#content = new ui.wc.FlexGrid();
+
+        this.#content.setAttribute("gap", "0.5rem");
         this.#content.style.width = "100%";
         this.#content.style.height = "100%";
         this.#content.innerHTML = flexGridContent;
+
         this.appendChild(this.#content);
     } // }}}
 
