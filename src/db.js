@@ -69,10 +69,7 @@ export class DB {
             const r = this.roStore().get([year, month, date]);
 
             r.onsuccess = () => resolve(r.result || null);
-            r.onerror = (ev) => {
-                console.warn(`[DB] Error while getting "${year}-${month}-${date}" from the "${this.storeName}" store!`, ev);
-                resolve(null);
-            };
+            r.onerror = () => resolve(null);
         });
     } // }}}
 
@@ -99,7 +96,7 @@ export class DB {
 
             r.onsuccess = () => resolve();
             r.onerror = async (ev) => {
-                console.warn(`[DB] Error while adding "${data.year}-${data.month}-${data.date}" to "${this.storeName}"! Try put now...`, ev);
+                console.warn(`[DB] Error while adding "${data.year}-${data.month}-${data.date}" to "${this.storeName}"!`, ev);
                 reject(r.error);
             };
         });
