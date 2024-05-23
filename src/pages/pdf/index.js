@@ -1,4 +1,5 @@
 import ui from "ui";
+import * as pdf from "./pdf";
 
 /**
  * @typedef {import("../../types").StoreEvents} StoreEvents
@@ -72,6 +73,7 @@ export class PDFPage extends ui.wc.StackLayoutPage {
         container.innerHTML = `
             <ui-secondary>Pick a Year</ui-secondary>
             <input
+                style="width: 100%;"
                 type="number"
                 value="${new Date(this.#store.ui.get('date-picker')).getFullYear()}"
             >
@@ -100,6 +102,10 @@ export class PDFPage extends ui.wc.StackLayoutPage {
         this.#downloadButton.setAttribute("variant", "full");
         this.#downloadButton.onclick = () => {
             // TODO: create pdf and download
+            const c = new Date(this.#store.ui.get("date-picker"));
+            pdf.create({
+                year: c.getFullYear(),
+            });
         };
 
         container.appendChild(this.#downloadButton);

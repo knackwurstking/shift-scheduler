@@ -7,7 +7,8 @@
         "dev": "vite --host",
         "build": "vite build",
         "preview": "vite preview",
-        "build:android": "npm run build && npx cap sync android && npx cap open android"
+        "build:android": "npm run build && npx cap sync android",
+        "build:android:open": "npx cap open android"
     },
     "devDependencies": {
         "@capacitor/cli": "^6.0.0",
@@ -21,6 +22,8 @@
         "@capacitor/core": "^6.0.0",
         "@capacitor/filesystem": "^6.0.0",
         "@capacitor/share": "^6.0.0",
+        "jspdf": "^2.5.1",
+        "jspdf-autotable": "^3.8.2",
         "ui": "file:../ui"
     }
 }
