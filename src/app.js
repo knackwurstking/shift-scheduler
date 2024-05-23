@@ -215,12 +215,12 @@ export default class App extends ui.js.events.Events {
                 this.appBar.removeChild(this.appBarSettingsButton.parentElement)
                 break;
             case "pdf":
-                utils.setAppBarTitle("@TODO: PDF Page")
-                this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
-                this.appBar.removeChild(this.appBarEditButton.parentElement)
-                this.appBar.removeChild(this.appBarTodayButton.parentElement)
-                this.appBar.removeChild(this.appBarPDFButton.parentElement)
-                this.appBar.removeChild(this.appBarSettingsButton.parentElement)
+                utils.setAppBarTitle("pdf", "app-bar-title");
+                this.appBar.removeChild(this.appBarDatePickerButton.parentElement);
+                this.appBar.removeChild(this.appBarEditButton.parentElement);
+                this.appBar.removeChild(this.appBarTodayButton.parentElement);
+                this.appBar.removeChild(this.appBarPDFButton.parentElement);
+                this.appBar.removeChild(this.appBarSettingsButton.parentElement);
                 break;
             default:
                 throw `unknown page "${newPage.ui.name}"`;

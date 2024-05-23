@@ -28,6 +28,10 @@
         "button-import": "Import",
         "button-export": "Export"
     },
+    "pdf": {
+        "app-bar-title": "PDF",
+        "button-download": "Herunterladen"
+    },
     "date-picker-dialog": {
         "title": "Datumsauswahl",
         "input-title-month": "Wähle ein Datum",
