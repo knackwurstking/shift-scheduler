@@ -297,57 +297,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         this.shadowRoot.querySelectorAll(".days-row > .day-item").forEach(child => {
             child.addEventListener("click",
-                async (/** @type {Event & { currentTarget: HTMLElement }} */ev) => {
-                    if (this.swipeHandler.startX !== null) {
-                        return;
-                    }
-
-                    const target = ev.currentTarget;
-                    const year = parseInt(target.getAttribute("data-year"));
-                    const month = parseInt(target.getAttribute("data-month"));
-                    const date = parseInt(target.getAttribute("data-date"));
-
-                    const { open, active } = this.#store.ui.get("edit-mode");
-                    if (!!open) {
-                        if (!active) return;
-
-                        const rhythmStift = utils.calcShiftForDay(
-                            new Date(year, month, date), this.#store.ui.get("settings")
-                        );
-
-                        const dbEntry = {
-                            year, month, date,
-                            shift: active.id === 0 ? null : active,
-                            note: (await db.get(year, month, date))?.note || "",
-                        };
-                        if (rhythmStift?.id === dbEntry.shift?.id) dbEntry.shift = null;
-
-                        if (!dbEntry.shift && !dbEntry.note) {
-                            db.delete(year, month, date)
-                        } else {
-                            db.add(dbEntry).catch(() => db.put(dbEntry));
-                        }
-
-                        this.updateDayItem(target, { ...dbEntry, shift: dbEntry.shift || rhythmStift });
-                        return;
-                    }
-
-                    const dialog = new dialogs.EditDayDialog(this.#store, this.#lang);
-                    document.body.appendChild(dialog);
-                    dialog.set(year, month, date);
-
-                    dialog.ui.open(true);
-
-                    dialog.ui.events.on("close", () => {
-                        document.body.removeChild(dialog);
-                    });
-
-                    dialog.ui.events.on("submit", async (data) => {
-                        if (data) {
-                            this.updateDayItem(child, data);
-                        }
-                    });
-                }
+                async (/** @type {Event & { currentTarget: HTMLElement }} */ev) =>
+                    this.onDayItemClick(ev.currentTarget, child)
             );
         });
     } // }}}
@@ -362,7 +313,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
                 // Handle the "date-picker" state change, update calendar items
                 this.#store.ui.on("date-picker",
-                    this.handleDatePickerChangeEvent.bind(this), true),
+                    this.onDatePicker.bind(this), true),
 
                 // Handle a "week-start" change event
                 this.#store.ui.on("week-start",
@@ -509,30 +460,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         }
     } // }}}
 
-    /** @param {DatePickerStore} dateString */
-    async handleDatePickerChangeEvent(dateString) { // {{{
-        console.debug(
-            `[calendar] date-picker change event: update calendar items`,
-        );
-
-        // Performance testing - start
-        const start = new Date().getMilliseconds();
-
-        const date = new Date(dateString);
-        date.setMonth(date.getMonth() - 1);
-        this.today = new Date();
-
-        const items = this.getItems()
-        for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
-            this.updateCalendarItem(new Date(date), items[i]);
-        }
-
-        // Performance testing - end
-        console.debug(
-            `[calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
-        );
-    } // }}}
-
     /**
      * @private
      * @param {WeekStartStore} weekStart
@@ -580,6 +507,88 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
             if (i % this.order.length === sunIndex) {
                 c.classList.add("is-sunday");
+            }
+        });
+    } // }}}
+
+    /**
+     * @private
+     * @param {DatePickerStore} dateString
+     */
+    async onDatePicker(dateString) { // {{{
+        console.debug(
+            `[calendar] date-picker change event: update calendar items`,
+        );
+
+        // Performance testing - start
+        const start = new Date().getMilliseconds();
+
+        const date = new Date(dateString);
+        date.setMonth(date.getMonth() - 1);
+        this.today = new Date();
+
+        const items = this.getItems()
+        for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
+            this.updateCalendarItem(new Date(date), items[i]);
+        }
+
+        // Performance testing - end
+        console.debug(
+            `[calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
+        );
+    } // }}}
+
+    /** 
+     * @param {HTMLElement} target
+     * @param {Element} child
+     */
+    async onDayItemClick(target, child) { // {{{
+        if (this.swipeHandler.startX !== null) {
+            return;
+        }
+
+        const year = parseInt(target.getAttribute("data-year"));
+        const month = parseInt(target.getAttribute("data-month"));
+        const date = parseInt(target.getAttribute("data-date"));
+
+        const { open, active } = this.#store.ui.get("edit-mode");
+        if (!!open) {
+            if (!active) return;
+
+            const rhythmStift = utils.calcShiftForDay(
+                new Date(year, month, date), this.#store.ui.get("settings")
+            );
+
+            const dbEntry = {
+                year, month, date,
+                shift: active.id === 0 ? null : active,
+                note: (await db.get(year, month, date))?.note || "",
+            };
+            if (rhythmStift?.id === dbEntry.shift?.id) dbEntry.shift = null;
+
+            if (!dbEntry.shift && !dbEntry.note) {
+                db.delete(year, month, date)
+            } else {
+                db.add(dbEntry).catch(() => db.put(dbEntry));
+            }
+
+            this.updateDayItem(target, { ...dbEntry, shift: dbEntry.shift || rhythmStift });
+            return;
+        }
+
+        const dialog = new dialogs.EditDayDialog(this.#store, this.#lang);
+        document.body.appendChild(dialog);
+        dialog.set(year, month, date);
+
+        dialog.ui.open(true);
+
+        dialog.ui.events.on("close", () => {
+            document.body.removeChild(dialog);
+        });
+
+        dialog.ui.events.on("submit", async (data) => {
+            if (data) {
+                this.updateDayItem(child, data);
             }
         });
     } // }}}
@@ -668,13 +677,11 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
      */
     async onWeekStart(weekStart) { // {{{
         console.debug(
-            `[calendar] week-start event: update week days and run the handleDatePickerChangeEvent callback`,
+            `[calendar] week-start event: update week days and run the onDatePicker callback`,
         );
 
         await this.updateWeekDays(weekStart);
-        await this.handleDatePickerChangeEvent(
-            this.#store.ui.get("date-picker"),
-        );
+        await this.onDatePicker(this.#store.ui.get("date-picker"));
     } // }}}
 
     /**
