@@ -22,7 +22,7 @@ export class DB {
     } // }}}
 
     /**
-     * @param {() => void|Promise<void>} cb
+     * @param {(() => void|Promise<void>) | null} cb
      */
     open(cb = null) { // {{{
         this.#request = window.indexedDB.open(this.dbName, this.version);
@@ -156,6 +156,8 @@ export class DB {
 
     /** @private */
     roStore() { // {{{
+        if (this.#request === null) throw `request is null, run open first!`;
+
         return this.#request.result
             .transaction(this.storeName, "readonly")
             .objectStore(this.storeName);
@@ -163,6 +165,8 @@ export class DB {
 
     /** @private */
     rwStore() { // {{{
+        if (this.#request === null) throw `request is null, run open first!`;
+
         return this.#request.result
             .transaction(this.storeName, "readwrite")
             .objectStore(this.storeName);
@@ -192,7 +196,7 @@ export class DB {
      */
     onError(ev) { // {{{
         console.error(`[DBCustom] Handle request failed: ${this.dbName}`, {
-            error: this.#request.error,
+            error: this.#request?.error || null,
             event: ev,
         });
         alert(`[DBCustom] Handle request failed: ${this.dbName} (see console)`);
@@ -204,7 +208,7 @@ export class DB {
      */
     onBlocked(ev) { // {{{
         console.warn(`[DBCustom] Handle request blocked: ${this.dbName}`, {
-            error: this.#request.error,
+            error: this.#request?.error || null,
             event: ev,
         });
         alert(`[DBCustom] Handle request blocked: ${this.dbName} (see console)`);
@@ -227,6 +231,7 @@ export class DB {
 
         switch (ev.oldVersion) {
             case 0:
+                if (this.#request === null) throw `request is null, run open first!`;
                 this.createStore(this.#request.result);
                 break;
         }
