@@ -215,7 +215,7 @@ export default class App extends ui.js.events.Events {
                 this.appBar.removeChild(this.appBarSettingsButton.parentElement)
                 break;
             case "pdf":
-                utils.setAppBarTitle("pdf", "app-bar-title");
+                utils.setAppBarTitle(this.#lang.ui.get("pdf", "app-bar-title"));
                 this.appBar.removeChild(this.appBarDatePickerButton.parentElement);
                 this.appBar.removeChild(this.appBarEditButton.parentElement);
                 this.appBar.removeChild(this.appBarTodayButton.parentElement);
