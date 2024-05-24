@@ -131,6 +131,8 @@ export class ShiftsBackup extends HTMLElement {
                 this.#store.ui.set("settings", data.settings);
             }
 
+            // TODO: Validate database version `data.indexedDB.version`
+
             // Handle indexedDB - validate all entries
             for (const entry of data.indexedDB.data || []) {
                 if (!db.validate(entry)) {
