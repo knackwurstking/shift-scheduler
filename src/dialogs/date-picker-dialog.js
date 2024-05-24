@@ -1,12 +1,11 @@
 import ui from "ui";
 
 /**
+ * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
  * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
- * @typedef {import("ui/src/wc").Secondary} Secondary
- * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
  */
 
 /** @extends {ui.wc.Dialog<DialogEvents>} */
