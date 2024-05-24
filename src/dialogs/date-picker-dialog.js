@@ -5,16 +5,10 @@ import { html } from "../utils";
  * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
+ * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc").Secondary} Secondary
  * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
  */
-
-const flexGridContent = html`
-    <ui-flex-grid-item>
-        <ui-secondary class="input-label"></ui-secondary>
-        <input type="month">
-    </ui-flex-grid-item>
-`;
 
 /** @extends {ui.wc.Dialog<DialogEvents>} */
 export class DatePickerDialog extends ui.wc.Dialog {
@@ -32,7 +26,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
     #submitButton;
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
-        this.#store.ui.set("date-picker", this.monthInput.value);
+        this.#store.ui.set("date-picker", new Date(this.querySelector("input").value).toString());
         this.ui.close();
     };
 
@@ -49,9 +43,6 @@ export class DatePickerDialog extends ui.wc.Dialog {
         this.#lang = lang;
 
         this.cleanup = [];
-
-        /** @type {HTMLInputElement} */
-        this.monthInput = this.querySelector("input");
 
         this.createContent();
         this.createActions();
@@ -76,10 +67,25 @@ export class DatePickerDialog extends ui.wc.Dialog {
         const content = new ui.wc.FlexGrid();
 
         content.setAttribute("gap", "0.5rem");
-        content.innerHTML = flexGridContent;
+
+        this.createInput(content);
 
         this.appendChild(content);
     } // }}}
+
+    /**
+     * @private
+     * @param {FlexGrid} content
+     */
+    createInput(content) {
+        const date = new Date(this.#store.ui.get("date-picker"));
+        const item = new ui.wc.FlexGridItem();
+        item.innerHTML = `
+            <ui-secondary class="input-label"></ui-secondary>
+            <input type="month" value="${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}">
+        `;
+        content.appendChild(item);
+    }
 
     /** @private */
     createActions() { // {{{
