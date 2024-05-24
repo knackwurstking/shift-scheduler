@@ -108,7 +108,6 @@ export class SwipeHandler extends ui.js.events.Events {
             requestAnimationFrame(this.animationFrameHandler);
         }; // }}}
 
-        // TODO: ...
         this.calendar.addEventListener("mousemove", this.onMouseMove, { passive: true });
         this.calendar.addEventListener("mouseup", this.onTouchEnd);
         this.calendar.addEventListener("mouseout", this.onTouchEnd);
