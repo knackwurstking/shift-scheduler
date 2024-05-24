@@ -77,7 +77,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
      * @private
      * @param {FlexGrid} content
      */
-    createInput(content) {
+    createInput(content) { // {{{
         const date = new Date(this.#store.ui.get("date-picker"));
         const item = new ui.wc.FlexGridItem();
         item.innerHTML = `
@@ -85,7 +85,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
             <input type="month" value="${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}">
         `;
         content.appendChild(item);
-    }
+    } // }}}
 
     /** @private */
     createActions() { // {{{
