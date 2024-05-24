@@ -3,7 +3,7 @@ import "./styles.css";
 import ui from "ui";
 import App from "./app";
 import { ShiftCard } from "./components";
-import { CalendarPage, SettingsPage, PDFPage } from "./pages";
+import { CalendarPage, SettingsPage } from "./pages";
 import utils from "./utils";
 
 /**
@@ -23,10 +23,9 @@ ui.defineSVG()
 ui.define()
     .then(() => {
         App.register();
-        ShiftCard.register()
-        CalendarPage.register()
-        SettingsPage.register()
-        PDFPage.register()
+        ShiftCard.register();
+        CalendarPage.register();
+        SettingsPage.register();
     })
     .catch((err) => alert(`Rendering web components failed: ${err}`));
 

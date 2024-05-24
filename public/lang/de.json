@@ -28,8 +28,8 @@
         "button-import": "Import",
         "button-export": "Export"
     },
-    "pdf": {
-        "app-bar-title": "PDF",
+    "pdf-dialog": {
+        "title": "PDF",
         "button-download": "Herunterladen"
     },
     "date-picker-dialog": {

@@ -21,7 +21,10 @@ export default class App extends ui.js.events.Events {
     /** @type {Lang} */
     #lang
 
-    static register = () => dialogs.DatePickerDialog.register();
+    static register = () => {
+        dialogs.DatePickerDialog.register();
+        dialogs.PDFDialog.register();
+    };
 
     /**
      * @param {Store} store
@@ -84,12 +87,6 @@ export default class App extends ui.js.events.Events {
                 .content.cloneNode(true);
         });
 
-        this.stackLayout.ui.registerPage("pdf", () => {
-            return document.querySelector("template#pagePDF")
-                // @ts-expect-error
-                .content.cloneNode(true)
-        });
-
         this.stackLayout.ui.registerPage("settings", () => {
             return document.querySelector("template#pageSettings")
                 // @ts-expect-error
@@ -134,8 +131,14 @@ export default class App extends ui.js.events.Events {
         /** @type {IconButton} */
         this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")
         this.appBarPDFButton.onclick = async () => {
-            // TODO: Open a pdf dialog instead of a page
-            this.stackLayout.ui.setPage("pdf");
+            const dialog = new dialogs.PDFDialog(this.#store, this.#lang);
+            document.body.appendChild(dialog);;
+
+            dialog.ui.events.on("close", () => {
+                document.body.removeChild(dialog);
+            });
+
+            dialog.ui.open(true);
         };
 
         /** @type {IconButton} */
@@ -216,14 +219,6 @@ export default class App extends ui.js.events.Events {
                 this.appBar.removeChild(this.appBarTodayButton.parentElement)
                 this.appBar.removeChild(this.appBarPDFButton.parentElement)
                 this.appBar.removeChild(this.appBarSettingsButton.parentElement)
-                break;
-            case "pdf":
-                utils.setAppBarTitle(this.#lang.ui.get("pdf", "app-bar-title"));
-                this.appBar.removeChild(this.appBarDatePickerButton.parentElement);
-                this.appBar.removeChild(this.appBarEditButton.parentElement);
-                this.appBar.removeChild(this.appBarTodayButton.parentElement);
-                this.appBar.removeChild(this.appBarPDFButton.parentElement);
-                this.appBar.removeChild(this.appBarSettingsButton.parentElement);
                 break;
             default:
                 throw `unknown page "${newPage.ui.name}"`;
