@@ -45,7 +45,7 @@ export class SwipeHandler extends ui.js.events.Events {
             if (ev.buttons === 1) { // primary button
                 if (this.startX === null) {
                     this.startX = ev.clientX;
-                    this.calendar.getItems().forEach(item => item.classList.add("moving"));
+                    this.getItems().forEach(item => item.classList.add("moving"));
                 }
 
                 this.clientX = ev.clientX;
@@ -58,7 +58,7 @@ export class SwipeHandler extends ui.js.events.Events {
 
             if (this.startX === null) {
                 this.startX = ev.touches[0].clientX;
-                this.calendar.getItems().forEach(item => item.classList.add("moving"));
+                this.getItems().forEach(item => item.classList.add("moving"));
             }
 
             this.clientX = ev.touches[0].clientX;
@@ -108,6 +108,7 @@ export class SwipeHandler extends ui.js.events.Events {
             requestAnimationFrame(this.animationFrameHandler);
         }; // }}}
 
+        // TODO: ...
         this.calendar.addEventListener("mousemove", this.onMouseMove, { passive: true });
         this.calendar.addEventListener("mouseup", this.onTouchEnd);
         this.calendar.addEventListener("mouseout", this.onTouchEnd);
@@ -127,6 +128,10 @@ export class SwipeHandler extends ui.js.events.Events {
         this.kill = false;
     } // }}}
 
+    getItems() { // {{{
+        return this.calendar.querySelectorAll(".item");
+    } // }}}
+
     isMinSwipe() { // {{{
         return (
             Math.abs(this.startX - this.clientX) >
@@ -139,7 +144,7 @@ export class SwipeHandler extends ui.js.events.Events {
      */
     moveX(dX) { // {{{
         // NOTE: -100% | 0% | 100%
-        const items = this.calendar.getItems();
+        const items = this.getItems();
 
         // @ts-ignore
         items[0].style.left = `calc(-100% + ${dX}px)`;
@@ -153,7 +158,7 @@ export class SwipeHandler extends ui.js.events.Events {
      * @param {string} value
      */
     setTransition(value) { // {{{
-        const items = this.calendar.getItems();
+        const items = this.getItems();
 
         // @ts-ignore
         items.forEach((c) => (c.style.transition = value));
@@ -169,26 +174,26 @@ export class SwipeHandler extends ui.js.events.Events {
         this.startX = null;
         this.clientX = null;
         this.#finalTransform = false;
-        this.calendar.getItems().forEach(item => item.classList.remove("moving"));
+        this.getItems().forEach(item => item.classList.remove("moving"));
 
         console.debug(`[Calendar SwipeHandler] release transform lock`);
     } // }}}
 
     /** @private */
     reorderItems() { // {{{
-        const items = this.calendar.getItems();
+        const items = this.getItems();
         const direction = this.clientX > this.startX ? "right" : "left";
         switch (direction) {
             case "left":
                 // The first item will be the last
-                this.calendar.shadowRoot.appendChild(
-                    this.calendar.shadowRoot.removeChild(items[0]),
+                this.calendar.appendChild(
+                    this.calendar.removeChild(items[0]),
                 );
                 break;
             case "right":
                 // The last item will be the first
-                this.calendar.shadowRoot.insertBefore(
-                    this.calendar.shadowRoot.removeChild(items[2]),
+                this.calendar.insertBefore(
+                    this.calendar.removeChild(items[2]),
                     items[0],
                 );
                 break;

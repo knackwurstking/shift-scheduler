@@ -285,7 +285,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
 
         this.#store = document.querySelector("ui-store");
         this.#lang = document.querySelector("ui-lang");
-        this.swipeHandler = new SwipeHandler(this);
+        this.swipeHandler = new SwipeHandler(this.shadowRoot.querySelector(".calendar"));
 
         /** @type {(() => void)[]} */
         this.cleanup = [];
@@ -335,10 +335,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.swipeHandler.stop();
         this.cleanup.forEach((fn) => fn());
         this.cleanup = [];
-    } // }}}
-
-    getItems() { // {{{
-        return [...this.shadowRoot.querySelectorAll(".item")];
     } // }}}
 
     /**
@@ -527,7 +523,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         date.setMonth(date.getMonth() - 1);
         this.today = new Date();
 
-        const items = this.getItems()
+        const items = this.shadowRoot.querySelectorAll(".item");
         for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
             this.updateCalendarItem(new Date(date), items[i]);
         }
