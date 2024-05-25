@@ -30,12 +30,20 @@ export class PDFDialog extends ui.wc.Dialog {
 
     /** @type {Button} */
     #downloadButton;
-    /** @type {() => void|Promise<void>} */
-    #onDownload = () => {
-        // TODO: Add fullscreen spinner until export pdf is done
-        const c = new Date(this.#store.ui.get("date-picker"));
-        createPDF({
-            year: c.getFullYear(),
+    /** @type {(() => void|Promise<void>)} */
+    #onDownload = async () => {
+        const spinner = new ui.wc.Spinner();
+        document.body.appendChild(spinner);
+
+        setTimeout(async () => {
+            try {
+                const c = new Date(this.#store.ui.get("date-picker"));
+                await createPDF({
+                    year: c.getFullYear(),
+                });
+            } finally {
+                document.body.removeChild(spinner);
+            }
         });
 
         this.ui.close();
