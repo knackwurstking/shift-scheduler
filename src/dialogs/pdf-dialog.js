@@ -5,6 +5,7 @@ import autoTable from "jspdf-autotable";
 import ui from "ui";
 import * as calendarUtils from "../pages/calendar/utils";
 import utils, { html } from "../utils";
+import db from "../db";
 
 /**
  * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
@@ -155,16 +156,16 @@ async function createPDF({ year = null, month = null }) { // {{{
      */
     const getRow = (month, a) => { // {{{
         // TODO: Add options like `useLongName`
-        return a.slice(0, 7).map(a => {
-            const name = a.shift?.visible
-                ? (a.shift?.shortName || "")
+        return a.slice(0, 7).map((e) => {
+            const name = e.shift?.visible
+                ? (e.shift?.shortName || "")
                 : "";
 
-            return a.month === month
+            return e.month === month
                 ? (
                     !name
-                        ? `\n${a.date}\n`
-                        : `${a.date}\n--\n${name}`
+                        ? `\n${e.date}\n`
+                        : `${e.date}\n--\n${name}`
                 ) : "\n\n";
         });
     } // }}}
@@ -186,8 +187,16 @@ async function createPDF({ year = null, month = null }) { // {{{
             pageIndex++;
         }
 
-        const mA = await calendarUtils.getArray(year, month, document.querySelector("ui-store"));
-        // TODO: Add database stuff using map
+        /** @type {DBDataEntry[]} */
+        let mA = await calendarUtils.getArray(year, month, document.querySelector("ui-store"));
+
+        for (let i = 0; i < mA.length; i++) {
+            const dbE = await db.get(mA[i].year, mA[i].month, mA[i].date);
+            if (dbE !== null) {
+                mA[i].note = dbE.note;
+                mA[i].shift = dbE.shift || mA[i].shift;
+            }
+        }
 
         autoTable(doc, {
             // TODO: Handle week start
