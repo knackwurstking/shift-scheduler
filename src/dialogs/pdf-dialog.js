@@ -149,8 +149,9 @@ export class PDFDialog extends ui.wc.Dialog {
  * @param {number | null} [options.year]
  * @param {number | null} [options.month]
  * @param {Lang} options.lang
+ * @param {Store} options.store
  */
-async function createPDF({ year = null, month = null, lang = null }) { // {{{
+async function createPDF({ year = null, month = null, lang = null, store = null }) { // {{{
     /**
      * @param {number} month
      * @param {DBDataEntry[]} a
@@ -183,9 +184,23 @@ async function createPDF({ year = null, month = null, lang = null }) { // {{{
      * @returns {string[]}
      */
     const getHeaderWeekDays = () => { // {{{
-        // TODO: Get header week days based on "week-start" setting
+        let order = [0, 1, 2, 3, 4, 5, 6];
+        const weekStart = store.ui.get("week-start");
 
-        return ['Sun', 'Mon', 'Thu', "Wed", "Thu", "Fri", "Ä, Ö"];
+        if (weekStart > 0) {
+            order = [
+                ...order.slice(weekStart),
+                ...order.slice(0, weekStart),
+            ];
+        }
+
+        /** @type {string[]} */
+        const result = [];
+        for (let i = 0; i < 7; i++) {
+            result.push(lang.ui.get("week-day", this.order[i % 7].toString()));
+        }
+
+        return result
     } // }}}
 
     const today = new Date();
