@@ -199,7 +199,7 @@ async function createPDF({ year = null, month = null, lang = null, store = null 
         /** @type {string[]} */
         const result = [];
         for (let i = 0; i < 7; i++) {
-            result.push(lang.ui.get("week-day", this.order[i % 7].toString()));
+            result.push(lang.ui.get("week-day", order[i % 7].toString()));
         }
 
         return result
