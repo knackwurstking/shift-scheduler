@@ -482,7 +482,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.markWeekendItems(...items);
 
         items.forEach((item, i) => {
-            item.innerHTML = `${this.#lang.ui.get("calendar", this.order[i % 7].toString())}`;
+            item.innerHTML = `${this.#lang.ui.get("week-day", this.order[i % 7].toString())}`;
         });
     } // }}}
 

@@ -2,15 +2,6 @@
     "error": {
         "missing-shift-name": "Fehlender Schichtname!"
     },
-    "calendar": {
-        "0": "So",
-        "1": "Mo",
-        "2": "Di",
-        "3": "Mi",
-        "4": "Do",
-        "5": "Fr",
-        "6": "Sa"
-    },
     "settings": {
         "app-bar-title": "Einstellungen",
         "confirm-delete-shift": "Shicht \"%s\" löschen?",
@@ -59,5 +50,15 @@
         "label-primary-visible-item": "Schicht ausblenden",
         "button-submit": "OK",
         "button-cancel": "Abbrechen"
-    }
+    },
+    "week-day": {
+        "0": "So",
+        "1": "Mo",
+        "2": "Di",
+        "3": "Mi",
+        "4": "Do",
+        "5": "Fr",
+        "6": "Sa"
+    },
+    "month": {}
 }

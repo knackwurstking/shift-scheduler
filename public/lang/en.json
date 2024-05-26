@@ -2,15 +2,6 @@
     "error": {
         "missing-shift-name": "Missing shift name!"
     },
-    "calendar": {
-        "0": "Sun",
-        "1": "Mon",
-        "2": "Tue",
-        "3": "Wed",
-        "4": "Thu",
-        "5": "Fri",
-        "6": "Sat"
-    },
     "settings": {
         "app-bar-title": "Settings",
         "confirm-delete-shift": "Delete shift \"%s\"?",
@@ -59,5 +50,15 @@
         "label-primary-visible-item": "Hide shift",
         "button-submit": "OK",
         "button-cancel": "Cancel"
-    }
+    },
+    "week-day": {
+        "0": "Sun",
+        "1": "Mon",
+        "2": "Tue",
+        "3": "Wed",
+        "4": "Thu",
+        "5": "Fri",
+        "6": "Sat"
+    },
+    "month": {}
 }
