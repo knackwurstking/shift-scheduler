@@ -211,6 +211,7 @@ async function createPDF({ year = null, month = null, lang = null, store = null 
 
     const doc = new jspdf.jsPDF();
     doc.setFont("Courier");
+    // TODO: A bigger font size? Or just use bold?
 
     const months = month !== null ? [month] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     let pageIndex = 0;
