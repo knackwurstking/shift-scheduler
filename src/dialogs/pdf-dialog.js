@@ -41,6 +41,8 @@ export class PDFDialog extends ui.wc.Dialog {
                 const c = new Date(this.#store.ui.get("date-picker"));
                 await createPDF({
                     year: c.getFullYear(),
+                    lang: this.#lang,
+                    store: this.#store
                 });
             } finally {
                 document.body.removeChild(spinner);
