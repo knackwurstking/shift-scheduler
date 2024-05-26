@@ -148,14 +148,15 @@ export class PDFDialog extends ui.wc.Dialog {
  * @param {Object} options
  * @param {number | null} [options.year]
  * @param {number | null} [options.month]
+ * @param {Lang} options.lang
  */
-async function createPDF({ year = null, month = null }) { // {{{
+async function createPDF({ year = null, month = null, lang = null }) { // {{{
     /**
      * @param {number} month
      * @param {DBDataEntry[]} a
+     * @returns {string[]}
      */
-    const getRow = (month, a) => { // {{{
-        // TODO: Add options like `useLongName`
+    const getRowFromArray = (month, a) => { // {{{
         return a.slice(0, 7).map((e) => {
             const name = e.shift?.visible
                 ? (e.shift?.shortName || "")
@@ -168,6 +169,23 @@ async function createPDF({ year = null, month = null }) { // {{{
                         : `${e.date}\n--\n${name}`
                 ) : "\n\n";
         });
+    } // }}}
+
+    /**
+     * @param {number} m
+     * @returns {string}
+     */
+    const getHeaderMonth = (m) => { // {{{
+        return lang.ui.get("month", `${m}`);
+    } // }}}
+
+    /**
+     * @returns {string[]}
+     */
+    const getHeaderWeekDays = () => { // {{{
+        // TODO: Get header week days based on "week-start" setting
+
+        return ['Sun', 'Mon', 'Thu', "Wed", "Thu", "Fri", "Ä, Ö"];
     } // }}}
 
     const today = new Date();
@@ -199,27 +217,25 @@ async function createPDF({ year = null, month = null }) { // {{{
         }
 
         autoTable(doc, {
-            // TODO: Handle week start
             head: [
                 [
                     {
-                        // TODO: Add table header showing the current month
-                        content: "Jannuar",
+                        content: getHeaderMonth(month),
                         colSpan: 7,
                         styles: {
                             fillColor: [0, 0, 0],
                             textColor: [255, 255, 255]
                         }
                     }
-                ], ['Sun', 'Mon', 'Thu', "Wed", "Thu", "Fri", "Ä, Ö"],
+                ], getHeaderWeekDays(),
             ],
             body: [
-                getRow(month, mA.slice(0, 7)),
-                getRow(month, mA.slice(7, 14)),
-                getRow(month, mA.slice(14, 21)),
-                getRow(month, mA.slice(21, 28)),
-                getRow(month, mA.slice(28, 35)),
-                getRow(month, mA.slice(35, 42)),
+                getRowFromArray(month, mA.slice(0, 7)),
+                getRowFromArray(month, mA.slice(7, 14)),
+                getRowFromArray(month, mA.slice(14, 21)),
+                getRowFromArray(month, mA.slice(21, 28)),
+                getRowFromArray(month, mA.slice(28, 35)),
+                getRowFromArray(month, mA.slice(35, 42)),
             ],
             theme: "grid",
             styles: {
