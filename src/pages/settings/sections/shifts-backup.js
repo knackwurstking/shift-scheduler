@@ -135,14 +135,18 @@ export class ShiftsBackup extends HTMLElement {
 
             if (!!data.indexedDB) {
                 if (typeof data.indexedDB.version !== "number") {
-                    alert(this.#lang.ui.get("backup-alerts", "invalid-version-type"));
+                    alert(
+                        this.#lang.ui.get("backup-alerts", "invalid-version-type")
+                            .replace("%v", `${typeof data.indexedDB.version}`)
+                    );
                     return;
                 }
 
-                if (data.indexedDB.version > db.version) {
+                if (data.indexedDB.version > db.version || data.indexedDB.version < 0) {
                     alert(
                         this.#lang.ui.get("backup-alerts", "invalid-version-number")
-                            .replaceAll("%d", data.indexedDB.version.toString())
+                            .replace("%d", data.indexedDB.version.toString())
+                            .replace("%d", db.version.toString())
                     );
                     return;
                 }

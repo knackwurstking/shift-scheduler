@@ -2,9 +2,9 @@
     "backup-alerts": {
         "invalid-data": "Invalid data!",
         "invalid-settings": "Invalid settings",
-        "invalid-version-type": "Invalid db version!",
-        "invalid-version-number": "Invalid backup database version number %d, current version in use is %d",
-        "invalid-indexed-entry": "Invalid entry:\n%s"
+        "invalid-version-type": "Invalid database version (type): %v",
+        "invalid-version-number": "Invalid database version %d, current version is %d",
+        "invalid-indexed-entry": "Invalid indexed data entry:\n%s"
     },
     "edit-shift-alerts": {
         "missing-name": "Missing shift name!"
