@@ -39,23 +39,18 @@ export class DB {
         if (this.#request !== null) this.#request.result.close();
     } // }}}
 
-    /** @param {DBDataEntry} entry */
-    validate(entry) { // {{{
-        if (typeof entry.year !== "number" || typeof entry.month !== "number" || typeof entry.date !== "number") {
-            return false;
-        }
-
-        if (typeof entry.note !== "string") {
-            entry.note = ""
-        }
-
-        if (entry.shift !== null) {
-            if (!utils.validateShift(entry.shift)) {
+    /**
+     * @param {number} version
+     * @param {DBDataEntry} entry
+     */
+    validate(version, entry) { // {{{
+        switch (version) {
+            case 0:
+            case 1:
+                return validateV1(entry)
+            default:
                 return false;
-            }
         }
-
-        return true;
     } // }}}
 
     /**
@@ -237,5 +232,26 @@ export class DB {
         }
     } // }}}
 }
+
+/**
+ * @param {DBDataEntry} entry
+ */
+function validateV1(entry) { // {{{
+    if (typeof entry.year !== "number" || typeof entry.month !== "number" || typeof entry.date !== "number") {
+        return false;
+    }
+
+    if (typeof entry.note !== "string") {
+        entry.note = ""
+    }
+
+    if (entry.shift !== null) {
+        if (!utils.validateShift(entry.shift)) {
+            return false;
+        }
+    }
+
+    return true;
+} // }}}
 
 export default new DB("shift-scheduler", 1)

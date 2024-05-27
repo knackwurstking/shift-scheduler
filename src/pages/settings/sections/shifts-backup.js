@@ -114,6 +114,8 @@ export class ShiftsBackup extends HTMLElement {
      * @param {FileReader} r
      * */
     async readerOnLoad(r) { // {{{
+        // TODO: Add translation support for alerts?
+
         if (typeof r.result !== "string") {
             alert("Wrong data!");
             return
@@ -131,22 +133,35 @@ export class ShiftsBackup extends HTMLElement {
                 this.#store.ui.set("settings", data.settings);
             }
 
-            // TODO: Validate database version `data.indexedDB.version`
-
-            // Handle indexedDB - validate all entries
-            for (const entry of data.indexedDB.data || []) {
-                if (!db.validate(entry)) {
-                    alert(`Data validation failed for:\n${JSON.stringify(entry, null, 4)}`);
+            if (!!data.indexedDB) {
+                if (typeof data.indexedDB.version !== "number") {
+                    alert(`Invalid backup database version`);
                     return;
                 }
 
-                //mergeDataShiftsToSettings(entry.data);
+                if (data.indexedDB.version > db.version) {
+                    alert(`Invalid backup database version number "${data.indexedDB.version}", current version in use is "${data.indexedDB.version}"`)
+                    return;
+                }
+
+                // Handle indexedDB - validate all entries
+                for (let i = 0; i < (data.indexedDB.data || []).length; i++) {
+                    if (!db.validate(data.indexedDB.version, data.indexedDB.data[i])) {
+                        alert(`Data validation failed for:\n${JSON.stringify(data.indexedDB.data[i], null, 4)}`);
+                        return;
+                    }
+
+                    data.indexedDB.data[i] = db.upgradeEntry(data.indexedDB.version, data.indexedDB.data[i]);
+                }
             }
 
             // Handle indexedDB - add/put to database
             await db.deleteAll();
-            for (const entry of data.indexedDB.data || []) {
-                db.add(entry).catch(() => db.put(entry));
+
+            if (!!data.indexedDB) {
+                for (const entry of data.indexedDB.data || []) {
+                    db.add(entry).catch(() => db.put(entry));
+                }
             }
         } catch (err) {
             alert(`Import data failed!\nerror: ${err}`);
