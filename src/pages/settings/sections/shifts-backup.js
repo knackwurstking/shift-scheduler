@@ -150,8 +150,6 @@ export class ShiftsBackup extends HTMLElement {
                         alert(`Data validation failed for:\n${JSON.stringify(data.indexedDB.data[i], null, 4)}`);
                         return;
                     }
-
-                    data.indexedDB.data[i] = db.upgradeEntry(data.indexedDB.version, data.indexedDB.data[i]);
                 }
             }
 
