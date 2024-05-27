@@ -260,6 +260,8 @@ async function createPDF({ year = null, month = null, lang = null, store = null 
                 valign: "middle",
                 halign: "center",
                 font: "Courier",
+                fontStyle: "bold",
+                fontSize: 12,
             },
             headStyles: {
                 fillColor: [0, 0, 0],
