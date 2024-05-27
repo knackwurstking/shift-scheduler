@@ -34,7 +34,7 @@ ui.define()
 // {{{ Initialize Theme
 
 /** @type {ThemeHandler} */
-const th = document.querySelector("#themeHandler")
+const th = document.querySelector("ui-theme-handler")
 //th.ui.addTheme("zinc", `/themes/zinc.css`);
 
 // }}}

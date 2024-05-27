@@ -36,7 +36,7 @@ export default class App extends ui.js.events.Events {
         this.#lang = document.querySelector("ui-lang")
 
         /** @type {ThemeHandler} */
-        this.themeHandler = document.querySelector("#themeHandler");
+        this.themeHandler = document.querySelector("ui-theme-handler");
 
         this.createStackLayout()
         this.createAppBar()
