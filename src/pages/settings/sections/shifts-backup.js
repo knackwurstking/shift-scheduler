@@ -114,10 +114,8 @@ export class ShiftsBackup extends HTMLElement {
      * @param {FileReader} r
      * */
     async readerOnLoad(r) { // {{{
-        // TODO: Add translation support for alerts?
-
         if (typeof r.result !== "string") {
-            alert("Wrong data!");
+            alert(this.#lang.ui.get("backup-alerts", "invalid-data"));
             return
         }
 
@@ -127,27 +125,35 @@ export class ShiftsBackup extends HTMLElement {
 
             // Handle settings
             if (data.settings) {
-                if (!validateSettings(data.settings))
-                    throw `invalid settings`;
+                if (!validateSettings(data.settings)) {
+                    alert(this.#lang.ui.get("backup-alerts", "invalid-settings"));
+                    return;
+                }
 
                 this.#store.ui.set("settings", data.settings);
             }
 
             if (!!data.indexedDB) {
                 if (typeof data.indexedDB.version !== "number") {
-                    alert(`Invalid backup database version`);
+                    alert(this.#lang.ui.get("backup-alerts", "invalid-version-type"));
                     return;
                 }
 
                 if (data.indexedDB.version > db.version) {
-                    alert(`Invalid backup database version number "${data.indexedDB.version}", current version in use is "${data.indexedDB.version}"`)
+                    alert(
+                        this.#lang.ui.get("backup-alerts", "invalid-version-number")
+                            .replaceAll("%d", data.indexedDB.version.toString())
+                    );
                     return;
                 }
 
                 // Handle indexedDB - validate all entries
                 for (let i = 0; i < (data.indexedDB.data || []).length; i++) {
                     if (!db.validate(data.indexedDB.version, data.indexedDB.data[i])) {
-                        alert(`Data validation failed for:\n${JSON.stringify(data.indexedDB.data[i], null, 4)}`);
+                        alert(
+                            this.#lang.ui.get("backup-alerts", "invalid-indexed-entry")
+                                .replace("%s", JSON.stringify(data.indexedDB.data[i], null, 4))
+                        );
                         return;
                     }
                 }
@@ -162,7 +168,7 @@ export class ShiftsBackup extends HTMLElement {
                 }
             }
         } catch (err) {
-            alert(`Import data failed!\nerror: ${err}`);
+            alert(`Import failed: ${err}`);
         }
     } // }}}
 

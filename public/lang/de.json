@@ -1,6 +1,13 @@
 {
-    "error": {
-        "missing-shift-name": "Fehlender Schichtname!"
+    "backup-alerts": {
+        "invalid-data": "Invalid data!",
+        "invalid-settings": "Invalid settings",
+        "invalid-version-type": "Invalid db version!",
+        "invalid-version-number": "Invalid db version %d, current version is %d",
+        "invalid-indexed-entry": "Invalid entry:\n%s"
+    },
+    "edit-shift-alerts": {
+        "missing-name": "Fehlender Schichtname!"
     },
     "settings": {
         "app-bar-title": "Einstellungen",

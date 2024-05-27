@@ -1,6 +1,13 @@
 {
-    "error": {
-        "missing-shift-name": "Missing shift name!"
+    "backup-alerts": {
+        "invalid-data": "Invalid data!",
+        "invalid-settings": "Invalid settings",
+        "invalid-version-type": "Invalid db version!",
+        "invalid-version-number": "Invalid backup database version number %d, current version in use is %d",
+        "invalid-indexed-entry": "Invalid entry:\n%s"
+    },
+    "edit-shift-alerts": {
+        "missing-name": "Missing shift name!"
     },
     "settings": {
         "app-bar-title": "Settings",
