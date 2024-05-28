@@ -3,8 +3,8 @@ import ui from "ui";
 /**
  * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler
  *
- * @typedef {import("./types").ThemeStore} ThemeStore
- * @typedef {import("./types").Shift} Shift
+ * @typedef {import("../types").ThemeStore} ThemeStore
+ * @typedef {import("../types").Shift} Shift
  */
 
 export const html = String.raw;

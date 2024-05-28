@@ -1,7 +1,7 @@
-import utils from "./utils";
+import utils from "../utils";
 
 /**
- * @typedef {import("./types").DBDataEntry} DBDataEntry
+ * @typedef {import("../types").DBDataEntry} DBDataEntry
  */
 
 export class DB {
