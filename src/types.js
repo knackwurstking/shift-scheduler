@@ -59,12 +59,37 @@
  *  "note": string;
  * }}
  *
- * @typedef Backup
+ * @typedef BackupV1
  * @type {{
  *  settings: SettingsStore;
- *  indexedDB: {
- *      version: number;
- *      data: DBDataEntry[];
+ *  indexedDB: BackupV1Indexed;
+ * }}
+ *
+ * @typedef BackupV1Indexed
+ * @type {{
+ *  version: number;
+ *  data: DBDataEntry[];
+ * }}
+ *
+ * @typedef OldBackup
+ * @type {{
+ *  settings: SettingsStore;
+ *  storage: OldBackupStorage;
+ * }}
+ *
+ * @typedef OldBackupStorage
+ * @type {{
+ *  [key: string]: {
+ *      [key: string]: {
+ *          shift: {
+ *              id: number; // Just a timestamp
+ *              name: string;
+ *              shortName: string;
+ *              visible: boolean;
+ *              color?: string;
+ *          } | null;
+ *          note: string;
+ *      };
  *  };
  * }}
  */

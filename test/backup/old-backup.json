@@ -1,0 +1,247 @@
+{
+  "settings": {
+    "shifts": [
+      {
+        "id": 1697867246836,
+        "name": "Früh",
+        "shortName": "F",
+        "color": "#4dff4d",
+        "visible": true
+      },
+      {
+        "id": 1697867271377,
+        "name": "Spät",
+        "shortName": "S",
+        "color": "#ff6e30",
+        "visible": true
+      },
+      {
+        "id": 1697867282916,
+        "name": "Nacht",
+        "shortName": "N",
+        "color": "#2e2eff",
+        "visible": true
+      },
+      {
+        "id": 1697867300186,
+        "name": "Free",
+        "shortName": "F",
+        "color": "transparent",
+        "visible": false
+      },
+      {
+        "id": 1697867508719,
+        "name": "Kurzarbeit",
+        "shortName": "Ka",
+        "color": "#36ffff",
+        "visible": true
+      },
+      {
+        "id": 1699350991708,
+        "name": "Urlaub",
+        "shortName": "U",
+        "color": "#963700",
+        "visible": true
+      },
+      {
+        "id": 1711157354251,
+        "name": "Test",
+        "shortName": "T",
+        "color": "transparent",
+        "visible": true
+      }
+    ],
+    "rhythm": [
+      1697867246836,
+      1697867246836,
+      1697867271377,
+      1697867271377,
+      1697867282916,
+      1697867282916,
+      1697867300186,
+      1697867300186,
+      1697867300186
+    ],
+    "startDate": "2023-09-05"
+  },
+  "storage": {
+    "db-2023-11": {
+      "2023-11-8": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-9": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-13": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-15": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-16": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-14": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-17": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-18": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-22": {
+        "shift": {
+          "id": 1697867508719,
+          "name": "Kurzarbeit",
+          "shortName": "Ka",
+          "color": "#36ffff",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-23": {
+        "shift": {
+          "id": 1699350991708,
+          "name": "Urlaub",
+          "shortName": "U",
+          "color": "#963700",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-24": {
+        "shift": {
+          "id": 1699350991708,
+          "name": "Urlaub",
+          "shortName": "U",
+          "color": "#963700",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-25": {
+        "shift": {
+          "id": 1699350991708,
+          "name": "Urlaub",
+          "shortName": "U",
+          "color": "#963700",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-26": {
+        "shift": {
+          "id": 1699350991708,
+          "name": "Urlaub",
+          "shortName": "U",
+          "color": "#963700",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-27": {
+        "shift": {
+          "id": 1699350991708,
+          "name": "Urlaub",
+          "shortName": "U",
+          "color": "#963700",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-31": {
+        "shift": {
+          "id": 1699350991708,
+          "name": "Urlaub",
+          "shortName": "U",
+          "color": "#963700",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-4": {
+        "shift": {
+          "id": 1699350991708,
+          "name": "Urlaub",
+          "shortName": "U",
+          "color": "#963700",
+          "visible": true
+        },
+        "note": ""
+      },
+      "2023-11-5": {
+        "shift": {
+          "id": 1697867271377,
+          "name": "Spät",
+          "shortName": "S",
+          "color": "#ff6e30",
+          "visible": true
+        },
+        "note": ""
+      }
+    },
+    "db-2024-9": {
+      "2024-9-22": {
+        "shift": null,
+        "note": "14:00 Zahnarzt"
+      }
+    }
+  }
+}

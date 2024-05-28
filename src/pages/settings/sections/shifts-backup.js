@@ -12,7 +12,11 @@ import utils from "../../../utils";
  * @typedef {import("ui/src/wc").Label} Label
  * @typedef {import("ui/src/wc").Label} Button
  *
- * @typedef {import("../../../types").Backup} Backup
+ * @typedef {import("../../../types").DBDataEntry} DBDataEntry
+ * @typedef {import("../../../types").BackupV1} BackupV1
+ * @typedef {import("../../../types").BackupV1Indexed} BackupV1Indexed
+ * @typedef {import("../../../types").OldBackup} OldBackup 
+ * @typedef {import("../../../types").OldBackupStorage} OldBackupStorage 
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
@@ -21,12 +25,20 @@ const innerHTML = html`
         <ui-flex-grid-row gap="0.25rem">
             <!-- import -->
             <ui-flex-grid-item>
-                <ui-button name="import" variant="full" color="secondary"></ui-button>
+                <ui-button
+                    name="import"
+                    variant="full"
+                    color="secondary"
+                ></ui-button>
             </ui-flex-grid-item>
 
             <!-- export -->
             <ui-flex-grid-item>
-                <ui-button name="export" variant="full" color="secondary"></ui-button>
+                <ui-button
+                    name="export"
+                    variant="full"
+                    color="secondary"
+                ></ui-button>
             </ui-flex-grid-item>
         </ui-flex-grid-row>
     </ui-label>
@@ -34,17 +46,19 @@ const innerHTML = html`
 
 export class ShiftsBackup extends HTMLElement {
     /** @type {Store} */
-    #store
+    #store;
     /** @type {Lang} */
-    #lang
+    #lang;
 
-    static register = () => customElements.define("settings-shifts-backup", ShiftsBackup);
+    static register = () =>
+        customElements.define("settings-shifts-backup", ShiftsBackup);
 
     /**
      * @param {Store} store
      * @param {Lang} lang
      */
-    constructor(store, lang) { // {{{
+    constructor(store, lang) {
+        // {{{
         super();
         this.innerHTML = innerHTML;
 
@@ -54,18 +68,19 @@ export class ShiftsBackup extends HTMLElement {
         this.cleanup = [];
 
         /** @type {Label} */
-        this.label = this.querySelector("ui-label")
+        this.label = this.querySelector("ui-label");
 
         /** @type {Button} */
-        this.importButton = this.querySelector(`ui-button[name="import"]`)
+        this.importButton = this.querySelector(`ui-button[name="import"]`);
         this.importButton.onclick = async () => this.importBackup();
 
         /** @type {Button} */
-        this.exportButton = this.querySelector(`ui-button[name="export"]`)
+        this.exportButton = this.querySelector(`ui-button[name="export"]`);
         this.exportButton.onclick = async () => this.exportBackup();
     } // }}}
 
-    connectedCallback() { // {{{
+    connectedCallback() {
+        // {{{
         setTimeout(() => {
             this.cleanup.push(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
@@ -73,12 +88,14 @@ export class ShiftsBackup extends HTMLElement {
         });
     } // }}}
 
-    disconnectedCallback() { // {{{
-        this.cleanup.forEach(fn => fn());
+    disconnectedCallback() {
+        // {{{
+        this.cleanup.forEach((fn) => fn());
         this.cleanup = [];
     } // }}}
 
-    async importBackup() { // {{{
+    async importBackup() {
+        // {{{
         const input = document.createElement("input");
 
         input.type = "file";
@@ -88,15 +105,16 @@ export class ShiftsBackup extends HTMLElement {
             reader.onload = () => this.readerOnLoad(reader);
             reader.onerror = () => {
                 alert(`Import data: read file failed: ${reader.error}`);
-            }
+            };
             reader.readAsText(input.files[0]);
         };
 
         input.click();
     } // }}}
 
-    async exportBackup() { // {{{
-        /** @type {Backup} */
+    async exportBackup() {
+        // {{{
+        /** @type {BackupV1} */
         const backup = {
             settings: this.#store.ui.get("settings"),
             indexedDB: {
@@ -116,57 +134,80 @@ export class ShiftsBackup extends HTMLElement {
     async readerOnLoad(r) { // {{{
         if (typeof r.result !== "string") {
             alert(this.#lang.ui.get("backup-alerts", "invalid-data"));
-            return
+            return;
         }
 
         try {
-            /** @type {Backup} */
+            /** @type {BackupV1 & OldBackup} */
             const data = JSON.parse(r.result);
 
             // Handle settings
-            if (data.settings) {
+            if (Object.hasOwn(data, "settings")) {
                 if (!validateSettings(data.settings)) {
-                    alert(this.#lang.ui.get("backup-alerts", "invalid-settings"));
+                    alert(
+                        this.#lang.ui.get("backup-alerts", "invalid-settings"),
+                    );
                     return;
                 }
 
                 this.#store.ui.set("settings", data.settings);
             }
 
-            if (!!data.indexedDB) {
+            // NOTE: Support for v1.4.0 - v1.5.3
+            if (Object.hasOwn(data, "storage")) {
+                data.indexedDB = convertStorage(data.storage); // Yes, this will overwrite all exising indexedDB stuff.
+            }
+
+            // Handle indexedDB data
+            if (Object.hasOwn(data, "indexedDB")) {
                 if (typeof data.indexedDB.version !== "number") {
                     alert(
-                        this.#lang.ui.get("backup-alerts", "invalid-version-type")
-                            .replace("%v", `${typeof data.indexedDB.version}`)
+                        this.#lang.ui
+                            .get("backup-alerts", "invalid-version-type")
+                            .replace("%v", `${typeof data.indexedDB.version}`),
                     );
                     return;
                 }
 
-                if (data.indexedDB.version > db.version || data.indexedDB.version < 0) {
+                if (
+                    data.indexedDB.version > db.version ||
+                    data.indexedDB.version < 0
+                ) {
                     alert(
-                        this.#lang.ui.get("backup-alerts", "invalid-version-number")
+                        this.#lang.ui
+                            .get("backup-alerts", "invalid-version-number")
                             .replace("%d", data.indexedDB.version.toString())
-                            .replace("%d", db.version.toString())
+                            .replace("%d", db.version.toString()),
                     );
                     return;
                 }
 
-                // Handle indexedDB - validate all entries
                 for (let i = 0; i < (data.indexedDB.data || []).length; i++) {
-                    if (!db.validate(data.indexedDB.version, data.indexedDB.data[i])) {
+                    if (
+                        !db.validate(
+                            data.indexedDB.version,
+                            data.indexedDB.data[i],
+                        )
+                    ) {
                         alert(
-                            this.#lang.ui.get("backup-alerts", "invalid-indexed-entry")
-                                .replace("%s", JSON.stringify(data.indexedDB.data[i], null, 4))
+                            this.#lang.ui
+                                .get("backup-alerts", "invalid-indexed-entry")
+                                .replace(
+                                    "%s",
+                                    JSON.stringify(
+                                        data.indexedDB.data[i],
+                                        null,
+                                        4,
+                                    ),
+                                ),
                         );
                         return;
                     }
                 }
             }
 
-            // Handle indexedDB - add/put to database
             await db.deleteAll();
-
-            if (!!data.indexedDB) {
+            if (Object.hasOwn(data, "indexedDB")) {
                 for (const entry of data.indexedDB.data || []) {
                     db.add(entry).catch(() => db.put(entry));
                 }
@@ -178,9 +219,10 @@ export class ShiftsBackup extends HTMLElement {
 
     /**
      * @private
-     * @param {Backup} data
+     * @param {BackupV1} data
      */
-    async androidExport(data) { // {{{
+    async androidExport(data) {
+        // {{{
         const fileName = await this.getBackupFileName();
         const today = new Date();
         const pM = (today.getMonth() + 1).toString().padStart(2, "0");
@@ -202,9 +244,10 @@ export class ShiftsBackup extends HTMLElement {
 
     /**
      * @private
-     * @param {Backup} data
+     * @param {BackupV1} data
      */
-    async browserExport(data) { // {{{
+    async browserExport(data) {
+        // {{{
         const blob = new Blob([JSON.stringify(data)], {
             type: "octet/stream",
         });
@@ -218,7 +261,8 @@ export class ShiftsBackup extends HTMLElement {
     } // }}}
 
     /** @private */
-    async getBackupFileName() { // {{{
+    async getBackupFileName() {
+        // {{{
         const today = new Date();
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
@@ -226,27 +270,28 @@ export class ShiftsBackup extends HTMLElement {
     } // }}}
 
     /** @private */
-    onLang() { // {{{
+    onLang() {
+        // {{{
         this.label.ui.primary = this.#lang.ui.get(
-            "settings", "label-primary-shifts-backup",
+            "settings",
+            "label-primary-shifts-backup",
         );
 
         this.importButton.innerHTML = this.#lang.ui.get(
-            "settings", "button-import",
+            "settings",
+            "button-import",
         );
 
         this.exportButton.innerHTML = this.#lang.ui.get(
-            "settings", "button-export",
+            "settings",
+            "button-export",
         );
     } // }}}
 }
 
 /** @param {SettingsStore} settings */
 function validateSettings(settings) { // {{{
-    if (
-        !Array.isArray(settings?.shifts) ||
-        !Array.isArray(settings?.rhythm)
-    ) {
+    if (!Array.isArray(settings?.shifts) || !Array.isArray(settings?.rhythm)) {
         return false;
     }
 
@@ -268,4 +313,75 @@ function validateSettings(settings) { // {{{
     }
 
     return true;
+} // }}}
+
+/**
+ * @param {OldBackupStorage} data
+ * @returns {BackupV1Indexed}
+ */
+function convertStorage(data) { // {{{
+    /**
+     * @type {BackupV1Indexed}
+     */
+    const indexedDB = {
+        version: 1,
+        data: [],
+    };
+
+    /**
+     * @param {any} data
+     * @returns {boolean}
+     */
+    const validate = (data) => { // {{{
+        try {
+            for (const [k, v] of Object.entries(data)) {
+                if (typeof k === "string") {
+                    const [y, m, d] = k.split("-", 3).map(n => parseInt(n, 10));
+                    if (isNaN(y) || isNaN(m) || isNaN(d)) {
+                        return false;
+                    }
+
+                    if (m < 0 || m > 11) {
+                        return false;
+                    }
+
+                    if (!Object.hasOwn(v, "shift") || !Object.hasOwn(v, "note")) {
+                        return false;
+                    }
+
+                    if (v.shift !== null) {
+                        if (!utils.validateShift(v.shift)) {
+                            return false;
+                        }
+                    }
+
+                    // check "note"
+                    if (typeof v.note !== "string") {
+                        v.note = "";
+                    }
+
+                    indexedDB.data.push({
+                        year: y,
+                        month: m,
+                        date: d,
+                        shift: v.shift,
+                        note: v.note,
+                    });
+                }
+            }
+        } catch {
+            return false;
+        }
+
+        return true;
+    }; // }}}
+
+    // Validate data and convert to new indexedDB data
+    for (const [k, v] of Object.entries(data)) {
+        if (!validate(v)) {
+            throw `invalid data for "${k}"`;
+        }
+    }
+
+    return indexedDB;
 } // }}}
