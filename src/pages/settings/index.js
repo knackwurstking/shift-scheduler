@@ -41,6 +41,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
         this.createMiscElements();
         this.createShiftElements();
+        // TODO: Add new section named "Indexed DB", contains a goto ("View") button
     } // }}}
 
     connectedCallback() { // {{{
