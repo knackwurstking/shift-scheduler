@@ -54,14 +54,14 @@ export default class App extends ui.js.events.Events {
                 const today = new Date();
                 const current = new Date(dateString);
 
-                this.appBarDatePickerButton.innerText =
-                    `${current.getFullYear()} / ${(current.getMonth() + 1).toString().padStart(2, "0")}`;
+                const y = current.getFullYear();
+                const m = (current.getMonth() + 1).toString().padStart(2, "0");
+                this.appBarDatePickerButton.innerText = `${y} / ${m}`;
 
                 // disable/enable this button based on the current date
                 if (
                     today.getFullYear() === current.getFullYear() &&
-                    today.getMonth() === current.getMonth() &&
-                    today.getDate() === current.getDate()
+                    today.getMonth() === current.getMonth()
                 ) {
                     this.appBarTodayButton.ui.disable();
                 } else {
@@ -126,7 +126,8 @@ export default class App extends ui.js.events.Events {
 
         /** @type {IconButton} */
         this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
-        this.appBarTodayButton.onclick = async () => this.#store.ui.set("date-picker", new Date().toString());
+        this.appBarTodayButton.onclick = async () =>
+            this.#store.ui.set("date-picker", new Date().toString());
 
         /** @type {IconButton} */
         this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")
