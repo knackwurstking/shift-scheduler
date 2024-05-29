@@ -24,11 +24,17 @@ export class DatePickerDialog extends ui.wc.Dialog {
     #submitButton;
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
-        this.#store.ui.set("date-picker", new Date(this.querySelector("input").value).toString());
+        this.#store.ui.set(
+            "date-picker",
+            // @ts-expect-error
+            new Date(this.querySelector("ui-input").ui.value).toString()
+        );
+
         this.ui.close();
     };
 
-    static register = () => customElements.define("date-picker-dialog", DatePickerDialog);
+    static register = () =>
+        customElements.define("date-picker-dialog", DatePickerDialog);
 
     /**
      * @param {Store} store
@@ -63,11 +69,8 @@ export class DatePickerDialog extends ui.wc.Dialog {
     /** @private */
     createContent() { // {{{
         const content = new ui.wc.FlexGrid();
-
         content.setAttribute("gap", "0.5rem");
-
         this.createInput(content);
-
         this.appendChild(content);
     } // }}}
 
@@ -78,10 +81,17 @@ export class DatePickerDialog extends ui.wc.Dialog {
     createInput(content) { // {{{
         const date = new Date(this.#store.ui.get("date-picker"));
         const item = new ui.wc.FlexGridItem();
+
+        const y = date.getFullYear();
+        const m = (date.getMonth() + 1).toString().padStart(2, '0');
+
         item.innerHTML = `
-            <ui-secondary class="input-label"></ui-secondary>
-            <input type="month" value="${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}">
+            <ui-input
+                type="month"
+                value="${y}-${m}"
+            ></ui-input>
         `;
+
         content.appendChild(item);
     } // }}}
 
@@ -113,10 +123,15 @@ export class DatePickerDialog extends ui.wc.Dialog {
     /** @private */
     onLang() { // {{{
         this.ui.title = this.#lang.ui.get("date-picker-dialog", "title");
-        this.querySelector("ui-secondary").innerHTML =
+
+        // @ts-expect-error
+        this.querySelector("ui-input").ui.title =
             this.#lang.ui.get("date-picker-dialog", "input-title-month");
 
-        this.#cancelButton.innerText = this.#lang.ui.get("date-picker-dialog", "button-cancel");
-        this.#submitButton.innerText = this.#lang.ui.get("date-picker-dialog", "button-submit");
+        this.#cancelButton.innerText =
+            this.#lang.ui.get("date-picker-dialog", "button-cancel");
+
+        this.#submitButton.innerText =
+            this.#lang.ui.get("date-picker-dialog", "button-submit");
     } // }}}
 }
