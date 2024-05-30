@@ -2,12 +2,16 @@
  * @typedef {import("ui/src/wc").Store} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Label} Label
+ * @typedef {import("ui/src/wc").Input<import("ui/src/wc/input").InputEvents, "date">} DateInput
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
 const innerHTML = `
 <ui-label>
-    <input slot="input" style="width: fit-content" type="date" />
+    <ui-input
+        slot="input"
+        type="date"
+    ></ui-input>
 </ui-label>
 `;
 
@@ -17,7 +21,7 @@ export class StartDate extends HTMLElement {
     /** @type {Lang} */
     #lang;
 
-    /** @type {HTMLInputElement} */
+    /** @type {DateInput} */
     #input;
     /** @type {Label} */
     #label;
@@ -58,19 +62,16 @@ export class StartDate extends HTMLElement {
 
     /** @private */
     createInput() { // {{{
-        this.#input = this.querySelector("input");
+        this.#input = this.querySelector("ui-input");
 
-        this.#input.oninput = ({ currentTarget }) => {
+        this.#input.ui.events.on("input", (/** @type {string} */value) => {
             this.#store.ui.update(
-                "settings",
-                (/**@type{SettingsStore}*/ settings) => {
-                    // NOTE: value format: "YYYY-MM-DD"
-                    // @ts-expect-error
-                    settings.startDate = currentTarget.value;
+                "settings", (/**@type{SettingsStore}*/ settings) => {
+                    settings.startDate = value;
                     return settings;
                 },
             );
-        };
+        });
     } // }}}
 
     /** @private */
@@ -85,7 +86,7 @@ export class StartDate extends HTMLElement {
      * @param {SettingsStore} settings
      */
     async onSettings(settings) { // {{{
-        if (settings.startDate === this.#input.value) return;
-        this.#input.value = settings.startDate;
+        if (settings.startDate === this.#input.ui.value) return;
+        this.#input.ui.value = settings.startDate;
     } // }}}
 }
