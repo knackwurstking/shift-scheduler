@@ -28,7 +28,8 @@
     },
     "pdf-dialog": {
         "title": "PDF",
-        "button-download": "Herunterladen"
+        "button-download": "Herunterladen",
+        "input-title-year": "Wähle ein Jahr"
     },
     "date-picker-dialog": {
         "title": "Datumsauswahl",

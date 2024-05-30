@@ -13,6 +13,7 @@ import db from "../db";
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
+ * @typedef {import("ui/src/wc").Input<import("ui/src/wc/input").InputEvents, "number">} NumberInput
  *
  * @typedef {import("../types").DBDataEntry} DBDataEntry
  * @typedef {import("../types").Shift} Shift
@@ -66,6 +67,12 @@ export class PDFDialog extends ui.wc.Dialog {
 
         this.cleanup = [];
 
+        /**
+         * @private
+         * @type {NumberInput}
+         */
+        this.year;
+
         this.createContent();
         this.createActions();
     } // }}}
@@ -102,25 +109,25 @@ export class PDFDialog extends ui.wc.Dialog {
      */
     createPicker(content) { // {{{
         const picker = content.querySelector(".picker");
+
         picker.innerHTML = `
-            <ui-secondary>Pick a Year</ui-secondary>
-            <input
-                style="width: 100%;"
+            <ui-input
                 type="number"
                 value="${new Date(this.#store.ui.get('date-picker')).getFullYear()}"
-            >
+            ></ui-input>
         `;
 
-        const year = picker.querySelector("input");
-        year.oninput = () => {
-            if (isNaN(parseInt(year.value, 10))) {
-                year.setAttribute("aria-invalid", "");
+        this.year = picker.querySelector("ui-input");
+
+        this.year.ui.events.on("input", (/** @type {number} */ value) => {
+            if (isNaN(value)) {
+                this.year.setAttribute("aria-invalid", "");
                 this.#downloadButton.setAttribute("disabled", "");
             } else {
-                year.removeAttribute("aria-invalid");
+                this.year.removeAttribute("aria-invalid");
                 this.#downloadButton.removeAttribute("disabled");
             }
-        }
+        });
     } // }}}
 
     /** @private */
@@ -140,6 +147,8 @@ export class PDFDialog extends ui.wc.Dialog {
     /** @private */
     onLang() { // {{{
         this.ui.title = this.#lang.ui.get("pdf-dialog", "title");
+
+        this.year.ui.title = this.#lang.ui.get("pdf-dialog", "input-title-year")
 
         this.#downloadButton.innerText =
             this.#lang.ui.get("pdf-dialog", "button-download");
