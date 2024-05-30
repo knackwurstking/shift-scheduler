@@ -39,7 +39,7 @@ export class PDFDialog extends ui.wc.Dialog {
 
         setTimeout(async () => {
             try {
-                const c = new Date(this.#store.ui.get("date-picker"));
+                const c = new Date(this.year.ui.value, 0);
                 await createPDF({
                     year: c.getFullYear(),
                     lang: this.#lang,
@@ -278,15 +278,19 @@ async function createPDF({ year = null, month = null, lang = null, store = null 
         });
     }
 
-    await exportDoc(doc, 2024);
+    await exportDoc(doc, year, month);
 } // }}}
 
 /**
  * @param {jspdf.jsPDF} doc
  * @param {number} year
+ * @param {number} [month]
  */
-async function exportDoc(doc, year) { // {{{
-    const fileName = `${year}.pdf`;
+async function exportDoc(doc, year, month = null) { // {{{
+    let fileName = `${year}.pdf`;
+    if (month !== null) {
+        fileName = `${year}-${month.toString().padStart(2, "0")}.pdf`;
+    }
 
     if (utils.isAndroid()) {
         const result = await Filesystem.writeFile({
@@ -298,8 +302,7 @@ async function exportDoc(doc, year) { // {{{
         });
 
         await Share.share({
-            title: `${year}`,
-            // @ts-ignore
+            title: fileName.slice(0, fileName.length - 4),
             url: result.uri,
             dialogTitle: `Share "${fileName}"`,
         });
