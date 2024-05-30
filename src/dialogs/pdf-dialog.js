@@ -120,7 +120,7 @@ export class PDFDialog extends ui.wc.Dialog {
         this.year = picker.querySelector("ui-input");
 
         this.year.ui.events.on("input", (/** @type {number} */ value) => {
-            if (isNaN(value)) {
+            if (isNaN(value) || value < 1900) {
                 this.year.setAttribute("aria-invalid", "");
                 this.#downloadButton.setAttribute("disabled", "");
             } else {
