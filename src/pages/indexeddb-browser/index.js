@@ -1,4 +1,5 @@
 import ui from "ui";
+import { ShiftCard } from "../../components";
 import db from "../../db";
 import { html } from "../../utils";
 
@@ -66,6 +67,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 { // Year
                     const item = new ui.wc.FlexGridItem();
                     item.setAttribute("flex", "0");
+                    item.className = "flex align-center";
 
                     const content = new ui.wc.Primary();
                     content.innerHTML = `${entry.year}`;
@@ -78,9 +80,10 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 {
                     const item = new ui.wc.FlexGridItem();
                     item.setAttribute("flex", "0");
+                    item.className = "flex align-center";
 
                     const content = new ui.wc.Primary();
-                    content.innerHTML = entry.month.toString().padStart(2, "0");
+                    content.innerHTML = (entry.month + 1).toString().padStart(2, "0");
                     item.appendChild(content);
 
                     row.appendChild(item);
@@ -90,6 +93,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 {
                     const item = new ui.wc.FlexGridItem();
                     item.setAttribute("flex", "0");
+                    item.className = "flex align-center";
 
                     const content = new ui.wc.Primary();
                     content.innerHTML = entry.date.toString().padStart(2, "0");
@@ -99,22 +103,39 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 }
 
                 // Shift
-                {
+                if (!!entry.shift) {
                     const item = new ui.wc.FlexGridItem();
                     item.setAttribute("flex", "0");
+                    item.className = "flex align-center";
 
-                    const content = document.createElement("pre");
-                    content.innerText = JSON.stringify(entry.shift, null, 4);
-                    item.appendChild(content);
+                    const shiftCard = new ShiftCard();
+                    shiftCard.setAttribute("color", entry.shift.color || 'inherit');
+                    if (!!entry.shift.visible ? 'visible' : '') {
+                        shiftCard.setAttribute("visible", "");
+                    } else {
+                        shiftCard.removeAttribute("visible");
+                    }
 
+                    const name = document.createElement("span");
+                    name.slot = "name";
+                    name.innerHTML = entry.shift.name;
+                    shiftCard.appendChild(name);
+
+                    const shortName = document.createElement("span");
+                    shortName.slot = "short-name";
+                    shortName.innerHTML = entry.shift.shortName;
+                    shiftCard.appendChild(shortName);
+
+                    item.appendChild(shiftCard);
                     row.appendChild(item);
                 }
 
-                // Note
-                {
+                if (!!entry.note) {
                     const item = new ui.wc.FlexGridItem();
+                    item.setAttribute("flex", "0");
+                    item.className = "flex align-center";
 
-                    const content = new ui.wc.Secondary();
+                    const content = document.createElement("pre");
                     content.innerHTML = `${entry.note}`;
                     item.appendChild(content);
 
