@@ -21,7 +21,7 @@ const flexGridContent = html`
             <tr>
                 <th style="text-align: left;"></th>
                 <th style="text-align: left;"></th>
-                <th style="text-align: right;"></ht>
+                <th style="text-align: right;"></th>
             </tr>
         </thead>
 
