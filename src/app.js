@@ -211,23 +211,13 @@ export default class App extends ui.js.events.Events {
 
         switch (newPage.ui.name) {
             case "calendar":
-                utils.setAppBarTitle("")
-                this.appBar.appendChild(this.appBarDatePickerButton.parentElement)
-                this.appBar.appendChild(this.appBarEditButton.parentElement)
-                this.appBar.appendChild(this.appBarTodayButton.parentElement)
-                this.appBar.appendChild(this.appBarPDFButton.parentElement)
-                this.appBar.appendChild(this.appBarSettingsButton.parentElement)
+                this.calendarLayout();
                 break;
             case "settings":
-                utils.setAppBarTitle(this.#lang.ui.get("settings", "app-bar-title"))
-                this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
-                this.appBar.removeChild(this.appBarEditButton.parentElement)
-                this.appBar.removeChild(this.appBarTodayButton.parentElement)
-                this.appBar.removeChild(this.appBarPDFButton.parentElement)
-                this.appBar.removeChild(this.appBarSettingsButton.parentElement)
+                this.settingsLayout();
                 break;
             case "indexeddb-browser":
-                utils.setAppBarTitle(this.#lang.ui.get("indexeddb-browser", "app-bar-title"))
+                this.indexedDBBrowserLayout();
                 break;
             default:
                 throw `unknown page "${newPage.ui.name}"`;
@@ -241,4 +231,35 @@ export default class App extends ui.js.events.Events {
         if (this.stackLayout.ui.stack.length <= 1) return;
         this.stackLayout.ui.goBack();
     } // }}}
-} // }}}
+
+    /**
+     * @private
+     */
+    calendarLayout() { // {{{
+        utils.setAppBarTitle("")
+        this.appBar.appendChild(this.appBarDatePickerButton.parentElement)
+        this.appBar.appendChild(this.appBarEditButton.parentElement)
+        this.appBar.appendChild(this.appBarTodayButton.parentElement)
+        this.appBar.appendChild(this.appBarPDFButton.parentElement)
+        this.appBar.appendChild(this.appBarSettingsButton.parentElement)
+    } // }}}
+
+    /**
+     * @private
+     */
+    settingsLayout() { // {{{
+        utils.setAppBarTitle(this.#lang.ui.get("settings", "app-bar-title"))
+        try { this.appBar.removeChild(this.appBarDatePickerButton.parentElement) } catch { }
+        try { this.appBar.removeChild(this.appBarEditButton.parentElement) } catch { }
+        try { this.appBar.removeChild(this.appBarTodayButton.parentElement) } catch { }
+        try { this.appBar.removeChild(this.appBarPDFButton.parentElement) } catch { }
+        try { this.appBar.removeChild(this.appBarSettingsButton.parentElement) } catch { }
+    } // }}}
+
+    /**
+     * @private
+     */
+    indexedDBBrowserLayout() { // {{{
+        utils.setAppBarTitle(this.#lang.ui.get("indexeddb-browser", "app-bar-title"))
+    } // }}}
+}
