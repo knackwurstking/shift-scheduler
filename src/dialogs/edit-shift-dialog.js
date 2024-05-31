@@ -1,4 +1,5 @@
 import ui from "ui";
+import { css, html } from "../utils";
 
 /**
  * @typedef {import("../types").Shift} Shift
@@ -10,6 +11,7 @@ import ui from "ui";
  * @typedef {import("ui/src/wc").StackLayout} StackLayout
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").Label} Label
+ * @typedef {import("ui/src/wc").Input<import("ui/src/wc/input").InputEvents, "text">} TextInput
  * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
  */
 
@@ -35,7 +37,8 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.ui.close();
     };
 
-    static register = () => customElements.define("edit-shift-dialog", EditShiftDialog);
+    static register = () =>
+        customElements.define("edit-shift-dialog", EditShiftDialog);
 
     /**
      * @param {Shift} shift
@@ -53,6 +56,48 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.#stackLayout = document.querySelector("ui-stack-layout")
 
         this.colorReset = null;
+
+        /**
+         * @private
+         * @type {FlexGridItem}
+         */
+        this.nameItem;
+
+        /**
+         * @private
+         * @type {FlexGridItem}
+         */
+        this.shortNameItem;
+
+        /**
+         * @private
+         * @type {FlexGridItem}
+         */
+        this.colorPickerItem;
+
+        /**
+         * @private
+         * @type {FlexGridItem}
+         */
+        this.useDefaultColorItem;
+
+        /**
+         * @private
+         * @type {FlexGridItem}
+         */
+        this.visibleItem;
+
+        /**
+         * @private
+         * @type {TextInput}
+         */
+        this.name;
+
+        /**
+         * @private
+         * @type {TextInput}
+         */
+        this.shortName;
 
         this.createContent();
         this.createActionButtons();
@@ -98,14 +143,16 @@ export class EditShiftDialog extends ui.wc.Dialog {
     createContentSectionName(container) { // {{{
         this.nameItem = new ui.wc.FlexGridItem();
         this.nameItem.innerHTML = `
-                <ui-secondary></ui-secondary>
-                <input type="text" value="${this.shift.name}">
-            `;
+            <ui-input
+                type="text"
+                value="${this.shift.name}"
+            ></ui-input>
+        `;
 
-        this.nameItem.querySelector("input").oninput =
-            async (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
-                this.shift.name = ev.currentTarget.value;
-            };
+        this.name = this.nameItem.querySelector("ui-input");
+        this.name.ui.events.on("input", async (/** @type {string} */value) => {
+            this.shift.name = value;
+        });
 
         container.appendChild(this.nameItem);
     } // }}}
@@ -117,20 +164,18 @@ export class EditShiftDialog extends ui.wc.Dialog {
     createContentSectionShortName(container) { // {{{
         this.shortNameItem = new ui.wc.FlexGridItem();
         this.shortNameItem.innerHTML = `
-            <ui-secondary>
-                ${this.#lang.ui.get("edit-shift-dialog", "input-title-short-name")}
-            </ui-secondary>
-            <input
-                style="color: ${this.shift.color || 'inherit'};"
+            <ui-input
                 type="text"
                 value="${this.shift.shortName}"
-            >
+            ></ui-input>
         `;
 
-        this.shortNameItem.querySelector("input").oninput =
-            async (/** @type {Event & { currentTarget: HTMLInputElement }} */ev) => {
-                this.shift.shortName = ev.currentTarget.value;
-            };
+        this.shortName = this.shortNameItem.querySelector("ui-input");
+        this.shortName.ui.input.style.color = this.shift.color || "inherit";
+
+        this.shortName.ui.events.on("input", async (/** @type {string} */ value) => {
+            this.shift.shortName = value;
+        });
 
         if (!this.shift.visible) {
             this.disableContentSection(this.shortNameItem);
@@ -283,7 +328,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
      */
     async updateShiftColor(color) { // {{{
         this.shift.color = color;
-        this.shortNameItem.querySelector("input").style.color = this.shift.color || "inherit";
+        this.shortName.ui.input.style.color = this.shift.color || "inherit"
     } // }}}
 
     /**
@@ -309,26 +354,38 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.ui.title = this.#lang.ui.get("edit-shift-dialog", "title");
 
         // Name
-        this.nameItem.querySelector("ui-secondary").innerHTML =
+        this.name.ui.title =
             this.#lang.ui.get("edit-shift-dialog", "input-title-name");
 
         // Short
-        this.shortNameItem.querySelector("ui-secondary").innerHTML =
+        this.shortName.ui.title =
             this.#lang.ui.get("edit-shift-dialog", "input-title-short-name");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.colorPickerItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("edit-shift-dialog", "label-primary-color-picker");
+            this.#lang.ui.get(
+                "edit-shift-dialog",
+                "label-primary-color-picker"
+            );
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.useDefaultColorItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("edit-shift-dialog", "label-primary-use-default-color");
+            this.#lang.ui.get(
+                "edit-shift-dialog",
+                "label-primary-use-default-color"
+            );
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.visibleItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get("edit-shift-dialog", "label-primary-visible-item");
+            this.#lang.ui.get(
+                "edit-shift-dialog",
+                "label-primary-visible-item"
+            );
 
-        this.#cancelButton.innerText = this.#lang.ui.get("edit-shift-dialog", "button-cancel");
-        this.#submitButton.innerText = this.#lang.ui.get("edit-shift-dialog", "button-submit");
-    }
-} // }}}
+        this.#cancelButton.innerText =
+            this.#lang.ui.get("edit-shift-dialog", "button-cancel");
+
+        this.#submitButton.innerText =
+            this.#lang.ui.get("edit-shift-dialog", "button-submit");
+    } // }}}
+}
