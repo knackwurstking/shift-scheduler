@@ -39,6 +39,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
 
+        /** @private */
+        this.stackLayout = document.querySelector("ui-stack-layout");
+
         this.createMiscElements();
         this.createShiftElements();
         // TODO: Add new section named "Indexed DB", contains a goto ("View") button
@@ -46,6 +49,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     connectedCallback() { // {{{
         console.debug("[settings] connect...")
+        // TODO: Register "Indexed DB" page
 
         setTimeout(() => {
             this.cleanup.push(
