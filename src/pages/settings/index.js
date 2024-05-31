@@ -1,12 +1,14 @@
 import ui from "ui";
 import * as dialogs from "../../dialogs";
 import * as sections from "./sections";
+import { IndexedDBBrowserPage } from "../indexeddb-browser";
 
 /**
  * @typedef {import("../../types").StoreEvents} StoreEvents
  *
  * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").StackLayout} StackLayout
  */
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
@@ -26,43 +28,47 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         sections.WeekStart.register();
         sections.ThemePicker.register();
         sections.ShiftsBackup.register();
+        // TODO: Register indexeddb section here...
+        IndexedDBBrowserPage.register();
     };
 
     constructor() { // {{{
         super();
-
-        /** @type {(() => void)[]} */
-        this.cleanup = []
 
         /** @type {Store} */
         this.#store = document.querySelector("ui-store")
         /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
 
-        /** @private */
+        /**
+         * @private
+         * @type {StackLayout}
+         */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
         this.createMiscElements();
         this.createShiftElements();
-        // TODO: Add new section named "Indexed DB", contains a goto ("View") button
+        this.createIndexedDBElements();
     } // }}}
 
     connectedCallback() { // {{{
-        console.debug("[settings] connect...")
-        // TODO: Register "Indexed DB" page
+        super.connectedCallback();
+
+        this.stackLayout.ui.registerPage("indexeddb", () => {
+            const page = new ui.wc.StackLayoutPage(); // TODO: Replace with custom page
+            return page;
+        });
 
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
             );
         });
     } // }}}
 
     disconnectedCallback() { // {{{
-        console.debug("[settings] disconnect...")
-
-        this.cleanup.forEach(fn => fn())
-        this.cleanup = []
+        super.disconnectedCallback();
+        this.stackLayout.ui.unregisterPage("indexeddb");
     } // }}}
 
     /** @private */
@@ -98,6 +104,11 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
             new sections.ShiftsBackup(this.#store, this.#lang)
         );
     } // }}}
+
+    /** @private */
+    createIndexedDBElements() {
+        // TODO: Add new section named "Indexed DB", contains a goto ("View") button
+    }
 
     /** @private */
     async onLang() { // {{{

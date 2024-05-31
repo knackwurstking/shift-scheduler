@@ -82,15 +82,15 @@ export default class App extends ui.js.events.Events {
         this.stackLayout = document.querySelector("ui-stack-layout");
 
         this.stackLayout.ui.registerPage("calendar", () => {
-            return document.querySelector("template#pageCalendar")
-                // @ts-expect-error
-                .content.cloneNode(true);
+            /** @type {HTMLTemplateElement} */
+            const t = document.querySelector("template#pageCalendar");
+            return t.content.cloneNode(true);
         });
 
         this.stackLayout.ui.registerPage("settings", () => {
-            return document.querySelector("template#pageSettings")
-                // @ts-expect-error
-                .content.cloneNode(true)
+            /** @type {HTMLTemplateElement} */
+            const t = document.querySelector("template#pageSettings");
+            return t.content.cloneNode(true)
         });
     } // }}}
 

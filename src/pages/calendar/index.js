@@ -287,9 +287,6 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         this.#lang = document.querySelector("ui-lang");
         this.swipeHandler = new SwipeHandler(this.shadowRoot.querySelector(".calendar"));
 
-        /** @type {(() => void)[]} */
-        this.cleanup = [];
-
         /** @type {Date} */
         this.today;
         /** @type {number[]} */
@@ -304,24 +301,32 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     connectedCallback() { // {{{
-        console.debug("[calendar] connect...");
+        super.connectedCallback();
 
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 // The "swipe" event will update the date-picker store, base on the swiped direction
-                this.swipeHandler.on("swipe", this.handleSwipeEvent.bind(this)),
+                this.swipeHandler.on("swipe", this.handleSwipeEvent.bind(this))
+            );
 
+            this.cleanup.add(
                 // Handle the "date-picker" state change, update calendar items
                 this.#store.ui.on("date-picker",
                     this.onDatePicker.bind(this), true),
+            );
 
+            this.cleanup.add(
                 // Handle a "week-start" change event
                 this.#store.ui.on("week-start",
                     this.onWeekStart.bind(this), true),
+            );
 
+            this.cleanup.add(
                 // Handle a "lang" change event
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
+            );
 
+            this.cleanup.add(
                 this.#store.ui.on("edit-mode", this.onEditMode.bind(this), true),
             );
 
@@ -330,11 +335,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     } // }}}
 
     disconnectedCallback() { // {{{
-        console.debug("[calendar] disconnect...");
-
+        super.disconnectedCallback();
         this.swipeHandler.stop();
-        this.cleanup.forEach((fn) => fn());
-        this.cleanup = [];
     } // }}}
 
     /**
