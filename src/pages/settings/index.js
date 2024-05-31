@@ -32,9 +32,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
     constructor() { // {{{
         super();
 
-        /** @type {Store} */
         this.#store = document.querySelector("ui-store")
-        /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
 
         this.createMiscElements();
