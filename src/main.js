@@ -44,7 +44,14 @@ const th = document.querySelector("ui-theme-handler")
 /** @type {Store} */
 const store = document.querySelector("ui-store");
 
-store.ui.set("date-picker", (new Date()).toString(), true);
+{
+    const t = new Date();
+    store.ui.set(
+        "date-picker",
+        new Date(t.getFullYear(), t.getMonth(), 1).toString(),
+        true
+    );
+}
 store.ui.set("theme", { mode: "system", name: "zinc" }, true);
 store.ui.set("week-start", 0, true);
 store.ui.set("settings", { shifts: [], rhythm: [], startDate: "" }, true);

@@ -126,8 +126,13 @@ export default class App extends ui.js.events.Events {
 
         /** @type {IconButton} */
         this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
-        this.appBarTodayButton.onclick = async () =>
-            this.#store.ui.set("date-picker", new Date().toString());
+        this.appBarTodayButton.onclick = async () => {
+            const t = new Date();
+            this.#store.ui.set(
+                "date-picker",
+                new Date(t.getFullYear(), t.getMonth(), 1).toString()
+            );
+        };
 
         /** @type {IconButton} */
         this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")

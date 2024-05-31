@@ -514,6 +514,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     async onDatePicker(dateString) { // {{{
         console.debug(
             `[calendar] date-picker change event: update calendar items`,
+            { dateString }
         );
 
         // Performance testing - start
