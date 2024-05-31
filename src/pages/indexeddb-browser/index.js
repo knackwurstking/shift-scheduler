@@ -15,9 +15,8 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
 
     connectedCallback() {
         super.connectedCallback();
-    }
 
-    disconnectedCallback() {
-        super.disconnectedCallback();
+        // TODO: Just testing here
+        this.cleanup.add(() => console.warn("cleanup indexeddb-browser page..."))
     }
 }

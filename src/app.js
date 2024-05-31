@@ -226,6 +226,9 @@ export default class App extends ui.js.events.Events {
                 this.appBar.removeChild(this.appBarPDFButton.parentElement)
                 this.appBar.removeChild(this.appBarSettingsButton.parentElement)
                 break;
+            case "indexeddb-browser":
+                utils.setAppBarTitle(this.#lang.ui.get("indexeddb-browser", "app-bar-title"))
+                break;
             default:
                 throw `unknown page "${newPage.ui.name}"`;
         }

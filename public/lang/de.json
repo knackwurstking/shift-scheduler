@@ -14,6 +14,7 @@
         "confirm-delete-shift": "Shicht \"%s\" löschen?",
         "title-misc": "Sonstiges",
         "title-shifts": "Schichteinstellungen",
+        "title-indexedDB": "IndexedDB",
         "label-primary-week-start": "Wochen start am Montag",
         "select-title-theme": "Theme",
         "table-header-name": "Name",
@@ -23,8 +24,13 @@
         "label-primary-edit-rhythm": "Rhythmus",
         "button-edit-rhythm": "Bearbeiten",
         "label-primary-shifts-backup": "Backup",
+        "label-primary-indexeddb-browser": "Einträge bearbeiten",
+        "button-indexeddb-browser": "Browse",
         "button-import": "Import",
         "button-export": "Export"
+    },
+    "indexeddb-browser": {
+        "app-bar-title": "IndexedDB Browser"
     },
     "pdf-dialog": {
         "title": "PDF",

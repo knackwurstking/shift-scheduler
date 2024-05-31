@@ -1,4 +1,5 @@
 export { EditRhythm } from "./edit-rhythm";
+export { IndexedDBBrowser } from "./indexeddb-browser";
 export { ShiftAddButton } from "./shift-add-button";
 export { ShiftsBackup } from "./shifts-backup";
 export { ShiftsTable } from "./shifts-table";

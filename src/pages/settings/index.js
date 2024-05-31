@@ -1,14 +1,12 @@
 import ui from "ui";
 import * as dialogs from "../../dialogs";
 import * as sections from "./sections";
-import { IndexedDBBrowserPage } from "../indexeddb-browser";
 
 /**
  * @typedef {import("../../types").StoreEvents} StoreEvents
  *
  * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
  */
 
 export class SettingsPage extends ui.wc.StackLayoutPage {
@@ -28,8 +26,7 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         sections.WeekStart.register();
         sections.ThemePicker.register();
         sections.ShiftsBackup.register();
-        // TODO: Register indexeddb section here...
-        IndexedDBBrowserPage.register();
+        sections.IndexedDBBrowser.register();
     };
 
     constructor() { // {{{
@@ -40,12 +37,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         /** @type {Lang} */
         this.#lang = document.querySelector("ui-lang")
 
-        /**
-         * @private
-         * @type {StackLayout}
-         */
-        this.stackLayout = document.querySelector("ui-stack-layout");
-
         this.createMiscElements();
         this.createShiftElements();
         this.createIndexedDBElements();
@@ -53,11 +44,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     connectedCallback() { // {{{
         super.connectedCallback();
-
-        this.stackLayout.ui.registerPage("indexeddb", () => {
-            const page = new ui.wc.StackLayoutPage(); // TODO: Replace with custom page
-            return page;
-        });
 
         setTimeout(() => {
             this.cleanup.add(
@@ -68,7 +54,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     disconnectedCallback() { // {{{
         super.disconnectedCallback();
-        this.stackLayout.ui.unregisterPage("indexeddb");
     } // }}}
 
     /** @private */
@@ -107,7 +92,9 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
 
     /** @private */
     createIndexedDBElements() {
-        // TODO: Add new section named "Indexed DB", contains a goto ("View") button
+        this.querySelector("#indexedDBBrowserSection").appendChild(
+            new sections.IndexedDBBrowser(this.#store, this.#lang)
+        );
     }
 
     /** @private */
@@ -123,5 +110,8 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         this.querySelector("#shiftsTitle").innerHTML = this.#lang.ui.get(
             "settings", "title-shifts",
         );
+
+        this.querySelector("#indexedDBTitle").innerHTML =
+            this.#lang.ui.get("settings", "title-indexedDB");
     } // }}}
 }
