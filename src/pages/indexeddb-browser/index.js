@@ -5,9 +5,12 @@ import { html } from "../../utils";
 
 /**
  * @typedef {import("../../types").StoreEvents} StoreEvents
+ *
  * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGridRow} FlexGridRow
+ * @typedef {import("ui/src/wc").IconButton} IconButton
+ *
  * @typedef {import("../../types").DBDataEntry} DBDataEntry
  */
 
@@ -84,9 +87,32 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                     </td>
 
                     <td>
-                        <!-- TODO: Action buttons: "delete" -->
+                        <ui-icon-button
+                            style="float: right;"
+                            class="delete"
+                            color="destructive"
+                            ghost
+                        >
+                            <ui-svg-delete-recycle-bin>
+                            </ui-svg-delete-recycle-bin>
+                        </ui-icon-button>
                     </td>
                 `;
+
+                /** @type {IconButton} */
+                const deleteButton = row.querySelector("ui-icon-button.delete");
+                deleteButton.onclick = async () => {
+                    const message = this.#lang.ui.get(
+                        "indexeddb-browser", "confirm-delete-entry"
+                    ).replace("%d", entry.year.toString())
+                        .replace("%d", entry.month.toString().padStart(2, "0"))
+                        .replace("%d", entry.date.toString().padStart(2, "0"));
+
+                    if (window.confirm(message)) {
+                        await db.delete(entry.year, entry.month, entry.date);
+                        this.grid.removeChild(item);
+                    }
+                }
 
                 if (!!entry.shift) {
                     const row = document.createElement("tr");

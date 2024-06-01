@@ -30,7 +30,8 @@
         "button-export": "Export"
     },
     "indexeddb-browser": {
-        "app-bar-title": "IndexedDB Browser"
+        "app-bar-title": "IndexedDB Browser",
+        "confirm-delete-entry": "Delete entry for \"%d-%d-%d\""
     },
     "pdf-dialog": {
         "title": "PDF",
