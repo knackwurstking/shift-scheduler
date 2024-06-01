@@ -51,6 +51,8 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         this.grid.style.minWidth = "100%";
         this.grid.style.width = "fit-content";
         this.appendChild(this.grid);
+
+        // TODO: createSearchBar()
     }
 
     connectedCallback() {
