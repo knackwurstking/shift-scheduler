@@ -44,7 +44,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         this.classList.add("no-scrollbar");
 
         this.grid = new ui.wc.FlexGrid();
-        this.grid.setAttribute("gap", "0.25rem");
+        this.grid.setAttribute("gap", "0.5rem");
         this.grid.style.minWidth = "100%";
         this.grid.style.width = "fit-content";
         this.appendChild(this.grid);
@@ -70,9 +70,9 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 const item = new ui.wc.FlexGridItem();
                 const content = document.createElement("table");
 
-                const row1 = document.createElement("tr");
-                content.appendChild(row1);
-                row1.innerHTML = `
+                const row = document.createElement("tr");
+                content.appendChild(row);
+                row.innerHTML = `
                     <td style="width: 5rem;">${entry.year}</td>
 
                     <td style="width: 3rem;">
@@ -83,29 +83,40 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                         ${entry.date.toString().padStart(2, "0")}
                     </td>
 
-                    <td
-                        style="user-select: text;"
-                    >
-                        ${entry.shift?.name || "&nbsp;"}
-                    </td>
-
-                    <td
-                        style="
-                            color: ${entry.shift?.color || 'inherit'};
-                            width: 4rem;
-                            user-select: text;
-                        "
-                    >
-                        ${!!entry.shift?.visible
-                        ? (entry.shift?.shortName || "&nbsp;")
-                        : "&nbsp;"}
+                    <td>
+                        <!-- TODO: Action buttons: "delete" -->
                     </td>
                 `;
 
+                if (!!entry.shift) {
+                    const row = document.createElement("tr");
+                    content.appendChild(row);
+                    row.innerHTML = `
+                        <td
+                            colspan="3"
+                            style="user-select: text;"
+                        >
+                            ${entry.shift?.name || "&nbsp;"}
+                        </td>
+
+                        <td
+                            style="
+                                color: ${entry.shift?.color || 'inherit'};
+                                width: 4rem;
+                                user-select: text;
+                            "
+                        >
+                            ${!!entry.shift?.visible
+                            ? (entry.shift?.shortName || "&nbsp;")
+                            : "&nbsp;"}
+                        </td>
+                    `;
+                }
+
                 if (!!entry.note) {
-                    const row2 = document.createElement("tr");
-                    content.appendChild(row2);
-                    row2.innerHTML = `
+                    const row = document.createElement("tr");
+                    content.appendChild(row);
+                    row.innerHTML = `
                         <td colspan="5">
                             <pre
                                 style="white-space: normal; user-select: text;"
