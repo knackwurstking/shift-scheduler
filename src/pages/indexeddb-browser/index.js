@@ -65,114 +65,61 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
      */
     async renderEntries() {
         const entries = await db.getAll();
-        entries.forEach((entry, idx) => {
+        entries.forEach((entry) => {
             setTimeout(() => {
-                let row = new ui.wc.FlexGridRow();
-                row.setAttribute("gap", "0.5rem");
-                this.grid.appendChild(row);
+                const item = new ui.wc.FlexGridItem();
+                const content = document.createElement("table");
 
-                this.createKey(row, entry);
-                this.createShift(row, entry);
-                this.createNote(row, entry);
+                const row1 = document.createElement("tr");
+                content.appendChild(row1);
+                row1.innerHTML = `
+                    <td style="width: 5rem;">${entry.year}</td>
 
-                // TODO: Action Buttons: "Delete"
+                    <td style="width: 3rem;">
+                        ${(entry.month + 1).toString().padStart(2, "0")}
+                    </td>
 
-                if (idx < entries.length - 1) {
-                    row = new ui.wc.FlexGridRow();
-                    row.setAttribute("gap", "0.25rem");
-                    this.addSeparator(row);
-                    this.grid.appendChild(row);
+                    <td style="width: 3rem;">
+                        ${entry.date.toString().padStart(2, "0")}
+                    </td>
+
+                    <td
+                        style="user-select: text;"
+                    >
+                        ${entry.shift?.name || "&nbsp;"}
+                    </td>
+
+                    <td
+                        style="
+                            color: ${entry.shift?.color || 'inherit'};
+                            width: 4rem;
+                            user-select: text;
+                        "
+                    >
+                        ${!!entry.shift?.visible
+                        ? (entry.shift?.shortName || "&nbsp;")
+                        : "&nbsp;"}
+                    </td>
+                `;
+
+                if (!!entry.note) {
+                    const row2 = document.createElement("tr");
+                    content.appendChild(row2);
+                    row2.innerHTML = `
+                        <td colspan="5">
+                            <pre
+                                style="white-space: normal; user-select: text;"
+                            >
+                                ${entry.note.trim().replaceAll("\n", "<br/>") || "&nbsp;"}
+                            </pre>
+                        </td>
+                    `;
                 }
+
+                item.appendChild(content);
+                this.grid.appendChild(item);
             });
         });
-    }
-
-    /**
-     * @private
-     * @param {FlexGridRow} row
-     * @param {DBDataEntry} entry
-     */
-    createKey(row, entry) {
-        const item = new ui.wc.FlexGridItem();
-        item.setAttribute("flex", "0");
-        item.className = "flex align-center";
-
-        const content = new ui.wc.Primary();
-        content.style.whiteSpace = "nowrap";
-
-        const m = (entry.month + 1).toString().padStart(2, "0");
-        const d = entry.date.toString().padStart(2, "0");
-        content.innerHTML = `${entry.year} / ${m} / ${d}`;
-
-        item.appendChild(content);
-        row.appendChild(item);
-    }
-
-    /**
-     * @private
-     * @param {FlexGridRow} row
-     * @param {DBDataEntry} entry
-     */
-    createShift(row, entry) {
-        if (!entry.shift) {
-            return;
-        }
-
-        const item = new ui.wc.FlexGridItem();
-        item.setAttribute("flex", "0");
-        item.className = "flex align-center";
-
-        const shiftCard = new ShiftCard();
-        shiftCard.setAttribute("color", entry.shift.color || 'inherit');
-        if (!!entry.shift.visible ? 'visible' : '') {
-            shiftCard.setAttribute("visible", "");
-        } else {
-            shiftCard.removeAttribute("visible");
-        }
-
-        const name = document.createElement("span");
-        name.slot = "name";
-        name.innerHTML = entry.shift.name;
-        shiftCard.appendChild(name);
-
-        const shortName = document.createElement("span");
-        shortName.slot = "short-name";
-        shortName.innerHTML = entry.shift.shortName;
-        shiftCard.appendChild(shortName);
-
-        item.appendChild(shiftCard);
-        row.appendChild(item);
-    }
-
-    /**
-     * @private
-     * @param {FlexGridRow} row
-     * @param {DBDataEntry} entry
-     */
-    createNote(row, entry) {
-        if (!entry.note) {
-            return;
-        }
-
-        const item = new ui.wc.FlexGridItem();
-        item.setAttribute("flex", "0");
-        item.className = "flex align-center";
-
-        const content = document.createElement("pre");
-        content.innerHTML = `${entry.note}`;
-        item.appendChild(content);
-
-        row.appendChild(item);
-    }
-
-    /**
-     * @private
-     * @param {FlexGridRow} row
-     */
-    addSeparator(row) {
-        const item = new ui.wc.FlexGridItem();
-        item.appendChild(document.createElement("hr"));
-        row.appendChild(item)
     }
 
     /**
