@@ -8,6 +8,7 @@ import db from "../../db";
  * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGridRow} FlexGridRow
+ * @typedef {import("ui/src/wc").FlexGridItem} FlexGridItem
  * @typedef {import("ui/src/wc").IconButton} IconButton
  * @typedef {import("ui/src/wc").Input<InputEvents, "number">} NumberInput
  *
@@ -109,6 +110,32 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
     }
 
     /**
+     * @param {Object} values
+     * @param {number | string | null} values.y
+     * @param {number | string | null} values.m
+     * @param {number | string | null} values.d
+     */
+    filter({ y, m, d }) {
+        if (y === null) y = ".*";
+        if (m === null) m = ".*";
+        if (d === null) d = ".*";
+        console.warn(y, m, d);
+
+        /**
+         * @type {FlexGridItem[]}
+         */
+        // @ts-ignore
+        const children = [...this.grid.children];
+        children.forEach(child => {
+            if (child.getAttribute("key").match(new RegExp(`${y}-${m}-${d}`))) {
+                child.style.display = "block";
+            } else {
+                child.style.display = "none";
+            }
+        });
+    }
+
+    /**
      * @private
      */
     createSearchBar() {
@@ -117,17 +144,26 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
          */
         const [y, m, d] = this.shadowRoot.querySelectorAll("ui-input");
 
+        let values = {
+            y: null,
+            m: null,
+            d: null,
+        }
+
         y.ui.events.on("input", (/** @type {number} */value) => {
-            // TODO: ...
-        })
+            values.y = isNaN(value) ? null : value;
+            this.filter(values);
+        });
 
         m.ui.events.on("input", (/** @type {number} */value) => {
-            // TODO: ...
-        })
+            values.m = isNaN(value) ? null : value;
+            this.filter(values);
+        });
 
         d.ui.events.on("input", (/** @type {number} */value) => {
-            // TODO: ...
-        })
+            values.d = isNaN(value) ? null : value;
+            this.filter(values);
+        });
     }
 
     /**
@@ -138,20 +174,20 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         entries.forEach((entry) => {
             setTimeout(() => {
                 const item = new ui.wc.FlexGridItem();
+
+                const y = entry.year;
+                const m = entry.month + 1;
+                const d = entry.date;
+                item.setAttribute("key", `${y}-${m}-${d}`);
+
                 const content = document.createElement("table");
 
                 const row = document.createElement("tr");
                 content.appendChild(row);
                 row.innerHTML = `
-                    <td style="width: 5rem;">${entry.year}</td>
-
-                    <td style="width: 3rem;">
-                        ${(entry.month + 1).toString().padStart(2, "0")}
-                    </td>
-
-                    <td style="width: 3rem;">
-                        ${entry.date.toString().padStart(2, "0")}
-                    </td>
+                    <td style="width: 5rem;">${y}</td>
+                    <td style="width: 3rem;">${m}</td>
+                    <td style="width: 3rem;">${d}</td>
 
                     <td>
                         <ui-icon-button
