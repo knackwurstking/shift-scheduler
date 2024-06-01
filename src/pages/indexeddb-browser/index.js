@@ -124,7 +124,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         /**
          * @type {FlexGridItem[]}
          */
-        // @ts-ignore
+        // @ts-expect-error
         const children = [...this.grid.children];
         children.forEach(child => {
             if (child.getAttribute("key").match(new RegExp(`${y}-${m}-${d}`))) {
