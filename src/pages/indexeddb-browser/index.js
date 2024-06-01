@@ -1,31 +1,72 @@
 import ui from "ui";
-import { ShiftCard } from "../../components";
 import db from "../../db";
-import { html } from "../../utils";
 
 /**
  * @typedef {import("../../types").StoreEvents} StoreEvents
+ * @typedef {import("ui/src/wc/input").InputEvents} InputEvents
  *
  * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").FlexGridRow} FlexGridRow
  * @typedef {import("ui/src/wc").IconButton} IconButton
+ * @typedef {import("ui/src/wc").Input<InputEvents, "number">} NumberInput
  *
  * @typedef {import("../../types").DBDataEntry} DBDataEntry
  */
 
+const filterHeight = "4rem";
+
 const t = document.createElement("template");
-t.innerHTML = html`
+t.innerHTML = `
     <style>
         :host {
             width: 100%;
             height: 100%;
             overflow: auto;
             padding-top: var(--ui-app-bar-height);
+            padding-bottom: ${filterHeight};
+        }
+
+        .filter {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: ${filterHeight};
+            border-top: 1px solid var(--ui-borderColor);
+        }
+
+        .filter .bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: var(--ui-backdrop-bgColor);
+            backdrop-filter: var(--ui-backdropFilter);
         }
     </style>
 
     <slot></slot>
+
+    <div class="filter">
+        <div class="bg"></div>
+        <ui-flex-grid>
+            <ui-flex-grid-row>
+                <ui-flex-grid-item>
+                    <ui-input title="Year" type="number"></ui-input>
+                </ui-flex-grid-item>
+
+                <ui-flex-grid-item>
+                    <ui-input title="Month" type="number"></ui-input>
+                </ui-flex-grid-item>
+
+                <ui-flex-grid-item>
+                    <ui-input title="Day" type="number"></ui-input>
+                </ui-flex-grid-item>
+            </ui-flex-grid-row>
+        </ui-flex-grid>
+    </div>
 `;
 
 export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
@@ -52,17 +93,41 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         this.grid.style.width = "fit-content";
         this.appendChild(this.grid);
 
-        // TODO: createSearchBar()
+        this.createSearchBar();
     }
 
     connectedCallback() {
         super.connectedCallback();
 
-        this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true)
-        );
+        setTimeout(() => {
+            this.cleanup.add(
+                this.#store.ui.on("lang", this.onLang.bind(this), true)
+            );
+        });
 
-        this.renderEntries()
+        this.renderEntries();
+    }
+
+    /**
+     * @private
+     */
+    createSearchBar() {
+        /**
+         * @type {NodeListOf<NumberInput>}
+         */
+        const [y, m, d] = this.shadowRoot.querySelectorAll("ui-input");
+
+        y.ui.events.on("input", (/** @type {number} */value) => {
+            // TODO: ...
+        })
+
+        m.ui.events.on("input", (/** @type {number} */value) => {
+            // TODO: ...
+        })
+
+        d.ui.events.on("input", (/** @type {number} */value) => {
+            // TODO: ...
+        })
     }
 
     /**
