@@ -185,9 +185,9 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 const row = document.createElement("tr");
                 content.appendChild(row);
                 row.innerHTML = `
-                    <td style="width: 5rem;">${y}</td>
-                    <td style="width: 3rem;">${m}</td>
-                    <td style="width: 3rem;">${d}</td>
+                    <td style="width: 50%;">${y}</td>
+                    <td style="width: 25%;">${m}</td>
+                    <td style="width: 25%;">${d}</td>
 
                     <td>
                         <ui-icon-button
@@ -231,7 +231,6 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                         <td
                             style="
                                 color: ${entry.shift?.color || 'inherit'};
-                                width: 4rem;
                                 user-select: text;
                             "
                         >
