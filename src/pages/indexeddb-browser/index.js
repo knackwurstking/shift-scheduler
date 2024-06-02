@@ -142,7 +142,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         /**
          * @type {NodeListOf<NumberInput>}
          */
-        const [y, m, d] = this.shadowRoot.querySelectorAll("ui-input");
+        const [y, m, d] = this.getInputs();
 
         let values = {
             y: null,
@@ -263,8 +263,19 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
 
     /**
      * @private
+     * @returns {NodeListOf<NumberInput>}
+     */
+    getInputs() {
+        return this.shadowRoot.querySelectorAll("ui-input");
+    }
+
+    /**
+     * @private
      */
     onLang() {
-        // TODO: ...
+        const [y, m, d] = this.getInputs();
+        y.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-year");
+        m.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-month");
+        d.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-date");
     }
 }

@@ -31,7 +31,10 @@
     },
     "indexeddb-browser": {
         "app-bar-title": "IndexedDB Browser",
-        "confirm-delete-entry": "Eintrag löschen für \"%d-%d-%d\""
+        "confirm-delete-entry": "Eintrag löschen für \"%d-%d-%d\"",
+        "input-title-year": "Jahr",
+        "input-title-month": "Monat",
+        "input-title-date": "Tag"
     },
     "pdf-dialog": {
         "title": "PDF",
