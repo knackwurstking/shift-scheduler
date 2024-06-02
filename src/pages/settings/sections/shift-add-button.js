@@ -53,7 +53,7 @@ export class ShiftAddButton extends ui.wc.Button {
             document.body.removeChild(dialog);
         } // }}}
 
-        this.addEventListener("click", () => {
+        const onClick = () => { // {{{
             /** @type {Shift} */
             let shift = {
                 id: new Date().getTime(),
@@ -101,7 +101,10 @@ export class ShiftAddButton extends ui.wc.Button {
             }; // }}}
 
             dialog.ui.events.on("submit", onSubmit);
-        });
+        } // }}}
+
+        this.addEventListener("click", onClick);
+        this.cleanup.add(() => this.removeEventListener("click", onClick));
     } // }}}
 
     /** @private */
