@@ -1,6 +1,7 @@
 import ui from "ui";
 import { html } from "../../../utils";
 import * as dialogs from "../../../dialogs";
+import { CleanUp } from "ui/src/js";
 
 /**
  * @typedef {import("ui/src/wc").IconButton} IconButton
@@ -40,20 +41,22 @@ export class ShiftsTable extends HTMLTableElement {
         this.#store = store
         this.#lang = lang
         this.innerHTML = innerHTML;
-        this.cleanup = [];
+        this.cleanup = new CleanUp();
         this.tbody = this.querySelector("tbody");
     } // }}}
 
     connectedCallback() { // {{{
-        this.cleanup.push(
+        this.cleanup.add(
             this.#store.ui.on("lang", this.onLang.bind(this), true),
+        );
+
+        this.cleanup.add(
             this.#store.ui.on("settings", this.onSettings.bind(this), true),
         );
     } // }}}
 
     disconnectedCallback() { // {{{
-        this.cleanup.forEach(fn => fn());
-        this.cleanup = [];
+        this.cleanup.run();
     } // }}}
 
     /**

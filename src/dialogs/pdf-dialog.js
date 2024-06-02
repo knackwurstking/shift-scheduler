@@ -3,14 +3,15 @@ import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
 import ui from "ui";
+import db from "../db";
 import * as calendarUtils from "../pages/calendar/utils";
 import utils, { html } from "../utils";
-import db from "../db";
 
 /**
  * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
  * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("ui/src/wc").StackLayout} StackLayout
  * @typedef {import("ui/src/wc").Button} Button
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  * @typedef {import("ui/src/wc").Input<import("ui/src/wc/input").InputEvents, "number">} NumberInput
@@ -65,7 +66,11 @@ export class PDFDialog extends ui.wc.Dialog {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = [];
+        /**
+         * @private
+         * @type {StackLayout}
+         */
+        this.stackLayout = document.querySelector("ui-stack-layout");
 
         /**
          * @private
@@ -80,15 +85,14 @@ export class PDFDialog extends ui.wc.Dialog {
     connectedCallback() { // {{{
         super.connectedCallback();
 
-        setTimeout(() => {
-            this.#store.ui.on("lang", this.onLang.bind(this), true);
-        });
-    } // }}}
+        this.stackLayout.ui.lock();
+        this.cleanup.add(() => this.stackLayout.ui.unlock());
 
-    disconnectedCallback() { // {{{
-        super.disconnectedCallback();
-        this.cleanup.forEach(fn => fn());
-        this.cleanup = [];
+        setTimeout(() => {
+            this.cleanup.add(
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
+            );
+        });
     } // }}}
 
     /** @private */

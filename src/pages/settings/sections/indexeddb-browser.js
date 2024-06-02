@@ -63,6 +63,8 @@ export class IndexedDBBrowser extends HTMLElement {
             `;
             return t.content.cloneNode(true);
         });
+        this.cleanup.add(() =>
+            this.stackLayout.ui.unregisterPage("indexeddb-browser"));
 
         setTimeout(() => {
             this.cleanup.add(
@@ -73,7 +75,6 @@ export class IndexedDBBrowser extends HTMLElement {
 
     disconnectedCallback() { // {{{
         this.cleanup.run();
-        this.stackLayout.ui.unregisterPage("indexeddb-browser");
     } // }}}
 
     /** @private */

@@ -1,4 +1,5 @@
 import ui from "ui";
+import { CleanUp } from "ui/src/js";
 import * as dialogs from "../../../dialogs";
 
 /**
@@ -27,6 +28,8 @@ export class ShiftAddButton extends ui.wc.Button {
 
         this.#store = store;
         this.#lang = lang;
+
+        this.cleanup = new CleanUp();
     } // }}}
 
     connectedCallback() { // {{{
@@ -34,9 +37,15 @@ export class ShiftAddButton extends ui.wc.Button {
         this.handleEvents()
 
         setTimeout(() => {
-            this.#store.ui.on("lang", this.onLang.bind(this), true);
+            this.cleanup.add(
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
+            );
         });
     } // }}}
+
+    disconnectedCallback() {
+        this.cleanup.run();
+    }
 
     /** @private */
     handleEvents() { // {{{

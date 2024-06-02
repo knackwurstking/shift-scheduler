@@ -1,3 +1,4 @@
+import { CleanUp } from "ui/src/js";
 import { html } from "ui/src/js/utils";
 import { EditRhythmDialog } from "../../../dialogs";
 
@@ -35,8 +36,7 @@ export class EditRhythm extends HTMLElement {
         super();
         this.innerHTML = innerHTML;
 
-        /** @type {(() => void)[]} */
-        this.cleanup = [];
+        this.cleanup = new CleanUp();
 
         this.#store = store;
         this.#lang = lang;
@@ -47,15 +47,14 @@ export class EditRhythm extends HTMLElement {
 
     connectedCallback() { // {{{
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
             );
         });
     } // }}}
 
     disconnectedCallback() { // {{{
-        this.cleanup.forEach((fn) => fn());
-        this.cleanup = [];
+        this.cleanup.run();
     } // }}}
 
     /** @private */

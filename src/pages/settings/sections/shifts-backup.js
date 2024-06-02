@@ -3,6 +3,7 @@ import { Share } from "@capacitor/share";
 import { html } from "ui/src/js/utils";
 import db from "../../../db";
 import utils from "../../../utils";
+import { CleanUp } from "ui/src/js";
 
 /**
  * @typedef {import("../../../types").StoreEvents} StoreEvents
@@ -65,7 +66,7 @@ export class ShiftsBackup extends HTMLElement {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = [];
+        this.cleanup = new CleanUp();
 
         /** @type {Label} */
         this.label = this.querySelector("ui-label");
@@ -82,16 +83,14 @@ export class ShiftsBackup extends HTMLElement {
     connectedCallback() {
         // {{{
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
             );
         });
     } // }}}
 
-    disconnectedCallback() {
-        // {{{
-        this.cleanup.forEach((fn) => fn());
-        this.cleanup = [];
+    disconnectedCallback() { // {{{
+        this.cleanup.run();
     } // }}}
 
     async importBackup() {

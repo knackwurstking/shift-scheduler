@@ -331,12 +331,8 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             );
 
             this.swipeHandler.start();
+            this.cleanup.add(() => this.swipeHandler.stop());
         });
-    } // }}}
-
-    disconnectedCallback() { // {{{
-        super.disconnectedCallback();
-        this.swipeHandler.stop();
     } // }}}
 
     /**

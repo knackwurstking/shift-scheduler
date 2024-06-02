@@ -5,6 +5,7 @@ import ui from "ui";
  * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Button} Button
+ * @typedef {import("ui/src/wc").StackLayout} StackLayout
  * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
  */
 
@@ -46,7 +47,11 @@ export class DatePickerDialog extends ui.wc.Dialog {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = [];
+        /**
+         * @private
+         * @type {StackLayout}
+         */
+        this.stackLayout = document.querySelector("ui-stack-layout")
 
         this.createContent();
         this.createActions();
@@ -55,15 +60,14 @@ export class DatePickerDialog extends ui.wc.Dialog {
     connectedCallback() { // {{{
         super.connectedCallback();
 
-        setTimeout(() => {
-            this.#store.ui.on("lang", this.onLang.bind(this), true);
-        });
-    } // }}}
+        this.stackLayout.ui.lock();
+        this.cleanup.add(() => this.stackLayout.ui.unlock());
 
-    disconnectedCallback() { // {{{
-        super.disconnectedCallback();
-        this.cleanup.forEach(fn => fn());
-        this.cleanup = [];
+        setTimeout(() => {
+            this.cleanup.add(
+                this.#store.ui.on("lang", this.onLang.bind(this), true)
+            );
+        });
     } // }}}
 
     /** @private */

@@ -1,3 +1,4 @@
+import { CleanUp } from "ui/src/js";
 import { html } from "ui/src/js/utils";
 
 /**
@@ -34,7 +35,7 @@ export class WeekStart extends HTMLElement {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = [];
+        this.cleanup = new CleanUp();
 
         /** @type {Label} */
         this.label = this.querySelector("ui-label");
@@ -47,16 +48,18 @@ export class WeekStart extends HTMLElement {
 
     connectedCallback() { // {{{
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
+            );
+
+            this.cleanup.add(
                 this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
             );
         });
     } // }}}
 
     disconnectedCallback() { // {{{
-        this.cleanup.forEach(fn => fn());
-        this.cleanup = [];
+        this.cleanup.run();
     } // }}}
 
     /**

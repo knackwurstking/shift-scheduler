@@ -4,6 +4,7 @@ import * as utils from "../pages/calendar/utils";
 
 /**
  * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
+ * @typedef {import("ui/src/wc").StackLayout} StackLayout
  * @typedef {import("ui/src/wc").Lang} Lang
  * @typedef {import("ui/src/wc").Select} Select
  * @typedef {import("ui/src/wc").SelectOption} SelectOption
@@ -73,7 +74,11 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = [];
+        /**
+         * @private
+         * @type {StackLayout}
+         */
+        this.stackLayout = document.querySelector("ui-stack-layout")
 
         /** @type {DBDataEntry | null} */
         this.data = null;
@@ -87,17 +92,14 @@ export class EditDayDialog extends ui.wc.Dialog {
     connectedCallback() { // {{{
         super.connectedCallback();
 
+        this.stackLayout.ui.lock();
+        this.cleanup.add(() => this.stackLayout.ui.unlock());
+
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
             );
         });
-    } // }}}
-
-    disconnectedCallback() { // {{{
-        super.disconnectedCallback();
-        this.cleanup.forEach(fn => fn());
-        this.cleanup = [];
     } // }}}
 
     /**

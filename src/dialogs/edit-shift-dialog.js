@@ -1,5 +1,4 @@
 import ui from "ui";
-import { css, html } from "../utils";
 
 /**
  * @typedef {import("../types").Shift} Shift
@@ -23,8 +22,6 @@ export class EditShiftDialog extends ui.wc.Dialog {
     #store;
     /** @type {Lang} */
     #lang;
-    /** @type {StackLayout} */
-    #stackLayout;
 
     /** @type {Button} */
     #cancelButton;
@@ -53,7 +50,12 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         this.#store = store;
         this.#lang = lang
-        this.#stackLayout = document.querySelector("ui-stack-layout")
+
+        /**
+         * @private
+         * @type {StackLayout}
+         */
+        this.stackLayout = document.querySelector("ui-stack-layout")
 
         this.colorReset = null;
 
@@ -101,24 +103,19 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         this.createContent();
         this.createActionButtons();
-
-        this.cleanup = []
     } // }}}
 
     connectedCallback() { // {{{
         super.connectedCallback();
-        this.#stackLayout.ui.lock()
+
+        this.stackLayout.ui.lock();
+        this.cleanup.add(() => this.stackLayout.ui.unlock());
 
         setTimeout(() => {
-            this.#store.ui.on("lang", this.onLang.bind(this), true);
+            this.cleanup.add(
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
+            );
         });
-    } // }}}
-
-    disconnectedCallback() { // {{{
-        super.disconnectedCallback();
-        this.#stackLayout.ui.unlock()
-        this.cleanup.forEach(fn => fn());
-        this.cleanup = [];
     } // }}}
 
     /** @private */

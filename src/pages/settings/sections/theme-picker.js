@@ -1,3 +1,4 @@
+import { CleanUp } from "ui/src/js";
 import { html } from "ui/src/js/utils";
 
 /**
@@ -53,7 +54,7 @@ export class ThemePicker extends HTMLElement {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = [];
+        this.cleanup = new CleanUp();
 
         /** @type {Select} */
         this.selectModeElement = this.querySelector("ui-select");
@@ -61,10 +62,15 @@ export class ThemePicker extends HTMLElement {
 
     connectedCallback() { // {{{
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
-                this.#store.ui.on("theme", this.onTheme.bind(this), true),
+            );
 
+            this.cleanup.add(
+                this.#store.ui.on("theme", this.onTheme.bind(this), true),
+            );
+
+            this.cleanup.add(
                 this.selectModeElement.ui.events.on("change", (option) => {
                     console.debug(`[settings] update theme mode:`, option);
                     this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
@@ -74,8 +80,7 @@ export class ThemePicker extends HTMLElement {
     } // }}}
 
     disconnectedCallback() { // {{{
-        this.cleanup.forEach(fn => fn());
-        this.cleanup = [];
+        this.cleanup.run();
     } // }}}
 
     /**

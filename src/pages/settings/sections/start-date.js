@@ -6,6 +6,8 @@
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
+import { CleanUp } from "ui/src/js";
+
 const innerHTML = `
 <ui-label>
     <ui-input
@@ -36,8 +38,7 @@ export class StartDate extends HTMLElement {
         super();
         this.innerHTML = innerHTML;
 
-        /** @type {(() => void)[]} */
-        this.cleanup = [];
+        this.cleanup = new CleanUp();
 
         this.#store = store;
         this.#lang = lang;
@@ -48,16 +49,18 @@ export class StartDate extends HTMLElement {
 
     connectedCallback() { // {{{
         setTimeout(() => {
-            this.cleanup.push(
+            this.cleanup.add(
                 this.#store.ui.on("lang", this.onLang.bind(this), true),
+            );
+
+            this.cleanup.add(
                 this.#store.ui.on("settings", this.onSettings.bind(this), true),
             );
         });
     } // }}}
 
     diconnectedCallback() { // {{{
-        this.cleanup.forEach((fn) => fn());
-        this.cleanup = [];
+        this.cleanup.run();
     } // }}}
 
     /** @private */

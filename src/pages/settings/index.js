@@ -50,10 +50,6 @@ export class SettingsPage extends ui.wc.StackLayoutPage {
         });
     } // }}}
 
-    disconnectedCallback() { // {{{
-        super.disconnectedCallback();
-    } // }}}
-
     /** @private */
     createMiscElements() { // {{{
         this.querySelector("#miscWeekStartSection").appendChild(
