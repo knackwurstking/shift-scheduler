@@ -1,5 +1,6 @@
 import ui from "ui";
 import db from "../../db";
+import { html } from "../../utils";
 
 /**
  * @typedef {import("../../types").StoreEvents} StoreEvents
@@ -17,8 +18,9 @@ import db from "../../db";
 
 const filterHeight = "4rem";
 
+// {{{ HTML Content
 const t = document.createElement("template");
-t.innerHTML = `
+t.innerHTML = html`
     <style>
         :host {
             width: 100%;
@@ -69,6 +71,7 @@ t.innerHTML = `
         </ui-flex-grid>
     </div>
 `;
+// }}}
 
 export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
     /** @type {Store} */
@@ -79,7 +82,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
     static register = () =>
         customElements.define("indexeddb-browser-page", IndexedDBBrowserPage);
 
-    constructor() {
+    constructor() { // {{{
         super();
         this.shadowRoot.appendChild(t.content.cloneNode(true));
 
@@ -95,9 +98,9 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         this.appendChild(this.grid);
 
         this.createSearchBar();
-    }
+    } // }}}
 
-    connectedCallback() {
+    connectedCallback() { // {{{
         super.connectedCallback();
 
         setTimeout(() => {
@@ -107,7 +110,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         });
 
         this.renderEntries();
-    }
+    } // }}}
 
     /**
      * @param {Object} values
@@ -115,7 +118,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
      * @param {number | string | null} values.m
      * @param {number | string | null} values.d
      */
-    filter({ y, m, d }) {
+    filter({ y, m, d }) { // {{{
         if (y === null) y = ".*";
         if (m === null) m = ".*";
         if (d === null) d = ".*";
@@ -133,12 +136,12 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 child.style.display = "none";
             }
         });
-    }
+    } // }}}
 
     /**
      * @private
      */
-    createSearchBar() {
+    createSearchBar() { // {{{
         /**
          * @type {NodeListOf<NumberInput>}
          */
@@ -164,12 +167,12 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
             values.d = isNaN(value) ? null : value;
             this.filter(values);
         });
-    }
+    } // }}}
 
     /**
      * @private
      */
-    async renderEntries() {
+    async renderEntries() { // {{{
         const entries = await db.getAll();
         entries.forEach((entry) => {
             setTimeout(() => {
@@ -259,23 +262,23 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 this.grid.appendChild(item);
             });
         });
-    }
+    } // }}}
 
     /**
      * @private
      * @returns {NodeListOf<NumberInput>}
      */
-    getInputs() {
+    getInputs() { // {{{
         return this.shadowRoot.querySelectorAll("ui-input");
-    }
+    } // }}}
 
     /**
      * @private
      */
-    onLang() {
+    onLang() { // {{{
         const [y, m, d] = this.getInputs();
         y.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-year");
         m.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-month");
         d.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-date");
-    }
+    } // }}}
 }
