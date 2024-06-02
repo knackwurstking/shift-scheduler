@@ -122,7 +122,6 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         if (y === null) y = ".*";
         if (m === null) m = ".*";
         if (d === null) d = ".*";
-        console.warn(y, m, d);
 
         /**
          * @type {FlexGridItem[]}
