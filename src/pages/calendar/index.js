@@ -347,6 +347,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
             const data = await db.get(item.year, item.month, item.date);
             if (data !== null) {
                 item.note = data.note;
+                // TODO: Get shift id from settings first, if possible
                 item.shift = data.shift || item.shift;
             }
 
