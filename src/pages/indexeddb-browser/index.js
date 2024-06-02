@@ -141,16 +141,13 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
      * @private
      */
     createSearchBar() { // {{{
-        /**
-         * @type {NodeListOf<NumberInput>}
-         */
         const [y, m, d] = this.getInputs();
 
         let values = {
             y: null,
             m: null,
             d: null,
-        }
+        };
 
         y.ui.events.on("input", (/** @type {number} */value) => {
             values.y = isNaN(value) ? null : value;
