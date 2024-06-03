@@ -342,13 +342,19 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
     async updateCalendarItem(current, calendarItem) { // {{{
         let dataEntries = await utils.getArray(current.getFullYear(), current.getMonth(), this.#store);
         const cards = calendarItem.querySelectorAll(".days-row > .day-item");
+        const settings = this.#store.ui.get("settings");
 
         dataEntries.forEach(async (item, idx) => {
             const data = await db.get(item.year, item.month, item.date);
             if (data !== null) {
                 item.note = data.note;
-                // TODO: Get shift id from settings first, if possible
-                item.shift = data.shift || item.shift;
+
+                const shift = settings.shifts.find((shift) => shift.id === data.shift?.id);
+                if (!!shift) {
+                    item.shift = shift;
+                } else {
+                    item.shift = data.shift || item.shift;
+                }
             }
 
             this.updateDayItem(cards[idx], item);

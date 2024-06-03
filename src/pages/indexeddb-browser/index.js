@@ -169,6 +169,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
      * @private
      */
     async renderEntries() { // {{{
+        const settings = this.#store.ui.get("settings");
         const entries = await db.getAll();
         entries.forEach((entry) => {
             setTimeout(() => {
@@ -217,6 +218,10 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                 }
 
                 if (!!entry.shift) {
+                    entry.shift = settings.shifts.find(
+                        (shift) => shift.id === entry.shift.id
+                    );
+
                     const row = document.createElement("tr");
                     content.appendChild(row);
                     row.innerHTML = `
