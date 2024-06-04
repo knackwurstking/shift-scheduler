@@ -1,4 +1,4 @@
-import ui from "ui";
+import * as ui from "ui";
 
 /**
  * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents

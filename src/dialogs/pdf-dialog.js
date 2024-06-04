@@ -2,7 +2,7 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
-import ui from "ui";
+import * as ui from "ui";
 import db from "../db";
 import * as calendarUtils from "../pages/calendar/utils";
 import utils from "../utils";

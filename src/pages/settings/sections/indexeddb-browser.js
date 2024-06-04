@@ -1,4 +1,4 @@
-import ui from "ui";
+import * as ui from "ui";
 import { IndexedDBBrowserPage } from "../../indexeddb-browser";
 
 /**

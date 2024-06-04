@@ -1,4 +1,4 @@
-import ui from "ui";
+import * as ui from "ui";
 
 const html = ui.js.html;
 

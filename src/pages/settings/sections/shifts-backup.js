@@ -1,6 +1,6 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
-import ui from "ui";
+import * as ui from "ui";
 import db from "../../../db";
 import utils from "../../../utils";
 

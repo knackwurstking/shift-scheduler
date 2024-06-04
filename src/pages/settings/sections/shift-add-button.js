@@ -1,4 +1,4 @@
-import ui from "ui";
+import * as ui from "ui";
 import { CleanUp } from "ui/src/js";
 import * as dialogs from "../../../dialogs";
 
