@@ -5,7 +5,6 @@ import autoTable from "jspdf-autotable";
 import * as ui from "ui";
 import db from "../db";
 import * as calendarUtils from "../pages/calendar/utils";
-import utils from "../utils";
 
 /**
  * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
@@ -291,7 +290,7 @@ async function exportDoc(doc, year, month = null) { // {{{
         fileName = `${year}-${month.toString().padStart(2, "0")}.pdf`;
     }
 
-    if (utils.isAndroid()) {
+    if (ui.js.isAndroid()) {
         const result = await Filesystem.writeFile({
             path: fileName,
             // @ts-ignore

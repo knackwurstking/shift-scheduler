@@ -116,7 +116,7 @@ export class ShiftsBackup extends HTMLElement {
             },
         };
 
-        if (utils.isAndroid()) this.androidExport(backup);
+        if (ui.js.isAndroid()) this.androidExport(backup);
         else this.browserExport(backup);
     } // }}}
 

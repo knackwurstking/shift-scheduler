@@ -1,5 +1,6 @@
 import "./styles.css";
 
+import * as ui from "ui";
 import App from "./app";
 import { ShiftCard } from "./components";
 import { CalendarPage, SettingsPage } from "./pages";
@@ -7,16 +8,18 @@ import utils from "./utils";
 
 /**
  * @typedef {import("./types").UIStoreEvents} UIStoreEvents
- *
- * @typedef {import("ui/src/ui-store").UIStore<UIStoreEvents>} UIStore
- * @typedef {import("ui/src/ui-lang").UILang} UILang
- * @typedef {import("ui/src/ui-theme-handler").UIThemeHandler} UIThemeHandler 
- *
  * @typedef {import("./types").DebugStore} DebugStore
  * @typedef {import("./types").ThemeStore} ThemeStore 
  */
 
 // Initialize Web Components {{{
+ui.SvgDeleteRecycleBin.register();
+ui.SvgBackArrowNavigation.register();
+ui.SvgEdit2.register();
+ui.SvgTodayOutline.register();
+ui.SvgPDFDocument.register();
+ui.SvgSettings.register();
+ui.registerWebComponents();
 
 // Define local components
 App.register();
@@ -28,7 +31,7 @@ SettingsPage.register();
 
 // {{{ Initialize Theme
 
-/** @type {UIThemeHandler} */
+/** @type {ui.UIThemeHandler} */
 const th = document.querySelector("ui-theme-handler")
 //th.ui.addTheme("zinc", `/themes/zinc.css`);
 
@@ -36,7 +39,7 @@ const th = document.querySelector("ui-theme-handler")
 
 // Initialize Store {{{
 
-/** @type {UIStore} */
+/** @type {ui.UIStore<UIStoreEvents>} */
 const store = document.querySelector("ui-store");
 
 {
@@ -70,7 +73,7 @@ store.ui.on("theme", (/** @type {ThemeStore} */ data) => {
 
 // {{{ Initialize Language
 
-/** @type {UILang} */
+/** @type {ui.UILang} */
 const lang = document.querySelector("ui-lang")
 
 lang.ui.on("change", (langTypeElement) => {

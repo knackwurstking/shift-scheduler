@@ -154,7 +154,7 @@ export default class App extends ui.js.Events {
      * @private
      */
     initializeAndroidHandlers() { // {{{
-        if (!utils.isAndroid()) return;
+        if (!ui.js.isAndroid()) return;
         CapApp.addListener("backButton", this.onBack.bind(this))
     } // }}}
 
