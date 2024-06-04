@@ -30,7 +30,7 @@
  *  active: Shift | null;
  * }}
  *
- * @typedef StoreEvents
+ * @typedef UIStoreEvents
  * @type {{
  *  "date-picker": DatePickerStore;
  *  "theme": ThemeStore;

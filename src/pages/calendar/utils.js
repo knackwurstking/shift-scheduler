@@ -1,16 +1,16 @@
 /**
- * @typedef {import("ui/src/wc").Store<import("../../types").StoreEvents>} Store
+ * @typedef {import("ui").UIStore<import("../../types").UIStoreEvents>} UIStore
+ * @typedef {import("../../db").DB} DB 
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
  * @typedef {import("../../types").DBDataEntry} DBDataEntry
  * @typedef {import("../../types").SettingsStore} SettingsStore
  * @typedef {import("../../types").Shift} Shift
- * @typedef {import("../../db").DB} DB 
  */
 
 /**
  * @param {number} year
  * @param {number} month
- * @param {Store} store
+ * @param {UIStore} store
  * @returns {Promise<DBDataEntry[]>}
  */
 export async function getArray(year, month, store) { // {{{

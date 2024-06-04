@@ -1,19 +1,14 @@
 import ui from "ui";
-import { html } from "ui/src/js/utils";
 
 /**
- * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Button} Button
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
- * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
- * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
- *
+ * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents 
+ * @typedef {import("../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../types").SettingsStore} SettingsStore
  */
 
 // {{{ Flex Grid Content
 
+const html = ui.js.html;
 const flexGridContent = html`
 <ui-flex-grid-item class="no-scrollbar" style="height: 100%; overflow-y: scroll;">
     <table>
@@ -64,19 +59,19 @@ const flexGridContent = html`
 
 // }}}
 
-/** @extends {ui.wc.Dialog<DialogEvents>} */
-export class EditRhythmDialog extends ui.wc.Dialog {
-    /** @type {Store} */
+/** @extends {ui.UIDialog<UIDialogEvents>} */
+export class EditRhythmDialog extends ui.UIDialog {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #cancelButton;
     /** @type {() => void|Promise<void>} */
     #onCancel = () => this.ui.close();
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #submitButton;
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
@@ -89,7 +84,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.ui.close();
     };
 
-    /** @type {FlexGrid} */
+    /** @type {ui.UIFlexGrid} */
     #content;
 
     /** @type {number[]} */
@@ -98,8 +93,8 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog);
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super()
@@ -109,7 +104,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
         /**
          * @private
-         * @type {StackLayout}
+         * @type {ui.UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
@@ -138,7 +133,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
     /** @private */
     createContent() { // {{{
-        this.#content = new ui.wc.FlexGrid();
+        this.#content = new ui.UIFlexGrid();
 
         this.#content.setAttribute("gap", "0.5rem");
         this.#content.style.width = "100%";
@@ -197,7 +192,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
 
             tbody.appendChild(tr)
 
-            ui.js.draggable.create(tr, {
+            ui.js.createDraggable(tr, {
                 onDragStart: async () => { // {{{
                     draggedIndex = index
                 }, // }}}
@@ -263,7 +258,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         while (picker.firstChild) picker.removeChild(picker.firstChild);
 
         settings.shifts.forEach(shift => {
-            const item = new ui.wc.FlexGridItem();
+            const item = new ui.UIFlexGridItem();
             item.innerHTML = `
                 <shift-card color="${shift.color || 'inherit'}" ${!!shift.visible ? 'visible' : ''}>
                     <span slot="name">${shift.name}</span>
@@ -284,7 +279,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
     /** @private */
     createActionButtons() { // {{{
         // Cancel
-        let item = new ui.wc.FlexGridItem();
+        let item = new ui.UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `
@@ -295,7 +290,7 @@ export class EditRhythmDialog extends ui.wc.Dialog {
         this.appendChild(item)
 
         // Submit
-        item = new ui.wc.FlexGridItem();
+        item = new ui.UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `

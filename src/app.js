@@ -5,20 +5,13 @@ import * as dialogs from "./dialogs";
 import utils from "./utils";
 
 /**
- * @typedef {import("ui/src/wc").AppBar} AppBar
- * @typedef {import("ui/src/wc").Button} Button
- * @typedef {import("ui/src/wc").IconButton} IconButton
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
- * @typedef {import("ui/src/wc").Lang} Lang 
- * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler 
- * @typedef {import("ui/src/wc").Store<import("./types").StoreEvents>} Store 
- * @typedef {import("ui/src/wc").StackLayoutPage} StackLayoutPage 
+ * @typedef {import("./types").UIStoreEvents} UIStoreEvents
  */
 
-export default class App extends ui.js.events.Events {
-    /** @type {Store} */
+export default class App extends ui.js.Events {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang
 
     static register = () => {
@@ -27,7 +20,7 @@ export default class App extends ui.js.events.Events {
     };
 
     /**
-     * @param {Store} store
+     * @param {ui.UIStore} store
      */
     constructor(store) { // {{{
         super();
@@ -35,7 +28,7 @@ export default class App extends ui.js.events.Events {
         this.#store = store;
         this.#lang = document.querySelector("ui-lang")
 
-        /** @type {ThemeHandler} */
+        /** @type {ui.UIThemeHandler} */
         this.themeHandler = document.querySelector("ui-theme-handler");
 
         this.createStackLayout()
@@ -78,7 +71,7 @@ export default class App extends ui.js.events.Events {
      * @private
      */
     createStackLayout() { // {{{
-        /** @type {StackLayout} */
+        /** @type {ui.UIStackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
         this.stackLayout.ui.registerPage("calendar", () => {
@@ -98,14 +91,14 @@ export default class App extends ui.js.events.Events {
      * @private
      */
     createAppBar() { // {{{
-        /** @type {AppBar} */
+        /** @type {ui.UIAppBar} */
         this.appBar = document.querySelector("ui-app-bar");
 
-        /** @type {IconButton} */
+        /** @type {ui.UIIconButton} */
         this.appBarBackButton = this.appBar.querySelector("#appBarBackButton")
         this.appBarBackButton.onclick = this.onBack.bind(this);
 
-        /** @type {Button} */
+        /** @type {ui.UIButton} */
         this.appBarDatePickerButton = this.appBar.querySelector("#appBarDatePickerButton")
         this.appBarDatePickerButton.onclick = async () => {
             const dialog = new dialogs.DatePickerDialog(this.#store, this.#lang);
@@ -118,13 +111,13 @@ export default class App extends ui.js.events.Events {
             });
         };
 
-        /** @type {IconButton} */
+        /** @type {ui.UIIconButton} */
         this.appBarEditButton = this.appBar.querySelector("#appBarEditButton")
         this.appBarEditButton.onclick = async () => {
             this.#store.ui.update("edit-mode", (data) => ({ ...data, open: !data.open }));
         };
 
-        /** @type {IconButton} */
+        /** @type {ui.UIIconButton} */
         this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
         this.appBarTodayButton.onclick = async () => {
             const t = new Date();
@@ -134,7 +127,7 @@ export default class App extends ui.js.events.Events {
             );
         };
 
-        /** @type {IconButton} */
+        /** @type {ui.UIIconButton} */
         this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")
         this.appBarPDFButton.onclick = async () => {
             const dialog = new dialogs.PDFDialog(this.#store, this.#lang);
@@ -147,7 +140,7 @@ export default class App extends ui.js.events.Events {
             dialog.ui.open(true);
         };
 
-        /** @type {IconButton} */
+        /** @type {ui.UIIconButton} */
         this.appBarSettingsButton = this.appBar.querySelector("#appBarSettingsButton")
         this.appBarSettingsButton.onclick = async () => this.stackLayout.ui.setPage("settings");
 
@@ -179,8 +172,8 @@ export default class App extends ui.js.events.Events {
     /**
      * @private
      * @param {Object} data
-     * @param {StackLayoutPage | null} data.newPage 
-     * @param {StackLayoutPage | null} data.oldPage 
+     * @param {ui.UIStackLayoutPage | null} data.newPage 
+     * @param {ui.UIStackLayoutPage | null} data.oldPage 
      */
     async onStackLayoutChange({ newPage, oldPage }) { // {{{
         console.debug(`[app] stack layout changed:`, { newPage, oldPage });

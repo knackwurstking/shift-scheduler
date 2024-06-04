@@ -5,37 +5,32 @@ import autoTable from "jspdf-autotable";
 import ui from "ui";
 import db from "../db";
 import * as calendarUtils from "../pages/calendar/utils";
-import utils, { html } from "../utils";
+import utils from "../utils";
 
 /**
- * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
- * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
- * @typedef {import("ui/src/wc").Button} Button
- * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
- * @typedef {import("ui/src/wc").Input<import("ui/src/wc/input").InputEvents, "number">} NumberInput
- *
+ * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
+ * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents
+ * @typedef {import("../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../types").DBDataEntry} DBDataEntry
  * @typedef {import("../types").Shift} Shift
  */
 
-const flexGridContent = html`
+const flexGridContent = `
     <ui-flex-grid-item class="picker"></ui-flex-grid-item>
 `;
 
-/** @extends {ui.wc.Dialog<DialogEvents>} */
-export class PDFDialog extends ui.wc.Dialog {
-    /** @type {Store} */
+/** @extends {ui.UIDialog<UIDialogEvents>} */
+export class PDFDialog extends ui.UIDialog {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #downloadButton;
     /** @type {(() => void|Promise<void>)} */
     #onDownload = async () => {
-        const spinner = new ui.wc.Spinner();
+        const spinner = new ui.UISpinner();
         document.body.appendChild(spinner);
 
         setTimeout(async () => {
@@ -57,8 +52,8 @@ export class PDFDialog extends ui.wc.Dialog {
     static register = () => customElements.define("pdf-dialog", PDFDialog);
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
@@ -68,13 +63,13 @@ export class PDFDialog extends ui.wc.Dialog {
 
         /**
          * @private
-         * @type {StackLayout}
+         * @type {ui.UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
         /**
          * @private
-         * @type {NumberInput}
+         * @type {ui.UIInput<UIInputEvents, "number">}
          */
         this.year;
 
@@ -97,7 +92,7 @@ export class PDFDialog extends ui.wc.Dialog {
 
     /** @private */
     createContent() { // {{{
-        const content = new ui.wc.FlexGrid();
+        const content = new ui.UIFlexGrid();
 
         content.setAttribute("gap", "0.5rem");
         content.innerHTML = flexGridContent;
@@ -109,7 +104,7 @@ export class PDFDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} content
+     * @param {ui.UIFlexGrid} content
      */
     createPicker(content) { // {{{
         const picker = content.querySelector(".picker");
@@ -137,7 +132,7 @@ export class PDFDialog extends ui.wc.Dialog {
     /** @private */
     createActions() { // {{{
         // Close Button
-        let item = new ui.wc.FlexGridItem();
+        let item = new ui.UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `
@@ -163,8 +158,8 @@ export class PDFDialog extends ui.wc.Dialog {
  * @param {Object} options
  * @param {number | null} [options.year]
  * @param {number | null} [options.month]
- * @param {Lang} options.lang
- * @param {Store} options.store
+ * @param {ui.UILang} options.lang
+ * @param {ui.UIStore<UIStoreEvents>} options.store
  */
 async function createPDF({ year = null, month = null, lang = null, store = null }) { // {{{
     /**

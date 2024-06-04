@@ -1,38 +1,32 @@
 import ui from "ui";
 import db from "../db";
-import * as utils from "../pages/calendar/utils";
+import { calcShiftForDay } from "../pages/calendar/utils";
 
 /**
- * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Select} Select
- * @typedef {import("ui/src/wc").SelectOption} SelectOption
- * @typedef {import("ui/src/wc").Button} Button
- * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
- * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
+ * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents
+ * @typedef {import("../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../types").DBDataEntry} DBDataEntry
  * @typedef {import("../types").Shift} Shift
  */
 
-/** @extends {ui.wc.Dialog<DialogEvents & { submit: DBDataEntry }>} */
-export class EditDayDialog extends ui.wc.Dialog {
-    /** @type {Store} */
+/** @extends {ui.UIDialog<UIDialogEvents & { submit: DBDataEntry }>} */
+export class EditDayDialog extends ui.UIDialog {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {Select} */
+    /** @type {ui.UISelect} */
     #shiftSelect;
     /** @type {HTMLTextAreaElement} */
     #notes;
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #cancelButton;
     /** @type {() => void|Promise<void>} */
     #onCancel = () => this.ui.close();
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #submitButton;
     /** @type {(() => void|Promise<void>)} */
     #onSubmit = async () => {
@@ -65,8 +59,8 @@ export class EditDayDialog extends ui.wc.Dialog {
     static register = () => customElements.define("edit-day-dialog", EditDayDialog);
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super()
@@ -76,7 +70,7 @@ export class EditDayDialog extends ui.wc.Dialog {
 
         /**
          * @private
-         * @type {StackLayout}
+         * @type {ui.UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout")
 
@@ -111,7 +105,7 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.ui.title = `${year}/${(month + 1).toString().padStart(2, "0")}/${(date).toString().padStart(2, "0")}`;
 
         this.data = await db.get(year, month, date);
-        this.rhythmShift = utils.calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
+        this.rhythmShift = calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
 
         if (this.data === null) {
             this.data = {
@@ -129,7 +123,7 @@ export class EditDayDialog extends ui.wc.Dialog {
      * @param {Shift | null} shift
      */
     selectShift(shift) { // {{{
-        /** @type {SelectOption[]} */
+        /** @type {ui.UISelectOption[]} */
         // @ts-ignore
         const children = [...this.#shiftSelect.children];
         children.forEach(child => {
@@ -147,7 +141,7 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /** @private */
     createContent() { // {{{
-        const content = new ui.wc.FlexGrid();
+        const content = new ui.UIFlexGrid();
 
         content.setAttribute("gap", "0.5rem");
 
@@ -159,12 +153,12 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} container
+     * @param {ui.UIFlexGrid} container
      */
     createShiftsPicker(container) { // {{{
-        const item = new ui.wc.FlexGridItem();
+        const item = new ui.UIFlexGridItem();
 
-        this.#shiftSelect = new ui.wc.Select();
+        this.#shiftSelect = new ui.UISelect();
         this.#shiftSelect.ui.events.on("change", (selectOption) => {
             this.data.shift = this.#store.ui.get("settings").shifts
                 .find(shift => shift.id.toString() === selectOption.ui.value) || null;
@@ -172,13 +166,13 @@ export class EditDayDialog extends ui.wc.Dialog {
 
         const shifts = this.#store.ui.get("settings").shifts;
 
-        let option = new ui.wc.SelectOption();
+        let option = new ui.UISelectOption();
         option.ui.value = "0"
         option.innerHTML = "&nbsp;"
         this.#shiftSelect.appendChild(option);
 
         shifts.forEach((shift) => {
-            option = new ui.wc.SelectOption();
+            option = new ui.UISelectOption();
             option.ui.value = shift.id.toString();
             option.innerText = shift.name;
             this.#shiftSelect.appendChild(option);
@@ -190,10 +184,10 @@ export class EditDayDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} container
+     * @param {ui.UIFlexGrid} container
      */
     createNotes(container) { // {{{
-        this.notesItem = new ui.wc.FlexGridItem();
+        this.notesItem = new ui.UIFlexGridItem();
         this.notesItem.innerHTML = `
             <ui-secondary></ui-secondary>
             <textarea rows="6"></textarea>
@@ -210,7 +204,7 @@ export class EditDayDialog extends ui.wc.Dialog {
     /** @private */
     createActions() { // {{{
         // Cancel
-        let item = new ui.wc.FlexGridItem();
+        let item = new ui.UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `
@@ -221,7 +215,7 @@ export class EditDayDialog extends ui.wc.Dialog {
         this.appendChild(item)
 
         // Submit
-        item = new ui.wc.FlexGridItem();
+        item = new ui.UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `

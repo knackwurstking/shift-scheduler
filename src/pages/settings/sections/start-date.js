@@ -1,12 +1,10 @@
+import ui from "ui";
+
 /**
- * @typedef {import("ui/src/wc").Store} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("ui/src/wc").Input<import("ui/src/wc/input").InputEvents, "date">} DateInput
+ * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
+ * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
-
-import { CleanUp } from "ui/src/js";
 
 const innerHTML = `
 <ui-label>
@@ -18,27 +16,27 @@ const innerHTML = `
 `;
 
 export class StartDate extends HTMLElement {
-    /** @type {Store} */
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {DateInput} */
+    /** @type {ui.UIInput<UIInputEvents, "date">} */
     #input;
-    /** @type {Label} */
+    /** @type {ui.UILabel} */
     #label;
 
     static register = () => customElements.define("settings-start-date", StartDate)
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.cleanup = new CleanUp();
+        this.cleanup = new ui.js.CleanUp();
 
         this.#store = store;
         this.#lang = lang;

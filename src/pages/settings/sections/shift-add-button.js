@@ -3,23 +3,21 @@ import { CleanUp } from "ui/src/js";
 import * as dialogs from "../../../dialogs";
 
 /**
- * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- *
+ * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").Shift} Shift
  */
 
-export class ShiftAddButton extends ui.wc.Button {
-    /** @type {Store} */
+export class ShiftAddButton extends ui.UIButton {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
     static register = () => customElements.define("settings-shift-add-button", ShiftAddButton)
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();

@@ -5,18 +5,14 @@ import { SwipeHandler } from "./swipe-handler";
 import * as utils from "./utils";
 
 /**
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Store<import("../../types").StoreEvents>} Store
- *
  * @typedef {import("./swipe-handler").Direction} Direction
- *
+ * @typedef {import("../../db").DB} DB 
+ * @typedef {import("../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../types").DatePickerStore} DatePickerStore 
  * @typedef {import("../../types").WeekStartStore} WeekStartStore 
  * @typedef {import("../../types").LangStore} LangStore 
  * @typedef {import("../../types").DBDataEntry} DBDataEntry
  * @typedef {import("../../types").EditModeStore} EditModeStore
- *
- * @typedef {import("../../db").DB} DB 
  */
 
 
@@ -268,10 +264,10 @@ template.innerHTML = `
 
 // }}}
 
-export class CalendarPage extends ui.wc.StackLayoutPage {
-    /** @type {Store} */
+export class CalendarPage extends ui.UIStackLayoutPage {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
     static register = () => {
@@ -631,7 +627,7 @@ export class CalendarPage extends ui.wc.StackLayoutPage {
         ];
 
         for (let i = 0; i < shifts.length; i++) {
-            const item = new ui.wc.FlexGridItem();
+            const item = new ui.UIFlexGridItem();
             item.slot = "shifts";
             item.innerHTML = `
                 <shift-card color="${shifts[i].color || 'inherit'}" ${!!shifts[i].visible ? 'visible' : ''}>

@@ -1,33 +1,26 @@
 import ui from "ui";
 
 /**
+ * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
+ * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents
  * @typedef {import("../types").Shift} Shift
- *
- * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
- * @typedef {import("ui/src/wc").FlexGridItem} FlexGridItem
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
- * @typedef {import("ui/src/wc").Button} Button
- * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("ui/src/wc").Input<import("ui/src/wc/input").InputEvents, "text">} TextInput
- * @typedef {import("ui/src/wc/dialog/dialog").DialogEvents} DialogEvents 
+ * @typedef {import("../types").UIStoreEvents} UIStoreEvents
  */
 
 /**
- * @extends {ui.wc.Dialog<DialogEvents & { submit: Shift }>}
+ * @extends {ui.UIDialog<UIDialogEvents & { submit: Shift }>}
  */
-export class EditShiftDialog extends ui.wc.Dialog {
-    /** @type {Store} */
+export class EditShiftDialog extends ui.UIDialog {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #cancelButton;
     #onCancel = async () => this.ui.close();
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #submitButton;
     #onSubmit = () => {
         this.ui.events.dispatch("submit", this.shift);
@@ -39,8 +32,8 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @param {Shift} shift
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(shift, store, lang) { // {{{
         super();
@@ -53,7 +46,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         /**
          * @private
-         * @type {StackLayout}
+         * @type {ui.UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout")
 
@@ -61,43 +54,43 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
         /**
          * @private
-         * @type {FlexGridItem}
+         * @type {ui.UIFlexGridItem}
          */
         this.nameItem;
 
         /**
          * @private
-         * @type {FlexGridItem}
+         * @type {ui.UIFlexGridItem}
          */
         this.shortNameItem;
 
         /**
          * @private
-         * @type {FlexGridItem}
+         * @type {ui.UIFlexGridItem}
          */
         this.colorPickerItem;
 
         /**
          * @private
-         * @type {FlexGridItem}
+         * @type {ui.UIFlexGridItem}
          */
         this.useDefaultColorItem;
 
         /**
          * @private
-         * @type {FlexGridItem}
+         * @type {ui.UIFlexGridItem}
          */
         this.visibleItem;
 
         /**
          * @private
-         * @type {TextInput}
+         * @type {ui.UIInput<UIInputEvents, "text">}
          */
         this.name;
 
         /**
          * @private
-         * @type {TextInput}
+         * @type {ui.UIInput<UIInputEvents, "text">}
          */
         this.shortName;
 
@@ -120,7 +113,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /** @private */
     createContent() { // {{{
-        const content = new ui.wc.FlexGrid();
+        const content = new ui.UIFlexGrid();
 
         content.setAttribute("gap", "0.5rem");
 
@@ -135,10 +128,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} container 
+     * @param {ui.UIFlexGrid} container 
      */
     createContentSectionName(container) { // {{{
-        this.nameItem = new ui.wc.FlexGridItem();
+        this.nameItem = new ui.UIFlexGridItem();
         this.nameItem.innerHTML = `
             <ui-input
                 type="text"
@@ -156,10 +149,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} container 
+     * @param {ui.UIFlexGrid} container 
      */
     createContentSectionShortName(container) { // {{{
-        this.shortNameItem = new ui.wc.FlexGridItem();
+        this.shortNameItem = new ui.UIFlexGridItem();
         this.shortNameItem.innerHTML = `
             <ui-input
                 type="text"
@@ -185,10 +178,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} container 
+     * @param {ui.UIFlexGrid} container 
      */
     createContentColorPicker(container) { // {{{
-        this.colorPickerItem = new ui.wc.FlexGridItem();
+        this.colorPickerItem = new ui.UIFlexGridItem();
         this.colorPickerItem.innerHTML = `
             <ui-label>
                 <input slot="input" style="width: 100%; min-width: 4rem;" type="color" value="${this.shift.color}">
@@ -211,10 +204,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} container 
+     * @param {ui.UIFlexGrid} container 
      */
     createContentUseDefaultColorCheckbox(container) { // {{{
-        this.useDefaultColorItem = new ui.wc.FlexGridItem();
+        this.useDefaultColorItem = new ui.UIFlexGridItem();
         this.useDefaultColorItem.innerHTML = `
             <ui-label ripple>
                 <input slot="input" type="checkbox">
@@ -247,10 +240,10 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} container 
+     * @param {ui.UIFlexGrid} container 
      */
     createContentVisibleCheckbox(container) { // {{{
-        this.visibleItem = new ui.wc.FlexGridItem();
+        this.visibleItem = new ui.UIFlexGridItem();
         this.visibleItem.innerHTML = `
             <ui-label ripple>
                 <input slot="input" type="checkbox">
@@ -279,7 +272,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
     /** @private */
     createActionButtons() { // {{{
         // Cancel Button
-        let item = new ui.wc.FlexGridItem()
+        let item = new ui.UIFlexGridItem()
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `<ui-button color="secondary" variant="full"></ui-button>`
@@ -288,7 +281,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
         this.appendChild(item)
 
         // Submit Button
-        item = new ui.wc.FlexGridItem()
+        item = new ui.UIFlexGridItem()
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `<ui-button color="primary" variant="full"></ui-button>`
@@ -299,7 +292,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGridItem} item
+     * @param {ui.UIFlexGridItem} item
      */
     enableContentSection(item) { // {{{
         item.style.opacity = "1";
@@ -310,7 +303,7 @@ export class EditShiftDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGridItem} item
+     * @param {ui.UIFlexGridItem} item
      */
     disableContentSection(item) { // {{{
         item.style.opacity = "0.25";

@@ -1,5 +1,6 @@
 import ui from "ui";
-import { html } from "../../utils";
+
+const html = ui.js.html;
 
 const innerHTML = html`
 <style>
@@ -72,7 +73,7 @@ export class ShiftCard extends HTMLElement {
         this.#shortName = this.shadowRoot.querySelector(".short-name");
         this.#rippleBackground = this.shadowRoot.querySelector(".active-background");
 
-        ui.js.ripple.create(this, { useClick: true });
+        ui.js.rippleCreate(this, { useClick: true });
     }
 
     /**
@@ -96,8 +97,8 @@ export class ShiftCard extends HTMLElement {
                 if (newValue === null) {
                     this.#rippleBackground.style.opacity = "0";
                 } else {
-                    this.#rippleBackground.style.backgroundColor = `${ui.js.ripple.defaultOptions.color}`;
-                    this.#rippleBackground.style.opacity = `${ui.js.ripple.defaultOptions.opacity}`;
+                    this.#rippleBackground.style.backgroundColor = `${ui.js.defaultRippleOptions.color}`;
+                    this.#rippleBackground.style.opacity = `${ui.js.defaultRippleOptions.opacity}`;
                 }
                 break;
         }

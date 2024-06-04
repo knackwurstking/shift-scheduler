@@ -1,42 +1,38 @@
-import { CleanUp } from "ui/src/js";
-import { html } from "ui/src/js/utils";
+import ui from "ui";
 import { EditRhythmDialog } from "../../../dialogs";
 
 /**
- * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("ui/src/wc").Button} Button
+ * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  */
 
-const innerHTML = html`
+const innerHTML = `
 <ui-label>
     <ui-button color="primary" variant="full"></ui-button>
 </ui-label>
 `;
 
 export class EditRhythm extends HTMLElement {
-    /** @type {Store} */
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {Label} */
+    /** @type {ui.UILabel} */
     #label;
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #button
 
     static register = () => customElements.define("settings-edit-rhythm", EditRhythm)
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.cleanup = new CleanUp();
+        this.cleanup = new ui.js.CleanUp();
 
         this.#store = store;
         this.#lang = lang;

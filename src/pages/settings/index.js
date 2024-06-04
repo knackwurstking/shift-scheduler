@@ -3,16 +3,13 @@ import * as dialogs from "../../dialogs";
 import * as sections from "./sections";
 
 /**
- * @typedef {import("../../types").StoreEvents} StoreEvents
- *
- * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
+ * @typedef {import("../../types").UIStoreEvents} UIStoreEvents
  */
 
-export class SettingsPage extends ui.wc.StackLayoutPage {
-    /** @type {Store} */
+export class SettingsPage extends ui.UIStackLayoutPage {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang
 
     static register = () => {

@@ -1,18 +1,13 @@
-import ui from "ui";
-
 /**
- * @typedef {import("ui/src/wc").ThemeHandler} ThemeHandler
+ * @typedef {import("ui/src/ui-theme-handler").UIThemeHandler} UIThemeHandler
  *
  * @typedef {import("../types").ThemeStore} ThemeStore
  * @typedef {import("../types").Shift} Shift
  */
 
-export const html = String.raw;
-export const css = String.raw;
-
 /**
  * @param {ThemeStore} theme
- * @param {ThemeHandler} themeHandler
+ * @param {UIThemeHandler} themeHandler
  */
 async function setTheme(theme, themeHandler) { // {{{
     //try {
@@ -30,8 +25,6 @@ async function setTheme(theme, themeHandler) { // {{{
         themeHandler.ui.disableAutoMode()
     }
 } // }}}
-
-const isAndroid = ui.js.utils.isAndroid;
 
 /**
  * @param {Shift} shift
@@ -75,7 +68,6 @@ async function setAppBarTitle(title) { // {{{
 
 export default {
     setTheme,
-    isAndroid,
     validateShift,
     setAppBarTitle,
 }

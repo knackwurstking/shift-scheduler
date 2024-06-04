@@ -1,18 +1,11 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
-import { html } from "ui/src/js/utils";
+import ui from "ui";
 import db from "../../../db";
 import utils from "../../../utils";
-import { CleanUp } from "ui/src/js";
 
 /**
- * @typedef {import("../../../types").StoreEvents} StoreEvents
- *
- * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("ui/src/wc").Label} Button
- *
+ * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").DBDataEntry} DBDataEntry
  * @typedef {import("../../../types").BackupV1} BackupV1
  * @typedef {import("../../../types").BackupV1Indexed} BackupV1Indexed
@@ -21,6 +14,7 @@ import { CleanUp } from "ui/src/js";
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
+const html = ui.js.html;
 const innerHTML = html`
     <ui-label>
         <ui-flex-grid-row gap="0.25rem">
@@ -46,17 +40,17 @@ const innerHTML = html`
 `;
 
 export class ShiftsBackup extends HTMLElement {
-    /** @type {Store} */
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
     static register = () =>
         customElements.define("settings-shifts-backup", ShiftsBackup);
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) {
         // {{{
@@ -66,16 +60,16 @@ export class ShiftsBackup extends HTMLElement {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = new CleanUp();
+        this.cleanup = new ui.js.CleanUp();
 
-        /** @type {Label} */
+        /** @type {ui.UILabel} */
         this.label = this.querySelector("ui-label");
 
-        /** @type {Button} */
+        /** @type {ui.UIButton} */
         this.importButton = this.querySelector(`ui-button[name="import"]`);
         this.importButton.onclick = async () => this.importBackup();
 
-        /** @type {Button} */
+        /** @type {ui.UIButton} */
         this.exportButton = this.querySelector(`ui-button[name="export"]`);
         this.exportButton.onclick = async () => this.exportBackup();
     } // }}}

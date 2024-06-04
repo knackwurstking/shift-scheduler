@@ -1,27 +1,23 @@
 import ui from "ui";
 
 /**
- * @typedef {import("ui/src/wc/dialog").DialogEvents} DialogEvents
- * @typedef {import("ui/src/wc").Store<import("../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Button} Button
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
- * @typedef {import("ui/src/wc").FlexGrid} FlexGrid
+ * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents
+ * @typedef {import("../types").UIStoreEvents} UIStoreEvents
  */
 
-/** @extends {ui.wc.Dialog<DialogEvents>} */
-export class DatePickerDialog extends ui.wc.Dialog {
-    /** @type {Store} */
+/** @extends {ui.UIDialog<UIDialogEvents>} */
+export class DatePickerDialog extends ui.UIDialog {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #cancelButton;
     /** @type {() => void|Promise<void>} */
     #onCancel = () => this.ui.close();
 
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #submitButton;
     /** @type {() => void|Promise<void>} */
     #onSubmit = () => {
@@ -38,8 +34,8 @@ export class DatePickerDialog extends ui.wc.Dialog {
         customElements.define("date-picker-dialog", DatePickerDialog);
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
@@ -49,7 +45,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
 
         /**
          * @private
-         * @type {StackLayout}
+         * @type {ui.UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout")
 
@@ -72,7 +68,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
 
     /** @private */
     createContent() { // {{{
-        const content = new ui.wc.FlexGrid();
+        const content = new ui.UIFlexGrid();
         content.setAttribute("gap", "0.5rem");
         this.createInput(content);
         this.appendChild(content);
@@ -80,11 +76,11 @@ export class DatePickerDialog extends ui.wc.Dialog {
 
     /**
      * @private
-     * @param {FlexGrid} content
+     * @param {ui.UIFlexGrid} content
      */
     createInput(content) { // {{{
         const date = new Date(this.#store.ui.get("date-picker"));
-        const item = new ui.wc.FlexGridItem();
+        const item = new ui.UIFlexGridItem();
 
         const y = date.getFullYear();
         const m = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -102,7 +98,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
     /** @private */
     createActions() { // {{{
         // Cancel
-        let item = new ui.wc.FlexGridItem();
+        let item = new ui.UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `
@@ -113,7 +109,7 @@ export class DatePickerDialog extends ui.wc.Dialog {
         this.appendChild(item)
 
         // Submit
-        item = new ui.wc.FlexGridItem();
+        item = new ui.UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `

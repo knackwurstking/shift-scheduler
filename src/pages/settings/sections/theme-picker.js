@@ -1,18 +1,11 @@
-import { CleanUp } from "ui/src/js";
-import { html } from "ui/src/js/utils";
+import ui from "ui";
 
 /**
- * @typedef {import("../../../types").StoreEvents} StoreEvents
- *
- * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("ui/src/wc").Select} Select
- * @typedef {import("ui/src/wc").SelectOption} SelectOption
- *
+ * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").ThemeStore} ThemeStore 
  */
 
+const html = ui.js.html;
 const innerHTML = html`
     <ui-secondary style="display: block;"></ui-secondary>
 
@@ -36,16 +29,16 @@ const innerHTML = html`
 `;
 
 export class ThemePicker extends HTMLElement {
-    /** @type {Store} */
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
     static register = () => customElements.define("settings-theme-picker", ThemePicker);
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
@@ -54,9 +47,9 @@ export class ThemePicker extends HTMLElement {
         this.#store = store;
         this.#lang = lang;
 
-        this.cleanup = new CleanUp();
+        this.cleanup = new ui.js.CleanUp();
 
-        /** @type {Select} */
+        /** @type {ui.UISelect} */
         this.selectModeElement = this.querySelector("ui-select");
     } // }}}
 
@@ -90,9 +83,9 @@ export class ThemePicker extends HTMLElement {
     async onTheme(theme) { // {{{
         console.debug(`[settings] onTheme`, theme);
 
-        /** @type {Select} */
+        /** @type {ui.UISelect} */
         [...this.selectModeElement.children].forEach(
-            (/** @type {SelectOption} */ c) => {
+            (/** @type {ui.UISelectOption} */ c) => {
                 c.ui.selected = (c.ui.value === theme.mode)
             }
         );

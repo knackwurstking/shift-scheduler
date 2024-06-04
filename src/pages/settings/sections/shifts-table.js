@@ -1,18 +1,13 @@
 import ui from "ui";
-import { html } from "../../../utils";
 import * as dialogs from "../../../dialogs";
-import { CleanUp } from "ui/src/js";
 
 /**
- * @typedef {import("ui/src/wc").IconButton} IconButton
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
- *
+ * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  * @typedef {import("../../../types").Shift} Shift
  */
 
-const innerHTML = html`
+const innerHTML = `
 <thead>
     <tr>
         <th style="text-align: left;"></th>
@@ -25,23 +20,23 @@ const innerHTML = html`
 `
 
 export class ShiftsTable extends HTMLTableElement {
-    /** @type {Store} */
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang
 
     static register = () => customElements.define("settings-shifts-table", ShiftsTable, { extends: "table" })
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.#store = store
         this.#lang = lang
         this.innerHTML = innerHTML;
-        this.cleanup = new CleanUp();
+        this.cleanup = new ui.js.CleanUp();
         this.tbody = this.querySelector("tbody");
     } // }}}
 
@@ -75,7 +70,7 @@ export class ShiftsTable extends HTMLTableElement {
             this.tbody.appendChild(tr);
 
             // Draggable Setup
-            ui.js.draggable.create(tr, {
+            ui.js.createDraggable(tr, {
                 onDragStart: async () => { // {{{
                     dStart = index;
                 }, // }}}
@@ -137,7 +132,7 @@ export class ShiftsTable extends HTMLTableElement {
     createTableActions(shift) { // {{{
         const td = document.createElement("td");
         td.style.textAlign = "right";
-        td.innerHTML = html`
+        td.innerHTML = `
             <ui-flex-grid-row style="justify-content: flex-end;" gap="0.25rem">
                 <ui-flex-grid-item flex="0">
                     <ui-icon-button ghost><ui-svg-edit2></ui-svg-edit2></ui-icon-button>
@@ -149,7 +144,7 @@ export class ShiftsTable extends HTMLTableElement {
             </ui-flex-grid-row>
         `;
 
-        /** @type {IconButton[]} */
+        /** @type {ui.UIIconButton[]} */
         // @ts-ignore
         const [editButton, deleteButton] = [...td.querySelectorAll("ui-icon-button")]
         editButton.onclick = async () => { // {{{

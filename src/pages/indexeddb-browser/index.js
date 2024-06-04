@@ -1,18 +1,9 @@
 import ui from "ui";
 import db from "../../db";
-import { html } from "../../utils";
 
 /**
- * @typedef {import("../../types").StoreEvents} StoreEvents
- * @typedef {import("ui/src/wc/input").InputEvents} InputEvents
- *
- * @typedef {import("ui/src/wc").Store<StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").FlexGridRow} FlexGridRow
- * @typedef {import("ui/src/wc").FlexGridItem} FlexGridItem
- * @typedef {import("ui/src/wc").IconButton} IconButton
- * @typedef {import("ui/src/wc").Input<InputEvents, "number">} NumberInput
- *
+ * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
+ * @typedef {import("../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../types").DBDataEntry} DBDataEntry
  */
 
@@ -20,7 +11,7 @@ const filterHeight = "4rem";
 
 // {{{ HTML Content
 const t = document.createElement("template");
-t.innerHTML = html`
+t.innerHTML = `
     <style>
         :host {
             width: 100%;
@@ -73,10 +64,10 @@ t.innerHTML = html`
 `;
 // }}}
 
-export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
-    /** @type {Store} */
+export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang
 
     static register = () =>
@@ -91,7 +82,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
 
         this.classList.add("no-scrollbar");
 
-        this.grid = new ui.wc.FlexGrid();
+        this.grid = new ui.UIFlexGrid();
         this.grid.setAttribute("gap", "0.5rem");
         this.grid.style.minWidth = "100%";
         this.grid.style.width = "fit-content";
@@ -124,7 +115,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         if (d === null) d = ".*";
 
         /**
-         * @type {FlexGridItem[]}
+         * @type {ui.UIFlexGridItem[]}
          */
         // @ts-expect-error
         const children = [...this.grid.children];
@@ -173,7 +164,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
         const entries = await db.getAll();
         entries.forEach((entry) => {
             setTimeout(() => {
-                const item = new ui.wc.FlexGridItem();
+                const item = new ui.UIFlexGridItem();
 
                 const y = entry.year;
                 const m = entry.month + 1;
@@ -202,7 +193,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
                     </td>
                 `;
 
-                /** @type {IconButton} */
+                /** @type {ui.UIIconButton} */
                 const deleteButton = row.querySelector("ui-icon-button.delete");
                 deleteButton.onclick = async () => {
                     const message = this.#lang.ui.get(
@@ -267,7 +258,7 @@ export class IndexedDBBrowserPage extends ui.wc.StackLayoutPage {
 
     /**
      * @private
-     * @returns {NodeListOf<NumberInput>}
+     * @returns {NodeListOf<ui.UIInput<UIInputEvents, "number">>}
      */
     getInputs() { // {{{
         return this.shadowRoot.querySelectorAll("ui-input");

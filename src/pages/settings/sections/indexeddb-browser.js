@@ -1,30 +1,25 @@
 import ui from "ui";
-import { html } from "ui/src/js/utils";
 import { IndexedDBBrowserPage } from "../../indexeddb-browser";
 
 /**
- * @typedef {import("ui/src/wc").Store<import("../../../types").StoreEvents>} Store
- * @typedef {import("ui/src/wc").Lang} Lang
- * @typedef {import("ui/src/wc").Label} Label
- * @typedef {import("ui/src/wc").Button} Button
- * @typedef {import("ui/src/wc").StackLayout} StackLayout
+ * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  */
 
-const innerHTML = html`
+const innerHTML = `
 <ui-label>
     <ui-button color="primary" variant="full"></ui-button>
 </ui-label>
 `;
 
 export class IndexedDBBrowser extends HTMLElement {
-    /** @type {Store} */
+    /** @type {ui.UIStore<UIStoreEvents>} */
     #store;
-    /** @type {Lang} */
+    /** @type {ui.UILang} */
     #lang;
 
-    /** @type {Label} */
+    /** @type {ui.UILabel} */
     #label;
-    /** @type {Button} */
+    /** @type {ui.UIButton} */
     #button
 
     static register = () => {
@@ -33,8 +28,8 @@ export class IndexedDBBrowser extends HTMLElement {
     };
 
     /**
-     * @param {Store} store
-     * @param {Lang} lang
+     * @param {ui.UIStore<UIStoreEvents>} store
+     * @param {ui.UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
@@ -47,7 +42,7 @@ export class IndexedDBBrowser extends HTMLElement {
 
         /**
          * @private
-         * @type {StackLayout}
+         * @type {ui.UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout");
 

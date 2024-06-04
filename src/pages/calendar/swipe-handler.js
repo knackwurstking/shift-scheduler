@@ -11,8 +11,8 @@ import ui from "ui";
 
 export const swipeRange = 75;
 
-/** @extends {ui.js.events.Events<_Events>} */
-export class SwipeHandler extends ui.js.events.Events {
+/** @extends {ui.js.Events<_Events>} */
+export class SwipeHandler extends ui.js.Events {
     /** @type {boolean} */
     #finalTransform = false;
 
