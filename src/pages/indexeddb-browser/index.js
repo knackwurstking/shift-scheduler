@@ -187,8 +187,8 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
                             color="destructive"
                             ghost
                         >
-                            <ui-svg-delete-recycle-bin>
-                            </ui-svg-delete-recycle-bin>
+                            <svg-delete-recycle-bin>
+                            </svg-delete-recycle-bin>
                         </ui-icon-button>
                     </td>
                 `;

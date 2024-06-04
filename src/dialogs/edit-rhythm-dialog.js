@@ -176,7 +176,7 @@ export class EditRhythmDialog extends ui.UIDialog {
                     <ui-flex-grid-row style="justify-content: flex-end;" gap="0.25rem">
                         <ui-flex-grid-item flex="0">
                             <ui-icon-button color="destructive" ghost>
-                                <ui-svg-delete-recycle-bin></ui-svg-delete-recycle-bin>
+                                <svg-delete-recycle-bin></svg-delete-recycle-bin>
                             </ui-icon-button>
                         </ui-flex-grid-item>
                     </ui-flex-grid-row>

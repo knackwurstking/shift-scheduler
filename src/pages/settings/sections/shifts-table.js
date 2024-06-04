@@ -135,11 +135,11 @@ export class ShiftsTable extends HTMLTableElement {
         td.innerHTML = `
             <ui-flex-grid-row style="justify-content: flex-end;" gap="0.25rem">
                 <ui-flex-grid-item flex="0">
-                    <ui-icon-button ghost><ui-svg-edit2></ui-svg-edit2></ui-icon-button>
+                    <ui-icon-button ghost><svg-edit2></svg-edit2></ui-icon-button>
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item flex="0">
-                    <ui-icon-button color="destructive" ghost><ui-svg-delete-recycle-bin></ui-svg-edit2></ui-icon-button>
+                    <ui-icon-button color="destructive" ghost><svg-delete-recycle-bin></svg-delete-recycle-bin></ui-icon-button>
                 </ui-flex-grid-item>
             </ui-flex-grid-row>
         `;
