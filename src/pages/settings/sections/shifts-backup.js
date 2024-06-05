@@ -74,13 +74,10 @@ export class ShiftsBackup extends HTMLElement {
         this.exportButton.onclick = async () => this.exportBackup();
     } // }}}
 
-    connectedCallback() {
-        // {{{
-        setTimeout(() => {
-            this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true),
-            );
-        });
+    connectedCallback() { // {{{
+        this.cleanup.add(
+            this.#store.ui.on("lang", this.onLang.bind(this), true),
+        );
     } // }}}
 
     disconnectedCallback() { // {{{

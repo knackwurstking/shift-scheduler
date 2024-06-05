@@ -58,14 +58,13 @@ export class IndexedDBBrowser extends HTMLElement {
             `;
             return t.content.cloneNode(true);
         });
+
         this.cleanup.add(() =>
             this.stackLayout.ui.unregisterPage("indexeddb-browser"));
 
-        setTimeout(() => {
-            this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true)
-            );
-        });
+        this.cleanup.add(
+            this.#store.ui.on("lang", this.onLang.bind(this), true)
+        );
     } // }}}
 
     disconnectedCallback() { // {{{

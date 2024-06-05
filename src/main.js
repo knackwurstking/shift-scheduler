@@ -47,14 +47,6 @@ SettingsPage.register();
 
 // }}}
 
-// {{{ Initialize Theme
-
-/** @type {ui.UIThemeHandler} */
-const th = document.querySelector("ui-theme-handler")
-//th.ui.addTheme("zinc", `/themes/zinc.css`);
-
-// }}}
-
 // Initialize Store {{{
 
 /** @type {ui.UIStore<UIStoreEvents>} */
@@ -84,7 +76,7 @@ store.ui.on("debug", (/** @type{DebugStore} */ state) => {
 
 store.ui.on("theme", (/** @type {ThemeStore} */ data) => {
     console.debug(`[app] current theme in use:`, data)
-    utils.setTheme(data, th);
+    utils.setTheme(data, document.querySelector("ui-theme-handler"));
 }, true);
 
 // }}}
@@ -120,6 +112,4 @@ if (!lang.hasAttribute("current")) {
 
 // }}}
 
-window.addEventListener("DOMContentLoaded", () => {
-    new App(store).run();
-});
+new App(store).run();

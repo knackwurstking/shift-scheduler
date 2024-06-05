@@ -34,11 +34,9 @@ export class ShiftAddButton extends ui.UIButton {
         super.connectedCallback()
         this.handleEvents()
 
-        setTimeout(() => {
-            this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true),
-            );
-        });
+        this.cleanup.add(
+            this.#store.ui.on("lang", this.onLang.bind(this), true),
+        );
     } // }}}
 
     disconnectedCallback() {

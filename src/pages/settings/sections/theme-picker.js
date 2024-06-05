@@ -54,22 +54,20 @@ export class ThemePicker extends HTMLElement {
     } // }}}
 
     connectedCallback() { // {{{
-        setTimeout(() => {
-            this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true),
-            );
+        this.cleanup.add(
+            this.#store.ui.on("lang", this.onLang.bind(this), true),
+        );
 
-            this.cleanup.add(
-                this.#store.ui.on("theme", this.onTheme.bind(this), true),
-            );
+        this.cleanup.add(
+            this.#store.ui.on("theme", this.onTheme.bind(this), true),
+        );
 
-            this.cleanup.add(
-                this.selectModeElement.ui.events.on("change", (option) => {
-                    console.debug(`[settings] update theme mode:`, option);
-                    this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
-                }),
-            );
-        });
+        this.cleanup.add(
+            this.selectModeElement.ui.events.on("change", (option) => {
+                console.debug(`[settings] update theme mode:`, option);
+                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
+            }),
+        );
     } // }}}
 
     disconnectedCallback() { // {{{

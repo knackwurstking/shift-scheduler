@@ -94,11 +94,9 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
     connectedCallback() { // {{{
         super.connectedCallback();
 
-        setTimeout(() => {
-            this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true)
-            );
-        });
+        this.cleanup.add(
+            this.#store.ui.on("lang", this.onLang.bind(this), true)
+        );
 
         this.renderEntries();
     } // }}}

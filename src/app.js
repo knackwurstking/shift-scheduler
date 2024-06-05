@@ -37,34 +37,32 @@ export default class App extends ui.js.Events {
     } // }}}
 
     run() { // {{{
-        setTimeout(() => {
-            this.stackLayout.ui.events.on(
-                "change",
-                this.onStackLayoutChange.bind(this),
-            );
+        this.stackLayout.ui.events.on(
+            "change",
+            this.onStackLayoutChange.bind(this),
+        );
 
-            this.#store.ui.on("date-picker", (dateString) => {
-                const today = new Date();
-                const current = new Date(dateString);
+        this.#store.ui.on("date-picker", async (dateString) => {
+            const today = new Date();
+            const current = new Date(dateString);
 
-                const y = current.getFullYear();
-                const m = (current.getMonth() + 1).toString().padStart(2, "0");
-                this.appBarDatePickerButton.innerText = `${y} / ${m}`;
+            const y = current.getFullYear();
+            const m = (current.getMonth() + 1).toString().padStart(2, "0");
+            this.appBarDatePickerButton.innerText = `${y} / ${m}`;
 
-                // disable/enable this button based on the current date
-                if (
-                    today.getFullYear() === current.getFullYear() &&
-                    today.getMonth() === current.getMonth()
-                ) {
-                    this.appBarTodayButton.ui.disable();
-                } else {
-                    this.appBarTodayButton.ui.enable();
-                }
-            }, true);
+            // disable/enable this button based on the current date
+            if (
+                today.getFullYear() === current.getFullYear() &&
+                today.getMonth() === current.getMonth()
+            ) {
+                this.appBarTodayButton.ui.disable();
+            } else {
+                this.appBarTodayButton.ui.enable();
+            }
+        }, true);
 
-            db.open(async () => this.stackLayout.ui.setPage("calendar"));
-            document.body.style.display = "block"
-        });
+        db.open(async () => this.stackLayout.ui.setPage("calendar"));
+        document.body.style.display = "block"
     } // }}}
 
     /**

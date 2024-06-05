@@ -42,15 +42,13 @@ export class WeekStart extends HTMLElement {
     } // }}}
 
     connectedCallback() { // {{{
-        setTimeout(() => {
-            this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true),
-            );
+        this.cleanup.add(
+            this.#store.ui.on("lang", this.onLang.bind(this), true),
+        );
 
-            this.cleanup.add(
-                this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
-            );
-        });
+        this.cleanup.add(
+            this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
+        );
     } // }}}
 
     disconnectedCallback() { // {{{
