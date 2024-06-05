@@ -18,28 +18,10 @@ import * as utils from "./utils";
 
 // {{{ Component Template
 
+const html = ui.js.html;
 const template = document.createElement("template");
 
-const templateDayItem = `
-<ui-flex-grid-item class="day-item" style="position: relative;">
-    <div class="day-item-date"></div>
-    <div class="day-item-shift"></div>
-</ui-flex-grid-item>
-`;
-
-const templateDaysRow = `
-<ui-flex-grid-row class="days-row" gap="0.05rem">
-    ${templateDayItem}
-    ${templateDayItem}
-    ${templateDayItem}
-    ${templateDayItem}
-    ${templateDayItem}
-    ${templateDayItem}
-    ${templateDayItem}
-</ui-flex-grid-row>
-`;
-
-const templateWeekDaysRow = `
+const templateWeekDaysRow = html`
 <ui-flex-grid-row class="week-days-row" gap="0.05rem">
     <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
     <ui-flex-grid-item class="week-day-item"></ui-flex-grid-item>
@@ -51,8 +33,27 @@ const templateWeekDaysRow = `
 </ui-flex-grid-row>
 `;
 
-const templateItemContent = `
-<ui-flex-grid gap="0.05rem">
+const templateDayItem = html`
+<ui-flex-grid-item class="day-item" style="position: relative;">
+    <div class="day-item-date"></div>
+    <div class="day-item-shift"></div>
+</ui-flex-grid-item>
+`;
+
+const templateDaysRow = html`
+<ui-flex-grid-row class="days-row" gap="0.05rem">
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+    ${templateDayItem}
+</ui-flex-grid-row>
+`;
+
+const templateItemContent = html`
+<ui-flex-grid class="content" gap="0.05rem">
     ${templateWeekDaysRow}
 
     ${templateDaysRow}
@@ -64,7 +65,7 @@ const templateItemContent = `
 </ui-flex-grid>
 `;
 
-template.innerHTML = `
+template.innerHTML = html`
 <style>
     :host {
         --header-height: 2.5rem;
@@ -300,11 +301,6 @@ export class CalendarPage extends ui.UIStackLayoutPage {
         super.connectedCallback();
 
         this.cleanup.add(
-            // The "swipe" event will update the date-picker store, base on the swiped direction
-            this.swipeHandler.on("swipe", this.handleSwipeEvent.bind(this))
-        );
-
-        this.cleanup.add(
             // Handle the "date-picker" state change, update calendar items
             this.#store.ui.on("date-picker",
                 this.onDatePicker.bind(this), true),
@@ -323,6 +319,11 @@ export class CalendarPage extends ui.UIStackLayoutPage {
 
         this.cleanup.add(
             this.#store.ui.on("edit-mode", this.onEditMode.bind(this), true),
+        );
+
+        this.cleanup.add(
+            // The "swipe" event will update the date-picker store, base on the swiped direction
+            this.swipeHandler.on("swipe", this.handleSwipeEvent.bind(this))
         );
 
         this.swipeHandler.start();

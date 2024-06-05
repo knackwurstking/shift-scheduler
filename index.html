@@ -4,10 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Shift Scheduler</title>
 </head>
 
@@ -26,78 +23,48 @@
             <ui-stack-layout></ui-stack-layout>
         </ui-container>
 
-        <ui-app-bar
-            style="padding: 0 var(--ui-spacing);"
-            position="top"
-            title=""
-        >
+        <ui-app-bar style="padding: 0 var(--ui-spacing);" position="top" title="">
             <!-- AppBar back button -->
-            <ui-flex-grid-item
-                slot="left"
-                class="flex align-center justify-center"
-            >
+            <ui-flex-grid-item slot="left" class="flex align-center justify-center">
                 <ui-icon-button id="appBarBackButton" ghost>
                     <svg-back-arrow-navigation></svg-back-arrow-navigation>
                 </ui-icon-button>
             </ui-flex-grid-item>
 
             <!-- AppBar date picker button -->
-            <ui-flex-grid-item
-                slot="left"
-                class="flex align-center justify-center"
-                style="padding: calc(var(--ui-spacing) / 2)"
-            >
-                <ui-button
-                    id="appBarDatePickerButton"
-                    style="height: 100%; white-space: nowrap"
-                    variant="outline"
-                    color="primary"
-                ></ui-button>
+            <ui-flex-grid-item slot="left" class="flex align-center justify-center"
+                style="padding: calc(var(--ui-spacing) / 2)">
+                <ui-button id="appBarDatePickerButton" style="height: 100%; white-space: nowrap" variant="outline"
+                    color="primary"></ui-button>
             </ui-flex-grid-item>
 
             <!-- AppBar title -->
-            <ui-flex-grid-item
-                slot="center"
-                id="appBarTitle"
-                class="flex align-center justify-center"
-                style="white-space: nowrap"
-            ></ui-flex-grid-item>
+            <ui-flex-grid-item slot="center" id="appBarTitle" class="flex align-center justify-center"
+                style="white-space: nowrap"></ui-flex-grid-item>
 
             <!-- AppBar edit mode (toggle) button -->
-            <ui-flex-grid-item
-                slot="right"
-                class="flex align-center justify-center"
-            >
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
                 <ui-icon-button id="appBarEditButton" ghost>
                     <svg-edit2></svg-edit2>
                 </ui-icon-button>
             </ui-flex-grid-item>
 
             <!-- AppBar go today button -->
-            <ui-flex-grid-item
-                slot="right"
-                class="flex align-center justify-center"
-            >
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
                 <ui-icon-button id="appBarTodayButton" ghost>
                     <svg-today-outline></svg-today-outline>
                 </ui-icon-button>
             </ui-flex-grid-item>
 
             <!-- AppBar pdf page button -->
-            <ui-flex-grid-item
-                slot="right"
-                class="flex align-center justify-center"
-            >
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
                 <ui-icon-button id="appBarPDFButton" ghost>
                     <svg-pdf-document></svg-pdf-document>
                 </ui-icon-button>
             </ui-flex-grid-item>
 
             <!-- AppBar settings page button -->
-            <ui-flex-grid-item
-                slot="right"
-                class="flex align-center justify-center"
-            >
+            <ui-flex-grid-item slot="right" class="flex align-center justify-center">
                 <ui-icon-button id="appBarSettingsButton" ghost>
                     <svg-settings></svg-settings>
                 </ui-icon-button>

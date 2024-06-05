@@ -169,30 +169,30 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
                 const d = entry.date;
                 item.setAttribute("key", `${y}-${m}-${d}`);
 
-                const content = document.createElement("table");
+                item.innerHTML = `
+                    <table>
+                        <tr>
+                            <td style="width: 50%;">${y}</td>
+                            <td style="width: 25%;">${m}</td>
+                            <td style="width: 25%;">${d}</td>
 
-                const row = document.createElement("tr");
-                content.appendChild(row);
-                row.innerHTML = `
-                    <td style="width: 50%;">${y}</td>
-                    <td style="width: 25%;">${m}</td>
-                    <td style="width: 25%;">${d}</td>
-
-                    <td>
-                        <ui-icon-button
-                            style="float: right;"
-                            class="delete"
-                            color="destructive"
-                            ghost
-                        >
-                            <svg-delete-recycle-bin>
-                            </svg-delete-recycle-bin>
-                        </ui-icon-button>
-                    </td>
+                            <td>
+                                <ui-icon-button
+                                    style="float: right;"
+                                    class="delete"
+                                    color="destructive"
+                                    ghost
+                                >
+                                    <svg-delete-recycle-bin>
+                                    </svg-delete-recycle-bin>
+                                </ui-icon-button>
+                            </td>
+                        </tr>
+                    </table>
                 `;
 
                 /** @type {ui.UIIconButton} */
-                const deleteButton = row.querySelector("ui-icon-button.delete");
+                const deleteButton = item.querySelector("ui-icon-button.delete");
                 deleteButton.onclick = async () => {
                     const message = this.#lang.ui.get(
                         "indexeddb-browser", "confirm-delete-entry"
@@ -212,7 +212,6 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
                     );
 
                     const row = document.createElement("tr");
-                    content.appendChild(row);
                     row.innerHTML = `
                         <td
                             colspan="3"
@@ -232,11 +231,11 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
                             : "&nbsp;"}
                         </td>
                     `;
+                    item.querySelector("table").appendChild(row);
                 }
 
                 if (!!entry.note) {
                     const row = document.createElement("tr");
-                    content.appendChild(row);
                     row.innerHTML = `
                         <td colspan="5">
                             <pre
@@ -246,9 +245,9 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
                             </pre>
                         </td>
                     `;
+                    item.querySelector("table").appendChild(row)
                 }
 
-                item.appendChild(content);
                 this.grid.appendChild(item);
             });
         });
