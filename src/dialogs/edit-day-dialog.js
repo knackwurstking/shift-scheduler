@@ -102,7 +102,9 @@ export class EditDayDialog extends ui.UIDialog {
      * @param {number} date
      */
     async set(year, month, date) { // {{{
-        this.ui.title = `${year}/${(month + 1).toString().padStart(2, "0")}/${(date).toString().padStart(2, "0")}`;
+        const m = (month + 1).toString().padStart(2, "0");
+        const d = (date).toString().padStart(2, "0");
+        this.ui.title = `${year}/${m}/${d}`;
 
         this.data = await db.get(year, month, date);
         this.rhythmShift = calcShiftForDay(new Date(year, month, date), this.#store.ui.get("settings"));
@@ -167,8 +169,8 @@ export class EditDayDialog extends ui.UIDialog {
         const shifts = this.#store.ui.get("settings").shifts;
 
         let option = new ui.UISelectOption();
-        option.ui.value = "0"
-        option.innerHTML = "&nbsp;"
+        option.ui.value = "0";
+        option.innerHTML = this.#lang.ui.get("edit-day-dialog", "reset");
         this.#shiftSelect.appendChild(option);
 
         shifts.forEach((shift) => {

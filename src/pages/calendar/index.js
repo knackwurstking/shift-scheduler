@@ -618,7 +618,7 @@ export class CalendarPage extends ui.UIStackLayoutPage {
         shifts = [
             {
                 id: 0,
-                name: "Reset",
+                name: this.#lang.ui.get("calendar", "reset"),
                 shortName: "",
                 visible: false
             },

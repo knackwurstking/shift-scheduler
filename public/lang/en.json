@@ -9,6 +9,9 @@
     "edit-shift-alerts": {
         "missing-name": "Missing shift name!"
     },
+    "calendar": {
+        "reset": "Reset"
+    },
     "settings": {
         "app-bar-title": "Settings",
         "confirm-delete-shift": "Delete shift \"%s\"?",
@@ -50,7 +53,8 @@
     "edit-day-dialog": {
         "textarea-title-notes": "Note",
         "button-submit": "OK",
-        "button-cancel": "Cancel"
+        "button-cancel": "Cancel",
+        "reset": "Reset"
     },
     "edit-rhythm-dialog": {
         "title": "Shift Rhythm",

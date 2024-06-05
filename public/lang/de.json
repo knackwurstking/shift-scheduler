@@ -9,6 +9,9 @@
     "edit-shift-alerts": {
         "missing-name": "Fehlender Schichtname!"
     },
+    "calendar": {
+        "reset": "Zurücksetzen"
+    },
     "settings": {
         "app-bar-title": "Einstellungen",
         "confirm-delete-shift": "Shicht \"%s\" löschen?",
@@ -50,7 +53,8 @@
     "edit-day-dialog": {
         "textarea-title-notes": "Notiz",
         "button-submit": "OK",
-        "button-cancel": "Abbrechen"
+        "button-cancel": "Abbrechen",
+        "reset": "Zurücksetzen"
     },
     "edit-rhythm-dialog": {
         "title": "Schicht Rhythmus",
