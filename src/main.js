@@ -12,7 +12,7 @@ import utils from "./utils";
  * @typedef {import("./types").ThemeStore} ThemeStore 
  */
 
-// Initialize Svg and Web Components {{{
+// {{{ Initialize Svg and Web Components
 ui.SvgDeleteRecycleBin.register();
 ui.SvgBackArrowNavigation.register();
 ui.SvgEdit2.register();
@@ -44,11 +44,9 @@ App.register();
 ShiftCard.register();
 CalendarPage.register();
 SettingsPage.register();
-
 // }}}
 
-// Initialize Store {{{
-
+// {{{ Initialize Store
 /** @type {ui.UIStore<UIStoreEvents>} */
 const store = document.querySelector("ui-store");
 
@@ -78,11 +76,9 @@ store.ui.on("theme", (/** @type {ThemeStore} */ data) => {
     console.debug(`[app] current theme in use:`, data)
     utils.setTheme(data, document.querySelector("ui-theme-handler"));
 }, true);
-
 // }}}
 
 // {{{ Initialize Language
-
 /** @type {ui.UILang} */
 const lang = document.querySelector("ui-lang")
 
@@ -109,7 +105,6 @@ for (const l of ["en", "de"]) {
 if (!lang.hasAttribute("current")) {
     lang.setAttribute("current", lang.ui.getFallbackElement().ui.name);
 }
-
 // }}}
 
 new App(store).run();
