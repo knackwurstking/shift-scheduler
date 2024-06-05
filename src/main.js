@@ -12,14 +12,30 @@ import utils from "./utils";
  * @typedef {import("./types").ThemeStore} ThemeStore 
  */
 
-// Initialize Web Components {{{
+// Initialize Svg and Web Components {{{
 ui.SvgDeleteRecycleBin.register();
 ui.SvgBackArrowNavigation.register();
 ui.SvgEdit2.register();
 ui.SvgTodayOutline.register();
 ui.SvgPDFDocument.register();
 ui.SvgSettings.register();
-ui.registerWebComponents();
+
+ui.UIThemeHandler.register();
+ui.UILabel.register();
+ui.UIStore.register();
+ui.UIStackLayout.register();
+ui.UISpinner.register();
+ui.UILang.register();
+ui.UIInput.register();
+ui.UISelect.register();
+ui.UIFlexGrid.register();
+ui.UIFlexGridRow.register();
+ui.UIFlexGridItem.register();
+ui.UIDialog.register();
+ui.UIContainer.register();
+ui.UIButton.register();
+ui.UIIconButton.register();
+ui.UIAppBar.register();
 
 // Define local components
 App.register();
