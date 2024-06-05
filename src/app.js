@@ -62,7 +62,7 @@ export default class App extends ui.js.Events {
         }, true);
 
         db.open(async () => this.stackLayout.ui.setPage("calendar"));
-        document.body.style.display = "block"
+        //document.body.style.display = "block"
     } // }}}
 
     /**
