@@ -2,7 +2,7 @@ import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import * as ui from "ui";
 import db from "../../../db";
-import utils from "../../../utils";
+import { validateShift } from "../../../utils";
 
 /**
  * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
@@ -291,7 +291,7 @@ function validateSettings(settings) { // {{{
 
     let d;
     for (d of settings.shifts) {
-        if (!utils.validateShift(d)) {
+        if (!validateShift(d)) {
             return false;
         }
     }
@@ -340,7 +340,7 @@ function convertStorage(data) { // {{{
                     }
 
                     if (v.shift !== null) {
-                        if (!utils.validateShift(v.shift)) {
+                        if (!validateShift(v.shift)) {
                             return false;
                         }
                     }

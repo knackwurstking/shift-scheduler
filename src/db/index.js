@@ -1,4 +1,4 @@
-import utils from "../utils";
+import { validateShift } from "../utils";
 
 /**
  * @typedef {import("../types").DBDataEntry} DBDataEntry
@@ -246,7 +246,7 @@ function validateV1(entry) { // {{{
     }
 
     if (entry.shift !== null) {
-        if (!utils.validateShift(entry.shift)) {
+        if (!validateShift(entry.shift)) {
             return false;
         }
     }
