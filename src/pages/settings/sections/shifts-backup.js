@@ -145,7 +145,7 @@ export class ShiftsBackup extends HTMLElement {
 
             // NOTE: Support for v1.4.0 - v1.5.3
             if (Object.hasOwn(data, "storage")) {
-                data.indexedDB = convertStorage(data.storage); // Yes, this will overwrite all exising indexedDB stuff.
+                data.indexedDB = convertStorage(data.storage); // Yes, this will overwrite all existing indexedDB stuff.
             }
 
             // Handle indexedDB data

@@ -55,7 +55,7 @@ export class StartDate extends HTMLElement {
         );
     } // }}}
 
-    diconnectedCallback() { // {{{
+    disconnectedCallback() { // {{{
         this.cleanup.run();
     } // }}}
 
