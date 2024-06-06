@@ -18,9 +18,6 @@
  *  startDate: string; // "yyyy-mm-dd"
  * }}
  *
- * @typedef DebugStore 
- * @type {boolean}
- *
  * @typedef LangStore
  * @type {string}
  *
@@ -36,7 +33,6 @@
  *  "theme": ThemeStore;
  *  "week-start": WeekStartStore;
  *  "settings": SettingsStore;
- *  "debug": DebugStore;
  *  "lang": LangStore;
  *  "edit-mode": EditModeStore;
  * }}

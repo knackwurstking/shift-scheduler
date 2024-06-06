@@ -8,7 +8,16 @@ import { html } from "ui/src/js";
  */
 
 const content = html`
-    <ui-flex-grid class="no-scrollbar" gap="0.25rem">
+    <ui-flex-grid
+        class="no-scrollbar"
+        style="
+            padding: 0.25rem;
+            padding-top: var(--ui-app-bar-height);
+            overflow-y: auto;
+            height: 100%;
+        "
+        gap="0.25rem"
+    >
         <!-- "Miscellaneous" Section -->
         <ui-flex-grid-row>
             <ui-flex-grid-item class="is-card">

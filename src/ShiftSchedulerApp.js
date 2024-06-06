@@ -364,16 +364,7 @@ export class ShiftSchedulerApp extends HTMLElement {
         this.uiStore.ui.set("theme", { mode: "system", name: "zinc" }, true);
         this.uiStore.ui.set("week-start", 0, true);
         this.uiStore.ui.set("settings", { shifts: [], rhythm: [], startDate: "" }, true);
-        this.uiStore.ui.set("debug", false, true);
         this.uiStore.ui.set("edit-mode", { open: false, active: null }, true);
-
-        this.uiStore.ui.on("debug", (state) => {
-            if (state) {
-                document.querySelector("#app").classList.add("is-debug")
-            } else {
-                document.querySelector("#app").classList.remove("is-debug")
-            }
-        }, true)
 
         this.uiStore.ui.on("theme", (data) => {
             console.debug(`[ShiftSchedulerApp] current theme in use:`, data)
