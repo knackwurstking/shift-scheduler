@@ -9,7 +9,7 @@
  * @param {ThemeStore} theme
  * @param {UIThemeHandler} themeHandler
  */
-async function setTheme(theme, themeHandler) { // {{{
+export async function setTheme(theme, themeHandler) { // {{{
     //try {
     //    themeHandler.ui.loadTheme(theme.name)
     //} catch {
@@ -29,7 +29,7 @@ async function setTheme(theme, themeHandler) { // {{{
 /**
  * @param {Shift} shift
  */
-function validateShift(shift) { // {{{
+export function validateShift(shift) { // {{{
     // Check for shift data
     if (typeof shift.id !== "number") {
         return false;
@@ -62,12 +62,8 @@ function validateShift(shift) { // {{{
 /**
  * @param {string | null} title
  */
-async function setAppBarTitle(title) { // {{{
-    document.querySelector("#appBarTitle").innerHTML = title || "";
+export async function setAppBarTitle(title) { // {{{
+    const child = document.createElement("span");
+    child.innerHTML = `${title || ""}`;
+    document.querySelector("shift-scheduler-app").appendChild(child);
 } // }}}
-
-export default {
-    setTheme,
-    validateShift,
-    setAppBarTitle,
-}

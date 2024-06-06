@@ -19,7 +19,7 @@ import { CleanUp, html, isAndroid } from "ui/src/js";
 import db from "./db";
 import { DatePickerDialog, PDFDialog } from "./dialogs";
 import { CalendarPage, SettingsPage } from "./pages";
-import utils from "./utils";
+import { setAppBarTitle, setTheme } from "./utils";
 
 // {{{ HTML Content
 const content = html`
@@ -368,7 +368,7 @@ export class ShiftSchedulerApp extends HTMLElement {
 
         this.uiStore.ui.on("theme", (data) => {
             console.debug(`[ShiftSchedulerApp] current theme in use:`, data)
-            utils.setTheme(data, document.querySelector("ui-theme-handler"));
+            setTheme(data, document.querySelector("ui-theme-handler"));
         }, true);
     } // }}}
 
@@ -471,7 +471,7 @@ export class ShiftSchedulerApp extends HTMLElement {
      * @private
      */
     noPageSetup() { // {{{
-        utils.setAppBarTitle(null)
+        setAppBarTitle(null)
         this.uiAppBar.removeChild(this.back.parentElement)
         this.uiAppBar.removeChild(this.datePicker.parentElement)
         this.uiAppBar.removeChild(this.edit.parentElement)
@@ -532,7 +532,7 @@ export class ShiftSchedulerApp extends HTMLElement {
      * @private
      */
     calendarAppBarLayout() { // {{{
-        utils.setAppBarTitle("")
+        setAppBarTitle("")
         this.uiAppBar.appendChild(this.datePicker.parentElement)
         this.uiAppBar.appendChild(this.edit.parentElement)
         this.uiAppBar.appendChild(this.today.parentElement)
@@ -545,7 +545,7 @@ export class ShiftSchedulerApp extends HTMLElement {
      * @param {import("ui").UIStackLayoutPage | null} oldPage
      */
     settingsAppBarLayout(oldPage) { // {{{
-        utils.setAppBarTitle(this.uiLang.ui.get("settings", "app-bar-title"))
+        setAppBarTitle(this.uiLang.ui.get("settings", "app-bar-title"))
 
         if (oldPage.ui.name === "calendar") {
             this.uiAppBar.removeChild(this.datePicker.parentElement);
@@ -560,7 +560,7 @@ export class ShiftSchedulerApp extends HTMLElement {
      * @private
      */
     indexedDBBrowserAppBarLayout() { // {{{
-        utils.setAppBarTitle(
+        setAppBarTitle(
             this.uiLang.ui.get("indexeddb-browser", "app-bar-title"),
         );
     } // }}}
