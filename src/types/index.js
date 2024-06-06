@@ -22,7 +22,7 @@
  * @type {boolean}
  *
  * @typedef LangStore
- * @type {"en" | "de"}
+ * @type {string}
  *
  * @typedef EditModeStore
  * @type {{

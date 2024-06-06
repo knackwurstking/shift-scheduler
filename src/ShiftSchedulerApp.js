@@ -21,6 +21,7 @@ import { DatePickerDialog, PDFDialog } from "./dialogs";
 import { CalendarPage, SettingsPage } from "./pages";
 import utils from "./utils";
 
+// {{{ HTML Content
 const content = html`
     <ui-theme-handler auto></ui-theme-handler>
 
@@ -118,6 +119,7 @@ const content = html`
         </ui-flex-grid-item>
     </ui-app-bar>
 `;
+// }}}
 
 /**
  * @typedef {import("./types").UIStoreEvents} UIStoreEvents
@@ -203,9 +205,10 @@ export class ShiftSchedulerApp extends HTMLElement {
 
         /**
          * @private
-         * @type {UIStore}
+         * @type {UIStore<import("./types").UIStoreEvents>}
          */
         this.uiStore = this.querySelector("ui-store");
+        this.setupUIStore();
 
         /**
          * @private
@@ -276,19 +279,49 @@ export class ShiftSchedulerApp extends HTMLElement {
         });
     } // }}}
 
-    connectedCallback() {
+    connectedCallback() { // {{{
         this.registerPages();
+
+        for (const l of ["en", "de"]) {
+            if (navigator.language.match(new RegExp(`^${l}`, "i"))) {
+                console.debug(`[ShiftSchedulerApp] Got a match here for "${l}":`, navigator.language);
+                this.uiLang.setAttribute("current", l);
+                break;
+            }
+            // NOTE: No need for iterating through `navigator.languages`,
+            //       only two languages are supported for now.
+        }
+
+        if (!this.uiLang.hasAttribute("current")) {
+            this.uiLang.setAttribute("current", this.uiLang.ui.getFallbackElement().ui.name);
+        }
+
+        this.cleanup.add(
+            this.uiLang.ui.on(
+                "change",
+                (ltElement) => { // {{{
+                    if (!ltElement) {
+                        console.debug("[ShiftSchedulerApp] No language set for now!");
+                        return;
+                    }
+
+                    console.debug(`[ShiftSchedulerApp] current language in use:`, ltElement);
+                    this.uiStore.ui.set("lang", ltElement.ui.name, true);
+                }, // }}}
+                true,
+            ),
+        );
 
         this.cleanup.add(
             this.uiStackLayout.ui.events.on(
-                "change", this.stackLayoutChange.bind(this)
+                "change", this.stackLayoutChange.bind(this),
             ),
         );
 
         this.cleanup.add(
             this.uiStore.ui.on(
                 "date-picker",
-                async (dateString) => {
+                async (dateString) => { // {{{
                     const today = new Date();
                     const current = new Date(dateString);
 
@@ -304,21 +337,49 @@ export class ShiftSchedulerApp extends HTMLElement {
                     } else {
                         this.today.ui.enable();
                     }
-                },
+                }, // }}}
                 true,
             ),
         );
 
-        // TODO: Do i need to add a close handler to cleanup?
-        db.open(
-            async () =>
-                this.uiStackLayout.ui.setPage("calendar"),
-        );
-    }
+        // TODO: Do i need to add a close handler for cleanup?
+        db.open(async () => this.uiStackLayout.ui.setPage("calendar"));
+    } // }}}
 
     disconnectedCallback() {
         this.cleanup.run();
     }
+
+    /**
+     * @private
+     */
+    setupUIStore() { // {{{
+        const t = new Date();
+        this.uiStore.ui.set(
+            "date-picker",
+            new Date(t.getFullYear(), t.getMonth(), 1).toString(),
+            true,
+        );
+
+        this.uiStore.ui.set("theme", { mode: "system", name: "zinc" }, true);
+        this.uiStore.ui.set("week-start", 0, true);
+        this.uiStore.ui.set("settings", { shifts: [], rhythm: [], startDate: "" }, true);
+        this.uiStore.ui.set("debug", false, true);
+        this.uiStore.ui.set("edit-mode", { open: false, active: null }, true);
+
+        this.uiStore.ui.on("debug", (state) => {
+            if (state) {
+                document.querySelector("#app").classList.add("is-debug")
+            } else {
+                document.querySelector("#app").classList.remove("is-debug")
+            }
+        }, true)
+
+        this.uiStore.ui.on("theme", (data) => {
+            console.debug(`[ShiftSchedulerApp] current theme in use:`, data)
+            utils.setTheme(data, document.querySelector("ui-theme-handler"));
+        }, true);
+    } // }}}
 
     /**
      * @private
@@ -435,7 +496,7 @@ export class ShiftSchedulerApp extends HTMLElement {
      * @param {import("ui").UIStackLayoutPage | null} data.oldPage 
      */
     async stackLayoutChange({ newPage, oldPage }) { // {{{
-        console.debug(`[app] stack layout changed:`, { newPage, oldPage });
+        console.debug(`[ShiftSchedulerApp] stack layout changed:`, { newPage, oldPage });
 
         // Update the AppBar buttons...
         if (this.uiStackLayout.ui.stack.length <= 1) {
