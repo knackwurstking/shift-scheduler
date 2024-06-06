@@ -1,14 +1,82 @@
 import { App as CapApp } from "@capacitor/app";
 import * as ui from "ui";
+import { UIAppBar, UIContainer, UILang, UIStore, UIThemeHandler } from "ui";
+import { html } from "ui/src/js";
 import db from "./db";
 import * as dialogs from "./dialogs";
 import utils from "./utils";
+
+const content = html`
+    <ui-theme-handler auto></ui-theme-handler>
+
+    <ui-store></ui-store>
+
+    <ui-lang>
+    </ui-lang>
+
+    <ui-app-bar position="top">
+    </ui-app-bar>
+
+    <ui-container></ui-container>
+`;
 
 /**
  * @typedef {import("./types").UIStoreEvents} UIStoreEvents
  */
 
-export default class App extends ui.js.Events {
+export class ShiftSchedulerApp extends HTMLElement {
+
+    static register = () => {
+        if (!customElements.get("ui-theme-handler")) {
+            UIThemeHandler.register();
+        }
+
+        if (!customElements.get("ui-store")) {
+            UIStore.register();
+        }
+
+        if (!customElements.get("ui-lang")) {
+            UILang.register();
+        }
+
+        if (!customElements.get("ui-app-bar")) {
+            UIAppBar.register();
+        }
+
+        if (!customElements.get("ui-container")) {
+            UIContainer.register();
+        }
+
+        customElements.define("shift-scheduler-app", ShiftSchedulerApp);
+    };
+
+    constructor() {
+        super();
+        this.innerHTML = content;
+
+        /**
+         * @private
+         * @type {UIThemeHandler}
+         */
+        this.uiThemeHandler = this.querySelector("ui-theme-handler");
+
+        /**
+         * @private
+         * @type {UIStore}
+         */
+        this.uiStore = this.querySelector("ui-store");
+
+        /**
+         * @private
+         * @type {UILang}
+         */
+        this.uiLang = this.querySelector("ui-lang");
+    }
+}
+
+// TODO: App class rewrite
+
+export class _ShiftSchedulerApp extends ui.js.Events {
     /** @type {ui.UIStore<UIStoreEvents>} */
     #store
     /** @type {ui.UILang} */

@@ -9,8 +9,10 @@
 </head>
 
 <body class="has-save-area">
-    <ui-theme-handler auto></ui-theme-handler>
+    <shift-scheduler-app style="width: 100%; height: 100%;"></shift-scheduler-app>
+    <script type="module" src="/src/main.js"></script>
 
+    <!-- TODO: Move all HTML to the app component -->
     <ui-store local-storage-prefix="shift-scheduler:" enable-local-storage></ui-store>
 
     <ui-lang>

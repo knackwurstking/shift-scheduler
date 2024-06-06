@@ -1,7 +1,11 @@
-import "./styles.css";
+import "../node_modules/ui/css/main.css";
+//import "./styles.css";
+import { ShiftSchedulerApp } from "./ShiftSchedulerApp";
 
+ShiftSchedulerApp.register();
+
+// TODO: Do all of this inside the new app component
 import * as ui from "ui";
-import App from "./app";
 import { ShiftCard } from "./components";
 import { CalendarPage, SettingsPage } from "./pages";
 import utils from "./utils";
