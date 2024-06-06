@@ -1,6 +1,10 @@
 import { App as CapApp } from "@capacitor/app";
-import * as ui from "ui";
 import {
+    SvgBackArrow,
+    SvgEdit2,
+    SvgPDF,
+    SvgSettings,
+    SvgToday,
     UIAppBar,
     UIButton,
     UIContainer,
@@ -11,7 +15,7 @@ import {
     UIStore,
     UIThemeHandler,
 } from "ui";
-import { CleanUp, html } from "ui/src/js";
+import { CleanUp, html, isAndroid } from "ui/src/js";
 import db from "./db";
 import { DatePickerDialog, PDFDialog } from "./dialogs";
 import { CalendarPage, SettingsPage } from "./pages";
@@ -158,6 +162,26 @@ export class ShiftSchedulerApp extends HTMLElement {
             UIStackLayout.register();
         }
 
+        if (!customElements.get("svg-edit2")) {
+            SvgEdit2.register();
+        }
+
+        if (!customElements.get("svg-settings")) {
+            SvgSettings.register();
+        }
+
+        if (!customElements.get("svg-pdf-document")) {
+            SvgPDF.register();
+        }
+
+        if (!customElements.get("svg-today-outline")) {
+            SvgToday.register();
+        }
+
+        if (!customElements.get("svg-back-arrow-navigation")) {
+            SvgBackArrow.register();
+        }
+
         customElements.define("shift-scheduler-app", ShiftSchedulerApp);
 
         CalendarPage.register();
@@ -242,7 +266,7 @@ export class ShiftSchedulerApp extends HTMLElement {
         this.createAppBar();
 
         setTimeout(async () => {
-            if (ui.js.isAndroid()) {
+            if (isAndroid()) {
                 const handle = await CapApp.addListener(
                     "backButton",
                     () => this.back.click(),
