@@ -60,10 +60,10 @@ function validateShift(shift) { // {{{
 } // }}}
 
 /**
- * @param {string} title
+ * @param {string | null} title
  */
 async function setAppBarTitle(title) { // {{{
-    document.querySelector("#appBarTitle").innerHTML = `<h3>${title}</h3>`;
+    document.querySelector("#appBarTitle").innerHTML = title || "";
 } // }}}
 
 export default {

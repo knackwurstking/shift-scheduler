@@ -1,23 +1,118 @@
 import { App as CapApp } from "@capacitor/app";
 import * as ui from "ui";
-import { UIAppBar, UIContainer, UILang, UIStore, UIThemeHandler } from "ui";
-import { html } from "ui/src/js";
+import {
+    UIAppBar,
+    UIButton,
+    UIContainer,
+    UIFlexGridItem,
+    UIIconButton,
+    UILang,
+    UIStackLayout,
+    UIStore,
+    UIThemeHandler,
+} from "ui";
+import { CleanUp, html } from "ui/src/js";
 import db from "./db";
-import * as dialogs from "./dialogs";
+import { DatePickerDialog, PDFDialog } from "./dialogs";
+import { CalendarPage, SettingsPage } from "./pages";
 import utils from "./utils";
 
 const content = html`
     <ui-theme-handler auto></ui-theme-handler>
 
-    <ui-store></ui-store>
+    <ui-store
+        local-storage-prefix="shift-scheduler:"
+        enable-local-storage
+    ></ui-store>
 
     <ui-lang>
+        <ui-lang-type name="en" href="/lang/en.json" fallback></ui-lang-type>
+        <ui-lang-type name="de" href="/lang/de.json"></ui-lang-type>
     </ui-lang>
 
-    <ui-app-bar position="top">
-    </ui-app-bar>
+    <ui-container
+        style="width: 100%; height: 100%;"
+    >
+        <ui-stack-layout></ui-stack-layout>
+    </ui-container>
 
-    <ui-container></ui-container>
+    <ui-app-bar
+        style="padding: 0 var(--ui-spacing);"
+        position="top"
+    >
+        <ui-flex-grid-item
+            slot="left"
+        >
+            <ui-icon-button
+                id="appBarBackButton"
+                style="width: 100%; height: 100%;"
+                ghost
+            >
+                <svg-back-arrow-navigation></svg-back-arrow-navigation>
+            </ui-icon-button>
+        </ui-flex-grid-item>
+
+        <ui-flex-grid-item
+            slot="left"
+            style="padding: calc(var(--ui-spacing) / 2)"
+        >
+            <ui-button
+                id="appBarDatePickerButton"
+                style="width: 100%; height: 100%; white-space: nowrap;"
+                variant="outline"
+                color="primary"
+            ></ui-button>
+        </ui-flex-grid-item>
+
+        <ui-flex-grid-item slot="center" class="flex align-center">
+            <h3
+                style="white-space: nowrap;"
+                id="appBarTitle"
+            >
+                <slot name="title">Shift Scheduler</slot>
+            </h3>
+        </ui-flex-grid-item>
+
+        <ui-flex-grid-item slot="right">
+            <ui-icon-button
+                id="appBarEditButton"
+                style="width: 100%; height: 100%;"
+                ghost
+            >
+                <svg-edit2></svg-edit2>
+            </ui-icon-button>
+        </ui-flex-grid-item>
+
+        <ui-flex-grid-item slot="right">
+            <ui-icon-button
+                id="appBarTodayButton"
+                style="width: 100%; height: 100%;"
+                ghost
+            >
+                <svg-today-outline></svg-today-outline>
+            </ui-icon-button>
+        </ui-flex-grid-item>
+
+        <ui-flex-grid-item slot="right">
+            <ui-icon-button
+                id="appBarPDFButton"
+                style="width: 100%; height: 100%;"
+                ghost
+            >
+                <svg-pdf-document></svg-pdf-document>
+            </ui-icon-button>
+        </ui-flex-grid-item>
+
+        <ui-flex-grid-item slot="right">
+            <ui-icon-button
+                id="appBarSettingsButton"
+                style="width: 100%; height: 100%;"
+                ghost
+            >
+                <svg-settings></svg-settings>
+            </ui-icon-button>
+        </ui-flex-grid-item>
+    </ui-app-bar>
 `;
 
 /**
@@ -26,7 +121,7 @@ const content = html`
 
 export class ShiftSchedulerApp extends HTMLElement {
 
-    static register = () => {
+    static register = () => { // {{{
         if (!customElements.get("ui-theme-handler")) {
             UIThemeHandler.register();
         }
@@ -43,14 +138,36 @@ export class ShiftSchedulerApp extends HTMLElement {
             UIAppBar.register();
         }
 
+        if (!customElements.get("ui-flex-grid-item")) {
+            UIFlexGridItem.register();
+        }
+
+        if (!customElements.get("ui-icon-button")) {
+            UIIconButton.register();
+        }
+
+        if (!customElements.get("ui-button")) {
+            UIButton.register();
+        }
+
         if (!customElements.get("ui-container")) {
             UIContainer.register();
         }
 
-        customElements.define("shift-scheduler-app", ShiftSchedulerApp);
-    };
+        if (!customElements.get("ui-stack-layout")) {
+            UIStackLayout.register();
+        }
 
-    constructor() {
+        customElements.define("shift-scheduler-app", ShiftSchedulerApp);
+
+        CalendarPage.register();
+        SettingsPage.register();
+
+        DatePickerDialog.register();
+        PDFDialog.register();
+    }; // }}}
+
+    constructor() { // {{{
         super();
         this.innerHTML = content;
 
@@ -71,103 +188,163 @@ export class ShiftSchedulerApp extends HTMLElement {
          * @type {UILang}
          */
         this.uiLang = this.querySelector("ui-lang");
-    }
-}
 
-// TODO: App class rewrite
+        /**
+         * @private
+         * @type {UIStackLayout}
+         */
+        this.uiStackLayout = this.querySelector("ui-stack-layout");
 
-export class _ShiftSchedulerApp extends ui.js.Events {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store
-    /** @type {ui.UILang} */
-    #lang
+        this.cleanup = new CleanUp();
 
-    static register = () => {
-        dialogs.DatePickerDialog.register();
-        dialogs.PDFDialog.register();
-    };
+        /**
+         * @private
+         * @type {UIAppBar}
+         */
+        this.uiAppBar;
 
-    /**
-     * @param {ui.UIStore} store
-     */
-    constructor(store) { // {{{
-        super();
+        /**
+         * @private
+         * @type {UIIconButton}
+         */
+        this.back;
 
-        this.#store = store;
-        this.#lang = document.querySelector("ui-lang")
+        /**
+         * @private
+         * @type {UIButton}
+         */
+        this.datePicker;
 
-        /** @type {ui.UIThemeHandler} */
-        this.themeHandler = document.querySelector("ui-theme-handler");
+        /**
+         * @private
+         * @type {UIIconButton}
+         */
+        this.edit;
 
-        this.createStackLayout()
-        this.createAppBar()
-        this.initializeAndroidHandlers()
+        /**
+         * @private
+         * @type {UIIconButton}
+         */
+        this.today;
+
+        /**
+         * @private
+         * @type {UIIconButton}
+         */
+        this.pdf;
+
+        /**
+         * @private
+         * @type {UIIconButton}
+         */
+        this.settings;
+
+        this.createAppBar();
+
+        setTimeout(async () => {
+            if (ui.js.isAndroid()) {
+                const handle = await CapApp.addListener(
+                    "backButton",
+                    () => this.back.click(),
+                )
+                this.cleanup.add(handle.remove);
+            }
+        });
     } // }}}
 
-    run() { // {{{
-        this.stackLayout.ui.events.on(
-            "change",
-            this.onStackLayoutChange.bind(this),
+    connectedCallback() {
+        this.registerPages();
+
+        this.cleanup.add(
+            this.uiStackLayout.ui.events.on(
+                "change", this.stackLayoutChange.bind(this)
+            ),
         );
 
-        this.#store.ui.on("date-picker", async (dateString) => {
-            const today = new Date();
-            const current = new Date(dateString);
+        this.cleanup.add(
+            this.uiStore.ui.on(
+                "date-picker",
+                async (dateString) => {
+                    const today = new Date();
+                    const current = new Date(dateString);
 
-            const y = current.getFullYear();
-            const m = (current.getMonth() + 1).toString().padStart(2, "0");
-            this.appBarDatePickerButton.innerText = `${y} / ${m}`;
+                    const y = current.getFullYear();
+                    const m = (current.getMonth() + 1).toString().padStart(2, "0");
+                    this.datePicker.innerText = `${y} / ${m}`;
 
-            // disable/enable this button based on the current date
-            if (
-                today.getFullYear() === current.getFullYear() &&
-                today.getMonth() === current.getMonth()
-            ) {
-                this.appBarTodayButton.ui.disable();
-            } else {
-                this.appBarTodayButton.ui.enable();
-            }
-        }, true);
+                    if (
+                        today.getFullYear() === current.getFullYear() &&
+                        today.getMonth() === current.getMonth()
+                    ) {
+                        this.today.ui.disable();
+                    } else {
+                        this.today.ui.enable();
+                    }
+                },
+                true,
+            ),
+        );
 
-        db.open(async () => this.stackLayout.ui.setPage("calendar"));
-        //document.body.style.display = "block"
-    } // }}}
+        // TODO: Do i need to add a close handler to cleanup?
+        db.open(
+            async () =>
+                this.uiStackLayout.ui.setPage("calendar"),
+        );
+    }
+
+    disconnectedCallback() {
+        this.cleanup.run();
+    }
 
     /**
      * @private
      */
-    createStackLayout() { // {{{
-        /** @type {ui.UIStackLayout} */
-        this.stackLayout = document.querySelector("ui-stack-layout");
+    registerPages() { // {{{
+        this.uiStackLayout.ui.registerPage(
+            "calendar",
+            () => {
+                const template = document.createElement("template");
 
-        this.stackLayout.ui.registerPage("calendar", () => {
-            /** @type {HTMLTemplateElement} */
-            const t = document.querySelector("template#pageCalendar");
-            return t.content.cloneNode(true);
-        });
+                template.innerHTML = `
+                    <calendar-page name="calendar"></calendar-page>
+                `;
 
-        this.stackLayout.ui.registerPage("settings", () => {
-            /** @type {HTMLTemplateElement} */
-            const t = document.querySelector("template#pageSettings");
-            return t.content.cloneNode(true)
-        });
+                return template.content.cloneNode(true);
+            },
+        );
+
+        this.uiStackLayout.ui.registerPage(
+            "settings",
+            () => {
+                const template = document.createElement("template");
+
+                template.innerHTML = `
+                    <settings-page name="settings"></settings-page>
+                `;
+
+                return template.content.cloneNode(true);
+            }
+        );
     } // }}}
 
     /**
      * @private
      */
     createAppBar() { // {{{
-        /** @type {ui.UIAppBar} */
-        this.appBar = document.querySelector("ui-app-bar");
+        this.uiAppBar = this.querySelector("ui-app-bar");
 
-        /** @type {ui.UIIconButton} */
-        this.appBarBackButton = this.appBar.querySelector("#appBarBackButton")
-        this.appBarBackButton.onclick = this.onBack.bind(this);
+        this.back = this.uiAppBar.querySelector("#appBarBackButton")
+        this.back.onclick = async () => { // {{{
+            if (this.uiStackLayout.ui.stack.length <= 1) {
+                return;
+            }
 
-        /** @type {ui.UIButton} */
-        this.appBarDatePickerButton = this.appBar.querySelector("#appBarDatePickerButton")
-        this.appBarDatePickerButton.onclick = async () => {
-            const dialog = new dialogs.DatePickerDialog(this.#store, this.#lang);
+            this.uiStackLayout.ui.goBack();
+        }; // }}}
+
+        this.datePicker = this.uiAppBar.querySelector("#appBarDatePickerButton")
+        this.datePicker.onclick = async () => { // {{{
+            const dialog = new DatePickerDialog(this.uiStore, this.uiLang);
             document.body.appendChild(dialog);
 
             dialog.ui.open(true);
@@ -175,28 +352,28 @@ export class _ShiftSchedulerApp extends ui.js.Events {
             dialog.ui.events.on("close", () => {
                 document.body.removeChild(dialog);
             });
-        };
+        }; // }}}
 
-        /** @type {ui.UIIconButton} */
-        this.appBarEditButton = this.appBar.querySelector("#appBarEditButton")
-        this.appBarEditButton.onclick = async () => {
-            this.#store.ui.update("edit-mode", (data) => ({ ...data, open: !data.open }));
-        };
-
-        /** @type {ui.UIIconButton} */
-        this.appBarTodayButton = this.appBar.querySelector("#appBarTodayButton")
-        this.appBarTodayButton.onclick = async () => {
-            const t = new Date();
-            this.#store.ui.set(
-                "date-picker",
-                new Date(t.getFullYear(), t.getMonth(), 1).toString()
+        this.edit = this.uiAppBar.querySelector("#appBarEditButton")
+        this.edit.onclick = async () => { // {{{
+            this.uiStore.ui.update(
+                "edit-mode",
+                (data) => ({ ...data, open: !data.open }),
             );
-        };
+        }; // }}}
 
-        /** @type {ui.UIIconButton} */
-        this.appBarPDFButton = this.appBar.querySelector("#appBarPDFButton")
-        this.appBarPDFButton.onclick = async () => {
-            const dialog = new dialogs.PDFDialog(this.#store, this.#lang);
+        this.today = this.uiAppBar.querySelector("#appBarTodayButton")
+        this.today.onclick = async () => { // {{{
+            const t = new Date();
+            this.uiStore.ui.set(
+                "date-picker",
+                new Date(t.getFullYear(), t.getMonth(), 1).toString(),
+            );
+        }; // }}}
+
+        this.pdf = this.uiAppBar.querySelector("#appBarPDFButton")
+        this.pdf.onclick = async () => { // {{{
+            const dialog = new PDFDialog(this.uiStore, this.uiLang);
             document.body.appendChild(dialog);;
 
             dialog.ui.events.on("close", () => {
@@ -204,61 +381,53 @@ export class _ShiftSchedulerApp extends ui.js.Events {
             });
 
             dialog.ui.open(true);
-        };
+        }; // }}}
 
-        /** @type {ui.UIIconButton} */
-        this.appBarSettingsButton = this.appBar.querySelector("#appBarSettingsButton")
-        this.appBarSettingsButton.onclick = async () => this.stackLayout.ui.setPage("settings");
+        this.settings = this.uiAppBar.querySelector("#appBarSettingsButton")
+        this.settings.onclick = async () => { // {{{
+            this.uiStackLayout.ui.setPage("settings");
+        } // }}}
 
         this.noPageSetup();
     } // }}}
 
     /**
-     * Android Handlers
-     *  - "backButton"
-     *
      * @private
      */
-    initializeAndroidHandlers() { // {{{
-        if (!ui.js.isAndroid()) return;
-        CapApp.addListener("backButton", this.onBack.bind(this))
-    } // }}}
-
-    /** @private */
     noPageSetup() { // {{{
-        utils.setAppBarTitle("")
-        this.appBar.removeChild(this.appBarBackButton.parentElement)
-        this.appBar.removeChild(this.appBarDatePickerButton.parentElement)
-        this.appBar.removeChild(this.appBarEditButton.parentElement)
-        this.appBar.removeChild(this.appBarTodayButton.parentElement)
-        this.appBar.removeChild(this.appBarPDFButton.parentElement)
-        this.appBar.removeChild(this.appBarSettingsButton.parentElement)
+        utils.setAppBarTitle(null)
+        this.uiAppBar.removeChild(this.back.parentElement)
+        this.uiAppBar.removeChild(this.datePicker.parentElement)
+        this.uiAppBar.removeChild(this.edit.parentElement)
+        this.uiAppBar.removeChild(this.today.parentElement)
+        this.uiAppBar.removeChild(this.pdf.parentElement)
+        this.uiAppBar.removeChild(this.settings.parentElement)
     } // }}}
 
     /**
      * @private
      * @param {Object} data
-     * @param {ui.UIStackLayoutPage | null} data.newPage 
-     * @param {ui.UIStackLayoutPage | null} data.oldPage 
+     * @param {import("ui").UIStackLayoutPage | null} data.newPage 
+     * @param {import("ui").UIStackLayoutPage | null} data.oldPage 
      */
-    async onStackLayoutChange({ newPage, oldPage }) { // {{{
+    async stackLayoutChange({ newPage, oldPage }) { // {{{
         console.debug(`[app] stack layout changed:`, { newPage, oldPage });
 
         // Update the AppBar buttons...
-        if (this.stackLayout.ui.stack.length <= 1) {
+        if (this.uiStackLayout.ui.stack.length <= 1) {
             try {
-                this.appBar.removeChild(this.appBarBackButton.parentElement);
+                this.uiAppBar.removeChild(this.back.parentElement);
             } catch { }
         } else {
-            const leftSlot = this.appBar.ui.getLeftSlot()
+            const leftSlot = this.uiAppBar.ui.getLeftSlot()
             if (leftSlot.length > 0) {
-                this.appBar.insertBefore(
-                    this.appBarBackButton.parentElement,
+                this.uiAppBar.insertBefore(
+                    this.back.parentElement,
                     leftSlot[0]
                 );
             } else {
-                this.appBar.appendChild(
-                    this.appBarBackButton.parentElement
+                this.uiAppBar.appendChild(
+                    this.back.parentElement
                 );
             }
         }
@@ -270,13 +439,13 @@ export class _ShiftSchedulerApp extends ui.js.Events {
 
         switch (newPage.ui.name) {
             case "calendar":
-                this.calendarLayout();
+                this.calendarAppBarLayout();
                 break;
             case "settings":
-                this.settingsLayout();
+                this.settingsAppBarLayout(oldPage);
                 break;
             case "indexeddb-browser":
-                this.indexedDBBrowserLayout();
+                this.indexedDBBrowserAppBarLayout();
                 break;
             default:
                 throw `unknown page "${newPage.ui.name}"`;
@@ -286,39 +455,37 @@ export class _ShiftSchedulerApp extends ui.js.Events {
     /**
      * @private
      */
-    async onBack() { // {{{
-        if (this.stackLayout.ui.stack.length <= 1) return;
-        this.stackLayout.ui.goBack();
-    } // }}}
-
-    /**
-     * @private
-     */
-    calendarLayout() { // {{{
+    calendarAppBarLayout() { // {{{
         utils.setAppBarTitle("")
-        this.appBar.appendChild(this.appBarDatePickerButton.parentElement)
-        this.appBar.appendChild(this.appBarEditButton.parentElement)
-        this.appBar.appendChild(this.appBarTodayButton.parentElement)
-        this.appBar.appendChild(this.appBarPDFButton.parentElement)
-        this.appBar.appendChild(this.appBarSettingsButton.parentElement)
+        this.uiAppBar.appendChild(this.datePicker.parentElement)
+        this.uiAppBar.appendChild(this.edit.parentElement)
+        this.uiAppBar.appendChild(this.today.parentElement)
+        this.uiAppBar.appendChild(this.pdf.parentElement)
+        this.uiAppBar.appendChild(this.settings.parentElement)
+    } // }}}
+
+    /**
+     * @private
+     * @param {import("ui").UIStackLayoutPage | null} oldPage
+     */
+    settingsAppBarLayout(oldPage) { // {{{
+        utils.setAppBarTitle(this.uiLang.ui.get("settings", "app-bar-title"))
+
+        if (oldPage.ui.name === "calendar") {
+            this.uiAppBar.removeChild(this.datePicker.parentElement);
+            this.uiAppBar.removeChild(this.edit.parentElement);
+            this.uiAppBar.removeChild(this.today.parentElement);
+            this.uiAppBar.removeChild(this.pdf.parentElement);
+            this.uiAppBar.removeChild(this.settings.parentElement);
+        }
     } // }}}
 
     /**
      * @private
      */
-    settingsLayout() { // {{{
-        utils.setAppBarTitle(this.#lang.ui.get("settings", "app-bar-title"))
-        try { this.appBar.removeChild(this.appBarDatePickerButton.parentElement) } catch { }
-        try { this.appBar.removeChild(this.appBarEditButton.parentElement) } catch { }
-        try { this.appBar.removeChild(this.appBarTodayButton.parentElement) } catch { }
-        try { this.appBar.removeChild(this.appBarPDFButton.parentElement) } catch { }
-        try { this.appBar.removeChild(this.appBarSettingsButton.parentElement) } catch { }
-    } // }}}
-
-    /**
-     * @private
-     */
-    indexedDBBrowserLayout() { // {{{
-        utils.setAppBarTitle(this.#lang.ui.get("indexeddb-browser", "app-bar-title"))
+    indexedDBBrowserAppBarLayout() { // {{{
+        utils.setAppBarTitle(
+            this.uiLang.ui.get("indexeddb-browser", "app-bar-title"),
+        );
     } // }}}
 }
