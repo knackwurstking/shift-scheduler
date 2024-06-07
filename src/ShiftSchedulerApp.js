@@ -47,13 +47,13 @@ const content = html`
     >
         <ui-flex-grid-item
             slot="left"
+            class="flex align-center justify-center"
         >
             <ui-icon-button
                 id="appBarBackButton"
-                style="width: 100%; height: 100%;"
                 ghost
             >
-                <svg-back-arrow-navigation></svg-back-arrow-navigation>
+                <svg-back-arrow></svg-back-arrow>
             </ui-icon-button>
         </ui-flex-grid-item>
 
@@ -63,7 +63,7 @@ const content = html`
         >
             <ui-button
                 id="appBarDatePickerButton"
-                style="width: 100%; height: 100%; white-space: nowrap;"
+                style="height: 100%; white-space: nowrap;"
                 variant="outline"
                 color="primary"
             ></ui-button>
@@ -78,40 +78,48 @@ const content = html`
             </h3>
         </ui-flex-grid-item>
 
-        <ui-flex-grid-item slot="right">
+        <ui-flex-grid-item
+            slot="right"
+            class="flex align-center justify-center"
+        >
             <ui-icon-button
                 id="appBarEditButton"
-                style="width: 100%; height: 100%;"
                 ghost
             >
                 <svg-edit2></svg-edit2>
             </ui-icon-button>
         </ui-flex-grid-item>
 
-        <ui-flex-grid-item slot="right">
+        <ui-flex-grid-item
+            slot="right"
+            class="flex align-center justify-center"
+        >
             <ui-icon-button
                 id="appBarTodayButton"
-                style="width: 100%; height: 100%;"
                 ghost
             >
-                <svg-today-outline></svg-today-outline>
+                <svg-today></svg-today>
             </ui-icon-button>
         </ui-flex-grid-item>
 
-        <ui-flex-grid-item slot="right">
+        <ui-flex-grid-item
+            slot="right"
+            class="flex align-center justify-center"
+        >
             <ui-icon-button
                 id="appBarPDFButton"
-                style="width: 100%; height: 100%;"
                 ghost
             >
-                <svg-pdf-document></svg-pdf-document>
+                <svg-pdf></svg-pdf>
             </ui-icon-button>
         </ui-flex-grid-item>
 
-        <ui-flex-grid-item slot="right">
+        <ui-flex-grid-item
+            slot="right"
+            class="flex align-center justify-center"
+        >
             <ui-icon-button
                 id="appBarSettingsButton"
-                style="width: 100%; height: 100%;"
                 ghost
             >
                 <svg-settings></svg-settings>
