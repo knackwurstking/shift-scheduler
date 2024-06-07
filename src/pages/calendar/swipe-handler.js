@@ -1,18 +1,18 @@
-import * as ui from "ui";
+import { Events } from "ui/src/js";
 
 /**
  * @typedef {"left" | "right"} Direction
  * @typedef {import(".").CalendarPage} CalendarPage 
- *
- * @typedef {{
- *  swipe: Direction
- * }} _Events
  */
 
 export const swipeRange = 75;
 
-/** @extends {ui.js.Events<_Events>} */
-export class SwipeHandler extends ui.js.Events {
+/**
+ * @extends {Events<{
+ *  swipe: Direction;
+ * }>}
+ */
+export class SwipeHandler extends Events {
     /** @type {boolean} */
     #finalTransform = false;
 
