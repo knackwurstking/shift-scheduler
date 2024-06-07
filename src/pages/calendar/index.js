@@ -7,7 +7,7 @@ import {
 import { html } from "ui/src/js";
 import { ShiftCard } from "../../components";
 import db from "../../db";
-import * as dialogs from "../../dialogs";
+import { EditDayDialog } from "../../dialogs";
 import { SwipeHandler } from "./swipe-handler";
 import * as utils from "./utils";
 
@@ -280,7 +280,7 @@ export class CalendarPage extends UIStackLayoutPage {
         UIFlexGridItem.register();
         ShiftCard.register();
 
-        dialogs.EditDayDialog.register();
+        EditDayDialog.register();
 
         customElements.define("calendar-page", CalendarPage);
     }; // }}}
@@ -519,9 +519,6 @@ export class CalendarPage extends UIStackLayoutPage {
      * @param {DatePickerStore} dateString
      */
     async onDatePicker(dateString) { // {{{
-        // Performance testing - start
-        const start = new Date().getMilliseconds();
-
         const date = new Date(dateString);
         date.setMonth(date.getMonth() - 1);
         this.today = new Date();
@@ -570,7 +567,7 @@ export class CalendarPage extends UIStackLayoutPage {
             return;
         }
 
-        const dialog = new dialogs.EditDayDialog(this.#store, this.#lang);
+        const dialog = new EditDayDialog(this.#store, this.#lang);
         document.body.appendChild(dialog);
         dialog.set(year, month, date);
 
