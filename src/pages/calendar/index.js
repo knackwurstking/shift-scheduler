@@ -5,6 +5,7 @@ import {
     UIStackLayoutPage
 } from "ui";
 import { html } from "ui/src/js";
+import { ShiftCard } from "../../components";
 import db from "../../db";
 import * as dialogs from "../../dialogs";
 import { SwipeHandler } from "./swipe-handler";
@@ -274,20 +275,14 @@ export class CalendarPage extends UIStackLayoutPage {
     #lang;
 
     static register = () => { // {{{
-        if (!customElements.get("ui-flex-grid")) {
-            customElements.define("ui-flex-grid", UIFlexGrid);
-        }
+        UIFlexGrid.register();
+        UIFlexGridRow.register();
+        UIFlexGridItem.register();
+        ShiftCard.register();
 
-        if (!customElements.get("ui-flex-grid-row")) {
-            customElements.define("ui-flex-grid-row", UIFlexGridRow);
-        }
-
-        if (!customElements.get("ui-flex-grid-item")) {
-            customElements.define("ui-flex-grid-item", UIFlexGridItem);
-        }
+        dialogs.EditDayDialog.register();
 
         customElements.define("calendar-page", CalendarPage);
-        dialogs.EditDayDialog.register();
     }; // }}}
 
     constructor() { // {{{
@@ -442,8 +437,6 @@ export class CalendarPage extends UIStackLayoutPage {
      * @param {Direction} direction
      */
     async handleSwipeEvent(direction) { // {{{
-        console.debug(`[calendar] handle swipe event: direction=${direction}`);
-
         switch (direction) {
             case "left":
                 // Go to next month
@@ -526,11 +519,6 @@ export class CalendarPage extends UIStackLayoutPage {
      * @param {DatePickerStore} dateString
      */
     async onDatePicker(dateString) { // {{{
-        console.debug(
-            `[calendar] date-picker change event: update calendar items`,
-            { dateString }
-        );
-
         // Performance testing - start
         const start = new Date().getMilliseconds();
 
@@ -542,11 +530,6 @@ export class CalendarPage extends UIStackLayoutPage {
         for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
             this.updateCalendarItem(new Date(date), items[i]);
         }
-
-        // Performance testing - end
-        console.debug(
-            `[calendar] updating all the (day) items took ${new Date().getMilliseconds() - start}ms`,
-        );
     } // }}}
 
     /** 
@@ -606,7 +589,7 @@ export class CalendarPage extends UIStackLayoutPage {
 
     /**
      * @private
-     * @param {EditModeStore} data 
+     * @param {EditModeStore} data
      */
     onEditMode(data) { // {{{
         if (this.hasAttribute("edit") && !!data.open) {
@@ -628,11 +611,11 @@ export class CalendarPage extends UIStackLayoutPage {
             this.removeChild(this.firstChild);
         }
 
-        let shifts = (this.#store.ui.get("settings").shifts || [])
+        let shifts = (this.#store.ui.get("settings").shifts || []);
         shifts = [
             {
                 id: 0,
-                name: this.#lang.ui.get("calendar", "reset"),
+                name: this.#lang.ui.get("calendar", "reset") || "",
                 shortName: "",
                 visible: false
             },
@@ -687,22 +670,20 @@ export class CalendarPage extends UIStackLayoutPage {
      * @param {WeekStartStore} weekStart
      */
     async onWeekStart(weekStart) { // {{{
-        console.debug(
-            `[calendar] week-start event: update week days and run the onDatePicker callback`,
-        );
-
         await this.updateWeekDays(weekStart);
         await this.onDatePicker(this.#store.ui.get("date-picker"));
     } // }}}
 
     /**
      * @private
-     * @param {LangStore} lang
      */
-    async onLang(lang) { // {{{
-        console.debug(`[calendar] language update`, lang);
-
+    async onLang() { // {{{
         // Update week days grid header row
         await this.updateWeekDays(this.#store.ui.get("week-start"));
+
+        const resetCard = this.querySelector(`shift-card:first-child span[slot="name"]`)
+        if (resetCard) {
+            resetCard.innerHTML = this.#lang.ui.get("calendar", "reset");
+        }
     } // }}}
 }

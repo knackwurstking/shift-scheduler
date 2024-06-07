@@ -69,9 +69,6 @@ export class SwipeHandler extends Events {
             if (this.startX === null || this.#finalTransform) return;
             this.#finalTransform = true;
 
-            // Start final transform
-            console.debug(`[Calendar SwipeHandler] transform lock`);
-
             if (!this.isMinSwipe()) {
                 this.setTransition(`left ${0.15}s ease`);
                 this.moveX(0);
@@ -174,8 +171,6 @@ export class SwipeHandler extends Events {
         this.clientX = null;
         this.#finalTransform = false;
         this.getItems().forEach(item => item.classList.remove("moving"));
-
-        console.debug(`[Calendar SwipeHandler] release transform lock`);
     } // }}}
 
     /** @private */

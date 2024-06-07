@@ -11,6 +11,7 @@ import {
     UIFlexGridItem,
     UIIconButton,
     UILang,
+    UILangType,
     UIStackLayout,
     UIStore,
     UIThemeHandler,
@@ -136,69 +137,29 @@ const content = html`
 export class ShiftSchedulerApp extends HTMLElement {
 
     static register = () => { // {{{
-        if (!customElements.get("ui-theme-handler")) {
-            UIThemeHandler.register();
-        }
-
-        if (!customElements.get("ui-store")) {
-            UIStore.register();
-        }
-
-        if (!customElements.get("ui-lang")) {
-            UILang.register();
-        }
-
-        if (!customElements.get("ui-app-bar")) {
-            UIAppBar.register();
-        }
-
-        if (!customElements.get("ui-flex-grid-item")) {
-            UIFlexGridItem.register();
-        }
-
-        if (!customElements.get("ui-icon-button")) {
-            UIIconButton.register();
-        }
-
-        if (!customElements.get("ui-button")) {
-            UIButton.register();
-        }
-
-        if (!customElements.get("ui-container")) {
-            UIContainer.register();
-        }
-
-        if (!customElements.get("ui-stack-layout")) {
-            UIStackLayout.register();
-        }
-
-        if (!customElements.get("svg-edit2")) {
-            SvgEdit2.register();
-        }
-
-        if (!customElements.get("svg-settings")) {
-            SvgSettings.register();
-        }
-
-        if (!customElements.get("svg-pdf-document")) {
-            SvgPDF.register();
-        }
-
-        if (!customElements.get("svg-today-outline")) {
-            SvgToday.register();
-        }
-
-        if (!customElements.get("svg-back-arrow-navigation")) {
-            SvgBackArrow.register();
-        }
-
-        customElements.define("shift-scheduler-app", ShiftSchedulerApp);
+        UIThemeHandler.register();
+        UIStore.register();
+        UILang.register();
+        UILangType.register();
+        UIAppBar.register();
+        UIFlexGridItem.register();
+        UIIconButton.register();
+        UIButton.register();
+        UIContainer.register();
+        UIStackLayout.register();
+        SvgEdit2.register();
+        SvgSettings.register();
+        SvgPDF.register();
+        SvgToday.register();
+        SvgBackArrow.register();
 
         CalendarPage.register();
         SettingsPage.register();
 
         DatePickerDialog.register();
         PDFDialog.register();
+
+        customElements.define("shift-scheduler-app", ShiftSchedulerApp);
     }; // }}}
 
     constructor() { // {{{
@@ -292,7 +253,6 @@ export class ShiftSchedulerApp extends HTMLElement {
 
         for (const l of ["en", "de"]) {
             if (navigator.language.match(new RegExp(`^${l}`, "i"))) {
-                console.debug(`[ShiftSchedulerApp] Got a match here for "${l}":`, navigator.language);
                 this.uiLang.setAttribute("current", l);
                 break;
             }
@@ -309,12 +269,10 @@ export class ShiftSchedulerApp extends HTMLElement {
                 "change",
                 (ltElement) => { // {{{
                     if (!ltElement) {
-                        console.debug("[ShiftSchedulerApp] No language set for now!");
                         return;
                     }
 
-                    console.debug(`[ShiftSchedulerApp] current language in use:`, ltElement);
-                    this.uiStore.ui.set("lang", ltElement.ui.name, true);
+                    this.uiStore.ui.set("lang", ltElement.ui.name);
                 }, // }}}
                 true,
             ),
@@ -375,7 +333,6 @@ export class ShiftSchedulerApp extends HTMLElement {
         this.uiStore.ui.set("edit-mode", { open: false, active: null }, true);
 
         this.uiStore.ui.on("theme", (data) => {
-            console.debug(`[ShiftSchedulerApp] current theme in use:`, data)
             setTheme(data, document.querySelector("ui-theme-handler"));
         }, true);
     } // }}}
@@ -495,8 +452,6 @@ export class ShiftSchedulerApp extends HTMLElement {
      * @param {import("ui").UIStackLayoutPage | null} data.oldPage 
      */
     async stackLayoutChange({ newPage, oldPage }) { // {{{
-        console.debug(`[ShiftSchedulerApp] stack layout changed:`, { newPage, oldPage });
-
         // Update the AppBar buttons...
         if (this.uiStackLayout.ui.stack.length <= 1) {
             try {
