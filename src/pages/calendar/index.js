@@ -1,4 +1,10 @@
-import * as ui from "ui";
+import {
+    UIFlexGrid,
+    UIFlexGridItem,
+    UIFlexGridRow,
+    UIStackLayoutPage
+} from "ui";
+import { html } from "ui/src/js";
 import db from "../../db";
 import * as dialogs from "../../dialogs";
 import { SwipeHandler } from "./swipe-handler";
@@ -6,19 +12,16 @@ import * as utils from "./utils";
 
 /**
  * @typedef {import("./swipe-handler").Direction} Direction
- * @typedef {import("../../db").DB} DB 
  * @typedef {import("../../types").UIStoreEvents} UIStoreEvents
- * @typedef {import("../../types").DatePickerStore} DatePickerStore 
- * @typedef {import("../../types").WeekStartStore} WeekStartStore 
- * @typedef {import("../../types").LangStore} LangStore 
+ * @typedef {import("../../types").DatePickerStore} DatePickerStore
+ * @typedef {import("../../types").WeekStartStore} WeekStartStore
+ * @typedef {import("../../types").LangStore} LangStore
  * @typedef {import("../../types").DBDataEntry} DBDataEntry
  * @typedef {import("../../types").EditModeStore} EditModeStore
  */
 
 
-// {{{ Component Template
-
-const html = ui.js.html;
+// {{{ HTML Content
 const template = document.createElement("template");
 
 const templateWeekDaysRow = html`
@@ -65,7 +68,7 @@ const templateItemContent = html`
 </ui-flex-grid>
 `;
 
-template.innerHTML = html`
+template.innerHTML = `
 <style>
     :host {
         --header-height: 2.5rem;
@@ -262,19 +265,30 @@ template.innerHTML = html`
 
 <ui-flex-grid-row class="edit-mode" gap="0.25rem"><slot name="shifts"></slot></ui-flex-grid-row>
 `;
-
 // }}}
 
-export class CalendarPage extends ui.UIStackLayoutPage {
-    /** @type {ui.UIStore<UIStoreEvents>} */
+export class CalendarPage extends UIStackLayoutPage {
+    /** @type {import("ui").UIStore<UIStoreEvents>} */
     #store;
-    /** @type {ui.UILang} */
+    /** @type {import("ui").UILang} */
     #lang;
 
-    static register = () => {
+    static register = () => { // {{{
+        if (!customElements.get("ui-flex-grid")) {
+            customElements.define("ui-flex-grid", UIFlexGrid);
+        }
+
+        if (!customElements.get("ui-flex-grid-row")) {
+            customElements.define("ui-flex-grid-row", UIFlexGridRow);
+        }
+
+        if (!customElements.get("ui-flex-grid-item")) {
+            customElements.define("ui-flex-grid-item", UIFlexGridItem);
+        }
+
         customElements.define("calendar-page", CalendarPage);
         dialogs.EditDayDialog.register();
-    };
+    }; // }}}
 
     constructor() { // {{{
         super();
@@ -626,7 +640,7 @@ export class CalendarPage extends ui.UIStackLayoutPage {
         ];
 
         for (let i = 0; i < shifts.length; i++) {
-            const item = new ui.UIFlexGridItem();
+            const item = new UIFlexGridItem();
             item.slot = "shifts";
             item.innerHTML = `
                 <shift-card color="${shifts[i].color || 'inherit'}" ${!!shifts[i].visible ? 'visible' : ''}>
