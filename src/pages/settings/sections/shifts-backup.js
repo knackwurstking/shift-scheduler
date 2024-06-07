@@ -1,6 +1,7 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
-import * as ui from "ui";
+import { UIButton, UIFlexGridItem, UIFlexGridRow, UILabel } from "ui";
+import { CleanUp, html, isAndroid } from "ui/src/js";
 import db from "../../../db";
 import { validateShift } from "../../../utils";
 
@@ -14,7 +15,6 @@ import { validateShift } from "../../../utils";
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
-const html = ui.js.html;
 const innerHTML = html`
     <ui-label>
         <ui-flex-grid-row gap="0.25rem">
@@ -40,43 +40,47 @@ const innerHTML = html`
 `;
 
 export class ShiftsBackup extends HTMLElement {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
 
-    static register = () =>
+    static register = () => {
+        UILabel.register();
+        UIFlexGridRow.register();
+        UIFlexGridItem.register();
+        UIButton.register();
+
         customElements.define("settings-shifts-backup", ShiftsBackup);
+    };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) {
         // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.#store = store;
-        this.#lang = lang;
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang;
 
-        this.cleanup = new ui.js.CleanUp();
+        this.cleanup = new CleanUp();
 
-        /** @type {ui.UILabel} */
+        /** @type {UILabel} */
         this.label = this.querySelector("ui-label");
 
-        /** @type {ui.UIButton} */
+        /** @type {UIButton} */
         this.importButton = this.querySelector(`ui-button[name="import"]`);
         this.importButton.onclick = async () => this.importBackup();
 
-        /** @type {ui.UIButton} */
+        /** @type {UIButton} */
         this.exportButton = this.querySelector(`ui-button[name="export"]`);
         this.exportButton.onclick = async () => this.exportBackup();
     } // }}}
 
     connectedCallback() { // {{{
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true),
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true),
         );
     } // }}}
 
@@ -106,14 +110,14 @@ export class ShiftsBackup extends HTMLElement {
         // {{{
         /** @type {BackupV1} */
         const backup = {
-            settings: this.#store.ui.get("settings"),
+            settings: this.uiStore.ui.get("settings"),
             indexedDB: {
                 version: db.version,
                 data: await db.getAll(),
             },
         };
 
-        if (ui.js.isAndroid()) this.androidExport(backup);
+        if (isAndroid()) this.androidExport(backup);
         else this.browserExport(backup);
     } // }}}
 
@@ -123,7 +127,7 @@ export class ShiftsBackup extends HTMLElement {
      * */
     async readerOnLoad(r) { // {{{
         if (typeof r.result !== "string") {
-            alert(this.#lang.ui.get("backup-alerts", "invalid-data"));
+            alert(this.uiLang.ui.get("backup-alerts", "invalid-data"));
             return;
         }
 
@@ -135,12 +139,12 @@ export class ShiftsBackup extends HTMLElement {
             if (Object.hasOwn(data, "settings")) {
                 if (!validateSettings(data.settings)) {
                     alert(
-                        this.#lang.ui.get("backup-alerts", "invalid-settings"),
+                        this.uiLang.ui.get("backup-alerts", "invalid-settings"),
                     );
                     return;
                 }
 
-                this.#store.ui.set("settings", data.settings);
+                this.uiStore.ui.set("settings", data.settings);
             }
 
             // NOTE: Support for v1.4.0 - v1.5.3
@@ -152,7 +156,7 @@ export class ShiftsBackup extends HTMLElement {
             if (Object.hasOwn(data, "indexedDB")) {
                 if (typeof data.indexedDB.version !== "number") {
                     alert(
-                        this.#lang.ui
+                        this.uiLang.ui
                             .get("backup-alerts", "invalid-version-type")
                             .replace("%v", `${typeof data.indexedDB.version}`),
                     );
@@ -164,7 +168,7 @@ export class ShiftsBackup extends HTMLElement {
                     data.indexedDB.version < 0
                 ) {
                     alert(
-                        this.#lang.ui
+                        this.uiLang.ui
                             .get("backup-alerts", "invalid-version-number")
                             .replace("%d", data.indexedDB.version.toString())
                             .replace("%d", db.version.toString()),
@@ -180,7 +184,7 @@ export class ShiftsBackup extends HTMLElement {
                         )
                     ) {
                         alert(
-                            this.#lang.ui
+                            this.uiLang.ui
                                 .get("backup-alerts", "invalid-indexed-entry")
                                 .replace(
                                     "%s",
@@ -262,17 +266,17 @@ export class ShiftsBackup extends HTMLElement {
     /** @private */
     onLang() {
         // {{{
-        this.label.ui.primary = this.#lang.ui.get(
+        this.label.ui.primary = this.uiLang.ui.get(
             "settings",
             "label-primary-shifts-backup",
         );
 
-        this.importButton.innerHTML = this.#lang.ui.get(
+        this.importButton.innerHTML = this.uiLang.ui.get(
             "settings",
             "button-import",
         );
 
-        this.exportButton.innerHTML = this.#lang.ui.get(
+        this.exportButton.innerHTML = this.uiLang.ui.get(
             "settings",
             "button-export",
         );

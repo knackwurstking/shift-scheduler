@@ -1,31 +1,34 @@
-import * as ui from "ui";
+import { UIButton } from "ui";
 import { CleanUp } from "ui/src/js";
-import * as dialogs from "../../../dialogs";
+import { EditShiftDialog } from "../../../dialogs";
 
 /**
  * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").Shift} Shift
  */
 
-export class ShiftAddButton extends ui.UIButton {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
+export class ShiftAddButton extends UIButton {
 
-    static register = () => customElements.define("settings-shift-add-button", ShiftAddButton)
+    static register = () => {
+        EditShiftDialog.register();
+        UIButton.register();
+
+        customElements.define("settings-shift-add-button", ShiftAddButton)
+    };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         super.setAttribute("color", "primary")
         super.setAttribute("variant", "full")
 
-        this.#store = store;
-        this.#lang = lang;
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang;
 
         this.cleanup = new CleanUp();
     } // }}}
@@ -35,7 +38,7 @@ export class ShiftAddButton extends ui.UIButton {
         this.handleEvents()
 
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true),
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true),
         );
     } // }}}
 
@@ -45,7 +48,7 @@ export class ShiftAddButton extends ui.UIButton {
 
     /** @private */
     handleEvents() { // {{{
-        const onClose = async (/**@type{dialogs.EditShiftDialog}*/dialog) => { // {{{
+        const onClose = async (/**@type{EditShiftDialog}*/dialog) => { // {{{
             document.body.removeChild(dialog);
         } // }}}
 
@@ -59,7 +62,7 @@ export class ShiftAddButton extends ui.UIButton {
                 color: null,
             };
 
-            const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
+            const dialog = new EditShiftDialog(shift, this.uiStore, this.uiLang);
             document.body.appendChild(dialog)
 
             dialog.ui.open(true);
@@ -70,11 +73,11 @@ export class ShiftAddButton extends ui.UIButton {
              */
             const onSubmit = async (newShift) => { // {{{
                 if (!newShift.name) {
-                    alert(this.#lang.ui.get("edit-shift-alerts", "missing-name"));
+                    alert(this.uiLang.ui.get("edit-shift-alerts", "missing-name"));
 
                     shift = newShift;
 
-                    const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
+                    const dialog = new EditShiftDialog(shift, this.uiStore, this.uiLang);
                     document.body.appendChild(dialog)
 
                     dialog.ui.open(true);
@@ -88,7 +91,7 @@ export class ShiftAddButton extends ui.UIButton {
                     newShift.shortName = newShift.name.slice(0, 2)
                 }
 
-                this.#store.ui.update("settings", (settings) => {
+                this.uiStore.ui.update("settings", (settings) => {
                     return {
                         ...settings,
                         shifts: [...settings.shifts, newShift],
@@ -105,6 +108,6 @@ export class ShiftAddButton extends ui.UIButton {
 
     /** @private */
     async onLang() { // {{{
-        this.innerHTML = this.#lang.ui.get("settings", "button-add-shift");
+        this.innerHTML = this.uiLang.ui.get("settings", "button-add-shift");
     } // }}}
 } // }}}

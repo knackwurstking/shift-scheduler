@@ -1,4 +1,5 @@
-import * as ui from "ui";
+import { UIButton, UILabel } from "ui";
+import { CleanUp } from "ui/src/js";
 import { IndexedDBBrowserPage } from "../../indexeddb-browser";
 
 /**
@@ -12,41 +13,42 @@ const innerHTML = `
 `;
 
 export class IndexedDBBrowser extends HTMLElement {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
-
-    /** @type {ui.UILabel} */
-    #label;
-    /** @type {ui.UIButton} */
-    #button
 
     static register = () => {
-        customElements.define("settings-indexeddb-browser", IndexedDBBrowser);
+        UILabel.register();
+        UIButton.register();
+
         IndexedDBBrowserPage.register();
+
+        customElements.define("settings-indexeddb-browser", IndexedDBBrowser);
     };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.cleanup = new ui.js.CleanUp();
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang;
 
-        this.#store = store;
-        this.#lang = lang;
+        this.cleanup = new CleanUp();
 
         /**
          * @private
-         * @type {ui.UIStackLayout}
+         * @type {import("ui").UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
-        this.#label = this.querySelector("ui-label");
+        /** @type {UILabel} */
+        this.label = this.querySelector("ui-label");
+
+        /** @type {UIButton} */
+        this.button = this.querySelector("ui-button");
         this.createButton()
     } // }}}
 
@@ -63,7 +65,7 @@ export class IndexedDBBrowser extends HTMLElement {
             this.stackLayout.ui.unregisterPage("indexeddb-browser"));
 
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true)
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true)
         );
     } // }}}
 
@@ -73,15 +75,14 @@ export class IndexedDBBrowser extends HTMLElement {
 
     /** @private */
     createButton() { // {{{
-        this.#button = this.querySelector("ui-button");
-        this.#button.onclick = async () => {
+        this.button.onclick = async () => {
             this.stackLayout.ui.setPage("indexeddb-browser");
         };
     } // }}}
 
     /** @private */
     async onLang() { // {{{
-        this.#label.ui.primary = this.#lang.ui.get("settings", "label-primary-indexeddb-browser");
-        this.#button.innerHTML = this.#lang.ui.get("settings", "button-indexeddb-browser")
+        this.label.ui.primary = this.uiLang.ui.get("settings", "label-primary-indexeddb-browser");
+        this.button.innerHTML = this.uiLang.ui.get("settings", "button-indexeddb-browser")
     } // }}}
 }

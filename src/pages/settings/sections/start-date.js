@@ -1,4 +1,5 @@
-import * as ui from "ui";
+import { UIInput, UILabel } from "ui";
+import { CleanUp, html } from "ui/src/js";
 
 /**
  * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
@@ -6,7 +7,7 @@ import * as ui from "ui";
  * @typedef {import("../../../types").SettingsStore} SettingsStore
  */
 
-const innerHTML = `
+const innerHTML = html`
 <ui-label>
     <ui-input
         slot="input"
@@ -16,42 +17,44 @@ const innerHTML = `
 `;
 
 export class StartDate extends HTMLElement {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
 
-    /** @type {ui.UIInput<UIInputEvents, "date">} */
-    #input;
-    /** @type {ui.UILabel} */
-    #label;
+    static register = () => {
+        UIInput.register();
+        UILabel.register();
 
-    static register = () => customElements.define("settings-start-date", StartDate)
+        customElements.define("settings-start-date", StartDate)
+    };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.cleanup = new ui.js.CleanUp();
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang;
 
-        this.#store = store;
-        this.#lang = lang;
+        this.cleanup = new CleanUp();
 
-        this.#label = this.querySelector("ui-label");
-        this.createInput()
+        /** @type {UILabel} */
+        this.label = this.querySelector("ui-label");
+
+        /** @type {UIInput<UIInputEvents, "date">} */
+        this.input;
+        this.createInput();
     } // }}}
 
     connectedCallback() { // {{{
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true),
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true),
         );
 
         this.cleanup.add(
-            this.#store.ui.on("settings", this.onSettings.bind(this), true),
+            this.uiStore.ui.on("settings", this.onSettings.bind(this), true),
         );
     } // }}}
 
@@ -61,10 +64,10 @@ export class StartDate extends HTMLElement {
 
     /** @private */
     createInput() { // {{{
-        this.#input = this.querySelector("ui-input");
+        this.input = this.querySelector("ui-input");
 
-        this.#input.ui.events.on("input", (/** @type {string} */value) => {
-            this.#store.ui.update(
+        this.input.ui.events.on("input", (/** @type {string} */value) => {
+            this.uiStore.ui.update(
                 "settings", (/**@type{SettingsStore}*/ settings) => {
                     settings.startDate = value;
                     return settings;
@@ -75,7 +78,7 @@ export class StartDate extends HTMLElement {
 
     /** @private */
     async onLang() { // {{{
-        this.#label.ui.primary = this.#lang.ui.get(
+        this.label.ui.primary = this.uiLang.ui.get(
             "settings", "label-primary-start-date"
         );
     } // }}}
@@ -85,7 +88,7 @@ export class StartDate extends HTMLElement {
      * @param {SettingsStore} settings
      */
     async onSettings(settings) { // {{{
-        if (settings.startDate === this.#input.ui.value) return;
-        this.#input.ui.value = settings.startDate;
+        if (settings.startDate === this.input.ui.value) return;
+        this.input.ui.value = settings.startDate;
     } // }}}
 }

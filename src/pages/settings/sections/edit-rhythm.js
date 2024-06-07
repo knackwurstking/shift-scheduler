@@ -1,4 +1,5 @@
-import * as ui from "ui";
+import { UIButton, UILabel } from "ui";
+import { CleanUp } from "ui/src/js";
 import { EditRhythmDialog } from "../../../dialogs";
 
 /**
@@ -12,38 +13,40 @@ const innerHTML = `
 `;
 
 export class EditRhythm extends HTMLElement {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
 
-    /** @type {ui.UILabel} */
-    #label;
-    /** @type {ui.UIButton} */
-    #button
+    static register = () => {
+        UILabel.register();
+        UIButton.register();
 
-    static register = () => customElements.define("settings-edit-rhythm", EditRhythm)
+        customElements.define("settings-edit-rhythm", EditRhythm)
+    };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.cleanup = new ui.js.CleanUp();
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang;
 
-        this.#store = store;
-        this.#lang = lang;
+        this.cleanup = new CleanUp();
 
-        this.#label = this.querySelector("ui-label");
+        /** @type {UILabel} */
+        this.label = this.querySelector("ui-label");
+
+        /** @type {UIButton} */
+        this.button = this.querySelector("ui-button");
         this.createButton()
     } // }}}
 
     connectedCallback() { // {{{
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true),
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true),
         );
     } // }}}
 
@@ -53,22 +56,21 @@ export class EditRhythm extends HTMLElement {
 
     /** @private */
     createButton() { // {{{
-        this.#button = this.querySelector("ui-button");
-        this.#button.onclick = async () => {
-            const dialog = new EditRhythmDialog(this.#store, this.#lang)
+        this.button.onclick = async () => {
+            const dialog = new EditRhythmDialog(this.uiStore, this.uiLang)
             document.body.appendChild(dialog);
 
             dialog.ui.open(true);
 
             dialog.ui.events.on("close", async () => {
                 document.body.removeChild(dialog)
-            })
+            });
         };
     } // }}}
 
     /** @private */
     async onLang() { // {{{
-        this.#label.ui.primary = this.#lang.ui.get("settings", "label-primary-edit-rhythm");
-        this.#button.innerHTML = this.#lang.ui.get("settings", "button-edit-rhythm")
+        this.label.ui.primary = this.uiLang.ui.get("settings", "label-primary-edit-rhythm");
+        this.button.innerHTML = this.uiLang.ui.get("settings", "button-edit-rhythm");
     } // }}}
 }

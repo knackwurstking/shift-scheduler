@@ -1,4 +1,11 @@
-import * as ui from "ui";
+import {
+    UIButton,
+    UIDialog,
+    UIFlexGrid,
+    UIFlexGridItem,
+    UIInput,
+    UILabel
+} from "ui";
 
 /**
  * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
@@ -8,32 +15,27 @@ import * as ui from "ui";
  */
 
 /**
- * @extends {ui.UIDialog<UIDialogEvents & { submit: Shift }>}
+ * @extends {UIDialog<UIDialogEvents & { submit: Shift }>}
  */
-export class EditShiftDialog extends ui.UIDialog {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
+export class EditShiftDialog extends UIDialog {
 
-    /** @type {ui.UIButton} */
-    #cancelButton;
-    #onCancel = async () => this.ui.close();
+    static register = () => {
+        UIDialog.register();
+        UIFlexGrid.register();
+        UIFlexGridItem.register();
+        UIButton.register();
+        UIInput.register();
+        UILabel.register();
 
-    /** @type {ui.UIButton} */
-    #submitButton;
-    #onSubmit = () => {
-        this.ui.events.dispatch("submit", this.shift);
-        this.ui.close();
-    };
-
-    static register = () =>
-        customElements.define("edit-shift-dialog", EditShiftDialog);
+        if (!customElements.get("edit-shift-dialog")) {
+            customElements.define("edit-shift-dialog", EditShiftDialog);
+        }
+    }
 
     /**
      * @param {Shift} shift
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(shift, store, lang) { // {{{
         super();
@@ -41,61 +43,46 @@ export class EditShiftDialog extends ui.UIDialog {
         /** @type {Shift} */
         this.shift = { ...shift }
 
-        this.#store = store;
-        this.#lang = lang
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
 
-        /**
-         * @private
-         * @type {ui.UIStackLayout}
-         */
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang
+
+        /** @type {import("ui").UIStackLayout} */
         this.stackLayout = document.querySelector("ui-stack-layout")
 
         this.colorReset = null;
 
-        /**
-         * @private
-         * @type {ui.UIFlexGridItem}
-         */
+        /** @type {UIFlexGridItem} */
         this.nameItem;
 
-        /**
-         * @private
-         * @type {ui.UIFlexGridItem}
-         */
+        /** @type {UIFlexGridItem} */
         this.shortNameItem;
 
-        /**
-         * @private
-         * @type {ui.UIFlexGridItem}
-         */
+        /** @type {UIFlexGridItem} */
         this.colorPickerItem;
 
-        /**
-         * @private
-         * @type {ui.UIFlexGridItem}
-         */
+        /** @type {UIFlexGridItem} */
         this.useDefaultColorItem;
 
-        /**
-         * @private
-         * @type {ui.UIFlexGridItem}
-         */
+        /** @type {UIFlexGridItem} */
         this.visibleItem;
 
-        /**
-         * @private
-         * @type {ui.UIInput<UIInputEvents, "text">}
-         */
+        /** @type {UIInput<UIInputEvents, "text">} */
         this.name;
 
-        /**
-         * @private
-         * @type {ui.UIInput<UIInputEvents, "text">}
-         */
+        /** @type {UIInput<UIInputEvents, "text">} */
         this.shortName;
 
+        /** @type {UIButton} */
+        this.cancel;
+
+        /** @type {UIButton} */
+        this.submit;
+
         this.createContent();
-        this.createActionButtons();
+        this.createActions();
     } // }}}
 
     connectedCallback() { // {{{
@@ -106,14 +93,14 @@ export class EditShiftDialog extends ui.UIDialog {
 
         setTimeout(() => {
             this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true),
+                this.uiStore.ui.on("lang", this.onLang.bind(this), true),
             );
         });
     } // }}}
 
     /** @private */
     createContent() { // {{{
-        const content = new ui.UIFlexGrid();
+        const content = new UIFlexGrid();
 
         content.setAttribute("gap", "0.5rem");
 
@@ -128,10 +115,10 @@ export class EditShiftDialog extends ui.UIDialog {
 
     /**
      * @private
-     * @param {ui.UIFlexGrid} container 
+     * @param {UIFlexGrid} container 
      */
     createContentSectionName(container) { // {{{
-        this.nameItem = new ui.UIFlexGridItem();
+        this.nameItem = new UIFlexGridItem();
         this.nameItem.innerHTML = `
             <ui-input
                 type="text"
@@ -149,10 +136,10 @@ export class EditShiftDialog extends ui.UIDialog {
 
     /**
      * @private
-     * @param {ui.UIFlexGrid} container 
+     * @param {UIFlexGrid} container 
      */
     createContentSectionShortName(container) { // {{{
-        this.shortNameItem = new ui.UIFlexGridItem();
+        this.shortNameItem = new UIFlexGridItem();
         this.shortNameItem.innerHTML = `
             <ui-input
                 type="text"
@@ -178,10 +165,10 @@ export class EditShiftDialog extends ui.UIDialog {
 
     /**
      * @private
-     * @param {ui.UIFlexGrid} container 
+     * @param {UIFlexGrid} container 
      */
     createContentColorPicker(container) { // {{{
-        this.colorPickerItem = new ui.UIFlexGridItem();
+        this.colorPickerItem = new UIFlexGridItem();
         this.colorPickerItem.innerHTML = `
             <ui-label>
                 <input slot="input" style="width: 100%; min-width: 4rem;" type="color" value="${this.shift.color}">
@@ -204,10 +191,10 @@ export class EditShiftDialog extends ui.UIDialog {
 
     /**
      * @private
-     * @param {ui.UIFlexGrid} container 
+     * @param {UIFlexGrid} container 
      */
     createContentUseDefaultColorCheckbox(container) { // {{{
-        this.useDefaultColorItem = new ui.UIFlexGridItem();
+        this.useDefaultColorItem = new UIFlexGridItem();
         this.useDefaultColorItem.innerHTML = `
             <ui-label ripple>
                 <input slot="input" type="checkbox">
@@ -240,10 +227,10 @@ export class EditShiftDialog extends ui.UIDialog {
 
     /**
      * @private
-     * @param {ui.UIFlexGrid} container 
+     * @param {UIFlexGrid} container 
      */
     createContentVisibleCheckbox(container) { // {{{
-        this.visibleItem = new ui.UIFlexGridItem();
+        this.visibleItem = new UIFlexGridItem();
         this.visibleItem.innerHTML = `
             <ui-label ripple>
                 <input slot="input" type="checkbox">
@@ -270,29 +257,29 @@ export class EditShiftDialog extends ui.UIDialog {
     } // }}}
 
     /** @private */
-    createActionButtons() { // {{{
+    createActions() { // {{{
         // Cancel Button
-        let item = new ui.UIFlexGridItem()
+        let item = new UIFlexGridItem()
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `<ui-button color="secondary" variant="full"></ui-button>`
-        this.#cancelButton = item.querySelector("ui-button")
-        this.#cancelButton.onclick = this.#onCancel;
+        this.cancel = item.querySelector("ui-button")
+        this.cancel.onclick = this.onCancel.bind(this);
         this.appendChild(item)
 
         // Submit Button
-        item = new ui.UIFlexGridItem()
+        item = new UIFlexGridItem()
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `<ui-button color="primary" variant="full"></ui-button>`
-        this.#submitButton = item.querySelector("ui-button")
-        this.#submitButton.onclick = this.#onSubmit;
+        this.submit = item.querySelector("ui-button")
+        this.submit.onclick = this.onSubmit.bind(this);
         this.appendChild(item)
     } // }}}
 
     /**
      * @private
-     * @param {ui.UIFlexGridItem} item
+     * @param {UIFlexGridItem} item
      */
     enableContentSection(item) { // {{{
         item.style.opacity = "1";
@@ -303,7 +290,7 @@ export class EditShiftDialog extends ui.UIDialog {
 
     /**
      * @private
-     * @param {ui.UIFlexGridItem} item
+     * @param {UIFlexGridItem} item
      */
     disableContentSection(item) { // {{{
         item.style.opacity = "0.25";
@@ -339,43 +326,52 @@ export class EditShiftDialog extends ui.UIDialog {
         this.shift.visible = state;
     } // }}}
 
+    onCancel() {
+        this.ui.close();
+    }
+
+    async onSubmit() {
+        this.ui.events.dispatch("submit", this.shift);
+        this.ui.close();
+    }
+
     /** @private */
     async onLang() { // {{{
-        this.ui.title = this.#lang.ui.get("edit-shift-dialog", "title");
+        this.ui.title = this.uiLang.ui.get("edit-shift-dialog", "title");
 
         // Name
         this.name.ui.title =
-            this.#lang.ui.get("edit-shift-dialog", "input-title-name");
+            this.uiLang.ui.get("edit-shift-dialog", "input-title-name");
 
         // Short
         this.shortName.ui.title =
-            this.#lang.ui.get("edit-shift-dialog", "input-title-short-name");
+            this.uiLang.ui.get("edit-shift-dialog", "input-title-short-name");
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.colorPickerItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get(
+            this.uiLang.ui.get(
                 "edit-shift-dialog",
                 "label-primary-color-picker"
             );
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.useDefaultColorItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get(
+            this.uiLang.ui.get(
                 "edit-shift-dialog",
                 "label-primary-use-default-color"
             );
 
         // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
         this.visibleItem.querySelector("ui-label").ui.primary =
-            this.#lang.ui.get(
+            this.uiLang.ui.get(
                 "edit-shift-dialog",
                 "label-primary-visible-item"
             );
 
-        this.#cancelButton.innerText =
-            this.#lang.ui.get("edit-shift-dialog", "button-cancel");
+        this.cancel.innerText =
+            this.uiLang.ui.get("edit-shift-dialog", "button-cancel");
 
-        this.#submitButton.innerText =
-            this.#lang.ui.get("edit-shift-dialog", "button-submit");
+        this.submit.innerText =
+            this.uiLang.ui.get("edit-shift-dialog", "button-submit");
     } // }}}
 }

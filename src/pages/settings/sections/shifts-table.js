@@ -1,5 +1,6 @@
-import * as ui from "ui";
-import * as dialogs from "../../../dialogs";
+import { UIIconButton } from "ui";
+import { CleanUp, createDraggable, html } from "ui/src/js";
+import { EditShiftDialog } from "../../../dialogs";
 
 /**
  * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
@@ -7,46 +8,52 @@ import * as dialogs from "../../../dialogs";
  * @typedef {import("../../../types").Shift} Shift
  */
 
-const innerHTML = `
-<thead>
-    <tr>
-        <th style="text-align: left;"></th>
-        <th style="text-align: left;"></th>
-        <th style="text-align: right;"></th>
-    </tr>
-</thead>
+const innerHTML = html`
+    <thead>
+        <tr>
+            <th style="text-align: left;"></th>
+            <th style="text-align: left;"></th>
+            <th style="text-align: right;"></th>
+        </tr>
+    </thead>
 
-<tbody></tbody>
+    <tbody></tbody>
 `
 
 export class ShiftsTable extends HTMLTableElement {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store
-    /** @type {ui.UILang} */
-    #lang
 
-    static register = () => customElements.define("settings-shifts-table", ShiftsTable, { extends: "table" })
+    static register = () => {
+        UIIconButton.register();
+
+        EditShiftDialog.register();
+
+        customElements.define("settings-shifts-table", ShiftsTable, { extends: "table" })
+    };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
-        this.#store = store
-        this.#lang = lang
+
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang
+
         this.innerHTML = innerHTML;
-        this.cleanup = new ui.js.CleanUp();
+        this.cleanup = new CleanUp();
         this.tbody = this.querySelector("tbody");
     } // }}}
 
     connectedCallback() { // {{{
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true),
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true),
         );
 
         this.cleanup.add(
-            this.#store.ui.on("settings", this.onSettings.bind(this), true),
+            this.uiStore.ui.on("settings", this.onSettings.bind(this), true),
         );
     } // }}}
 
@@ -70,7 +77,7 @@ export class ShiftsTable extends HTMLTableElement {
             this.tbody.appendChild(tr);
 
             // Draggable Setup
-            ui.js.createDraggable(tr, {
+            createDraggable(tr, {
                 onDragStart: async () => { // {{{
                     dStart = index;
                 }, // }}}
@@ -101,7 +108,7 @@ export class ShiftsTable extends HTMLTableElement {
                             ...settings.shifts.slice(index + 1),
                         ];
 
-                        this.#store.ui.set("settings", settings);
+                        this.uiStore.ui.set("settings", settings);
                     } else if (dStart > index) { // dragged up 
                         settings.shifts = [
                             ...settings.shifts.slice(0, index),
@@ -110,7 +117,7 @@ export class ShiftsTable extends HTMLTableElement {
                             ...settings.shifts.slice(dStart + 1),
                         ];
 
-                        this.#store.ui.set("settings", settings);
+                        this.uiStore.ui.set("settings", settings);
                     }
 
                     [...this.tbody.children].forEach((/**@type{HTMLElement}*/c) => {
@@ -144,11 +151,11 @@ export class ShiftsTable extends HTMLTableElement {
             </ui-flex-grid-row>
         `;
 
-        /** @type {ui.UIIconButton[]} */
+        /** @type {UIIconButton[]} */
         // @ts-ignore
         const [editButton, deleteButton] = [...td.querySelectorAll("ui-icon-button")]
         editButton.onclick = async () => { // {{{
-            const dialog = new dialogs.EditShiftDialog(shift, this.#store, this.#lang);
+            const dialog = new EditShiftDialog(shift, this.uiStore, this.uiLang);
             document.body.appendChild(dialog);
 
             dialog.ui.open(true);
@@ -157,7 +164,7 @@ export class ShiftsTable extends HTMLTableElement {
             });
 
             dialog.ui.events.on("submit", (shift) => {
-                this.#store.ui.update("settings", (settings) => {
+                this.uiStore.ui.update("settings", (settings) => {
                     return {
                         ...settings,
                         shifts: settings.shifts.map(s => {
@@ -175,7 +182,7 @@ export class ShiftsTable extends HTMLTableElement {
         deleteButton.onclick = async () => { // {{{
             if (
                 !window.confirm(
-                    this.#lang.ui.get(
+                    this.uiLang.ui.get(
                         "settings", "confirm-delete-shift"
                     ).replace("%s", shift.name)
                 )
@@ -183,7 +190,7 @@ export class ShiftsTable extends HTMLTableElement {
                 return
             };
 
-            this.#store.ui.update("settings", (settings) => {
+            this.uiStore.ui.update("settings", (settings) => {
                 return {
                     ...settings,
                     shifts: settings.shifts.filter(s => s.id !== shift.id),
@@ -224,11 +231,11 @@ export class ShiftsTable extends HTMLTableElement {
         [...this.querySelectorAll("thead th")].forEach((th, i) => {
             switch (i) {
                 case 0:
-                    th.innerHTML = this.#lang.ui.get(
+                    th.innerHTML = this.uiLang.ui.get(
                         "settings", "table-header-name");
                     break
                 case 1:
-                    th.innerHTML = this.#lang.ui.get(
+                    th.innerHTML = this.uiLang.ui.get(
                         "settings", "table-header-short-name");
                     break
             }

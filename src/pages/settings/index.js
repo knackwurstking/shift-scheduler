@@ -1,12 +1,26 @@
-import * as ui from "ui";
-import * as dialogs from "../../dialogs";
-import * as sections from "./sections";
+import {
+    UIFlexGrid,
+    UIFlexGridItem,
+    UIFlexGridRow,
+    UIStackLayoutPage
+} from "ui";
 import { html } from "ui/src/js";
+import {
+    EditRhythm,
+    IndexedDBBrowser,
+    ShiftAddButton,
+    ShiftsBackup,
+    ShiftsTable,
+    StartDate,
+    ThemePicker,
+    WeekStart
+} from "./sections";
 
 /**
  * @typedef {import("../../types").UIStoreEvents} UIStoreEvents
  */
 
+// {{{ HTML content
 const content = html`
     <ui-flex-grid
         class="no-scrollbar"
@@ -74,26 +88,31 @@ const content = html`
         </ui-flex-grid-row>
     </ui-flex-grid>
 `;
+// }}}
 
-export class SettingsPage extends ui.UIStackLayoutPage {
-    /** @type {ui.UIStore<UIStoreEvents>} */
+export class SettingsPage extends UIStackLayoutPage {
+    /** @type {import("ui").UIStore<UIStoreEvents>} */
     #store
-    /** @type {ui.UILang} */
+    /** @type {import("ui").UILang} */
     #lang
 
-    static register = () => {
+    static register = () => { // {{{
+        UIStackLayoutPage.register();
+        UIFlexGrid.register();
+        UIFlexGridRow.register();
+        UIFlexGridItem.register();
+
+        StartDate.register();
+        EditRhythm.register();
+        ShiftsTable.register();
+        ShiftAddButton.register();
+        WeekStart.register();
+        ThemePicker.register();
+        ShiftsBackup.register();
+        IndexedDBBrowser.register();
+
         customElements.define("settings-page", SettingsPage);
-        dialogs.EditRhythmDialog.register();
-        dialogs.EditShiftDialog.register();
-        sections.StartDate.register();
-        sections.EditRhythm.register();
-        sections.ShiftsTable.register();
-        sections.ShiftAddButton.register();
-        sections.WeekStart.register();
-        sections.ThemePicker.register();
-        sections.ShiftsBackup.register();
-        sections.IndexedDBBrowser.register();
-    };
+    }; // }}}
 
     constructor() { // {{{
         super();
@@ -120,43 +139,43 @@ export class SettingsPage extends ui.UIStackLayoutPage {
     /** @private */
     createMiscElements() { // {{{
         this.querySelector("#miscWeekStartSection").appendChild(
-            new sections.WeekStart(this.#store, this.#lang)
+            new WeekStart(this.#store, this.#lang)
         );
 
         this.querySelector("#miscThemePickerSection").appendChild(
-            new sections.ThemePicker(this.#store, this.#lang)
+            new ThemePicker(this.#store, this.#lang)
         );
     } // }}}
 
     /** @private */
     createShiftElements() { // {{{
         this.querySelector("#shiftsStartDateSection").appendChild(
-            new sections.StartDate(this.#store, this.#lang)
+            new StartDate(this.#store, this.#lang)
         );
 
         this.querySelector("#shiftsEditRhythmSection").appendChild(
-            new sections.EditRhythm(this.#store, this.#lang)
+            new EditRhythm(this.#store, this.#lang)
         );
 
         this.querySelector("#shiftsTable").appendChild(
-            new sections.ShiftsTable(this.#store, this.#lang)
+            new ShiftsTable(this.#store, this.#lang)
         );
 
         this.querySelector("#shiftsAddSection").appendChild(
-            new sections.ShiftAddButton(this.#store, this.#lang)
+            new ShiftAddButton(this.#store, this.#lang)
         )
 
         this.querySelector("#shiftsBackupSection").appendChild(
-            new sections.ShiftsBackup(this.#store, this.#lang)
+            new ShiftsBackup(this.#store, this.#lang)
         );
     } // }}}
 
     /** @private */
-    createIndexedDBElements() {
+    createIndexedDBElements() { // {{{
         this.querySelector("#indexedDBBrowserSection").appendChild(
-            new sections.IndexedDBBrowser(this.#store, this.#lang)
+            new IndexedDBBrowser(this.#store, this.#lang)
         );
-    }
+    } // }}}
 
     /** @private */
     async onLang() { // {{{

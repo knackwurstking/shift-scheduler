@@ -1,4 +1,11 @@
-import * as ui from "ui";
+import {
+    UIButton,
+    UIDialog,
+    UIFlexGrid,
+    UIFlexGridItem,
+    UIFlexGridRow
+} from "ui";
+import { createDraggable, html } from "ui/src/js";
 
 /**
  * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents 
@@ -6,9 +13,7 @@ import * as ui from "ui";
  * @typedef {import("../types").SettingsStore} SettingsStore
  */
 
-// {{{ Flex Grid Content
-
-const html = ui.js.html;
+// {{{ HTML FlexGrid Content
 const flexGridContent = html`
 <ui-flex-grid-item class="no-scrollbar" style="height: 100%; overflow-y: scroll;">
     <table>
@@ -55,63 +60,71 @@ const flexGridContent = html`
         gap="0.25rem"
     ></ui-flex-grid-row>
 </ui-flex-grid-item>
-`
-
+`;
 // }}}
 
-/** @extends {ui.UIDialog<UIDialogEvents>} */
-export class EditRhythmDialog extends ui.UIDialog {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
+/** @extends {UIDialog<UIDialogEvents>} */
+export class EditRhythmDialog extends UIDialog {
 
-    /** @type {ui.UIButton} */
-    #cancelButton;
-    /** @type {() => void|Promise<void>} */
-    #onCancel = () => this.ui.close();
+    static register = () => {
+        UIDialog.register();
+        UIFlexGridItem.register();
+        UIFlexGridRow.register();
+        UIFlexGrid.register();
+        UIButton.register();
 
-    /** @type {ui.UIButton} */
-    #submitButton;
-    /** @type {() => void|Promise<void>} */
-    #onSubmit = () => {
-        this.#store.ui.update("settings", (settings) => {
-            return {
-                ...settings,
-                rhythm: this.#rhythm,
-            };
-        });
-        this.ui.close();
+        if (!customElements.get("edit-rhythm-dialog")) {
+            customElements.define("edit-rhythm-dialog", EditRhythmDialog);
+        }
     };
 
-    /** @type {ui.UIFlexGrid} */
-    #content;
-
-    /** @type {number[]} */
-    #rhythm;
-
-    static register = () => customElements.define("edit-rhythm-dialog", EditRhythmDialog);
-
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super()
 
-        this.#store = store
-        this.#lang = lang
+        /**
+         * @type {import("ui").UIStore<UIStoreEvents>}
+         */
+        this.uiStore = store;
+
+        /**
+         * @type {import("ui").UILang}
+         */
+        this.uiLang = lang;
 
         /**
          * @private
-         * @type {ui.UIStackLayout}
+         * @type {import("ui").UIStackLayout}
          */
         this.stackLayout = document.querySelector("ui-stack-layout");
 
         this.ui.fullscreen = true
 
-        this.createActionButtons()
+        /**
+         * @type {UIFlexGrid}
+         */
+        this.content;
+
+        /**
+         * @type {number[]}
+         */
+        this.rhythm;
+
+        /**
+        * @type {UIButton}
+        */
+        this.cancel;
+
+        /**
+         * @type {UIButton}
+         */
+        this.submit;
+
         this.createContent()
+        this.createActions()
     } // }}}
 
     connectedCallback() { // {{{
@@ -122,25 +135,25 @@ export class EditRhythmDialog extends ui.UIDialog {
 
         setTimeout(() => {
             this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true),
+                this.uiStore.ui.on("lang", this.onLang.bind(this), true),
             );
 
             this.cleanup.add(
-                this.#store.ui.on("settings", this.onSettings.bind(this), true),
+                this.uiStore.ui.on("settings", this.onSettings.bind(this), true),
             );
         });
     } // }}}
 
     /** @private */
     createContent() { // {{{
-        this.#content = new ui.UIFlexGrid();
+        this.content = new UIFlexGrid();
 
-        this.#content.setAttribute("gap", "0.5rem");
-        this.#content.style.width = "100%";
-        this.#content.style.height = "100%";
-        this.#content.innerHTML = flexGridContent;
+        this.content.setAttribute("gap", "0.5rem");
+        this.content.style.width = "100%";
+        this.content.style.height = "100%";
+        this.content.innerHTML = flexGridContent;
 
-        this.appendChild(this.#content);
+        this.appendChild(this.content);
     } // }}}
 
     /**
@@ -148,11 +161,11 @@ export class EditRhythmDialog extends ui.UIDialog {
      * @param {SettingsStore} settings
      */
     renderTable(settings) { // {{{
-        const tbody = this.#content.querySelector("tbody");
+        const tbody = this.content.querySelector("tbody");
         while (!!tbody.firstChild) tbody.removeChild(tbody.firstChild);
 
         let draggedIndex = null;
-        this.#rhythm.forEach((id, index) => {
+        this.rhythm.forEach((id, index) => {
             let shift = settings.shifts.find(shift => shift.id === id)
             if (!shift) {
                 console.warn(`shift with id of "${id}" is missing in shifts`)
@@ -186,13 +199,13 @@ export class EditRhythmDialog extends ui.UIDialog {
             // @ts-ignore
             tr.querySelector("ui-icon-button:nth-child(1)").onclick = async () => {
                 tbody.removeChild(tr);
-                this.#rhythm = this.#rhythm.filter((_n, i) => i !== index);
+                this.rhythm = this.rhythm.filter((_n, i) => i !== index);
                 this.renderTable(settings)
             };
 
             tbody.appendChild(tr)
 
-            ui.js.createDraggable(tr, {
+            createDraggable(tr, {
                 onDragStart: async () => { // {{{
                     draggedIndex = index
                 }, // }}}
@@ -216,20 +229,20 @@ export class EditRhythmDialog extends ui.UIDialog {
                     if (draggedIndex === null) return
 
                     if (draggedIndex < index) { // dragged down
-                        this.#rhythm = [
-                            ...this.#rhythm.slice(0, draggedIndex),
-                            ...this.#rhythm.slice(draggedIndex + 1, index + 1),
-                            this.#rhythm[draggedIndex],
-                            ...this.#rhythm.slice(index + 1),
+                        this.rhythm = [
+                            ...this.rhythm.slice(0, draggedIndex),
+                            ...this.rhythm.slice(draggedIndex + 1, index + 1),
+                            this.rhythm[draggedIndex],
+                            ...this.rhythm.slice(index + 1),
                         ];
 
                         this.renderTable(settings)
                     } else if (draggedIndex > index) { // dragged up
-                        this.#rhythm = [
-                            ...this.#rhythm.slice(0, index),
-                            this.#rhythm[draggedIndex],
-                            ...this.#rhythm.slice(index, draggedIndex),
-                            ...this.#rhythm.slice(draggedIndex + 1),
+                        this.rhythm = [
+                            ...this.rhythm.slice(0, index),
+                            this.rhythm[draggedIndex],
+                            ...this.rhythm.slice(index, draggedIndex),
+                            ...this.rhythm.slice(draggedIndex + 1),
                         ]
 
                         this.renderTable(settings)
@@ -254,11 +267,11 @@ export class EditRhythmDialog extends ui.UIDialog {
      * @param {SettingsStore} settings
      */
     renderShiftsPicker(settings) { // {{{
-        const picker = this.#content.querySelector(".picker .shifts");
+        const picker = this.content.querySelector(".picker .shifts");
         while (picker.firstChild) picker.removeChild(picker.firstChild);
 
         settings.shifts.forEach(shift => {
-            const item = new ui.UIFlexGridItem();
+            const item = new UIFlexGridItem();
             item.innerHTML = `
                 <shift-card color="${shift.color || 'inherit'}" ${!!shift.visible ? 'visible' : ''}>
                     <span slot="name">${shift.name}</span>
@@ -268,7 +281,7 @@ export class EditRhythmDialog extends ui.UIDialog {
 
             // @ts-ignore
             item.querySelector("shift-card").onclick = () => {
-                this.#rhythm.push(shift.id);
+                this.rhythm.push(shift.id);
                 this.renderTable(settings)
             };
 
@@ -277,44 +290,58 @@ export class EditRhythmDialog extends ui.UIDialog {
     } // }}}
 
     /** @private */
-    createActionButtons() { // {{{
+    createActions() { // {{{
         // Cancel
-        let item = new ui.UIFlexGridItem();
+        let item = new UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `
             <ui-button variant="full" color="secondary"></ui-button>
         `;
-        this.#cancelButton = item.querySelector("ui-button");
-        this.#cancelButton.onclick = this.#onCancel;
+        this.cancel = item.querySelector("ui-button");
+        this.cancel.onclick = this.onCancel.bind(this);
         this.appendChild(item)
 
         // Submit
-        item = new ui.UIFlexGridItem();
+        item = new UIFlexGridItem();
         item.slot = "actions"
         item.setAttribute("flex", "0")
         item.innerHTML = `
             <ui-button variant="full" color="primary"></ui-button>
         `;
-        this.#submitButton = item.querySelector("ui-button");
-        this.#submitButton.onclick = this.#onSubmit;
+        this.submit = item.querySelector("ui-button");
+        this.submit.onclick = this.onSubmit.bind(this);
         this.appendChild(item)
+    } // }}}
+
+    onCancel() { // {{{
+        this.ui.close();
+    } // }}}
+
+    async onSubmit() { // {{{
+        this.uiStore.ui.update("settings", (settings) => {
+            return {
+                ...settings,
+                rhythm: this.rhythm,
+            };
+        });
+        this.ui.close();
     } // }}}
 
     /** @private */
     async onLang() { // {{{
-        this.ui.title = this.#lang.ui.get("edit-rhythm-dialog", "title");
+        this.ui.title = this.uiLang.ui.get("edit-rhythm-dialog", "title");
 
         // Name
-        this.#content.querySelector("thead th:nth-child(1)").innerHTML =
-            this.#lang.ui.get("edit-rhythm-dialog", "table-header-name");
+        this.content.querySelector("thead th:nth-child(1)").innerHTML =
+            this.uiLang.ui.get("edit-rhythm-dialog", "table-header-name");
 
         // Short
-        this.#content.querySelector("thead th:nth-child(2)").innerHTML =
-            this.#lang.ui.get("edit-rhythm-dialog", "table-header-short-name");
+        this.content.querySelector("thead th:nth-child(2)").innerHTML =
+            this.uiLang.ui.get("edit-rhythm-dialog", "table-header-short-name");
 
-        this.#cancelButton.innerText = this.#lang.ui.get("edit-rhythm-dialog", "button-cancel");
-        this.#submitButton.innerText = this.#lang.ui.get("edit-rhythm-dialog", "button-submit");
+        this.cancel.innerText = this.uiLang.ui.get("edit-rhythm-dialog", "button-cancel");
+        this.submit.innerText = this.uiLang.ui.get("edit-rhythm-dialog", "button-submit");
     } // }}}
 
     /**
@@ -322,7 +349,7 @@ export class EditRhythmDialog extends ui.UIDialog {
      * @param {SettingsStore} settings
      */
     async onSettings(settings) { // {{{
-        this.#rhythm = [...settings.rhythm]
+        this.rhythm = [...settings.rhythm]
         this.renderTable(settings)
         this.renderShiftsPicker(settings)
     } // }}}

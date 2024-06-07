@@ -1,53 +1,57 @@
-import * as ui from "ui";
+import { UILabel } from "ui";
+import { CleanUp, html } from "ui/src/js";
 
 /**
  * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").WeekStartStore} WeekStartStore
  */
 
-const innerHTML = `
+const innerHTML = html`
     <ui-label ripple>
         <input slot="input" type="checkbox">
     </ui-label>
 `;
 
 export class WeekStart extends HTMLElement {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
 
-    static register = () => customElements.define("settings-week-start", WeekStart)
+    static register = () => {
+        UILabel.register();
+
+        customElements.define("settings-week-start", WeekStart)
+    };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.#store = store;
-        this.#lang = lang;
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang;
 
-        this.cleanup = new ui.js.CleanUp();
+        this.cleanup = new CleanUp();
 
-        /** @type {ui.UILabel} */
+        /** @type {UILabel} */
         this.label = this.querySelector("ui-label");
         this.input = this.querySelector("input");
 
         this.querySelector("input").onclick =
-            (/**@type{MouseEvent & { currentTarget: HTMLInputElement }}*/ev) =>
-                this.#store.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
+            (/**@type{MouseEvent & { currentTarget: HTMLInputElement }}*/ev) => {
+                this.uiStore.ui.set("week-start", ev.currentTarget.checked ? 1 : 0);
+            };
     } // }}}
 
     connectedCallback() { // {{{
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true),
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true),
         );
 
         this.cleanup.add(
-            this.#store.ui.on("week-start", this.onWeekStart.bind(this), true),
+            this.uiStore.ui.on("week-start", this.onWeekStart.bind(this), true),
         );
     } // }}}
 
@@ -65,7 +69,7 @@ export class WeekStart extends HTMLElement {
 
     /** @private */
     onLang() { // {{{
-        this.label.ui.primary = this.#lang.ui.get(
+        this.label.ui.primary = this.uiLang.ui.get(
             "settings", "label-primary-week-start",
         );
     } // }}}

@@ -1,11 +1,17 @@
-import * as ui from "ui";
+import {
+    UIFlexGridItem,
+    UIFlexGridRow,
+    UISecondary,
+    UISelect,
+    UISelectOption
+} from "ui";
+import { CleanUp, html } from "ui/src/js";
 
 /**
  * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
  * @typedef {import("../../../types").ThemeStore} ThemeStore 
  */
 
-const html = ui.js.html;
 const innerHTML = html`
     <ui-secondary style="display: block;"></ui-secondary>
 
@@ -29,43 +35,54 @@ const innerHTML = html`
 `;
 
 export class ThemePicker extends HTMLElement {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store;
-    /** @type {ui.UILang} */
-    #lang;
 
-    static register = () => customElements.define("settings-theme-picker", ThemePicker);
+    static register = () => {
+        UISecondary.register();
+        UIFlexGridRow.register();
+        UIFlexGridItem.register();
+        UISelect.register();
+        UISelectOption.register();
+
+        customElements.define("settings-theme-picker", ThemePicker);
+    };
 
     /**
-     * @param {ui.UIStore<UIStoreEvents>} store
-     * @param {ui.UILang} lang
+     * @param {import("ui").UIStore<UIStoreEvents>} store
+     * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
         super();
         this.innerHTML = innerHTML;
 
-        this.#store = store;
-        this.#lang = lang;
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = store;
+        /** @type {import("ui").UILang} */
+        this.uiLang = lang;
 
-        this.cleanup = new ui.js.CleanUp();
+        this.cleanup = new CleanUp();
 
-        /** @type {ui.UISelect} */
+        /** @type {UISelect} */
         this.selectModeElement = this.querySelector("ui-select");
     } // }}}
 
     connectedCallback() { // {{{
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true),
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true),
         );
 
         this.cleanup.add(
-            this.#store.ui.on("theme", this.onTheme.bind(this), true),
+            this.uiStore.ui.on("theme", this.onTheme.bind(this), true),
         );
 
         this.cleanup.add(
             this.selectModeElement.ui.events.on("change", (option) => {
                 console.debug(`[settings] update theme mode:`, option);
-                this.#store.ui.update("theme", (theme) => ({ ...theme, mode: option.ui.value }));
+                this.uiStore.ui.update(
+                    "theme",
+                    (theme) => {
+                        return { ...theme, mode: option.ui.value };
+                    },
+                );
             }),
         );
     } // }}}
@@ -81,9 +98,9 @@ export class ThemePicker extends HTMLElement {
     async onTheme(theme) { // {{{
         console.debug(`[settings] onTheme`, theme);
 
-        /** @type {ui.UISelect} */
+        /** @type {UISelect} */
         [...this.selectModeElement.children].forEach(
-            (/** @type {ui.UISelectOption} */ c) => {
+            (/** @type {UISelectOption} */ c) => {
                 c.ui.selected = (c.ui.value === theme.mode)
             }
         );
@@ -91,6 +108,7 @@ export class ThemePicker extends HTMLElement {
 
     /** @private */
     onLang() { // {{{
-        this.querySelector("ui-secondary").innerHTML = this.#lang.ui.get("settings", "select-title-theme");
+        this.querySelector("ui-secondary").innerHTML =
+            this.uiLang.ui.get("settings", "select-title-theme");
     } // }}}
 }
