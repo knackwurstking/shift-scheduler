@@ -29,7 +29,6 @@ export class DB {
         this.#request.onerror = this.onError.bind(this);
         this.#request.onblocked = this.onBlocked.bind(this);
         this.#request.onsuccess = (ev) => {
-            this.onSuccess(ev);
             if (cb) cb();
         };
         this.#request.onupgradeneeded = this.onUpgradeNeeded.bind(this);
@@ -125,10 +124,6 @@ export class DB {
 
             r.onsuccess = () => resolve();
             r.onerror = () => {
-                console.debug(
-                    `[DB] Deleting entry "${year}-${month}-${date}" from "${this.storeName}" failed!`,
-                    r.error
-                );
                 reject(r.error);
             };
         });
@@ -143,7 +138,6 @@ export class DB {
 
             r.onsuccess = () => resolve();
             r.onerror = () => {
-                console.debug(`[DB] Clear all records in "${this.storeName}" failed!`, r.error);
                 reject(r.error);
             }
         });
@@ -211,19 +205,9 @@ export class DB {
 
     /**
      * @private
-     * @param {Event} ev
-     */
-    onSuccess(ev) { // {{{
-        console.debug(`[DBCustom] Handle request success: ${this.dbName}`, ev);
-    } // }}}
-
-    /**
-     * @private
      * @param {IDBVersionChangeEvent} ev
      */
     onUpgradeNeeded(ev) { // {{{
-        console.debug(`[DBCustom] Handle request upgradeneeded: ${this.dbName}`, ev);
-
         switch (ev.oldVersion) {
             case 0:
                 if (this.#request === null) throw `request is null, run open first!`;
