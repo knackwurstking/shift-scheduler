@@ -1,6 +1,13 @@
-import * as ui from "ui";
+import {
+    SvgRecycle,
+    UIFlexGrid,
+    UIFlexGridItem,
+    UIIconButton,
+    UIInput,
+    UIStackLayoutPage
+} from "ui";
+import { html } from "ui/src/js";
 import db from "../../db";
-import { SvgRecycle } from "ui";
 
 /**
  * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
@@ -11,8 +18,7 @@ import { SvgRecycle } from "ui";
 const filterHeight = "4rem";
 
 // {{{ HTML Content
-const t = document.createElement("template");
-t.innerHTML = `
+const content = html`
     <style>
         :host {
             width: 100%;
@@ -65,28 +71,31 @@ t.innerHTML = `
 `;
 // }}}
 
-export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
-    /** @type {ui.UIStore<UIStoreEvents>} */
-    #store
-    /** @type {ui.UILang} */
-    #lang
+export class IndexedDBBrowserPage extends UIStackLayoutPage {
 
     static register = () => {
         SvgRecycle.register();
 
+        UIStackLayoutPage.register();
+        UIFlexGrid.register();
+        UIFlexGridItem.register();
+        UIIconButton.register();
+        UIInput.register();
+
         customElements.define("indexeddb-browser-page", IndexedDBBrowserPage);
-    }
+    };
 
     constructor() { // {{{
         super();
-        this.shadowRoot.appendChild(t.content.cloneNode(true));
-
-        this.#store = document.querySelector("ui-store");
-        this.#lang = document.querySelector("ui-lang");
-
+        this.shadowRoot.innerHTML = content;
         this.classList.add("no-scrollbar");
 
-        this.grid = new ui.UIFlexGrid();
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore = document.querySelector("ui-store");
+        /** @type {import("ui").UILang} */
+        this.uiLang = document.querySelector("ui-lang");
+
+        this.grid = new UIFlexGrid();
         this.grid.setAttribute("gap", "0.5rem");
         this.grid.style.minWidth = "100%";
         this.grid.style.width = "fit-content";
@@ -99,7 +108,7 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
         super.connectedCallback();
 
         this.cleanup.add(
-            this.#store.ui.on("lang", this.onLang.bind(this), true)
+            this.uiStore.ui.on("lang", this.onLang.bind(this), true)
         );
 
         this.renderEntries();
@@ -117,7 +126,7 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
         if (d === null) d = ".*";
 
         /**
-         * @type {ui.UIFlexGridItem[]}
+         * @type {UIFlexGridItem[]}
          */
         // @ts-expect-error
         const children = [...this.grid.children];
@@ -162,11 +171,11 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
      * @private
      */
     async renderEntries() { // {{{
-        const settings = this.#store.ui.get("settings");
+        const settings = this.uiStore.ui.get("settings");
         const entries = await db.getAll();
         entries.forEach((entry) => {
             setTimeout(() => {
-                const item = new ui.UIFlexGridItem();
+                const item = new UIFlexGridItem();
 
                 const y = entry.year;
                 const m = entry.month + 1;
@@ -194,10 +203,10 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
                     </table>
                 `;
 
-                /** @type {ui.UIIconButton} */
+                /** @type {UIIconButton} */
                 const deleteButton = item.querySelector("ui-icon-button.delete");
                 deleteButton.onclick = async () => {
-                    const message = this.#lang.ui.get(
+                    const message = this.uiLang.ui.get(
                         "indexeddb-browser", "confirm-delete-entry"
                     ).replace("%d", entry.year.toString())
                         .replace("%d", entry.month.toString().padStart(2, "0"))
@@ -258,7 +267,7 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
 
     /**
      * @private
-     * @returns {NodeListOf<ui.UIInput<UIInputEvents, "number">>}
+     * @returns {NodeListOf<UIInput<UIInputEvents, "number">>}
      */
     getInputs() { // {{{
         return this.shadowRoot.querySelectorAll("ui-input");
@@ -269,8 +278,8 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
      */
     onLang() { // {{{
         const [y, m, d] = this.getInputs();
-        y.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-year");
-        m.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-month");
-        d.ui.title = this.#lang.ui.get("indexeddb-browser", "input-title-date");
+        y.ui.title = this.uiLang.ui.get("indexeddb-browser", "input-title-year");
+        m.ui.title = this.uiLang.ui.get("indexeddb-browser", "input-title-month");
+        d.ui.title = this.uiLang.ui.get("indexeddb-browser", "input-title-date");
     } // }}}
 }
