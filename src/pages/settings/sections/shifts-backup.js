@@ -1,6 +1,11 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
-import { UIButton, UIFlexGridItem, UIFlexGridRow, UILabel } from "ui";
+import {
+    UIButton,
+    UIFlexGridItem,
+    UIFlexGridRow,
+    UILabel
+} from "ui";
 import { CleanUp, html, isAndroid } from "ui/src/js";
 import db from "../../../db";
 import { validateShift } from "../../../utils";

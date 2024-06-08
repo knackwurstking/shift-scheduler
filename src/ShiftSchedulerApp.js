@@ -72,10 +72,9 @@ const content = html`
 
         <ui-flex-grid-item slot="center" class="flex align-center">
             <h3
+                class="app-bar-title"
                 style="white-space: nowrap;"
-                id="appBarTitle"
             >
-                <slot name="title">Shift Scheduler</slot>
             </h3>
         </ui-flex-grid-item>
 
@@ -165,6 +164,9 @@ export class ShiftSchedulerApp extends HTMLElement {
     constructor() { // {{{
         super();
         this.innerHTML = content;
+        this.style.width = "100%";
+        this.style.height = "100%";
+        this.style.overflow = "hidden";
 
         /**
          * @private

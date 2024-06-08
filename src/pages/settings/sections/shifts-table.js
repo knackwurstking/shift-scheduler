@@ -1,4 +1,10 @@
-import { UIIconButton } from "ui";
+import {
+    SvgEdit2,
+    SvgRecycle,
+    UIFlexGridItem,
+    UIFlexGridRow,
+    UIIconButton
+} from "ui";
 import { CleanUp, createDraggable, html } from "ui/src/js";
 import { EditShiftDialog } from "../../../dialogs";
 
@@ -23,7 +29,12 @@ const innerHTML = html`
 export class ShiftsTable extends HTMLTableElement {
 
     static register = () => {
+        SvgEdit2.register();
+        SvgRecycle.register();
+
         UIIconButton.register();
+        UIFlexGridRow.register();
+        UIFlexGridItem.register();
 
         EditShiftDialog.register();
 
@@ -146,7 +157,7 @@ export class ShiftsTable extends HTMLTableElement {
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item flex="0">
-                    <ui-icon-button color="destructive" ghost><svg-delete-recycle-bin></svg-delete-recycle-bin></ui-icon-button>
+                    <ui-icon-button color="destructive" ghost><svg-recycle></svg-recycle></ui-icon-button>
                 </ui-flex-grid-item>
             </ui-flex-grid-row>
         `;

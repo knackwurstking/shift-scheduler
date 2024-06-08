@@ -1,5 +1,6 @@
 import * as ui from "ui";
 import db from "../../db";
+import { SvgRecycle } from "ui";
 
 /**
  * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
@@ -70,8 +71,11 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
     /** @type {ui.UILang} */
     #lang
 
-    static register = () =>
+    static register = () => {
+        SvgRecycle.register();
+
         customElements.define("indexeddb-browser-page", IndexedDBBrowserPage);
+    }
 
     constructor() { // {{{
         super();
@@ -183,8 +187,7 @@ export class IndexedDBBrowserPage extends ui.UIStackLayoutPage {
                                     color="destructive"
                                     ghost
                                 >
-                                    <svg-delete-recycle-bin>
-                                    </svg-delete-recycle-bin>
+                                    <svg-recycle></svg-recycle>
                                 </ui-icon-button>
                             </td>
                         </tr>

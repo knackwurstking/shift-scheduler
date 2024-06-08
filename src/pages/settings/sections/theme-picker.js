@@ -76,7 +76,6 @@ export class ThemePicker extends HTMLElement {
 
         this.cleanup.add(
             this.selectModeElement.ui.events.on("change", (option) => {
-                console.debug(`[settings] update theme mode:`, option);
                 this.uiStore.ui.update(
                     "theme",
                     (theme) => {
@@ -96,8 +95,6 @@ export class ThemePicker extends HTMLElement {
      * @param {ThemeStore} theme
      */
     async onTheme(theme) { // {{{
-        console.debug(`[settings] onTheme`, theme);
-
         /** @type {UISelect} */
         [...this.selectModeElement.children].forEach(
             (/** @type {UISelectOption} */ c) => {

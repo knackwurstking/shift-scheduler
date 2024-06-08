@@ -63,7 +63,5 @@ export function validateShift(shift) { // {{{
  * @param {string | null} title
  */
 export async function setAppBarTitle(title) { // {{{
-    const child = document.createElement("span");
-    child.innerHTML = `${title || ""}`;
-    document.querySelector("shift-scheduler-app").appendChild(child);
+    document.querySelector("shift-scheduler-app .app-bar-title").innerHTML = title;
 } // }}}

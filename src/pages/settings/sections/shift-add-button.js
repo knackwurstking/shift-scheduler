@@ -10,8 +10,9 @@ import { EditShiftDialog } from "../../../dialogs";
 export class ShiftAddButton extends UIButton {
 
     static register = () => {
-        EditShiftDialog.register();
         UIButton.register();
+
+        EditShiftDialog.register();
 
         customElements.define("settings-shift-add-button", ShiftAddButton)
     };

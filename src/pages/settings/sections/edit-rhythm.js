@@ -18,6 +18,8 @@ export class EditRhythm extends HTMLElement {
         UILabel.register();
         UIButton.register();
 
+        EditRhythmDialog.register();
+
         customElements.define("settings-edit-rhythm", EditRhythm)
     };
 

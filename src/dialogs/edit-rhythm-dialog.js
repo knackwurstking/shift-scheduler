@@ -1,3 +1,4 @@
+import { SvgRecycle } from "ui";
 import {
     UIButton,
     UIDialog,
@@ -67,6 +68,8 @@ const flexGridContent = html`
 export class EditRhythmDialog extends UIDialog {
 
     static register = () => {
+        SvgRecycle.register();
+
         UIDialog.register();
         UIFlexGridItem.register();
         UIFlexGridRow.register();
@@ -83,7 +86,7 @@ export class EditRhythmDialog extends UIDialog {
      * @param {import("ui").UILang} lang
      */
     constructor(store, lang) { // {{{
-        super()
+        super();
 
         /**
          * @type {import("ui").UIStore<UIStoreEvents>}
@@ -151,6 +154,7 @@ export class EditRhythmDialog extends UIDialog {
         this.content.setAttribute("gap", "0.5rem");
         this.content.style.width = "100%";
         this.content.style.height = "100%";
+        this.content.style.paddingBottom = "var(--ui-spacing)";
         this.content.innerHTML = flexGridContent;
 
         this.appendChild(this.content);
@@ -189,7 +193,7 @@ export class EditRhythmDialog extends UIDialog {
                     <ui-flex-grid-row style="justify-content: flex-end;" gap="0.25rem">
                         <ui-flex-grid-item flex="0">
                             <ui-icon-button color="destructive" ghost>
-                                <svg-delete-recycle-bin></svg-delete-recycle-bin>
+                                <svg-recycle></svg-recycle>
                             </ui-icon-button>
                         </ui-flex-grid-item>
                     </ui-flex-grid-row>
