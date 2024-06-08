@@ -1,7 +1,7 @@
 import { App as CapApp } from "@capacitor/app";
 import {
     SvgBackArrow,
-    SvgEdit2,
+    SvgEdit,
     SvgPDF,
     SvgSettings,
     SvgToday,
@@ -86,7 +86,7 @@ const content = html`
                 id="appBarEditButton"
                 ghost
             >
-                <svg-edit2></svg-edit2>
+                <svg-edit></svg-edit>
             </ui-icon-button>
         </ui-flex-grid-item>
 
@@ -146,7 +146,7 @@ export class ShiftSchedulerApp extends HTMLElement {
         UIButton.register();
         UIContainer.register();
         UIStackLayout.register();
-        SvgEdit2.register();
+        SvgEdit.register();
         SvgSettings.register();
         SvgPDF.register();
         SvgToday.register();
