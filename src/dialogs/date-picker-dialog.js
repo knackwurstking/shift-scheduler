@@ -46,8 +46,6 @@ export class DatePickerDialog extends UIDialog {
          */
         this.stackLayout = document.querySelector("ui-stack-layout")
 
-        this.createContent();
-
         /**
          * @type {UIButton}
          */
@@ -58,6 +56,7 @@ export class DatePickerDialog extends UIDialog {
          */
         this.submit;
 
+        this.createContent();
         this.createActions();
     } // }}}
 
