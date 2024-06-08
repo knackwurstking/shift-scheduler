@@ -19,39 +19,35 @@ const filterHeight = "4rem";
 
 // {{{ HTML Content
 const content = html`
-    <style>
-        :host {
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            padding-top: var(--ui-app-bar-height);
-            padding-bottom: ${filterHeight};
-        }
+    <ui-flex-grid
+        style="min-width: 100%; width: fit-content;"
+        class="content"
+        gap="0.5rem"
+    >
+    </ui-flex-grid>
 
-        .filter {
+    <div
+        style="
             position: fixed;
             right: 0;
             bottom: 0;
             left: 0;
             height: ${filterHeight};
             border-top: 1px solid var(--ui-borderColor);
-        }
+        "
+    >
+        <div
+            style="
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: var(--ui-backdrop-bgColor);
+                backdrop-filter: var(--ui-backdropFilter);
+            "
+        ></div>
 
-        .filter .bg {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-color: var(--ui-backdrop-bgColor);
-            backdrop-filter: var(--ui-backdropFilter);
-        }
-    </style>
-
-    <slot></slot>
-
-    <div class="filter">
-        <div class="bg"></div>
         <ui-flex-grid>
             <ui-flex-grid-row>
                 <ui-flex-grid-item>
@@ -87,19 +83,18 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
 
     constructor() { // {{{
         super();
-        this.shadowRoot.innerHTML = content;
-        this.classList.add("no-scrollbar");
+        this.innerHTML = content;
+        this.className = "no-scrollbar";
+        this.style.width = "100%";
+        this.style.height = "100%";
+        this.style.overflowY = "auto";
+        this.style.paddingTop = "var(--ui-app-bar-height)";
+        this.style.paddingBottom = `${filterHeight}`;
 
         /** @type {import("ui").UIStore<UIStoreEvents>} */
         this.uiStore = document.querySelector("ui-store");
         /** @type {import("ui").UILang} */
         this.uiLang = document.querySelector("ui-lang");
-
-        this.grid = new UIFlexGrid();
-        this.grid.setAttribute("gap", "0.5rem");
-        this.grid.style.minWidth = "100%";
-        this.grid.style.width = "fit-content";
-        this.appendChild(this.grid);
 
         this.createSearchBar();
     } // }}}
@@ -129,7 +124,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
          * @type {UIFlexGridItem[]}
          */
         // @ts-expect-error
-        const children = [...this.grid.children];
+        const children = [...this.children];
         children.forEach(child => {
             if (child.getAttribute("key").match(new RegExp(`${y}-${m}-${d}`))) {
                 child.style.display = "block";
@@ -173,6 +168,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
     async renderEntries() { // {{{
         const settings = this.uiStore.ui.get("settings");
         const entries = await db.getAll();
+        const content = this.querySelector("ui-flex-grid.content");
         entries.forEach((entry) => {
             setTimeout(() => {
                 const item = new UIFlexGridItem();
@@ -214,7 +210,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
 
                     if (window.confirm(message)) {
                         await db.delete(entry.year, entry.month, entry.date);
-                        this.grid.removeChild(item);
+                        content.removeChild(item);
                     }
                 }
 
@@ -260,7 +256,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
                     item.querySelector("table").appendChild(row)
                 }
 
-                this.grid.appendChild(item);
+                content.appendChild(item);
             });
         });
     } // }}}
@@ -270,7 +266,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
      * @returns {NodeListOf<UIInput<UIInputEvents, "number">>}
      */
     getInputs() { // {{{
-        return this.shadowRoot.querySelectorAll("ui-input");
+        return this.querySelectorAll("ui-input");
     } // }}}
 
     /**
