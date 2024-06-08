@@ -1,6 +1,5 @@
-import { SvgRecycle } from "ui";
 import {
-    UIButton,
+    SvgRecycle, UIButton,
     UIDialog,
     UIFlexGrid,
     UIFlexGridItem,
