@@ -71,11 +71,11 @@ const content = html`
         </ui-flex-grid-item>
 
         <ui-flex-grid-item slot="center" class="flex align-center">
-            <h3
+            <h4
                 class="app-bar-title"
                 style="white-space: nowrap;"
             >
-            </h3>
+            </h4>
         </ui-flex-grid-item>
 
         <ui-flex-grid-item
