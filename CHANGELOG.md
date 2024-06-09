@@ -3,6 +3,7 @@
 ## v2.0.0 [unreleased]
 
 - Fist Vite vanilla javascript version using web-components
+- Using [ui v0.2.0](https://github.com/knackwurstking/ui.git)
 
 ## v1.5.3 [unreleased]
 
@@ -12,13 +13,13 @@
 - Fixed PDF view error when no shift rhythm was configured
 - Changed PDF format, 3 months per page
 - Fixed PDF generation in German, no UTF-8 encoding
-- Updated dependency [ui v0.1.1](https://github.com/knackwurstking/ui.git)
+- Updated dependency [ui v0.1.1](https://github.com/knackwurstking/ui/tree/v0.1.1)
 - Changed `lang` library
 - Code clean up
 
 ## v1.5.2 2024-03-02
 
-- Changed ui library from `svelte-css` to [ui v0.1.0](https://github.com/knackwurstking/ui.git)
+- Changed ui library from `svelte-css` to [ui v0.1.0](https://github.com/knackwurstking/ui/tree/v0.1.0)
 
 ## v1.5.1 2024-02-07
 
