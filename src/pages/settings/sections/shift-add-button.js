@@ -49,62 +49,69 @@ export class ShiftAddButton extends UIButton {
 
     /** @private */
     handleEvents() { // {{{
-        const onClose = async (/**@type{EditShiftDialog}*/dialog) => { // {{{
-            document.body.removeChild(dialog);
-        } // }}}
+        this.cleanup.add(
+            this.ui.events.on("click", this.onClick.bind(this)),
+        );
+    } // }}}
 
-        const onClick = () => { // {{{
-            /** @type {Shift} */
-            let shift = {
-                id: new Date().getTime(),
-                name: "",
-                shortName: "",
-                visible: true,
-                color: null,
-            };
+    /**
+     * @private
+     * @param {EditShiftDialog} dialog
+     */
+    onDialogClose(dialog) {
+        document.body.removeChild(dialog);
+    }
 
-            const dialog = new EditShiftDialog(shift, this.uiStore, this.uiLang);
-            document.body.appendChild(dialog)
+    /** @private */
+    onClick() { // {{{
+        /** @type {Shift} */
+        let shift = {
+            id: new Date().getTime(),
+            name: "",
+            shortName: "",
+            visible: true,
+            color: null,
+        };
 
-            dialog.ui.open(true);
-            dialog.ui.events.on("close", () => onClose(dialog));
+        const dialog = new EditShiftDialog(shift, this.uiStore, this.uiLang);
+        document.body.appendChild(dialog)
 
-            /**
-             * @param {Shift} newShift
-             */
-            const onSubmit = async (newShift) => { // {{{
-                if (!newShift.name) {
-                    alert(this.uiLang.ui.get("edit-shift-alerts", "missing-name"));
+        dialog.ui.open(true);
+        dialog.ui.events.on("close", () => this.onDialogClose(dialog));
 
-                    shift = newShift;
+        /**
+         * @param {Shift} newShift
+         */
+        const onSubmit = async (newShift) => { // {{{
+            // If shift name is missing then reopen the dialog
+            if (!newShift.name) {
+                alert(this.uiLang.ui.get("edit-shift-alerts", "missing-name"));
 
-                    const dialog = new EditShiftDialog(shift, this.uiStore, this.uiLang);
-                    document.body.appendChild(dialog)
+                shift = newShift;
 
-                    dialog.ui.open(true);
-                    dialog.ui.events.on("close", () => onClose(dialog));
-                    dialog.ui.events.on("submit", onSubmit);
+                const dialog = new EditShiftDialog(shift, this.uiStore, this.uiLang);
+                document.body.appendChild(dialog)
 
-                    return;
-                }
+                dialog.ui.open(true);
+                dialog.ui.events.on("close", () => this.onDialogClose(dialog));
+                dialog.ui.events.on("submit", onSubmit);
 
-                if (!newShift.shortName) {
-                    newShift.shortName = newShift.name.slice(0, 2)
-                }
+                return;
+            }
 
-                this.uiStore.ui.update("settings", (settings) => {
-                    return {
-                        ...settings,
-                        shifts: [...settings.shifts, newShift],
-                    };
-                });
-            }; // }}}
+            if (!newShift.shortName) {
+                newShift.shortName = newShift.name.slice(0, 2)
+            }
 
-            dialog.ui.events.on("submit", onSubmit);
-        } // }}}
+            this.uiStore.ui.update("settings", (settings) => {
+                return {
+                    ...settings,
+                    shifts: [...settings.shifts, newShift],
+                };
+            });
+        }; // }}}
 
-        this.addEventListener("click", onClick);
-        this.cleanup.add(() => this.removeEventListener("click", onClick));
+        dialog.ui.events.on("submit", onSubmit);
     } // }}}
 
     /** @private */

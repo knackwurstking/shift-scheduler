@@ -300,10 +300,9 @@ export class CalendarPage extends UIStackLayoutPage {
         this.order;
 
         this.shadowRoot.querySelectorAll(".days-row > .day-item").forEach(child => {
-            child.addEventListener("click",
-                async (/** @type {Event & { currentTarget: HTMLElement }} */ev) =>
-                    this.onDayItemClick(ev.currentTarget, child)
-            );
+            // @ts-ignore
+            child.onclick = async (/** @type {Event & { currentTarget: HTMLElement }} */ev) =>
+                this.onDayItemClick(ev.currentTarget, child);
         });
     } // }}}
 
