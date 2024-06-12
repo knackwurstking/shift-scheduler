@@ -187,12 +187,6 @@ export class ShiftSchedulerApp extends HTMLElement {
          */
         this.uiLang = this.querySelector("ui-lang");
 
-        /**
-         * @private
-         * @type {UIStackLayout}
-         */
-        this.uiStackLayout = this.querySelector("ui-stack-layout");
-
         this.cleanup = new CleanUp();
 
         /**
@@ -237,6 +231,7 @@ export class ShiftSchedulerApp extends HTMLElement {
          */
         this.settings;
 
+        this.createStackLayout();
         this.createAppBar();
 
         setTimeout(async () => {
@@ -251,7 +246,6 @@ export class ShiftSchedulerApp extends HTMLElement {
     } // }}}
 
     connectedCallback() { // {{{
-        this.registerPages();
 
         for (const l of ["en", "de"]) {
             if (navigator.language.match(new RegExp(`^${l}`, "i"))) {
@@ -342,30 +336,29 @@ export class ShiftSchedulerApp extends HTMLElement {
     /**
      * @private
      */
-    registerPages() { // {{{
+    createStackLayout() { // {{{
+        /**
+         * @private
+         * @type {UIStackLayout}
+         */
+        this.uiStackLayout = this.querySelector("ui-stack-layout");
+
+        this.pages = {
+            calendar: new CalendarPage(),
+            settings: new SettingsPage(),
+        };
+
         this.uiStackLayout.ui.registerPage(
-            "calendar",
+            this.pages.calendar.ui.name,
             () => {
-                const template = document.createElement("template");
-
-                template.innerHTML = `
-                    <calendar-page name="calendar"></calendar-page>
-                `;
-
-                return template.content.cloneNode(true);
+                return this.pages.calendar;
             },
         );
 
         this.uiStackLayout.ui.registerPage(
-            "settings",
+            this.pages.settings.ui.name,
             () => {
-                const template = document.createElement("template");
-
-                template.innerHTML = `
-                    <settings-page name="settings"></settings-page>
-                `;
-
-                return template.content.cloneNode(true);
+                return this.pages.settings;
             }
         );
     } // }}}

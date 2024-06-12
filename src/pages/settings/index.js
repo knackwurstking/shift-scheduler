@@ -117,6 +117,8 @@ export class SettingsPage extends UIStackLayoutPage {
         super();
         this.innerHTML = content;
 
+        this.ui.name = "settings";
+
         this.#store = document.querySelector("ui-store")
         this.#lang = document.querySelector("ui-lang")
 

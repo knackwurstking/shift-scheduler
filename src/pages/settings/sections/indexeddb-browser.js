@@ -50,19 +50,19 @@ export class IndexedDBBrowser extends HTMLElement {
         /** @type {UIButton} */
         this.button = this.querySelector("ui-button");
         this.createButton()
+
+        this.pages = {
+            indexedDBBrowser: new IndexedDBBrowserPage(),
+        };
     } // }}}
 
     connectedCallback() { // {{{
-        this.stackLayout.ui.registerPage("indexeddb-browser", () => {
-            const t = document.createElement("template");
-            t.innerHTML = `
-                <indexeddb-browser-page name="indexeddb-browser"></indexeddb-browser-page>
-            `;
-            return t.content.cloneNode(true);
+        this.stackLayout.ui.registerPage(this.pages.indexedDBBrowser.ui.name, () => {
+            return this.pages.indexedDBBrowser;
         });
 
         this.cleanup.add(() =>
-            this.stackLayout.ui.unregisterPage("indexeddb-browser"));
+            this.stackLayout.ui.unregisterPage(this.pages.indexedDBBrowser.ui.name));
 
         this.cleanup.add(
             this.uiStore.ui.on("lang", this.onLang.bind(this), true)

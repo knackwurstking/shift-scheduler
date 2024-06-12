@@ -289,6 +289,8 @@ export class CalendarPage extends UIStackLayoutPage {
         super();
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+        this.ui.name = "calendar";
+
         this.#store = document.querySelector("ui-store");
         this.#lang = document.querySelector("ui-lang");
         this.swipeHandler = new SwipeHandler(this.shadowRoot.querySelector(".calendar"));

@@ -90,6 +90,8 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
         this.style.paddingTop = "var(--ui-app-bar-height)";
         this.style.paddingBottom = `${filterHeight}`;
 
+        this.ui.name = "indexeddb-browser";
+
         /** @type {import("ui").UIStore<UIStoreEvents>} */
         this.uiStore = document.querySelector("ui-store");
         /** @type {import("ui").UILang} */
