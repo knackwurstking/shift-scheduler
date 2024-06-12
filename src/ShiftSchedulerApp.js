@@ -378,7 +378,7 @@ export class ShiftSchedulerApp extends HTMLElement {
 
         this.back = this.uiAppBar.querySelector("#appBarBackButton")
         this.back.onclick = async () => { // {{{
-            if (this.uiStackLayout.ui.stack.length <= 1) {
+            if (this.uiStackLayout.ui.stackSize() <= 1) {
                 return;
             }
 
@@ -455,7 +455,7 @@ export class ShiftSchedulerApp extends HTMLElement {
      */
     async stackLayoutChange({ newPage, oldPage }) { // {{{
         // Update the AppBar buttons...
-        if (this.uiStackLayout.ui.stack.length <= 1) {
+        if (this.uiStackLayout.ui.stackSize() <= 1) {
             try {
                 this.uiAppBar.removeChild(this.back.parentElement);
             } catch { }
