@@ -72,7 +72,6 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
     static register = () => {
         SvgRecycle.register();
 
-        UIStackLayoutPage.register();
         UIFlexGrid.register();
         UIFlexGridItem.register();
         UIIconButton.register();

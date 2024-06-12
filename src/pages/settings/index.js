@@ -97,7 +97,6 @@ export class SettingsPage extends UIStackLayoutPage {
     #lang
 
     static register = () => { // {{{
-        UIStackLayoutPage.register();
         UIFlexGrid.register();
         UIFlexGridRow.register();
         UIFlexGridItem.register();

@@ -275,7 +275,6 @@ export class CalendarPage extends UIStackLayoutPage {
     #lang;
 
     static register = () => { // {{{
-        UIStackLayoutPage.register();
         UIFlexGrid.register();
         UIFlexGridRow.register();
         UIFlexGridItem.register();
