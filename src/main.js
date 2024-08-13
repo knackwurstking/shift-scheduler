@@ -1,4 +1,8 @@
 import "../node_modules/ui/css/main.css";
-import { ShiftSchedulerApp } from "./ShiftSchedulerApp";
 
-ShiftSchedulerApp.register();
+import { register } from "ui";
+import { SchedulerApp } from "./SchedulerApp";
+
+register();
+
+SchedulerApp.register();
