@@ -3,7 +3,7 @@ import { CleanUp } from "ui/src/js";
 import { IndexedDBBrowserPage } from "../../indexeddb-browser";
 
 /**
- * @typedef {import("../../../types").UIStoreEvents} UIStoreEvents
+ * @typedef {import("../../../types/.index").UIStoreEvents} UIStoreEvents
  */
 
 const innerHTML = `
@@ -13,76 +13,88 @@ const innerHTML = `
 `;
 
 export class IndexedDBBrowser extends HTMLElement {
+  static register = () => {
+    UILabel.register();
+    UIButton.register();
 
-    static register = () => {
-        UILabel.register();
-        UIButton.register();
+    IndexedDBBrowserPage.register();
 
-        IndexedDBBrowserPage.register();
+    customElements.define("settings-indexeddb-browser", IndexedDBBrowser);
+  };
 
-        customElements.define("settings-indexeddb-browser", IndexedDBBrowser);
-    };
+  /**
+   * @param {import("ui").UIStore<UIStoreEvents>} store
+   * @param {import("ui").UILang} lang
+   */
+  constructor(store, lang) {
+    // {{{
+    super();
+    this.innerHTML = innerHTML;
+
+    /** @type {import("ui").UIStore<UIStoreEvents>} */
+    this.uiStore = store;
+    /** @type {import("ui").UILang} */
+    this.uiLang = lang;
+
+    this.cleanup = new CleanUp();
 
     /**
-     * @param {import("ui").UIStore<UIStoreEvents>} store
-     * @param {import("ui").UILang} lang
+     * @private
+     * @type {import("ui").UIStackLayout}
      */
-    constructor(store, lang) { // {{{
-        super();
-        this.innerHTML = innerHTML;
+    this.stackLayout = document.querySelector("ui-stack-layout");
 
-        /** @type {import("ui").UIStore<UIStoreEvents>} */
-        this.uiStore = store;
-        /** @type {import("ui").UILang} */
-        this.uiLang = lang;
+    /** @type {UILabel} */
+    this.label = this.querySelector("ui-label");
 
-        this.cleanup = new CleanUp();
+    /** @type {UIButton} */
+    this.button = this.querySelector("ui-button");
+    this.createButton();
 
-        /**
-         * @private
-         * @type {import("ui").UIStackLayout}
-         */
-        this.stackLayout = document.querySelector("ui-stack-layout");
+    this.pages = {
+      indexedDBBrowser: new IndexedDBBrowserPage(),
+    };
+  } // }}}
 
-        /** @type {UILabel} */
-        this.label = this.querySelector("ui-label");
+  connectedCallback() {
+    // {{{
+    this.stackLayout.ui.registerPage(
+      this.pages.indexedDBBrowser.ui.name,
+      () => {
+        return this.pages.indexedDBBrowser;
+      },
+    );
 
-        /** @type {UIButton} */
-        this.button = this.querySelector("ui-button");
-        this.createButton()
+    this.cleanup.add(() =>
+      this.stackLayout.ui.unregisterPage(this.pages.indexedDBBrowser.ui.name),
+    );
 
-        this.pages = {
-            indexedDBBrowser: new IndexedDBBrowserPage(),
-        };
-    } // }}}
+    this.cleanup.add(this.uiStore.ui.on("lang", this.onLang.bind(this), true));
+  } // }}}
 
-    connectedCallback() { // {{{
-        this.stackLayout.ui.registerPage(this.pages.indexedDBBrowser.ui.name, () => {
-            return this.pages.indexedDBBrowser;
-        });
+  disconnectedCallback() {
+    // {{{
+    this.cleanup.run();
+  } // }}}
 
-        this.cleanup.add(() =>
-            this.stackLayout.ui.unregisterPage(this.pages.indexedDBBrowser.ui.name));
+  /** @private */
+  createButton() {
+    // {{{
+    this.button.onclick = async () => {
+      this.stackLayout.ui.setPage("indexeddb-browser");
+    };
+  } // }}}
 
-        this.cleanup.add(
-            this.uiStore.ui.on("lang", this.onLang.bind(this), true)
-        );
-    } // }}}
-
-    disconnectedCallback() { // {{{
-        this.cleanup.run();
-    } // }}}
-
-    /** @private */
-    createButton() { // {{{
-        this.button.onclick = async () => {
-            this.stackLayout.ui.setPage("indexeddb-browser");
-        };
-    } // }}}
-
-    /** @private */
-    async onLang() { // {{{
-        this.label.ui.primary = this.uiLang.ui.get("settings", "label-primary-indexeddb-browser");
-        this.button.innerHTML = this.uiLang.ui.get("settings", "button-indexeddb-browser")
-    } // }}}
+  /** @private */
+  async onLang() {
+    // {{{
+    this.label.ui.primary = this.uiLang.ui.get(
+      "settings",
+      "label-primary-indexeddb-browser",
+    );
+    this.button.innerHTML = this.uiLang.ui.get(
+      "settings",
+      "button-indexeddb-browser",
+    );
+  } // }}}
 }
