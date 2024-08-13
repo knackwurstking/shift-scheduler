@@ -1,20 +1,27 @@
 import { App as CapApp } from "@capacitor/app";
 import { CleanUp, html, isAndroid } from "ui";
-import { SchedulerAppBar } from "./components";
+import {
+  CalendarPage,
+  DatePickerDialog,
+  IndexedDBBrowserPage,
+  PDFDialog,
+  SchedulerAppBar,
+  SettingsPage,
+} from "./components";
 import { pages } from "./data/constants";
-import db from "./db";
-import { DatePickerDialog, PDFDialog } from "./dialogs";
-import { CalendarPage, SettingsPage } from "./pages";
-import { IndexedDBBrowser } from "./pages/settings/sections";
-import { setAppBarTitle, setTheme } from "./utils";
+import { db } from "./lib";
+import { setTheme } from "./utils";
 
 export class SchedulerApp extends HTMLElement {
   static register = () => {
+    DatePickerDialog.register();
+    PDFDialog.register();
+
     SchedulerAppBar.register();
 
     CalendarPage.register();
     SettingsPage.register();
-    IndexedDBBrowser.register();
+    IndexedDBBrowserPage.register();
 
     customElements.define("scheduler-app", SchedulerApp);
   };
@@ -56,10 +63,15 @@ export class SchedulerApp extends HTMLElement {
       <scheduler-app-bar></scheduler-app-bar>
     `;
 
+    this.uiStore = this.querySelector("ui-store");
+    this.uiLang = this.querySelector("ui-lang");
+    this.uiStackLayout = this.querySelector("ui-stack-layout");
+
+    this.schedulerAppBar = this.querySelector("scheduler-app-bar");
+
     this.createStore();
-    this.createAppBar();
-    this.createStackLayout();
     this.createLang();
+    this.createStackLayout();
   }
 
   connectedCallback() {
@@ -68,7 +80,7 @@ export class SchedulerApp extends HTMLElement {
         this.cleanup.add(
           (
             await CapApp.addListener("backButton", () =>
-              this.uiAppBarItems.back.click(),
+              this.schedulerAppBar.items.back.ui.child.click(),
             )
           ).remove,
         );
@@ -92,15 +104,15 @@ export class SchedulerApp extends HTMLElement {
 
           const y = current.getFullYear();
           const m = (current.getMonth() + 1).toString().padStart(2, "0");
-          this.uiAppBarItems.datePicker.innerText = `${y} / ${m}`;
+          this.schedulerAppBar.items.datePicker.ui.child.innerText = `${y} / ${m}`;
 
           if (
             today.getFullYear() === current.getFullYear() &&
             today.getMonth() === current.getMonth()
           ) {
-            this.uiAppBarItems.today.ui.disabled = true;
+            this.schedulerAppBar.items.today.ui.child.ui.disabled = true;
           } else {
-            this.uiAppBarItems.today.ui.disabled = false;
+            this.schedulerAppBar.items.today.ui.child.ui.disabled = false;
           }
         },
         true,
@@ -115,8 +127,6 @@ export class SchedulerApp extends HTMLElement {
   }
 
   createStore() {
-    this.uiStore = this.querySelector("ui-store");
-
     const date = new Date();
     this.uiStore.ui.set(
       "date-picker",
@@ -136,67 +146,47 @@ export class SchedulerApp extends HTMLElement {
     this.uiStore.ui.set("edit-mode", { open: false, active: null }, true);
   }
 
-  createAppBar() {
-    this.schedulerAppBar = this.querySelector("ui-app-bar");
-
-    // TODO: Continue here... move app-bar stuff to `SchedulerAppBar`
-
-    /** @type {import("ui").UIIconButton} */
-    this.uiAppBarItems.back.onclick = async () => {
-      if (this.uiStackLayout.ui.size() > 1) {
-        this.uiStackLayout.ui.goBack();
-      }
-    };
-
-    this.uiAppBarItems.datePicker.onclick = async () => {
-      const dialog = new DatePickerDialog(this.uiStore, this.uiLang);
-
-      dialog.ui.events.on("close", () => {
-        document.body.removeChild(dialog);
-      });
-
-      document.body.appendChild(dialog);
-      dialog.ui.open(true);
-    };
-
-    this.uiAppBarItems.edit.onclick = async () => {
-      this.uiStore.ui.update("edit-mode", (data) => ({
-        ...data,
-        open: !data.open,
-      }));
-    };
-
-    this.uiAppBarItems.today.onclick = async () => {
-      const t = new Date();
-      this.uiStore.ui.set(
-        "date-picker",
-        new Date(t.getFullYear(), t.getMonth(), 1).toString(),
-      );
-    };
-
-    this.uiAppBarItems.pdf.onclick = async () => {
-      const dialog = new PDFDialog(this.uiStore, this.uiLang);
-      document.body.appendChild(dialog);
-
-      dialog.ui.events.on("close", () => {
-        document.body.removeChild(dialog);
-      });
-
-      dialog.ui.open(true);
-    };
-
-    this.uiAppBarItems.settings.onclick = async () => {
-      this.uiStackLayout.ui.set("settings");
-    };
-  }
-
   createStackLayout() {
-    this.uiStackLayout = this.querySelector("ui-stack-layout");
+    this.uiStackLayout.ui.events.on("change", ({ newPage }) => {
+      if (this.uiStackLayout.ui.size() > 1) {
+        this.schedulerAppBar.items.back.ui.show();
+      } else {
+        this.schedulerAppBar.items.back.ui.hide();
+      }
 
-    this.uiStackLayout.ui.events.on(
-      "change",
-      this.stackLayoutChangeHandler.bind(this),
-    );
+      if (!newPage) {
+        this.noPageSetup();
+        return;
+      }
+
+      switch (newPage.ui.name) {
+        case pages.calendar:
+        case pages.settings:
+        case pages.dbBrowser:
+          this.resetAppBar();
+          break;
+      }
+
+      switch (newPage.ui.name) {
+        case pages.calendar:
+          this.schedulerAppBar.items.datePicker.ui.show();
+          this.schedulerAppBar.items.edit.ui.show();
+          this.schedulerAppBar.items.today.ui.show();
+          this.schedulerAppBar.items.pdf.ui.show();
+          this.schedulerAppBar.items.settings.ui.show();
+          break;
+
+        case pages.settings:
+          this.schedulerAppBar.items.title.ui.child.innerHTML =
+            this.uiLang.ui.get(pages.settings, "app-bar-title");
+          break;
+
+        case pages.dbBrowser:
+          this.schedulerAppBar.items.title.ui.child.innerHTML =
+            this.uiLang.ui.get(pages.dbBrowser, "app-bar-title");
+          break;
+      }
+    });
 
     this.uiStackLayout.ui.register(pages.calendar, () => {
       return new CalendarPage();
@@ -210,8 +200,6 @@ export class SchedulerApp extends HTMLElement {
   }
 
   createLang() {
-    this.uiLang = this.querySelector("ui-lang");
-
     this.uiLang.ui.events.on("change", (ltElement) => {
       if (!ltElement) {
         return;
@@ -237,72 +225,15 @@ export class SchedulerApp extends HTMLElement {
   }
 
   resetAppBar() {
-    this.uiAppBar.removeChild(this.uiAppBarItems.back.parentElement);
-    this.uiAppBar.removeChild(this.uiAppBarItems.datePicker.parentElement);
-    this.uiAppBar.removeChild(this.uiAppBarItems.edit.parentElement);
-    this.uiAppBar.removeChild(this.uiAppBarItems.today.parentElement);
-    this.uiAppBar.removeChild(this.uiAppBarItems.pdf.parentElement);
-    this.uiAppBar.removeChild(this.uiAppBarItems.settings.parentElement);
+    this.schedulerAppBar.items.datePicker.ui.hide();
+    this.schedulerAppBar.items.edit.ui.hide();
+    this.schedulerAppBar.items.today.ui.hide();
+    this.schedulerAppBar.items.pdf.ui.hide();
+    this.schedulerAppBar.items.settings.ui.hide();
   }
 
   noPageSetup() {
-    setAppBarTitle(null);
+    this.schedulerAppBar.items.title.ui.child.innerHTML = "";
     this.resetAppBar();
-  }
-
-  /**
-   * @private
-   * @param {Object} data
-   * @param {import("ui").UIStackLayoutPage | null} data.newPage
-   * @param {import("ui").UIStackLayoutPage | null} data.oldPage
-   */
-  async stackLayoutChangeHandler({ newPage, oldPage }) {
-    // Update the AppBar buttons...
-    if (this.uiStackLayout.ui.size() <= 1) {
-      try {
-        this.uiAppBar.removeChild(this.uiAppBarItems.back.parentElement);
-      } catch {}
-    } else {
-      const leftSlot = this.uiAppBar.ui.leftSlot;
-      if (leftSlot.length > 0) {
-        this.uiAppBar.insertBefore(
-          this.uiAppBarItems.back.parentElement,
-          leftSlot[0],
-        );
-      } else {
-        this.uiAppBar.appendChild(this.uiAppBarItems.back.parentElement);
-      }
-    }
-
-    if (!newPage) {
-      this.noPageSetup();
-      return;
-    }
-
-    switch (newPage.ui.name) {
-      case pages.calendar:
-      case pages.settings:
-      case pages.dbBrowser:
-        this.resetAppBar();
-        break;
-    }
-
-    switch (newPage.ui.name) {
-      case pages.calendar:
-        this.uiAppBar.appendChild(this.uiAppBarItems.datePicker.parentElement);
-        this.uiAppBar.appendChild(this.uiAppBarItems.edit.parentElement);
-        this.uiAppBar.appendChild(this.uiAppBarItems.today.parentElement);
-        this.uiAppBar.appendChild(this.uiAppBarItems.pdf.parentElement);
-        this.uiAppBar.appendChild(this.uiAppBarItems.settings.parentElement);
-        break;
-      case pages.settings:
-        setAppBarTitle(this.uiLang.ui.get("settings", "app-bar-title"));
-        break;
-      case pages.dbBrowser:
-        setAppBarTitle(
-          this.uiLang.ui.get("indexeddb-browser", "app-bar-title"),
-        );
-        break;
-    }
   }
 }

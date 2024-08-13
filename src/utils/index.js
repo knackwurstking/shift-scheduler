@@ -51,11 +51,3 @@ export function validateShift(shift) {
 
   return true;
 }
-
-/**
- * @param {string | null} title
- */
-export async function setAppBarTitle(title) {
-  document.querySelector("shift-scheduler-app .app-bar-title").innerHTML =
-    title;
-}

@@ -5,6 +5,7 @@ import svgSettings from "ui/src/svg/smoothie-line-icons/settings";
 import svgToday from "ui/src/svg/smoothie-line-icons/today";
 
 import { html, UIAppBar } from "ui";
+import { DatePickerDialog, PDFDialog } from "..";
 
 export class SchedulerAppBar extends UIAppBar {
   static register = () => {
@@ -13,6 +14,15 @@ export class SchedulerAppBar extends UIAppBar {
 
   constructor() {
     super();
+
+    /** @type {SchedulerStore} */
+    this.uiStore = document.querySelector("ui-store");
+
+    /** @type {import("ui").UIStackLayout} */
+    this.uiStackLayout = document.querySelector("ui-stack-layout");
+
+    /** @type {import("ui").UILang} */
+    this.uiLang = document.querySelector("ui-lang");
 
     this.items;
 
@@ -57,25 +67,109 @@ export class SchedulerAppBar extends UIAppBar {
     `;
 
     this.items = {
-      /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
-      back: this.querySelector(`[name="back"]`),
-      /** @type {import("ui").UIAppBarItem<import("ui").UIButton>} */
-      datePicker: this.querySelector(`[name="date-picker"]`),
+      back: this.createBackItem(),
+      datePicker: this.createDatePickerItem(),
 
       /** @type {import("ui").UIAppBarItem<HTMLElement>} */
       title: this.querySelector(`[name="title"]`),
 
-      /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
-      edit: this.querySelector(`[name="edit"]`),
-
-      /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
-      today: this.querySelector(`[name="today"]`),
-
-      /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
-      pdf: this.querySelector(`[name="pdf"]`),
-
-      /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
-      settings: this.querySelector(`[name="settings"]`),
+      edit: this.createEditItem(),
+      today: this.createTodayItem(),
+      pdf: this.createPDFItem(),
+      settings: this.createSettingsItem(),
     };
+  }
+
+  /** @private */
+  createBackItem() {
+    /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
+    const item = this.querySelector(`[name="back"]`);
+
+    item.ui.child.ui.events.on("click", async () => {
+      if (this.uiStackLayout.ui.size() > 1) {
+        this.uiStackLayout.ui.goBack();
+      }
+    });
+
+    return item;
+  }
+
+  /** @private */
+  createDatePickerItem() {
+    /** @type {import("ui").UIAppBarItem<import("ui").UIButton>} */
+    const item = this.querySelector(`[name="date-picker"]`);
+
+    item.ui.child.ui.events.on("click", async () => {
+      const dialog = new DatePickerDialog(this.uiStore, this.uiLang);
+
+      dialog.ui.events.on("close", () => {
+        document.body.removeChild(dialog);
+      });
+
+      document.body.appendChild(dialog);
+      dialog.ui.open(true);
+    });
+
+    return item;
+  }
+
+  /** @private */
+  createEditItem() {
+    /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
+    const item = this.querySelector(`[name="edit"]`);
+
+    item.ui.child.ui.events.on("click", async () => {
+      this.uiStore.ui.update("edit-mode", (data) => ({
+        ...data,
+        open: !data.open,
+      }));
+    });
+
+    return item;
+  }
+
+  /** @private */
+  createTodayItem() {
+    /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
+    const item = this.querySelector(`[name="today"]`);
+
+    item.ui.child.ui.events.on("click", async () => {
+      const t = new Date();
+      this.uiStore.ui.set(
+        "date-picker",
+        new Date(t.getFullYear(), t.getMonth(), 1).toString(),
+      );
+    });
+
+    return item;
+  }
+
+  createPDFItem() {
+    /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
+    const item = this.querySelector(`[name="pdf"]`);
+
+    item.ui.child.ui.events.on("click", async () => {
+      const dialog = new PDFDialog(this.uiStore, this.uiLang);
+      document.body.appendChild(dialog);
+
+      dialog.ui.events.on("close", () => {
+        document.body.removeChild(dialog);
+      });
+
+      dialog.ui.open(true);
+    });
+
+    return item;
+  }
+
+  createSettingsItem() {
+    /** @type {import("ui").UIAppBarItem<import("ui").UIIconButton>} */
+    const item = this.querySelector(`[name="settings"]`);
+
+    item.ui.child.ui.events.on("click", async () => {
+      this.uiStackLayout.ui.set("settings");
+    });
+
+    return item;
   }
 }
