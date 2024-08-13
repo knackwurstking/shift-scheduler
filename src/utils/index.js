@@ -1,67 +1,61 @@
 /**
- * @typedef {import("ui/src/ui-theme-handler").UIThemeHandler} UIThemeHandler
- *
- * @typedef {import("../types").ThemeStore} ThemeStore
- * @typedef {import("../types").Shift} Shift
+ * @param {SchedulerStore_Theme} theme
+ * @param {import("ui").UIThemeHandler} themeHandler
  */
+export async function setTheme(theme, themeHandler) {
+  //try {
+  //    themeHandler.ui.loadTheme(theme.name)
+  //} catch {
+  //    themeHandler.ui.loadTheme("zinc") // default theme (original)
+  //}
+
+  if (theme.mode === "system") {
+    // Enable auto mode
+    themeHandler.ui.auto = true;
+  } else {
+    // Disable auto mode and set theme manually
+    themeHandler.ui.mode = theme.mode;
+    themeHandler.ui.auto = false;
+  }
+}
 
 /**
- * @param {ThemeStore} theme
- * @param {UIThemeHandler} themeHandler
+ * @param {DB_Shift} shift
  */
-export async function setTheme(theme, themeHandler) { // {{{
-    //try {
-    //    themeHandler.ui.loadTheme(theme.name)
-    //} catch {
-    //    themeHandler.ui.loadTheme("zinc") // default theme (original)
-    //}
+export function validateShift(shift) {
+  // Check for shift data
+  if (typeof shift.id !== "number") {
+    return false;
+  }
 
-    if (theme.mode === "system") {
-        // Enable auto mode
-        themeHandler.ui.enableAutoMode()
-    } else {
-        // Disable auto mode and set theme manually
-        themeHandler.ui.setMode(theme.mode)
-        themeHandler.ui.disableAutoMode()
-    }
-} // }}}
+  if (typeof shift.name !== "string" || typeof shift.shortName !== "string") {
+    return false;
+  }
 
-/**
- * @param {Shift} shift
- */
-export function validateShift(shift) { // {{{
-    // Check for shift data
-    if (typeof shift.id !== "number") {
-        return false;
-    }
+  if (typeof shift.color !== "string" && !!shift.color) {
+    return false;
+  }
 
-    if (typeof shift.name !== "string" || typeof shift.shortName !== "string") {
-        return false;
-    }
+  if (shift.color === "transparent") {
+    shift.visible = false;
+    shift.color = null;
+  }
 
-    if (typeof shift.color !== "string" && !!shift.color) {
-        return false;
-    }
+  if (typeof shift.visible !== "boolean") {
+    shift.visible = true;
+  }
 
-    if (shift.color === "transparent") {
-        shift.visible = false;
-        shift.color = null;
-    }
+  if (!shift.color) {
+    shift.color = null;
+  }
 
-    if (typeof shift.visible !== "boolean") {
-        shift.visible = true;
-    }
-
-    if (!shift.color) {
-        shift.color = null;
-    }
-
-    return true;
-} // }}}
+  return true;
+}
 
 /**
  * @param {string | null} title
  */
-export async function setAppBarTitle(title) { // {{{
-    document.querySelector("shift-scheduler-app .app-bar-title").innerHTML = title;
-} // }}}
+export async function setAppBarTitle(title) {
+  document.querySelector("shift-scheduler-app .app-bar-title").innerHTML =
+    title;
+}
