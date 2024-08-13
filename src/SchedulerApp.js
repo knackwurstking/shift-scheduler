@@ -7,6 +7,7 @@ import {
   PDFDialog,
   SchedulerAppBar,
   SettingsPage,
+  ShiftCard,
 } from "./components";
 import { pages } from "./data/constants";
 import { db, utils } from "./lib";
@@ -17,6 +18,7 @@ export class SchedulerApp extends HTMLElement {
     PDFDialog.register();
 
     SchedulerAppBar.register();
+    ShiftCard.register();
 
     CalendarPage.register();
     SettingsPage.register();

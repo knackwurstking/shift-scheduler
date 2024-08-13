@@ -7,6 +7,9 @@ import svgToday from "ui/src/svg/smoothie-line-icons/today";
 import { html, UIAppBar } from "ui";
 import { DatePickerDialog, PDFDialog } from "..";
 
+/**
+ * HTML: `scheduler-app-bar`
+ */
 export class SchedulerAppBar extends UIAppBar {
   static register = () => {
     customElements.define("scheduler-app-bar", SchedulerAppBar);
