@@ -1,13 +1,21 @@
 import { App as CapApp } from "@capacitor/app";
 import { CleanUp, html, isAndroid } from "ui";
+import { SchedulerAppBar } from "./components";
 import { pages } from "./data/constants";
 import db from "./db";
 import { DatePickerDialog, PDFDialog } from "./dialogs";
 import { CalendarPage, SettingsPage } from "./pages";
+import { IndexedDBBrowser } from "./pages/settings/sections";
 import { setAppBarTitle, setTheme } from "./utils";
 
 export class SchedulerApp extends HTMLElement {
   static register = () => {
+    SchedulerAppBar.register();
+
+    CalendarPage.register();
+    SettingsPage.register();
+    IndexedDBBrowser.register();
+
     customElements.define("scheduler-app", SchedulerApp);
   };
 
@@ -18,28 +26,23 @@ export class SchedulerApp extends HTMLElement {
     /** @type {SchedulerStore} */
     this.uiStore;
 
-    /** @type {import("ui").UIAppBar} */
-    this.uiAppBar;
-    this.uiAppBarItems;
-
     /** @type {import("ui").UIStackLayout} */
     this.uiStackLayout;
 
     /** @type {import("ui").UILang} */
     this.uiLang;
 
+    /** @type {SchedulerAppBar} */
+    this.schedulerAppBar;
+
     this.render();
   }
 
   render() {
-    // TODO: Update attributes and create SchedulerAppBar component
     this.innerHTML = html`
       <ui-theme-handler auto></ui-theme-handler>
 
-      <ui-store
-        local-storage-prefix="shift-scheduler:"
-        enable-local-storage
-      ></ui-store>
+      <ui-store storageprefix="shift-scheduler:" storage></ui-store>
 
       <ui-lang>
         <ui-lang-type name="en" href="/lang/en.json" fallback></ui-lang-type>
@@ -50,65 +53,7 @@ export class SchedulerApp extends HTMLElement {
         <ui-stack-layout></ui-stack-layout>
       </ui-container>
 
-      <ui-app-bar style="padding: 0 var(--ui-spacing);" position="top">
-        <ui-flex-grid-item slot="left" class="flex align-center justify-center">
-          <ui-icon-button id="appBarBackButton" ghost>
-            <svg-back-arrow></svg-back-arrow>
-          </ui-icon-button>
-        </ui-flex-grid-item>
-
-        <ui-flex-grid-item
-          slot="left"
-          style="padding: calc(var(--ui-spacing) / 2)"
-        >
-          <ui-button
-            id="appBarDatePickerButton"
-            style="height: 100%; white-space: nowrap;"
-            variant="outline"
-            color="primary"
-          ></ui-button>
-        </ui-flex-grid-item>
-
-        <ui-flex-grid-item slot="center" class="flex align-center">
-          <h4 class="app-bar-title" style="white-space: nowrap;"></h4>
-        </ui-flex-grid-item>
-
-        <ui-flex-grid-item
-          slot="right"
-          class="flex align-center justify-center"
-        >
-          <ui-icon-button id="appBarEditButton" ghost>
-            <svg-edit></svg-edit>
-          </ui-icon-button>
-        </ui-flex-grid-item>
-
-        <ui-flex-grid-item
-          slot="right"
-          class="flex align-center justify-center"
-        >
-          <ui-icon-button id="appBarTodayButton" ghost>
-            <svg-today></svg-today>
-          </ui-icon-button>
-        </ui-flex-grid-item>
-
-        <ui-flex-grid-item
-          slot="right"
-          class="flex align-center justify-center"
-        >
-          <ui-icon-button id="appBarPDFButton" ghost>
-            <svg-pdf></svg-pdf>
-          </ui-icon-button>
-        </ui-flex-grid-item>
-
-        <ui-flex-grid-item
-          slot="right"
-          class="flex align-center justify-center"
-        >
-          <ui-icon-button id="appBarSettingsButton" ghost>
-            <svg-settings></svg-settings>
-          </ui-icon-button>
-        </ui-flex-grid-item>
-      </ui-app-bar>
+      <scheduler-app-bar></scheduler-app-bar>
     `;
 
     this.createStore();
@@ -192,22 +137,9 @@ export class SchedulerApp extends HTMLElement {
   }
 
   createAppBar() {
-    this.uiAppBar = this.querySelector("ui-app-bar");
+    this.schedulerAppBar = this.querySelector("ui-app-bar");
 
-    this.uiAppBarItems = {
-      /** @type {import("ui").UIIconButton} */
-      back: this.uiAppBar.querySelector("#appBarBackButton"),
-      /** @type {import("ui").UIButton} */
-      datePicker: this.uiAppBar.querySelector("#appBarDatePickerButton"),
-      /** @type {import("ui").UIIconButton} */
-      edit: this.uiAppBar.querySelector("#appBarEditButton"),
-      /** @type {import("ui").UIIconButton} */
-      today: this.uiAppBar.querySelector("#appBarTodayButton"),
-      /** @type {import("ui").UIIconButton} */
-      pdf: this.uiAppBar.querySelector("#appBarPDFButton"),
-      /** @type {import("ui").UIIconButton} */
-      settings: this.uiAppBar.querySelector("#appBarSettingsButton"),
-    };
+    // TODO: Continue here... move app-bar stuff to `SchedulerAppBar`
 
     /** @type {import("ui").UIIconButton} */
     this.uiAppBarItems.back.onclick = async () => {
