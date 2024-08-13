@@ -9,8 +9,7 @@ import {
   SettingsPage,
 } from "./components";
 import { pages } from "./data/constants";
-import { db } from "./lib";
-import { setTheme } from "./utils";
+import { db, utils } from "./lib";
 
 export class SchedulerApp extends HTMLElement {
   static register = () => {
@@ -91,7 +90,7 @@ export class SchedulerApp extends HTMLElement {
       this.uiStore.ui.on(
         "theme",
         (data) => {
-          setTheme(data, document.querySelector("ui-theme-handler"));
+          utils.setTheme(data, document.querySelector("ui-theme-handler"));
         },
         true,
       ),
