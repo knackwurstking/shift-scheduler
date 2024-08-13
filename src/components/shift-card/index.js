@@ -1,5 +1,4 @@
-import { CleanUp } from "ui";
-import { html, ripple } from "ui";
+import { CleanUp, html, ripple } from "ui";
 
 /**
  * HTML: `shift-card`
