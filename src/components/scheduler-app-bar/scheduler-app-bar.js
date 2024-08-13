@@ -103,7 +103,7 @@ export class SchedulerAppBar extends UIAppBar {
     const item = this.querySelector(`[name="date-picker"]`);
 
     item.ui.child.ui.events.on("click", async () => {
-      const dialog = new DatePickerDialog(this.uiStore, this.uiLang);
+      const dialog = new DatePickerDialog();
 
       dialog.ui.events.on("close", () => {
         document.body.removeChild(dialog);

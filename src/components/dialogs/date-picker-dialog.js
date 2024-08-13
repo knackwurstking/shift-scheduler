@@ -1,173 +1,136 @@
-import { UIButton, UIDialog, UIFlexGrid, UIFlexGridItem } from "ui";
+import { CleanUp, html, UIDialog, UIFlexGridItem } from "ui";
 
 /**
- * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents
- * @typedef {import("../types/.index").UIStoreEvents} UIStoreEvents
+ * HTML: `date-picker-dialog`
+ *
+ * @extends {UIDialog<import("ui").UIDialog_Events>}
  */
-
-/** @extends {UIDialog<UIDialogEvents>} */
 export class DatePickerDialog extends UIDialog {
   static register = () => {
-    // {{{
-    UIDialog.register();
-    UIFlexGrid.register();
-    UIFlexGridItem.register();
-    UIButton.register();
+    customElements.define("date-picker-dialog", DatePickerDialog);
+  };
 
-    if (!customElements.get("date-picker-dialog")) {
-      customElements.define("date-picker-dialog", DatePickerDialog);
-    }
-  }; // }}}
+  constructor() {
+    super("");
 
-  /**
-   * @param {import("ui").UIStore} store
-   * @param {import("ui").UILang} lang
-   */
-  constructor(store, lang) {
-    // {{{
-    super();
+    /** @type {SchedulerStore} */
+    this.uiStore = document.querySelector("ui-store");
 
-    /**
-     * @type {import("ui").UIStore<UIStoreEvents>}
-     */
-    this.uiStore = store;
+    /** @type {import("ui").UILang} */
+    this.uiLang = document.querySelector("ui-lang");
 
-    /**
-     * @type {import("ui").UILang}
-     */
-    this.uiLang = lang;
-
-    /**
-     * @type {import("ui").UIStackLayout}
-     */
+    /** @type {import("ui").UIStackLayout} */
     this.stackLayout = document.querySelector("ui-stack-layout");
 
-    /**
-     * @type {UIButton}
-     */
-    this.cancel;
+    this.cleanup = new CleanUp();
 
-    /**
-     * @type {UIButton}
-     */
+    /** @type {import("ui").UIInput<import("ui").UIInput_Events>} */
+    this.input;
+    /** @type {import("ui").UIButton} */
+    this.cancel;
+    /** @type {import("ui").UIButton} */
     this.submit;
 
-    this.createContent();
-    this.createActions();
-  } // }}}
+    this.render();
+  }
+
+  render() {
+    this.innerHTML = html`
+      <ui-flex-grid gap="0.5rem">
+        <ui-flex-grid-item>
+          <ui-input type="month" value=""></ui-input>
+        </ui-flex-grid-item>
+      </ui-flex-grid>
+    `;
+
+    this.input = this.querySelector("ui-input");
+
+    this.appendChild(this.createCancelAction());
+    this.appendChild(this.createSubmitAction());
+  }
 
   connectedCallback() {
-    // {{{
     super.connectedCallback();
 
-    this.stackLayout.ui.lock();
-    this.cleanup.add(() => this.stackLayout.ui.unlock());
+    this.stackLayout.ui.lock = true;
 
-    setTimeout(() => {
-      this.cleanup.add(
-        this.uiStore.ui.on("lang", this.onLang.bind(this), true),
-      );
-    });
-  } // }}}
+    const date = new Date(this.uiStore.ui.get("date-picker"));
+    this.input.ui.value = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}`;
+
+    this.cleanup.add(
+      this.uiStore.ui.on(
+        "lang",
+        () => {
+          this.ui.title = this.uiLang.ui.get("date-picker-dialog", "title");
+
+          this.input.ui.title = this.uiLang.ui.get(
+            "date-picker-dialog",
+            "input-title-month",
+          );
+
+          this.cancel.innerText = this.uiLang.ui.get(
+            "date-picker-dialog",
+            "button-cancel",
+          );
+
+          this.submit.innerText = this.uiLang.ui.get(
+            "date-picker-dialog",
+            "button-submit",
+          );
+        },
+        true,
+      ),
+    );
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.cleanup.run();
+    this.stackLayout.ui.lock = false;
+  }
 
   /** @private */
-  createContent() {
-    // {{{
-    const content = new UIFlexGrid();
-    content.setAttribute("gap", "0.5rem");
-    this.createInput(content);
-    this.appendChild(content);
-  } // }}}
-
-  /**
-   * @private
-   * @param {UIFlexGrid} content
-   */
-  createInput(content) {
-    // {{{
-    const date = new Date(this.uiStore.ui.get("date-picker"));
+  createCancelAction() {
     const item = new UIFlexGridItem();
 
-    const y = date.getFullYear();
-    const m = (date.getMonth() + 1).toString().padStart(2, "0");
-
-    item.innerHTML = `
-            <ui-input
-                type="month"
-                value="${y}-${m}"
-            ></ui-input>
-        `;
-
-    content.appendChild(item);
-  } // }}}
-
-  /** @private */
-  createActions() {
-    // {{{
-    // Cancel
-    let item = new UIFlexGridItem();
     item.slot = "actions";
     item.setAttribute("flex", "0");
-    item.innerHTML = `
-            <ui-button variant="full" color="secondary"></ui-button>
-        `;
+
+    item.innerHTML = html`
+      <ui-button variant="full" color="secondary"></ui-button>
+    `;
+
     this.cancel = item.querySelector("ui-button");
-    this.cancel.onclick = this.onCancel.bind(this);
-    this.appendChild(item);
+    this.cancel.ui.events.on("click", () => {
+      this.ui.close();
+    });
 
-    // Submit
-    item = new UIFlexGridItem();
-    item.slot = "actions";
-    item.setAttribute("flex", "0");
-    item.innerHTML = `
-            <ui-button variant="full" color="primary"></ui-button>
-        `;
-    this.submit = item.querySelector("ui-button");
-    this.submit.onclick = this.onSubmit.bind(this);
-    this.appendChild(item);
-  } // }}}
-
-  /**
-   * @private
-   */
-  onCancel() {
-    // {{{
-    this.ui.close();
-  } // }}}
-
-  /**
-   * @private
-   */
-  async onSubmit() {
-    // {{{
-    this.uiStore.ui.set(
-      "date-picker",
-      // @ts-expect-error
-      new Date(this.querySelector("ui-input").ui.value).toString(),
-    );
-
-    this.ui.close();
-  } // }}}
+    return item;
+  }
 
   /** @private */
-  onLang() {
-    // {{{
-    this.ui.title = this.uiLang.ui.get("date-picker-dialog", "title");
+  createSubmitAction() {
+    const item = new UIFlexGridItem();
 
-    // @ts-expect-error
-    this.querySelector("ui-input").ui.title = this.uiLang.ui.get(
-      "date-picker-dialog",
-      "input-title-month",
-    );
+    item.slot = "actions";
+    item.setAttribute("flex", "0");
 
-    this.cancel.innerText = this.uiLang.ui.get(
-      "date-picker-dialog",
-      "button-cancel",
-    );
+    item.innerHTML = html`
+      <ui-button variant="full" color="primary"></ui-button>
+    `;
 
-    this.submit.innerText = this.uiLang.ui.get(
-      "date-picker-dialog",
-      "button-submit",
-    );
-  } // }}}
+    this.submit = item.querySelector("ui-button");
+    this.submit.ui.events.on("click", () => {
+      this.uiStore.ui.set(
+        "date-picker",
+        new Date(this.input.ui.value).toString(),
+      );
+
+      this.ui.close();
+    });
+
+    return item;
+  }
 }
