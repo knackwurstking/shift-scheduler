@@ -1,2 +1,2 @@
-export { default as db } from "./db";
+export { default as db, DB } from "./db";
 export * as utils from "./utils";
