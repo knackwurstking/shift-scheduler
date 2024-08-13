@@ -20,6 +20,6 @@
     "@capacitor/share": "^6.0.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
-    "ui": "knackwurstking/ui#v0.2.16"
+    "ui": "file:../ui"
   }
 }
