@@ -22,7 +22,7 @@ export async function setTheme(theme, themeHandler) {
 }
 
 /**
- * @param {DB_Shift} shift
+ * @param {Shift} shift
  */
 export function validateShift(shift) {
   // Check for shift data

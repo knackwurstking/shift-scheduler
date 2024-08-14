@@ -1,23 +1,11 @@
-// TODO: Continue here...
-
-/**
- * @typedef {import("ui").UIStore<import("../../types/.index").UIStoreEvents>} UIStore
- * @typedef {import("../../db").DB} DB
- * @typedef {import("../../types/.index").WeekStartStore} WeekStartStore
- * @typedef {import("../../types/.index").DBDataEntry} DBDataEntry
- * @typedef {import("../../types/.index").SettingsStore} SettingsStore
- * @typedef {import("../../types/.index").Shift} Shift
- */
-
 /**
  * @param {number} year
  * @param {number} month
- * @param {UIStore} store
- * @returns {Promise<DBDataEntry[]>}
+ * @param {SchedulerStore} store
+ * @returns {Promise<DB_Entry[]>}
  */
 export async function getArray(year, month, store) {
-  // {{{
-  /** @type {DBDataEntry[]} */
+  /** @type {DB_Entry[]} */
   const data = [];
   const weekStart = store.ui.get("week-start");
   const settings = store.ui.get("settings");
@@ -39,15 +27,14 @@ export async function getArray(year, month, store) {
   }
 
   return data;
-} // }}}
+}
 
 /**
  * @param {Date} current
- * @param {SettingsStore} settings
+ * @param {SchedulerStore_Settings} settings
  * @returns {Shift| null}
  */
 export function calcShiftForDay(current, settings) {
-  // {{{
   if (!settings.startDate || !settings.rhythm.length) return null;
 
   const sDate = new Date(settings.startDate);
@@ -74,20 +61,19 @@ export function calcShiftForDay(current, settings) {
         shift.id === settings.rhythm[diffInDays % settings.rhythm.length],
     ) || null
   );
-} // }}}
+}
 
 /**
  * @param {number} year
  * @param {number} month
- * @param {WeekStartStore} weekStart
+ * @param {SchedulerStore_WeekStart} weekStart
  * @returns {number}
  */
 function getStartDay(year, month, weekStart) {
-  // {{{
   // NOTE: if month starts on sunday (0), but the week start is set to monday (1), than set it to 6 (sunday becomes 6)
   const date = new Date(year, month, 1);
   const weekDay = date.getDay();
 
   if (weekStart === 0) return weekDay;
   return weekDay === 0 ? 6 : weekDay - 1;
-} // }}}
+}
