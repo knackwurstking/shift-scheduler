@@ -10,6 +10,8 @@ const flexGridContent = `
 `;
 
 /**
+ * HTML: `pdf-dialog`
+ *
  * @extends {UIDialog<import("ui").UIDialog_Events>}
  */
 export class PDFDialog extends UIDialog {
