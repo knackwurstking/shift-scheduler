@@ -1,3 +1,5 @@
+// TODO: Continue here...
+
 /**
  * @typedef {import("ui").UIStore<import("../../types/.index").UIStoreEvents>} UIStore
  * @typedef {import("../../db").DB} DB

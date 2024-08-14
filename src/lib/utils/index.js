@@ -1,3 +1,5 @@
+export * as calendar from "./calendar";
+
 /**
  * @param {SchedulerStore_Theme} theme
  * @param {import("ui").UIThemeHandler} themeHandler

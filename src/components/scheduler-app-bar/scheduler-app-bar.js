@@ -152,7 +152,7 @@ export class SchedulerAppBar extends UIAppBar {
     const item = this.querySelector(`[name="pdf"]`);
 
     item.ui.child.ui.events.on("click", async () => {
-      const dialog = new PDFDialog(this.uiStore, this.uiLang);
+      const dialog = new PDFDialog();
       document.body.appendChild(dialog);
 
       dialog.ui.events.on("close", () => {

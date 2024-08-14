@@ -2,175 +2,138 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
-import {
-  UIButton,
-  UIDialog,
-  UIFlexGrid,
-  UIFlexGridItem,
-  UIInput,
-  UISpinner,
-} from "ui";
-import { isAndroid } from "ui/src/js";
-import db from "../db";
-import * as calendarUtils from "../pages/calendar/utils";
-
-/**
- * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
- * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents
- * @typedef {import("../types/.index").UIStoreEvents} UIStoreEvents
- * @typedef {import("../types/.index").DBDataEntry} DBDataEntry
- * @typedef {import("../types/.index").Shift} Shift
- */
+import { CleanUp, isAndroid } from "ui";
+import { html, UIDialog, UIFlexGridItem, UISpinner } from "ui";
+import { db, utils } from "../../lib";
 
 const flexGridContent = `
-    <ui-flex-grid-item class="picker"></ui-flex-grid-item>
 `;
 
-/** @extends {UIDialog<UIDialogEvents>} */
+/**
+ * @extends {UIDialog<import("ui").UIDialog_Events>}
+ */
 export class PDFDialog extends UIDialog {
   static register = () => {
-    UIDialog.register();
-    UIFlexGrid.register();
-    UIFlexGridItem.register();
-    UIButton.register();
-    UISpinner.register();
-    UIInput.register();
-
-    if (!customElements.get("pdf-dialog")) {
-      customElements.define("pdf-dialog", PDFDialog);
-    }
+    customElements.define("pdf-dialog", PDFDialog);
   };
 
-  /**
-   * @param {import("ui").UIStore<UIStoreEvents>} store
-   * @param {import("ui").UILang} lang
-   */
-  constructor(store, lang) {
-    // {{{
-    super();
+  constructor() {
+    super("");
 
-    /** @type {import("ui").UIStore<UIStoreEvents>} */
-    this.uiStore = store;
+    this.cleanup = new CleanUp();
+
+    /** @type {SchedulerStore} */
+    this.uiStore = document.querySelector("ui-store");
+
     /** @type {import("ui").UILang} */
-    this.uiLang = lang;
+    this.uiLang = document.querySelector("ui-lang");
 
     /** @type {import("ui").UIStackLayout} */
     this.stackLayout = document.querySelector("ui-stack-layout");
 
-    /**
-     * @private
-     * @type {UIInput<UIInputEvents, "number">}
-     */
+    /** @type {import("ui").UIInput<import("ui").UIInput_Events>} */
     this.year;
 
-    /** @type {UIButton} */
+    /** @type {import("ui").UIButton} */
     this.download;
 
-    this.createContent();
-    this.createActions();
-  } // }}}
+    this.render();
+  }
 
-  connectedCallback() {
-    // {{{
-    super.connectedCallback();
+  render() {
+    this.innerHTML = html`
+      <ui-flex-grid gap="0.5rem">
+        <ui-flex-grid-item>
+          <ui-input
+            name="picker"
+            type="number"
+            value="${new Date(
+              this.uiStore.ui.get("date-picker"),
+            ).getFullYear()}"
+          ></ui-input>
+        </ui-flex-grid-item>
+      </ui-flex-grid>
+    `;
 
-    this.stackLayout.ui.lock();
-    this.cleanup.add(() => this.stackLayout.ui.unlock());
+    this.year = this.querySelector(`ui-input[name="picker"]`);
 
-    setTimeout(() => {
-      this.cleanup.add(
-        this.uiStore.ui.on("lang", this.onLang.bind(this), true),
-      );
-    });
-  } // }}}
-
-  /** @private */
-  createContent() {
-    // {{{
-    const content = new UIFlexGrid();
-
-    content.setAttribute("gap", "0.5rem");
-    content.innerHTML = flexGridContent;
-
-    this.createPicker(content);
-
-    this.appendChild(content);
-  } // }}}
-
-  /**
-   * @private
-   * @param {UIFlexGrid} content
-   */
-  createPicker(content) {
-    // {{{
-    const picker = content.querySelector(".picker");
-
-    picker.innerHTML = `
-            <ui-input
-                type="number"
-                value="${new Date(this.uiStore.ui.get("date-picker")).getFullYear()}"
-            ></ui-input>
-        `;
-
-    this.year = picker.querySelector("ui-input");
-
-    this.year.ui.events.on("input", (/** @type {number} */ value) => {
-      if (isNaN(value) || value < 1900) {
-        this.year.setAttribute("aria-invalid", "");
-        this.download.setAttribute("disabled", "");
+    this.year.ui.events.on("input", (value) => {
+      const n = parseInt(value);
+      if (isNaN(n) || n < 1900) {
+        this.year.ui.invalid = true;
+        this.download.ui.disabled = true;
       } else {
-        this.year.removeAttribute("aria-invalid");
-        this.download.removeAttribute("disabled");
+        this.year.ui.invalid = false;
+        this.download.ui.disabled = false;
       }
     });
-  } // }}}
+
+    this.appendChild(this.createDownloadAction());
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.stackLayout.ui.lock = true;
+
+    this.cleanup.add(
+      this.uiStore.ui.on(
+        "lang",
+        () => {
+          this.ui.title = this.uiLang.ui.get("pdf-dialog", "title");
+
+          this.year.ui.title = this.uiLang.ui.get(
+            "pdf-dialog",
+            "input-title-year",
+          );
+
+          this.download.innerText = this.uiLang.ui.get(
+            "pdf-dialog",
+            "button-download",
+          );
+        },
+        true,
+      ),
+    );
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.stackLayout.ui.lock = true;
+  }
 
   /** @private */
-  createActions() {
-    // {{{
-    let item = new UIFlexGridItem();
+  createDownloadAction() {
+    const item = new UIFlexGridItem();
+
     item.slot = "actions";
-    item.setAttribute("flex", "0");
-    item.innerHTML = `
-            <ui-button variant="full" color="primary"></ui-button>
-        `;
+    item.ui.flex = "0";
+
+    item.innerHTML = html`
+      <ui-button variant="full" color="primary"></ui-button>
+    `;
+
     this.download = item.querySelector("ui-button");
-    this.download.onclick = this.onDownload.bind(this);
-    this.appendChild(item);
-  } // }}}
+    this.download.onclick = async () => {
+      const spinner = new UISpinner();
+      document.body.appendChild(spinner);
 
-  async onDownload() {
-    const spinner = new UISpinner();
-    document.body.appendChild(spinner);
-
-    setTimeout(async () => {
       try {
-        const c = new Date(this.year.ui.value, 0);
+        const date = new Date(parseInt(this.year.ui.value), 0);
         await createPDF({
-          year: c.getFullYear(),
+          year: date.getFullYear(),
           lang: this.uiLang,
           store: this.uiStore,
         });
       } finally {
         document.body.removeChild(spinner);
       }
-    });
 
-    this.ui.close();
+      this.ui.close();
+    };
+
+    return item;
   }
-
-  /** @private */
-  onLang() {
-    // {{{
-    this.ui.title = this.uiLang.ui.get("pdf-dialog", "title");
-
-    this.year.ui.title = this.uiLang.ui.get("pdf-dialog", "input-title-year");
-
-    this.download.innerText = this.uiLang.ui.get(
-      "pdf-dialog",
-      "button-download",
-    );
-  } // }}}
 }
 
 /**
@@ -178,74 +141,35 @@ export class PDFDialog extends UIDialog {
  * @param {number | null} [options.year]
  * @param {number | null} [options.month]
  * @param {import("ui").UILang} options.lang
- * @param {import("ui").UIStore<UIStoreEvents>} options.store
+ * @param {SchedulerStore} options.store
  */
 async function createPDF({
   year = null,
-  month = null,
+  month = null, // NOTE: Not used for now
   lang = null,
   store = null,
 }) {
-  // {{{
-  /**
-   * @param {number} month
-   * @param {DBDataEntry[]} a
-   * @returns {string[]}
-   */
-  const getRowFromArray = (month, a) => {
-    // {{{
-    return a.slice(0, 7).map((e) => {
-      const name = e.shift?.visible ? e.shift?.shortName || "" : "";
-
-      return e.month === month
-        ? !name
-          ? `\n${e.date}\n`
-          : `${e.date}\n--\n${name}`
-        : "\n\n";
-    });
-  }; // }}}
-
-  /**
-   * @param {number} m
-   * @returns {string}
-   */
-  const getHeaderMonth = (m) => {
-    // {{{
-    return lang.ui.get("month", `${m}`);
-  }; // }}}
-
-  /**
-   * @returns {string[]}
-   */
-  const getHeaderWeekDays = () => {
-    // {{{
-    let order = [0, 1, 2, 3, 4, 5, 6];
-    const weekStart = store.ui.get("week-start");
-
-    if (weekStart > 0) {
-      order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
-    }
-
-    /** @type {string[]} */
-    const result = [];
-    for (let i = 0; i < 7; i++) {
-      result.push(lang.ui.get("week-day", order[i % 7].toString()));
-    }
-
-    return result;
-  }; // }}}
-
+  // Check params for year and month
   const today = new Date();
-  if (month === null && year === null) month = today.getMonth();
-  if (year === null) year = today.getFullYear();
 
+  if (month === null && year === null) {
+    month = today.getMonth();
+  }
+
+  if (year === null) {
+    year = today.getFullYear();
+  }
+
+  // Create the PDF
   const doc = new jspdf.jsPDF();
   doc.setFont("Courier");
 
+  // Add pages
   const months =
     month !== null ? [month] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
   let pageIndex = 0;
-  for (const month of months) {
+  for (const m of months) {
     if (pageIndex === 2) {
       doc.addPage();
       pageIndex = 1;
@@ -253,10 +177,10 @@ async function createPDF({
       pageIndex++;
     }
 
-    /** @type {DBDataEntry[]} */
-    let mA = await calendarUtils.getArray(
+    /** @type {DB_Entry[]} */
+    let mA = await utils.calendar.getArray(
       year,
-      month,
+      m,
       document.querySelector("ui-store"),
     );
 
@@ -272,7 +196,7 @@ async function createPDF({
       head: [
         [
           {
-            content: getHeaderMonth(month),
+            content: lang.ui.get("month", `${m}`),
             colSpan: 7,
             styles: {
               fillColor: [0, 0, 0],
@@ -280,15 +204,15 @@ async function createPDF({
             },
           },
         ],
-        getHeaderWeekDays(),
+        getTableHeader(this.store, this.lang),
       ],
       body: [
-        getRowFromArray(month, mA.slice(0, 7)),
-        getRowFromArray(month, mA.slice(7, 14)),
-        getRowFromArray(month, mA.slice(14, 21)),
-        getRowFromArray(month, mA.slice(21, 28)),
-        getRowFromArray(month, mA.slice(28, 35)),
-        getRowFromArray(month, mA.slice(35, 42)),
+        getTableBodyEntries(m, mA.slice(0, 7)),
+        getTableBodyEntries(m, mA.slice(7, 14)),
+        getTableBodyEntries(m, mA.slice(14, 21)),
+        getTableBodyEntries(m, mA.slice(21, 28)),
+        getTableBodyEntries(m, mA.slice(28, 35)),
+        getTableBodyEntries(m, mA.slice(35, 42)),
       ],
       theme: "grid",
       styles: {
@@ -306,7 +230,50 @@ async function createPDF({
   }
 
   await exportDoc(doc, year, month);
-} // }}}
+}
+
+/**
+ * @param {SchedulerStore} store
+ * @param {import("ui").UILang} lang
+ * @returns {string[]}
+ */
+function getTableHeader(store, lang) {
+  let order = [0, 1, 2, 3, 4, 5, 6];
+  const weekStart = store.ui.get("week-start");
+
+  if (weekStart > 0) {
+    order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
+  }
+
+  /** @type {string[]} */
+  const result = [];
+  for (let i = 0; i < 7; i++) {
+    result.push(lang.ui.get("week-day", order[i % 7].toString()));
+  }
+
+  return result;
+}
+
+/**
+ * @param {number} month
+ * @param {DB_Entry[]} entries
+ * @returns {string[]}
+ */
+function getTableBodyEntries(month, entries) {
+  return entries.slice(0, 7).map((entry) => {
+    const name = entry.shift?.visible ? entry.shift?.shortName || "" : "";
+
+    if (entry.month === month) {
+      if (!name) {
+        return `\n${entry.date}\n`;
+      }
+
+      return `${entry.date}\n--\n${name}`;
+    }
+
+    return "\n\n";
+  });
+}
 
 /**
  * @param {jspdf.jsPDF} doc
@@ -314,7 +281,6 @@ async function createPDF({
  * @param {number} [month]
  */
 async function exportDoc(doc, year, month = null) {
-  // {{{
   let fileName = `${year}.pdf`;
   if (month !== null) {
     fileName = `${year}-${month.toString().padStart(2, "0")}.pdf`;
@@ -339,4 +305,4 @@ async function exportDoc(doc, year, month = null) {
   }
 
   doc.save(fileName);
-} // }}}
+}

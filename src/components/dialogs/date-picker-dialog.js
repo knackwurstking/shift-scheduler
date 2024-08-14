@@ -96,7 +96,7 @@ export class DatePickerDialog extends UIDialog {
     const item = new UIFlexGridItem();
 
     item.slot = "actions";
-    item.setAttribute("flex", "0");
+    item.ui.flex = "0";
 
     item.innerHTML = html`
       <ui-button variant="full" color="secondary"></ui-button>
@@ -115,7 +115,7 @@ export class DatePickerDialog extends UIDialog {
     const item = new UIFlexGridItem();
 
     item.slot = "actions";
-    item.setAttribute("flex", "0");
+    item.ui.flex = "0";
 
     item.innerHTML = html`
       <ui-button variant="full" color="primary"></ui-button>
