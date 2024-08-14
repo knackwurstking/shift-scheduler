@@ -1,6 +1,6 @@
 /// <reference types="vite-plugin-pwa/client" />
 
-interface DB_Shift {
+interface Shift {
   /**
    * NOTE: Just a timestamp
    */
