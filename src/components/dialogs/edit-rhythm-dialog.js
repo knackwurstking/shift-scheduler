@@ -138,12 +138,12 @@ export class EditRhythmDialog extends UIDialog {
           this.querySelector("thead th:nth-child(2)").innerHTML =
             this.uiLang.ui.get("edit-rhythm-dialog", "table-header-short-name");
 
-          this.innerText = this.uiLang.ui.get(
+          this.cancelAction.action.innerText = this.uiLang.ui.get(
             "edit-rhythm-dialog",
             "button-cancel",
           );
 
-          this.innerText = this.uiLang.ui.get(
+          this.submitAction.action.innerText = this.uiLang.ui.get(
             "edit-rhythm-dialog",
             "button-submit",
           );

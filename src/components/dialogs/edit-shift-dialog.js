@@ -1,398 +1,282 @@
-import {
-  UIButton,
-  UIDialog,
-  UIFlexGrid,
-  UIFlexGridItem,
-  UIInput,
-  UILabel,
-} from "ui";
+import { UIIconButton } from "ui";
+import { CleanUp, html, UIDialog, UIInput } from "ui";
 
 /**
- * @typedef {import("ui/src/ui-input").UIInputEvents} UIInputEvents
- * @typedef {import("ui/src/ui-dialog").UIDialogEvents} UIDialogEvents
- * @typedef {import("../types/.index").Shift} Shift
- * @typedef {import("../types/.index").UIStoreEvents} UIStoreEvents
- */
-
-/**
- * @extends {UIDialog<UIDialogEvents & { submit: Shift }>}
+ * @extends {UIDialog<import("ui").UIDialog_Events & { submit: Shift }>}
  */
 export class EditShiftDialog extends UIDialog {
   static register = () => {
-    UIDialog.register();
-    UIFlexGrid.register();
-    UIFlexGridItem.register();
-    UIButton.register();
-    UIInput.register();
-    UILabel.register();
-
-    if (!customElements.get("edit-shift-dialog")) {
-      customElements.define("edit-shift-dialog", EditShiftDialog);
-    }
+    customElements.define("edit-shift-dialog", EditShiftDialog);
   };
 
-  /**
-   * @param {Shift} shift
-   * @param {import("ui").UIStore<UIStoreEvents>} store
-   * @param {import("ui").UILang} lang
-   */
-  constructor(shift, store, lang) {
-    // {{{
-    super();
+  constructor() {
+    super("");
 
-    /** @type {Shift} */
-    this.shift = { ...shift };
+    this.cleanup = new CleanUp();
 
-    /** @type {import("ui").UIStore<UIStoreEvents>} */
-    this.uiStore = store;
-
+    /** @type {SchedulerStore} */
+    this.uiStore = document.querySelector("ui-store");
     /** @type {import("ui").UILang} */
-    this.uiLang = lang;
-
+    this.uiLang = document.querySelector("ui-lang");
     /** @type {import("ui").UIStackLayout} */
     this.stackLayout = document.querySelector("ui-stack-layout");
 
-    this.colorReset = null;
+    this.colorReset;
 
-    /** @type {UIFlexGridItem} */
-    this.nameItem;
+    this.inputName;
+    this.inputShortName;
+    this.labelColorPicker;
+    this.labelDefaultColor;
+    this.labelVisible;
 
-    /** @type {UIFlexGridItem} */
-    this.shortNameItem;
+    this.shift;
 
-    /** @type {UIFlexGridItem} */
-    this.colorPickerItem;
+    this.cancelAction;
+    this.submitAction;
 
-    /** @type {UIFlexGridItem} */
-    this.useDefaultColorItem;
+    this.render();
+  }
 
-    /** @type {UIFlexGridItem} */
-    this.visibleItem;
+  render() {
+    this.innerHTML = html`
+      <ui-flex-grid gap="0.5rem">
+        <ui-flex-grid-item>
+          <ui-input name="name" type="text"></ui-input>
+        </ui-flex-grid-item>
 
-    /** @type {UIInput<UIInputEvents, "text">} */
-    this.name;
+        <ui-flex-grid-item>
+          <ui-input name="short-name" type="text"></ui-input>
+        </ui-flex-grid-item>
 
-    /** @type {UIInput<UIInputEvents, "text">} */
-    this.shortName;
+        <ui-flex-grid-item>
+          <ui-label name="color-picker">
+            <input
+              name="color-picker"
+              slot="input"
+              style="width: 100%; min-width: 4rem;"
+              type="color"
+            />
+          </ui-label>
+        </ui-flex-grid-item>
 
-    /** @type {UIButton} */
-    this.cancel;
+        <ui-flex-grid-item>
+          <ui-label name="default-color" ripple>
+            <input name="default-color" slot="input" type="checkbox" />
+          </ui-label>
+        </ui-flex-grid-item>
 
-    /** @type {UIButton} */
-    this.submit;
+        <ui-flex-grid-item>
+          <ui-label name="visible" ripple>
+            <input name="visible" slot="input" type="checkbox" />
+          </ui-label>
+        </ui-flex-grid-item>
+      </ui-flex-grid>
+    `;
 
-    this.createContent();
-    this.createActions();
-  } // }}}
-
-  connectedCallback() {
-    // {{{
-    super.connectedCallback();
-
-    this.stackLayout.ui.lock();
-    this.cleanup.add(() => this.stackLayout.ui.unlock());
-
-    setTimeout(() => {
-      this.cleanup.add(
-        this.uiStore.ui.on("lang", this.onLang.bind(this), true),
-      );
-    });
-  } // }}}
-
-  /** @private */
-  createContent() {
-    // {{{
-    const content = new UIFlexGrid();
-
-    content.setAttribute("gap", "0.5rem");
-
-    this.createContentSectionName(content);
-    this.createContentSectionShortName(content);
-    this.createContentColorPicker(content);
-    this.createContentUseDefaultColorCheckbox(content);
-    this.createContentVisibleCheckbox(content);
-
-    this.appendChild(content);
-  } // }}}
-
-  /**
-   * @private
-   * @param {UIFlexGrid} container
-   */
-  createContentSectionName(container) {
-    // {{{
-    this.nameItem = new UIFlexGridItem();
-    this.nameItem.innerHTML = `
-            <ui-input
-                type="text"
-                value="${this.shift.name}"
-            ></ui-input>
-        `;
-
-    this.name = this.nameItem.querySelector("ui-input");
-    this.name.ui.events.on("input", async (/** @type {string} */ value) => {
+    /** @type {import("ui").UIInput<import("ui").UIInput_Events>} */
+    this.inputName = this.querySelector(`ui-input[name="name"]`);
+    this.inputName.ui.events.on("input", async (value) => {
       this.shift.name = value;
     });
 
-    container.appendChild(this.nameItem);
-  } // }}}
+    /** @type {import("ui").UIInput<import("ui").UIInput_Events>} */
+    this.inputShortName = this.querySelector(`ui-input[name="short-name"]`);
+    this.inputShortName.ui.events.on("input", (value) => {
+      this.shift.shortName = value;
+    });
 
-  /**
-   * @private
-   * @param {UIFlexGrid} container
-   */
-  createContentSectionShortName(container) {
-    // {{{
-    this.shortNameItem = new UIFlexGridItem();
-    this.shortNameItem.innerHTML = `
-            <ui-input
-                type="text"
-                value="${this.shift.shortName}"
-            ></ui-input>
-        `;
-
-    this.shortName = this.shortNameItem.querySelector("ui-input");
-    this.shortName.ui.input.style.color = this.shift.color || "inherit";
-
-    this.shortName.ui.events.on(
-      "input",
-      async (/** @type {string} */ value) => {
-        this.shift.shortName = value;
-      },
-    );
-
-    if (!this.shift.visible) {
-      this.disableContentSection(this.shortNameItem);
-    } else {
-      this.enableContentSection(this.shortNameItem);
-    }
-
-    container.appendChild(this.shortNameItem);
-  } // }}}
-
-  /**
-   * @private
-   * @param {UIFlexGrid} container
-   */
-  createContentColorPicker(container) {
-    // {{{
-    this.colorPickerItem = new UIFlexGridItem();
-    this.colorPickerItem.innerHTML = `
-            <ui-label>
-                <input slot="input" style="width: 100%; min-width: 4rem;" type="color" value="${this.shift.color}">
-            </ui-label>
-        `;
-
-    this.colorPickerItem.querySelector("input").onchange = async (
-      /**@type{Event & { currentTarget:  HTMLInputElement }}*/ ev,
-    ) => {
-      this.updateShiftColor(ev.currentTarget.value || null);
-    };
-
-    if (!this.shift.visible) {
-      this.disableContentSection(this.colorPickerItem);
-    } else {
-      this.enableContentSection(this.colorPickerItem);
-    }
-
-    container.appendChild(this.colorPickerItem);
-  } // }}}
-
-  /**
-   * @private
-   * @param {UIFlexGrid} container
-   */
-  createContentUseDefaultColorCheckbox(container) {
-    // {{{
-    this.useDefaultColorItem = new UIFlexGridItem();
-    this.useDefaultColorItem.innerHTML = `
-            <ui-label ripple>
-                <input slot="input" type="checkbox">
-            </ui-label>
-        `;
-
+    /** @type {import("ui").UILabel} */
+    this.labelColorPicker = this.querySelector(`ui-label[name="color-picker"]`);
     /** @type {HTMLInputElement} */
-    const input = this.useDefaultColorItem.querySelector("input");
-    input.checked = !this.shift.color;
-    input.onchange = async () => {
-      if (input.checked) {
+    const inputColorPicker = this.querySelector(`input[name="color-picker"]`);
+    inputColorPicker.addEventListener("change", () => {
+      this.shift.color = inputColorPicker.value || null;
+      this.inputShortName.ui.input.style.color = this.shift.color || "inherit";
+    });
+
+    /** @type {import("ui").UILabel} */
+    this.labelDefaultColor = this.querySelector(
+      `ui-label[name="default-color"]`,
+    );
+    const inputDefaultColor = this.labelDefaultColor.ui.inputSlot[0];
+    inputDefaultColor.checked = !this.shift.color;
+    inputDefaultColor.addEventListener("change", () => {
+      if (inputDefaultColor.checked) {
         this.colorReset = this.shift.color;
-        this.updateShiftColor(null);
-        this.disableContentSection(this.colorPickerItem);
+        inputColorPicker.value = null;
+        this.disable(this.labelColorPicker);
       } else {
         this.shift.color = this.colorReset;
-        this.updateShiftColor(this.shift.color);
-        this.enableContentSection(this.colorPickerItem);
+        inputColorPicker.value = this.shift.color;
+        this.enable(this.labelColorPicker);
       }
-    };
 
-    if (input.checked) {
+      inputColorPicker.dispatchEvent(new Event("change"));
+    });
+
+    if (inputDefaultColor.checked) {
       this.colorReset = this.shift.color;
-      this.updateShiftColor(null);
-      this.disableContentSection(this.colorPickerItem);
+      inputColorPicker.value = null;
+      inputColorPicker.dispatchEvent(new Event("change"));
+      this.disable(this.labelColorPicker);
     }
 
-    container.appendChild(this.useDefaultColorItem);
-  } // }}}
-
-  /**
-   * @private
-   * @param {UIFlexGrid} container
-   */
-  createContentVisibleCheckbox(container) {
-    // {{{
-    this.visibleItem = new UIFlexGridItem();
-    this.visibleItem.innerHTML = `
-            <ui-label ripple>
-                <input slot="input" type="checkbox">
-            </ui-label>
-        `;
-
-    const input = this.visibleItem.querySelector("input");
-    input.checked = !this.shift.visible;
-    input.onchange = async () => {
-      if (input.checked) {
-        this.setVisible(false);
+    /** @type {import("ui").UILabel} */
+    this.labelVisible = this.querySelector(`ui-label[name="visible"]`);
+    const inputVisible = this.labelVisible.ui.inputSlot[0];
+    inputVisible.addEventListener("change", () => {
+      if (inputVisible.checked) {
+        this.disable(this.inputShortName);
+        this.disable(this.labelColorPicker);
+        this.disable(this.labelDefaultColor);
       } else {
-        this.setVisible(true);
-        const input = this.useDefaultColorItem.querySelector("input");
-        input.onchange(null);
+        this.enable(this.inputShortName);
+        this.enable(this.labelColorPicker);
+        this.enable(this.labelDefaultColor);
       }
-    };
 
-    if (input.checked) {
-      this.setVisible(false);
-    }
+      this.shift.visible = inputVisible.checked;
+      inputDefaultColor.dispatchEvent(new Event("change"));
+    });
 
-    container.appendChild(this.visibleItem);
-  } // }}}
+    this.cancelAction = UIDialog.createAction({
+      variant: "full",
+      color: "secondary",
+      onClick: () => {
+        this.ui.close();
+      },
+    });
+    this.appendChild(this.cancelAction.container);
 
-  /** @private */
-  createActions() {
-    // {{{
-    // Cancel Button
-    let item = new UIFlexGridItem();
-    item.slot = "actions";
-    item.setAttribute("flex", "0");
-    item.innerHTML = `<ui-button color="secondary" variant="full"></ui-button>`;
-    this.cancel = item.querySelector("ui-button");
-    this.cancel.onclick = this.onCancel.bind(this);
-    this.appendChild(item);
+    this.submitAction = UIDialog.createAction({
+      variant: "full",
+      color: "primary",
+      onClick: () => {
+        this.ui.events.dispatch("submit", this.shift);
+        this.ui.close();
+      },
+    });
+    this.appendChild(this.submitAction.container);
+  }
 
-    // Submit Button
-    item = new UIFlexGridItem();
-    item.slot = "actions";
-    item.setAttribute("flex", "0");
-    item.innerHTML = `<ui-button color="primary" variant="full"></ui-button>`;
-    this.submit = item.querySelector("ui-button");
-    this.submit.onclick = this.onSubmit.bind(this);
-    this.appendChild(item);
-  } // }}}
+  connectedCallback() {
+    super.connectedCallback();
+    this.stackLayout.ui.lock = true;
 
-  /**
-   * @private
-   * @param {UIFlexGridItem} item
-   */
-  enableContentSection(item) {
-    // {{{
-    item.style.opacity = "1";
-    item.style.userSelect = "auto";
-    const input = item.querySelector("input");
-    if (!!input) input.disabled = false;
-  } // }}}
+    this.cleanup.add(
+      this.uiStore.ui.on(
+        "lang",
+        () => {
+          this.ui.title = this.uiLang.ui.get("edit-shift-dialog", "title");
 
-  /**
-   * @private
-   * @param {UIFlexGridItem} item
-   */
-  disableContentSection(item) {
-    // {{{
-    item.style.opacity = "0.25";
-    item.style.userSelect = "none";
-    const input = item.querySelector("input");
-    if (!!input) input.disabled = true;
-  } // }}}
+          // Name
+          this.inputName.ui.title = this.uiLang.ui.get(
+            "edit-shift-dialog",
+            "input-title-name",
+          );
 
-  /**
-   * @private
-   * @param {string | null} color
-   */
-  async updateShiftColor(color) {
-    // {{{
-    this.shift.color = color;
-    this.shortName.ui.input.style.color = this.shift.color || "inherit";
-  } // }}}
+          // Short
+          this.inputShortName.ui.title = this.uiLang.ui.get(
+            "edit-shift-dialog",
+            "input-title-short-name",
+          );
 
-  /**
-   * @private
-   * @param {boolean} state
-   */
-  async setVisible(state) {
-    // {{{
-    if (state) {
-      this.enableContentSection(this.shortNameItem);
-      this.enableContentSection(this.colorPickerItem);
-      this.enableContentSection(this.useDefaultColorItem);
+          this.labelColorPicker.ui.primary = this.uiLang.ui.get(
+            "edit-shift-dialog",
+            "label-primary-color-picker",
+          );
+
+          this.labelDefaultColor.ui.primary = this.uiLang.ui.get(
+            "edit-shift-dialog",
+            "label-primary-use-default-color",
+          );
+
+          this.labelVisible.ui.primary = this.uiLang.ui.get(
+            "edit-shift-dialog",
+            "label-primary-visible-item",
+          );
+
+          this.cancelAction.action.innerText = this.uiLang.ui.get(
+            "edit-shift-dialog",
+            "button-cancel",
+          );
+
+          this.submitAction.action.innerText = this.uiLang.ui.get(
+            "edit-shift-dialog",
+            "button-submit",
+          );
+        },
+        true,
+      ),
+    );
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.stackLayout.ui.lock = false;
+    this.cleanup.run();
+  }
+
+  /** @param {Shift} shift */
+  set(shift) {
+    /** @type {Shift} */
+    this.shift = shift;
+
+    this.inputName.ui.value = this.shift.name;
+    this.inputShortName.ui.value = this.shift.shortName;
+    this.inputShortName.ui.input.style.color = this.shift.color || "inherit";
+    this.labelColorPicker.ui.inputSlot[0].value = this.shift.color;
+    this.labelDefaultColor.ui.inputSlot[0].checked = !this.shift.color;
+    this.labelVisible.ui.inputSlot[0].checked = !this.shift.visible;
+
+    if (!this.shift.visible) {
+      this.disable(this.inputShortName);
+      this.disable(this.labelColorPicker);
     } else {
-      this.disableContentSection(this.shortNameItem);
-      this.disableContentSection(this.colorPickerItem);
-      this.disableContentSection(this.useDefaultColorItem);
+      this.enable(this.inputShortName);
+      this.enable(this.labelColorPicker);
     }
-
-    this.shift.visible = state;
-  } // }}}
-
-  onCancel() {
-    this.ui.close();
   }
 
-  async onSubmit() {
-    this.ui.events.dispatch("submit", this.shift);
-    this.ui.close();
+  /**
+   * @private
+   * @param {import("ui").UIInput<import("ui").UIInput_Events> | import("ui").UILabel} el
+   */
+  enable(el) {
+    el.style.opacity = "1";
+    el.style.userSelect = "auto";
+
+    if (el instanceof UIInput) {
+      el.ui.input.disabled = false;
+    } else {
+      el.ui.inputSlot.forEach((slot) => {
+        if (el instanceof UIInput) {
+          slot.ui.input.disabled = false;
+        } else {
+          slot.disabled = false;
+        }
+      });
+    }
   }
 
-  /** @private */
-  async onLang() {
-    // {{{
-    this.ui.title = this.uiLang.ui.get("edit-shift-dialog", "title");
+  /**
+   * @private
+   * @param {import("ui").UIInput<import("ui").UIInput_Events> | import("ui").UILabel} el
+   */
+  disable(el) {
+    el.style.opacity = "0.25";
+    el.style.userSelect = "none";
 
-    // Name
-    this.name.ui.title = this.uiLang.ui.get(
-      "edit-shift-dialog",
-      "input-title-name",
-    );
-
-    // Short
-    this.shortName.ui.title = this.uiLang.ui.get(
-      "edit-shift-dialog",
-      "input-title-short-name",
-    );
-
-    // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
-    this.colorPickerItem.querySelector("ui-label").ui.primary =
-      this.uiLang.ui.get("edit-shift-dialog", "label-primary-color-picker");
-
-    // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
-    this.useDefaultColorItem.querySelector("ui-label").ui.primary =
-      this.uiLang.ui.get(
-        "edit-shift-dialog",
-        "label-primary-use-default-color",
-      );
-
-    // @ts-expect-error - ui.primary is a `ui.wc.Label` thing
-    this.visibleItem.querySelector("ui-label").ui.primary = this.uiLang.ui.get(
-      "edit-shift-dialog",
-      "label-primary-visible-item",
-    );
-
-    this.cancel.innerText = this.uiLang.ui.get(
-      "edit-shift-dialog",
-      "button-cancel",
-    );
-
-    this.submit.innerText = this.uiLang.ui.get(
-      "edit-shift-dialog",
-      "button-submit",
-    );
-  } // }}}
+    if (el instanceof UIInput) {
+      el.ui.input.disabled = true;
+    } else {
+      el.ui.inputSlot.forEach((slot) => {
+        if (el instanceof UIInput) {
+          slot.ui.input.disabled = true;
+        } else {
+          slot.disabled = true;
+        }
+      });
+    }
+  }
 }
