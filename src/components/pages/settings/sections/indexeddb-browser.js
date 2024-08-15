@@ -1,100 +1,66 @@
-import { UIButton, UILabel } from "ui";
-import { CleanUp } from "ui/src/js";
+import { CleanUp, html } from "ui";
 import { IndexedDBBrowserPage } from "../../indexeddb-browser";
-
-/**
- * @typedef {import("../../../types/.index").UIStoreEvents} UIStoreEvents
- */
-
-const innerHTML = `
-<ui-label>
-    <ui-button color="primary" variant="full"></ui-button>
-</ui-label>
-`;
+import { pages } from "../../../../data/constants";
 
 export class IndexedDBBrowser extends HTMLElement {
-  static register = () => {
-    UILabel.register();
-    UIButton.register();
-
-    IndexedDBBrowserPage.register();
-
-    customElements.define("settings-indexeddb-browser", IndexedDBBrowser);
-  };
-
-  /**
-   * @param {import("ui").UIStore<UIStoreEvents>} store
-   * @param {import("ui").UILang} lang
-   */
-  constructor(store, lang) {
-    // {{{
-    super();
-    this.innerHTML = innerHTML;
-
-    /** @type {import("ui").UIStore<UIStoreEvents>} */
-    this.uiStore = store;
-    /** @type {import("ui").UILang} */
-    this.uiLang = lang;
-
-    this.cleanup = new CleanUp();
-
-    /**
-     * @private
-     * @type {import("ui").UIStackLayout}
-     */
-    this.stackLayout = document.querySelector("ui-stack-layout");
-
-    /** @type {UILabel} */
-    this.label = this.querySelector("ui-label");
-
-    /** @type {UIButton} */
-    this.button = this.querySelector("ui-button");
-    this.createButton();
-
-    this.pages = {
-      indexedDBBrowser: new IndexedDBBrowserPage(),
+    static register = () => {
+        customElements.define("settings-indexeddb-browser", IndexedDBBrowser);
     };
-  } // }}}
 
-  connectedCallback() {
-    // {{{
-    this.stackLayout.ui.registerPage(
-      this.pages.indexedDBBrowser.ui.name,
-      () => {
-        return this.pages.indexedDBBrowser;
-      },
-    );
+    constructor() {
+        super();
 
-    this.cleanup.add(() =>
-      this.stackLayout.ui.unregisterPage(this.pages.indexedDBBrowser.ui.name),
-    );
+        this.cleanup = new CleanUp();
 
-    this.cleanup.add(this.uiStore.ui.on("lang", this.onLang.bind(this), true));
-  } // }}}
+        /** @type {SchedulerStore} */
+        this.uiStore = document.querySelector("ui-store");
+        /** @type {import("ui").UILang} */
+        this.uiLang = document.querySelector("ui-lang");
+        /** @type {import("ui").UIStackLayout} */
+        this.stackLayout = document.querySelector("ui-stack-layout");
 
-  disconnectedCallback() {
-    // {{{
-    this.cleanup.run();
-  } // }}}
+        this.pages = {
+            dbBrowser: new IndexedDBBrowserPage(),
+        };
 
-  /** @private */
-  createButton() {
-    // {{{
-    this.button.onclick = async () => {
-      this.stackLayout.ui.setPage("indexeddb-browser");
-    };
-  } // }}}
+        this.label;
 
-  /** @private */
-  async onLang() {
-    // {{{
-    this.label.ui.primary = this.uiLang.ui.get(
-      "settings",
-      "label-primary-indexeddb-browser",
-    );
-    this.button.innerHTML = this.uiLang.ui.get(
-      "settings",
-      "button-indexeddb-browser",
-    );
-  } // }}}
+        this.render();
+    }
+
+    render() {
+        this.innerHTML = html`
+            <ui-label>
+                <ui-button color="primary" variant="full"></ui-button>
+            </ui-label>
+        `;
+
+        /** @type {import("ui").UILabel} */
+        this.label = this.querySelector("ui-label");
+        this.label.ui.inputSlot[0].onclick = async () => {
+            this.stackLayout.ui.set(pages.dbBrowser, null, true);
+        };
+    }
+
+    connectedCallback() {
+        this.cleanup.add(
+            this.uiStore.ui.on("lang", this.storeHandlerLang.bind(this), true),
+        );
+    }
+
+    disconnectedCallback() {
+        this.cleanup.run();
+    }
+
+    /** @private */
+    async storeHandlerLang() {
+        this.label.ui.primary = this.uiLang.ui.get(
+            "settings",
+            "label-primary-indexeddb-browser",
+        );
+        this.label.ui.inputSlot[0].innerHTML = this.uiLang.ui.get(
+            "settings",
+            "button-indexeddb-browser",
+        );
+    }
 }

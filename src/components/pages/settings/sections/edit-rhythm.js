@@ -1,86 +1,74 @@
-import { UIButton, UILabel } from "ui";
-import { CleanUp } from "ui/src/js";
+import { CleanUp, UIButton, UILabel, html } from "ui";
 import { EditRhythmDialog } from "../../../dialogs";
 
 /**
- * @typedef {import("../../../types/.index").UIStoreEvents} UIStoreEvents
+ * HTML: `settings-edit-rhythm`
  */
-
-const innerHTML = `
-<ui-label>
-    <ui-button color="primary" variant="full"></ui-button>
-</ui-label>
-`;
-
 export class EditRhythm extends HTMLElement {
-  static register = () => {
-    UILabel.register();
-    UIButton.register();
-
-    EditRhythmDialog.register();
-
-    customElements.define("settings-edit-rhythm", EditRhythm);
-  };
-
-  /**
-   * @param {import("ui").UIStore<UIStoreEvents>} store
-   * @param {import("ui").UILang} lang
-   */
-  constructor(store, lang) {
-    // {{{
-    super();
-    this.innerHTML = innerHTML;
-
-    /** @type {import("ui").UIStore<UIStoreEvents>} */
-    this.uiStore = store;
-    /** @type {import("ui").UILang} */
-    this.uiLang = lang;
-
-    this.cleanup = new CleanUp();
-
-    /** @type {UILabel} */
-    this.label = this.querySelector("ui-label");
-
-    /** @type {UIButton} */
-    this.button = this.querySelector("ui-button");
-    this.createButton();
-  } // }}}
-
-  connectedCallback() {
-    // {{{
-    this.cleanup.add(this.uiStore.ui.on("lang", this.onLang.bind(this), true));
-  } // }}}
-
-  disconnectedCallback() {
-    // {{{
-    this.cleanup.run();
-  } // }}}
-
-  /** @private */
-  createButton() {
-    // {{{
-    this.button.onclick = async () => {
-      const dialog = new EditRhythmDialog(this.uiStore, this.uiLang);
-      document.body.appendChild(dialog);
-
-      dialog.ui.open(true);
-
-      dialog.ui.events.on("close", async () => {
-        document.body.removeChild(dialog);
-      });
+    static register = () => {
+        customElements.define("settings-edit-rhythm", EditRhythm);
     };
-  } // }}}
 
-  /** @private */
-  async onLang() {
-    // {{{
-    this.label.ui.primary = this.uiLang.ui.get(
-      "settings",
-      "label-primary-edit-rhythm",
-    );
-    this.button.innerHTML = this.uiLang.ui.get(
-      "settings",
-      "button-edit-rhythm",
-    );
-  } // }}}
+    constructor() {
+        super();
+
+        this.cleanup = new CleanUp();
+
+        /** @type {SchedulerStore} */
+        this.uiStore = document.querySelector("ui-store");
+        /** @type {import("ui").UILang} */
+        this.uiLang = document.querySelector("ui-lang");
+
+        this.label;
+    }
+
+    render() {
+        this.innerHTML = html`
+            <ui-label ripple>
+                <ui-button
+                    slot="input"
+                    color="primary"
+                    variant="full"
+                ></ui-button>
+            </ui-label>
+        `;
+
+        /** @type {UILabel} */
+        this.label = this.querySelector("ui-label");
+
+        /** @type {UIButton} */
+        const button = this.label.ui.inputSlot[0];
+        button.onclick = async () => {
+            const dialog = new EditRhythmDialog();
+
+            dialog.ui.events.on("close", async () => {
+                document.body.removeChild(dialog);
+            });
+
+            document.body.appendChild(dialog);
+            dialog.ui.open(true);
+        };
+    }
+
+    connectedCallback() {
+        this.cleanup.add(
+            this.uiStore.ui.on("lang", this.storeHandlerLang.bind(this), true),
+        );
+    }
+
+    disconnectedCallback() {
+        this.cleanup.run();
+    }
+
+    /** @private */
+    async storeHandlerLang() {
+        this.label.ui.primary = this.uiLang.ui.get(
+            "settings",
+            "label-primary-edit-rhythm",
+        );
+        this.label.ui.inputSlot[0].innerHTML = this.uiLang.ui.get(
+            "settings",
+            "button-edit-rhythm",
+        );
+    }
 }
