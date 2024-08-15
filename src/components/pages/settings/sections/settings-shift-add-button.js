@@ -1,9 +1,15 @@
 import { CleanUp, UIButton } from "ui";
 import { EditShiftDialog } from "../../../dialogs";
 
-export class ShiftAddButton extends UIButton {
+/**
+ * HTML: `settings-shift-add-button`
+ */
+export class SettingsShiftAddButton extends UIButton {
     static register = () => {
-        customElements.define("settings-shift-add-button", ShiftAddButton);
+        customElements.define(
+            "settings-shift-add-button",
+            SettingsShiftAddButton,
+        );
     };
 
     constructor() {

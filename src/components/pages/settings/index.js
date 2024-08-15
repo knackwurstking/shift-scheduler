@@ -1,9 +1,9 @@
 import { html, UIStackLayoutPage } from "ui";
 import {
-  EditRhythm,
-  IndexedDBBrowser,
-  ShiftAddButton,
-  ShiftsBackup,
+    SettingsEditRhythm,
+    SettingsIndexedDBBrowser,
+    SettingsShiftAddButton,
+    SettingsShiftsBackup,
 } from "./sections";
 
 // {{{ HTML content
@@ -77,109 +77,111 @@ const content = html`
 // }}}
 
 export class SettingsPage extends UIStackLayoutPage {
-  static register = () => {
-    EditRhythm.register();
-    IndexedDBBrowser.register();
-    ShiftAddButton.register();
-    ShiftsBackup.register();
+    static register = () => {
+        SettingsEditRhythm.register();
+        SettingsIndexedDBBrowser.register();
+        SettingsShiftAddButton.register();
+        SettingsShiftsBackup.register();
 
-    customElements.define("settings-page", SettingsPage);
-  };
+        customElements.define("settings-page", SettingsPage);
+    };
 
-  constructor() {
-    // {{{
-    super();
+    constructor() {
+        // {{{
+        super();
 
-    /** @type {import("ui").UIStore<UIStoreEvents>} */
-    this.uiStore;
-    /** @type {import("ui").UILang} */
-    this.uiLang;
+        /** @type {import("ui").UIStore<UIStoreEvents>} */
+        this.uiStore;
+        /** @type {import("ui").UILang} */
+        this.uiLang;
 
-    this.innerHTML = content;
+        this.innerHTML = content;
 
-    this.ui.name = "settings";
+        this.ui.name = "settings";
 
-    this.#store = document.querySelector("ui-store");
-    this.#lang = document.querySelector("ui-lang");
+        this.#store = document.querySelector("ui-store");
+        this.#lang = document.querySelector("ui-lang");
 
-    this.createMiscElements();
-    this.createShiftElements();
-    this.createIndexedDBElements();
-  } // }}}
+        this.createMiscElements();
+        this.createShiftElements();
+        this.createIndexedDBElements();
+    } // }}}
 
-  connectedCallback() {
-    // {{{
-    super.connectedCallback();
+    connectedCallback() {
+        // {{{
+        super.connectedCallback();
 
-    setTimeout(() => {
-      this.cleanup.add(this.#store.ui.on("lang", this.onLang.bind(this), true));
-    });
-  } // }}}
+        setTimeout(() => {
+            this.cleanup.add(
+                this.#store.ui.on("lang", this.onLang.bind(this), true),
+            );
+        });
+    } // }}}
 
-  /** @private */
-  createMiscElements() {
-    // {{{
-    this.querySelector("#miscWeekStartSection").appendChild(
-      new WeekStart(this.#store, this.#lang),
-    );
+    /** @private */
+    createMiscElements() {
+        // {{{
+        this.querySelector("#miscWeekStartSection").appendChild(
+            new WeekStart(this.#store, this.#lang),
+        );
 
-    this.querySelector("#miscThemePickerSection").appendChild(
-      new ThemePicker(this.#store, this.#lang),
-    );
-  } // }}}
+        this.querySelector("#miscThemePickerSection").appendChild(
+            new ThemePicker(this.#store, this.#lang),
+        );
+    } // }}}
 
-  /** @private */
-  createShiftElements() {
-    // {{{
-    this.querySelector("#shiftsStartDateSection").appendChild(
-      new StartDate(this.#store, this.#lang),
-    );
+    /** @private */
+    createShiftElements() {
+        // {{{
+        this.querySelector("#shiftsStartDateSection").appendChild(
+            new StartDate(this.#store, this.#lang),
+        );
 
-    this.querySelector("#shiftsEditRhythmSection").appendChild(
-      new EditRhythm(this.#store, this.#lang),
-    );
+        this.querySelector("#shiftsEditRhythmSection").appendChild(
+            new EditRhythm(this.#store, this.#lang),
+        );
 
-    this.querySelector("#shiftsTable").appendChild(
-      new ShiftsTable(this.#store, this.#lang),
-    );
+        this.querySelector("#shiftsTable").appendChild(
+            new ShiftsTable(this.#store, this.#lang),
+        );
 
-    this.querySelector("#shiftsAddSection").appendChild(
-      new ShiftAddButton(this.#store, this.#lang),
-    );
+        this.querySelector("#shiftsAddSection").appendChild(
+            new ShiftAddButton(this.#store, this.#lang),
+        );
 
-    this.querySelector("#shiftsBackupSection").appendChild(
-      new ShiftsBackup(this.#store, this.#lang),
-    );
-  } // }}}
+        this.querySelector("#shiftsBackupSection").appendChild(
+            new ShiftsBackup(this.#store, this.#lang),
+        );
+    } // }}}
 
-  /** @private */
-  createIndexedDBElements() {
-    // {{{
-    this.querySelector("#indexedDBBrowserSection").appendChild(
-      new IndexedDBBrowser(this.#store, this.#lang),
-    );
-  } // }}}
+    /** @private */
+    createIndexedDBElements() {
+        // {{{
+        this.querySelector("#indexedDBBrowserSection").appendChild(
+            new IndexedDBBrowser(this.#store, this.#lang),
+        );
+    } // }}}
 
-  /** @private */
-  async onLang() {
-    // {{{
-    // Misc Title
+    /** @private */
+    async onLang() {
+        // {{{
+        // Misc Title
 
-    this.querySelector("#miscTitle").innerHTML = this.#lang.ui.get(
-      "settings",
-      "title-misc",
-    );
+        this.querySelector("#miscTitle").innerHTML = this.#lang.ui.get(
+            "settings",
+            "title-misc",
+        );
 
-    // Shifts Title
+        // Shifts Title
 
-    this.querySelector("#shiftsTitle").innerHTML = this.#lang.ui.get(
-      "settings",
-      "title-shifts",
-    );
+        this.querySelector("#shiftsTitle").innerHTML = this.#lang.ui.get(
+            "settings",
+            "title-shifts",
+        );
 
-    this.querySelector("#indexedDBTitle").innerHTML = this.#lang.ui.get(
-      "settings",
-      "title-indexedDB",
-    );
-  } // }}}
+        this.querySelector("#indexedDBTitle").innerHTML = this.#lang.ui.get(
+            "settings",
+            "title-indexedDB",
+        );
+    } // }}}
 }

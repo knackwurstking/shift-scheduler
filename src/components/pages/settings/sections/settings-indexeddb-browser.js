@@ -1,12 +1,16 @@
-import { CleanUp, UIButton, UILabel, html } from "ui";
-import { EditRhythmDialog } from "../../../dialogs";
+import { CleanUp, html } from "ui";
+import { IndexedDBBrowserPage } from "../../indexeddb-browser";
+import { pages } from "../../../../data/constants";
 
 /**
- * HTML: `settings-edit-rhythm`
+ * HTML: `settings-indexeddb-browser`
  */
-export class EditRhythm extends HTMLElement {
+export class SettingsIndexedDBBrowser extends HTMLElement {
     static register = () => {
-        customElements.define("settings-edit-rhythm", EditRhythm);
+        customElements.define(
+            "settings-indexeddb-browser",
+            SettingsIndexedDBBrowser,
+        );
     };
 
     constructor() {
@@ -18,35 +22,29 @@ export class EditRhythm extends HTMLElement {
         this.uiStore = document.querySelector("ui-store");
         /** @type {import("ui").UILang} */
         this.uiLang = document.querySelector("ui-lang");
+        /** @type {import("ui").UIStackLayout} */
+        this.stackLayout = document.querySelector("ui-stack-layout");
+
+        this.pages = {
+            dbBrowser: new IndexedDBBrowserPage(),
+        };
 
         this.label;
+
+        this.render();
     }
 
     render() {
         this.innerHTML = html`
-            <ui-label ripple>
-                <ui-button
-                    slot="input"
-                    color="primary"
-                    variant="full"
-                ></ui-button>
+            <ui-label>
+                <ui-button color="primary" variant="full"></ui-button>
             </ui-label>
         `;
 
-        /** @type {UILabel} */
+        /** @type {import("ui").UILabel} */
         this.label = this.querySelector("ui-label");
-
-        /** @type {UIButton} */
-        const button = this.label.ui.inputSlot[0];
-        button.onclick = async () => {
-            const dialog = new EditRhythmDialog();
-
-            dialog.ui.events.on("close", async () => {
-                document.body.removeChild(dialog);
-            });
-
-            document.body.appendChild(dialog);
-            dialog.ui.open(true);
+        this.label.ui.inputSlot[0].onclick = async () => {
+            this.stackLayout.ui.set(pages.dbBrowser, null, true);
         };
     }
 
@@ -64,11 +62,11 @@ export class EditRhythm extends HTMLElement {
     async storeHandlerLang() {
         this.label.ui.primary = this.uiLang.ui.get(
             "settings",
-            "label-primary-edit-rhythm",
+            "label-primary-indexeddb-browser",
         );
         this.label.ui.inputSlot[0].innerHTML = this.uiLang.ui.get(
             "settings",
-            "button-edit-rhythm",
+            "button-indexeddb-browser",
         );
     }
 }

@@ -1,10 +1,12 @@
-import { CleanUp, html } from "ui";
-import { IndexedDBBrowserPage } from "../../indexeddb-browser";
-import { pages } from "../../../../data/constants";
+import { CleanUp, UIButton, UILabel, html } from "ui";
+import { EditRhythmDialog } from "../../../dialogs";
 
-export class IndexedDBBrowser extends HTMLElement {
+/**
+ * HTML: `settings-edit-rhythm`
+ */
+export class SettingsEditRhythm extends HTMLElement {
     static register = () => {
-        customElements.define("settings-indexeddb-browser", IndexedDBBrowser);
+        customElements.define("settings-edit-rhythm", SettingsEditRhythm);
     };
 
     constructor() {
@@ -16,29 +18,35 @@ export class IndexedDBBrowser extends HTMLElement {
         this.uiStore = document.querySelector("ui-store");
         /** @type {import("ui").UILang} */
         this.uiLang = document.querySelector("ui-lang");
-        /** @type {import("ui").UIStackLayout} */
-        this.stackLayout = document.querySelector("ui-stack-layout");
-
-        this.pages = {
-            dbBrowser: new IndexedDBBrowserPage(),
-        };
 
         this.label;
-
-        this.render();
     }
 
     render() {
         this.innerHTML = html`
-            <ui-label>
-                <ui-button color="primary" variant="full"></ui-button>
+            <ui-label ripple>
+                <ui-button
+                    slot="input"
+                    color="primary"
+                    variant="full"
+                ></ui-button>
             </ui-label>
         `;
 
-        /** @type {import("ui").UILabel} */
+        /** @type {UILabel} */
         this.label = this.querySelector("ui-label");
-        this.label.ui.inputSlot[0].onclick = async () => {
-            this.stackLayout.ui.set(pages.dbBrowser, null, true);
+
+        /** @type {UIButton} */
+        const button = this.label.ui.inputSlot[0];
+        button.onclick = async () => {
+            const dialog = new EditRhythmDialog();
+
+            dialog.ui.events.on("close", async () => {
+                document.body.removeChild(dialog);
+            });
+
+            document.body.appendChild(dialog);
+            dialog.ui.open(true);
         };
     }
 
@@ -56,11 +64,11 @@ export class IndexedDBBrowser extends HTMLElement {
     async storeHandlerLang() {
         this.label.ui.primary = this.uiLang.ui.get(
             "settings",
-            "label-primary-indexeddb-browser",
+            "label-primary-edit-rhythm",
         );
         this.label.ui.inputSlot[0].innerHTML = this.uiLang.ui.get(
             "settings",
-            "button-indexeddb-browser",
+            "button-edit-rhythm",
         );
     }
 }
