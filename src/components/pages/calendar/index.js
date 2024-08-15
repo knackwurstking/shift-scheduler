@@ -4,6 +4,9 @@ import { db, utils } from "../../../lib";
 import { EditDayDialog } from "../../dialogs";
 import { SwipeHandler } from "./swipe-handler";
 
+/**
+ * HTML: `calendar-page`
+ */
 export class CalendarPage extends UIStackLayoutPage {
     static register = () => {
         customElements.define("calendar-page", CalendarPage);
