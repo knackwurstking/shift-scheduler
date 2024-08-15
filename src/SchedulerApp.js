@@ -3,6 +3,9 @@ import { CleanUp, html, isAndroid } from "ui";
 import {
   CalendarPage,
   DatePickerDialog,
+  EditDayDialog,
+  EditRhythmDialog,
+  EditShiftDialog,
   IndexedDBBrowserPage,
   PDFDialog,
   SchedulerAppBar,
@@ -15,6 +18,9 @@ import { db, utils } from "./lib";
 export class SchedulerApp extends HTMLElement {
   static register = () => {
     DatePickerDialog.register();
+    EditDayDialog.register();
+    EditRhythmDialog.register();
+    EditShiftDialog.register();
     PDFDialog.register();
 
     SchedulerAppBar.register();
