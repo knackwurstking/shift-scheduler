@@ -1,4 +1,3 @@
-import { UIIconButton } from "ui";
 import { CleanUp, html, UIDialog, UIInput } from "ui";
 
 /**

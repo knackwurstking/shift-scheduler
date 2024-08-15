@@ -5,9 +5,6 @@ import autoTable from "jspdf-autotable";
 import { CleanUp, html, isAndroid, UIDialog, UISpinner } from "ui";
 import { db, utils } from "../../lib";
 
-const flexGridContent = `
-`;
-
 /**
  * HTML: `pdf-dialog`
  *
@@ -165,11 +162,7 @@ async function createPDF({
     }
 
     /** @type {DB_Entry[]} */
-    let mA = await utils.calendar.getArray(
-      year,
-      m,
-      document.querySelector("ui-store"),
-    );
+    let mA = await utils.calendar.getArray(year, m, store);
 
     for (let i = 0; i < mA.length; i++) {
       const dbE = await db.get(mA[i].year, mA[i].month, mA[i].date);
