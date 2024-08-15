@@ -1,6 +1,8 @@
 import { CleanUp, html, UIDialog, UIInput } from "ui";
 
 /**
+ * HTML: `edit-shift-dialog`
+ *
  * @extends {UIDialog<import("ui").UIDialog_Events & { submit: Shift }>}
  */
 export class EditShiftDialog extends UIDialog {
