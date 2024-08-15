@@ -1,5 +1,10 @@
 import { html, UIStackLayoutPage } from "ui";
-import { EditRhythm, IndexedDBBrowser, ShiftAddButton } from "./sections";
+import {
+  EditRhythm,
+  IndexedDBBrowser,
+  ShiftAddButton,
+  ShiftsBackup,
+} from "./sections";
 
 // {{{ HTML content
 const content = html`
@@ -76,6 +81,7 @@ export class SettingsPage extends UIStackLayoutPage {
     EditRhythm.register();
     IndexedDBBrowser.register();
     ShiftAddButton.register();
+    ShiftsBackup.register();
 
     customElements.define("settings-page", SettingsPage);
   };

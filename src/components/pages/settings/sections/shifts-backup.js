@@ -1,93 +1,84 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
-import { UIButton, UIFlexGridItem, UIFlexGridRow, UILabel } from "ui";
-import { CleanUp, html, isAndroid } from "ui/src/js";
-import db from "../../../db";
-import { validateShift } from "../../../utils";
-
-/**
- * @typedef {import("../../../types/.index").UIStoreEvents} UIStoreEvents
- * @typedef {import("../../../types/.index").DBDataEntry} DBDataEntry
- * @typedef {import("../../../types/.index").BackupV1} BackupV1
- * @typedef {import("../../../types/.index").BackupV1Indexed} BackupV1Indexed
- * @typedef {import("../../../types/.index").OldBackup} OldBackup
- * @typedef {import("../../../types/.index").OldBackupStorage} OldBackupStorage
- * @typedef {import("../../../types/.index").SettingsStore} SettingsStore
- */
-
-const innerHTML = html`
-  <ui-label>
-    <ui-flex-grid-row gap="0.25rem">
-      <!-- import -->
-      <ui-flex-grid-item>
-        <ui-button name="import" variant="full" color="secondary"></ui-button>
-      </ui-flex-grid-item>
-
-      <!-- export -->
-      <ui-flex-grid-item>
-        <ui-button name="export" variant="full" color="secondary"></ui-button>
-      </ui-flex-grid-item>
-    </ui-flex-grid-row>
-  </ui-label>
-`;
+import { CleanUp, html, isAndroid } from "ui";
+import { db, utils } from "../../../../lib";
 
 export class ShiftsBackup extends HTMLElement {
   static register = () => {
-    UILabel.register();
-    UIFlexGridRow.register();
-    UIFlexGridItem.register();
-    UIButton.register();
-
     customElements.define("settings-shifts-backup", ShiftsBackup);
   };
 
-  /**
-   * @param {import("ui").UIStore<UIStoreEvents>} store
-   * @param {import("ui").UILang} lang
-   */
-  constructor(store, lang) {
-    // {{{
+  constructor() {
     super();
-    this.innerHTML = innerHTML;
-
-    /** @type {import("ui").UIStore<UIStoreEvents>} */
-    this.uiStore = store;
-    /** @type {import("ui").UILang} */
-    this.uiLang = lang;
 
     this.cleanup = new CleanUp();
 
-    /** @type {UILabel} */
-    this.label = this.querySelector("ui-label");
+    /** @type {SchedulerStore} */
+    this.uiStore = document.querySelector("ui-store");
+    /** @type {import("ui").UILang} */
+    this.uiLang = document.querySelector("ui-lang");
 
-    /** @type {UIButton} */
-    this.importButton = this.querySelector(`ui-button[name="import"]`);
-    this.importButton.onclick = async () => this.importBackup();
+    this.label;
+    this.buttonImport;
+    this.buttonExport;
+  }
 
-    /** @type {UIButton} */
-    this.exportButton = this.querySelector(`ui-button[name="export"]`);
-    this.exportButton.onclick = async () => this.exportBackup();
-  } // }}}
+  render() {
+    this.innerHTML = html`
+      <ui-label>
+        <ui-flex-grid-row gap="0.25rem">
+          <!-- import -->
+          <ui-flex-grid-item>
+            <ui-button
+              name="import"
+              variant="full"
+              color="secondary"
+            ></ui-button>
+          </ui-flex-grid-item>
+
+          <!-- export -->
+          <ui-flex-grid-item>
+            <ui-button
+              name="export"
+              variant="full"
+              color="secondary"
+            ></ui-button>
+          </ui-flex-grid-item>
+        </ui-flex-grid-row>
+      </ui-label>
+    `;
+
+    /** @type {import("ui").UILabel} */
+    this.label = document.querySelector("ui-label");
+
+    /** @type {import("ui").UIButton} */
+    this.buttonImport = this.querySelector(`ui-button[name="import"]`);
+    this.buttonImport.onclick = async () => await this.importHandler();
+
+    /** @type {import("ui").UIButton} */
+    this.buttonExport = this.querySelector(`ui-button[name="export"]`);
+    this.buttonExport.onclick = async () => await this.exportHandler();
+  }
 
   connectedCallback() {
-    // {{{
-    this.cleanup.add(this.uiStore.ui.on("lang", this.onLang.bind(this), true));
-  } // }}}
+    this.cleanup.add(
+      this.uiStore.ui.on("lang", this.storeLangHandler.bind(this), true),
+    );
+  }
 
   disconnectedCallback() {
-    // {{{
     this.cleanup.run();
-  } // }}}
+  }
 
-  async importBackup() {
-    // {{{
+  /** @private */
+  async importHandler() {
     const input = document.createElement("input");
 
     input.type = "file";
 
     input.onchange = async () => {
       const reader = new FileReader();
-      reader.onload = () => this.readerOnLoad(reader);
+      reader.onload = () => this.readerOnLoadHandler(reader);
       reader.onerror = () => {
         alert(`Import data: read file failed: ${reader.error}`);
       };
@@ -95,11 +86,11 @@ export class ShiftsBackup extends HTMLElement {
     };
 
     input.click();
-  } // }}}
+  }
 
-  async exportBackup() {
-    // {{{
-    /** @type {BackupV1} */
+  /** @private */
+  async exportHandler() {
+    /** @type {Settings_BackupV1} */
     const backup = {
       settings: this.uiStore.ui.get("settings"),
       indexedDB: {
@@ -110,21 +101,20 @@ export class ShiftsBackup extends HTMLElement {
 
     if (isAndroid()) this.androidExport(backup);
     else this.browserExport(backup);
-  } // }}}
+  }
 
   /**
    * @private
    * @param {FileReader} r
-   * */
-  async readerOnLoad(r) {
-    // {{{
+   */
+  async readerOnLoadHandler(r) {
     if (typeof r.result !== "string") {
       alert(this.uiLang.ui.get("backup-alerts", "invalid-data"));
       return;
     }
 
     try {
-      /** @type {BackupV1 & OldBackup} */
+      /** @type {Settings_BackupV1 & Settings_BackupV0} */
       const data = JSON.parse(r.result);
 
       // Handle settings
@@ -184,14 +174,13 @@ export class ShiftsBackup extends HTMLElement {
     } catch (err) {
       alert(`Import failed: ${err}`);
     }
-  } // }}}
+  }
 
   /**
    * @private
-   * @param {BackupV1} data
+   * @param {Settings_BackupV1} data
    */
   async androidExport(data) {
-    // {{{
     const fileName = await this.getBackupFileName();
     const today = new Date();
     const pM = (today.getMonth() + 1).toString().padStart(2, "0");
@@ -209,14 +198,13 @@ export class ShiftsBackup extends HTMLElement {
       ).uri,
       dialogTitle: `Backup "${fileName}"`,
     });
-  } // }}}
+  }
 
   /**
    * @private
-   * @param {BackupV1} data
+   * @param {Settings_BackupV1} data
    */
   async browserExport(data) {
-    // {{{
     const blob = new Blob([JSON.stringify(data)], {
       type: "octet/stream",
     });
@@ -227,40 +215,37 @@ export class ShiftsBackup extends HTMLElement {
     anchor.setAttribute("download", await this.getBackupFileName());
 
     anchor.click();
-  } // }}}
+  }
 
   /** @private */
   async getBackupFileName() {
-    // {{{
     const today = new Date();
     const month = (today.getMonth() + 1).toString().padStart(2, "0");
     const date = today.getDate().toString().padStart(2, "0");
     return `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
-  } // }}}
+  }
 
   /** @private */
-  onLang() {
-    // {{{
+  async storeLangHandler() {
     this.label.ui.primary = this.uiLang.ui.get(
       "settings",
       "label-primary-shifts-backup",
     );
 
-    this.importButton.innerHTML = this.uiLang.ui.get(
+    this.buttonImport.innerHTML = this.uiLang.ui.get(
       "settings",
       "button-import",
     );
 
-    this.exportButton.innerHTML = this.uiLang.ui.get(
+    this.buttonExport.innerHTML = this.uiLang.ui.get(
       "settings",
       "button-export",
     );
-  } // }}}
+  }
 }
 
-/** @param {SettingsStore} settings */
+/** @param {SchedulerStore_Settings} settings */
 function validateSettings(settings) {
-  // {{{
   if (!Array.isArray(settings?.shifts) || !Array.isArray(settings?.rhythm)) {
     return false;
   }
@@ -271,7 +256,7 @@ function validateSettings(settings) {
 
   let d;
   for (d of settings.shifts) {
-    if (!validateShift(d)) {
+    if (!utils.validateShift(d)) {
       return false;
     }
   }
@@ -283,32 +268,23 @@ function validateSettings(settings) {
   }
 
   return true;
-} // }}}
+}
 
 /**
- * @param {OldBackupStorage} data
- * @returns {BackupV1Indexed}
+ * @param {BackupV0_Storage} data
+ * @returns {BackupV1_IndexedDB}
  */
 function convertStorage(data) {
-  // {{{
-  /**
-   * @type {BackupV1Indexed}
-   */
-  const indexedDB = {
-    version: 1,
-    data: [],
-  };
-
   /**
    * @param {any} data
    * @returns {boolean}
    */
   const validate = (data) => {
-    // {{{
     try {
       for (const [k, v] of Object.entries(data)) {
         if (typeof k === "string") {
           const [y, m, d] = k.split("-", 3).map((n) => parseInt(n, 10));
+
           if (isNaN(y) || isNaN(m) || isNaN(d)) {
             return false;
           }
@@ -322,7 +298,7 @@ function convertStorage(data) {
           }
 
           if (v.shift !== null) {
-            if (!validateShift(v.shift)) {
+            if (!utils.validateShift(v.shift)) {
               return false;
             }
           }
@@ -346,7 +322,15 @@ function convertStorage(data) {
     }
 
     return true;
-  }; // }}}
+  };
+
+  /**
+   * @type {BackupV1_IndexedDB}
+   */
+  const indexedDB = {
+    version: 1,
+    data: [],
+  };
 
   // Validate data and convert to new indexedDB data
   for (const [k, v] of Object.entries(data)) {
@@ -356,4 +340,4 @@ function convertStorage(data) {
   }
 
   return indexedDB;
-} // }}}
+}
