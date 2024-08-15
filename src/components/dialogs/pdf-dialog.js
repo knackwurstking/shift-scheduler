@@ -2,8 +2,7 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
-import { CleanUp, isAndroid } from "ui";
-import { html, UIDialog, UIFlexGridItem, UISpinner } from "ui";
+import { CleanUp, html, isAndroid, UIDialog, UISpinner } from "ui";
 import { db, utils } from "../../lib";
 
 const flexGridContent = `
@@ -26,18 +25,15 @@ export class PDFDialog extends UIDialog {
 
     /** @type {SchedulerStore} */
     this.uiStore = document.querySelector("ui-store");
-
     /** @type {import("ui").UILang} */
     this.uiLang = document.querySelector("ui-lang");
-
     /** @type {import("ui").UIStackLayout} */
     this.stackLayout = document.querySelector("ui-stack-layout");
 
     /** @type {import("ui").UIInput<import("ui").UIInput_Events>} */
     this.year;
 
-    /** @type {import("ui").UIButton} */
-    this.download;
+    this.downloadAction;
 
     this.render();
   }
@@ -63,14 +59,35 @@ export class PDFDialog extends UIDialog {
       const n = parseInt(value);
       if (isNaN(n) || n < 1900) {
         this.year.ui.invalid = true;
-        this.download.ui.disabled = true;
+        this.downloadAction.action.ui.disabled = true;
       } else {
         this.year.ui.invalid = false;
-        this.download.ui.disabled = false;
+        this.downloadAction.action.ui.disabled = false;
       }
     });
 
-    this.appendChild(this.createDownloadAction());
+    this.downloadAction = UIDialog.createAction({
+      variant: "full",
+      color: "primary",
+      onClick: async () => {
+        const spinner = new UISpinner();
+        document.body.appendChild(spinner);
+
+        try {
+          const date = new Date(parseInt(this.year.ui.value), 0);
+          await createPDF({
+            year: date.getFullYear(),
+            lang: this.uiLang,
+            store: this.uiStore,
+          });
+        } finally {
+          document.body.removeChild(spinner);
+        }
+
+        this.ui.close();
+      },
+    });
+    this.appendChild(this.downloadAction.container);
   }
 
   connectedCallback() {
@@ -89,7 +106,7 @@ export class PDFDialog extends UIDialog {
             "input-title-year",
           );
 
-          this.download.innerText = this.uiLang.ui.get(
+          this.downloadAction.action.innerText = this.uiLang.ui.get(
             "pdf-dialog",
             "button-download",
           );
@@ -102,39 +119,7 @@ export class PDFDialog extends UIDialog {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.stackLayout.ui.lock = true;
-  }
-
-  /** @private */
-  createDownloadAction() {
-    const item = new UIFlexGridItem();
-
-    item.slot = "actions";
-    item.ui.flex = "0";
-
-    item.innerHTML = html`
-      <ui-button variant="full" color="primary"></ui-button>
-    `;
-
-    this.download = item.querySelector("ui-button");
-    this.download.onclick = async () => {
-      const spinner = new UISpinner();
-      document.body.appendChild(spinner);
-
-      try {
-        const date = new Date(parseInt(this.year.ui.value), 0);
-        await createPDF({
-          year: date.getFullYear(),
-          lang: this.uiLang,
-          store: this.uiStore,
-        });
-      } finally {
-        document.body.removeChild(spinner);
-      }
-
-      this.ui.close();
-    };
-
-    return item;
+    this.cleanup.run();
   }
 }
 
