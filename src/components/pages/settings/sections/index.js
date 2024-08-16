@@ -4,5 +4,5 @@ export { SettingsShiftAddButton } from "./settings-shift-add-button";
 export { SettingsShiftsBackup } from "./settings-shifts-backup";
 export { SettingsShiftsTable } from "./settings-shifts-table";
 export { SettingsStartDate } from "./settings-start-date";
-export { ThemePicker } from "./theme-picker";
+export { SettingsThemePicker } from "./settings-theme-picker";
 export { WeekStart } from "./week-start";

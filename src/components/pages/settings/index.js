@@ -6,6 +6,7 @@ import {
     SettingsShiftsBackup,
     SettingsShiftsTable,
     SettingsStartDate,
+    SettingsThemePicker,
 } from "./sections";
 
 // {{{ HTML content
@@ -86,6 +87,7 @@ export class SettingsPage extends UIStackLayoutPage {
         SettingsShiftsBackup.register();
         SettingsShiftsTable.register();
         SettingsStartDate.register();
+        SettingsThemePicker.register();
 
         customElements.define("settings-page", SettingsPage);
     };
