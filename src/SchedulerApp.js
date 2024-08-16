@@ -86,7 +86,7 @@ export class SchedulerApp extends HTMLElement {
     }
 
     connectedCallback() {
-        setTimeout(async () => {
+        (async () => {
             if (isAndroid()) {
                 this.cleanup.add(
                     (
@@ -96,12 +96,12 @@ export class SchedulerApp extends HTMLElement {
                     ).remove,
                 );
             }
-        });
+        })();
 
         this.cleanup.add(
             this.uiStore.ui.on(
                 "theme",
-                (data) => {
+                async (data) => {
                     utils.setTheme(
                         data,
                         document.querySelector("ui-theme-handler"),
@@ -163,7 +163,7 @@ export class SchedulerApp extends HTMLElement {
     }
 
     createStackLayout() {
-        this.uiStackLayout.ui.events.on("change", ({ newPage }) => {
+        this.uiStackLayout.ui.events.on("change", async ({ newPage }) => {
             if (this.uiStackLayout.ui.size() > 1) {
                 this.schedulerAppBar.items.back.ui.show();
             } else {
