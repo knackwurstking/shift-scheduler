@@ -32,7 +32,8 @@ export class CalendarPage extends UIStackLayoutPage {
     }
 
     render() {
-        this.innerHTML = html`
+        this.shadowRoot.removeChild(this.shadowRoot.lastChild);
+        this.shadowRoot.innerHTML += html`
             <style>
                 :host {
                     --header-height: 2.5rem;
@@ -236,13 +237,17 @@ export class CalendarPage extends UIStackLayoutPage {
             </ui-flex-grid-row>
         `;
 
-        this.swipeHandler = new SwipeHandler(this.querySelector(".calendar"));
+        this.swipeHandler = new SwipeHandler(
+            this.shadowRoot.querySelector(".calendar"),
+        );
 
-        this.querySelectorAll(".days-row > .day-item").forEach((child) => {
-            child.addEventListener("click", async (ev) => {
-                this.onClickDayItem(child);
+        this.shadowRoot
+            .querySelectorAll(".days-row > .day-item")
+            .forEach((child) => {
+                child.addEventListener("click", async (ev) => {
+                    this.onClickDayItem(child);
+                });
             });
-        });
     }
 
     /** @private */
@@ -347,7 +352,9 @@ export class CalendarPage extends UIStackLayoutPage {
         }
 
         const items = [
-            ...this.querySelectorAll(".week-days-row .week-day-item"),
+            ...this.shadowRoot.querySelectorAll(
+                ".week-days-row .week-day-item",
+            ),
         ];
 
         this.markWeekendItems(...items);
@@ -491,7 +498,7 @@ export class CalendarPage extends UIStackLayoutPage {
 
         this.today = new Date();
 
-        const items = this.querySelectorAll(".item");
+        const items = this.shadowRoot.querySelectorAll(".item");
         for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
             this.updateCalendarItem(new Date(date), items[i]);
         }
@@ -509,7 +516,7 @@ export class CalendarPage extends UIStackLayoutPage {
     async storeHandlerLang() {
         await this.updateWeekDays(this.uiStore.ui.get("week-start"));
 
-        const resetCard = this.querySelector(
+        const resetCard = this.shadowRoot.querySelector(
             `shift-card:first-child span[slot="name"]`,
         );
 
@@ -555,6 +562,7 @@ export class CalendarPage extends UIStackLayoutPage {
 
         for (let i = 0; i < shifts.length; i++) {
             const item = new UIFlexGridItem();
+            item.ui.flex = "0";
             item.slot = "shifts";
             item.innerHTML = `
                 <shift-card color="${shifts[i].color || "inherit"}" ${!!shifts[i].visible ? "visible" : ""}>
