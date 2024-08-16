@@ -20,6 +20,8 @@ export class SettingsEditRhythm extends HTMLElement {
         this.uiLang = document.querySelector("ui-lang");
 
         this.label;
+
+        this.render();
     }
 
     render() {

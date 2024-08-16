@@ -37,7 +37,11 @@ export class SettingsIndexedDBBrowser extends HTMLElement {
     render() {
         this.innerHTML = html`
             <ui-label>
-                <ui-button color="primary" variant="full"></ui-button>
+                <ui-button
+                    slot="input"
+                    color="primary"
+                    variant="full"
+                ></ui-button>
             </ui-label>
         `;
 

@@ -24,6 +24,8 @@ export class SettingsShiftsBackup extends HTMLElement {
         this.label;
         this.buttonImport;
         this.buttonExport;
+
+        this.render();
     }
 
     render() {
