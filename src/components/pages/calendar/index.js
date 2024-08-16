@@ -238,13 +238,11 @@ export class CalendarPage extends UIStackLayoutPage {
 
         this.swipeHandler = new SwipeHandler(this.querySelector(".calendar"));
 
-        this.shadowRoot
-            .querySelectorAll(".days-row > .day-item")
-            .forEach((child) => {
-                child.addEventListener("click", async (ev) => {
-                    this.onClickDayItem(child);
-                });
+        this.querySelectorAll(".days-row > .day-item").forEach((child) => {
+            child.addEventListener("click", async (ev) => {
+                this.onClickDayItem(child);
             });
+        });
     }
 
     /** @private */
@@ -349,9 +347,7 @@ export class CalendarPage extends UIStackLayoutPage {
         }
 
         const items = [
-            ...this.shadowRoot.querySelectorAll(
-                ".week-days-row .week-day-item",
-            ),
+            ...this.querySelectorAll(".week-days-row .week-day-item"),
         ];
 
         this.markWeekendItems(...items);
@@ -495,7 +491,7 @@ export class CalendarPage extends UIStackLayoutPage {
 
         this.today = new Date();
 
-        const items = this.shadowRoot.querySelectorAll(".item");
+        const items = this.querySelectorAll(".item");
         for (let i = 0; i < 3; i++, date.setMonth(date.getMonth() + 1)) {
             this.updateCalendarItem(new Date(date), items[i]);
         }
