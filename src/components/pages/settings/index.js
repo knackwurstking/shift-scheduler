@@ -7,6 +7,7 @@ import {
     SettingsShiftsTable,
     SettingsStartDate,
     SettingsThemePicker,
+    SettingsWeekStart,
 } from "./sections";
 
 // {{{ HTML content
@@ -88,6 +89,7 @@ export class SettingsPage extends UIStackLayoutPage {
         SettingsShiftsTable.register();
         SettingsStartDate.register();
         SettingsThemePicker.register();
+        SettingsWeekStart.register();
 
         customElements.define("settings-page", SettingsPage);
     };

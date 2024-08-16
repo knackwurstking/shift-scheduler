@@ -5,4 +5,4 @@ export { SettingsShiftsBackup } from "./settings-shifts-backup";
 export { SettingsShiftsTable } from "./settings-shifts-table";
 export { SettingsStartDate } from "./settings-start-date";
 export { SettingsThemePicker } from "./settings-theme-picker";
-export { WeekStart } from "./week-start";
+export { SettingsWeekStart } from "./settings-week-start";
