@@ -4,6 +4,7 @@ import {
     SettingsIndexedDBBrowser,
     SettingsShiftAddButton,
     SettingsShiftsBackup,
+    SettingsShiftsTable,
 } from "./sections";
 
 // {{{ HTML content
@@ -82,6 +83,7 @@ export class SettingsPage extends UIStackLayoutPage {
         SettingsIndexedDBBrowser.register();
         SettingsShiftAddButton.register();
         SettingsShiftsBackup.register();
+        SettingsShiftsTable.register();
 
         customElements.define("settings-page", SettingsPage);
     };
