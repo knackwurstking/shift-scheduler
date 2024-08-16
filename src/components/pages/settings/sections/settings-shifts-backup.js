@@ -54,7 +54,7 @@ export class SettingsShiftsBackup extends HTMLElement {
         `;
 
         /** @type {import("ui").UILabel} */
-        this.label = document.querySelector("ui-label");
+        this.label = this.querySelector("ui-label");
 
         /** @type {import("ui").UIButton} */
         this.buttonImport = this.querySelector(`ui-button[name="import"]`);
