@@ -8,193 +8,201 @@ import { EditShiftDialog } from "../../../dialogs";
  * HTML: `settings-shifts-table`
  */
 export class SettingsShiftsTable extends HTMLTableElement {
-  static register = () => {
-    customElements.define("settings-shifts-table", SettingsShiftsTable, {
-      extends: "table",
-    });
-  };
+    static register = () => {
+        customElements.define("settings-shifts-table", SettingsShiftsTable, {
+            extends: "table",
+        });
+    };
 
-  constructor() {
-    super();
+    constructor() {
+        super();
 
-    this.cleanup = new CleanUp();
+        this.cleanup = new CleanUp();
 
-    /** @type {SchedulerStore} */
-    this.uiStore = document.querySelector("ui-store");
-    /** @type {import("ui").UILang} */
-    this.uiLang = document.querySelector("ui-lang");
+        /** @type {SchedulerStore} */
+        this.uiStore = document.querySelector("ui-store");
+        /** @type {import("ui").UILang} */
+        this.uiLang = document.querySelector("ui-lang");
 
-    this.render();
-  }
+        this.render();
+    }
 
-  render() {
-    this.innerHTML = html`
-      <thead>
-        <tr>
-          <th style="text-align: left;"></th>
-          <th style="text-align: left;"></th>
-          <th style="text-align: right;"></th>
-        </tr>
-      </thead>
+    render() {
+        this.innerHTML = html`
+            <thead>
+                <tr>
+                    <th style="text-align: left;"></th>
+                    <th style="text-align: left;"></th>
+                    <th style="text-align: right;"></th>
+                </tr>
+            </thead>
 
-      <tbody></tbody>
-    `;
+            <tbody></tbody>
+        `;
 
-    this.tbody = this.querySelector("tbody");
-  }
+        this.tbody = this.querySelector("tbody");
+    }
 
-  connectedCallback() {
-    this.cleanup.add(
-      this.uiStore.ui.on(
-        "settings",
-        (data) => {
-          this.renderShiftsTable(data);
-        },
-        true,
-      ),
+    connectedCallback() {
+        this.cleanup.add(
+            this.uiStore.ui.on(
+                "settings",
+                (data) => {
+                    this.renderShiftsTable(data);
+                },
+                true,
+            ),
 
-      this.uiStore.ui.on("lang", this.storeHandlerLang.bind(this), true),
-    );
-  }
-
-  disconnectedCallback() {
-    this.cleanup.run();
-  }
-
-  /**
-   * @private
-   * @param {SchedulerStore_Settings} settings
-   */
-  renderShiftsTable(settings) {
-    while (!!this.tbody.firstChild)
-      this.tbody.removeChild(this.tbody.firstChild);
-
-    settings.shifts.forEach((shift) => {
-      this.appendChild(this.createTableRow(shift));
-    });
-
-    draggable.createMobile(this.tbody, {
-      onDragEnd: () => {
-        settings.shifts = Array.from(this.tbody.children).map((child) =>
-          JSON.parse(child.getAttribute("data-json")),
+            this.uiStore.ui.on("lang", this.storeHandlerLang.bind(this), true),
         );
+    }
 
-        this.uiStore.ui.set("settings", settings);
-      },
-    });
-  }
+    disconnectedCallback() {
+        this.cleanup.run();
+    }
 
-  /**
-   * @private
-   * @param {Shift} shift
-   */
-  createTableRow(shift) {
-    const tr = document.createElement("tr");
+    /**
+     * @private
+     * @param {SchedulerStore_Settings} settings
+     */
+    renderShiftsTable(settings) {
+        while (!!this.tbody.firstChild)
+            this.tbody.removeChild(this.tbody.firstChild);
 
-    tr.setAttribute("data-json", JSON.stringify(shift));
+        settings.shifts.forEach((shift) => {
+            this.appendChild(this.createTableRow(shift));
+        });
 
-    tr.innerHTML = html`
-      <td style="text-align: left;">${shift.name}</td>
+        draggable.createMobile(this.tbody, {
+            onDragEnd: () => {
+                settings.shifts = Array.from(this.tbody.children).map((child) =>
+                    JSON.parse(child.getAttribute("data-json")),
+                );
 
-      <td
-        style="${styles({
-          textAlign: "left",
-          color: shift.color || "inherit",
-        })};"
-      >
-        ${shift.visible ? shift.shortName : ""}
-      </td>
+                this.uiStore.ui.set("settings", settings);
+            },
+        });
+    }
 
-      <td style="text-align: right;">
-        <ui-flex-grid-row style="justify-content: flex-end;" gap="0.25rem">
-          <ui-flex-grid-item flex="0">
-            <ui-icon-button name="pen" ghost> ${svgPen} </ui-icon-button>
-          </ui-flex-grid-item>
+    /**
+     * @private
+     * @param {Shift} shift
+     */
+    createTableRow(shift) {
+        const tr = document.createElement("tr");
 
-          <ui-flex-grid-item flex="0">
-            <ui-icon-button name="trash" color="destructive" ghost>
-              ${svgTrash}
-            </ui-icon-button>
-          </ui-flex-grid-item>
-        </ui-flex-grid-row>
-      </td>
-    `;
+        tr.setAttribute("data-json", JSON.stringify(shift));
 
-    /** @type {import("ui").UIIconButton} */
-    const edit = tr.querySelector(`ui-icon-button[name="pen"]`);
-    edit.addEventListener("click", () => this.clickHandlerEdit(shift));
+        tr.innerHTML = html`
+            <td style="text-align: left;">${shift.name}</td>
 
-    /** @type {import("ui").UIIconButton} */
-    const trash = tr.querySelector(`ui-icon-button[name="trash"]`);
-    trash.addEventListener("click", () => this.clickHandlerRemove(shift));
+            <td
+                style="${styles({
+                    textAlign: "left",
+                    color: shift.color || "inherit",
+                })};"
+            >
+                ${shift.visible ? shift.shortName : ""}
+            </td>
 
-    return tr;
-  }
+            <td style="text-align: right;">
+                <ui-flex-grid-row
+                    style="justify-content: flex-end;"
+                    gap="0.25rem"
+                >
+                    <ui-flex-grid-item flex="0">
+                        <ui-icon-button name="pen" ghost>
+                            ${svgPen}
+                        </ui-icon-button>
+                    </ui-flex-grid-item>
 
-  /**
-   * @private
-   * @param {Shift} shift
-   */
-  clickHandlerEdit(shift) {
-    const dialog = new EditShiftDialog();
-    dialog.set(shift);
+                    <ui-flex-grid-item flex="0">
+                        <ui-icon-button name="trash" color="destructive" ghost>
+                            ${svgTrash}
+                        </ui-icon-button>
+                    </ui-flex-grid-item>
+                </ui-flex-grid-row>
+            </td>
+        `;
 
-    dialog.ui.events.on("close", () => {
-      document.body.removeChild(dialog);
-    });
+        /** @type {import("ui").UIIconButton} */
+        const edit = tr.querySelector(`ui-icon-button[name="pen"]`);
+        edit.addEventListener("click", () => this.clickHandlerEdit(shift));
 
-    dialog.ui.events.on("submit", (shift) => {
-      this.uiStore.ui.update("settings", (settings) => {
-        return {
-          ...settings,
-          shifts: settings.shifts.map((s) => {
-            if (s.id === shift.id) {
-              return shift;
+        /** @type {import("ui").UIIconButton} */
+        const trash = tr.querySelector(`ui-icon-button[name="trash"]`);
+        trash.addEventListener("click", () => this.clickHandlerRemove(shift));
+
+        return tr;
+    }
+
+    /**
+     * @private
+     * @param {Shift} shift
+     */
+    async clickHandlerEdit(shift) {
+        const dialog = new EditShiftDialog();
+        dialog.set(shift);
+
+        dialog.ui.events.on("close", () => {
+            document.body.removeChild(dialog);
+        });
+
+        dialog.ui.events.on("submit", (shift) => {
+            this.uiStore.ui.update("settings", (settings) => {
+                return {
+                    ...settings,
+                    shifts: settings.shifts.map((s) => {
+                        if (s.id === shift.id) {
+                            return shift;
+                        }
+
+                        return s;
+                    }),
+                };
+            });
+        });
+
+        document.body.appendChild(dialog);
+        dialog.ui.open(true);
+    }
+
+    /**
+     * @private
+     * @param {Shift} shift
+     */
+    async clickHandlerRemove(shift) {
+        const message = this.uiLang.ui
+            .get("settings", "confirm-delete-shift")
+            .replace("%s", shift.name);
+
+        if (!window.confirm(message)) return;
+
+        this.uiStore.ui.update("settings", (settings) => {
+            return {
+                ...settings,
+                shifts: settings.shifts.filter((s) => s.id !== shift.id),
+            };
+        });
+    }
+
+    /** @private */
+    async storeHandlerLang() {
+        Array.from(this.querySelectorAll("thead th")).forEach((th, i) => {
+            switch (i) {
+                case 0:
+                    th.innerHTML = this.uiLang.ui.get(
+                        "settings",
+                        "table-header-name",
+                    );
+                    break;
+                case 1:
+                    th.innerHTML = this.uiLang.ui.get(
+                        "settings",
+                        "table-header-short-name",
+                    );
+                    break;
             }
-
-            return s;
-          }),
-        };
-      });
-    });
-
-    document.body.appendChild(dialog);
-    dialog.ui.open(true);
-  }
-
-  /**
-   * @private
-   * @param {Shift} shift
-   */
-  clickHandlerRemove(shift) {
-    const message = this.uiLang.ui
-      .get("settings", "confirm-delete-shift")
-      .replace("%s", shift.name);
-
-    if (!window.confirm(message)) return;
-
-    this.uiStore.ui.update("settings", (settings) => {
-      return {
-        ...settings,
-        shifts: settings.shifts.filter((s) => s.id !== shift.id),
-      };
-    });
-  }
-
-  /** @private */
-  storeHandlerLang() {
-    Array.from(this.querySelectorAll("thead th")).forEach((th, i) => {
-      switch (i) {
-        case 0:
-          th.innerHTML = this.uiLang.ui.get("settings", "table-header-name");
-          break;
-        case 1:
-          th.innerHTML = this.uiLang.ui.get(
-            "settings",
-            "table-header-short-name",
-          );
-          break;
-      }
-    });
-  }
+        });
+    }
 }

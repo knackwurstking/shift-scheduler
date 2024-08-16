@@ -44,7 +44,7 @@ export class SettingsShiftAddButton extends UIButton {
     }
 
     /** @private */
-    clickHandler() {
+    async clickHandler() {
         /**
          * @param {Shift} newShift
          */

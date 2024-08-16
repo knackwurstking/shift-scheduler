@@ -1,4 +1,5 @@
-import { html, UIStackLayoutPage } from "ui";
+import { CleanUp, html, styles, UIStackLayoutPage } from "ui";
+import { pages } from "../../../data/constants";
 import {
     SettingsEditRhythm,
     SettingsIndexedDBBrowser,
@@ -10,76 +11,9 @@ import {
     SettingsWeekStart,
 } from "./sections";
 
-// {{{ HTML content
-const content = html`
-    <ui-flex-grid
-        class="no-scrollbar"
-        style="
-            padding: 0.25rem;
-            padding-top: var(--ui-app-bar-height);
-            overflow-y: auto;
-            height: 100%;
-        "
-        gap="0.25rem"
-    >
-        <!-- "Miscellaneous" Section -->
-        <ui-flex-grid-row>
-            <ui-flex-grid-item class="is-card">
-                <h3 id="miscTitle" class="title"></h3>
-
-                <hr />
-
-                <!-- week-start settings -->
-                <section id="miscWeekStartSection"></section>
-
-                <hr />
-
-                <!-- theme settings -->
-                <section id="miscThemePickerSection"></section>
-            </ui-flex-grid-item>
-        </ui-flex-grid-row>
-
-        <!-- "Shifts" Section -->
-        <ui-flex-grid-row>
-            <ui-flex-grid-item class="is-card">
-                <h3 id="shiftsTitle" class="title"></h3>
-
-                <hr />
-
-                <!-- data table -->
-                <section id="shiftsTable"></section>
-
-                <!-- add a shift button -->
-                <section id="shiftsAddSection"></section>
-
-                <hr />
-
-                <!-- start date input -->
-                <section id="shiftsStartDateSection"></section>
-
-                <hr />
-
-                <!-- edit rhythm (open dialog button) -->
-                <section id="shiftsEditRhythmSection"></section>
-
-                <hr />
-
-                <!-- backup import/export -->
-                <section id="shiftsBackupSection"></section>
-            </ui-flex-grid-item>
-        </ui-flex-grid-row>
-
-        <ui-flex-grid-row>
-            <ui-flex-grid-item class="is-card">
-                <h3 id="indexedDBTitle" class="title"></h3>
-
-                <!-- indexeddb-browser (open page) -->
-                <section id="indexedDBBrowserSection"></section>
-        </ui-flex-grid-row>
-    </ui-flex-grid>
-`;
-// }}}
-
+/**
+ * HTML: `settings-page`
+ */
 export class SettingsPage extends UIStackLayoutPage {
     static register = () => {
         SettingsEditRhythm.register();
@@ -95,101 +29,126 @@ export class SettingsPage extends UIStackLayoutPage {
     };
 
     constructor() {
-        // {{{
-        super();
+        super(pages.settings);
 
-        /** @type {import("ui").UIStore<UIStoreEvents>} */
-        this.uiStore;
+        this.cleanup = new CleanUp();
+
+        /** @type {SchedulerStore} */
+        this.uiStore = document.querySelector("ui-store");
         /** @type {import("ui").UILang} */
-        this.uiLang;
+        this.uiLang = document.querySelector("ui-lang");
 
-        this.innerHTML = content;
+        this.render();
+    }
 
-        this.ui.name = "settings";
+    render() {
+        this.innerHTML = html`
+            <ui-flex-grid
+                class="no-scrollbar"
+                style="${styles({
+                    padding: "0.25rem",
+                    paddingTop: "var(--ui-app-bar-height)",
+                    overflowY: "auto",
+                    height: "100%",
+                })}"
+                gap="0.25rem"
+            >
+                <!-- "Miscellaneous" Section -->
+                <ui-flex-grid-item class="is-card">
+                    <h3 id="miscTitle" class="title"></h3>
 
-        this.#store = document.querySelector("ui-store");
-        this.#lang = document.querySelector("ui-lang");
+                    <hr />
 
-        this.createMiscElements();
-        this.createShiftElements();
-        this.createIndexedDBElements();
-    } // }}}
+                    <section>
+                        <settings-week-start></settings-week-start>
+                    </section>
+
+                    <hr />
+
+                    <section>
+                        <settings-theme-picker></settings-theme-picker>
+                    </section>
+                </ui-flex-grid-item>
+
+                <!-- "Shifts" Section -->
+                <ui-flex-grid-item class="is-card">
+                    <h3 id="shiftsTitle" class="title"></h3>
+
+                    <hr />
+
+                    <!-- data table -->
+                    <section>
+                        <settings-shifts-table></settings-shifts-table>
+                    </section>
+
+                    <!-- add a shift button -->
+                    <section>
+                        <settings-shift-add-button></settings-shift-add-button>
+                    </section>
+
+                    <hr />
+
+                    <!-- start date input -->
+                    <section>
+                        <settings-start-date></settings-start-date>
+                    </section>
+
+                    <hr />
+
+                    <!-- edit rhythm (open dialog button) -->
+                    <section>
+                        <settings-edit-rhythm></settings-edit-rhythm>
+                    </section>
+
+                    <hr />
+
+                    <!-- backup import/export -->
+                    <section>
+                        <settings-shifts-backup></settings-shifts-backup>
+                    </section>
+                </ui-flex-grid-item>
+
+                <!-- "DBBrowser" Section -->
+                <ui-flex-grid-item class="is-card">
+                    <h3 id="indexedDBTitle" class="title"></h3>
+
+                    <!-- indexeddb-browser (open page) -->
+                    <section>
+                        <settings-indexeddb-browser></settings-indexeddb-browser>
+                    </section>
+                </ui-flex-grid-item>
+            </ui-flex-grid>
+        `;
+    }
 
     connectedCallback() {
-        // {{{
         super.connectedCallback();
 
-        setTimeout(() => {
-            this.cleanup.add(
-                this.#store.ui.on("lang", this.onLang.bind(this), true),
-            );
-        });
-    } // }}}
+        this.cleanup.add(
+            this.uiStore.ui.on("lang", this.storeHandlerLang.bind(this), true),
+        );
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.cleanup.run();
+    }
 
     /** @private */
-    createMiscElements() {
-        // {{{
-        this.querySelector("#miscWeekStartSection").appendChild(
-            new WeekStart(this.#store, this.#lang),
-        );
-
-        this.querySelector("#miscThemePickerSection").appendChild(
-            new ThemePicker(this.#store, this.#lang),
-        );
-    } // }}}
-
-    /** @private */
-    createShiftElements() {
-        // {{{
-        this.querySelector("#shiftsStartDateSection").appendChild(
-            new StartDate(this.#store, this.#lang),
-        );
-
-        this.querySelector("#shiftsEditRhythmSection").appendChild(
-            new EditRhythm(this.#store, this.#lang),
-        );
-
-        this.querySelector("#shiftsTable").appendChild(
-            new ShiftsTable(this.#store, this.#lang),
-        );
-
-        this.querySelector("#shiftsAddSection").appendChild(
-            new ShiftAddButton(this.#store, this.#lang),
-        );
-
-        this.querySelector("#shiftsBackupSection").appendChild(
-            new ShiftsBackup(this.#store, this.#lang),
-        );
-    } // }}}
-
-    /** @private */
-    createIndexedDBElements() {
-        // {{{
-        this.querySelector("#indexedDBBrowserSection").appendChild(
-            new IndexedDBBrowser(this.#store, this.#lang),
-        );
-    } // }}}
-
-    /** @private */
-    async onLang() {
-        // {{{
-        // Misc Title
-
-        this.querySelector("#miscTitle").innerHTML = this.#lang.ui.get(
+    async storeHandlerLang() {
+        this.querySelector("#miscTitle").innerHTML = this.uiLang.ui.get(
             "settings",
             "title-misc",
         );
 
-        // Shifts Title
-
-        this.querySelector("#shiftsTitle").innerHTML = this.#lang.ui.get(
+        this.querySelector("#shiftsTitle").innerHTML = this.uiLang.ui.get(
             "settings",
             "title-shifts",
         );
 
-        this.querySelector("#indexedDBTitle").innerHTML = this.#lang.ui.get(
+        this.querySelector("#indexedDBTitle").innerHTML = this.uiLang.ui.get(
             "settings",
             "title-indexedDB",
         );
-    } // }}}
+    }
 }
