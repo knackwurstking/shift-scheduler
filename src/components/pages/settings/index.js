@@ -5,6 +5,7 @@ import {
     SettingsShiftAddButton,
     SettingsShiftsBackup,
     SettingsShiftsTable,
+    SettingsStartDate,
 } from "./sections";
 
 // {{{ HTML content
@@ -84,6 +85,7 @@ export class SettingsPage extends UIStackLayoutPage {
         SettingsShiftAddButton.register();
         SettingsShiftsBackup.register();
         SettingsShiftsTable.register();
+        SettingsStartDate.register();
 
         customElements.define("settings-page", SettingsPage);
     };
