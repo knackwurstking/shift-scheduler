@@ -13,7 +13,7 @@ import { UIFlexGridItem } from "ui";
  * }}
  */
 
-const filterHeight = "4rem";
+const filterHeight = "4.25rem";
 
 /**
  * HTML: `indexeddb-browser-page`
@@ -76,7 +76,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
                 ></div>
 
                 <ui-flex-grid>
-                    <ui-flex-grid-row>
+                    <ui-flex-grid-row style="padding: 0.25rem;" gap="0.125rem">
                         <ui-flex-grid-item>
                             <ui-input title="Year" type="number"></ui-input>
                         </ui-flex-grid-item>
