@@ -7,24 +7,22 @@ export const pages = {
 };
 
 export const style = {
-    dialog: {
-        datePickerDialog: {
-            flexGrid: styles({
-                width: "calc(100vw - 3rem)",
-                maxWidth: "18rem",
-            }),
-        },
-        editDayDialog: {
-            flexGrid: styles({
-                width: "calc(100vw - 3rem)",
-                maxWidth: "18rem",
-            }),
-        },
-        editShiftDialog: {
-            flexGrid: styles({
-                width: "calc(100vw - 3rem)",
-                maxWidth: "18rem",
-            }),
-        },
+    datePickerDialog: {
+        flexGrid: styles({
+            width: "calc(100vw - 3rem)",
+            maxWidth: "18rem",
+        }),
+    },
+    editDayDialog: {
+        flexGrid: styles({
+            width: "calc(100vw - 3rem)",
+            maxWidth: "18rem",
+        }),
+    },
+    editShiftDialog: {
+        flexGrid: styles({
+            width: "calc(100vw - 3rem)",
+            maxWidth: "18rem",
+        }),
     },
 };

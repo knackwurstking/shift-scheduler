@@ -41,7 +41,7 @@ export class EditDayDialog extends UIDialog {
 
     render() {
         this.innerHTML = html`
-            <ui-flex-grid style="${style.dialog.flexGrid}" gap="0.5rem">
+            <ui-flex-grid style="${style.editDayDialog.flexGrid}" gap="0.5rem">
                 <ui-flex-grid-item>
                     <ui-select></ui-select>
                 </ui-flex-grid-item>

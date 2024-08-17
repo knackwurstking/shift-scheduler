@@ -47,7 +47,10 @@ export class EditShiftDialog extends UIDialog {
 
     render() {
         this.innerHTML = html`
-            <ui-flex-grid style="${style.dialog.flexGrid}" gap="0.5rem">
+            <ui-flex-grid
+                style="${style.editShiftDialog.flexGrid}"
+                gap="0.5rem"
+            >
                 <ui-flex-grid-item>
                     <ui-input name="name" type="text"></ui-input>
                 </ui-flex-grid-item>
