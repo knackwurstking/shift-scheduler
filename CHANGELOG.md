@@ -2,8 +2,10 @@
 
 ## v2.0.0 [unreleased]
 
+**General**:
+
 - Fist Vite vanilla javascript version using web-components
-- Using [ui v0.2.0](https://github.com/knackwurstking/ui.git)
+- Using [ui v0.2.17](https://github.com/knackwurstking/ui.git)
 
 ## v1.5.3 [unreleased]
 
