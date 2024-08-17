@@ -135,6 +135,7 @@ export class CalendarPage extends UIStackLayoutPage {
                 .day-item {
                     height: 100%;
                     overflow: hidden;
+                    cursor: pointer;
                 }
 
                 .day-item.today::after {
@@ -244,7 +245,7 @@ export class CalendarPage extends UIStackLayoutPage {
         this.shadowRoot
             .querySelectorAll(".days-row > .day-item")
             .forEach((child) => {
-                child.addEventListener("click", async (ev) => {
+                child.addEventListener("click", async () => {
                     this.onClickDayItem(child);
                 });
             });

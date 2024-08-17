@@ -248,6 +248,7 @@ export class SchedulerApp extends HTMLElement {
     }
 
     resetAppBar() {
+        this.schedulerAppBar.items.title.ui.child.innerHTML = "";
         this.schedulerAppBar.items.datePicker.ui.hide();
         this.schedulerAppBar.items.edit.ui.hide();
         this.schedulerAppBar.items.today.ui.hide();
