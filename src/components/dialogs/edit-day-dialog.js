@@ -1,5 +1,6 @@
 import { CleanUp, html, UIDialog, UISelectOption } from "ui";
 import { db, utils } from "../../lib";
+import { style } from "../../data/constants";
 
 /**
  * HTML: `edit-day-dialog`
@@ -40,7 +41,7 @@ export class EditDayDialog extends UIDialog {
 
     render() {
         this.innerHTML = html`
-            <ui-flex-grid style="min-width: 18rem;" gap="0.5rem">
+            <ui-flex-grid style="${style.dialog.flexGrid}" gap="0.5rem">
                 <ui-flex-grid-item>
                     <ui-select></ui-select>
                 </ui-flex-grid-item>

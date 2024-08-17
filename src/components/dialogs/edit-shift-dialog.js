@@ -1,4 +1,5 @@
 import { CleanUp, html, UIDialog, UIInput } from "ui";
+import { style } from "../../data/constants";
 
 /**
  * HTML: `edit-shift-dialog`
@@ -46,7 +47,7 @@ export class EditShiftDialog extends UIDialog {
 
     render() {
         this.innerHTML = html`
-            <ui-flex-grid gap="0.5rem">
+            <ui-flex-grid style="${style.dialog.flexGrid}" gap="0.5rem">
                 <ui-flex-grid-item>
                     <ui-input name="name" type="text"></ui-input>
                 </ui-flex-grid-item>
