@@ -1,4 +1,3 @@
-// FIXME: Cannot read properties of undefined error
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
@@ -185,7 +184,7 @@ async function createPDF({
                         },
                     },
                 ],
-                getTableHeader(this.store, this.lang),
+                getTableHeader(store, lang),
             ],
             body: [
                 getTableBodyEntries(m, mA.slice(0, 7)),
