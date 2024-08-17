@@ -70,7 +70,7 @@ export class SettingsShiftsTable extends HTMLTableElement {
             this.tbody.removeChild(this.tbody.firstChild);
 
         settings.shifts.forEach((shift) => {
-            this.appendChild(this.createTableRow(shift));
+            this.tbody.appendChild(this.createTableRow(shift));
         });
 
         draggable.createMobile(this.tbody, {
@@ -87,6 +87,7 @@ export class SettingsShiftsTable extends HTMLTableElement {
     /**
      * @private
      * @param {Shift} shift
+     * @returns {HTMLTableRowElement}
      */
     createTableRow(shift) {
         const tr = document.createElement("tr");
