@@ -34,10 +34,7 @@ export class DatePickerDialog extends UIDialog {
 
     render() {
         this.innerHTML = html`
-            <ui-flex-grid
-                style="${style.datePickerDialog.flexGrid}"
-                gap="0.5rem"
-            >
+            <ui-flex-grid gap="0.5rem">
                 <ui-flex-grid-item>
                     <ui-input type="month" value=""></ui-input>
                 </ui-flex-grid-item>

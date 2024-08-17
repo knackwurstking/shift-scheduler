@@ -7,12 +7,6 @@ export const pages = {
 };
 
 export const style = {
-    datePickerDialog: {
-        flexGrid: styles({
-            width: "calc(100vw - 3rem)",
-            maxWidth: "18rem",
-        }),
-    },
     editDayDialog: {
         flexGrid: styles({
             width: "calc(100vw - 3rem)",
