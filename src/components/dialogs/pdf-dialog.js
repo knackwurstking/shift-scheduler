@@ -70,16 +70,18 @@ export class PDFDialog extends UIDialog {
                 const spinner = new UISpinner();
                 document.body.appendChild(spinner);
 
-                try {
-                    const date = new Date(parseInt(this.year.ui.value), 0);
-                    await createPDF({
-                        year: date.getFullYear(),
-                        lang: this.uiLang,
-                        store: this.uiStore,
-                    });
-                } finally {
-                    document.body.removeChild(spinner);
-                }
+                setTimeout(async () => {
+                    try {
+                        const date = new Date(parseInt(this.year.ui.value), 0);
+                        await createPDF({
+                            year: date.getFullYear(),
+                            lang: this.uiLang,
+                            store: this.uiStore,
+                        });
+                    } finally {
+                        document.body.removeChild(spinner);
+                    }
+                });
 
                 this.ui.close();
             },
