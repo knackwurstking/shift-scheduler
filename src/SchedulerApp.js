@@ -147,7 +147,7 @@ export class SchedulerApp extends HTMLElement {
         this.uiStore.ui.set(
             "date-picker",
             new Date(date.getFullYear(), date.getMonth(), 1).toString(),
-            true,
+            false,
         );
 
         this.uiStore.ui.set("theme", { mode: "system", name: "zinc" }, true);
