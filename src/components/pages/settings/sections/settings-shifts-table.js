@@ -7,11 +7,9 @@ import { EditShiftDialog } from "../../../dialogs";
 /**
  * HTML: `settings-shifts-table`
  */
-export class SettingsShiftsTable extends HTMLTableElement {
+export class SettingsShiftsTable extends HTMLElement {
     static register = () => {
-        customElements.define("settings-shifts-table", SettingsShiftsTable, {
-            extends: "table",
-        });
+        customElements.define("settings-shifts-table", SettingsShiftsTable);
     };
 
     constructor() {
@@ -29,15 +27,17 @@ export class SettingsShiftsTable extends HTMLTableElement {
 
     render() {
         this.innerHTML = html`
-            <thead>
-                <tr>
-                    <th style="text-align: left;"></th>
-                    <th style="text-align: left;"></th>
-                    <th style="text-align: right;"></th>
-                </tr>
-            </thead>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align: left;"></th>
+                        <th style="text-align: left;"></th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                </thead>
 
-            <tbody></tbody>
+                <tbody></tbody>
+            </table>
         `;
 
         this.tbody = this.querySelector("tbody");
