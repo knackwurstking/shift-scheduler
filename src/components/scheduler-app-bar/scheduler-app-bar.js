@@ -170,10 +170,7 @@ export class SchedulerAppBar extends UIAppBar {
         const item = this.querySelector(`[name="settings"]`);
 
         item.ui.child.ui.events.on("click", async () => {
-            console.debug("app-bar settings clicked");
-            this.uiStackLayout.ui.set("settings", () => {
-                console.debug("open settings page");
-            });
+            this.uiStackLayout.ui.set("settings");
         });
 
         return item;
