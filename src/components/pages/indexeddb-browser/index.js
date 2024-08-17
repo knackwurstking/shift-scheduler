@@ -1,3 +1,5 @@
+import svgTrash from "ui/src/svg/smoothie-line-icons/trash";
+
 import { UIStackLayoutPage, html } from "ui";
 import { pages } from "../../../data/constants";
 import { CleanUp } from "ui";
@@ -188,7 +190,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
                                     color="destructive"
                                     ghost
                                 >
-                                    <svg-recycle></svg-recycle>
+                                    ${svgTrash}
                                 </ui-icon-button>
                             </td>
                         </tr>

@@ -1,3 +1,5 @@
+import svgTrash from "ui/src/svg/smoothie-line-icons/trash";
+
 import { CleanUp, draggable, html, styles, UIDialog, UIFlexGridItem } from "ui";
 
 /**
@@ -215,7 +217,7 @@ export class EditRhythmDialog extends UIDialog {
                     >
                         <ui-flex-grid-item flex="0">
                             <ui-icon-button color="destructive" ghost>
-                                <svg-recycle></svg-recycle>
+                                ${svgTrash}
                             </ui-icon-button>
                         </ui-flex-grid-item>
                     </ui-flex-grid-row>
