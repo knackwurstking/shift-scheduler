@@ -139,7 +139,7 @@ export class IndexedDBBrowserPage extends UIStackLayoutPage {
         if (d === null) d = ".*";
 
         /** @type {UIFlexGridItem[]} */
-        Array.from(this.children).forEach(
+        Array.from(this.querySelector(`ui-flex-grid.content`).children).forEach(
             (/** @type {HTMLElement} */ child) => {
                 if (
                     child
