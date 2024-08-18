@@ -6,6 +6,7 @@ import svgToday from "ui/src/svg/smoothie-line-icons/today";
 
 import { html, UIAppBar } from "ui";
 import { DatePickerDialog, PDFDialog } from "..";
+import { styles } from "ui";
 
 /**
  * HTML: `scheduler-app-bar`
@@ -42,7 +43,11 @@ export class SchedulerAppBar extends UIAppBar {
 
             <ui-app-bar-item name="date-picker" slot="left">
                 <ui-button
-                    style="height: 100%; white-space: nowrap;"
+                    style="${styles({
+                        margin: "0.25rem",
+                        height: "calc(100% - 0.5rem)",
+                        whiteSpace: "nowrap",
+                    })}"
                     variant="outline"
                     color="primary"
                 ></ui-button>
