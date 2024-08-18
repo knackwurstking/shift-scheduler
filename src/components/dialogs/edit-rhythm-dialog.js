@@ -236,8 +236,10 @@ export class EditRhythmDialog extends UIDialog {
             tbody.appendChild(tr);
         });
 
-        const scrollContainer = tbody.parentElement.parentElement;
-        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        setTimeout(() => {
+            const scrollContainer = tbody.parentElement.parentElement;
+            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        });
 
         draggable.createMobile(tbody, {
             onDragEnd: () => {
@@ -261,6 +263,7 @@ export class EditRhythmDialog extends UIDialog {
 
         settings.shifts.forEach((shift) => {
             const item = new UIFlexGridItem();
+            item.ui.flex = "0";
             item.innerHTML = html`
                 <shift-card
                     color="${shift.color || "inherit"}"
