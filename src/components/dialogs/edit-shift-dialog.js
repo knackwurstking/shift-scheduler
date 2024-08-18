@@ -29,7 +29,7 @@ export class EditShiftDialog extends UIDialog {
         this.inputShortName;
         this.labelColorPicker;
         this.labelDefaultColor;
-        this.labelVisible;
+        this.labelHideShift;
 
         this.shift = {
             id: 0,
@@ -125,11 +125,11 @@ export class EditShiftDialog extends UIDialog {
         );
 
         /** @type {import("ui").UILabel} */
-        this.labelVisible = this.querySelector(`ui-label[name="visible"]`);
-        const inputVisible = this.labelVisible.ui.inputSlot[0];
-        inputVisible.addEventListener(
+        this.labelHideShift = this.querySelector(`ui-label[name="visible"]`);
+        const inputHideShift = this.labelHideShift.ui.inputSlot[0];
+        inputHideShift.addEventListener(
             "input",
-            this.eventHandlerLabelVisible.bind(this),
+            this.eventHandlerLabelHideShift.bind(this),
         );
 
         this.cancelAction = UIDialog.createAction({
@@ -187,7 +187,7 @@ export class EditShiftDialog extends UIDialog {
                         "label-primary-use-default-color",
                     );
 
-                    this.labelVisible.ui.primary = this.uiLang.ui.get(
+                    this.labelHideShift.ui.primary = this.uiLang.ui.get(
                         "edit-shift-dialog",
                         "label-primary-visible-item",
                     );
@@ -215,8 +215,6 @@ export class EditShiftDialog extends UIDialog {
 
     /** @param {Shift} shift */
     set(shift) {
-        console.debug("set", shift);
-
         /** @type {Shift} */
         this.shift = shift;
         this.colorReset = this.shift.color || null;
@@ -225,7 +223,7 @@ export class EditShiftDialog extends UIDialog {
         this.inputShortName.ui.value = this.shift.shortName;
         this.labelColorPicker.ui.inputSlot[0].value = this.shift.color;
         this.labelDefaultColor.ui.inputSlot[0].checked = !this.shift.color;
-        this.labelVisible.ui.inputSlot[0].checked = !this.shift.visible;
+        this.labelHideShift.ui.inputSlot[0].checked = !this.shift.visible;
 
         this.triggerEvents();
     }
@@ -278,7 +276,7 @@ export class EditShiftDialog extends UIDialog {
         this.eventHandlerInputShortName();
         this.eventHandlerLabelColorPicker();
         this.eventHandlerLabelDefaultColor();
-        this.eventHandlerLabelVisible();
+        this.eventHandlerLabelHideShift();
     }
 
     /** @private */
@@ -324,11 +322,11 @@ export class EditShiftDialog extends UIDialog {
     }
 
     /** @private */
-    async eventHandlerLabelVisible() {
-        const inputVisible = this.labelVisible.ui.inputSlot[0];
-        this.shift.visible = inputVisible.checked;
+    async eventHandlerLabelHideShift() {
+        const input = this.labelHideShift.ui.inputSlot[0];
+        this.shift.visible = !input.checked;
 
-        if (inputVisible.checked) {
+        if (input.checked) {
             this.disable(this.inputShortName);
             this.disable(this.labelColorPicker);
             this.disable(this.labelDefaultColor);
