@@ -90,29 +90,28 @@ export class EditShiftDialog extends UIDialog {
 
         /** @type {import("ui").UIInput<import("ui").UIInput_Events>} */
         this.inputName = this.querySelector(`ui-input[name="name"]`);
-        this.inputName.ui.events.on("input", async (value) => {
-            this.shift.name = value;
-        });
+        this.inputName.ui.events.on(
+            "input",
+            this.eventHandlerInputName.bind(this),
+        );
 
         /** @type {import("ui").UIInput<import("ui").UIInput_Events>} */
         this.inputShortName = this.querySelector(`ui-input[name="short-name"]`);
-        this.inputShortName.ui.events.on("input", (value) => {
-            this.shift.shortName = value;
-        });
+        this.inputShortName.ui.events.on(
+            "input",
+            this.eventHandlerInputShortName.bind(this),
+        );
 
         /** @type {import("ui").UILabel} */
         this.labelColorPicker = this.querySelector(
             `ui-label[name="color-picker"]`,
         );
         /** @type {HTMLInputElement} */
-        const inputColorPicker = this.querySelector(
-            `input[name="color-picker"]`,
+        const inputColorPicker = this.labelColorPicker.ui.inputSlot[0];
+        inputColorPicker.addEventListener(
+            "input",
+            this.eventHandlerLabelColorPicker.bind(this),
         );
-        inputColorPicker.addEventListener("change", () => {
-            this.shift.color = inputColorPicker.value || null;
-            this.inputShortName.ui.input.style.color =
-                this.shift.color || "inherit";
-        });
 
         /** @type {import("ui").UILabel} */
         this.labelDefaultColor = this.querySelector(
@@ -120,44 +119,18 @@ export class EditShiftDialog extends UIDialog {
         );
         const inputDefaultColor = this.labelDefaultColor.ui.inputSlot[0];
         inputDefaultColor.checked = !this.shift?.color;
-        inputDefaultColor.addEventListener("change", () => {
-            if (inputDefaultColor.checked) {
-                this.colorReset = this.shift.color;
-                inputColorPicker.value = null;
-                this.disable(this.labelColorPicker);
-            } else {
-                this.shift.color = this.colorReset;
-                inputColorPicker.value = this.shift.color;
-                this.enable(this.labelColorPicker);
-            }
-
-            inputColorPicker.dispatchEvent(new Event("change"));
-        });
-
-        if (inputDefaultColor.checked) {
-            this.colorReset = this.shift?.color;
-            inputColorPicker.value = null;
-            inputColorPicker.dispatchEvent(new Event("change"));
-            this.disable(this.labelColorPicker);
-        }
+        inputDefaultColor.addEventListener(
+            "input",
+            this.eventHandlerLabelDefaultColor.bind(this),
+        );
 
         /** @type {import("ui").UILabel} */
         this.labelVisible = this.querySelector(`ui-label[name="visible"]`);
         const inputVisible = this.labelVisible.ui.inputSlot[0];
-        inputVisible.addEventListener("change", () => {
-            if (inputVisible.checked) {
-                this.disable(this.inputShortName);
-                this.disable(this.labelColorPicker);
-                this.disable(this.labelDefaultColor);
-            } else {
-                this.enable(this.inputShortName);
-                this.enable(this.labelColorPicker);
-                this.enable(this.labelDefaultColor);
-            }
-
-            this.shift.visible = inputVisible.checked;
-            inputDefaultColor.dispatchEvent(new Event("change"));
-        });
+        inputVisible.addEventListener(
+            "input",
+            this.eventHandlerLabelVisible.bind(this),
+        );
 
         this.cancelAction = UIDialog.createAction({
             variant: "full",
@@ -242,24 +215,19 @@ export class EditShiftDialog extends UIDialog {
 
     /** @param {Shift} shift */
     set(shift) {
+        console.debug("set", shift);
+
         /** @type {Shift} */
         this.shift = shift;
+        this.colorReset = this.shift.color || null;
 
         this.inputName.ui.value = this.shift.name;
         this.inputShortName.ui.value = this.shift.shortName;
-        this.inputShortName.ui.input.style.color =
-            this.shift.color || "inherit";
         this.labelColorPicker.ui.inputSlot[0].value = this.shift.color;
         this.labelDefaultColor.ui.inputSlot[0].checked = !this.shift.color;
         this.labelVisible.ui.inputSlot[0].checked = !this.shift.visible;
 
-        if (!this.shift.visible) {
-            this.disable(this.inputShortName);
-            this.disable(this.labelColorPicker);
-        } else {
-            this.enable(this.inputShortName);
-            this.enable(this.labelColorPicker);
-        }
+        this.triggerEvents();
     }
 
     /**
@@ -301,6 +269,75 @@ export class EditShiftDialog extends UIDialog {
                     slot.disabled = true;
                 }
             });
+        }
+    }
+
+    /** @private */
+    triggerEvents() {
+        this.eventHandlerInputName();
+        this.eventHandlerInputShortName();
+        this.eventHandlerLabelColorPicker();
+        this.eventHandlerLabelDefaultColor();
+        this.eventHandlerLabelVisible();
+    }
+
+    /** @private */
+    async eventHandlerInputName() {
+        this.shift.name = this.inputName.ui.value;
+    }
+
+    /** @private */
+    async eventHandlerInputShortName() {
+        this.shift.shortName = this.inputShortName.ui.value;
+    }
+
+    /** @private */
+    async eventHandlerLabelColorPicker() {
+        this.shift.color = this.labelColorPicker.ui.inputSlot[0].value || null;
+        this.inputShortName.ui.input.style.color =
+            this.shift.color || "inherit";
+    }
+
+    /** @private */
+    async eventHandlerLabelDefaultColor() {
+        const inputColorPicker = this.labelColorPicker.ui.inputSlot[0];
+        const inputDefaultColor = this.labelDefaultColor.ui.inputSlot[0];
+
+        if (inputDefaultColor.checked) {
+            this.colorReset = this.shift.color || inputColorPicker.value;
+
+            inputColorPicker.value = null;
+            this.shift.color = null;
+
+            this.disable(this.labelColorPicker);
+        } else {
+            this.shift.color = this.colorReset;
+
+            inputColorPicker.value = this.colorReset;
+            this.shift.color = this.colorReset;
+
+            this.enable(this.labelColorPicker);
+        }
+
+        this.inputShortName.ui.input.style.color =
+            this.shift.color || "inherit";
+    }
+
+    /** @private */
+    async eventHandlerLabelVisible() {
+        const inputVisible = this.labelVisible.ui.inputSlot[0];
+        this.shift.visible = inputVisible.checked;
+
+        if (inputVisible.checked) {
+            this.disable(this.inputShortName);
+            this.disable(this.labelColorPicker);
+            this.disable(this.labelDefaultColor);
+            this.eventHandlerLabelDefaultColor();
+        } else {
+            this.enable(this.inputShortName);
+            this.enable(this.labelColorPicker);
+            this.enable(this.labelDefaultColor);
+            this.eventHandlerLabelDefaultColor();
         }
     }
 }
