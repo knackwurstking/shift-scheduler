@@ -1,11 +1,12 @@
 # Changelog
 
-## v2.0.0 - [unreleased]
+## v2.0.0 - [pending]
+
+- [ui version v0.2.17](https://github.com/knackwurstking/ui)
 
 **General**:
 
-- Fist Vite vanilla javascript version using web-components
-- Using [ui v0.2.17](https://github.com/knackwurstking/ui.git)
+- Rewritten everything with vanilla JS web components
 
 ## v1.5.3 [unreleased]
 
