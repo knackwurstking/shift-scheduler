@@ -236,6 +236,9 @@ export class EditRhythmDialog extends UIDialog {
             tbody.appendChild(tr);
         });
 
+        const scrollContainer = tbody.parentElement.parentElement;
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
         draggable.createMobile(tbody, {
             onDragEnd: () => {
                 this.rhythm = Array.from(tbody.children).map((child) => {
