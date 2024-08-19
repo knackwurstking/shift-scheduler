@@ -159,7 +159,7 @@ export class SchedulerApp extends HTMLElement {
             true,
         );
 
-        this.uiStore.ui.set("edit-mode", { open: false, active: null }, true);
+        this.uiStore.ui.set("edit-mode", { open: false, active: null }, false);
     }
 
     createStackLayout() {
