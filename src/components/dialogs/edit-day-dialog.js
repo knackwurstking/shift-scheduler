@@ -43,7 +43,9 @@ export class EditDayDialog extends UIDialog {
         this.innerHTML = html`
             <ui-flex-grid style="${style.editDayDialog.flexGrid}" gap="0.5rem">
                 <ui-flex-grid-item>
-                    <ui-select></ui-select>
+                    <ui-select>
+                        <ui-select-option value="0"></ui-select-option>
+                    </ui-select>
                 </ui-flex-grid-item>
 
                 <ui-flex-grid-item>
@@ -65,11 +67,6 @@ export class EditDayDialog extends UIDialog {
                             shift.id.toString() === selectOption.ui.value,
                     ) || null;
         });
-
-        // NOTE: Reset shift (value: 0)
-        let option = new UISelectOption();
-        option.ui.value = "0";
-        option.innerHTML = this.uiLang.ui.get("edit-day-dialog", "reset");
 
         // Set shifts as options for select
         this.select.append(
@@ -211,7 +208,7 @@ export class EditDayDialog extends UIDialog {
      * @private
      * @param {Shift | null} shift
      */
-    selectShift(shift) {
+    async selectShift(shift) {
         Array.from(this.select.children).forEach(
             (/** @type {UISelectOption} */ child) => {
                 child.ui.selected =
