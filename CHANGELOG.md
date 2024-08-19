@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.0.0 - [pending]
+## v2.0.0 - 2024-08-19
 
 - [ui version v0.2.17](https://github.com/knackwurstking/ui)
 
