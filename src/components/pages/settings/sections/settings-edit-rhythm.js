@@ -26,7 +26,7 @@ export class SettingsEditRhythm extends HTMLElement {
 
     render() {
         this.innerHTML = html`
-            <ui-label ripple>
+            <ui-label>
                 <ui-button
                     slot="input"
                     color="primary"
