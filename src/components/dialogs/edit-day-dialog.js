@@ -44,7 +44,9 @@ export class EditDayDialog extends UIDialog {
             <ui-flex-grid style="${style.editDayDialog.flexGrid}" gap="0.5rem">
                 <ui-flex-grid-item>
                     <ui-select>
-                        <ui-select-option value="0"></ui-select-option>
+                        <ui-select-option value="0">
+                            ${this.uiLang.ui.get("edit-day-dialog", "reset")}
+                        </ui-select-option>
                     </ui-select>
                 </ui-flex-grid-item>
 
