@@ -450,15 +450,16 @@ export class CalendarPage extends UIStackLayoutPage {
         if (!data.shift) {
             itemShift.style.removeProperty("--shift-color");
             itemShift.innerHTML = "";
-            return;
+        } else {
+            itemShift.style.setProperty(
+                "--shift-color",
+                data.shift.visible
+                    ? data.shift.color || "inherit"
+                    : "transparent",
+            );
+
+            itemShift.innerHTML = data.shift.shortName || "";
         }
-
-        itemShift.style.setProperty(
-            "--shift-color",
-            data.shift.visible ? data.shift.color || "inherit" : "transparent",
-        );
-
-        itemShift.innerHTML = data.shift.shortName || "";
 
         // Needed for the dialog to add a note or modify the shift
         el.setAttribute("data-year", data.year.toString());
