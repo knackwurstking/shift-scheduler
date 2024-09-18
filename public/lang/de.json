@@ -1,0 +1,99 @@
+{
+    "backup-alerts": {
+        "invalid-data": "Invalid data!",
+        "invalid-settings": "Invalid settings",
+        "invalid-version-type": "Invalid database version (type): %v",
+        "invalid-version-number": "Invalid database version %d, current version is %d",
+        "invalid-indexed-entry": "Invalid indexed data entry:\n%s"
+    },
+    "edit-shift-alerts": {
+        "missing-name": "Fehlender Schichtname!"
+    },
+    "calendar": {
+        "reset": "Zurücksetzen"
+    },
+    "settings": {
+        "app-bar-title": "Einstellungen",
+        "confirm-delete-shift": "Shicht \"%s\" löschen?",
+        "title-misc": "Sonstiges",
+        "title-shifts": "Schichteinstellungen",
+        "title-indexedDB": "IndexedDB",
+        "label-primary-week-start": "Wochen start am Montag",
+        "select-title-theme": "Theme",
+        "table-header-name": "Name",
+        "table-header-short-name": "Kürzel",
+        "button-add-shift": "Neue Schicht hinzufügen",
+        "label-primary-start-date": "Start Datum",
+        "label-primary-edit-rhythm": "Rhythmus",
+        "button-edit-rhythm": "Bearbeiten",
+        "label-primary-shifts-backup": "Backup",
+        "label-primary-indexeddb-browser": "Einträge bearbeiten",
+        "button-indexeddb-browser": "Browse",
+        "button-import": "Import",
+        "button-export": "Export"
+    },
+    "indexeddb-browser": {
+        "app-bar-title": "IndexedDB Browser",
+        "confirm-delete-entry": "Eintrag löschen für \"%d-%d-%d\"",
+        "input-title-year": "Jahr",
+        "input-title-month": "Monat",
+        "input-title-date": "Tag"
+    },
+    "pdf-dialog": {
+        "title": "PDF",
+        "button-download": "Herunterladen",
+        "input-title-year": "Wähle ein Jahr"
+    },
+    "date-picker-dialog": {
+        "title": "Datumsauswahl",
+        "input-title-month": "Wähle ein Datum",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen"
+    },
+    "edit-day-dialog": {
+        "textarea-title-notes": "Notiz",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen",
+        "reset": "Zurücksetzen"
+    },
+    "edit-rhythm-dialog": {
+        "title": "Schicht Rhythmus",
+        "table-header-name": "Name",
+        "table-header-short-name": "Kürzel",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen"
+    },
+    "edit-shift-dialog": {
+        "title": "Schicht Bearbeiten",
+        "input-title-name": "Name (Bsp.: Nacht)",
+        "input-title-short-name": "Kürzel (Bsp.: N)",
+        "label-primary-color-picker": "Farbe wählen",
+        "label-primary-use-default-color": "Farbe deaktivieren",
+        "label-primary-visible-item": "Schicht ausblenden",
+        "button-submit": "OK",
+        "button-cancel": "Abbrechen"
+    },
+    "week-day": {
+        "0": "So",
+        "1": "Mo",
+        "2": "Di",
+        "3": "Mi",
+        "4": "Do",
+        "5": "Fr",
+        "6": "Sa"
+    },
+    "month": {
+        "0": "Januar",
+        "1": "Februar",
+        "2": "März",
+        "3": "April",
+        "4": "Mai",
+        "5": "Juni",
+        "6": "Juli",
+        "7": "August",
+        "8": "September",
+        "9": "August",
+        "10": "November",
+        "11": "Dezember"
+    }
+}

@@ -1,0 +1,99 @@
+{
+    "backup-alerts": {
+        "invalid-data": "Invalid data!",
+        "invalid-settings": "Invalid settings",
+        "invalid-version-type": "Invalid database version (type): %v",
+        "invalid-version-number": "Invalid database version %d, current version is %d",
+        "invalid-indexed-entry": "Invalid indexed data entry:\n%s"
+    },
+    "edit-shift-alerts": {
+        "missing-name": "Missing shift name!"
+    },
+    "calendar": {
+        "reset": "Reset"
+    },
+    "settings": {
+        "app-bar-title": "Settings",
+        "confirm-delete-shift": "Delete shift \"%s\"?",
+        "title-misc": "Miscellaneous",
+        "title-shifts": "Shift Settings",
+        "title-indexedDB": "IndexedDB",
+        "label-primary-week-start": "The week starts on Monday",
+        "select-title-theme": "Theme",
+        "table-header-name": "Name",
+        "table-header-short-name": "Short",
+        "button-add-shift": "Add a new shift",
+        "label-primary-start-date": "Start Date",
+        "label-primary-edit-rhythm": "Rhythm",
+        "button-edit-rhythm": "Edit",
+        "label-primary-shifts-backup": "Backup",
+        "label-primary-indexeddb-browser": "Edit entries",
+        "button-indexeddb-browser": "Browse",
+        "button-import": "Import",
+        "button-export": "Export"
+    },
+    "indexeddb-browser": {
+        "app-bar-title": "IndexedDB Browser",
+        "confirm-delete-entry": "Delete entry for \"%d-%d-%d\"",
+        "input-title-year": "Year",
+        "input-title-month": "Month",
+        "input-title-date": "Day"
+    },
+    "pdf-dialog": {
+        "title": "PDF",
+        "button-download": "Download",
+        "input-title-year": "Pick a Year"
+    },
+    "date-picker-dialog": {
+        "title": "Date Picker",
+        "input-title-month": "Pick a Date",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
+    },
+    "edit-day-dialog": {
+        "textarea-title-notes": "Note",
+        "button-submit": "OK",
+        "button-cancel": "Cancel",
+        "reset": "Reset"
+    },
+    "edit-rhythm-dialog": {
+        "title": "Shift Rhythm",
+        "table-header-name": "Name",
+        "table-header-short-name": "Short",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
+    },
+    "edit-shift-dialog": {
+        "title": "Edit Shift",
+        "input-title-name": "Name (ex.: Night)",
+        "input-title-short-name": "Short (ex.: N)",
+        "label-primary-color-picker": "Pick a color",
+        "label-primary-use-default-color": "Disable color",
+        "label-primary-visible-item": "Hide shift",
+        "button-submit": "OK",
+        "button-cancel": "Cancel"
+    },
+    "week-day": {
+        "0": "Sun",
+        "1": "Mon",
+        "2": "Tue",
+        "3": "Wed",
+        "4": "Thu",
+        "5": "Fri",
+        "6": "Sat"
+    },
+    "month": {
+        "0": "January",
+        "1": "February",
+        "2": "March",
+        "3": "April",
+        "4": "May",
+        "5": "June",
+        "6": "July",
+        "7": "August",
+        "8": "September",
+        "9": "October",
+        "10": "November",
+        "11": "December"
+    }
+}

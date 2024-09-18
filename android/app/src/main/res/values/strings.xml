@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">shift-scheduler</string>
+    <string name="title_activity_main">shift-scheduler</string>
+    <string name="package_name">com.knackwurstking.shiftscheduler</string>
+    <string name="custom_url_scheme">com.knackwurstking.shiftscheduler</string>
+</resources>
