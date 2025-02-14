@@ -11,7 +11,23 @@
         <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.min.css" />
         <link rel="stylesheet" href="/node_modules/ui/dist/css/main.css" />
 
-        <link rel="stylesheet" href="/src/style.css" />
+        <style>
+            html,
+            body {
+                overscroll-behavior-y: none !important;
+            }
+
+            html,
+            body,
+            #routerTarget {
+                width: 100%;
+                height: 100%;
+            }
+
+            #routerTarget {
+                padding-top: var(--ui-app-bar-height);
+            }
+        </style>
     </head>
 
     <body>
@@ -46,6 +62,202 @@
 
         <template name="calendar">
             <!-- MARK: Calendar Page Template -->
+
+            <style>
+                .item-container {
+                    --week-days-height: 2.5rem;
+                    --edit-mode-height: 4.5rem;
+
+                    position: relative;
+                    overflow: hidden;
+                    width: 100%;
+                    height: 100%;
+                    transition: height 0.25s ease;
+                }
+
+                .item-container[edit-mode] {
+                    height: calc(100% - var(--edit-mode-height));
+                }
+
+                .edit-mode {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    height: var(--edit-mode-height);
+                    transform: translateY(100%);
+                    transition: transform 0.25s ease;
+                }
+
+                .edit-mode[edit-mode] {
+                    transform: translateY(0);
+                }
+
+                .item-container > .item {
+                    position: absolute;
+                    top: var(--ui-app-bar-height);
+                    bottom: 0;
+                    min-width: 100%;
+                }
+
+                .item-container > .item > .item-content {
+                    width: calc(100% - 0.25rem);
+                    height: calc(100% - 0.25rem);
+                }
+
+                .item-container > .item > .item-content > .week-days {
+                    height: var(--week-days-height);
+                    padding: 1px 0;
+                }
+
+                .item-container > .item > .item-content > .days {
+                    height: 100%;
+                    padding: 1px 0;
+                }
+
+                .item-container > .item > .item-content > .week-days,
+                .item-container > .item > .item-content > .days {
+                    border-radius: var(--ui-radius);
+                    border: var(--ui-border-width) var(--ui-border-style) var(--ui-border-color);
+                }
+
+                .item-container[no-border] > .item > .item-content > .week-days,
+                .item-container[no-border] > .item > .item-content > .days {
+                    border: none;
+                }
+
+                .item-container > .item > .item-content > .week-days > .week-day {
+                    width: calc(100% / 7);
+                    overflow: hidden;
+                    height: 100%;
+                    font-size: 115%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .item-container > .item > .item-content > .week-days > .week-day.saturday,
+                .item-container > .item > .item-content > .week-days > .week-day.sunday {
+                    font-weight: bold;
+                }
+
+                .item-container > .item > .item-content > .saturday,
+                .item-container > .item > .item-content > .sunday {
+                    background-color: var(--ui-secondary);
+                    color: var(--ui-secondary-text);
+                }
+
+                .item-container > .item > .item-content > .days > .day {
+                    height: 100%;
+                    overflow: hidden;
+                    cursor: pointer;
+                }
+
+                .item-container > .item > .item-content > .days > .day.today::after {
+                    content: "";
+                    position: absolute;
+                    z-index: 9;
+                    top: -1rem;
+                    left: -1rem;
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: var(--ui-radius);
+                    border-bottom-right-radius: 50%;
+                    background-color: orange;
+                    filter: blur(1rem);
+                    animation: fade-in 0.5s;
+                }
+
+                .item-container > .item:not(.moving) .day.note::before {
+                    content: "";
+                    position: absolute;
+                    z-index: 8;
+                    bottom: -1rem;
+                    right: -1rem;
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: var(--ui-radius);
+                    border-top-left-radius: 50%;
+                    background-color: red;
+                    filter: blur(1rem);
+                    animation: fade-in 0.5s;
+                }
+
+                .item-container > .item > .item-content > .days > .day .date {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    padding: 0.5vmin;
+                    font-size: 3vmin;
+                    font-size: clamp(0rem, 3vmin, 1rem);
+                    border-radius: inherit;
+                }
+
+                .item-container > .item > .item-content > .days > .day > .shift {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 5vmin;
+                    font-weight: bold;
+                    color: var(--shift-color, var(--ui-text));
+                    border-radius: inherit;
+                }
+
+                @media (orientation: landscape) {
+                    .item-container > .item > .item-content > .days > .day .shift {
+                        left: 4vmin;
+                    }
+                }
+
+                @media (orientation: portrait) {
+                    .item-container > .item > .item-content > .days > .day .shift {
+                        top: 5vmin;
+                    }
+                }
+
+                @keyframes fade-in {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            </style>
+
+            <div class="item-container ui-flex-grid-row ui-none-select">
+                <div class="item item1" style="left: -100%"></div>
+
+                <div class="item item2" style="left: 0"></div>
+
+                <div class="item item3" style="left: 100%"></div>
+            </div>
+
+            <div
+                class="edit-mode ui-flex-grid-row ui-auto-scroll-x ui-hide-scrollbar"
+                style="--gap: 0.5rem"
+            ></div>
+
+            <template name="calendar-item">
+                <div class="item-content ui-flex-grid" style="--gap: 0.05rem">
+                    <div class="week-days ui-flex-grid-row" class="week-days-row" gap="0.05rem">
+                        <div class="week-day ui-flex-grid-item"></div>
+                        <div class="week-day ui-flex-grid-item"></div>
+                        <div class="week-day ui-flex-grid-item"></div>
+                        <div class="week-day ui-flex-grid-item"></div>
+                        <div class="week-day ui-flex-grid-item"></div>
+                        <div class="week-day ui-flex-grid-item"></div>
+                        <div class="week-day ui-flex-grid-item"></div>
+                    </div>
+
+                    <!-- TODO: 6 rows containing 7 days per row -->
+                </div>
+            </template>
         </template>
 
         <template name="settings">
