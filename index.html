@@ -1,13 +1,43 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+        <title>Shift Scheduler</title>
+
+        <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.min.css" />
+        <link rel="stylesheet" href="/node_modules/ui/dist/css/main.css" />
+
+        <link rel="stylesheet" href="/src/style.css" />
+    </head>
+
+    <body>
+        <div id="routerTarget" class="ui-auto-scroll ui-hide-scrollbar"></div>
+
+        <div class="ui-app-bar" position="top" fixed>
+            <div class="left">
+                <button
+                    id="appBar_ButtonBack"
+                    style="display: none"
+                    variant="ghost"
+                    color="primary"
+                    icon
+                    onclick="history.back()"
+                >
+                    <div class="bi bi-chevron-left"></div>
+                </button>
+            </div>
+
+            <div class="center">
+                <h4 class="ui-ellipsis" id="appBar_Title">PG: Vis</h4>
+            </div>
+
+            <div class="right"></div>
+        </div>
+
+        <script type="module" src="/src/main.ts"></script>
+    </body>
 </html>

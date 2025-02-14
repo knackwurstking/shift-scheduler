@@ -1,24 +1,32 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import * as ui from "ui";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+import * as constants from "./constants";
+import * as pages from "./pages";
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+ui.router.hash.init(document.querySelector(constants.routerTarget)!, {
+    "/": {
+        title: "Shift Scheduler",
+        template: {
+            selector: constants.templateCalendar,
+            onMount() {
+                pages.calendar.onMount();
+            },
+            onDestroy() {
+                pages.calendar.onDestroy();
+            },
+        },
+    },
+
+    settings: {
+        title: "Shift Scheduler | Settings",
+        template: {
+            selector: constants.templateSettings,
+            onMount() {
+                pages.settings.onMount();
+            },
+            onDestroy() {
+                pages.settings.onDestroy();
+            },
+        },
+    },
+});
