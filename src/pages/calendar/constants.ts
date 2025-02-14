@@ -1,6 +1,7 @@
 import * as types from "../../types";
 
-export const itemContainer: types.QuerySelector = `.item-container`;
-export const editMode: types.QuerySelector = `.edit-mode`;
-
-export const templateCalendarItem: types.QuerySelector = `template[name="calendar-item"]`;
+export const query = {
+    itemContainer: `.item-container` as types.QuerySelector,
+    editMode: `.edit-mode` as types.QuerySelector,
+    templateCalendarItem: `template[name="calendar-item"]` as types.QuerySelector,
+};

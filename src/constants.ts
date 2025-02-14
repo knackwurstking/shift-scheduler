@@ -1,6 +1,7 @@
 import * as types from "./types";
 
-export const templateSettings: types.QuerySelector = `template[name="settings"]`;
-export const templateCalendar: types.QuerySelector = `template[name="calendar"]`;
-
-export const routerTarget: types.QuerySelector = `#routerTarget`;
+export const query = {
+    templateSettings: `template[name="settings"]` as types.QuerySelector,
+    templateCalendar: `template[name="calendar"]` as types.QuerySelector,
+    routerTarget: `#routerTarget` as types.QuerySelector,
+};

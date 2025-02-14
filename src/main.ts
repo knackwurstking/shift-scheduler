@@ -3,11 +3,11 @@ import * as ui from "ui";
 import * as constants from "./constants";
 import * as pages from "./pages";
 
-ui.router.hash.init(document.querySelector(constants.routerTarget)!, {
+ui.router.hash.init(document.querySelector(constants.query.routerTarget)!, {
     "/": {
         title: "Shift Scheduler",
         template: {
-            selector: constants.templateCalendar,
+            selector: constants.query.templateCalendar,
             onMount() {
                 pages.calendar.onMount();
             },
@@ -20,7 +20,7 @@ ui.router.hash.init(document.querySelector(constants.routerTarget)!, {
     settings: {
         title: "Shift Scheduler | Settings",
         template: {
-            selector: constants.templateSettings,
+            selector: constants.query.templateSettings,
             onMount() {
                 pages.settings.onMount();
             },

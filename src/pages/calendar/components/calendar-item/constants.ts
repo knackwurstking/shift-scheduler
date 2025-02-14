@@ -1,4 +1,6 @@
 import * as types from "../../../../types";
 
-export const itemContent: types.QuerySelector = `.item-content`;
-export const weekDays: types.QuerySelector = `.item-content > .weekDays`;
+export const query = {
+    itemContent: `.item-content` as types.QuerySelector,
+    weekDays: `.item-content > .weekDays` as types.QuerySelector,
+};
