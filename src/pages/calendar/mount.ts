@@ -1,6 +1,7 @@
-//import * as constants from "./constants";
-import * as utils from "../../utils";
 import * as store from "../../store";
+import * as utils from "../../utils";
+import * as components from "./components";
+import * as constants from "./constants";
 import * as handlers from "./handlers";
 
 let appBarTitleBackup = "";
@@ -13,7 +14,10 @@ export async function onMount() {
     // Enable app-bar items
     setupAppBarItems();
 
-    // TODO: Render day items
+    // Render day items
+    renderDayItems();
+
+    // TODO: Initialize the swipe handler
 
     // Setup store handlers
     setupStoreHandlers();
@@ -22,6 +26,15 @@ export async function onMount() {
 export async function onDestroy() {
     // Restore app bar title
     utils.appBar.set(appBarTitleBackup);
+}
+
+function renderDayItems() {
+    document.querySelectorAll<HTMLElement>(constants.query.itemContainer)!.forEach((item) => {
+        item.innerHTML = "";
+
+        const itemContent = components.calendarItem.create();
+        item.appendChild(itemContent);
+    });
 }
 
 function setupAppBarItems() {
