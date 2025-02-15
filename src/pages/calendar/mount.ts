@@ -1,15 +1,24 @@
+import * as ui from "ui";
+
 import * as store from "../../store";
 import * as utils from "../../utils";
-import * as itemContent from "./item-content";
+
 import * as constants from "./constants";
 import * as handlers from "./handlers";
+import * as itemContent from "./item-content";
+import * as lib from "./lib";
 
 let appBarTitleBackup = "";
+let cleanup: ui.CleanUpFunction[] = [];
 
 export async function onMount() {
     // Setup app bar
     appBarTitleBackup = utils.appBar.get();
     utils.appBar.set("");
+
+    const swipeHandler = new lib.SwipeHandler(
+        document.querySelector(constants.query.itemContainer)!,
+    );
 
     // Enable app-bar items
     setupAppBarItems();
@@ -17,15 +26,21 @@ export async function onMount() {
     // Render day items
     renderDayItems();
 
-    // TODO: Initialize the swipe handler, Continue here...
-
     // Setup store handlers
     setupStoreHandlers();
+
+    swipeHandler.addListener("swipe", handlers.swipe);
+    cleanup.push(() => swipeHandler.removeListener("swipe", handlers.swipe));
+
+    setTimeout(() => {
+        swipeHandler.start();
+    });
 }
 
 export async function onDestroy() {
-    // Restore app bar title
     utils.appBar.set(appBarTitleBackup);
+    cleanup.forEach((fn) => fn());
+    cleanup = [];
 }
 
 function renderDayItems() {
@@ -40,7 +55,9 @@ function setupAppBarItems() {
 }
 
 function setupStoreHandlers() {
-    store.obj.listen("date-picker", handlers.datePicker, true);
-    store.obj.listen("week-start", handlers.weekStart, true);
-    store.obj.listen("edit-mode", handlers.editMode, true);
+    cleanup.push(
+        store.obj.listen("date-picker", handlers.datePicker, true),
+        store.obj.listen("week-start", handlers.weekStart, true),
+        store.obj.listen("edit-mode", handlers.editMode, true),
+    );
 }
