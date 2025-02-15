@@ -64,6 +64,11 @@
             <!-- MARK: Calendar Page Template -->
 
             <style>
+                html,
+                body {
+                    overscroll-behavior: none !important;
+                }
+
                 .item-container {
                     --week-days-height: 2.5rem;
                     --edit-mode-height: 4.5rem;
@@ -95,7 +100,7 @@
 
                 .item-container > .item {
                     position: absolute;
-                    top: var(--ui-app-bar-height);
+                    top: 0;
                     bottom: 0;
                     min-width: 100%;
                 }
@@ -115,8 +120,8 @@
                     padding: 1px 0;
                 }
 
-                .item-container > .item > .item-content > .week-days,
-                .item-container > .item > .item-content > .days {
+                .item-container > .item > .item-content > .week-days > .week-day,
+                .item-container > .item > .item-content > .days > .day {
                     border-radius: var(--ui-radius);
                     border: var(--ui-border-width) var(--ui-border-style) var(--ui-border-color);
                 }
@@ -136,13 +141,13 @@
                     justify-content: center;
                 }
 
-                .item-container > .item > .item-content > .week-days > .week-day.saturday,
-                .item-container > .item > .item-content > .week-days > .week-day.sunday {
+                .item-container > .item > .item-content > .week-days > .saturday,
+                .item-container > .item > .item-content > .week-days > .sunday {
                     font-weight: bold;
                 }
 
-                .item-container > .item > .item-content > .saturday,
-                .item-container > .item > .item-content > .sunday {
+                .item-container > .item > .item-content > * > .saturday,
+                .item-container > .item > .item-content > * > .sunday {
                     background-color: var(--ui-secondary);
                     color: var(--ui-secondary-text);
                 }
@@ -168,7 +173,7 @@
                     animation: fade-in 0.5s;
                 }
 
-                .item-container > .item:not(.moving) .day.note::before {
+                .item-container > .item:not(.moving) > .item-content > .days > .day.note::before {
                     content: "";
                     position: absolute;
                     z-index: 8;
@@ -243,16 +248,18 @@
                 style="--gap: 0.5rem"
             ></div>
 
+            <!-- MARK: Calendar Item Template -->
+
             <template name="calendar-item">
                 <div class="item-content ui-flex-grid" style="--gap: 0.05rem">
                     <div class="week-days ui-flex-grid-row" class="week-days-row" gap="0.05rem">
-                        <div class="week-day ui-flex-grid-item"></div>
-                        <div class="week-day ui-flex-grid-item"></div>
-                        <div class="week-day ui-flex-grid-item"></div>
-                        <div class="week-day ui-flex-grid-item"></div>
-                        <div class="week-day ui-flex-grid-item"></div>
-                        <div class="week-day ui-flex-grid-item"></div>
-                        <div class="week-day ui-flex-grid-item"></div>
+                        <div class="week-day ui-flex-grid-item">Mon</div>
+                        <div class="week-day ui-flex-grid-item">Tue</div>
+                        <div class="week-day ui-flex-grid-item">Wed</div>
+                        <div class="week-day ui-flex-grid-item">Thu</div>
+                        <div class="week-day ui-flex-grid-item">Fri</div>
+                        <div class="week-day ui-flex-grid-item">Sat</div>
+                        <div class="week-day ui-flex-grid-item">Sun</div>
                     </div>
 
                     <!-- TODO: 6 rows containing 7 days per row -->

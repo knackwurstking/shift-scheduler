@@ -29,7 +29,8 @@ export async function onDestroy() {
 }
 
 function renderDayItems() {
-    document.querySelectorAll<HTMLElement>(constants.query.itemContainer)!.forEach((item) => {
+    Array.from(document.querySelector(constants.query.itemContainer)!.children)!.forEach((item) => {
+        console.debug(item);
         item.innerHTML = "";
 
         const itemContent = components.calendarItem.create();
