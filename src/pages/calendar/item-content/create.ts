@@ -1,6 +1,7 @@
-import * as constants from "./constants";
 import * as store from "../../../store";
 import * as types from "../../../types";
+import * as utils from "../../../utils";
+import * as constants from "./constants";
 
 const html = String.raw;
 
@@ -26,13 +27,12 @@ export function create(): DocumentFragment {
     return fragment;
 }
 
-export function update(itemContent: HTMLElement, date: Date): void {
+export async function update(itemContent: HTMLElement, date: Date): Promise<void> {
     const settings = store.obj.get("settings")!;
     const days: HTMLElement[] = Array.from(itemContent.querySelectorAll(constants.query.day));
 
-    // TODO: calendar util missing
     let dataEntries: types.db.Entry[] = await utils.calendar.getDataForDays(
-        days,
+        days.length,
         date.getFullYear(),
         date.getMonth(),
     );
