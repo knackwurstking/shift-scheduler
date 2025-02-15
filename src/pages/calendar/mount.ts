@@ -1,6 +1,6 @@
 import * as store from "../../store";
 import * as utils from "../../utils";
-import * as components from "./components";
+import * as itemContent from "./item-content";
 import * as constants from "./constants";
 import * as handlers from "./handlers";
 
@@ -17,7 +17,7 @@ export async function onMount() {
     // Render day items
     renderDayItems();
 
-    // TODO: Initialize the swipe handler
+    // TODO: Initialize the swipe handler, Continue here...
 
     // Setup store handlers
     setupStoreHandlers();
@@ -30,11 +30,8 @@ export async function onDestroy() {
 
 function renderDayItems() {
     Array.from(document.querySelector(constants.query.itemContainer)!.children)!.forEach((item) => {
-        console.debug(item);
         item.innerHTML = "";
-
-        const itemContent = components.calendarItem.create();
-        item.appendChild(itemContent);
+        item.appendChild(itemContent.create());
     });
 }
 

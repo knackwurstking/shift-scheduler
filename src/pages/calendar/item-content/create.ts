@@ -24,7 +24,7 @@ export function create(): DocumentFragment {
     return fragment;
 }
 
-export function createDayItem(date: number, shift?: string): HTMLDivElement {
+function createDayItem(date: number, shift?: string): HTMLDivElement {
     const el = document.createElement("div");
 
     el.className = "day ui-flex-grid-item";
