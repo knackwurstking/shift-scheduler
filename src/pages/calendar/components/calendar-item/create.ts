@@ -13,7 +13,7 @@ export function create(): DocumentFragment {
         const row = document.createElement("div");
         itemContent.appendChild(row);
 
-        row.classList.add("days ui-flex-grid-row");
+        row.className = "days ui-flex-grid-row";
         row.style.setProperty("--gap", "0.05rem");
 
         for (let x = 0; x < 7; x++) {

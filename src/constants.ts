@@ -11,7 +11,7 @@ export const query = {
         backButton: `.ui-app-bar .left .back-button` as types.QuerySelector,
     },
     appBarCenter: {
-        title: `.ui-app-bar .left .title` as types.QuerySelector,
+        title: `.ui-app-bar .center .title` as types.QuerySelector,
     },
     appBarRight: {},
 };
