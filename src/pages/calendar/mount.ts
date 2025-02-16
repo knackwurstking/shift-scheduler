@@ -57,17 +57,23 @@ function renderDayItems() {
 
 function setupAppBarItems() {
     const datePickerButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .left button.date-picker`,
+        constants.query.appBar.left.datePicker,
     )!;
+
     const todayButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .right button.today`,
+        constants.query.appBar.right.today,
     )!;
-    const editButton = document.querySelector<HTMLButtonElement>(`.ui-app-bar .right button.edit`)!;
+
+    const editButton = document.querySelector<HTMLButtonElement>(
+        constants.query.appBar.right.edit,
+    )!;
+
     const printerButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .right button.printer`,
+        constants.query.appBar.right.printer,
     )!;
+
     const settingsButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .right button.settings`,
+        constants.query.appBar.right.settings,
     )!;
 
     datePickerButton.style.display = "inline-flex";
