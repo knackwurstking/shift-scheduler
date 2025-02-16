@@ -17,9 +17,9 @@ export async function datePicker(dateString: number): Promise<void> {
                 date.getFullYear(),
                 date.getMonth(),
             );
-        },
 
-        date.setMonth(date.getMonth() + 1),
+            date.setMonth(date.getMonth() + 1);
+        },
     );
 }
 
