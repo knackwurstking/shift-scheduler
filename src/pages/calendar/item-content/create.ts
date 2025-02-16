@@ -59,6 +59,13 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
 
         updateDayItem(days[index], entry);
 
+        // Set [disabled]
+        if (month !== entry.month) {
+            days[index].setAttribute("disabled", "");
+        } else {
+            days[index].removeAttribute("disabled");
+        }
+
         // Inactive Item
         if (entry.year !== date.getFullYear() || entry.month !== date.getMonth()) {
             days[index].classList.add("inactive");
