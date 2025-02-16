@@ -29,11 +29,14 @@ export async function onMount() {
     // Setup store handlers
     setupStoreHandlers();
 
-    swipeHandler.addListener("swipe", handlers.swipe);
-    cleanup.push(() => swipeHandler.removeListener("swipe", handlers.swipe));
-
     setTimeout(() => {
         swipeHandler.start();
+    });
+
+    swipeHandler.addListener("swipe", handlers.swipe);
+    cleanup.push(() => {
+        swipeHandler.removeListener("swipe", handlers.swipe);
+        swipeHandler.stop();
     });
 }
 
@@ -96,7 +99,7 @@ function setupAppBarItems() {
                 const date = new Date(data);
 
                 if (
-                    date.getFullYear() === today.getFullYear() ||
+                    date.getFullYear() === today.getFullYear() &&
                     date.getMonth() === today.getMonth()
                 ) {
                     todayButton.setAttribute("disabled", "");
