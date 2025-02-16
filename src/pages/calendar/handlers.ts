@@ -2,8 +2,8 @@ import * as store from "../../store";
 import * as types from "../../types";
 
 import * as constants from "./constants";
-import * as lib from "./lib";
 import * as itemContent from "./item-content/";
+import * as lib from "./lib";
 
 export async function datePicker(dateString: string): Promise<void> {
     const date = new Date(dateString);
@@ -14,7 +14,8 @@ export async function datePicker(dateString: string): Promise<void> {
         async (item) => {
             itemContent.update(
                 item.querySelector(itemContent.constants.query.itemContent)!,
-                new Date(date),
+                date.getFullYear(),
+                date.getMonth(),
             );
         },
 
@@ -23,7 +24,7 @@ export async function datePicker(dateString: string): Promise<void> {
 }
 
 export async function weekStart(data: types.calendar.WeekStart): Promise<void> {
-    // TODO: ...
+    // TODO: Continue here...
 }
 
 export async function editMode(data: types.calendar.EditMode): Promise<void> {

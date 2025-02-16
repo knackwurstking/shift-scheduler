@@ -44,9 +44,11 @@ export async function onDestroy() {
 }
 
 function renderDayItems() {
+    const date = new Date();
+
     Array.from(document.querySelector(constants.query.itemContainer)!.children)!.forEach((item) => {
         item.innerHTML = "";
-        item.appendChild(itemContent.create());
+        item.appendChild(itemContent.create(date.getFullYear(), date.getMonth()));
     });
 }
 

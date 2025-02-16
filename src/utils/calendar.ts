@@ -7,8 +7,7 @@ export async function getDataForDays(
     month: number,
 ): Promise<types.db.Entry[]> {
     const data: types.db.Entry[] = [];
-    const weekStart = store.obj.get("week-start");
-    const settings = store.obj.get("settings");
+    const weekStart = store.obj.get("week-start")!;
 
     for (let i = 0; i < size; i++) {
         const date = new Date(year, month, i + 1 - getStartDay(year, month, weekStart));
@@ -17,7 +16,7 @@ export async function getDataForDays(
             year: date.getFullYear(),
             month: date.getMonth(),
             date: date.getDate(),
-            shift: calcShiftForDay(date, settings),
+            shift: calcShiftForDay(date),
             note: "",
         });
     }
@@ -25,16 +24,9 @@ export async function getDataForDays(
     return data;
 }
 
-// TODO: Continue here...
-
-/**
- * @param {number} year
- * @param {number} month
- * @param {SchedulerStore_WeekStart} weekStart
- * @returns {number}
- */
-function getStartDay(year, month, weekStart) {
-    // NOTE: if month starts on sunday (0), but the week start is set to monday (1), than set it to 6 (sunday becomes 6)
+function getStartDay(year: number, month: number, weekStart: types.calendar.WeekStart): number {
+    // NOTE: if month starts on sunday (0), but the week start is
+    //       set to monday (1), than set it to 6 (sunday becomes 6)
     const date = new Date(year, month, 1);
     const weekDay = date.getDay();
 
@@ -42,12 +34,8 @@ function getStartDay(year, month, weekStart) {
     return weekDay === 0 ? 6 : weekDay - 1;
 }
 
-/**
- * @param {Date} current
- * @param {SchedulerStore_Settings} settings
- * @returns {Shift| null}
- */
-export function calcShiftForDay(current, settings) {
+export function calcShiftForDay(current: Date): types.calendar.Shift | null {
+    const settings = store.obj.get("settings")!;
     if (!settings.startDate || !settings.rhythm.length) return null;
 
     const sDate = new Date(settings.startDate);
