@@ -1,5 +1,6 @@
 import * as ui from "ui";
 
+import * as dialogs from "../../dialogs";
 import * as store from "../../store";
 import * as utils from "../../utils";
 
@@ -84,14 +85,15 @@ function setupAppBarItems() {
 
     // date-picker handler
     datePickerButton.onclick = async () => {
-        // TODO: Open the date picker dialog and update "date-picker" store on submit
+        const data = await dialogs.datePicker.open(store.obj.get("date-picker")!);
+        if (!data) return;
+
+        store.obj.set("date-picker", data.date);
     };
 
     // today handler
     todayButton.onclick = async () => {
-        store.obj.update("date-picker", () => {
-            return new Date().getTime();
-        });
+        store.obj.set("date-picker", new Date().getTime());
     };
 
     // TODO: Setup "edit" and "printer" handlers
