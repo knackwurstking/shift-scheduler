@@ -23,7 +23,7 @@ export async function datePicker(dateString: number): Promise<void> {
     );
 }
 
-export async function editMode(data: types.calendar.EditMode): Promise<void> {
+export async function editMode(_data: types.calendar.EditMode): Promise<void> {
     // TODO: ...
 }
 
