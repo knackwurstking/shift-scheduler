@@ -67,15 +67,25 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
         }
     });
 
-    markWeekendItems(...days);
+    markWeekendItems([...itemContent.querySelectorAll(constants.query.weekDay)], days);
 }
 
-export function markWeekendItems(...days: Element[]): void {
-    const order = [0, 1, 2, 3, 4, 5, 6];
+function markWeekendItems(weekDays: Element[], days: Element[]): void {
+    const weekStart = store.obj.get("week-start")!;
+    let order = constants.defaultWeekOrder;
+
+    if (weekStart > 0) {
+        order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
+    }
+
     const satIndex = order.findIndex((o) => o === 6);
     const sunIndex = order.findIndex((o) => o === 0);
 
-    days.forEach((c, i) => {
+    weekDays.forEach((weekDay, i) => {
+        weekDay.innerHTML = `${constants.defaultWeekDaysInOrder[order[i % 7]]}`;
+    });
+
+    [...weekDays, ...days].forEach((c, i) => {
         c.classList.remove("saturday");
         c.classList.remove("sunday");
 

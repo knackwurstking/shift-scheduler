@@ -23,10 +23,6 @@ export async function datePicker(dateString: string): Promise<void> {
     );
 }
 
-export async function weekStart(data: types.calendar.WeekStart): Promise<void> {
-    // TODO: Continue here...
-}
-
 export async function editMode(data: types.calendar.EditMode): Promise<void> {
     // TODO: ...
 }

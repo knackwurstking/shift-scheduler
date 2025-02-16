@@ -59,7 +59,6 @@ function setupAppBarItems() {
 function setupStoreHandlers() {
     cleanup.push(
         store.obj.listen("date-picker", handlers.datePicker, true),
-        store.obj.listen("week-start", handlers.weekStart, true),
         store.obj.listen("edit-mode", handlers.editMode, true),
     );
 }
