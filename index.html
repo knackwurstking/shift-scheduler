@@ -38,7 +38,18 @@
         <div class="ui-app-bar" position="top" fixed>
             <div class="left">
                 <button
-                    class="back-button"
+                    class="date-picker"
+                    style="
+                        display: none;
+                        margin: 0.25rem;
+                        height: calc(100% - 0.5rem);
+                        whitespace: nowrap;
+                    "
+                    variant="outline"
+                ></button>
+
+                <button
+                    class="back"
                     style="display: none"
                     variant="ghost"
                     color="primary"
@@ -53,7 +64,29 @@
                 <h4 class="title ui-ellipsis">Shift Scheduler</h4>
             </div>
 
-            <div class="right"></div>
+            <div class="right">
+                <button class="edit" style="display: none" variant="ghost" icon>
+                    <i class="bi bi-pen"></i>
+                </button>
+
+                <button class="today" style="display: none" variant="ghost" icon>
+                    <i class="bi bi-calendar-event"></i>
+                </button>
+
+                <button class="printer" style="display: none" variant="ghost" icon>
+                    <i class="bi bi-printer"></i>
+                </button>
+
+                <button
+                    class="settings"
+                    style="display: none"
+                    variant="ghost"
+                    icon
+                    onclick="location.hash = '#settings'"
+                >
+                    <i class="bi bi-gear"></i>
+                </button>
+            </div>
         </div>
 
         <!-- MARK: Dialogs -->
@@ -69,7 +102,7 @@
                     overscroll-behavior: none !important;
                 }
 
-                .item-container {
+                #routerTarget .item-container {
                     --week-days-height: 2.5rem;
                     --edit-mode-height: 4.5rem;
 
@@ -80,11 +113,11 @@
                     transition: height 0.25s ease;
                 }
 
-                .item-container[edit-mode] {
+                #routerTarget .item-container[edit-mode] {
                     height: calc(100% - var(--edit-mode-height));
                 }
 
-                .edit-mode {
+                #routerTarget .edit-mode {
                     position: absolute;
                     right: 0;
                     bottom: 0;
@@ -94,44 +127,44 @@
                     transition: transform 0.25s ease;
                 }
 
-                .edit-mode[edit-mode] {
+                #routerTarget .edit-mode[edit-mode] {
                     transform: translateY(0);
                 }
 
-                .item-container > .item {
+                #routerTarget .item {
                     position: absolute;
                     top: 0;
                     bottom: 0;
                     min-width: 100%;
                 }
 
-                .item-container > .item > .item-content {
+                #routerTarget .item-content {
                     width: calc(100% - 0.25rem);
                     height: calc(100% - 0.25rem);
                 }
 
-                .item-container > .item > .item-content > .week-days {
+                #routerTarget .week-days {
                     height: var(--week-days-height);
                     padding: 1px 0;
                 }
 
-                .item-container > .item > .item-content > .days {
+                #routerTarget .days {
                     height: 100%;
                     padding: 1px 0;
                 }
 
-                .item-container > .item > .item-content > .week-days > .week-day,
-                .item-container > .item > .item-content > .days > .day {
+                #routerTarget .week-day,
+                #routerTarget .day {
                     border-radius: var(--ui-radius);
                     border: var(--ui-border-width) var(--ui-border-style) var(--ui-border-color);
                 }
 
-                .item-container[no-border] > .item > .item-content > .week-days,
-                .item-container[no-border] > .item > .item-content > .days {
+                #routerTarget .item-container[no-border] .week-days,
+                #routerTarget .item-container[no-border] .days {
                     border: none;
                 }
 
-                .item-container > .item > .item-content > .week-days > .week-day {
+                #routerTarget .week-day {
                     width: calc(100% / 7);
                     overflow: hidden;
                     height: 100%;
@@ -141,24 +174,24 @@
                     justify-content: center;
                 }
 
-                .item-container > .item > .item-content > .week-days > .saturday,
-                .item-container > .item > .item-content > .week-days > .sunday {
+                #routerTarget .saturday,
+                #routerTarget .sunday {
                     font-weight: bold;
                 }
 
-                .item-container > .item > .item-content > * > .saturday,
-                .item-container > .item > .item-content > * > .sunday {
+                #routerTarget .saturday,
+                #routerTarget .sunday {
                     background-color: var(--ui-muted);
                     color: var(--ui-muted-text);
                 }
 
-                .item-container > .item > .item-content > .days > .day {
+                #routerTarget .day {
                     height: 100%;
                     overflow: hidden;
                     cursor: pointer;
                 }
 
-                .item-container > .item > .item-content > .days > .day.today::after {
+                #routerTarget .day.today::after {
                     content: "";
                     position: absolute;
                     z-index: 9;
@@ -173,7 +206,7 @@
                     animation: fade-in 0.5s;
                 }
 
-                .item-container > .item:not(.moving) > .item-content > .days > .day.note::before {
+                #routerTarget .day.note::before {
                     content: "";
                     position: absolute;
                     z-index: 8;
@@ -188,7 +221,7 @@
                     animation: fade-in 0.5s;
                 }
 
-                .item-container > .item > .item-content > .days > .day .date {
+                #routerTarget .day .date {
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -198,7 +231,7 @@
                     border-radius: inherit;
                 }
 
-                .item-container > .item > .item-content > .days > .day > .shift {
+                #routerTarget .day .shift {
                     position: absolute;
                     top: 0;
                     right: 0;
@@ -214,13 +247,13 @@
                 }
 
                 @media (orientation: landscape) {
-                    .item-container > .item > .item-content > .days > .day .shift {
+                    #routerTarget .day .shift {
                         left: 4vmin;
                     }
                 }
 
                 @media (orientation: portrait) {
-                    .item-container > .item > .item-content > .days > .day .shift {
+                    #routerTarget .day .shift {
                         top: 5vmin;
                     }
                 }

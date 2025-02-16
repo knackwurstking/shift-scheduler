@@ -2,7 +2,7 @@ import * as calendar from "./calendar";
 import * as settings from "./settings";
 
 export interface Data {
-    "date-picker": string;
+    "date-picker": number;
     "week-start": calendar.WeekStart;
 
     settings: {

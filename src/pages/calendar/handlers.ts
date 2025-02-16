@@ -5,7 +5,7 @@ import * as constants from "./constants";
 import * as itemContent from "./item-content/";
 import * as lib from "./lib";
 
-export async function datePicker(dateString: string): Promise<void> {
+export async function datePicker(dateString: number): Promise<void> {
     const date = new Date(dateString);
     date.setMonth(date.getMonth() - 1);
 
@@ -34,7 +34,7 @@ export async function swipe(direction: lib.Direction): Promise<void> {
             store.obj.update("date-picker", (dateString) => {
                 const date = new Date(dateString);
                 date.setMonth(date.getMonth() + 1);
-                return date.toString();
+                return date.getTime();
             });
 
             break;
@@ -44,7 +44,7 @@ export async function swipe(direction: lib.Direction): Promise<void> {
             store.obj.update("date-picker", (dateString) => {
                 const date = new Date(dateString);
                 date.setMonth(date.getMonth() - 1);
-                return date.toString();
+                return date.getTime();
             });
 
             break;

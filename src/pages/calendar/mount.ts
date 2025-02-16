@@ -53,7 +53,68 @@ function renderDayItems() {
 }
 
 function setupAppBarItems() {
-    // TODO: ...
+    const datePickerButton = document.querySelector<HTMLButtonElement>(
+        `.ui-app-bar .left button.date-picker`,
+    )!;
+    const todayButton = document.querySelector<HTMLButtonElement>(
+        `.ui-app-bar .right button.today`,
+    )!;
+    const editButton = document.querySelector<HTMLButtonElement>(`.ui-app-bar .right button.edit`)!;
+    const printerButton = document.querySelector<HTMLButtonElement>(
+        `.ui-app-bar .right button.printer`,
+    )!;
+    const settingsButton = document.querySelector<HTMLButtonElement>(
+        `.ui-app-bar .right button.settings`,
+    )!;
+
+    datePickerButton.style.display = "inline-flex";
+    todayButton.style.display = "inline-flex";
+    editButton.style.display = "inline-flex";
+    printerButton.style.display = "inline-flex";
+    settingsButton.style.display = "inline-flex";
+
+    // date-picker handler
+    datePickerButton.onclick = async () => {
+        // TODO: Open the date picker dialog and update "date-picker" store on submit
+    };
+
+    // today handler
+    todayButton.onclick = async () => {
+        store.obj.update("date-picker", () => {
+            return new Date().getTime();
+        });
+    };
+
+    // TODO: Setup "edit" and "printer" handlers
+
+    // handle today [disabled] attribute
+    cleanup.push(
+        store.obj.listen(
+            "date-picker",
+            (data) => {
+                const today = new Date();
+                const date = new Date(data);
+
+                if (
+                    date.getFullYear() === today.getFullYear() ||
+                    date.getMonth() === today.getMonth()
+                ) {
+                    todayButton.setAttribute("disabled", "");
+                } else {
+                    todayButton.removeAttribute("disabled");
+                }
+            },
+            true,
+        ),
+    );
+
+    cleanup.push(() => {
+        datePickerButton.style.display = "none";
+        todayButton.style.display = "none";
+        editButton.style.display = "none";
+        printerButton.style.display = "none";
+        settingsButton.style.display = "none";
+    });
 }
 
 function setupStoreHandlers() {
