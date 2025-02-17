@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+*.aab
+*.apk
+
+# TODO: For now just testing
+android.keystore
+.gradle/
+gradle/
+/app/
+*.idsig
+*.gradle
+*.properties
+gradlew
+*.bat
+manifest-checksum.txt
+/store_icon.png
+twa-manifest.json
