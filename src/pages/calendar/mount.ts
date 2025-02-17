@@ -104,16 +104,22 @@ function setupAppBarItems() {
             "date-picker",
             (data) => {
                 const today = new Date();
-                const date = new Date(data);
+                const currentDate = new Date(data);
+                const currentYear = currentDate.getFullYear();
 
+                // Enable/Disable the app-bar "today" button
                 if (
-                    date.getFullYear() === today.getFullYear() &&
-                    date.getMonth() === today.getMonth()
+                    currentYear === today.getFullYear() &&
+                    currentDate.getMonth() === today.getMonth()
                 ) {
                     todayButton.setAttribute("disabled", "");
                 } else {
                     todayButton.removeAttribute("disabled");
                 }
+
+                // Update date-picker button innerText content `YYYY / MM`?
+                const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+                datePickerButton.innerText = `${currentYear} / ${currentMonth}`;
             },
             true,
         ),
