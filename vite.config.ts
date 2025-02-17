@@ -1,8 +1,6 @@
 import { defineConfig } from "vite";
 import { IconResource, ManifestOptions, VitePWA } from "vite-plugin-pwa";
 
-// TODO: Add icons
-
 const icons: IconResource[] = [
     {
         src: "/icons/pwa-64x64.png",
