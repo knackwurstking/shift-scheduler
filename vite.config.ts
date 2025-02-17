@@ -1,0 +1,47 @@
+import { defineConfig } from "vite";
+import { IconResource, ManifestOptions, VitePWA } from "vite-plugin-pwa";
+
+// TODO: Add icons
+
+const icons: IconResource[] = [
+    {
+        src: "pwa-64x64.png",
+        sizes: "64x64",
+        type: "image/png",
+    },
+    {
+        src: "pwa-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+    },
+    {
+        src: "pwa-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+    },
+    {
+        src: "maskable-icon-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+    },
+];
+
+const manifest: Partial<ManifestOptions> = {
+    name: "Schift Scheduler",
+    short_name: "shift-scheduler",
+    icons: icons,
+    screenshots: [
+        // TODO: ...
+    ],
+    theme_color: "#09090b",
+    background_color: "#09090b",
+    display: "standalone",
+    scope: ".",
+    start_url: "./",
+    publicPath: "/shift-scheduler.github.io",
+};
+
+export default defineConfig({
+    plugins: [VitePWA({ registerType: "prompt", manifest })],
+});
