@@ -1,4 +1,22 @@
-//import * as constants from "./constants";
+import * as ui from "ui";
 
-export async function onMount() {}
-export async function onDestroy() {}
+import * as utils from "../../utils";
+
+import * as constants from "./constants";
+
+let appBarTitleBackup = "";
+let cleanup: ui.CleanUpFunction[] = [];
+
+export async function onMount() {
+    // Setup app bar
+    appBarTitleBackup = utils.appBar.get();
+    utils.appBar.set("");
+
+    // TODO: ...
+}
+
+export async function onDestroy() {
+    utils.appBar.set(appBarTitleBackup);
+    cleanup.forEach((fn) => fn());
+    cleanup = [];
+}
