@@ -43,8 +43,15 @@ const manifest: Partial<ManifestOptions> = {
 export default defineConfig({
     plugins: [
         VitePWA({
+            strategies: "generateSW",
             registerType: "prompt",
             manifest,
         }),
     ],
+    clearScreen: false,
+    base: "/shift-scheduler.github.io/",
+
+    build: {
+        outDir: "../shift-scheduler.github.io/",
+    },
 });
