@@ -1,4 +1,4 @@
-import * as types from "../types";
+import * as types from "../../types";
 import * as store from "../store";
 
 export async function getDataForDays(

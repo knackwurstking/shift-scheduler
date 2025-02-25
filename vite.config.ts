@@ -41,5 +41,10 @@ const manifest: Partial<ManifestOptions> = {
 };
 
 export default defineConfig({
-    plugins: [VitePWA({ registerType: "prompt", manifest })],
+    plugins: [
+        VitePWA({
+            registerType: "prompt",
+            manifest,
+        }),
+    ],
 });

@@ -1,19 +1,18 @@
-import * as store from "../../store";
+import * as store from "../../lib/store";
 import * as types from "../../types";
 
-import * as constants from "./constants";
 import * as itemContent from "./item-content/";
-import * as lib from "./lib";
+import { Direction } from "./lib/swipe-handler";
 
 export async function datePicker(dateString: number): Promise<void> {
     const date = new Date(dateString);
     date.setMonth(date.getMonth() - 1);
 
-    Array.from(document.querySelector(constants.query.itemContainer)!.children).forEach(
+    Array.from(document.querySelector(`.item-container`)!.children).forEach(
         // Update item-container > item
         async (item) => {
             itemContent.update(
-                item.querySelector(itemContent.constants.query.itemContent)!,
+                item.querySelector(`.item-content`)!,
                 date.getFullYear(),
                 date.getMonth(),
             );
@@ -27,7 +26,7 @@ export async function editMode(_data: types.calendar.EditMode): Promise<void> {
     // TODO: ...
 }
 
-export async function swipe(direction: lib.Direction): Promise<void> {
+export async function swipe(direction: Direction): Promise<void> {
     switch (direction) {
         case "left":
             // Go to next month

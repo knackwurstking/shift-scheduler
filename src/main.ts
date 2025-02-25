@@ -1,15 +1,16 @@
 import * as ui from "ui";
 
-import * as constants from "./constants";
+import db from "./lib/db";
 import * as pages from "./pages";
-import db from "./db";
+
+// TODO: Add pwa updater
 
 db.open(() => {
-    ui.router.hash.init(document.querySelector(constants.query.routerTarget)!, {
+    ui.router.hash.init(document.querySelector(`#routerTarget`)!, {
         "/": {
             title: "Shift Scheduler",
             template: {
-                selector: constants.query.templateCalendar,
+                selector: `template[name="calendar"]`,
                 onMount() {
                     pages.calendar.onMount();
                 },
@@ -22,7 +23,7 @@ db.open(() => {
         settings: {
             title: "Shift Scheduler | Settings",
             template: {
-                selector: constants.query.templateSettings,
+                selector: `template[name="settings"]`,
                 onMount() {
                     pages.settings.onMount();
                 },
