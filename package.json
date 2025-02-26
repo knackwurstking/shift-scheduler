@@ -15,9 +15,10 @@
     "devDependencies": {
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
+        "bootstrap-icons": "^1.11.3",
         "typescript": "~5.7.2",
+        "ui": "file:../ui",
         "vite": "^6.1.0",
-        "vite-plugin-pwa": "^0.21.1",
-        "ui": "file:../ui"
+        "vite-plugin-pwa": "^0.21.1"
     }
 }
