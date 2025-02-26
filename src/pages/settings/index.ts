@@ -6,23 +6,29 @@ const html = String.raw;
 
 const template = document.createElement("template");
 template.innerHTML = html`
+    <style>
+        #routerTarget section.week-start > label {
+            padding: var(--ui-spacing);
+        }
+    </style>
+
     <!-- MARK: Settings Page Template -->
-    <details class="misc" open>
-        <summary>Miscellaneous</summary>
+    <article class="misc" open>
+        <h4>Miscellaneous</h4>
 
         <section class="week-start">
-            <label>
+            <label class="ui-flex justify-between">
                 The week starts on Monday
                 <input type="checkbox" />
             </label>
         </section>
-    </details>
+    </article>
 
-    <details class="shifts" open>
-        <summary>Shift Settings</summary>
+    <article class="shifts" open>
+        <h4>Shift Settings</h4>
 
         <!-- TODO: Continue here -->
-    </details>
+    </article>
 
     <!-- TODO: ... -->
 `;
