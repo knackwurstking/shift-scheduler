@@ -80,11 +80,17 @@ template.innerHTML = html`
                 <button>Edit</button>
             </label>
         </section>
+    </article>
 
-        <section class="backup">
+    <br />
+
+    <article class="backup">
+        <h4>Backup</h4>
+
+        <section class="json-file">
             <label class="ui-flex justify-between align-center" style="padding: var(--ui-spacing)">
-                Backup
-                <span class="ui-flex-grid-row" style="--justify: flex-end;">
+                Backup to JSON
+                <span class="ui-flex gap" style="--justify: flex-end;">
                     <button class="import" color="secondary">Import</button>
                     <button class="export" color="secondary">Export</button>
                 </span>
