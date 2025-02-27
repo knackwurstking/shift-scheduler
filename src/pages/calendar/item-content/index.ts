@@ -5,7 +5,7 @@ import * as types from "../../../types";
 
 const html = String.raw;
 export const defaultWeekOrder = [0, 1, 2, 3, 4, 5, 6];
-export const defaultWeekDaysInOrder = ["Sun", "Mon", "Tue", "Wed", "Thy", "Fri", "Sat"];
+export const defaultWeekDaysInOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function create(year: number, month: number): DocumentFragment {
     const fragment = document
