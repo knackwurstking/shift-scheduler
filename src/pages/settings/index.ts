@@ -124,8 +124,9 @@ export async function onMount() {
     routerTarget.innerHTML = "";
     routerTarget.appendChild(template.content.cloneNode(true));
 
-    // TODO: Enable back button
     setupAppBarItems();
+
+    render();
 }
 
 export async function onDestroy() {
@@ -142,4 +143,8 @@ function setupAppBarItems() {
     cleanup.push(() => {
         back.style.display = "none";
     });
+}
+
+function render() {
+    // TODO: ...
 }
