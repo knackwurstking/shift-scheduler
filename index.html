@@ -91,8 +91,6 @@
             </div>
         </div>
 
-        <!-- MARK: Dialogs -->
-
         <dialog name="date-picker">
             <form method="dialog">
                 <label>
@@ -103,6 +101,56 @@
                 <div class="ui-flex-grid-row" style="--justify: flex-end">
                     <button class="cancel" color="secondary">Cancel</button>
                     <input type="submit" />
+                </div>
+            </form>
+        </dialog>
+
+        <dialog name="date-picker">
+            <form method="dialog" class="ui-debug">
+                <div class="ui-flex-grid">
+                    <div class="ui-flex-grid-item">
+                        <label class="ui-flex justify-between ui-padding">
+                            Name (ex.: Night)
+                            <input class="name" type="text" />
+                        </label>
+                    </div>
+
+                    <div class="ui-flex-grid-item">
+                        <label class="ui-flex justify-between ui-padding">
+                            Short (ex.: N)
+                            <input class="short-name" type="text" />
+                        </label>
+                    </div>
+
+                    <div class="ui-flex-grid-item">
+                        <label class="ui-flex justify-between ui-padding">
+                            Pick a color
+                            <input
+                                class="color-picker"
+                                style="width: 100%; min-width: 4rem"
+                                type="color"
+                            />
+                        </label>
+                    </div>
+
+                    <div class="ui-flex-grid-item">
+                        <label class="ui-flex justify-between ui-padding">
+                            Disable color
+                            <input class="default-color" type="checkbox" />
+                        </label>
+                    </div>
+
+                    <div class="ui-flex-grid-item">
+                        <label class="ui-flex justify-between ui-padding">
+                            Hide shift
+                            <input class="hidden" type="checkbox" />
+                        </label>
+                    </div>
+
+                    <div class="ui-flex-grid-row" style="--justify: flex-end">
+                        <button class="cancel" color="secondary">Cancel</button>
+                        <input type="submit" />
+                    </div>
                 </div>
             </form>
         </dialog>

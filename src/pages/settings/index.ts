@@ -1,7 +1,8 @@
 import * as ui from "ui";
 
+import * as dialogs from "../../dialogs";
+import * as store from "../../lib/store";
 import * as utils from "../../lib/utils";
-import { Hash } from "node:crypto";
 
 const html = String.raw;
 
@@ -47,12 +48,12 @@ template.innerHTML = html`
                 <tr class="item" data-json="">
                     <td class="name" style="text-align: left;"></td>
 
-                    <td class="shift-short" style="text-align: left; color: inherit"></td>
+                    <td class="short-name" style="text-align: left; color: inherit"></td>
 
                     <td class="actions" style="text-align: right;">
                         <div class="ui-flex-grid-row" style="--justify: flex-end;">
                             <div class="ui-flex-grid-item" style="--flex: 0;">
-                                <button class="pen" variant="ghost" icon>
+                                <button class="edit" variant="ghost" icon>
                                     <i class="bi bi-pen"></i>
                                 </button>
                             </div>
@@ -158,15 +159,72 @@ function renderMisc(target: HTMLElement): void {
         `article.misc section.week-start input[type="checkbox"]`,
     )!;
 
-    // TODO: Initialize week start from store
-    // TODO: Update store on change
+    // Read week start from store
+    weekStart.checked = store.obj.get("week-start") === 1;
+
+    // Update store on change
+    weekStart.onchange = () => {
+        store.obj.set("week-start", weekStart.checked ? 1 : 0);
+    };
 }
 
 function renderShifts(target: HTMLElement) {
     const tbody = target.querySelector<HTMLElement>(`article.shifts section.shifts-table tbody`)!;
-    // TODO: get the template "table-item"
+    const template = document.querySelector<HTMLTemplateElement>(
+        `article.shifts section.shifts-table template.table-item`,
+    )!;
 
-    // TODO: ...
+    // Create shift table rows from settings shifts
+    store.obj.get("settings")!.shifts.forEach((shift) => {
+        const tableItem = (
+            template.content.cloneNode(true) as HTMLElement
+        ).querySelector<HTMLElement>(`tr.item`)!;
+
+        tbody.appendChild(tableItem);
+
+        // Set shift name
+        tableItem.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
+
+        // Set shifts short name
+        const shortName = tableItem.querySelector<HTMLElement>(`.short-name`)!;
+        shortName.style.color = shift.color || "inherit";
+        shortName.innerText = shift.visible ? shift.shortName : "";
+
+        // Set edit button handler, open edit dialog
+        const editButton = tableItem.querySelector<HTMLElement>(`button.edit`)!;
+        editButton.onclick = async () => {
+            const data = await dialogs.shift.open(shift);
+            if (!data) {
+                return;
+            }
+
+            // Update store and and table item
+            store.obj.update("settings", (settings) => {
+                return {
+                    ...settings,
+                    shifts: settings.shifts.map((s) => {
+                        if (s.id === shift.id) {
+                            return shift;
+                        }
+
+                        return s;
+                    }),
+                };
+            });
+        };
+
+        const deleteButton = tableItem.querySelector<HTMLElement>(`button.delete`)!;
+        deleteButton.onclick = async () => {
+            if (confirm(`Delete shift \"${shift.name}\"?`)) {
+                store.obj.update("settings", (data) => {
+                    return {
+                        ...data,
+                        shifts: data.shifts.filter((s) => s.id !== shift.id),
+                    };
+                });
+            }
+        };
+    });
 
     const startDate = target.querySelector<HTMLInputElement>(
         `article.shifts section.start-date input[type="date"]`,
