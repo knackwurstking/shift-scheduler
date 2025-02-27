@@ -59,7 +59,7 @@ template.innerHTML = html`
                             </div>
 
                             <div class="ui-flex-grid-item" style="--flex: 0;">
-                                <button class="delete" variant="ghost" icon>
+                                <button class="delete" variant="ghost" color="destructive" icon>
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
