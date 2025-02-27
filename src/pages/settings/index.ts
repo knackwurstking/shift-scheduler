@@ -146,5 +146,24 @@ function setupAppBarItems() {
 }
 
 function render() {
+    renderMisc();
+    renderShifts();
+    renderBackup();
+    renderDBBrowser();
+}
+
+function renderMisc() {
+    // TODO: ...
+}
+
+function renderShifts() {
+    // TODO: ...
+}
+
+function renderBackup() {
+    // TODO: ...
+}
+
+function renderDBBrowser() {
     // TODO: ...
 }
