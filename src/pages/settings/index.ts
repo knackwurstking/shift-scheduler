@@ -1,6 +1,7 @@
 import * as ui from "ui";
 
 import * as utils from "../../lib/utils";
+import { Hash } from "node:crypto";
 
 const html = String.raw;
 
@@ -126,7 +127,7 @@ export async function onMount() {
 
     setupAppBarItems();
 
-    render();
+    render(routerTarget);
 }
 
 export async function onDestroy() {
@@ -145,18 +146,38 @@ function setupAppBarItems() {
     });
 }
 
-function render() {
-    renderMisc();
-    renderShifts();
+function render(target: HTMLElement): void {
+    renderMisc(target);
+    renderShifts(target);
     renderBackup();
     renderDBBrowser();
 }
 
-function renderMisc() {
-    // TODO: ...
+function renderMisc(target: HTMLElement): void {
+    const weekStart = target.querySelector<HTMLInputElement>(
+        `article.misc section.week-start input[type="checkbox"]`,
+    )!;
+
+    // TODO: Initialize week start from store
+    // TODO: Update store on change
 }
 
-function renderShifts() {
+function renderShifts(target: HTMLElement) {
+    const tbody = target.querySelector<HTMLElement>(`article.shifts section.shifts-table tbody`)!;
+    // TODO: get the template "table-item"
+
+    // TODO: ...
+
+    const startDate = target.querySelector<HTMLInputElement>(
+        `article.shifts section.start-date input[type="date"]`,
+    )!;
+
+    // TODO: ...
+
+    const editRhythm = target.querySelector<HTMLButtonElement>(
+        `article.shifts section.edit-rhythm button`,
+    )!;
+
     // TODO: ...
 }
 
