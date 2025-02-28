@@ -7,6 +7,7 @@ export type ShiftSchedulerStore = ui.Store<{
     "week-start": types.calendar.WeekStart;
 
     settings: {
+        // TODO: Move one level down, remove "settings" from the store
         shifts: types.settings.Shifts;
         rhythm: types.settings.Rhythm;
         startDate: types.settings.StartDate;
@@ -43,6 +44,8 @@ export const obj: ShiftSchedulerStore = (() => {
                     settings.startDate = new Date(oldStartDate).getTime();
                     return settings;
                 });
+
+                // TODO: "settings" removed from the store
             }
             break;
     }
