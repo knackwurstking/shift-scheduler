@@ -14,58 +14,72 @@ export function open(
             `template[name="table-item"]`,
         )!;
 
-        const templateShiftCard = dialog.querySelector<HTMLTemplateElement>(
+        const templateShiftCard = document.querySelector<HTMLTemplateElement>(
             `template[name="shift-card"]`,
         )!;
 
-        // Reset
-        tbody.innerHTML = "";
-        shiftsContainer.innerHTML = "";
+        const renderTBody = () => {
+            tbody.innerHTML = "";
 
-        const result: types.settings.Rhythm | null = null;
-        dialog.onclose = () => resolve(result || rhythm);
+            // Setup Rhythm items for the table
+            rhythm.forEach((id) => {
+                let shift = shifts.find((shift) => shift.id === id);
+                if (!shift) {
+                    shift = {
+                        id: id,
+                        name: "",
+                        shortName: "",
+                        color: "var(--destructive)",
+                        visible: false,
+                    };
+                }
 
-        form.onsubmit = () => {
-            // TODO: ...
+                const tableItem = (templateTableItem.content.cloneNode(true) as HTMLElement)
+                    .children[0] as HTMLElement;
+
+                tbody.appendChild(tableItem);
+
+                // Setup table item
+                tableItem.querySelector<HTMLElement>(".name")!.innerText = shift.name;
+
+                const shortName = tableItem.querySelector<HTMLElement>(".short-name")!;
+                shortName.style.color = shift.color || "inherit";
+                shortName.innerText = !!shift.visible ? shift.shortName : "";
+
+                // Delete button handler
+                const deleteButton = tableItem.querySelector<HTMLButtonElement>(`button.delete`)!;
+                deleteButton.onclick = () => {
+                    // Delete this item from the rhythm
+                    rhythm = rhythm.filter((id) => id !== shift.id);
+                    // Re-Render the table
+                    renderTBody();
+                };
+            });
         };
 
-        // TODO: Setup Rhythm items for the table
-        // iter rhythm, get shift from shifts (check for id), ...
-        rhythm.forEach((id) => {
-            let shift = shifts.find((shift) => shift.id === id);
-            if (!shift) {
-                shift = {
-                    id: id,
-                    name: "",
-                    shortName: "",
-                    color: "var(--destructive)",
-                    visible: false,
+        const renderShiftsContainer = () => {
+            shiftsContainer.innerHTML = "";
+
+            // Setup Shift Card items for the shifts-container
+            shifts.forEach((shift) => {
+                const card = (templateShiftCard.cloneNode(true) as HTMLElement)
+                    .children[0] as HTMLElement;
+
+                shiftsContainer.appendChild(card);
+
+                card.onclick = () => {
+                    rhythm.push(shift.id);
+                    renderShiftsContainer();
                 };
-            }
+            });
+        };
 
-            const tableItem = (
-                templateTableItem.content.cloneNode(true) as HTMLElement
-            ).querySelector<HTMLElement>(`tr`)!;
+        const rhythmOriginal = rhythm;
+        dialog.onclose = () => resolve(rhythmOriginal);
 
-            tbody.appendChild(tableItem);
-
-            // Setup table item
-            tableItem.querySelector<HTMLElement>(".name")!.innerText = shift.name;
-
-            const shortName = tableItem.querySelector<HTMLElement>(".short-name")!;
-            shortName.style.color = shift.color || "inherit";
-            shortName.innerText = !!shift.visible ? shift.shortName : "";
-
-            // Delete button handler
-            const deleteButton = tableItem.querySelector<HTMLButtonElement>(`button.delete`)!;
-            deleteButton.onclick = () => {
-                // Delete this item from the rhythm
-                rhythm = rhythm.filter((id) => id !== shift.id);
-                // TODO: Re-Render the table
-            };
-        });
-
-        // TODO: Setup Shift Card items for the shifts-container
+        form.onsubmit = () => {
+            resolve(rhythm);
+        };
 
         dialog.showModal();
     });
