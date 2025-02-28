@@ -256,8 +256,10 @@ function renderShiftsArticle(target: HTMLElement) {
         `article.shifts section.edit-rhythm button`,
     )!;
 
-    editRhythm.onclick = () => {
-        // TODO: Implement edit rhythm dialog
+    editRhythm.onclick = async () => {
+        const settings = store.obj.get("settings")!;
+        settings.rhythm = await dialogs.rhythm.open(settings.rhythm, settings.shifts);
+        store.obj.set("settings", settings);
     };
 }
 
