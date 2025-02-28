@@ -148,13 +148,13 @@ function setupAppBarItems() {
 }
 
 function render(target: HTMLElement): void {
-    renderMisc(target);
-    renderShifts(target);
-    renderBackup();
-    renderDBBrowser();
+    renderMiscArticle(target);
+    renderShiftsArticle(target);
+    renderBackupArticle();
+    renderDBBrowserArticle();
 }
 
-function renderMisc(target: HTMLElement): void {
+function renderMiscArticle(target: HTMLElement): void {
     const weekStart = target.querySelector<HTMLInputElement>(
         `article.misc section.week-start input[type="checkbox"]`,
     )!;
@@ -168,7 +168,7 @@ function renderMisc(target: HTMLElement): void {
     };
 }
 
-function renderShifts(target: HTMLElement) {
+function renderShiftsArticle(target: HTMLElement) {
     const tbody = target.querySelector<HTMLElement>(`article.shifts section.shifts-table tbody`)!;
     const template = document.querySelector<HTMLTemplateElement>(
         `article.shifts section.shifts-table template.table-item`,
@@ -230,7 +230,13 @@ function renderShifts(target: HTMLElement) {
         `article.shifts section.start-date input[type="date"]`,
     )!;
 
-    // TODO: ...
+    startDate.value = new Date(store.obj.get("settings")!.startDate).toDateString();
+    startDate.onchange = () => {
+        store.obj.update("settings", (settings) => {
+            settings.startDate = new Date(startDate.value).getTime();
+            return settings;
+        });
+    };
 
     const editRhythm = target.querySelector<HTMLButtonElement>(
         `article.shifts section.edit-rhythm button`,
@@ -239,10 +245,10 @@ function renderShifts(target: HTMLElement) {
     // TODO: ...
 }
 
-function renderBackup() {
+function renderBackupArticle(target: HTMLElement) {
     // TODO: ...
 }
 
-function renderDBBrowser() {
+function renderDBBrowserArticle(target: HTMLElement) {
     // TODO: ...
 }
