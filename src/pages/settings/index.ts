@@ -242,7 +242,9 @@ function renderShiftsArticle(target: HTMLElement) {
         `article.shifts section.edit-rhythm button`,
     )!;
 
-    // TODO: ...
+    editRhythm.onclick = () => {
+        // TODO: Implement edit rhythm dialog
+    };
 }
 
 function renderBackupArticle(target: HTMLElement) {
