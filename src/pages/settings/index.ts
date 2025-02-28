@@ -169,62 +169,74 @@ function renderMiscArticle(target: HTMLElement): void {
 }
 
 function renderShiftsArticle(target: HTMLElement) {
-    const tbody = target.querySelector<HTMLElement>(`article.shifts section.shifts-table tbody`)!;
-    const template = document.querySelector<HTMLTemplateElement>(
-        `article.shifts section.shifts-table template.table-item`,
-    )!;
+    function renderShiftsTableSection() {
+        // Table Section
+        const tbody = target.querySelector<HTMLElement>(
+            `article.shifts section.shifts-table tbody`,
+        )!;
+        const template = document.querySelector<HTMLTemplateElement>(
+            `article.shifts section.shifts-table template.table-item`,
+        )!;
 
-    // Create shift table rows from settings shifts
-    store.obj.get("settings")!.shifts.forEach((shift) => {
-        const tableItem = (
-            template.content.cloneNode(true) as HTMLElement
-        ).querySelector<HTMLElement>(`tr.item`)!;
+        // Reset
+        tbody.innerHTML = "";
 
-        tbody.appendChild(tableItem);
+        // Create shift table rows from settings shifts
+        store.obj.get("settings")!.shifts.forEach((shift) => {
+            const tableItem = (
+                template.content.cloneNode(true) as HTMLElement
+            ).querySelector<HTMLElement>(`tr.item`)!;
 
-        // Set shift name
-        tableItem.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
+            tbody.appendChild(tableItem);
 
-        // Set shifts short name
-        const shortName = tableItem.querySelector<HTMLElement>(`.short-name`)!;
-        shortName.style.color = shift.color || "inherit";
-        shortName.innerText = shift.visible ? shift.shortName : "";
+            // Set shift name
+            tableItem.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
 
-        // Set edit button handler, open edit dialog
-        const editButton = tableItem.querySelector<HTMLElement>(`button.edit`)!;
-        editButton.onclick = async () => {
-            const data = await dialogs.shift.open(shift);
-            if (!data) {
-                return;
-            }
+            // Set shifts short name
+            const shortName = tableItem.querySelector<HTMLElement>(`.short-name`)!;
+            shortName.style.color = shift.color || "inherit";
+            shortName.innerText = shift.visible ? shift.shortName : "";
 
-            // Update store and and table item
-            store.obj.update("settings", (settings) => {
-                return {
-                    ...settings,
-                    shifts: settings.shifts.map((s) => {
-                        if (s.id === shift.id) {
-                            return shift;
-                        }
+            // Set edit button handler, open edit dialog
+            const editButton = tableItem.querySelector<HTMLElement>(`button.edit`)!;
+            editButton.onclick = async () => {
+                const data = await dialogs.shift.open(shift);
+                if (!data) {
+                    return;
+                }
 
-                        return s;
-                    }),
-                };
-            });
-        };
-
-        const deleteButton = tableItem.querySelector<HTMLElement>(`button.delete`)!;
-        deleteButton.onclick = async () => {
-            if (confirm(`Delete shift \"${shift.name}\"?`)) {
-                store.obj.update("settings", (data) => {
+                // Update store and and table item
+                store.obj.update("settings", (settings) => {
                     return {
-                        ...data,
-                        shifts: data.shifts.filter((s) => s.id !== shift.id),
+                        ...settings,
+                        shifts: settings.shifts.map((s) => {
+                            if (s.id === shift.id) {
+                                return shift;
+                            }
+
+                            return s;
+                        }),
                     };
                 });
-            }
-        };
-    });
+            };
+
+            const deleteButton = tableItem.querySelector<HTMLElement>(`button.delete`)!;
+            deleteButton.onclick = async () => {
+                if (confirm(`Delete shift \"${shift.name}\"?`)) {
+                    store.obj.update("settings", (data) => {
+                        return {
+                            ...data,
+                            shifts: data.shifts.filter((s) => s.id !== shift.id),
+                        };
+                    });
+                }
+
+                renderShiftsTableSection();
+            };
+        });
+    }
+
+    renderShiftsTableSection();
 
     const startDate = target.querySelector<HTMLInputElement>(
         `article.shifts section.start-date input[type="date"]`,
