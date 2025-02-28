@@ -45,7 +45,7 @@ template.innerHTML = html`
             </div>
 
             <template name="table-item">
-                <tr class="item" data-json="">
+                <tr class="item">
                     <td class="name" style="text-align: left;"></td>
 
                     <td class="short-name" style="text-align: left; color: inherit"></td>
@@ -150,8 +150,8 @@ function setupAppBarItems() {
 function render(target: HTMLElement): void {
     renderMiscArticle(target);
     renderShiftsArticle(target);
-    renderBackupArticle();
-    renderDBBrowserArticle();
+    renderBackupArticle(target);
+    renderDBBrowserArticle(target);
 }
 
 function renderMiscArticle(target: HTMLElement): void {

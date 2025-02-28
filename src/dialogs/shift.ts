@@ -2,13 +2,13 @@ import * as types from "../types";
 
 export function open(data: types.calendar.Shift): Promise<types.calendar.Shift | null> {
     return new Promise((resolve) => {
-        const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="date-picker"]`)!;
+        const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="shift"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
-        const inputName = dialog.querySelector<HTMLInputElement>(`input.name`)!;
-        const inputShortName = dialog.querySelector<HTMLInputElement>(`input.short-name`)!;
-        const inputColorPicker = dialog.querySelector<HTMLInputElement>(`input.color-picker`)!;
-        const checkboxDefaultColor = dialog.querySelector<HTMLInputElement>(`input.default-color`)!;
-        const checkboxHidden = dialog.querySelector<HTMLInputElement>(`input.hidden`)!;
+        const inputName = form.querySelector<HTMLInputElement>(`input.name`)!;
+        const inputShortName = form.querySelector<HTMLInputElement>(`input.short-name`)!;
+        const inputColorPicker = form.querySelector<HTMLInputElement>(`input.color-picker`)!;
+        const checkboxDefaultColor = form.querySelector<HTMLInputElement>(`input.default-color`)!;
+        const checkboxHidden = form.querySelector<HTMLInputElement>(`input.hidden`)!;
 
         let result: types.calendar.Shift | null = null;
         dialog.onclose = () => resolve(result);

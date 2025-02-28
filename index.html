@@ -29,6 +29,36 @@
             #routerTarget {
                 padding-top: var(--ui-app-bar-height);
             }
+
+            .shift-card {
+                position: relative;
+                display: inline-block;
+                overflow: hidden;
+                width: 100%;
+                min-height: calc(1.6rem * 2 + var(--ui-spacing) * 2);
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .shift-card span {
+                display: block;
+            }
+
+            .shift-card .name,
+            .shift-card .short-name {
+                text-wrap: nowrap;
+            }
+
+            .shift-card .background {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                transition:
+                    opacity 0.25s linear,
+                    background-color 0.25s linear;
+            }
         </style>
     </head>
 
@@ -105,7 +135,7 @@
             </form>
         </dialog>
 
-        <dialog name="date-picker">
+        <dialog name="shifts">
             <form method="dialog" class="ui-debug">
                 <div class="ui-flex-grid">
                     <div class="ui-flex-grid-item">
@@ -153,6 +183,76 @@
                     </div>
                 </div>
             </form>
+        </dialog>
+
+        <dialog name="rhythm" fullscreen>
+            <form method="dialog" class="ui-debug">
+                <div class="ui-flex-grid" style="width: 100%; height: 100%">
+                    <div
+                        class="ui-flex-grid-item ui-auto-scroll-y ui-hide-scrollbar"
+                        style="height: 100%"
+                    >
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="left">Name</th>
+                                    <th class="left">Short</th>
+                                    <th class="left"></th>
+                                </tr>
+                            </thead>
+
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="ui-flex-grid-item" style="position: relative; max-height: 1.6rem">
+                        <hr
+                            style="position: absolute; top: var(--ui-spacing); left: 0; width: 100%"
+                        />
+                    </div>
+
+                    <div
+                        class="picker ui-flex-grid-item"
+                        style="--flex; 0; position: relative; max-height: fit-content;"
+                    >
+                        <div
+                            class="shifts-container ui-flex-grid-row ui-auto-scroll-x ui-hide-scrollbar"
+                            style="width: 100%; height: 100%"
+                        ></div>
+                    </div>
+                </div>
+
+                <div class="ui-flex-grid-row" style="--justify: flex-end">
+                    <button class="cancel" color="secondary">Cancel</button>
+                    <input type="submit" />
+                </div>
+            </form>
+
+            <template name="table-item">
+                <tr>
+                    <td class="name left"></td>
+
+                    <td class="short-name left" style="color: inherit"></td>
+
+                    <td class="right">
+                        <div class="ui-flex-grid-row" style="--justify: flex-end">
+                            <div class="ui-flex-grid-item" style="--flex: 0">
+                                <button class="delete" variant="ghost" color="destructive" icon>
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </template>
+
+            <template name="shift-card">
+                <div class="shift-card">
+                    <div class="background"></div>
+                    <span class="name"></span>
+                    <span class="short-name"></span>
+                </div>
+            </template>
         </dialog>
 
         <script type="module" src="/src/main.ts"></script>
