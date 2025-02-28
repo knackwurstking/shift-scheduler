@@ -218,6 +218,8 @@ function renderShiftsArticle(target: HTMLElement) {
                         }),
                     };
                 });
+
+                renderShiftsTableSection();
             };
 
             const deleteButton = tableItem.querySelector<HTMLElement>(`button.delete`)!;
