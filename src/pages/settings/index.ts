@@ -169,7 +169,7 @@ function renderMiscArticle(target: HTMLElement): void {
 }
 
 function renderShiftsArticle(target: HTMLElement) {
-    function renderShiftsTableSection() {
+    const renderShiftsTableSection = () => {
         // Table Section
         const tbody = target.querySelector<HTMLElement>(
             `article.shifts section.shifts-table tbody`,
@@ -234,7 +234,7 @@ function renderShiftsArticle(target: HTMLElement) {
                 renderShiftsTableSection();
             };
         });
-    }
+    };
 
     renderShiftsTableSection();
 
