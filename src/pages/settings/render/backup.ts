@@ -89,6 +89,7 @@ export function article(): HTMLElement {
 async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     if (typeof result !== "string") return alert("Invalid data!");
 
+    // Parsing JSON
     let data: types.settings.BackupV1 | types.settings.BackupV2 | types.settings.BackupV3;
     try {
         data = JSON.parse(result);
@@ -96,9 +97,26 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
         return alert("Invalid JSON data!");
     }
 
-    // TODO: Check for V3
-    // TODO: Check for V2
-    // TODO: Check for V1
+    // Validate backup version
+    let backupV3: types.settings.BackupV3;
+    if (isBackupV3(data)) {
+        backupV3 = data as types.settings.BackupV3;
+    } else if (isBackupV2(data)) {
+        backupV3 = convertV2(data as types.settings.BackupV2);
+    } else if (isBackupV1(data)) {
+        backupV3 = convertV1(data as types.settings.BackupV1);
+    } else {
+        return alert("Invalid JSON data!");
+    }
+
+    // Initialing
+    store.obj.set("settings", backupV3.settings);
+    store.obj.set("week-start", backupV3.weekStart);
+
+    await db.deleteAll();
+    for (const entry of backupV3.indexedDB.data || []) {
+        db.add(entry).catch(() => db.put(entry));
+    }
 
     return;
     // NOTE: Original code from v2
@@ -160,4 +178,34 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     } catch (err) {
         alert(`Import failed: ${err}`);
     }
+}
+
+function isBackupV1(data: any): boolean {
+    // TODO: ...
+
+    return false;
+}
+
+function isBackupV2(data: any): boolean {
+    // TODO: ...
+
+    return false;
+}
+
+function isBackupV3(data: any): boolean {
+    // TODO: Continue here
+
+    return false;
+}
+
+function convertV2(data: types.settings.BackupV2): types.settings.BackupV3 {
+    // TODO: ...
+
+    return {};
+}
+
+function convertV1(data: types.settings.BackupV1): types.settings.BackupV3 {
+    // TODO: ...
+
+    return {};
 }
