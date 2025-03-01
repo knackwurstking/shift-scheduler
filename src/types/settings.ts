@@ -16,9 +16,8 @@ export interface Version {
     build: number;
 }
 
-// TODO: Find out the correct version here
-// NOTE: < v1.?.?
-export interface BackupV0 {
+// NOTE: >= v1.4.0 && <= v1.5.3
+export interface BackupV1 {
     settings: Settings & { startData: string };
     storage: {
         [key: string]: {
@@ -30,8 +29,8 @@ export interface BackupV0 {
     };
 }
 
-// NOTE: < v3.0.0
-export interface BackupV1 {
+// NOTE: >= v2.0.0 && < v3.0.0
+export interface BackupV2 {
     settings: Settings & { startData: string };
     indexedDB: {
         version: number;
