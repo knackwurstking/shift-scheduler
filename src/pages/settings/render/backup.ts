@@ -7,14 +7,13 @@ import * as store from "../../../lib/store";
 const articleHTML = html`
     <h4>Backup</h4>
 
-    <section class="json">
-        <label class="ui-flex justify-between align-center" style="padding: var(--ui-spacing)">
-            JSON
-            <span class="ui-flex gap" style="--justify: flex-end;">
-                <button class="import" color="secondary">Import</button>
-                <button class="export" color="secondary">Export</button>
-            </span>
-        </label>
+    <section class="json ui-flex justify-between align-center">
+        <label style="padding: var(--ui-spacing)"> JSON </label>
+
+        <span class="ui-flex gap" style="--justify: flex-end; padding: var(--ui-spacing)">
+            <button class="import" color="secondary">Import</button>
+            <button class="export" color="secondary">Export</button>
+        </span>
     </section>
 `;
 
