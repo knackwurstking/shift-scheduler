@@ -186,11 +186,11 @@
         </dialog>
 
         <dialog name="rhythm" fullscreen>
-            <form method="dialog" class="ui-debug">
-                <div class="ui-flex-grid" style="width: 100%; height: 100%">
+            <form method="dialog" style="width: 100%; height: 100%">
+                <div class="ui-flex-grid" style="width: 100%; height: 100%; margin: 0">
                     <div
                         class="ui-flex-grid-item ui-auto-scroll-y ui-hide-scrollbar"
-                        style="height: 100%"
+                        style="width: 100%"
                     >
                         <table>
                             <thead>
@@ -205,7 +205,10 @@
                         </table>
                     </div>
 
-                    <div class="ui-flex-grid-item" style="position: relative; max-height: 1.6rem">
+                    <div
+                        class="ui-flex-grid-item"
+                        style="position: relative; max-height: 1.6rem; width: 100%"
+                    >
                         <hr
                             style="position: absolute; top: var(--ui-spacing); left: 0; width: 100%"
                         />
@@ -213,18 +216,18 @@
 
                     <div
                         class="picker ui-flex-grid-item"
-                        style="--flex; 0; position: relative; max-height: fit-content;"
+                        style="--flex: 0; position: relative; max-height: fit-content"
                     >
                         <div
                             class="shifts-container ui-flex-grid-row ui-auto-scroll-x ui-hide-scrollbar"
                             style="width: 100%; height: 100%"
                         ></div>
                     </div>
-                </div>
 
-                <div class="ui-flex-grid-row" style="--justify: flex-end">
-                    <button class="cancel" color="secondary">Cancel</button>
-                    <input type="submit" />
+                    <div class="ui-flex-grid-row" style="--justify: flex-end">
+                        <button class="cancel" color="secondary">Cancel</button>
+                        <input type="submit" />
+                    </div>
                 </div>
             </form>
 
