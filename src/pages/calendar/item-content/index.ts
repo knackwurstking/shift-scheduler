@@ -1,9 +1,11 @@
+import { html } from "../../../lib/utils";
+
 import db from "../../../lib/db";
+
 import * as store from "../../../lib/store";
 import * as utils from "../../../lib/utils";
 import * as types from "../../../types";
 
-const html = String.raw;
 export const defaultWeekOrder = [0, 1, 2, 3, 4, 5, 6];
 export const defaultWeekDaysInOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

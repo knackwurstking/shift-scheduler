@@ -4,11 +4,12 @@ import * as dialogs from "../../dialogs";
 import * as store from "../../lib/store";
 import * as utils from "../../lib/utils";
 
-import * as handlers from "./handlers";
-import * as itemContent from "./item-content";
+import { html } from "../../lib/utils";
+
 import { SwipeHandler } from "./lib/swipe-handler";
 
-const html = String.raw;
+import * as handlers from "./handlers";
+import * as itemContent from "./item-content";
 
 const template = document.createElement("template");
 template.innerHTML = html`
