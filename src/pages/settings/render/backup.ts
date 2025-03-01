@@ -3,6 +3,7 @@ import db from "../../../lib/db";
 import { html } from "../../../lib/utils";
 
 import * as store from "../../../lib/store";
+import * as types from "../../../types";
 
 const articleHTML = html`
     <h4>Backup</h4>
@@ -39,10 +40,7 @@ export function article(): HTMLElement {
 
             const reader = new FileReader();
 
-            reader.onload = () => {
-                // TODO: Handle the loaded data
-                //this.readerOnLoadHandler(reader)
-            };
+            reader.onload = async () => await parseJSON(reader.result);
 
             reader.onerror = () => {
                 alert(`Import data: read file failed: ${reader.error}`);
@@ -86,4 +84,75 @@ export function article(): HTMLElement {
     };
 
     return article;
+}
+
+async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
+    if (typeof result !== "string") return alert("Invalid data!");
+
+    let data: types.settings.BackupV1 & types.settings.BackupV0;
+    try {
+        data = JSON.parse(result);
+    } catch (err) {
+        return alert("Invalid JSON data!");
+    }
+
+    // TODO: Continue...
+    try {
+        // Handle settings
+        if ("settings" in data) {
+            if (!validateSettings(data.settings)) {
+                alert(this.uiLang.ui.get("backup-alerts", "invalid-settings"));
+                return;
+            }
+
+            this.uiStore.ui.set("settings", data.settings);
+        }
+
+        // NOTE: Support for v1.4.0 - v1.5.3
+        if ("storage" in data) {
+            data.indexedDB = convertStorage(data.storage); // Yes, this will overwrite all existing indexedDB stuff.
+        }
+
+        // Handle indexedDB data
+        if ("inexedDB" in data) {
+            if (typeof data.indexedDB.version !== "number") {
+                alert(
+                    this.uiLang.ui
+                        .get("backup-alerts", "invalid-version-type")
+                        .replace("%v", `${typeof data.indexedDB.version}`),
+                );
+                return;
+            }
+
+            if (data.indexedDB.version > db.version || data.indexedDB.version < 0) {
+                alert(
+                    this.uiLang.ui
+                        .get("backup-alerts", "invalid-version-number")
+                        .replace("%d", data.indexedDB.version.toString())
+                        .replace("%d", db.version.toString()),
+                );
+                return;
+            }
+
+            for (let i = 0; i < (data.indexedDB.data || []).length; i++) {
+                if (!db.validate(data.indexedDB.version, data.indexedDB.data[i])) {
+                    alert(
+                        this.uiLang.ui
+                            .get("backup-alerts", "invalid-indexed-entry")
+                            .replace("%s", JSON.stringify(data.indexedDB.data[i], null, 4)),
+                    );
+                    return;
+                }
+            }
+        }
+
+        await db.deleteAll();
+        if (Object.hasOwn(data, "indexedDB")) {
+            for (const entry of data.indexedDB.data || []) {
+                db.add(entry).catch(() => db.put(entry));
+            }
+        }
+    } catch (err) {
+        alert(`Import failed: ${err}`);
+    }
 }
