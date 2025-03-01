@@ -4,6 +4,7 @@ import { html } from "../../../lib/utils";
 
 import * as store from "../../../lib/store";
 import * as types from "../../../types";
+import * as backupUtils from "./backup-utils";
 
 const articleHTML = html`
     <h4>Backup</h4>
@@ -99,17 +100,19 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
 
     // Validate backup version
     let backupV3: types.settings.BackupV3;
-    if (isBackupV3(data)) {
+    if (backupUtils.isBackupV3(data)) {
         backupV3 = data as types.settings.BackupV3;
-    } else if (isBackupV2(data)) {
-        backupV3 = convertV2(data as types.settings.BackupV2);
-    } else if (isBackupV1(data)) {
-        backupV3 = convertV1(data as types.settings.BackupV1);
+    } else if (backupUtils.isBackupV2(data)) {
+        //backupV3 = convertV2(data as types.settings.BackupV2);
+        return alert("Under Construction!");
+    } else if (backupUtils.isBackupV1(data)) {
+        //backupV3 = convertV1(data as types.settings.BackupV1);
+        return alert("Under Construction!");
     } else {
         return alert("Invalid JSON data!");
     }
 
-    // Initialing
+    // Initialize
     store.obj.set("settings", backupV3.settings);
     store.obj.set("week-start", backupV3.weekStart);
 
@@ -120,92 +123,62 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
 
     return;
     // NOTE: Original code from v2
-    try {
-        // Handle settings
-        if ("settings" in data) {
-            if (!validateSettings(data.settings)) {
-                alert(this.uiLang.ui.get("backup-alerts", "invalid-settings"));
-                return;
-            }
+    //try {
+    //    // Handle settings
+    //    if ("settings" in data) {
+    //        if (!validateSettings(data.settings)) {
+    //            alert(this.uiLang.ui.get("backup-alerts", "invalid-settings"));
+    //            return;
+    //        }
 
-            this.uiStore.ui.set("settings", data.settings);
-        }
+    //        this.uiStore.ui.set("settings", data.settings);
+    //    }
 
-        // NOTE: Support for v1.4.0 - v1.5.3
-        if ("storage" in data) {
-            data.indexedDB = convertStorage(data.storage); // Yes, this will overwrite all existing indexedDB stuff.
-        }
+    //    // NOTE: Support for v1.4.0 - v1.5.3
+    //    if ("storage" in data) {
+    //        data.indexedDB = convertStorage(data.storage); // Yes, this will overwrite all existing //indexedDB stuff.
+    //    }
 
-        // Handle indexedDB data
-        if ("inexedDB" in data) {
-            if (typeof data.indexedDB.version !== "number") {
-                alert(
-                    this.uiLang.ui
-                        .get("backup-alerts", "invalid-version-type")
-                        .replace("%v", `${typeof data.indexedDB.version}`),
-                );
-                return;
-            }
+    //    // Handle indexedDB data
+    //    if ("inexedDB" in data) {
+    //        if (typeof data.indexedDB.version !== "number") {
+    //            alert(
+    //                this.uiLang.ui
+    //                    .get("backup-alerts", "invalid-version-type")
+    //                    .replace("%v", `${typeof data.indexedDB.version}`),
+    //            );
+    //            return;
+    //        }
 
-            if (data.indexedDB.version > db.version || data.indexedDB.version < 0) {
-                alert(
-                    this.uiLang.ui
-                        .get("backup-alerts", "invalid-version-number")
-                        .replace("%d", data.indexedDB.version.toString())
-                        .replace("%d", db.version.toString()),
-                );
-                return;
-            }
+    //        if (data.indexedDB.version > db.version || data.indexedDB.version < 0) {
+    //            alert(
+    //                this.uiLang.ui
+    //                    .get("backup-alerts", "invalid-version-number")
+    //                    .replace("%d", data.indexedDB.version.toString())
+    //                    .replace("%d", db.version.toString()),
+    //            );
+    //            return;
+    //        }
 
-            for (let i = 0; i < (data.indexedDB.data || []).length; i++) {
-                if (!db.validate(data.indexedDB.version, data.indexedDB.data[i])) {
-                    alert(
-                        this.uiLang.ui
-                            .get("backup-alerts", "invalid-indexed-entry")
-                            .replace("%s", JSON.stringify(data.indexedDB.data[i], null, 4)),
-                    );
-                    return;
-                }
-            }
-        }
+    //        for (let i = 0; i < (data.indexedDB.data || []).length; i++) {
+    //            if (!db.validate(data.indexedDB.version, data.indexedDB.data[i])) {
+    //                alert(
+    //                    this.uiLang.ui
+    //                        .get("backup-alerts", "invalid-indexed-entry")
+    //                        .replace("%s", JSON.stringify(data.indexedDB.data[i], null, 4)),
+    //                );
+    //                return;
+    //            }
+    //        }
+    //    }
 
-        await db.deleteAll();
-        if (Object.hasOwn(data, "indexedDB")) {
-            for (const entry of data.indexedDB.data || []) {
-                db.add(entry).catch(() => db.put(entry));
-            }
-        }
-    } catch (err) {
-        alert(`Import failed: ${err}`);
-    }
-}
-
-function isBackupV1(data: any): boolean {
-    // TODO: ...
-
-    return false;
-}
-
-function isBackupV2(data: any): boolean {
-    // TODO: ...
-
-    return false;
-}
-
-function isBackupV3(data: any): boolean {
-    // TODO: Continue here
-
-    return false;
-}
-
-function convertV2(data: types.settings.BackupV2): types.settings.BackupV3 {
-    // TODO: ...
-
-    return {};
-}
-
-function convertV1(data: types.settings.BackupV1): types.settings.BackupV3 {
-    // TODO: ...
-
-    return {};
+    //    await db.deleteAll();
+    //    if (Object.hasOwn(data, "indexedDB")) {
+    //        for (const entry of data.indexedDB.data || []) {
+    //            db.add(entry).catch(() => db.put(entry));
+    //        }
+    //    }
+    //} catch (err) {
+    //    alert(`Import failed: ${err}`);
+    //}
 }
