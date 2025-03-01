@@ -89,14 +89,19 @@ export function article(): HTMLElement {
 async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     if (typeof result !== "string") return alert("Invalid data!");
 
-    let data: types.settings.BackupV1 & types.settings.BackupV0;
+    let data: types.settings.BackupV1 | types.settings.BackupV2 | types.settings.BackupV3;
     try {
         data = JSON.parse(result);
     } catch (err) {
         return alert("Invalid JSON data!");
     }
 
-    // TODO: Continue...
+    // TODO: Check for V3
+    // TODO: Check for V2
+    // TODO: Check for V1
+
+    return;
+    // NOTE: Original code from v2
     try {
         // Handle settings
         if ("settings" in data) {
