@@ -22,8 +22,26 @@ export async function datePicker(dateString: number): Promise<void> {
     );
 }
 
-export async function editMode(_data: types.calendar.EditMode): Promise<void> {
-    // TODO: ...
+export async function editMode(data: types.calendar.EditMode): Promise<void> {
+    const routerTarget = document.querySelector("#routerTarget")!;
+
+    const itemContainer = routerTarget.querySelector<HTMLElement>(".item-container");
+    const editModeContainer = document.querySelector<HTMLElement>(".edit-mode");
+
+    if (!itemContainer || !editModeContainer) return;
+
+    editModeContainer.innerHTML = "";
+
+    if (data.open) {
+        // Open the ".edit-mode" bottom bar
+        itemContainer.setAttribute("edit-mode", "");
+        editModeContainer.setAttribute("open", "");
+        renderShiftCards(editModeContainer, data.active);
+    } else {
+        // Close it again
+        itemContainer.removeAttribute("edit-mode");
+        editModeContainer.removeAttribute("open");
+    }
 }
 
 export async function swipe(direction: Direction): Promise<void> {
@@ -48,4 +66,42 @@ export async function swipe(direction: Direction): Promise<void> {
 
             break;
     }
+}
+
+function renderShiftCards(container: HTMLElement, active: types.calendar.Shift | null): void {
+    const template: HTMLTemplateElement = document.querySelector(`template[name="shift-card"]`)!;
+
+    (store.obj.get("shifts") || []).forEach((shift) => {
+        const card: HTMLElement = (template.content.cloneNode(true) as HTMLElement).querySelector(
+            ".shift-card",
+        )!;
+
+        if (!!active && active.id === shift.id) {
+            card.setAttribute("active", "");
+        } else {
+            card.removeAttribute("active");
+        }
+
+        card.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
+
+        const shortName = card.querySelector<HTMLElement>(`.short-name`)!;
+        shortName.style.color = shift.color || "inherit";
+        shortName.innerText = shift.visible ? shift.shortName : "";
+
+        card.onclick = () => {
+            if (card.hasAttribute("active")) {
+                card.removeAttribute("active");
+            } else {
+                card.setAttribute("active", "");
+            }
+
+            // FIXME: This will rerender the whole edit mode container
+            store.obj.update("editMode", (data) => {
+                data.active = card.hasAttribute("active") ? shift : null;
+                return data;
+            });
+        };
+
+        container.appendChild(card);
+    });
 }

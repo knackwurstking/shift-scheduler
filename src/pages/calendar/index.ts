@@ -44,7 +44,7 @@ template.innerHTML = html`
             transition: transform 0.25s ease;
         }
 
-        #routerTarget .edit-mode[edit-mode] {
+        #routerTarget .edit-mode[open] {
             transform: translateY(0);
         }
 
@@ -183,6 +183,10 @@ template.innerHTML = html`
                 opacity: 1;
             }
         }
+
+        #routerTarget .shift-card[active] {
+            border-color: var(--ui-text);
+        }
     </style>
 
     <div class="item-container ui-flex-grid-row ui-none-select">
@@ -198,7 +202,7 @@ template.innerHTML = html`
         style="--gap: 0.5rem"
     ></div>
 
-    <!-- MARK: Calendar Item Template -->
+    <!-- Calendar Item Template -->
 
     <template name="calendar-item-content">
         <div class="item-content ui-flex-grid" style="--gap: 0.05rem">
@@ -232,8 +236,8 @@ export async function onMount() {
     // Enable app-bar items
     setupAppBarItems();
 
-    // Render day items
-    renderDayItems();
+    // Render
+    render();
 
     // Setup store handlers
     cleanup.push(
@@ -258,7 +262,8 @@ export async function onDestroy() {
     cleanup = [];
 }
 
-function renderDayItems() {
+function render() {
+    // Create content for items in "item-container"
     const date = new Date();
 
     Array.from(document.querySelector(`.item-container`)!.children)!.forEach((item) => {
@@ -305,7 +310,15 @@ function setupAppBarItems() {
         store.obj.set("datePicker", new Date().getTime());
     };
 
-    // TODO: Setup "editButton" and "printerButton" app-bar (icon button) handlers
+    // edit mode button
+    editButton.onclick = async () => {
+        store.obj.update("editMode", (data) => {
+            data.open = !data.open;
+            return data;
+        });
+    };
+
+    // TODO: Setup "printerButton" app-bar (icon button) handlers
 
     // handle today [disabled] attribute
     cleanup.push(
