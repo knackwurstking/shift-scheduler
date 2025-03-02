@@ -1,6 +1,5 @@
 import * as types from "../types";
 
-// FIXME: Nothing shown
 export function open(
     rhythm: types.calendar.Rhythm,
     shifts: types.calendar.Shift[],
