@@ -29,36 +29,6 @@
             #routerTarget {
                 padding-top: var(--ui-app-bar-height);
             }
-
-            .shift-card {
-                position: relative;
-                display: inline-block;
-                overflow: hidden;
-                width: 100%;
-                min-height: calc(1.6rem * 2 + var(--ui-spacing) * 2);
-                cursor: pointer;
-                user-select: none;
-            }
-
-            .shift-card span {
-                display: block;
-            }
-
-            .shift-card .name,
-            .shift-card .short-name {
-                text-wrap: nowrap;
-            }
-
-            .shift-card .background {
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                transition:
-                    opacity 0.25s linear,
-                    background-color 0.25s linear;
-            }
         </style>
     </head>
 
@@ -236,7 +206,7 @@
             </form>
 
             <template name="table-item">
-                <tr>
+                <tr class="table-item">
                     <td class="name left"></td>
 
                     <td class="short-name left" style="color: inherit"></td>
@@ -255,10 +225,18 @@
         </dialog>
 
         <template name="shift-card">
-            <div class="shift-card ui-flex-grid-item" style="--flex: 0">
-                <div class="background"></div>
-                <span class="name"></span>
-                <span class="short-name"></span>
+            <div
+                class="shift-card ui-flex-grid-item ui-none-select ui-border ui-padding"
+                style="
+                    --flex: 0;
+                    width: fit-content;
+                    min-width: 5rem;
+                    min-height: calc(1.6rem * 2 + var(--ui-spacing) * 2);
+                    cursor: pointer;
+                "
+            >
+                <div class="name" style="text-wrap: nowrap"></div>
+                <div class="short-name"></div>
             </div>
         </template>
 

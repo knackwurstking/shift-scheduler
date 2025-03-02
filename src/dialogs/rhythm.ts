@@ -1,5 +1,6 @@
 import * as types from "../types";
 
+// FIXME: Nothing shown
 export function open(
     rhythm: types.calendar.Rhythm,
     shifts: types.calendar.Shift[],
@@ -23,7 +24,7 @@ export function open(
             tbody.innerHTML = "";
 
             // Setup Rhythm items for the table
-            rhythm.forEach((id) => {
+            rhythm.forEach((id, index) => {
                 let shift = shifts.find((shift) => shift.id === id);
                 if (!shift) {
                     shift = {
@@ -35,10 +36,9 @@ export function open(
                     };
                 }
 
-                const tableItem = (templateTableItem.content.cloneNode(true) as HTMLElement)
-                    .children[0] as HTMLElement;
-
-                tbody.appendChild(tableItem);
+                const tableItem = (
+                    templateTableItem.content.cloneNode(true) as HTMLElement
+                ).querySelector<HTMLElement>(`.table-item`)!;
 
                 // Setup table item
                 tableItem.querySelector<HTMLElement>(".name")!.innerText = shift.name;
@@ -51,10 +51,13 @@ export function open(
                 const deleteButton = tableItem.querySelector<HTMLButtonElement>(`button.delete`)!;
                 deleteButton.onclick = () => {
                     // Delete this item from the rhythm
-                    rhythm = rhythm.filter((id) => id !== shift.id);
+                    rhythm.splice(index, 1);
                     // Re-Render the table
                     renderTBody();
                 };
+
+                tbody.appendChild(tableItem);
+                tableItem.scrollIntoView();
             });
         };
 
@@ -63,17 +66,28 @@ export function open(
 
             // Setup Shift Card items for the shifts-container
             shifts.forEach((shift) => {
-                const card = (templateShiftCard.cloneNode(true) as HTMLElement)
-                    .children[0] as HTMLElement;
+                const card = (
+                    templateShiftCard.content.cloneNode(true) as HTMLElement
+                ).querySelector<HTMLElement>(`.shift-card`)!;
 
                 shiftsContainer.appendChild(card);
 
+                const name = card.querySelector<HTMLElement>(".name")!;
+                name.innerText = shift.name;
+
+                const shortName = card.querySelector<HTMLElement>(".short-name")!;
+                shortName.style.color = shift.color || "inherit";
+                shortName.innerText = shift.visible ? shift.shortName : "";
+
                 card.onclick = () => {
                     rhythm.push(shift.id);
-                    renderShiftsContainer();
+                    renderTBody();
                 };
             });
         };
+
+        renderTBody();
+        renderShiftsContainer();
 
         const rhythmOriginal = rhythm;
         dialog.onclose = () => resolve(rhythmOriginal);
