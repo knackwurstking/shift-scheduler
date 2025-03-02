@@ -236,7 +236,10 @@ export async function onMount() {
     renderDayItems();
 
     // Setup store handlers
-    setupStoreHandlers();
+    cleanup.push(
+        store.obj.listen("datePicker", handlers.datePicker, true),
+        store.obj.listen("editMode", handlers.editMode, true),
+    );
 
     setTimeout(() => {
         swipeHandler.start();
@@ -302,7 +305,7 @@ function setupAppBarItems() {
         store.obj.set("datePicker", new Date().getTime());
     };
 
-    // TODO: Setup "edit" and "printer" handlers
+    // TODO: Setup "editButton" and "printerButton" app-bar (icon button) handlers
 
     // handle today [disabled] attribute
     cleanup.push(
@@ -338,11 +341,4 @@ function setupAppBarItems() {
         printerButton.style.display = "none";
         settingsButton.style.display = "none";
     });
-}
-
-function setupStoreHandlers() {
-    cleanup.push(
-        store.obj.listen("datePicker", handlers.datePicker, true),
-        store.obj.listen("editMode", handlers.editMode, true),
-    );
 }
