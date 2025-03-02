@@ -103,10 +103,9 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     if (backupUtils.isBackupV3(data)) {
         backupV3 = data as types.settings.BackupV3;
     } else if (backupUtils.isBackupV2(data)) {
-        //backupV3 = convertV2(data as types.settings.BackupV2);
-        return alert("Under Construction!");
+        backupV3 = backupUtils.convertV2(data as types.settings.BackupV2);
     } else if (backupUtils.isBackupV1(data)) {
-        //backupV3 = convertV1(data as types.settings.BackupV1);
+        //backupV3 = backupUtils.convertV1(data as types.settings.BackupV1);
         return alert("Under Construction!");
     } else {
         return alert("Invalid JSON data!");

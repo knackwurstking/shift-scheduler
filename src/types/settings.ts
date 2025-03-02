@@ -31,10 +31,32 @@ export interface BackupV1 {
 
 // NOTE: >= v2.0.0 && < v3.0.0
 export interface BackupV2 {
-    settings: Settings & { startData: string };
+    settings: {
+        shifts: {
+            id: number;
+            name: string;
+            shortName: string;
+            visible: boolean;
+            color?: string | null;
+        }[];
+        rhythm: number[];
+        startDate: string;
+    };
     indexedDB: {
         version: number;
-        data: db.Entry[];
+        data: {
+            year: number;
+            month: number;
+            date: number;
+            shift: {
+                id: number;
+                name: string;
+                shortName: string;
+                visible: boolean;
+                color?: string | null;
+            } | null;
+            note: string;
+        }[];
     };
 }
 
