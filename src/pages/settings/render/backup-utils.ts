@@ -235,7 +235,6 @@ export function isBackupV3(data: any): boolean {
     return true;
 }
 
-// TODO: Write a jest test for convertV2
 export function convertV2(data: types.settings.BackupV2): types.settings.BackupV3 {
     return {
         weekStart: 0,
