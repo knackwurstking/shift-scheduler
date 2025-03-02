@@ -75,7 +75,7 @@ export function article(): HTMLElement {
         // Table Section
         const tbody = article.querySelector<HTMLElement>(`section.shifts-table tbody`)!;
         const template = article.querySelector<HTMLTemplateElement>(
-            `section.shifts-table template.table-item`,
+            `section.shifts-table template[name="table-item"]`,
         )!;
 
         // Reset
