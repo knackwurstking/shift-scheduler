@@ -82,7 +82,7 @@ export function article(): HTMLElement {
         tbody.innerHTML = "";
 
         // Create shift table rows from settings shifts
-        store.obj.get("settings")!.shifts.forEach((shift) => {
+        store.obj.get("shifts")!.forEach((shift) => {
             const tableItem = (
                 template.content.cloneNode(true) as HTMLElement
             ).querySelector<HTMLElement>(`tr.item`)!;
@@ -106,17 +106,14 @@ export function article(): HTMLElement {
                 }
 
                 // Update store and and table item
-                store.obj.update("settings", (settings) => {
-                    return {
-                        ...settings,
-                        shifts: settings.shifts.map((s) => {
-                            if (s.id === shift.id) {
-                                return shift;
-                            }
+                store.obj.update("shifts", (shifts) => {
+                    return shifts.map((s) => {
+                        if (s.id === shift.id) {
+                            return shift;
+                        }
 
-                            return s;
-                        }),
-                    };
+                        return s;
+                    });
                 });
 
                 renderShiftsTableSection();
@@ -125,11 +122,8 @@ export function article(): HTMLElement {
             const deleteButton = tableItem.querySelector<HTMLElement>(`button.delete`)!;
             deleteButton.onclick = async () => {
                 if (confirm(`Delete shift \"${shift.name}\"?`)) {
-                    store.obj.update("settings", (data) => {
-                        return {
-                            ...data,
-                            shifts: data.shifts.filter((s) => s.id !== shift.id),
-                        };
+                    store.obj.update("shifts", (shifts) => {
+                        return shifts.filter((s) => s.id !== shift.id);
                     });
                 }
 
@@ -144,20 +138,18 @@ export function article(): HTMLElement {
         `section.start-date input[type="date"]`,
     )!;
 
-    startDate.value = new Date(store.obj.get("settings")!.startDate).toDateString();
+    startDate.value = new Date(store.obj.get("startDate")!).toDateString();
     startDate.onchange = () => {
-        store.obj.update("settings", (settings) => {
-            settings.startDate = new Date(startDate.value).getTime();
-            return settings;
-        });
+        store.obj.set("startDate", new Date(startDate.value).getTime());
     };
 
     const editRhythm = article.querySelector<HTMLButtonElement>(`section.edit-rhythm button`)!;
 
     editRhythm.onclick = async () => {
-        const settings = store.obj.get("settings")!;
-        settings.rhythm = await dialogs.rhythm.open(settings.rhythm, settings.shifts);
-        store.obj.set("settings", settings);
+        store.obj.set(
+            "rhythm",
+            await dialogs.rhythm.open(store.obj.get("rhythm")!, store.obj.get("shifts")!),
+        );
     };
 
     return article;

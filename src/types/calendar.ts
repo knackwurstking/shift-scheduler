@@ -10,6 +10,10 @@ export interface Shift {
     color?: string | null;
 }
 
+export type Shifts = Shift[];
+export type Rhythm = number[];
+export type StartDate = number;
+
 export interface EditMode {
     open: boolean;
     active: Shift | null;

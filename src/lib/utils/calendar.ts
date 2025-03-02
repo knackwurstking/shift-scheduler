@@ -7,7 +7,7 @@ export async function getDataForDays(
     month: number,
 ): Promise<types.db.Entry[]> {
     const data: types.db.Entry[] = [];
-    const weekStart = store.obj.get("week-start")!;
+    const weekStart = store.obj.get("weekStart")!;
 
     for (let i = 0; i < size; i++) {
         const date = new Date(year, month, i + 1 - getStartDay(year, month, weekStart));
@@ -35,28 +35,24 @@ function getStartDay(year: number, month: number, weekStart: types.calendar.Week
 }
 
 export function calcShiftForDay(current: Date): types.calendar.Shift | null {
-    const settings = store.obj.get("settings")!;
-    if (!settings.startDate || !settings.rhythm.length) return null;
+    const startDate = store.obj.get("startDate")!;
+    const shifts = store.obj.get("shifts")!;
+    const rhythm = store.obj.get("rhythm")!;
 
-    const sDate = new Date(settings.startDate);
+    if (!startDate || !rhythm.length) return null;
+
+    const sDate = new Date(startDate);
     const diffInDays = Math.round((current.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24));
 
     if (diffInDays <= 0) {
         return (
-            settings.shifts.find(
+            shifts.find(
                 (shift) =>
                     shift.id ===
-                    settings.rhythm[
-                        settings.rhythm.length +
-                            (diffInDays % settings.rhythm.length || -settings.rhythm.length)
-                    ],
+                    rhythm[rhythm.length + (diffInDays % rhythm.length || -rhythm.length)],
             ) || null
         );
     }
 
-    return (
-        settings.shifts.find(
-            (shift) => shift.id === settings.rhythm[diffInDays % settings.rhythm.length],
-        ) || null
-    );
+    return shifts.find((shift) => shift.id === rhythm[diffInDays % rhythm.length]) || null;
 }

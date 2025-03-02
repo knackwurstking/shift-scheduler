@@ -3,15 +3,17 @@ import * as ui from "ui";
 import * as types from "../../types";
 
 export type ShiftSchedulerStore = ui.Store<{
-    "date-picker": number;
-    "week-start": types.calendar.WeekStart;
+    datePicker: number;
 
-    // TODO: Move one level down, remove "settings" from the store
-    settings: types.settings.Settings;
+    weekStart: types.calendar.WeekStart;
 
-    version: types.settings.Version;
+    shifts: types.calendar.Shifts;
+    rhythm: types.calendar.Rhythm;
+    startDate: types.calendar.StartDate;
 
-    "edit-mode": types.calendar.EditMode;
+    version: types.Version;
+
+    editMode: types.calendar.EditMode;
 }>;
 
 export const prefix = "shift-scheduler:";
@@ -20,25 +22,24 @@ export const obj: ShiftSchedulerStore = (() => {
     const store: ShiftSchedulerStore = new ui.Store(prefix);
 
     const date = new Date();
-    store.set("date-picker", new Date(date.getFullYear(), date.getMonth(), 1).getTime(), false);
+    store.set("datePicker", new Date(date.getFullYear(), date.getMonth(), 1).getTime(), false);
 
-    store.set("week-start", 0, true);
-    store.set("settings", { shifts: [], rhythm: [], startDate: 0 }, true);
-    store.set("edit-mode", { open: false, active: null }, false);
+    store.set("weekStart", 0, true);
+
+    store.set("shifts", [], true);
+    store.set("rhythm", [], true);
+    store.set("startDate", 0, true);
+
+    store.set("editMode", { open: false, active: null }, false);
 
     const newVersion = { version: "0.0.0", build: 1 };
 
     switch (store.get("version")?.build) {
         case undefined:
-            const oldStartDate = store.get("settings")?.startDate;
-            if (oldStartDate) {
+            const oldStartDate = store.get("startDate");
+            if (!!oldStartDate) {
                 // NOTE: Start date in settings changed from string to number in version v3.0.0
-                store.update("settings", (settings) => {
-                    settings.startDate = new Date(oldStartDate).getTime();
-                    return settings;
-                });
-
-                // TODO: "settings" removed from the store
+                store.set("startDate", new Date(oldStartDate).getTime());
             }
             break;
     }

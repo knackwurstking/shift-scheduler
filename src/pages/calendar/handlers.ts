@@ -30,7 +30,7 @@ export async function swipe(direction: Direction): Promise<void> {
     switch (direction) {
         case "left":
             // Go to next month
-            store.obj.update("date-picker", (dateString) => {
+            store.obj.update("datePicker", (dateString) => {
                 const date = new Date(dateString);
                 date.setMonth(date.getMonth() + 1);
                 return date.getTime();
@@ -40,7 +40,7 @@ export async function swipe(direction: Direction): Promise<void> {
 
         case "right":
             // Go to prev month
-            store.obj.update("date-picker", (dateString) => {
+            store.obj.update("datePicker", (dateString) => {
                 const date = new Date(dateString);
                 date.setMonth(date.getMonth() - 1);
                 return date.getTime();

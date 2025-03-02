@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals";
 
 import { isBackupV3, isBackupV2, isBackupV1, convertV1, convertV2 } from "./backup-utils";
-import { BackupV3, BackupV2, BackupV1 } from "../../../types/settings";
+import { BackupV3, BackupV2, BackupV1 } from "../../../types/backup";
 
 import * as constants from "../../../constants";
 
@@ -13,11 +13,9 @@ describe("pages -> settings -> backup-utils", () => {
 
         let data: BackupV3 = {
             weekStart: 0,
-            settings: {
-                shifts: [],
-                rhythm: [],
-                startDate: 0,
-            },
+            shifts: [],
+            rhythm: [],
+            startDate: 0,
             version: {
                 version: "v3.0.0",
                 build: 1,
@@ -29,7 +27,7 @@ describe("pages -> settings -> backup-utils", () => {
         };
         expect(isBackupV3(data)).toBe(true);
 
-        data.settings.shifts.push({
+        data.shifts.push({
             id: new Date().getTime(),
             name: "Name",
             shortName: "Short",
@@ -37,13 +35,13 @@ describe("pages -> settings -> backup-utils", () => {
         });
         expect(isBackupV3(data)).toBe(true);
 
-        data.settings.shifts[0].color = "#ffffff";
+        data.shifts[0].color = "#ffffff";
         expect(isBackupV3(data)).toBe(true);
 
-        data.settings.shifts[0].color = null;
+        data.shifts[0].color = null;
         expect(isBackupV3(data)).toBe(true);
 
-        data.settings.rhythm.push(0, 1, 2);
+        data.rhythm.push(0, 1, 2);
         expect(isBackupV3(data)).toBe(true);
 
         data.indexedDB.data.push({
@@ -55,7 +53,7 @@ describe("pages -> settings -> backup-utils", () => {
         });
         expect(isBackupV3(data)).toBe(true);
 
-        data.indexedDB.data[0].shift = data.settings.shifts[0];
+        data.indexedDB.data[0].shift = data.shifts[0];
         expect(isBackupV3(data)).toBe(true);
     });
 });
@@ -181,11 +179,9 @@ describe("pages -> settings -> backup-utils", () => {
 
         const result: BackupV3 = {
             weekStart: 0,
-            settings: {
-                shifts: [],
-                rhythm: [],
-                startDate: 0,
-            },
+            shifts: [],
+            rhythm: [],
+            startDate: 0,
             version: {
                 version: constants.version,
                 build: constants.build,
@@ -212,7 +208,7 @@ describe("pages -> settings -> backup-utils", () => {
         expect(convertV1(data)).toStrictEqual(result);
 
         data.settings.startDate = "2025-02-04";
-        result.settings.startDate = new Date("2025-02-04").getTime();
+        result.startDate = new Date("2025-02-04").getTime();
         expect(convertV1(data)).toStrictEqual(result);
     });
 });
@@ -246,11 +242,9 @@ describe("pages -> settings -> backup-utils", () => {
 
         const result: BackupV3 = {
             weekStart: 0,
-            settings: {
-                shifts: [],
-                rhythm: [],
-                startDate: 0,
-            },
+            shifts: [],
+            rhythm: [],
+            startDate: 0,
             version: {
                 version: constants.version,
                 build: constants.build,
@@ -261,7 +255,7 @@ describe("pages -> settings -> backup-utils", () => {
         expect(convertV2(data)).toStrictEqual(result);
 
         data.settings.startDate = "2025-02-04";
-        result.settings.startDate = new Date("2025-02-04").getTime();
+        result.startDate = new Date("2025-02-04").getTime();
         expect(convertV2(data)).toStrictEqual(result);
     });
 });

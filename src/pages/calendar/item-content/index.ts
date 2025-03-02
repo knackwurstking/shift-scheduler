@@ -37,7 +37,6 @@ export function create(year: number, month: number): DocumentFragment {
 
 export async function update(itemContent: HTMLElement, year: number, month: number): Promise<void> {
     const date = new Date(year, month);
-    const settings = store.obj.get("settings")!;
     const days: HTMLElement[] = Array.from(
         itemContent.querySelectorAll(`.item-content > .days > .day`),
     );
@@ -48,12 +47,13 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
         date.getMonth(),
     );
 
+    const shifts = store.obj.get("shifts")!;
     dataEntries.forEach(async (entry, index) => {
         const data = await db.get(entry.year, entry.month, entry.date);
         if (data !== null) {
             entry.note = data.note;
 
-            const shift = settings.shifts.find((shift) => shift.id === data.shift?.id);
+            const shift = shifts.find((shift) => shift.id === data.shift?.id);
             if (!!shift) {
                 entry.shift = shift;
             } else {
@@ -85,7 +85,7 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
 }
 
 function markWeekendItems(weekDays: Element[], days: Element[]): void {
-    const weekStart = store.obj.get("week-start")!;
+    const weekStart = store.obj.get("weekStart")!;
     let order = defaultWeekOrder;
 
     if (weekStart > 0) {

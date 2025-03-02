@@ -171,10 +171,6 @@ export function isBackupV3(data: any): boolean {
         return false;
     }
 
-    if (data.settings?.constructor !== Object) {
-        return false;
-    }
-
     if (data.version?.constructor !== Object) {
         return false;
     }
@@ -183,20 +179,19 @@ export function isBackupV3(data: any): boolean {
         return false;
     }
 
-    // Check settings
     if (
-        !Array.isArray(data.settings.shifts) ||
-        !Array.isArray(data.settings.rhythm) ||
-        typeof data.settings.startDate !== "number"
+        !Array.isArray(data.shifts) ||
+        !Array.isArray(data.rhythm) ||
+        typeof data.startDate !== "number"
     ) {
         return false;
     }
 
-    if (!!data.settings.rhythm.find((r: any) => typeof r !== "number")) {
+    if (!!data.rhythm.find((r: any) => typeof r !== "number")) {
         return false;
     }
 
-    if (!!data.settings.shifts.find((s: any) => !isShift(s))) {
+    if (!!data.shifts.find((s: any) => !isShift(s))) {
         return false;
     }
 
@@ -235,18 +230,16 @@ export function isBackupV3(data: any): boolean {
     return true;
 }
 
-export function convertV2(data: types.settings.BackupV2): types.settings.BackupV3 {
+export function convertV2(data: types.backup.BackupV2): types.backup.BackupV3 {
     return {
         weekStart: 0,
         version: {
             version: constants.version,
             build: constants.build,
         },
-        settings: {
-            rhythm: data.settings.rhythm,
-            shifts: data.settings.shifts,
-            startDate: !!data.settings.startDate ? new Date(data.settings.startDate).getTime() : 0,
-        },
+        rhythm: data.settings.rhythm,
+        shifts: data.settings.shifts,
+        startDate: !!data.settings.startDate ? new Date(data.settings.startDate).getTime() : 0,
         indexedDB: {
             version: data.indexedDB.version,
             data: data.indexedDB.data.map((entry) => ({
@@ -260,23 +253,21 @@ export function convertV2(data: types.settings.BackupV2): types.settings.BackupV
     };
 }
 
-export function convertV1(data: types.settings.BackupV1): types.settings.BackupV3 {
+export function convertV1(data: types.backup.BackupV1): types.backup.BackupV3 {
     return {
         weekStart: 0,
         version: {
             version: constants.version,
             build: constants.build,
         },
-        settings: {
-            rhythm: data.settings.rhythm,
-            shifts: data.settings.shifts,
-            startDate: !!data.settings.startDate ? new Date(data.settings.startDate).getTime() : 0,
-        },
+        rhythm: data.settings.rhythm,
+        shifts: data.settings.shifts,
+        startDate: !!data.settings.startDate ? new Date(data.settings.startDate).getTime() : 0,
         indexedDB: convertV1StorageToV3IndexedDB(data),
     };
 }
 
-function convertV1StorageToV3IndexedDB(data: types.settings.BackupV1): {
+function convertV1StorageToV3IndexedDB(data: types.backup.BackupV1): {
     version: number;
     data: types.db.Entry[];
 } {

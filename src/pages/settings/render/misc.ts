@@ -23,11 +23,11 @@ export function article(): HTMLElement {
     )!;
 
     // Read week start from store
-    weekStart.checked = store.obj.get("week-start") === 1;
+    weekStart.checked = store.obj.get("weekStart") === 1;
 
     // Update store on change
     weekStart.onchange = () => {
-        store.obj.set("week-start", weekStart.checked ? 1 : 0);
+        store.obj.set("weekStart", weekStart.checked ? 1 : 0);
     };
 
     return article;

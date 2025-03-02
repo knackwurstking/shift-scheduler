@@ -291,15 +291,15 @@ function setupAppBarItems() {
 
     // date-picker handler
     datePickerButton.onclick = async () => {
-        const data = await dialogs.datePicker.open(store.obj.get("date-picker")!);
+        const data = await dialogs.datePicker.open(store.obj.get("datePicker")!);
         if (!data) return;
 
-        store.obj.set("date-picker", data.date);
+        store.obj.set("datePicker", data.date);
     };
 
     // today handler
     todayButton.onclick = async () => {
-        store.obj.set("date-picker", new Date().getTime());
+        store.obj.set("datePicker", new Date().getTime());
     };
 
     // TODO: Setup "edit" and "printer" handlers
@@ -307,7 +307,7 @@ function setupAppBarItems() {
     // handle today [disabled] attribute
     cleanup.push(
         store.obj.listen(
-            "date-picker",
+            "datePicker",
             (data) => {
                 const today = new Date();
                 const currentDate = new Date(data);
@@ -342,7 +342,7 @@ function setupAppBarItems() {
 
 function setupStoreHandlers() {
     cleanup.push(
-        store.obj.listen("date-picker", handlers.datePicker, true),
-        store.obj.listen("edit-mode", handlers.editMode, true),
+        store.obj.listen("datePicker", handlers.datePicker, true),
+        store.obj.listen("editMode", handlers.editMode, true),
     );
 }

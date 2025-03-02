@@ -1,9 +1,9 @@
 import * as types from "../types";
 
 export function open(
-    rhythm: types.settings.Rhythm,
+    rhythm: types.calendar.Rhythm,
     shifts: types.calendar.Shift[],
-): Promise<types.settings.Rhythm> {
+): Promise<types.calendar.Rhythm> {
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="rhythm"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;

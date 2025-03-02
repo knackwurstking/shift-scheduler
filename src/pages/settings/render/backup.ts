@@ -54,22 +54,22 @@ export function article(): HTMLElement {
     };
 
     exportButton.onclick = async () => {
-        const blob = new Blob(
-            [
-                JSON.stringify({
-                    // Create the backup object
-                    weekStart: store.obj.get("week-start"),
-                    settings: store.obj.get("settings"),
-                    indexedDB: {
-                        version: db.version,
-                        data: await db.getAll(),
-                    },
-                }),
-            ],
-            {
-                type: "octet/stream",
+        const data: types.backup.BackupV3 = {
+            // Create the backup object
+            weekStart: store.obj.get("weekStart")!,
+            shifts: store.obj.get("shifts")!,
+            rhythm: store.obj.get("rhythm")!,
+            startDate: store.obj.get("startDate")!,
+            version: store.obj.get("version")!,
+            indexedDB: {
+                version: db.version,
+                data: await db.getAll(),
             },
-        );
+        };
+
+        const blob = new Blob([JSON.stringify(data)], {
+            type: "octet/stream",
+        });
 
         const anchor = document.createElement("a");
 
@@ -91,7 +91,7 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     if (typeof result !== "string") return alert("Invalid data!");
 
     // Parsing JSON
-    let data: types.settings.BackupV1 | types.settings.BackupV2 | types.settings.BackupV3;
+    let data: types.backup.BackupV1 | types.backup.BackupV2 | types.backup.BackupV3;
     try {
         data = JSON.parse(result);
     } catch (err) {
@@ -99,20 +99,22 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     }
 
     // Validate backup version
-    let backupV3: types.settings.BackupV3;
+    let backupV3: types.backup.BackupV3;
     if (backupUtils.isBackupV3(data)) {
-        backupV3 = data as types.settings.BackupV3;
+        backupV3 = data as types.backup.BackupV3;
     } else if (backupUtils.isBackupV2(data)) {
-        backupV3 = backupUtils.convertV2(data as types.settings.BackupV2);
+        backupV3 = backupUtils.convertV2(data as types.backup.BackupV2);
     } else if (backupUtils.isBackupV1(data)) {
-        backupV3 = backupUtils.convertV1(data as types.settings.BackupV1);
+        backupV3 = backupUtils.convertV1(data as types.backup.BackupV1);
     } else {
         return alert("Invalid JSON data!");
     }
 
     // Initialize
-    store.obj.set("settings", backupV3.settings);
-    store.obj.set("week-start", backupV3.weekStart);
+    store.obj.set("shifts", backupV3.shifts);
+    store.obj.set("rhythm", backupV3.rhythm);
+    store.obj.set("startDate", backupV3.startDate);
+    store.obj.set("weekStart", backupV3.weekStart);
 
     await db.deleteAll();
     for (const entry of backupV3.indexedDB.data || []) {
