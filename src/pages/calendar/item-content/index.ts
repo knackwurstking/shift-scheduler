@@ -105,6 +105,8 @@ async function itemContentClickHandler(e: Event) {
     const dayItem: HTMLElement | null = (e.target as HTMLElement).closest(".day");
     if (!dayItem) return;
 
+    // TODO: Check if editMode is active before opening the dialog
+
     // Handle the click on the day item
     const year = parseInt(dayItem.getAttribute("data-year")!, 10);
     const month = parseInt(dayItem.getAttribute("data-month")!, 10);
