@@ -5,6 +5,7 @@ import db from "../../../lib/db";
 import * as store from "../../../lib/store";
 import * as utils from "../../../lib/utils";
 import * as types from "../../../types";
+import * as dialogs from "../../../dialogs";
 
 const template = document.createElement("template");
 template.innerHTML = html`
@@ -44,9 +45,18 @@ export function create(year: number, month: number): HTMLElement {
     itemContent.onclick = async (e) => {
         // Iter path and get the ".day" item if possible
         const dayItem = (e.target as HTMLElement).closest(".day");
-        if (dayItem) return;
+        if (!dayItem) return;
 
-        // TODO: Handle the click on the day item
+        // Handle the click on the day item
+        const dbEntry = await db.get(
+            parseInt(dayItem.getAttribute("data-year")!, 10),
+            parseInt(dayItem.getAttribute("data-month")!, 10),
+            parseInt(dayItem.getAttribute("data-date")!, 10),
+        );
+        const rhythmID = parseInt(dayItem.getAttribute("data-rhythm-id")!, 10);
+        if (await dialogs.day.open(rhythmID, dbEntry)) {
+            // TODO: Update...
+        }
     };
 
     setTimeout(() => {
