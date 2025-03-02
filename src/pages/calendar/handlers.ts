@@ -95,7 +95,6 @@ function renderShiftCards(container: HTMLElement, active: types.calendar.Shift |
                 card.setAttribute("active", "");
             }
 
-            // FIXME: This will rerender the whole edit mode container
             store.obj.update("editMode", (data) => {
                 data.active = card.hasAttribute("active") ? shift : null;
                 return data;
