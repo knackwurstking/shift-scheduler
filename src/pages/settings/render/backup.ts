@@ -105,8 +105,7 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     } else if (backupUtils.isBackupV2(data)) {
         backupV3 = backupUtils.convertV2(data as types.settings.BackupV2);
     } else if (backupUtils.isBackupV1(data)) {
-        //backupV3 = backupUtils.convertV1(data as types.settings.BackupV1);
-        return alert("Under Construction!");
+        backupV3 = backupUtils.convertV1(data as types.settings.BackupV1);
     } else {
         return alert("Invalid JSON data!");
     }

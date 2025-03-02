@@ -18,11 +18,27 @@ export interface Version {
 
 // NOTE: >= v1.4.0 && <= v1.5.3
 export interface BackupV1 {
-    settings: Settings & { startData: string };
+    settings: {
+        shifts: {
+            id: number;
+            name: string;
+            shortName: string;
+            visible: boolean;
+            color?: string | null;
+        }[];
+        rhythm: number[];
+        startDate: string;
+    };
     storage: {
         [key: string]: {
             [key: string]: {
-                shift: calendar.Shift | null;
+                shift: {
+                    id: number;
+                    name: string;
+                    shortName: string;
+                    visible: boolean;
+                    color?: string | null;
+                } | null;
                 note: string;
             };
         };
