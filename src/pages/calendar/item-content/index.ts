@@ -48,13 +48,12 @@ export function create(year: number, month: number): HTMLElement {
         if (!dayItem) return;
 
         // Handle the click on the day item
-        const dbEntry = await db.get(
-            parseInt(dayItem.getAttribute("data-year")!, 10),
-            parseInt(dayItem.getAttribute("data-month")!, 10),
-            parseInt(dayItem.getAttribute("data-date")!, 10),
-        );
+        const year = parseInt(dayItem.getAttribute("data-year")!, 10);
+        const month = parseInt(dayItem.getAttribute("data-month")!, 10);
+        const day = parseInt(dayItem.getAttribute("data-date")!, 10);
+        const dbEntry = await db.get(year, month, day);
         const rhythmID = parseInt(dayItem.getAttribute("data-rhythm-id")!, 10);
-        if (await dialogs.day.open(rhythmID, dbEntry)) {
+        if (await dialogs.day.open(new Date(year, month, day, 6, 0, 0), rhythmID, dbEntry)) {
             // TODO: Update...
         }
     };
