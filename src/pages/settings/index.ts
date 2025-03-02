@@ -5,6 +5,8 @@ import * as utils from "../../lib/utils";
 import * as render from "./render";
 
 let appBarTitleBackup = "";
+let appBarBackButtonBackup: any = null;
+
 let cleanup: ui.CleanUpFunction[] = [];
 
 export async function onMount() {
@@ -40,7 +42,11 @@ function setupAppBarItems() {
 
     back.style.display = "inline-flex";
 
+    appBarBackButtonBackup = back.onclick;
+    back.onclick = () => ui.router.hash.goTo(null, "");
+
     cleanup.push(() => {
         back.style.display = "none";
+        back.onclick = appBarBackButtonBackup;
     });
 }
