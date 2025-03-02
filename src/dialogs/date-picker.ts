@@ -15,7 +15,8 @@ export function open(date: string | number | Date): Promise<{ date: number } | n
                 break;
         }
 
-        monthInput.value = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        monthInput.value = `${date.getFullYear()}-${month}`;
 
         let result: { date: number } | null = null;
         form.onsubmit = () => {
