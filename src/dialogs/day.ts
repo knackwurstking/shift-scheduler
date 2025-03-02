@@ -38,8 +38,8 @@ export function open(
             form.querySelector<HTMLElement>(".title")!.innerText = date.toDateString();
 
             // Setup shift select
-            if (shiftSelect.children.length > 1) {
-                shiftSelect.removeChild(shiftSelect.children[1]);
+            while (shiftSelect.children.length > 1) {
+                shiftSelect.removeChild(shiftSelect.lastChild!);
             }
             store.obj.get("shifts")!.forEach((shift) => {
                 const option = document.createElement("option");
