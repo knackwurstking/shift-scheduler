@@ -17,8 +17,8 @@ describe("pages -> settings -> backup-utils", () => {
             rhythm: [],
             startDate: 0,
             version: {
-                version: "v3.0.0",
-                build: 1,
+                version: constants.version,
+                build: constants.build,
             },
             indexedDB: {
                 version: 0,
