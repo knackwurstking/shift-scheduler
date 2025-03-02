@@ -3,36 +3,57 @@ import * as types from "../types";
 
 export function open(
     date: Date,
-    rhythmShiftID: number,
+    shiftID: number,
     data: types.db.Entry | null,
-): Promise<boolean> {
+): Promise<{ shiftID: number; note: string } | null> {
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLFormElement>(`dialog[name="day"]`)!;
         const form = dialog.querySelector<HTMLFormElement>("form")!;
 
+        const shiftSelect = form.querySelector<HTMLSelectElement>("select.shift-select")!;
+        const dbNote = form.querySelector<HTMLTextAreaElement>("textarea.db-note")!;
+
+        // Close section
         form.querySelector<HTMLButtonElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
             dialog.close();
         };
 
-        let result: boolean = false;
+        let result: { shiftID: number; note: string } | null = null;
 
         dialog.onclose = () => {
             resolve(result);
         };
 
         form.onsubmit = () => {
-            result = true;
+            result = {
+                shiftID: parseInt(shiftSelect.value || "0", 10),
+                note: dbNote.value.trim(),
+            };
         };
 
+        // Content section
         {
+            // Setup title
             form.querySelector<HTMLElement>(".title")!.innerText = date.toDateString();
 
-            const shiftSelect = form.querySelector<HTMLSelectElement>("select.shift-select")!;
-            const dbNote = form.querySelector<HTMLTextAreaElement>("ui-textarea.db-note")!;
+            // Setup shift select
+            if (shiftSelect.children.length > 1) {
+                shiftSelect.removeChild(shiftSelect.children[1]);
+            }
+            store.obj.get("shifts")!.forEach((shift) => {
+                const option = document.createElement("option");
+                option.value = shift.id.toString();
+                option.innerText = shift.name || shift.shortName;
+                shiftSelect.appendChild(option);
 
-            // TODO: Get current shift for rhythmShiftID
-            // TODO: Get data from database and initialize dialog elements
+                if (shift.id === shiftID) {
+                    option.selected = true;
+                }
+            });
+
+            // Setup note textarea
+            dbNote.value = data?.note || "";
         }
 
         dialog.showModal();

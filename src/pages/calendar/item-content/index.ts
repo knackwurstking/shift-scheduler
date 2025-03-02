@@ -42,21 +42,7 @@ export function create(year: number, month: number): HTMLElement {
         }
     }
 
-    itemContent.onclick = async (e) => {
-        // Iter path and get the ".day" item if possible
-        const dayItem = (e.target as HTMLElement).closest(".day");
-        if (!dayItem) return;
-
-        // Handle the click on the day item
-        const year = parseInt(dayItem.getAttribute("data-year")!, 10);
-        const month = parseInt(dayItem.getAttribute("data-month")!, 10);
-        const day = parseInt(dayItem.getAttribute("data-date")!, 10);
-        const dbEntry = await db.get(year, month, day);
-        const rhythmID = parseInt(dayItem.getAttribute("data-rhythm-id")!, 10);
-        if (await dialogs.day.open(new Date(year, month, day, 6, 0, 0), rhythmID, dbEntry)) {
-            // TODO: Update...
-        }
-    };
+    itemContent.onclick = itemContentClickHandler;
 
     setTimeout(() => {
         update(itemContent, year, month);
@@ -112,6 +98,59 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
         [...itemContent.querySelectorAll(`.item-content > .week-days > .week-day`)],
         days,
     );
+}
+
+async function itemContentClickHandler(e: Event) {
+    // Iter path and get the ".day" item if possible
+    const dayItem: HTMLElement | null = (e.target as HTMLElement).closest(".day");
+    if (!dayItem) return;
+
+    // Handle the click on the day item
+    const year = parseInt(dayItem.getAttribute("data-year")!, 10);
+    const month = parseInt(dayItem.getAttribute("data-month")!, 10);
+    const day = parseInt(dayItem.getAttribute("data-date")!, 10);
+    const shiftID = parseInt(dayItem.getAttribute("data-shift-id") || "0", 10);
+
+    // Open day daialog
+    const data = await dialogs.day.open(
+        new Date(year, month, day, 6, 0, 0),
+        shiftID,
+        await db.get(year, month, day),
+    );
+    if (!data) return;
+
+    // Update database and day item
+    const rhythmShift = utils.calendar.calcShiftForDay(new Date(year, month, day));
+    const updatedData: types.db.Entry = {
+        year,
+        month,
+        date: day,
+        shift:
+            store.obj.get("shifts")!.find((shift) => {
+                return shift.id === data.shiftID;
+            }) || null,
+        note: data.note || "",
+    };
+
+    // Remove shift if it's a rhythm shift
+    if (!!updatedData.shift && !!rhythmShift && rhythmShift.id === updatedData.shift.id) {
+        updatedData.shift = null;
+    }
+
+    // Handle database add/put/delete
+    if (!!updatedData.note || !!updatedData.shift) {
+        console.warn("Add data to the database", updatedData);
+        db.put(updatedData).catch(() =>
+            db.add(updatedData!).catch((err) => alert(`Update database failed: ${err}`)),
+        );
+    } else {
+        console.warn("Remove data from the database", { year, month, day });
+        db.delete(year, month, day);
+    }
+
+    // Before re-rendering add the rhythm shift (again) if it's not already set
+    if (!updatedData.shift) updatedData.shift = rhythmShift;
+    updateDayItem(dayItem, updatedData);
 }
 
 function markWeekendItems(weekDays: Element[], days: Element[]): void {
@@ -200,4 +239,5 @@ function updateDayItem(dayItem: HTMLElement, entry: types.db.Entry): void {
     dayItem.setAttribute("data-year", entry.year.toString());
     dayItem.setAttribute("data-month", entry.month.toString());
     dayItem.setAttribute("data-date", entry.date.toString());
+    if (!!entry.shift) dayItem.setAttribute("data-shift-id", entry.shift.id.toString());
 }
