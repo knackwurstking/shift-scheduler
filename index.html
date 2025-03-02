@@ -129,57 +129,60 @@
                 </label>
 
                 <div class="ui-flex-grid-row" style="--justify: flex-end">
-                    <button class="cancel" color="secondary">Cancel</button>
+                    <button class="cancel" color="secondary" noformsubmit>Cancel</button>
                     <input type="submit" />
                 </div>
             </form>
         </dialog>
 
-        <!-- TODO: Style this dialog -->
         <dialog name="shift">
-            <form method="dialog" class="ui-debug">
+            <form method="dialog">
                 <div class="ui-flex-grid">
-                    <div class="ui-flex-grid-item">
-                        <label class="ui-flex justify-between ui-padding">
+                    <div class="ui-flex-grid-item" style="width: 100%">
+                        <label class="ui-flex justify-between align-center ui-padding">
                             Name (ex.: Night)
-                            <input class="name" type="text" />
-                        </label>
-                    </div>
-
-                    <div class="ui-flex-grid-item">
-                        <label class="ui-flex justify-between ui-padding">
-                            Short (ex.: N)
-                            <input class="short-name" type="text" />
-                        </label>
-                    </div>
-
-                    <div class="ui-flex-grid-item">
-                        <label class="ui-flex justify-between ui-padding">
-                            Pick a color
                             <input
-                                class="color-picker"
-                                style="width: 100%; min-width: 4rem"
-                                type="color"
+                                class="name"
+                                type="text"
+                                style="margin-left: var(--ui-spacing)"
                             />
                         </label>
                     </div>
 
-                    <div class="ui-flex-grid-item">
-                        <label class="ui-flex justify-between ui-padding">
+                    <div class="ui-flex-grid-item" style="width: 100%">
+                        <label class="ui-flex justify-between align-center ui-padding">
+                            Short (ex.: N)
+                            <input
+                                class="short-name"
+                                type="text"
+                                style="margin-left: var(--ui-spacing)"
+                            />
+                        </label>
+                    </div>
+
+                    <div class="ui-flex-grid-item" style="width: 100%">
+                        <label class="ui-flex justify-between align-center ui-padding">
+                            Pick a color
+                            <input class="color-picker" style="min-width: 4rem" type="color" />
+                        </label>
+                    </div>
+
+                    <div class="ui-flex-grid-item" style="width: 100%">
+                        <label class="ui-flex justify-between align-center ui-padding">
                             Disable color
                             <input class="default-color" type="checkbox" />
                         </label>
                     </div>
 
-                    <div class="ui-flex-grid-item">
-                        <label class="ui-flex justify-between ui-padding">
+                    <div class="ui-flex-grid-item" style="width: 100%">
+                        <label class="ui-flex justify-between align-center ui-padding">
                             Hide shift
                             <input class="hidden" type="checkbox" />
                         </label>
                     </div>
 
-                    <div class="ui-flex-grid-row" style="--justify: flex-end">
-                        <button class="cancel" color="secondary">Cancel</button>
+                    <div class="ui-flex-grid-row" style="--justify: flex-end; width: 100%">
+                        <button class="cancel" color="secondary" noformsubmit>Cancel</button>
                         <input type="submit" />
                     </div>
                 </div>
@@ -226,7 +229,7 @@
                     </div>
 
                     <div class="ui-flex-grid-row" style="--justify: flex-end">
-                        <button class="cancel" color="secondary">Cancel</button>
+                        <button class="cancel" color="secondary" noformsubmit>Cancel</button>
                         <input type="submit" />
                     </div>
                 </div>

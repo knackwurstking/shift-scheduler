@@ -2,6 +2,7 @@ export function open(date: string | number | Date): Promise<{ date: number } | n
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="date-picker"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
+        const cancelButton = form.querySelector<HTMLElement>(`button.cancel`)!;
         const monthInput = form.querySelector<HTMLInputElement>(`input[type="month"]`)!;
 
         switch (typeof date) {
@@ -24,6 +25,10 @@ export function open(date: string | number | Date): Promise<{ date: number } | n
         };
 
         dialog.onclose = () => resolve(result);
+        cancelButton.onclick = (e) => {
+            e.preventDefault();
+            dialog.close();
+        };
         dialog.showModal();
     });
 }

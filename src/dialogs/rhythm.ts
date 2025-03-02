@@ -7,6 +7,7 @@ export function open(
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="rhythm"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
+        const cancelButton = form.querySelector<HTMLElement>(`button.cancel`)!;
         const tbody = form.querySelector<HTMLElement>(`tbody`)!;
         const shiftsContainer = form.querySelector<HTMLElement>(`.shifts-container`)!;
 
@@ -76,6 +77,10 @@ export function open(
 
         const rhythmOriginal = rhythm;
         dialog.onclose = () => resolve(rhythmOriginal);
+        cancelButton.onclick = (e) => {
+            e.preventDefault();
+            dialog.close();
+        };
 
         form.onsubmit = () => {
             resolve(rhythm);

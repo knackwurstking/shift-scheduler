@@ -4,6 +4,7 @@ export function open(data: types.calendar.Shift | null): Promise<types.calendar.
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="shift"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
+        const cancelButton = form.querySelector<HTMLElement>(`button.cancel`)!;
         const inputName = form.querySelector<HTMLInputElement>(`input.name`)!;
         const inputShortName = form.querySelector<HTMLInputElement>(`input.short-name`)!;
         const inputColorPicker = form.querySelector<HTMLInputElement>(`input.color-picker`)!;
@@ -12,6 +13,10 @@ export function open(data: types.calendar.Shift | null): Promise<types.calendar.
 
         let result: types.calendar.Shift | null = null;
         dialog.onclose = () => resolve(result);
+        cancelButton.onclick = (e) => {
+            e.preventDefault();
+            dialog.close();
+        };
 
         form.onsubmit = (e) => {
             // Get the data, validate it, and update result
@@ -43,9 +48,9 @@ export function open(data: types.calendar.Shift | null): Promise<types.calendar.
         // Initialize the form with shift data
         inputName.value = data?.name || "";
         inputShortName.value = data?.shortName || "";
-        inputColorPicker.value = data?.color || "inherit";
+        inputColorPicker.value = data?.color || "#66FF00";
         checkboxDefaultColor.checked = !data?.color;
-        checkboxHidden.checked = !data?.visible;
+        checkboxHidden.checked = typeof data?.visible !== "boolean" ? false : !data.visible;
 
         // Initialize input handler for disabling or enabling stuff
         // Default Color:
@@ -64,6 +69,9 @@ export function open(data: types.calendar.Shift | null): Promise<types.calendar.
 
             checkboxDefaultColor.onchange!(e);
         };
+
+        checkboxDefaultColor.onchange!(new Event("change"));
+        checkboxHidden.onchange!(new Event("change"));
 
         dialog.showModal();
     });
