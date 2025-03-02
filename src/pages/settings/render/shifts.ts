@@ -151,18 +151,26 @@ export function article(): HTMLElement {
 
     renderShiftsTableSection();
 
-    const startDate = article.querySelector<HTMLInputElement>(
+    const startDateInput = article.querySelector<HTMLInputElement>(
         `section.start-date input[type="date"]`,
     )!;
 
-    startDate.value = new Date(store.obj.get("startDate")!).toDateString();
-    startDate.onchange = () => {
-        store.obj.set("startDate", new Date(startDate.value).getTime());
-    };
+    const startDate = store.obj.get("startDate")!;
+    if (!!startDate) {
+        const date = new Date();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        startDateInput.value = `${date.getFullYear()}-${month}-${day}`;
+        startDateInput.onchange = () => {
+            store.obj.set("startDate", new Date(startDateInput.value).getTime());
+        };
+    }
 
-    const editRhythm = article.querySelector<HTMLButtonElement>(`section.edit-rhythm button`)!;
+    const editRhythmButton = article.querySelector<HTMLButtonElement>(
+        `section.edit-rhythm button`,
+    )!;
 
-    editRhythm.onclick = async () => {
+    editRhythmButton.onclick = async () => {
         store.obj.set(
             "rhythm",
             await dialogs.rhythm.open(store.obj.get("rhythm")!, store.obj.get("shifts")!),
