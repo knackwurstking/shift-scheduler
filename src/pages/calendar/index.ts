@@ -201,22 +201,6 @@ template.innerHTML = html`
         class="edit-mode ui-flex-grid-row ui-auto-scroll-x ui-hide-scrollbar"
         style="--gap: 0.5rem"
     ></div>
-
-    <!-- Calendar Item Template -->
-
-    <template name="calendar-item-content">
-        <div class="item-content ui-flex-grid" style="--gap: 0.05rem">
-            <div class="week-days ui-flex-grid-row" class="week-days-row" gap="0.05rem">
-                <div class="week-day ui-flex-grid-item"></div>
-                <div class="week-day ui-flex-grid-item"></div>
-                <div class="week-day ui-flex-grid-item"></div>
-                <div class="week-day ui-flex-grid-item"></div>
-                <div class="week-day ui-flex-grid-item"></div>
-                <div class="week-day ui-flex-grid-item"></div>
-                <div class="week-day ui-flex-grid-item"></div>
-            </div>
-        </div>
-    </template>
 `;
 
 let appBarTitleBackup = "";

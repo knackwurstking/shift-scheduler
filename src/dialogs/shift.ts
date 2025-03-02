@@ -4,19 +4,21 @@ export function open(data: types.calendar.Shift | null): Promise<types.calendar.
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="shift"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
-        const cancelButton = form.querySelector<HTMLElement>(`button.cancel`)!;
+
         const inputName = form.querySelector<HTMLInputElement>(`input.name`)!;
         const inputShortName = form.querySelector<HTMLInputElement>(`input.short-name`)!;
         const inputColorPicker = form.querySelector<HTMLInputElement>(`input.color-picker`)!;
         const checkboxDefaultColor = form.querySelector<HTMLInputElement>(`input.default-color`)!;
         const checkboxHidden = form.querySelector<HTMLInputElement>(`input.hidden`)!;
 
-        let result: types.calendar.Shift | null = null;
-        dialog.onclose = () => resolve(result);
-        cancelButton.onclick = (e) => {
+        form.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
             dialog.close();
         };
+
+        let result: types.calendar.Shift | null = null;
+
+        dialog.onclose = () => resolve(result);
 
         form.onsubmit = (e) => {
             // Get the data, validate it, and update result
@@ -45,33 +47,35 @@ export function open(data: types.calendar.Shift | null): Promise<types.calendar.
             result = newData;
         };
 
-        // Initialize the form with shift data
-        inputName.value = data?.name || "";
-        inputShortName.value = data?.shortName || "";
-        inputColorPicker.value = data?.color || "#66FF00";
-        checkboxDefaultColor.checked = !data?.color;
-        checkboxHidden.checked = typeof data?.visible !== "boolean" ? false : !data.visible;
+        {
+            // Initialize the form with shift data
+            inputName.value = data?.name || "";
+            inputShortName.value = data?.shortName || "";
+            inputColorPicker.value = data?.color || "#66FF00";
+            checkboxDefaultColor.checked = !data?.color;
+            checkboxHidden.checked = typeof data?.visible !== "boolean" ? false : !data.visible;
 
-        // Initialize input handler for disabling or enabling stuff
-        // Default Color:
-        checkboxDefaultColor.onchange = () => {
-            inputColorPicker.disabled = checkboxDefaultColor.checked;
-            inputShortName.style.color = checkboxDefaultColor.checked
-                ? "inherit"
-                : inputColorPicker.value || "inherit";
-        };
+            // Initialize input handler for disabling or enabling stuff
+            // Default Color:
+            checkboxDefaultColor.onchange = () => {
+                inputColorPicker.disabled = checkboxDefaultColor.checked;
+                inputShortName.style.color = checkboxDefaultColor.checked
+                    ? "inherit"
+                    : inputColorPicker.value || "inherit";
+            };
 
-        // Hidden:
-        checkboxHidden.onchange = (e) => {
-            inputShortName.disabled = checkboxHidden.checked;
-            inputColorPicker.disabled = checkboxHidden.checked;
-            checkboxDefaultColor.disabled = checkboxHidden.checked;
+            // Hidden:
+            checkboxHidden.onchange = (e) => {
+                inputShortName.disabled = checkboxHidden.checked;
+                inputColorPicker.disabled = checkboxHidden.checked;
+                checkboxDefaultColor.disabled = checkboxHidden.checked;
 
-            checkboxDefaultColor.onchange!(e);
-        };
+                checkboxDefaultColor.onchange!(e);
+            };
 
-        checkboxDefaultColor.onchange!(new Event("change"));
-        checkboxHidden.onchange!(new Event("change"));
+            checkboxDefaultColor.onchange!(new Event("change"));
+            checkboxHidden.onchange!(new Event("change"));
+        }
 
         dialog.showModal();
     });

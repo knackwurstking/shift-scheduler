@@ -6,15 +6,28 @@ import * as store from "../../../lib/store";
 import * as utils from "../../../lib/utils";
 import * as types from "../../../types";
 
+const template = document.createElement("template");
+template.innerHTML = html`
+    <div class="item-content ui-flex-grid" style="--gap: 0.05rem">
+        <div class="week-days ui-flex-grid-row" class="week-days-row" gap="0.05rem">
+            <div class="week-day ui-flex-grid-item"></div>
+            <div class="week-day ui-flex-grid-item"></div>
+            <div class="week-day ui-flex-grid-item"></div>
+            <div class="week-day ui-flex-grid-item"></div>
+            <div class="week-day ui-flex-grid-item"></div>
+            <div class="week-day ui-flex-grid-item"></div>
+            <div class="week-day ui-flex-grid-item"></div>
+        </div>
+    </div>
+`;
+
 export const defaultWeekOrder = [0, 1, 2, 3, 4, 5, 6];
 export const defaultWeekDaysInOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export function create(year: number, month: number): DocumentFragment {
-    const fragment = document
-        .querySelector<HTMLTemplateElement>(`template[name="calendar-item-content"]`)!
-        .content.cloneNode(true) as DocumentFragment;
-
-    const itemContent = fragment.querySelector<HTMLElement>(`.item-content`)!;
+export function create(year: number, month: number): HTMLElement {
+    const itemContent = (
+        template.content.cloneNode(true) as HTMLElement
+    ).querySelector<HTMLElement>(`.item-content`)!;
 
     for (let y = 0; y < 6; y++) {
         const row = document.createElement("div");
@@ -28,11 +41,19 @@ export function create(year: number, month: number): DocumentFragment {
         }
     }
 
+    itemContent.onclick = async (e) => {
+        // Iter path and get the ".day" item if possible
+        const dayItem = (e.target as HTMLElement).closest(".day");
+        if (dayItem) return;
+
+        // TODO: Handle the click on the day item
+    };
+
     setTimeout(() => {
         update(itemContent, year, month);
     });
 
-    return fragment;
+    return itemContent;
 }
 
 export async function update(itemContent: HTMLElement, year: number, month: number): Promise<void> {
