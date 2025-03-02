@@ -1,6 +1,6 @@
 import * as types from "../types";
 
-export function open(data: types.calendar.Shift): Promise<types.calendar.Shift | null> {
+export function open(data: types.calendar.Shift | null): Promise<types.calendar.Shift | null> {
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="shift"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
@@ -16,7 +16,7 @@ export function open(data: types.calendar.Shift): Promise<types.calendar.Shift |
         form.onsubmit = (e) => {
             // Get the data, validate it, and update result
             const newData: types.calendar.Shift = {
-                id: data.id || new Date().getTime(),
+                id: data?.id || new Date().getTime(),
                 name: inputName.value,
                 shortName: inputShortName.value,
                 visible: !checkboxHidden.checked,
@@ -41,11 +41,11 @@ export function open(data: types.calendar.Shift): Promise<types.calendar.Shift |
         };
 
         // Initialize the form with shift data
-        inputName.value = data.name;
-        inputShortName.value = data.shortName;
-        inputColorPicker.value = data.color || "inherit";
-        checkboxDefaultColor.checked = !data.color;
-        checkboxHidden.checked = !data.visible;
+        inputName.value = data?.name || "";
+        inputShortName.value = data?.shortName || "";
+        inputColorPicker.value = data?.color || "inherit";
+        checkboxDefaultColor.checked = !data?.color;
+        checkboxHidden.checked = !data?.visible;
 
         // Initialize input handler for disabling or enabling stuff
         // Default Color:

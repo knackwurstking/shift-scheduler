@@ -23,7 +23,7 @@ const articleHTML = html`
             class="ui-flex-grid-item ui-flex justify-end"
             style="padding: var(--ui-spacing); width: 100%;"
         >
-            <button>Add a new shift</button>
+            <button class="add-shift">Add a new shift</button>
         </div>
 
         <template name="table-item">
@@ -130,6 +130,23 @@ export function article(): HTMLElement {
                 renderShiftsTableSection();
             };
         });
+
+        // Add "Add Shift" button handler
+        article.querySelector<HTMLButtonElement>(`section.shifts-table button.add-shift`)!.onclick =
+            async () => {
+                const data = await dialogs.shift.open(null);
+                if (!data) {
+                    return;
+                }
+
+                // Update store and and table item
+                store.obj.update("shifts", (shifts) => {
+                    shifts.push(data);
+                    return shifts;
+                });
+
+                renderShiftsTableSection();
+            };
     };
 
     renderShiftsTableSection();
