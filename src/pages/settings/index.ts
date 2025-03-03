@@ -25,7 +25,7 @@ export async function onMount() {
     routerTarget.appendChild(render.shifts.article());
     routerTarget.appendChild(document.createElement("br"));
 
-    routerTarget.appendChild(render.backup.article());
+    routerTarget.appendChild(render.backup.article(reload));
     routerTarget.appendChild(document.createElement("br"));
 
     routerTarget.appendChild(render.dbBrowser.article());
@@ -49,4 +49,9 @@ function setupAppBarItems() {
         back.style.display = "none";
         back.onclick = appBarBackButtonBackup;
     });
+}
+
+async function reload() {
+    await onDestroy();
+    await onMount();
 }

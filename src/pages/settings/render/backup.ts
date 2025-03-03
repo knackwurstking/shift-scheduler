@@ -19,7 +19,7 @@ const articleHTML = html`
     </section>
 `;
 
-export function article(): HTMLElement {
+export function article(reRenderCallback: () => Promise<void> | void): HTMLElement {
     const article = document.createElement("article");
     article.className = "backup";
     article.innerHTML = articleHTML;
@@ -41,7 +41,7 @@ export function article(): HTMLElement {
 
             const reader = new FileReader();
 
-            reader.onload = async () => await parseJSON(reader.result);
+            reader.onload = async () => await parseJSON(reader.result, reRenderCallback);
 
             reader.onerror = () => {
                 alert(`Import data: read file failed: ${reader.error}`);
@@ -87,7 +87,10 @@ export function article(): HTMLElement {
     return article;
 }
 
-async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
+async function parseJSON(
+    result: string | ArrayBuffer | null,
+    reRenderCallback: () => Promise<void> | void,
+): Promise<void> {
     if (typeof result !== "string") return alert("Invalid data!");
 
     // Parsing JSON
@@ -120,4 +123,6 @@ async function parseJSON(result: string | ArrayBuffer | null): Promise<void> {
     for (const entry of backupV3.indexedDB.data || []) {
         db.add(entry).catch(() => db.put(entry));
     }
+
+    setTimeout(reRenderCallback);
 }
