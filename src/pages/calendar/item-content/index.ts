@@ -102,23 +102,34 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
 
 async function itemContentClickHandler(e: Event) {
     // Iter path and get the ".day" item if possible
-    const dayItem: HTMLElement | null = (e.target as HTMLElement).closest(".day");
-    if (!dayItem) return;
+    const item: HTMLElement | null = (e.target as HTMLElement).closest(".day");
+    if (!item) return;
 
-    // TODO: Check if editMode is active before opening the dialog
+    const year = parseInt(item.getAttribute("data-year")!, 10);
+    const month = parseInt(item.getAttribute("data-month")!, 10);
+    const day = parseInt(item.getAttribute("data-date")!, 10);
+    const shiftID = parseInt(item.getAttribute("data-shift-id") || "0", 10);
 
-    // Handle the click on the day item
-    const year = parseInt(dayItem.getAttribute("data-year")!, 10);
-    const month = parseInt(dayItem.getAttribute("data-month")!, 10);
-    const day = parseInt(dayItem.getAttribute("data-date")!, 10);
-    const shiftID = parseInt(dayItem.getAttribute("data-shift-id") || "0", 10);
+    const editMode = store.obj.get("editMode")!;
 
-    // Open day daialog
-    const data = await dialogs.day.open(
-        new Date(year, month, day, 6, 0, 0),
-        shiftID,
-        await db.get(year, month, day),
-    );
+    let data: { shiftID: number; note: string } | null;
+
+    if (!editMode.open) {
+        // Open (day) Dialog
+        data = await dialogs.day.open(
+            new Date(year, month, day, 6, 0, 0),
+            shiftID,
+            await db.get(year, month, day),
+        );
+    } else {
+        // Edit Mode
+        const dbEntry = await db.get(year, month, day);
+        data = {
+            shiftID: !editMode.active ? 0 : editMode.active,
+            note: dbEntry?.note || "",
+        };
+    }
+
     if (!data) return;
 
     // Update database and day item
@@ -152,7 +163,7 @@ async function itemContentClickHandler(e: Event) {
 
     // Before re-rendering add the rhythm shift (again) if it's not already set
     if (!updatedData.shift) updatedData.shift = rhythmShift;
-    updateDayItem(dayItem, updatedData);
+    updateDayItem(item, updatedData);
 }
 
 function markWeekendItems(weekDays: Element[], days: Element[]): void {

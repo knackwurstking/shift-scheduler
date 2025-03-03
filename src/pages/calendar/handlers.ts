@@ -68,7 +68,7 @@ export async function swipe(direction: Direction): Promise<void> {
     }
 }
 
-function renderShiftCards(container: HTMLElement, active: types.calendar.Shift | null): void {
+function renderShiftCards(container: HTMLElement, active: number): void {
     const template: HTMLTemplateElement = document.querySelector(`template[name="shift-card"]`)!;
 
     (store.obj.get("shifts") || []).forEach((shift) => {
@@ -76,8 +76,9 @@ function renderShiftCards(container: HTMLElement, active: types.calendar.Shift |
             ".shift-card",
         )!;
 
-        if (!!active && active.id === shift.id) {
+        if (active === shift.id) {
             card.setAttribute("active", "");
+            card.scrollIntoView();
         } else {
             card.removeAttribute("active");
         }
@@ -96,7 +97,7 @@ function renderShiftCards(container: HTMLElement, active: types.calendar.Shift |
             }
 
             store.obj.update("editMode", (data) => {
-                data.active = card.hasAttribute("active") ? shift : null;
+                data.active = card.hasAttribute("active") ? shift.id : 0;
                 return data;
             });
         };

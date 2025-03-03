@@ -16,5 +16,5 @@ export type StartDate = number;
 
 export interface EditMode {
     open: boolean;
-    active: Shift | null;
+    active: number;
 }
