@@ -3,6 +3,9 @@ PWA_URL=https://knackwurstking.github.io/shift-scheduler.github.io
 clean:
 	@git clean -fxd
 
+init:
+	@npm install
+
 dev:
 	@npm run dev
 
