@@ -21,9 +21,6 @@ pwa-init:
 pwa-build:
 	@npx bubblewrap build
 
-cap-android-init:
-	@npm install @capacitor/cli @capacitor/core @capacitor/android
-
 cap-android-build:
 	@npx cap sync && npx cap build android
 
