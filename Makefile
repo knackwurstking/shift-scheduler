@@ -1,3 +1,5 @@
+PWA_URL=https://knackwurstking.github.io/shift-scheduler.github.io
+
 clean:
 	@git clean -fxd
 
@@ -12,7 +14,8 @@ generate-assets:
 	@npx pwa-assets-generator
 
 pwa-init:
-	@npx bubblewrap init --manifest=https://knackwurstking.github.io/shift-scheduler.github.io/manifest.webmanifest
+	@npx bubblewrap init --manifest=${PWA_URL}/manifest.webmanifest
 
 pwa-build:
 	@npx bubblewrap build
+
