@@ -21,4 +21,3 @@ pwa-init:
 
 pwa-build:
 	@npx bubblewrap build
-
