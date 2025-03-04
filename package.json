@@ -4,15 +4,12 @@
     "version": "3.0.0",
     "type": "module",
     "scripts": {
-        "clean": "git clean -fxd",
-        "dev": "vite --host",
-        "build": "tsc && npm test && vite build --minify -c vite.config.js --emptyOutDir",
         "preview": "vite preview --host",
-        "generate-assets": "npx pwa-assets-generator",
-        "pwa-init": "bubblewrap init --manifest=https://knackwurstking.github.io/shift-scheduler.github.io/manifest.webmanifest",
-        "pwa-build": "bubblewrap build",
-        "test-init": "ts-jest init:config",
-        "test": "jest"
+        "dev": "vite --host",
+        "check:test": "jest",
+        "chec:tsc": "tsc",
+        "check": "npm run tsc && npm test",
+        "build": "vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
         "@types/node": "^22.13.4",
