@@ -7,19 +7,21 @@
         "preview": "vite preview --host",
         "dev": "vite --host",
         "check:test": "jest",
-        "chec:tsc": "tsc",
+        "check:tsc": "tsc",
         "check": "npm run tsc && npm test",
         "build": "vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
+        "@capacitor/cli": "^7.0.1",
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
         "bootstrap-icons": "^1.11.3",
         "jest": "^29.7.0",
         "ts-jest": "^29.2.6",
         "typescript": "~5.7.2",
-        "ui": "file:../ui",
         "vite": "^6.1.0",
-        "vite-plugin-pwa": "^0.21.1"
+        "vite-plugin-pwa": "^0.21.1",
+        "@capacitor/core": "^7.0.1",
+        "ui": "file:../ui"
     }
 }
