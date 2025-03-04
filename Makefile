@@ -10,8 +10,7 @@ dev:
 	@npm run dev
 
 build:
-	@npm run check && \
-        npm run build
+	@npm run check && npm run build
 
 generate-assets:
 	@npx pwa-assets-generator
@@ -21,3 +20,12 @@ pwa-init:
 
 pwa-build:
 	@npx bubblewrap build
+
+cap-android-init:
+	@npm install @capacitor/cli @capacitor/core @capacitor/android
+
+cap-android-build:
+	@npx cap sync && npx cap build android
+
+cap-android-run:
+	@npx cap run android
