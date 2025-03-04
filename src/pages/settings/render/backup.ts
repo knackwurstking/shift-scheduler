@@ -1,3 +1,5 @@
+import { Share } from "@capacitor/share";
+
 import db from "../../../lib/db";
 
 import { html } from "../../../lib/utils";
@@ -71,17 +73,40 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
             type: "octet/stream",
         });
 
-        const anchor = document.createElement("a");
+        // Instead of an anchor element, use the Share API or the Capacitor Share
+        // TODO: Test this shit
+        try {
+            try {
+                await Share.share({
+                    title: "Shift Scheduler Backup",
+                    text: "Backup data for Shift Scheduler",
+                    url: window.URL.createObjectURL(blob),
+                });
+            } catch (err) {
+                console.warn(`Share with Capacitor failed: ${err}`);
 
-        anchor.setAttribute("href", window.URL.createObjectURL(blob));
+                await navigator.share({
+                    title: "Shift Scheduler Backup",
+                    text: "Backup data for Shift Scheduler",
+                    url: window.URL.createObjectURL(blob),
+                });
+            }
+        } catch (err) {
+            console.warn(`Share with Navigator failed: ${err}`);
 
-        const today = new Date();
-        const month = (today.getMonth() + 1).toString().padStart(2, "0");
-        const date = today.getDate().toString().padStart(2, "0");
-        const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
-        anchor.setAttribute("download", fileName);
+            // NOTE: Fallback...
+            const anchor = document.createElement("a");
 
-        anchor.click();
+            anchor.setAttribute("href", window.URL.createObjectURL(blob));
+
+            const today = new Date();
+            const month = (today.getMonth() + 1).toString().padStart(2, "0");
+            const date = today.getDate().toString().padStart(2, "0");
+            const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
+            anchor.setAttribute("download", fileName);
+
+            anchor.click();
+        }
     };
 
     return article;
