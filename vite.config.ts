@@ -3,22 +3,22 @@ import { IconResource, ManifestOptions, VitePWA } from "vite-plugin-pwa";
 
 const icons: IconResource[] = [
     {
-        src: "/icons/pwa-64x64.png",
+        src: "/assets/icons/pwa-64x64.png",
         sizes: "64x64",
         type: "image/png",
     },
     {
-        src: "/icons/pwa-192x192.png",
+        src: "/assets/icons/pwa-192x192.png",
         sizes: "192x192",
         type: "image/png",
     },
     {
-        src: "/icons/pwa-512x512.png",
+        src: "/assets/icons/pwa-512x512.png",
         sizes: "512x512",
         type: "image/png",
     },
     {
-        src: "/icons/maskable-icon-512x512.png",
+        src: "/assets/icons/maskable-icon-512x512.png",
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable",
