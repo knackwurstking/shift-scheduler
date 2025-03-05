@@ -46,8 +46,8 @@ export default defineConfig({
             strategies: "generateSW",
             registerType: "prompt",
             includeAssets: [
-                "/assets/fonts/bootstrap-icons.woff",
-                "/assets/fonts/bootstrap-icons.woff2",
+                "assets/fonts/bootstrap-icons.woff",
+                "assets/fonts/bootstrap-icons.woff2",
             ],
             manifest,
         }),
