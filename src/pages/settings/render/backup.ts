@@ -1,5 +1,3 @@
-import { Share } from "@capacitor/share";
-
 import db from "../../../lib/db";
 
 import { html } from "../../../lib/utils";
@@ -70,31 +68,17 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
         };
 
         const blob = new Blob([JSON.stringify(data)], {
-            type: "octet/stream",
+            type: "plain/text",
         });
 
-        // Instead of an anchor element, use the Share API or the Capacitor Share
-        // TODO: Test this shit
         try {
-            try {
-                await Share.share({
-                    title: "Shift Scheduler Backup",
-                    text: "Backup data for Shift Scheduler",
-                    url: window.URL.createObjectURL(blob),
-                });
-            } catch (err) {
-                console.warn(`Share with Capacitor failed: ${err}`);
-
-                await navigator.share({
-                    title: "Shift Scheduler Backup",
-                    text: "Backup data for Shift Scheduler",
-                    url: window.URL.createObjectURL(blob),
-                });
-            }
+            await navigator.share({
+                title: "Shift Scheduler Backup",
+                text: "Backup of your Shift Scheduler data",
+                files: [new File([blob], "shift-scheduler-backup.json")],
+            });
         } catch (err) {
-            console.warn(`Share with Navigator failed: ${err}`);
-
-            // NOTE: Fallback...
+            console.error(err);
             const anchor = document.createElement("a");
 
             anchor.setAttribute("href", window.URL.createObjectURL(blob));
