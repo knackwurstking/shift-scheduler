@@ -6,7 +6,7 @@ const articleHTML = html`
     <section>
         <label class="ui-flex justify-between align-center" style="padding: var(--ui-spacing)">
             Edit entries
-            <button>Browse</button>
+            <button disabled>Browse</button>
         </label>
     </section>
 `;
