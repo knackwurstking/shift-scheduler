@@ -71,27 +71,25 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
             type: "plain/text",
         });
 
+        const today = new Date();
+        const month = (today.getMonth() + 1).toString().padStart(2, "0");
+        const date = today.getDate().toString().padStart(2, "0");
+        const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
+
         try {
             await navigator.share({
                 title: "Shift Scheduler Backup",
                 text: "Backup of your Shift Scheduler data",
                 files: [
-                    new File([blob], "shift-scheduler-backup.json", {
+                    new File([blob], fileName, {
                         type: "plain/text",
                     }),
                 ],
             });
         } catch {
             const anchor = document.createElement("a");
-
             anchor.setAttribute("href", window.URL.createObjectURL(blob));
-
-            const today = new Date();
-            const month = (today.getMonth() + 1).toString().padStart(2, "0");
-            const date = today.getDate().toString().padStart(2, "0");
-            const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
             anchor.setAttribute("download", fileName);
-
             anchor.click();
         }
     };
