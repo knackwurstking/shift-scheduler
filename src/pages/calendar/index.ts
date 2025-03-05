@@ -281,7 +281,7 @@ function setupAppBarItems() {
     printerButton.style.display = "inline-flex";
     settingsButton.style.display = "inline-flex";
 
-    // date-picker handler
+    // app-bar: date-picker handler
     datePickerButton.onclick = async () => {
         const data = await dialogs.datePicker.open(store.obj.get("datePicker")!);
         if (!data) return;
@@ -289,12 +289,12 @@ function setupAppBarItems() {
         store.obj.set("datePicker", data.date);
     };
 
-    // today handler
+    // app-bar: today handler
     todayButton.onclick = async () => {
         store.obj.set("datePicker", new Date().getTime());
     };
 
-    // edit mode button
+    // app-bar: edit mode button
     editButton.onclick = async () => {
         store.obj.update("editMode", (data) => {
             data.open = !data.open;
@@ -302,9 +302,10 @@ function setupAppBarItems() {
         });
     };
 
+    // app-bar: printer handler
     // TODO: Setup "printerButton" app-bar (icon button) handlers
 
-    // handle today [disabled] attribute
+    // app-bar: handle today [disabled] attribute
     cleanup.push(
         store.obj.listen(
             "datePicker",
