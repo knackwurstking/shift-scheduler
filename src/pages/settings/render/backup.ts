@@ -75,10 +75,13 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
             await navigator.share({
                 title: "Shift Scheduler Backup",
                 text: "Backup of your Shift Scheduler data",
-                files: [new File([blob], "shift-scheduler-backup.json")],
+                files: [
+                    new File([blob], "shift-scheduler-backup.json", {
+                        type: "plain/text",
+                    }),
+                ],
             });
-        } catch (err) {
-            console.error(err);
+        } catch {
             const anchor = document.createElement("a");
 
             anchor.setAttribute("href", window.URL.createObjectURL(blob));
