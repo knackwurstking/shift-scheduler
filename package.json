@@ -6,9 +6,9 @@
     "scripts": {
         "preview": "vite preview --host",
         "dev": "vite --host",
-        "check:test": "jest",
+        "test": "jest",
         "check:tsc": "tsc",
-        "check": "npm run tsc && npm test",
+        "check": "npm run check:tsc && npm test",
         "build": "vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
