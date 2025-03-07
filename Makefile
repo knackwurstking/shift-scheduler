@@ -21,14 +21,14 @@ pwa-init:
 pwa-build:
 	npx bubblewrap build
 
-cap-sync-android:
+android-sync:
 	npx cap sync android
 
-cap-build-android:
+android-build:
 	npx cap build android
 
-cap-run-android:
+android-run:
 	npx cap build android
 
-cap-open-android:
+android-open:
 	npx cap open android
