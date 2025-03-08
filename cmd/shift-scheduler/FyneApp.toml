@@ -1,0 +1,6 @@
+[Details]
+Icon = "./icon.png"
+Name = "Shift Scheduler"
+ID = "knackwurstking.fyne.shiftscheduler"
+Version = "0.0.1"
+Build = 3
