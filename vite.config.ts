@@ -40,13 +40,6 @@ const manifest: Partial<ManifestOptions> = {
     publicPath: "/shift-scheduler.github.io",
 };
 
-let base = "/shift-scheduler.github.io/";
-let outDir = "../shift-scheduler.github.io/";
-if (process.env.MODE === "android") {
-    base = "/";
-    outDir = "./android-dist/";
-}
-
 export default defineConfig({
     plugins: [
         VitePWA({
@@ -60,10 +53,10 @@ export default defineConfig({
         }),
     ],
     clearScreen: false,
-    base,
+    base: "/shift-scheduler.github.io/",
 
     build: {
-        outDir,
+        outDir: "../shift-scheduler.github.io/",
     },
 
     define: {

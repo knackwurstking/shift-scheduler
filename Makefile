@@ -10,25 +10,7 @@ dev:
 	npm run dev
 
 build:
-	npm run check && npm run build:pwa && npm run build:android
+	npm run check && npm run build
 
 generate-assets:
 	npx pwa-assets-generator
-
-pwa-init:
-	npx bubblewrap init --manifest=${PWA_URL}/manifest.webmanifest
-
-pwa-build:
-	npx bubblewrap build
-
-android-sync:
-	npx cap sync android
-
-android-build:
-	npx cap build android
-
-android-run:
-	npx cap build android
-
-android-open:
-	npx cap open android

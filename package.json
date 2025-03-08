@@ -9,8 +9,7 @@
         "test": "jest",
         "check:tsc": "tsc",
         "check": "npm run check:tsc && npm test",
-        "build:android": "MODE=android vite build --minify -c vite.config.js --emptyOutDir",
-        "build:pwa": "MODE=pwa vite build --minify -c vite.config.js --emptyOutDir"
+        "build": "vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
         "@capacitor/android": "^7.0.1",
