@@ -58,8 +58,4 @@ export default defineConfig({
     build: {
         outDir: "../shift-scheduler.github.io/",
     },
-
-    define: {
-        "process.env.MODE": process.env.MODE,
-    },
 });
