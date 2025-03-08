@@ -3,7 +3,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
     appId: "knackwurstking.shiftscheduler",
     appName: "shift-scheduler",
-    webDir: "android-dist",
+    webDir: "../shift-scheduler.github.io/",
 };
 
 export default config;
