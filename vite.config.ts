@@ -67,6 +67,6 @@ export default defineConfig({
     },
 
     define: {
-        "process.env.MODE": "pwa",
+        "process.env.MODE": process.env.MODE,
     },
 });
