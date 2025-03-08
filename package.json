@@ -12,6 +12,7 @@
         "build": "vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
+        "@capacitor/share": "^7.0.0",
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
         "bootstrap-icons": "^1.11.3",
