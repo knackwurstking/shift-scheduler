@@ -1,3 +1,5 @@
+import { Share } from "@capacitor/share";
+
 import db from "../../../lib/db";
 
 import { html } from "../../../lib/utils";
@@ -77,14 +79,10 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
         const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
 
         try {
-            await navigator.share({
+            await Share.share({
                 title: "Shift Scheduler Backup",
                 text: "Backup of your Shift Scheduler data",
-                files: [
-                    new File([blob], fileName, {
-                        type: "plain/text",
-                    }),
-                ],
+                url: window.URL.createObjectURL(blob),
             });
         } catch {
             const anchor = document.createElement("a");
