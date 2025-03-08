@@ -12,6 +12,9 @@
         "build": "vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
+        "@capacitor/android": "^7.0.1",
+        "@capacitor/cli": "^7.0.1",
+        "@capacitor/core": "^7.0.1",
         "@capacitor/share": "^7.0.0",
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
