@@ -4,12 +4,13 @@
     "version": "3.0.0",
     "type": "module",
     "scripts": {
-        "preview": "vite preview --host",
-        "dev": "vite --host",
+        "preview": "vite preview --host -c vite.pwa.config.js",
+        "dev": "vite --host -c vite.pwa.config.js",
         "test": "jest",
         "check:tsc": "tsc",
         "check": "npm run check:tsc && npm test",
-        "build": "vite build --minify -c vite.config.js --emptyOutDir"
+        "build:android": "MODE=android vite build --minify -c vite.config.js --emptyOutDir",
+        "build:pwa": "MODE=pwa vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
         "@capacitor/android": "^7.0.1",

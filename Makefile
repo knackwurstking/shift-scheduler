@@ -10,7 +10,7 @@ dev:
 	npm run dev
 
 build:
-	npm run check && npm run build
+	npm run check && npm run build:pwa && npm run build:android
 
 generate-assets:
 	npx pwa-assets-generator
