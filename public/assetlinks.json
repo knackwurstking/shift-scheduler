@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "knackwurstking.twa.shiftscheduler",
+        "sha256_cert_fingerprints": ["48:E1:F1:92:5F:76:9A:09:D9:A0:99:2C:7C:25:BD:AD:BA:C4:53:F3:C4:0B:92:28:27:EF:69:5B:30:7A:D4:F5"]
+      }
+    }]

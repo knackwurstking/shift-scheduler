@@ -48,6 +48,7 @@ export default defineConfig({
             includeAssets: [
                 "assets/fonts/bootstrap-icons.woff",
                 "assets/fonts/bootstrap-icons.woff2",
+                "assetlinks.json",
             ],
             manifest,
         }),
