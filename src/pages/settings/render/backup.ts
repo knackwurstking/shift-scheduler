@@ -1,3 +1,4 @@
+import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
 import db from "../../../lib/db";
@@ -69,26 +70,42 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
             },
         };
 
-        const blob = new Blob([JSON.stringify(data)], {
-            type: "plain/text",
-        });
-
         const today = new Date();
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const date = today.getDate().toString().padStart(2, "0");
         const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
 
-        try {
-            await Share.share({
+        if (process.env.MODE === "android") {
+            // TODO: ...
+            Share.share({
                 title: "Shift Scheduler Backup",
                 text: "Backup of your Shift Scheduler data",
-                url: window.URL.createObjectURL(blob),
+                url: (
+                    await Filesystem.writeFile({
+                        path: fileName,
+                        data: JSON.stringify(data),
+                        encoding: Encoding.UTF8,
+                        directory: Directory.Cache,
+                    })
+                ).uri,
             });
-        } catch {
-            const anchor = document.createElement("a");
-            anchor.setAttribute("href", window.URL.createObjectURL(blob));
-            anchor.setAttribute("download", fileName);
-            anchor.click();
+        } else {
+            const blob = new Blob([JSON.stringify(data)], {
+                type: "plain/text",
+            });
+
+            try {
+                await navigator.share({
+                    title: "Shift Scheduler Backup",
+                    text: "Backup of your Shift Scheduler data",
+                    url: window.URL.createObjectURL(blob),
+                });
+            } catch {
+                const anchor = document.createElement("a");
+                anchor.setAttribute("href", window.URL.createObjectURL(blob));
+                anchor.setAttribute("download", fileName);
+                anchor.click();
+            }
         }
     };
 

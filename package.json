@@ -10,12 +10,13 @@
         "check:tsc": "tsc",
         "check": "npm run check:tsc && npm test",
         "build:github": "PWA=true MODE=github vite build --minify -c vite.config.js --emptyOutDir",
-        "build:android": "vite build --minify -c vite.config.js --emptyOutDir"
+        "build:android": "PWA=false MODE=android vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
         "@capacitor/android": "^7.0.1",
         "@capacitor/cli": "^7.0.1",
         "@capacitor/core": "^7.0.1",
+        "@capacitor/filesystem": "^7.0.0",
         "@capacitor/share": "^7.0.0",
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
