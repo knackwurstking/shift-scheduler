@@ -107,12 +107,12 @@ export function article(): HTMLElement {
 
                 // Update store and and table item
                 store.obj.update("shifts", (shifts) => {
-                    return shifts.map((s) => {
-                        if (s.id === shift.id) {
-                            return shift;
+                    return shifts.map((shift) => {
+                        if (shift.id === data.id) {
+                            return data;
                         }
 
-                        return s;
+                        return shift;
                     });
                 });
 
