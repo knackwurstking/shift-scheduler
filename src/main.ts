@@ -6,7 +6,7 @@ import { registerSW } from "virtual:pwa-register";
 import db from "./lib/db";
 import * as pages from "./pages";
 
-console.debug({ PWA: process.env.PWA });
+console.debug({ PWA: process.env.PWA, MODE: process.env.MODE });
 if (process.env.PWA) {
     console.debug("PWA updater registered");
     const updateSW = registerSW({

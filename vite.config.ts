@@ -60,6 +60,7 @@ export default defineConfig({
     },
 
     define: {
-        "process.env.PWA": process.env.PWA || "false",
+        "process.env.PWA": process.env.PWA || false,
+        "process.env.MODE": JSON.stringify(process.env.MODE),
     },
 });
