@@ -97,7 +97,7 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
                 await navigator.share({
                     title: "Shift Scheduler Backup",
                     text: "Backup of your Shift Scheduler data",
-                    files: [new File([blob], fileName)],
+                    files: [new File([blob], fileName, { type: "plain/text" })],
                 });
             } catch {
                 const anchor = document.createElement("a");
