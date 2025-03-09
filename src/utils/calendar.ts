@@ -1,5 +1,5 @@
-import * as types from "../../types";
-import * as store from "../store";
+import { store } from "../globals";
+import * as types from "../types";
 
 export async function getDataForDays(
     size: number,

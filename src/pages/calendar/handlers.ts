@@ -1,7 +1,7 @@
-import * as store from "../../lib/store";
+import { store } from "../../globals";
 import * as types from "../../types";
 
-import * as itemContent from "./item-content/";
+import * as components from "./components";
 import { Direction } from "./lib/swipe-handler";
 
 export async function datePicker(dateString: number): Promise<void> {
@@ -11,7 +11,7 @@ export async function datePicker(dateString: number): Promise<void> {
     Array.from(document.querySelector(`.item-container`)!.children).forEach(
         // Update item-container > item
         async (item) => {
-            itemContent.update(
+            components.itemContent.update(
                 item.querySelector(`.item-content`)!,
                 date.getFullYear(),
                 date.getMonth(),

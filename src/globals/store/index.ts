@@ -1,7 +1,8 @@
 import * as ui from "ui";
 
 import * as types from "../../types";
-import * as constants from "../../constants";
+
+import * as constants from "../constants";
 
 export type ShiftSchedulerStore = ui.Store<{
     datePicker: number;

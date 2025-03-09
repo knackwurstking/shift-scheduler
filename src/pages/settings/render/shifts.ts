@@ -1,7 +1,6 @@
-import { html } from "../../../lib/utils";
-
 import * as dialogs from "../../../dialogs";
-import * as store from "../../../lib/store";
+import { store } from "../../../globals";
+import { html } from "../../../utils";
 
 const articleHTML = html`
     <h4>Shift Settings</h4>

@@ -1,9 +1,9 @@
-import { describe, test, expect } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 
-import { isBackupV3, isBackupV2, isBackupV1, convertV1, convertV2 } from "./backup-utils";
-import { BackupV3, BackupV2, BackupV1 } from "../../../types/backup";
+import { constants } from "../../../globals";
+import { BackupV1, BackupV2, BackupV3 } from "../../../types/backup";
 
-import * as constants from "../../../constants";
+import { convertV1, convertV2, isBackupV1, isBackupV2, isBackupV3 } from "./backup-utils";
 
 describe("pages -> settings -> backup-utils", () => {
     test("isBackupV3", () => {

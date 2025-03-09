@@ -1,6 +1,6 @@
 import * as ui from "ui";
 
-import * as utils from "../../lib/utils";
+import * as utils from "../../utils";
 
 import * as render from "./render";
 

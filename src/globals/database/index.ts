@@ -1,5 +1,6 @@
 import * as types from "../../types";
-import * as utils from "../utils";
+
+import * as validate from "./validate.ts";
 
 export class DB {
     public version: number;
@@ -187,12 +188,10 @@ function validateV1(entry: types.db.Entry) {
     }
 
     if (entry.shift !== null) {
-        if (!utils.validate.shift(entry.shift)) {
+        if (!validate.shift(entry.shift)) {
             return false;
         }
     }
 
     return true;
 }
-
-export default new DB("shift-scheduler", 1);

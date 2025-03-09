@@ -1,12 +1,10 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import db from "../../../lib/db";
-
-import { html } from "../../../lib/utils";
-
-import * as store from "../../../lib/store";
+import * as globals from "../../../globals";
 import * as types from "../../../types";
+import { html } from "../../../utils";
+
 import * as backupUtils from "./backup-utils";
 
 const articleHTML = html`
@@ -59,14 +57,14 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
     exportButton.onclick = async () => {
         const data: types.backup.BackupV3 = {
             // Create the backup object
-            weekStart: store.obj.get("weekStart")!,
-            shifts: store.obj.get("shifts")!,
-            rhythm: store.obj.get("rhythm")!,
-            startDate: store.obj.get("startDate")!,
-            version: store.obj.get("version")!,
+            weekStart: globals.store.obj.get("weekStart")!,
+            shifts: globals.store.obj.get("shifts")!,
+            rhythm: globals.store.obj.get("rhythm")!,
+            startDate: globals.store.obj.get("startDate")!,
+            version: globals.store.obj.get("version")!,
             indexedDB: {
-                version: db.version,
-                data: await db.getAll(),
+                version: globals.db.version,
+                data: await globals.db.getAll(),
             },
         };
 
@@ -137,14 +135,14 @@ async function parseJSON(
     }
 
     // Initialize
-    store.obj.set("shifts", backupV3.shifts);
-    store.obj.set("rhythm", backupV3.rhythm);
-    store.obj.set("startDate", backupV3.startDate);
-    store.obj.set("weekStart", backupV3.weekStart);
+    globals.store.obj.set("shifts", backupV3.shifts);
+    globals.store.obj.set("rhythm", backupV3.rhythm);
+    globals.store.obj.set("startDate", backupV3.startDate);
+    globals.store.obj.set("weekStart", backupV3.weekStart);
 
-    await db.deleteAll();
+    await globals.db.deleteAll();
     for (const entry of backupV3.indexedDB.data || []) {
-        db.add(entry).catch(() => db.put(entry));
+        globals.db.add(entry).catch(() => globals.db.put(entry));
     }
 
     setTimeout(reRenderCallback);

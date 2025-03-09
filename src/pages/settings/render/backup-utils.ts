@@ -1,4 +1,4 @@
-import * as constants from "../../../constants";
+import { constants } from "../../../globals";
 import * as types from "../../../types";
 
 export function isBackupV1(data: any): boolean {

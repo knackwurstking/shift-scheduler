@@ -1,15 +1,15 @@
 import * as ui from "ui";
 
-import * as dialogs from "../../dialogs";
-import * as store from "../../lib/store";
-import * as utils from "../../lib/utils";
+import { store } from "../../globals";
+import * as utils from "../../utils";
+import { html } from "../../utils";
 
-import { html } from "../../lib/utils";
+import * as dialogs from "./dialogs";
 
 import { SwipeHandler } from "./lib/swipe-handler";
 
+import * as components from "./components";
 import * as handlers from "./handlers";
-import * as itemContent from "./item-content";
 
 const template = document.createElement("template");
 template.innerHTML = html`
@@ -252,7 +252,7 @@ function render() {
 
     Array.from(document.querySelector(`.item-container`)!.children)!.forEach((item) => {
         item.innerHTML = "";
-        item.appendChild(itemContent.create(date.getFullYear(), date.getMonth()));
+        item.appendChild(components.itemContent.create(date.getFullYear(), date.getMonth()));
     });
 }
 
@@ -303,7 +303,10 @@ function setupAppBarItems() {
     };
 
     // app-bar: printer handler
-    // TODO: Setup "printerButton" app-bar (icon button) handlers
+    printerButton.onclick = async () => {
+        // TODO: Setup "printerButton" app-bar (icon button) handlers
+        await dialogs.calendarPrint.open();
+    };
 
     // app-bar: handle today [disabled] attribute
     cleanup.push(

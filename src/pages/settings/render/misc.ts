@@ -1,6 +1,5 @@
-import { html } from "../../../lib/utils";
-
-import * as store from "../../../lib/store";
+import { store } from "../../../globals";
+import { html } from "../../../utils";
 
 const articleHTML = html`
     <h4>Miscellaneous</h4>

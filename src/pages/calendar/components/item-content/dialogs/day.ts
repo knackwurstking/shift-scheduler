@@ -1,5 +1,5 @@
-import * as store from "../lib/store";
-import * as types from "../types";
+import * as globals from "../../../../../globals";
+import * as types from "../../../../../types";
 
 export function open(
     date: Date,
@@ -41,7 +41,7 @@ export function open(
             while (shiftSelect.children.length > 1) {
                 shiftSelect.removeChild(shiftSelect.lastChild!);
             }
-            store.obj.get("shifts")!.forEach((shift) => {
+            globals.store.obj.get("shifts")!.forEach((shift) => {
                 const option = document.createElement("option");
                 option.value = shift.id.toString();
                 option.innerText = shift.name || shift.shortName;

@@ -1,11 +1,9 @@
-import { html } from "../../../lib/utils";
+import * as globals from "../../../../globals";
+import * as types from "../../../../types";
+import * as utils from "../../../../utils";
+import { html } from "../../../../utils";
 
-import db from "../../../lib/db";
-
-import * as store from "../../../lib/store";
-import * as utils from "../../../lib/utils";
-import * as types from "../../../types";
-import * as dialogs from "../../../dialogs";
+import * as dialogs from "./dialogs";
 
 const template = document.createElement("template");
 template.innerHTML = html`
@@ -63,9 +61,9 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
         date.getMonth(),
     );
 
-    const shifts = store.obj.get("shifts")!;
+    const shifts = globals.store.obj.get("shifts")!;
     dataEntries.forEach(async (entry, index) => {
-        const data = await db.get(entry.year, entry.month, entry.date);
+        const data = await globals.db.get(entry.year, entry.month, entry.date);
         if (data !== null) {
             entry.note = data.note;
 
@@ -110,7 +108,7 @@ async function itemContentClickHandler(e: Event) {
     const day = parseInt(item.getAttribute("data-date")!, 10);
     const shiftID = parseInt(item.getAttribute("data-shift-id") || "0", 10);
 
-    const editMode = store.obj.get("editMode")!;
+    const editMode = globals.store.obj.get("editMode")!;
 
     let data: { shiftID: number; note: string } | null;
 
@@ -119,11 +117,11 @@ async function itemContentClickHandler(e: Event) {
         data = await dialogs.day.open(
             new Date(year, month, day, 6, 0, 0),
             shiftID,
-            await db.get(year, month, day),
+            await globals.db.get(year, month, day),
         );
     } else {
         // Edit Mode
-        const dbEntry = await db.get(year, month, day);
+        const dbEntry = await globals.db.get(year, month, day);
         data = {
             shiftID: !editMode.active ? 0 : editMode.active,
             note: dbEntry?.note || "",
@@ -139,7 +137,7 @@ async function itemContentClickHandler(e: Event) {
         month,
         date: day,
         shift:
-            store.obj.get("shifts")!.find((shift) => {
+            globals.store.obj.get("shifts")!.find((shift) => {
                 return shift.id === data.shiftID;
             }) || null,
         note: data.note || "",
@@ -153,12 +151,16 @@ async function itemContentClickHandler(e: Event) {
     // Handle database add/put/delete
     if (!!updatedData.note || !!updatedData.shift) {
         console.warn("Add data to the database", updatedData);
-        db.put(updatedData).catch(() =>
-            db.add(updatedData!).catch((err) => alert(`Update database failed: ${err}`)),
-        );
+        globals.db
+            .put(updatedData)
+            .catch(() =>
+                globals.db
+                    .add(updatedData!)
+                    .catch((err) => alert(`Update database failed: ${err}`)),
+            );
     } else {
         console.warn("Remove data from the database", { year, month, day });
-        db.delete(year, month, day);
+        globals.db.delete(year, month, day);
     }
 
     // Before re-rendering add the rhythm shift (again) if it's not already set
@@ -167,7 +169,7 @@ async function itemContentClickHandler(e: Event) {
 }
 
 function markWeekendItems(weekDays: Element[], days: Element[]): void {
-    const weekStart = store.obj.get("weekStart")!;
+    const weekStart = globals.store.obj.get("weekStart")!;
     let order = defaultWeekOrder;
 
     if (weekStart > 0) {

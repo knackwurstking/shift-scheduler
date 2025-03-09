@@ -1,4 +1,4 @@
-import { html } from "../../../lib/utils";
+import { html } from "../../../utils";
 
 const articleHTML = html`
     <h4>IndexedDB</h4>
