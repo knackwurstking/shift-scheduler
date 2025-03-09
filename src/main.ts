@@ -6,13 +6,17 @@ import { registerSW } from "virtual:pwa-register";
 import db from "./lib/db";
 import * as pages from "./pages";
 
-const updateSW = registerSW({
-    async onNeedRefresh() {
-        if (confirm(`Update verfügbar. Zum Aktualisieren bestätigen.`)) {
-            await updateSW();
-        }
-    },
-});
+console.debug({ PWA: process.env.PWA });
+if (process.env.PWA) {
+    console.debug("PWA updater registered");
+    const updateSW = registerSW({
+        async onNeedRefresh() {
+            if (confirm(`Update verfügbar. Zum Aktualisieren bestätigen.`)) {
+                await updateSW();
+            }
+        },
+    });
+}
 
 db.open(() => {
     ui.router.hash.init(null, {

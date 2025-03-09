@@ -58,4 +58,8 @@ export default defineConfig({
     build: {
         outDir: process.env.MODE === "github" ? "../shift-scheduler.github.io/" : "./dist",
     },
+
+    define: {
+        "process.env.PWA": process.env.PWA || "false",
+    },
 });
