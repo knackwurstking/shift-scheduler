@@ -53,9 +53,9 @@ export default defineConfig({
         }),
     ],
     clearScreen: false,
-    base: "/shift-scheduler.github.io/",
+    base: process.env.MODE === "github" ? "/shift-scheduler.github.io/" : "/",
 
     build: {
-        outDir: "../shift-scheduler.github.io/",
+        outDir: process.env.MODE === "github" ? "../shift-scheduler.github.io/" : "./dist",
     },
 });

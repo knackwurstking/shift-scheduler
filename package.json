@@ -9,6 +9,7 @@
         "test": "jest",
         "check:tsc": "tsc",
         "check": "npm run check:tsc && npm test",
+        "build:github": "MODE=github vite build --minify -c vite.config.js --emptyOutDir",
         "build": "vite build --minify -c vite.config.js --emptyOutDir"
     },
     "devDependencies": {
