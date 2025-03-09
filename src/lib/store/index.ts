@@ -1,6 +1,7 @@
 import * as ui from "ui";
 
 import * as types from "../../types";
+import * as constants from "../../constants";
 
 export type ShiftSchedulerStore = ui.Store<{
     datePicker: number;
@@ -32,7 +33,7 @@ export const obj: ShiftSchedulerStore = (() => {
 
     store.set("editMode", { open: false, active: 0 }, false);
 
-    const newVersion = { version: "0.0.0", build: 1 };
+    const newVersion = { version: constants.version, build: constants.build };
 
     switch (store.get("version")?.build) {
         case undefined:
