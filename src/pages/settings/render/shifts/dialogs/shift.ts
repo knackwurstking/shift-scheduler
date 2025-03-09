@@ -1,4 +1,4 @@
-import * as types from "../types";
+import * as types from "@types";
 
 export function open(data: types.calendar.Shift | null): Promise<types.calendar.Shift | null> {
     return new Promise((resolve) => {

@@ -1,6 +1,7 @@
-import * as dialogs from "@dialogs";
 import { store } from "@globals";
 import { html } from "@utils";
+
+import * as dialogs from "./dialogs";
 
 const articleHTML = html`
     <h4>Shift Settings</h4>
