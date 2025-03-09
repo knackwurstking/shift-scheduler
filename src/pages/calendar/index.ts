@@ -1,8 +1,8 @@
 import * as ui from "ui";
 
-import { store } from "../../globals";
-import * as utils from "../../utils";
-import { html } from "../../utils";
+import { store } from "@globals";
+import * as utils from "@utils";
+import { html } from "@utils";
 
 import * as dialogs from "./dialogs";
 

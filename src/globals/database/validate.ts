@@ -1,4 +1,4 @@
-import * as types from "../../types";
+import * as types from "@types";
 
 export function shift(shift: types.calendar.Shift): boolean {
     // Check for shift data

@@ -3,8 +3,8 @@ import "./bootstrap-icons.css";
 import * as ui from "ui";
 import { registerSW } from "virtual:pwa-register";
 
-import * as globals from "./globals";
-import * as pages from "./pages";
+import * as globals from "@globals";
+import * as pages from "@pages";
 
 console.debug({ PWA: process.env.PWA, MODE: process.env.MODE });
 if (process.env.PWA) {

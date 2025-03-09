@@ -1,9 +1,9 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import * as globals from "../../../globals";
-import * as types from "../../../types";
-import { html } from "../../../utils";
+import * as globals from "@globals";
+import * as types from "@types";
+import { html } from "@utils";
 
 import * as backupUtils from "./backup-utils";
 

@@ -1,5 +1,5 @@
-import { store } from "../../globals";
-import * as types from "../../types";
+import { store } from "@globals";
+import * as types from "@types";
 
 import * as components from "./components";
 import { Direction } from "./lib/swipe-handler";

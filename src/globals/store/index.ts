@@ -1,6 +1,6 @@
 import * as ui from "ui";
 
-import * as types from "../../types";
+import * as types from "@types";
 
 import * as constants from "../constants";
 

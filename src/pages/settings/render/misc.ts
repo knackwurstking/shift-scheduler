@@ -1,5 +1,5 @@
-import { store } from "../../../globals";
-import { html } from "../../../utils";
+import { store } from "@globals";
+import { html } from "@utils";
 
 const articleHTML = html`
     <h4>Miscellaneous</h4>

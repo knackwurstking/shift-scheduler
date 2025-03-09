@@ -1,7 +1,7 @@
-import * as globals from "../../../../globals";
-import * as types from "../../../../types";
-import * as utils from "../../../../utils";
-import { html } from "../../../../utils";
+import * as globals from "@globals";
+import * as types from "@types";
+import * as utils from "@utils";
+import { html } from "@utils";
 
 import * as dialogs from "./dialogs";
 

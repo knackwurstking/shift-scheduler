@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import { IconResource, ManifestOptions, VitePWA } from "vite-plugin-pwa";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const icons: IconResource[] = [
     {
@@ -42,6 +43,7 @@ const manifest: Partial<ManifestOptions> = {
 
 export default defineConfig({
     plugins: [
+        tsconfigPaths(),
         VitePWA({
             strategies: "generateSW",
             registerType: "prompt",

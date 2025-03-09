@@ -1,5 +1,5 @@
-import * as globals from "../../../../../globals";
-import * as types from "../../../../../types";
+import * as globals from "@globals";
+import * as types from "@types";
 
 export function open(
     date: Date,
