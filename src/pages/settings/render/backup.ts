@@ -76,7 +76,6 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
         const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
 
         if (process.env.MODE === "android") {
-            // TODO: ...
             Share.share({
                 title: "Shift Scheduler Backup",
                 text: "Backup of your Shift Scheduler data",
