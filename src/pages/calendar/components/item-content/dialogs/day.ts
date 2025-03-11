@@ -1,6 +1,38 @@
-// TODO: Add create function here, just like the date-picker dialog
 import * as globals from "@globals";
-import { DBEntry } from "@types";
+import { DBEntry, DialogCreate } from "@types";
+import { html } from "@utils";
+
+export function create(): DialogCreate {
+    const dialog = document.createElement("dialog");
+    document.body.appendChild(dialog);
+
+    dialog.innerHTML = html`
+        <form method="dialog" style="width: 100%; height: 100%">
+            <h4 class="title"></h4>
+
+            <select class="shift-select" style="width: 100%">
+                <option value="0">Reset</option>
+            </select>
+
+            <div>
+                <label>Note</label>
+                <textarea class="db-note" rows="6" style="resize: none; width: 100%"></textarea>
+            </div>
+
+            <div class="ui-flex-grid-row" style="--justify: flex-end">
+                <button class="cancel" color="secondary">Cancel</button>
+                <input type="submit" />
+            </div>
+        </form>
+    `;
+
+    return {
+        dialog,
+        destroy() {
+            document.body.removeChild(this.dialog);
+        },
+    };
+}
 
 export function open(
     date: Date,
@@ -8,7 +40,7 @@ export function open(
     data: DBEntry | null,
 ): Promise<{ shiftID: number; note: string } | null> {
     return new Promise((resolve) => {
-        const dialog = document.querySelector<HTMLFormElement>(`dialog[name="day"]`)!;
+        const { dialog, destroy } = create();
         const form = dialog.querySelector<HTMLFormElement>("form")!;
 
         const shiftSelect = form.querySelector<HTMLSelectElement>("select.shift-select")!;
@@ -24,6 +56,7 @@ export function open(
 
         dialog.onclose = () => {
             resolve(result);
+            setTimeout(destroy);
         };
 
         form.onsubmit = () => {
