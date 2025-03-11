@@ -1,6 +1,36 @@
+import { html } from "@utils";
+import * as types from "@types";
+
+export function create(): types.DialogCreate {
+    const dialog = document.createElement("dialog");
+    document.body.appendChild(dialog);
+
+    dialog.innerHTML = html`
+        <form method="dialog">
+            <label>
+                Pick a Date
+                <input type="month" style="min-width: 12ch" />
+            </label>
+
+            <div class="ui-flex-grid-row" style="--justify: flex-end">
+                <button class="cancel" color="secondary">Cancel</button>
+                <input type="submit" />
+            </div>
+        </form>
+    `;
+
+    return {
+        dialog,
+        destroy() {
+            document.body.removeChild(this.dialog);
+        },
+    };
+}
+
 export function open(date: string | number | Date): Promise<{ date: number } | null> {
     return new Promise((resolve) => {
-        const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="date-picker"]`)!;
+        const { dialog, destroy } = create();
+
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
         const monthInput = form.querySelector<HTMLInputElement>(`input[type="month"]`)!;
 
@@ -11,7 +41,10 @@ export function open(date: string | number | Date): Promise<{ date: number } | n
 
         let result: { date: number } | null = null;
 
-        dialog.onclose = () => resolve(result);
+        dialog.onclose = () => {
+            resolve(result);
+            setTimeout(destroy);
+        };
 
         form.onsubmit = () => {
             result = {
