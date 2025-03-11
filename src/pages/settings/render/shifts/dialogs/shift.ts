@@ -1,6 +1,8 @@
-import * as types from "@types";
+// TODO: Add create function here, just like the date-picker dialog
 
-export function open(data: types.calendar.Shift | null): Promise<types.calendar.Shift | null> {
+import { Shift } from "@types";
+
+export function open(data: Shift | null): Promise<Shift | null> {
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="shift"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
@@ -16,13 +18,13 @@ export function open(data: types.calendar.Shift | null): Promise<types.calendar.
             dialog.close();
         };
 
-        let result: types.calendar.Shift | null = null;
+        let result: Shift | null = null;
 
         dialog.onclose = () => resolve(result);
 
         form.onsubmit = (e) => {
             // Get the data, validate it, and update result
-            const newData: types.calendar.Shift = {
+            const newData: Shift = {
                 id: data?.id || new Date().getTime(),
                 name: inputName.value,
                 shortName: inputShortName.value,

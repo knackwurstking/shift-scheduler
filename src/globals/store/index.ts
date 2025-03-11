@@ -1,21 +1,20 @@
 import * as ui from "ui";
 
-import * as types from "@types";
-
+import { EditMode, Rhythm, Shifts, StartDate, Version, WeekStart } from "@types";
 import * as constants from "../constants";
 
 export type ShiftSchedulerStore = ui.Store<{
     datePicker: number;
 
-    weekStart: types.calendar.WeekStart;
+    weekStart: WeekStart;
 
-    shifts: types.calendar.Shifts;
-    rhythm: types.calendar.Rhythm;
-    startDate: types.calendar.StartDate;
+    shifts: Shifts;
+    rhythm: Rhythm;
+    startDate: StartDate;
 
-    version: types.Version;
+    version: Version;
 
-    editMode: types.calendar.EditMode;
+    editMode: EditMode;
 }>;
 
 export const prefix = "shift-scheduler:";

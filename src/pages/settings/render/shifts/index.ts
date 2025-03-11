@@ -1,6 +1,5 @@
-import { store } from "@globals";
+import * as globals from "@globals";
 import { html } from "@utils";
-
 import * as dialogs from "./dialogs";
 
 const articleHTML = html`
@@ -82,7 +81,7 @@ export function article(): HTMLElement {
         tbody.innerHTML = "";
 
         // Create shift table rows from settings shifts
-        store.obj.get("shifts")!.forEach((shift) => {
+        globals.store.obj.get("shifts")!.forEach((shift) => {
             const tableItem = (
                 template.content.cloneNode(true) as HTMLElement
             ).querySelector<HTMLElement>(`tr.item`)!;
@@ -106,7 +105,7 @@ export function article(): HTMLElement {
                 }
 
                 // Update store and and table item
-                store.obj.update("shifts", (shifts) => {
+                globals.store.obj.update("shifts", (shifts) => {
                     return shifts.map((shift) => {
                         if (shift.id === data.id) {
                             return data;
@@ -122,7 +121,7 @@ export function article(): HTMLElement {
             const deleteButton = tableItem.querySelector<HTMLElement>(`button.delete`)!;
             deleteButton.onclick = async () => {
                 if (confirm(`Delete shift \"${shift.name}\"?`)) {
-                    store.obj.update("shifts", (shifts) => {
+                    globals.store.obj.update("shifts", (shifts) => {
                         return shifts.filter((s) => s.id !== shift.id);
                     });
                 }
@@ -140,7 +139,7 @@ export function article(): HTMLElement {
                 }
 
                 // Update store and and table item
-                store.obj.update("shifts", (shifts) => {
+                globals.store.obj.update("shifts", (shifts) => {
                     shifts.push(data);
                     return shifts;
                 });
@@ -155,14 +154,14 @@ export function article(): HTMLElement {
         `section.start-date input[type="date"]`,
     )!;
 
-    const startDate = store.obj.get("startDate")!;
+    const startDate = globals.store.obj.get("startDate")!;
     if (!!startDate) {
         const date = new Date();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
         const day = date.getDate().toString().padStart(2, "0");
         startDateInput.value = `${date.getFullYear()}-${month}-${day}`;
         startDateInput.onchange = () => {
-            store.obj.set("startDate", new Date(startDateInput.value).getTime());
+            globals.store.obj.set("startDate", new Date(startDateInput.value).getTime());
         };
     }
 
@@ -171,9 +170,12 @@ export function article(): HTMLElement {
     )!;
 
     editRhythmButton.onclick = async () => {
-        store.obj.set(
+        globals.store.obj.set(
             "rhythm",
-            await dialogs.rhythm.open(store.obj.get("rhythm")!, store.obj.get("shifts")!),
+            await dialogs.rhythm.open(
+                globals.store.obj.get("rhythm")!,
+                globals.store.obj.get("shifts")!,
+            ),
         );
     };
 

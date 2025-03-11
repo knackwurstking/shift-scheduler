@@ -1,6 +1,6 @@
-import * as calendar from "./calendar";
-import * as db from "./db";
-import * as version from "./version";
+import { Rhythm, Shifts, StartDate, WeekStart } from "./calendar";
+import { DBEntry } from "./db";
+import { Version } from "./version";
 
 // NOTE: >= v1.4.0 && <= v1.5.3
 export interface BackupV1 {
@@ -64,13 +64,13 @@ export interface BackupV2 {
 
 // NOTE: >= v3.0.0
 export interface BackupV3 {
-    weekStart: calendar.WeekStart;
-    shifts: calendar.Shifts;
-    rhythm: calendar.Rhythm;
-    startDate: calendar.StartDate;
-    version: version.Version;
+    weekStart: WeekStart;
+    shifts: Shifts;
+    rhythm: Rhythm;
+    startDate: StartDate;
+    version: Version;
     indexedDB: {
         version: number;
-        data: db.Entry[];
+        data: DBEntry[];
     };
 }

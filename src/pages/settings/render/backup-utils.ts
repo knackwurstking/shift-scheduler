@@ -1,5 +1,5 @@
-import { constants } from "@globals";
-import * as types from "@types";
+import * as globals from "@globals";
+import { BackupV1, BackupV2, BackupV3, DBEntry } from "@types";
 
 export function isBackupV1(data: any): boolean {
     const isShift = (s: any): boolean => {
@@ -230,12 +230,12 @@ export function isBackupV3(data: any): boolean {
     return true;
 }
 
-export function convertV2(data: types.backup.BackupV2): types.backup.BackupV3 {
+export function convertV2(data: BackupV2): BackupV3 {
     return {
         weekStart: 0,
         version: {
-            version: constants.version,
-            build: constants.build,
+            version: globals.constants.version,
+            build: globals.constants.build,
         },
         rhythm: data.settings.rhythm,
         shifts: data.settings.shifts,
@@ -253,12 +253,12 @@ export function convertV2(data: types.backup.BackupV2): types.backup.BackupV3 {
     };
 }
 
-export function convertV1(data: types.backup.BackupV1): types.backup.BackupV3 {
+export function convertV1(data: BackupV1): BackupV3 {
     return {
         weekStart: 0,
         version: {
-            version: constants.version,
-            build: constants.build,
+            version: globals.constants.version,
+            build: globals.constants.build,
         },
         rhythm: data.settings.rhythm,
         shifts: data.settings.shifts,
@@ -267,11 +267,11 @@ export function convertV1(data: types.backup.BackupV1): types.backup.BackupV3 {
     };
 }
 
-function convertV1StorageToV3IndexedDB(data: types.backup.BackupV1): {
+function convertV1StorageToV3IndexedDB(data: BackupV1): {
     version: number;
-    data: types.db.Entry[];
+    data: DBEntry[];
 } {
-    const result: { version: number; data: types.db.Entry[] } = {
+    const result: { version: number; data: DBEntry[] } = {
         version: 1,
         data: [],
     };

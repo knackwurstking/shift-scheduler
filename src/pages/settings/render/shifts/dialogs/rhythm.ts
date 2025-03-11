@@ -1,9 +1,7 @@
-import * as types from "@types";
+// TODO: Add create function here, just like the date-picker dialog
+import { Rhythm, Shift } from "@types";
 
-export function open(
-    rhythm: types.calendar.Rhythm,
-    shifts: types.calendar.Shift[],
-): Promise<types.calendar.Rhythm> {
+export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="rhythm"]`)!;
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
@@ -23,7 +21,7 @@ export function open(
             dialog.close();
         };
 
-        let result: types.calendar.Rhythm = [...rhythm];
+        let result: Rhythm = [...rhythm];
 
         dialog.onclose = () => resolve(result);
 

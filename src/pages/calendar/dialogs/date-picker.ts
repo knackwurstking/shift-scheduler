@@ -1,7 +1,7 @@
 import { html } from "@utils";
-import * as types from "@types";
+import { DialogCreate } from "@types";
 
-export function create(): types.DialogCreate {
+export function create(): DialogCreate {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 

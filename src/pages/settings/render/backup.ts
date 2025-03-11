@@ -2,9 +2,8 @@ import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
 import * as globals from "@globals";
-import * as types from "@types";
+import { BackupV1, BackupV2, BackupV3 } from "@types";
 import { html } from "@utils";
-
 import * as backupUtils from "./backup-utils";
 
 const articleHTML = html`
@@ -55,7 +54,7 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
     };
 
     exportButton.onclick = async () => {
-        const data: types.backup.BackupV3 = {
+        const data: BackupV3 = {
             // Create the backup object
             weekStart: globals.store.obj.get("weekStart")!,
             shifts: globals.store.obj.get("shifts")!,
@@ -115,7 +114,7 @@ async function parseJSON(
     if (typeof result !== "string") return alert("Invalid data!");
 
     // Parsing JSON
-    let data: types.backup.BackupV1 | types.backup.BackupV2 | types.backup.BackupV3;
+    let data: BackupV1 | BackupV2 | BackupV3;
     try {
         data = JSON.parse(result);
     } catch (err) {
@@ -123,13 +122,13 @@ async function parseJSON(
     }
 
     // Validate backup version
-    let backupV3: types.backup.BackupV3;
+    let backupV3: BackupV3;
     if (backupUtils.isBackupV3(data)) {
-        backupV3 = data as types.backup.BackupV3;
+        backupV3 = data as BackupV3;
     } else if (backupUtils.isBackupV2(data)) {
-        backupV3 = backupUtils.convertV2(data as types.backup.BackupV2);
+        backupV3 = backupUtils.convertV2(data as BackupV2);
     } else if (backupUtils.isBackupV1(data)) {
-        backupV3 = backupUtils.convertV1(data as types.backup.BackupV1);
+        backupV3 = backupUtils.convertV1(data as BackupV1);
     } else {
         return alert("Invalid JSON data!");
     }

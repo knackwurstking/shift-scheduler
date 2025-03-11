@@ -1,6 +1,5 @@
-import * as types from "@types";
-
-import * as validate from "./validate.ts";
+import { DBEntry } from "@types";
+import { validateShift } from "./validate";
 
 export class DB {
     public version: number;
@@ -30,7 +29,7 @@ export class DB {
         if (this.request !== null) this.request.result.close();
     }
 
-    public validate(version: number, entry: types.db.Entry): boolean {
+    public validate(version: number, entry: DBEntry): boolean {
         switch (version) {
             case 0:
             case 1:
@@ -40,7 +39,7 @@ export class DB {
         }
     }
 
-    public get(year: number, month: number, date: number): Promise<types.db.Entry | null> {
+    public get(year: number, month: number, date: number): Promise<DBEntry | null> {
         return new Promise((resolve) => {
             const r = this.roStore().get([year, month, date]);
 
@@ -49,7 +48,7 @@ export class DB {
         });
     }
 
-    public getAll(): Promise<types.db.Entry[]> {
+    public getAll(): Promise<DBEntry[]> {
         return new Promise((resolve) => {
             const r = this.roStore().getAll();
 
@@ -64,7 +63,7 @@ export class DB {
         });
     }
 
-    public add(data: types.db.Entry): Promise<void> {
+    public add(data: DBEntry): Promise<void> {
         return new Promise((resolve, reject) => {
             const r = this.rwStore().add(data);
 
@@ -79,7 +78,7 @@ export class DB {
         });
     }
 
-    public put(data: types.db.Entry): Promise<void> {
+    public put(data: DBEntry): Promise<void> {
         return new Promise((resolve, reject) => {
             const r = this.rwStore().put(data);
 
@@ -174,7 +173,7 @@ export class DB {
     }
 }
 
-function validateV1(entry: types.db.Entry) {
+function validateV1(entry: DBEntry) {
     if (
         typeof entry.year !== "number" ||
         typeof entry.month !== "number" ||
@@ -188,7 +187,7 @@ function validateV1(entry: types.db.Entry) {
     }
 
     if (entry.shift !== null) {
-        if (!validate.shift(entry.shift)) {
+        if (!validateShift(entry.shift)) {
             return false;
         }
     }

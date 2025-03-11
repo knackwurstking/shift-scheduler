@@ -1,4 +1,4 @@
-import { store } from "@globals";
+import * as globals from "@globals";
 import { html } from "@utils";
 
 const articleHTML = html`
@@ -22,11 +22,11 @@ export function article(): HTMLElement {
     )!;
 
     // Read week start from store
-    weekStart.checked = store.obj.get("weekStart") === 1;
+    weekStart.checked = globals.store.obj.get("weekStart") === 1;
 
     // Update store on change
     weekStart.onchange = () => {
-        store.obj.set("weekStart", weekStart.checked ? 1 : 0);
+        globals.store.obj.set("weekStart", weekStart.checked ? 1 : 0);
     };
 
     return article;

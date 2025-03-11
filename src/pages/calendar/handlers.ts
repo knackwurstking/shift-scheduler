@@ -1,6 +1,5 @@
 import { store } from "@globals";
-import * as types from "@types";
-
+import { EditMode } from "@types";
 import * as components from "./components";
 import { Direction } from "./lib/swipe-handler";
 
@@ -22,7 +21,7 @@ export async function datePicker(dateString: number): Promise<void> {
     );
 }
 
-export async function editMode(data: types.calendar.EditMode): Promise<void> {
+export async function editMode(data: EditMode): Promise<void> {
     const routerTarget = document.querySelector("#routerTarget")!;
 
     const itemContainer = routerTarget.querySelector<HTMLElement>(".item-container");

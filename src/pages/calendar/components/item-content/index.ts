@@ -1,8 +1,8 @@
 import * as globals from "@globals";
-import * as types from "@types";
 import * as utils from "@utils";
 import { html } from "@utils";
 
+import { DBEntry } from "@types";
 import * as dialogs from "./dialogs";
 
 const template = document.createElement("template");
@@ -55,7 +55,7 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
         itemContent.querySelectorAll(`.item-content > .days > .day`),
     );
 
-    let dataEntries: types.db.Entry[] = await utils.calendar.getDataForDays(
+    let dataEntries: DBEntry[] = await utils.calendar.getDataForDays(
         days.length,
         date.getFullYear(),
         date.getMonth(),
@@ -132,7 +132,7 @@ async function itemContentClickHandler(e: Event) {
 
     // Update database and day item
     const rhythmShift = utils.calendar.calcShiftForDay(new Date(year, month, day));
-    const updatedData: types.db.Entry = {
+    const updatedData: DBEntry = {
         year,
         month,
         date: day,
@@ -210,7 +210,7 @@ function createDayItem(date: number, shift?: string): HTMLDivElement {
     return el;
 }
 
-function updateDayItem(dayItem: HTMLElement, entry: types.db.Entry): void {
+function updateDayItem(dayItem: HTMLElement, entry: DBEntry): void {
     const isToday = (year: number, month: number, date: number): boolean => {
         const today = new Date();
 

@@ -1,7 +1,6 @@
 import * as ui from "ui";
 
 import * as utils from "@utils";
-
 import * as render from "./render";
 
 let appBarTitleBackup = "";

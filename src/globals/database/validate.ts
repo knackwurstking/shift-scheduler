@@ -1,6 +1,6 @@
-import * as types from "@types";
+import { Shift } from "@types";
 
-export function shift(shift: types.calendar.Shift): boolean {
+export function validateShift(shift: Shift): boolean {
     // Check for shift data
     if (typeof shift.id !== "number") {
         return false;

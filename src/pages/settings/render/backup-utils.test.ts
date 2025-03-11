@@ -1,8 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 
-import { constants } from "@globals";
-import * as types from "@types";
-
+import * as globals from "@globals";
+import { BackupV1, BackupV2, BackupV3 } from "@types";
 import { convertV1, convertV2, isBackupV1, isBackupV2, isBackupV3 } from "./backup-utils";
 
 describe("pages -> settings -> backup-utils", () => {
@@ -11,14 +10,14 @@ describe("pages -> settings -> backup-utils", () => {
         expect(isBackupV3(null)).toBe(false);
         expect(isBackupV3([])).toBe(false);
 
-        let data: types.backup.BackupV3 = {
+        let data: BackupV3 = {
             weekStart: 0,
             shifts: [],
             rhythm: [],
             startDate: 0,
             version: {
-                version: constants.version,
-                build: constants.build,
+                version: globals.constants.version,
+                build: globals.constants.build,
             },
             indexedDB: {
                 version: 0,
@@ -64,7 +63,7 @@ describe("pages -> settings -> backup-utils", () => {
         expect(isBackupV2(null)).toBe(false);
         expect(isBackupV2([])).toBe(false);
 
-        let data: types.backup.BackupV2 = {
+        let data: BackupV2 = {
             settings: {
                 shifts: [],
                 rhythm: [],
@@ -114,7 +113,7 @@ describe("pages -> settings -> backup-utils", () => {
         expect(isBackupV1(null)).toBe(false);
         expect(isBackupV1([])).toBe(false);
 
-        let data: types.backup.BackupV1 = {
+        let data: BackupV1 = {
             settings: {
                 shifts: [],
                 rhythm: [],
@@ -156,7 +155,7 @@ describe("pages -> settings -> backup-utils", () => {
 
 describe("pages -> settings -> backup-utils", () => {
     test("convertV1", () => {
-        const data: types.backup.BackupV1 = {
+        const data: BackupV1 = {
             settings: {
                 shifts: [],
                 rhythm: [],
@@ -177,14 +176,14 @@ describe("pages -> settings -> backup-utils", () => {
             },
         };
 
-        const result: types.backup.BackupV3 = {
+        const result: BackupV3 = {
             weekStart: 0,
             shifts: [],
             rhythm: [],
             startDate: 0,
             version: {
-                version: constants.version,
-                build: constants.build,
+                version: globals.constants.version,
+                build: globals.constants.build,
             },
             indexedDB: {
                 version: 1,
@@ -215,7 +214,7 @@ describe("pages -> settings -> backup-utils", () => {
 
 describe("pages -> settings -> backup-utils", () => {
     test("convertV2", () => {
-        const data: types.backup.BackupV2 = {
+        const data: BackupV2 = {
             settings: {
                 shifts: [],
                 rhythm: [],
@@ -240,14 +239,14 @@ describe("pages -> settings -> backup-utils", () => {
             },
         };
 
-        const result: types.backup.BackupV3 = {
+        const result: BackupV3 = {
             weekStart: 0,
             shifts: [],
             rhythm: [],
             startDate: 0,
             version: {
-                version: constants.version,
-                build: constants.build,
+                version: globals.constants.version,
+                build: globals.constants.build,
             },
             indexedDB: data.indexedDB,
         };

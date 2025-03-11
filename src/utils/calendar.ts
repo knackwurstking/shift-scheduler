@@ -1,13 +1,13 @@
-import { store } from "@globals";
-import * as types from "@types";
+import * as globals from "@globals";
+import { DBEntry, Shift, WeekStart } from "@types";
 
 export async function getDataForDays(
     size: number,
     year: number,
     month: number,
-): Promise<types.db.Entry[]> {
-    const data: types.db.Entry[] = [];
-    const weekStart = store.obj.get("weekStart")!;
+): Promise<DBEntry[]> {
+    const data: DBEntry[] = [];
+    const weekStart = globals.store.obj.get("weekStart")!;
 
     for (let i = 0; i < size; i++) {
         const date = new Date(year, month, i + 1 - getStartDay(year, month, weekStart));
@@ -24,7 +24,7 @@ export async function getDataForDays(
     return data;
 }
 
-function getStartDay(year: number, month: number, weekStart: types.calendar.WeekStart): number {
+function getStartDay(year: number, month: number, weekStart: WeekStart): number {
     // NOTE: if month starts on sunday (0), but the week start is
     //       set to monday (1), than set it to 6 (sunday becomes 6)
     const date = new Date(year, month, 1);
@@ -34,10 +34,10 @@ function getStartDay(year: number, month: number, weekStart: types.calendar.Week
     return weekDay === 0 ? 6 : weekDay - 1;
 }
 
-export function calcShiftForDay(current: Date): types.calendar.Shift | null {
-    const startDate = store.obj.get("startDate")!;
-    const shifts = store.obj.get("shifts")!;
-    const rhythm = store.obj.get("rhythm")!;
+export function calcShiftForDay(current: Date): Shift | null {
+    const startDate = globals.store.obj.get("startDate")!;
+    const shifts = globals.store.obj.get("shifts")!;
+    const rhythm = globals.store.obj.get("rhythm")!;
 
     if (!startDate || !rhythm.length) return null;
 

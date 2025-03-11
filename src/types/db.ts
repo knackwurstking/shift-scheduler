@@ -1,9 +1,9 @@
-import * as calendar from "./calendar";
+import { Shift } from "./calendar";
 
-export interface Entry {
+export interface DBEntry {
     year: number;
     month: number;
     date: number;
-    shift: calendar.Shift | null;
+    shift: Shift | null;
     note: string;
 }

@@ -1,10 +1,11 @@
+// TODO: Add create function here, just like the date-picker dialog
 import * as globals from "@globals";
-import * as types from "@types";
+import { DBEntry } from "@types";
 
 export function open(
     date: Date,
     shiftID: number,
-    data: types.db.Entry | null,
+    data: DBEntry | null,
 ): Promise<{ shiftID: number; note: string } | null> {
     return new Promise((resolve) => {
         const dialog = document.querySelector<HTMLFormElement>(`dialog[name="day"]`)!;

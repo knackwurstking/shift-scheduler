@@ -1,15 +1,12 @@
 import * as ui from "ui";
 
-import { store } from "@globals";
+import * as globals from "@globals";
 import * as utils from "@utils";
 import { html } from "@utils";
-
-import * as dialogs from "./dialogs";
-
-import { SwipeHandler } from "./lib/swipe-handler";
-
 import * as components from "./components";
+import * as dialogs from "./dialogs";
 import * as handlers from "./handlers";
+import { SwipeHandler } from "./lib/swipe-handler";
 
 const template = document.createElement("template");
 template.innerHTML = html`
@@ -225,8 +222,8 @@ export async function onMount() {
 
     // Setup store handlers
     cleanup.push(
-        store.obj.listen("datePicker", handlers.datePicker, true),
-        store.obj.listen("editMode", handlers.editMode, true),
+        globals.store.obj.listen("datePicker", handlers.datePicker, true),
+        globals.store.obj.listen("editMode", handlers.editMode, true),
     );
 
     setTimeout(() => {
@@ -283,20 +280,20 @@ function setupAppBarItems() {
 
     // app-bar: date-picker handler
     datePickerButton.onclick = async () => {
-        const data = await dialogs.datePicker.open(store.obj.get("datePicker")!);
+        const data = await dialogs.datePicker.open(globals.store.obj.get("datePicker")!);
         if (!data) return;
 
-        store.obj.set("datePicker", data.date);
+        globals.store.obj.set("datePicker", data.date);
     };
 
     // app-bar: today handler
     todayButton.onclick = async () => {
-        store.obj.set("datePicker", new Date().getTime());
+        globals.store.obj.set("datePicker", new Date().getTime());
     };
 
     // app-bar: edit mode button
     editButton.onclick = async () => {
-        store.obj.update("editMode", (data) => {
+        globals.store.obj.update("editMode", (data) => {
             data.open = !data.open;
             return data;
         });
@@ -310,7 +307,7 @@ function setupAppBarItems() {
 
     // app-bar: handle today [disabled] attribute
     cleanup.push(
-        store.obj.listen(
+        globals.store.obj.listen(
             "datePicker",
             (data) => {
                 const today = new Date();
