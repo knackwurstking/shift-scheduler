@@ -1,9 +1,86 @@
-// TODO: Add create function here, just like the date-picker dialog
-import { Rhythm, Shift } from "@types";
+import { DialogCreate, Rhythm, Shift } from "@types";
+import { html } from "@utils";
+
+export function create(): DialogCreate {
+    const dialog = document.createElement("dialog");
+    document.body.appendChild(dialog);
+
+    dialog.setAttribute("fullscreen", "");
+
+    dialog.innerHTML = html`
+        <form method="dialog" style="width: 100%; height: 100%">
+            <div class="ui-flex-grid" style="width: 100%; height: 100%; margin: 0">
+                <div
+                    class="ui-flex-grid-item ui-auto-scroll-y ui-hide-scrollbar"
+                    style="width: 100%"
+                >
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="left">Name</th>
+                                <th class="left">Short</th>
+                                <th class="left"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div
+                    class="ui-flex-grid-item"
+                    style="position: relative; max-height: 1.6rem; width: 100%"
+                >
+                    <hr style="position: absolute; top: var(--ui-spacing); left: 0; width: 100%" />
+                </div>
+
+                <div
+                    class="picker ui-flex-grid-item"
+                    style="--flex: 0; position: relative; max-height: fit-content; width: 100%"
+                >
+                    <div
+                        class="shifts-container ui-flex-grid-row ui-auto-scroll-x ui-hide-scrollbar"
+                        style="width: 100%; height: 100%"
+                    ></div>
+                </div>
+
+                <div class="ui-flex-grid-row" style="--justify: flex-end">
+                    <button class="cancel" color="secondary">Cancel</button>
+                    <input type="submit" />
+                </div>
+            </div>
+        </form>
+
+        <template name="table-item">
+            <tr class="table-item">
+                <td class="name left"></td>
+
+                <td class="short-name left" style="color: inherit"></td>
+
+                <td class="right">
+                    <div class="ui-flex-grid-row" style="--justify: flex-end">
+                        <div class="ui-flex-grid-item" style="--flex: 0">
+                            <button class="delete" variant="ghost" color="destructive" icon>
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </template>
+    `;
+
+    return {
+        dialog,
+        destroy() {
+            document.body.removeChild(this.dialog);
+        },
+    };
+}
 
 export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
     return new Promise((resolve) => {
-        const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="rhythm"]`)!;
+        const { dialog, destroy } = create();
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
         const tbody = form.querySelector<HTMLElement>(`tbody`)!;
         const shiftsContainer = form.querySelector<HTMLElement>(`.shifts-container`)!;
@@ -27,6 +104,7 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
 
         form.onsubmit = () => {
             result = rhythm;
+            setTimeout(destroy);
         };
 
         {
