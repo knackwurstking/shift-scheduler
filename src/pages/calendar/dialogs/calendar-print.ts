@@ -14,12 +14,14 @@ export function create(year: number): DialogCreate {
 
     dialog.innerHTML = html`
         <form method="dialog">
-            <label>
+            <label class="ui-flex justify-between align-center">
                 Pick a Date
                 <input
                     class="year"
-                    type="year"
-                    style="min-width: 8ch"
+                    style="width: 8ch"
+                    type="number"
+                    min="0"
+                    step="0"
                     value="${year}"
                 />
             </label>
@@ -34,7 +36,7 @@ export function create(year: number): DialogCreate {
     return {
         dialog,
         destroy() {
-            document.body.removeChild(this.dialog);
+            document.body.removeChild(dialog);
         },
     };
 }
@@ -42,6 +44,11 @@ export function create(year: number): DialogCreate {
 export function open(year: number): Promise<void> {
     return new Promise((resolve) => {
         const { dialog, destroy } = create(year);
+
+        dialog.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
+            e.preventDefault();
+            dialog.close();
+        };
 
         dialog.onclose = () => {
             resolve();

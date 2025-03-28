@@ -9,7 +9,10 @@ export function create(): DialogCreate {
 
     dialog.innerHTML = html`
         <form method="dialog" style="width: 100%; height: 100%">
-            <div class="ui-flex-grid" style="width: 100%; height: 100%; margin: 0">
+            <div
+                class="ui-flex-grid"
+                style="width: 100%; height: 100%; margin: 0"
+            >
                 <div
                     class="ui-flex-grid-item ui-auto-scroll-y ui-hide-scrollbar"
                     style="width: 100%"
@@ -31,7 +34,9 @@ export function create(): DialogCreate {
                     class="ui-flex-grid-item"
                     style="position: relative; max-height: 1.6rem; width: 100%"
                 >
-                    <hr style="position: absolute; top: var(--ui-spacing); left: 0; width: 100%" />
+                    <hr
+                        style="position: absolute; top: var(--ui-spacing); left: 0; width: 100%"
+                    />
                 </div>
 
                 <div
@@ -60,7 +65,12 @@ export function create(): DialogCreate {
                 <td class="right">
                     <div class="ui-flex-grid-row" style="--justify: flex-end">
                         <div class="ui-flex-grid-item" style="--flex: 0">
-                            <button class="delete" variant="ghost" color="destructive" icon>
+                            <button
+                                class="delete"
+                                variant="ghost"
+                                color="destructive"
+                                icon
+                            >
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
@@ -73,7 +83,7 @@ export function create(): DialogCreate {
     return {
         dialog,
         destroy() {
-            document.body.removeChild(this.dialog);
+            document.body.removeChild(dialog);
         },
     };
 }
@@ -81,9 +91,9 @@ export function create(): DialogCreate {
 export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
     return new Promise((resolve) => {
         const { dialog, destroy } = create();
-        const form = dialog.querySelector<HTMLFormElement>(`form`)!;
-        const tbody = form.querySelector<HTMLElement>(`tbody`)!;
-        const shiftsContainer = form.querySelector<HTMLElement>(`.shifts-container`)!;
+        const tbody = dialog.querySelector<HTMLElement>(`tbody`)!;
+        const shiftsContainer =
+            dialog.querySelector<HTMLElement>(`.shifts-container`)!;
 
         const templateTableItem = dialog.querySelector<HTMLTemplateElement>(
             `template[name="table-item"]`,
@@ -93,7 +103,7 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
             `template[name="shift-card"]`,
         )!;
 
-        form.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
+        dialog.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
             dialog.close();
         };
@@ -102,7 +112,7 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
 
         dialog.onclose = () => resolve(result);
 
-        form.onsubmit = () => {
+        dialog.querySelector(`form`)!.onsubmit = () => {
             result = rhythm;
             setTimeout(destroy);
         };
@@ -129,15 +139,21 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
                     ).querySelector<HTMLElement>(`.table-item`)!;
 
                     // Setup table item
-                    tableItem.querySelector<HTMLElement>(".name")!.innerText = shift.name;
+                    tableItem.querySelector<HTMLElement>(".name")!.innerText =
+                        shift.name;
 
-                    const shortName = tableItem.querySelector<HTMLElement>(".short-name")!;
+                    const shortName =
+                        tableItem.querySelector<HTMLElement>(".short-name")!;
                     shortName.style.color = shift.color || "inherit";
-                    shortName.innerText = !!shift.visible ? shift.shortName : "";
+                    shortName.innerText = !!shift.visible
+                        ? shift.shortName
+                        : "";
 
                     // Delete button handler
                     const deleteButton =
-                        tableItem.querySelector<HTMLButtonElement>(`button.delete`)!;
+                        tableItem.querySelector<HTMLButtonElement>(
+                            `button.delete`,
+                        )!;
                     deleteButton.onclick = () => {
                         // Delete this item from the rhythm
                         rhythm.splice(index, 1);
@@ -164,7 +180,8 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
                     const name = card.querySelector<HTMLElement>(".name")!;
                     name.innerText = shift.name;
 
-                    const shortName = card.querySelector<HTMLElement>(".short-name")!;
+                    const shortName =
+                        card.querySelector<HTMLElement>(".short-name")!;
                     shortName.style.color = shift.color || "inherit";
                     shortName.innerText = shift.visible ? shift.shortName : "";
 

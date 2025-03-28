@@ -79,7 +79,7 @@ export function create(): DialogCreate {
     return {
         dialog,
         destroy() {
-            document.body.removeChild(this.dialog);
+            document.body.removeChild(dialog);
         },
     };
 }
@@ -88,19 +88,17 @@ export function open(data: Shift | null): Promise<Shift | null> {
     return new Promise((resolve) => {
         const { dialog, destroy } = create();
 
-        const form = dialog.querySelector<HTMLFormElement>(`form`)!;
-
-        const inputName = form.querySelector<HTMLInputElement>(`input.name`)!;
+        const inputName = dialog.querySelector<HTMLInputElement>(`input.name`)!;
         const inputShortName =
-            form.querySelector<HTMLInputElement>(`input.short-name`)!;
+            dialog.querySelector<HTMLInputElement>(`input.short-name`)!;
         const inputColorPicker =
-            form.querySelector<HTMLInputElement>(`input.color-picker`)!;
+            dialog.querySelector<HTMLInputElement>(`input.color-picker`)!;
         const checkboxDefaultColor =
-            form.querySelector<HTMLInputElement>(`input.default-color`)!;
+            dialog.querySelector<HTMLInputElement>(`input.default-color`)!;
         const checkboxHidden =
-            form.querySelector<HTMLInputElement>(`input.hidden`)!;
+            dialog.querySelector<HTMLInputElement>(`input.hidden`)!;
 
-        form.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
+        dialog.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
             dialog.close();
         };
@@ -112,7 +110,7 @@ export function open(data: Shift | null): Promise<Shift | null> {
             setTimeout(destroy);
         };
 
-        form.onsubmit = (e) => {
+        dialog.querySelector(`form`)!.onsubmit = (e) => {
             // Get the data, validate it, and update result
             const newData: Shift = {
                 id: data?.id || new Date().getTime(),

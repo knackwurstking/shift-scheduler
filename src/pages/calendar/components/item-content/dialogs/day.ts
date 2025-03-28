@@ -16,7 +16,11 @@ export function create(): DialogCreate {
 
             <div>
                 <label>Note</label>
-                <textarea class="db-note" rows="6" style="resize: none; width: 100%"></textarea>
+                <textarea
+                    class="db-note"
+                    rows="6"
+                    style="resize: none; width: 100%"
+                ></textarea>
             </div>
 
             <div class="ui-flex-grid-row" style="--justify: flex-end">
@@ -29,7 +33,7 @@ export function create(): DialogCreate {
     return {
         dialog,
         destroy() {
-            document.body.removeChild(this.dialog);
+            document.body.removeChild(dialog);
         },
     };
 }
@@ -41,13 +45,17 @@ export function open(
 ): Promise<{ shiftID: number; note: string } | null> {
     return new Promise((resolve) => {
         const { dialog, destroy } = create();
-        const form = dialog.querySelector<HTMLFormElement>("form")!;
 
-        const shiftSelect = form.querySelector<HTMLSelectElement>("select.shift-select")!;
-        const dbNote = form.querySelector<HTMLTextAreaElement>("textarea.db-note")!;
+        const shiftSelect = dialog.querySelector<HTMLSelectElement>(
+            "select.shift-select",
+        )!;
+        const dbNote =
+            dialog.querySelector<HTMLTextAreaElement>("textarea.db-note")!;
 
         // Close section
-        form.querySelector<HTMLButtonElement>(`button.cancel`)!.onclick = (e) => {
+        dialog.querySelector<HTMLButtonElement>(`button.cancel`)!.onclick = (
+            e,
+        ) => {
             e.preventDefault();
             dialog.close();
         };
@@ -59,7 +67,7 @@ export function open(
             setTimeout(destroy);
         };
 
-        form.onsubmit = () => {
+        dialog.querySelector(`form`)!.onsubmit = () => {
             result = {
                 shiftID: parseInt(shiftSelect.value || "0", 10),
                 note: dbNote.value.trim(),
@@ -69,7 +77,8 @@ export function open(
         // Content section
         {
             // Setup title
-            form.querySelector<HTMLElement>(".title")!.innerText = date.toDateString();
+            dialog.querySelector<HTMLElement>(".title")!.innerText =
+                date.toDateString();
 
             // Setup shift select
             while (shiftSelect.children.length > 1) {

@@ -22,19 +22,21 @@ export function create(): DialogCreate {
     return {
         dialog,
         destroy() {
-            document.body.removeChild(this.dialog);
+            document.body.removeChild(dialog);
         },
     };
 }
 
-export function open(date: string | number | Date): Promise<{ date: number } | null> {
+export function open(
+    date: string | number | Date,
+): Promise<{ date: number } | null> {
     return new Promise((resolve) => {
         const { dialog, destroy } = create();
 
-        const form = dialog.querySelector<HTMLFormElement>(`form`)!;
-        const monthInput = form.querySelector<HTMLInputElement>(`input[type="month"]`)!;
+        const monthInput =
+            dialog.querySelector<HTMLInputElement>(`input[type="month"]`)!;
 
-        form.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
+        dialog.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
             dialog.close();
         };
@@ -46,7 +48,7 @@ export function open(date: string | number | Date): Promise<{ date: number } | n
             setTimeout(destroy);
         };
 
-        form.onsubmit = () => {
+        dialog.querySelector(`form`)!.onsubmit = () => {
             result = {
                 date: new Date(monthInput.value).getTime(),
             };
