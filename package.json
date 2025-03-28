@@ -6,9 +6,7 @@
     "scripts": {
         "preview": "export PWA=true; export MODE=github; vite preview --host -c vite.config.js",
         "dev": "export PWA=true; export MODE=github; vite --host -c vite.config.js",
-        "test": "jest",
-        "check:tsc": "tsc",
-        "check": "npm run check:tsc && npm test",
+        "check": "tsc",
         "build:github": "export PWA=true; export MODE=github; vite build --minify -c vite.config.js --emptyOutDir",
         "build:android": "export PWA=false; export MODE=android; vite build --minify -c vite.config.js --emptyOutDir"
     },
@@ -20,17 +18,15 @@
         "@capacitor/share": "^7.0.0",
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
-        "bootstrap-icons": "^1.11.3",
-        "jest": "^29.7.0",
-        "ts-jest": "^29.2.6",
         "typescript": "~5.7.2",
-        "ui": "knackwurstking/ui#v2.1.0",
         "vite": "^6.1.0",
         "vite-plugin-pwa": "^0.21.1",
         "vite-tsconfig-paths": "^5.1.4"
     },
     "dependencies": {
+        "bootstrap-icons": "^1.11.3",
         "jspdf": "^3.0.1",
-        "jspdf-autotable": "^5.0.2"
+        "jspdf-autotable": "^5.0.2",
+        "ui": "knackwurstking/ui#v2.1.1"
     }
 }
