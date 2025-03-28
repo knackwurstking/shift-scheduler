@@ -70,7 +70,8 @@ template.innerHTML = html`
         #routerTarget .week-day,
         #routerTarget .day {
             border-radius: var(--ui-radius);
-            border: var(--ui-border-width) var(--ui-border-style) var(--ui-border-color);
+            border: var(--ui-border-width) var(--ui-border-style)
+                var(--ui-border-color);
         }
 
         #routerTarget .item-container[no-border] .week-days,
@@ -212,7 +213,9 @@ export async function onMount() {
     routerTarget.innerHTML = "";
     routerTarget.appendChild(template.content.cloneNode(true));
 
-    const swipeHandler = new SwipeHandler(document.querySelector(`.item-container`)!);
+    const swipeHandler = new SwipeHandler(
+        document.querySelector(`.item-container`)!,
+    );
 
     // Enable app-bar items
     setupAppBarItems();
@@ -247,10 +250,17 @@ function render() {
     // Create content for items in "item-container"
     const date = new Date();
 
-    Array.from(document.querySelector(`.item-container`)!.children)!.forEach((item) => {
-        item.innerHTML = "";
-        item.appendChild(components.itemContent.create(date.getFullYear(), date.getMonth()));
-    });
+    Array.from(document.querySelector(`.item-container`)!.children)!.forEach(
+        (item) => {
+            item.innerHTML = "";
+            item.appendChild(
+                components.itemContent.create(
+                    date.getFullYear(),
+                    date.getMonth(),
+                ),
+            );
+        },
+    );
 }
 
 function setupAppBarItems() {
@@ -262,7 +272,9 @@ function setupAppBarItems() {
         `.ui-app-bar .right button.today`,
     )!;
 
-    const editButton = document.querySelector<HTMLButtonElement>(`.ui-app-bar .right button.edit`)!;
+    const editButton = document.querySelector<HTMLButtonElement>(
+        `.ui-app-bar .right button.edit`,
+    )!;
 
     const printerButton = document.querySelector<HTMLButtonElement>(
         `.ui-app-bar .right button.printer`,
@@ -280,7 +292,9 @@ function setupAppBarItems() {
 
     // app-bar: date-picker handler
     datePickerButton.onclick = async () => {
-        const data = await dialogs.datePicker.open(globals.store.obj.get("datePicker")!);
+        const data = await dialogs.datePicker.open(
+            globals.store.obj.get("datePicker")!,
+        );
         if (!data) return;
 
         globals.store.obj.set("datePicker", data.date);
@@ -301,8 +315,9 @@ function setupAppBarItems() {
 
     // app-bar: printer handler
     printerButton.onclick = async () => {
-        // TODO: Setup "printerButton" app-bar (icon button) handlers
-        await dialogs.calendarPrint.open();
+        await dialogs.calendarPrint.open(
+            new Date(globals.store.obj.get("datePicker")!).getFullYear(),
+        );
     };
 
     // app-bar: handle today [disabled] attribute
@@ -325,7 +340,9 @@ function setupAppBarItems() {
                 }
 
                 // Update date-picker button innerText content `YYYY / MM`?
-                const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+                const currentMonth = (currentDate.getMonth() + 1)
+                    .toString()
+                    .padStart(2, "0");
                 datePickerButton.innerText = `${currentYear} / ${currentMonth}`;
             },
             true,

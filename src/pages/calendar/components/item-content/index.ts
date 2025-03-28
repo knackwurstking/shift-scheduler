@@ -8,7 +8,11 @@ import * as dialogs from "./dialogs";
 const template = document.createElement("template");
 template.innerHTML = html`
     <div class="item-content ui-flex-grid" style="--gap: 0.05rem">
-        <div class="week-days ui-flex-grid-row" class="week-days-row" gap="0.05rem">
+        <div
+            class="week-days ui-flex-grid-row"
+            class="week-days-row"
+            gap="0.05rem"
+        >
             <div class="week-day ui-flex-grid-item"></div>
             <div class="week-day ui-flex-grid-item"></div>
             <div class="week-day ui-flex-grid-item"></div>
@@ -19,9 +23,6 @@ template.innerHTML = html`
         </div>
     </div>
 `;
-
-export const defaultWeekOrder = [0, 1, 2, 3, 4, 5, 6];
-export const defaultWeekDaysInOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function create(year: number, month: number): HTMLElement {
     const itemContent = (
@@ -49,7 +50,11 @@ export function create(year: number, month: number): HTMLElement {
     return itemContent;
 }
 
-export async function update(itemContent: HTMLElement, year: number, month: number): Promise<void> {
+export async function update(
+    itemContent: HTMLElement,
+    year: number,
+    month: number,
+): Promise<void> {
     const date = new Date(year, month);
     const days: HTMLElement[] = Array.from(
         itemContent.querySelectorAll(`.item-content > .days > .day`),
@@ -85,7 +90,10 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
         }
 
         // Inactive Item
-        if (entry.year !== date.getFullYear() || entry.month !== date.getMonth()) {
+        if (
+            entry.year !== date.getFullYear() ||
+            entry.month !== date.getMonth()
+        ) {
             days[index].classList.add("inactive");
         } else {
             days[index].classList.remove("inactive");
@@ -93,7 +101,11 @@ export async function update(itemContent: HTMLElement, year: number, month: numb
     });
 
     markWeekendItems(
-        [...itemContent.querySelectorAll(`.item-content > .week-days > .week-day`)],
+        [
+            ...itemContent.querySelectorAll(
+                `.item-content > .week-days > .week-day`,
+            ),
+        ],
         days,
     );
 }
@@ -131,7 +143,9 @@ async function itemContentClickHandler(e: Event) {
     if (!data) return;
 
     // Update database and day item
-    const rhythmShift = utils.calendar.calcShiftForDay(new Date(year, month, day));
+    const rhythmShift = utils.calendar.calcShiftForDay(
+        new Date(year, month, day),
+    );
     const updatedData: DBEntry = {
         year,
         month,
@@ -144,7 +158,11 @@ async function itemContentClickHandler(e: Event) {
     };
 
     // Remove shift if it's a rhythm shift
-    if (!!updatedData.shift && !!rhythmShift && rhythmShift.id === updatedData.shift.id) {
+    if (
+        !!updatedData.shift &&
+        !!rhythmShift &&
+        rhythmShift.id === updatedData.shift.id
+    ) {
         updatedData.shift = null;
     }
 
@@ -170,7 +188,7 @@ async function itemContentClickHandler(e: Event) {
 
 function markWeekendItems(weekDays: Element[], days: Element[]): void {
     const weekStart = globals.store.obj.get("weekStart")!;
-    let order = defaultWeekOrder;
+    let order = globals.constants.defaultWeekOrder;
 
     if (weekStart > 0) {
         order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
@@ -180,7 +198,7 @@ function markWeekendItems(weekDays: Element[], days: Element[]): void {
     const sunIndex = order.findIndex((o) => o === 0);
 
     weekDays.forEach((weekDay, i) => {
-        weekDay.innerHTML = `${defaultWeekDaysInOrder[order[i % 7]]}`;
+        weekDay.innerHTML = `${globals.constants.defaultWeekDaysInOrder[order[i % 7]]}`;
     });
 
     [...weekDays, ...days].forEach((c, i) => {
@@ -215,7 +233,9 @@ function updateDayItem(dayItem: HTMLElement, entry: DBEntry): void {
         const today = new Date();
 
         return (
-            today.getFullYear() === year && today.getMonth() === month && today.getDate() === date
+            today.getFullYear() === year &&
+            today.getMonth() === month &&
+            today.getDate() === date
         );
     };
 
@@ -244,7 +264,9 @@ function updateDayItem(dayItem: HTMLElement, entry: DBEntry): void {
     } else {
         shiftItem.style.setProperty(
             "--shift-color",
-            entry.shift.visible ? entry.shift.color || "inherit" : "transparent",
+            entry.shift.visible
+                ? entry.shift.color || "inherit"
+                : "transparent",
         );
 
         shiftItem.innerHTML = entry.shift.shortName || "";
@@ -254,5 +276,6 @@ function updateDayItem(dayItem: HTMLElement, entry: DBEntry): void {
     dayItem.setAttribute("data-year", entry.year.toString());
     dayItem.setAttribute("data-month", entry.month.toString());
     dayItem.setAttribute("data-date", entry.date.toString());
-    if (!!entry.shift) dayItem.setAttribute("data-shift-id", entry.shift.id.toString());
+    if (!!entry.shift)
+        dayItem.setAttribute("data-shift-id", entry.shift.id.toString());
 }
