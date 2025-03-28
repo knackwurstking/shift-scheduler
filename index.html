@@ -6,7 +6,10 @@
 
         <link rel="icon" href="/assets/icons/favicon.ico" sizes="any" />
         <link rel="icon" href="/assets/icons/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180x180.png" />
+        <link
+            rel="apple-touch-icon"
+            href="/assets/icons/apple-touch-icon-180x180.png"
+        />
 
         <title>Shift Scheduler</title>
 
@@ -70,11 +73,21 @@
                     <i class="bi bi-pen"></i>
                 </button>
 
-                <button class="today" style="display: none" variant="ghost" icon>
+                <button
+                    class="today"
+                    style="display: none"
+                    variant="ghost"
+                    icon
+                >
                     <i class="bi bi-calendar-event"></i>
                 </button>
 
-                <button class="printer" style="display: none" variant="ghost" icon>
+                <button
+                    class="printer"
+                    style="display: none"
+                    variant="ghost"
+                    icon
+                >
                     <i class="bi bi-printer"></i>
                 </button>
 
@@ -89,60 +102,6 @@
                 </button>
             </div>
         </div>
-
-        <dialog name="shift">
-            <form method="dialog">
-                <div class="ui-flex-grid">
-                    <div class="ui-flex-grid-item" style="width: 100%">
-                        <label class="ui-flex justify-between align-center ui-padding">
-                            Name (ex.: Night)
-                            <input
-                                class="name"
-                                type="text"
-                                style="margin-left: var(--ui-spacing)"
-                            />
-                        </label>
-                    </div>
-
-                    <div class="ui-flex-grid-item" style="width: 100%">
-                        <label class="ui-flex justify-between align-center ui-padding">
-                            Short (ex.: N)
-                            <input
-                                class="short-name"
-                                type="text"
-                                style="margin-left: var(--ui-spacing)"
-                            />
-                        </label>
-                    </div>
-
-                    <div class="ui-flex-grid-item" style="width: 100%">
-                        <label class="ui-flex justify-between align-center ui-padding">
-                            Pick a color
-                            <input class="color-picker" style="min-width: 4rem" type="color" />
-                        </label>
-                    </div>
-
-                    <div class="ui-flex-grid-item" style="width: 100%">
-                        <label class="ui-flex justify-between align-center ui-padding">
-                            Disable color
-                            <input class="default-color" type="checkbox" />
-                        </label>
-                    </div>
-
-                    <div class="ui-flex-grid-item" style="width: 100%">
-                        <label class="ui-flex justify-between align-center ui-padding">
-                            Hide shift
-                            <input class="hidden" type="checkbox" />
-                        </label>
-                    </div>
-
-                    <div class="ui-flex-grid-row" style="--justify: flex-end; width: 100%">
-                        <button class="cancel" color="secondary">Cancel</button>
-                        <input type="submit" />
-                    </div>
-                </div>
-            </form>
-        </dialog>
 
         <template name="shift-card">
             <div

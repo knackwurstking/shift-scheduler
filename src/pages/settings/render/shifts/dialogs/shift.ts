@@ -1,17 +1,104 @@
-// TODO: Add create function here, just like the date-picker dialog
+import { Shift, DialogCreate } from "@types";
+import { html } from "@utils";
 
-import { Shift } from "@types";
+export function create(): DialogCreate {
+    const dialog = document.createElement("dialog");
+    document.body.appendChild(dialog);
+
+    dialog.innerHTML = html`
+        <form method="dialog">
+            <div class="ui-flex-grid">
+                <div class="ui-flex-grid-item" style="width: 100%">
+                    <label
+                        class="ui-flex justify-between align-center ui-padding"
+                    >
+                        Name (ex.: Night)
+                        <input
+                            class="name"
+                            type="text"
+                            style="margin-left: var(--ui-spacing)"
+                        />
+                    </label>
+                </div>
+
+                <div class="ui-flex-grid-item" style="width: 100%">
+                    <label
+                        class="ui-flex justify-between align-center ui-padding"
+                    >
+                        Short (ex.: N)
+                        <input
+                            class="short-name"
+                            type="text"
+                            style="margin-left: var(--ui-spacing)"
+                        />
+                    </label>
+                </div>
+
+                <div class="ui-flex-grid-item" style="width: 100%">
+                    <label
+                        class="ui-flex justify-between align-center ui-padding"
+                    >
+                        Pick a color
+                        <input
+                            class="color-picker"
+                            style="min-width: 4rem"
+                            type="color"
+                        />
+                    </label>
+                </div>
+
+                <div class="ui-flex-grid-item" style="width: 100%">
+                    <label
+                        class="ui-flex justify-between align-center ui-padding"
+                    >
+                        Disable color
+                        <input class="default-color" type="checkbox" />
+                    </label>
+                </div>
+
+                <div class="ui-flex-grid-item" style="width: 100%">
+                    <label
+                        class="ui-flex justify-between align-center ui-padding"
+                    >
+                        Hide shift
+                        <input class="hidden" type="checkbox" />
+                    </label>
+                </div>
+
+                <div
+                    class="ui-flex-grid-row"
+                    style="--justify: flex-end; width: 100%"
+                >
+                    <button class="cancel" color="secondary">Cancel</button>
+                    <input type="submit" />
+                </div>
+            </div>
+        </form>
+    `;
+
+    return {
+        dialog,
+        destroy() {
+            document.body.removeChild(this.dialog);
+        },
+    };
+}
 
 export function open(data: Shift | null): Promise<Shift | null> {
     return new Promise((resolve) => {
-        const dialog = document.querySelector<HTMLDialogElement>(`dialog[name="shift"]`)!;
+        const { dialog, destroy } = create();
+
         const form = dialog.querySelector<HTMLFormElement>(`form`)!;
 
         const inputName = form.querySelector<HTMLInputElement>(`input.name`)!;
-        const inputShortName = form.querySelector<HTMLInputElement>(`input.short-name`)!;
-        const inputColorPicker = form.querySelector<HTMLInputElement>(`input.color-picker`)!;
-        const checkboxDefaultColor = form.querySelector<HTMLInputElement>(`input.default-color`)!;
-        const checkboxHidden = form.querySelector<HTMLInputElement>(`input.hidden`)!;
+        const inputShortName =
+            form.querySelector<HTMLInputElement>(`input.short-name`)!;
+        const inputColorPicker =
+            form.querySelector<HTMLInputElement>(`input.color-picker`)!;
+        const checkboxDefaultColor =
+            form.querySelector<HTMLInputElement>(`input.default-color`)!;
+        const checkboxHidden =
+            form.querySelector<HTMLInputElement>(`input.hidden`)!;
 
         form.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
@@ -20,7 +107,10 @@ export function open(data: Shift | null): Promise<Shift | null> {
 
         let result: Shift | null = null;
 
-        dialog.onclose = () => resolve(result);
+        dialog.onclose = () => {
+            resolve(result);
+            setTimeout(destroy);
+        };
 
         form.onsubmit = (e) => {
             // Get the data, validate it, and update result
@@ -29,7 +119,9 @@ export function open(data: Shift | null): Promise<Shift | null> {
                 name: inputName.value,
                 shortName: inputShortName.value,
                 visible: !checkboxHidden.checked,
-                color: checkboxDefaultColor.checked ? null : inputColorPicker.value || null,
+                color: checkboxDefaultColor.checked
+                    ? null
+                    : inputColorPicker.value || null,
             };
 
             if (!newData.name) {
@@ -55,7 +147,8 @@ export function open(data: Shift | null): Promise<Shift | null> {
             inputShortName.value = data?.shortName || "";
             inputColorPicker.value = data?.color || "#66FF00";
             checkboxDefaultColor.checked = !data?.color;
-            checkboxHidden.checked = typeof data?.visible !== "boolean" ? false : !data.visible;
+            checkboxHidden.checked =
+                typeof data?.visible !== "boolean" ? false : !data.visible;
 
             // Initialize input handler for disabling or enabling stuff
             // Default Color:
