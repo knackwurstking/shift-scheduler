@@ -16,7 +16,12 @@ export function create(year: number): DialogCreate {
         <form method="dialog">
             <label>
                 Pick a Date
-                <input type="year" style="min-width: 8ch" value="${year}" />
+                <input
+                    class="year"
+                    type="year"
+                    style="min-width: 8ch"
+                    value="${year}"
+                />
             </label>
 
             <div class="ui-flex-grid-row" style="--justify: flex-end">
@@ -196,21 +201,19 @@ async function exportDoc(
     }
 
     if (process.env.MODE === "android") {
-        const result = await Filesystem.writeFile({
-            path: fileName,
-            // @ts-ignore
-            data: doc.output("datauri"),
-            directory: Directory.Cache,
-        });
-
         await Share.share({
             title: fileName.slice(0, fileName.length - 4),
-            url: result.uri,
             dialogTitle: `Share "${fileName}"`,
+            url: (
+                await Filesystem.writeFile({
+                    path: fileName,
+                    // @ts-ignore
+                    data: doc.output("datauri"),
+                    directory: Directory.Cache,
+                })
+            ).uri,
         });
-
-        return;
+    } else {
+        doc.save(fileName);
     }
-
-    doc.save(fileName);
 }
