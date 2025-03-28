@@ -1,11 +1,12 @@
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
-import * as globals from "@globals";
-import { DBEntry, DialogCreate } from "@types";
-import { html } from "@utils";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
+
+import * as globals from "@globals";
+import { DBEntry, DialogCreate } from "@types";
 import * as utils from "@utils";
+import { html } from "@utils";
 
 export function create(year: number): DialogCreate {
     const dialog = document.createElement("dialog");
