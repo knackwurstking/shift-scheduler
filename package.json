@@ -39,6 +39,6 @@
 	},
 	"dependencies": {
 		"@inlang/paraglide-js": "^2.0.0",
-        "ui": "github:knackwurstking/ui#v2.1.1"
+		"ui": "github:knackwurstking/ui#v2.2.0"
 	}
 }
