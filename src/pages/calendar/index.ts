@@ -299,7 +299,11 @@ function setupAppBarItems() {
 
     // app-bar: today handler
     todayButton.onclick = async () => {
-        store.obj.set("datePicker", new Date().getTime());
+        const today = new Date();
+        store.obj.set(
+            "datePicker",
+            new Date(today.getFullYear(), today.getMonth()).getTime(),
+        );
     };
 
     // app-bar: edit mode button
