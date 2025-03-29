@@ -44,4 +44,6 @@
 	</div>
 </div>
 
-{@render children()}
+<div style="padding-top: var(--ui-app-bar-height); width: 100%; height: 100%;">
+	{@render children()}
+</div>
