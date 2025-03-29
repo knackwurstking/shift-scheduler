@@ -3,10 +3,9 @@ import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
 
-import * as globals from "@globals";
+import { constants, db, store } from "@globals";
 import { DBEntry, DialogCreate } from "@types";
-import * as utils from "@utils";
-import { html } from "@utils";
+import { html, calendar } from "@utils";
 
 export function create(year: number): DialogCreate {
     const dialog = document.createElement("dialog");
@@ -103,14 +102,14 @@ async function createPDF(options: {
             pageIndex++;
         }
 
-        let monthDataArray: DBEntry[] = await utils.calendar.getDataForDays(
+        let monthDataArray: DBEntry[] = await calendar.getDataForDays(
             42,
             options.year,
             month,
         );
 
         for (let i = 0; i < monthDataArray.length; i++) {
-            const dbEntry = await globals.db.get(
+            const dbEntry = await db.get(
                 monthDataArray[i].year,
                 monthDataArray[i].month,
                 monthDataArray[i].date,
@@ -127,7 +126,7 @@ async function createPDF(options: {
             head: [
                 [
                     {
-                        content: globals.constants.months[month],
+                        content: constants.months[month],
                         colSpan: 7,
                         styles: {
                             fillColor: [0, 0, 0],
@@ -164,8 +163,8 @@ async function createPDF(options: {
 }
 
 function getTableHeader(): string[] {
-    let order = globals.constants.defaultWeekOrder;
-    const weekStart = globals.store.obj.get("weekStart")!;
+    let order = constants.defaultWeekOrder;
+    const weekStart = store.obj.get("weekStart")!;
 
     if (weekStart > 0) {
         order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
@@ -173,9 +172,7 @@ function getTableHeader(): string[] {
 
     const result: string[] = [];
     for (let i = 0; i < 7; i++) {
-        result.push(
-            globals.constants.defaultWeekDaysInOrder[order[i % 7]].toString(),
-        );
+        result.push(constants.defaultWeekDaysInOrder[order[i % 7]].toString());
     }
 
     return result;

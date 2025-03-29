@@ -1,6 +1,6 @@
-import * as globals from "@globals";
+import { store } from "@globals";
 import { html } from "@utils";
-import * as dialogs from "./dialogs";
+import { dialogs } from "@components";
 
 const articleHTML = html`
     <h4>Shift Settings</h4>
@@ -29,7 +29,10 @@ const articleHTML = html`
             <tr class="item">
                 <td class="name" style="text-align: left;"></td>
 
-                <td class="short-name" style="text-align: left; color: inherit"></td>
+                <td
+                    class="short-name"
+                    style="text-align: left; color: inherit"
+                ></td>
 
                 <td class="actions" style="text-align: right;">
                     <div class="ui-flex-grid-row" style="--justify: flex-end;">
@@ -40,7 +43,12 @@ const articleHTML = html`
                         </div>
 
                         <div class="ui-flex-grid-item" style="--flex: 0;">
-                            <button class="delete" variant="ghost" color="destructive" icon>
+                            <button
+                                class="delete"
+                                variant="ghost"
+                                color="destructive"
+                                icon
+                            >
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
@@ -51,14 +59,20 @@ const articleHTML = html`
     </section>
 
     <section class="start-date">
-        <label class="ui-flex justify-between align-center" style="padding: var(--ui-spacing);">
+        <label
+            class="ui-flex justify-between align-center"
+            style="padding: var(--ui-spacing);"
+        >
             Start Date
             <input type="date" />
         </label>
     </section>
 
     <section class="edit-rhythm">
-        <label class="ui-flex justify-between align-center" style="padding: var(--ui-spacing)">
+        <label
+            class="ui-flex justify-between align-center"
+            style="padding: var(--ui-spacing)"
+        >
             Rhythm
             <button>Edit</button>
         </label>
@@ -72,7 +86,9 @@ export function article(): HTMLElement {
 
     const renderShiftsTableSection = () => {
         // Table Section
-        const tbody = article.querySelector<HTMLElement>(`section.shifts-table tbody`)!;
+        const tbody = article.querySelector<HTMLElement>(
+            `section.shifts-table tbody`,
+        )!;
         const template = article.querySelector<HTMLTemplateElement>(
             `section.shifts-table template[name="table-item"]`,
         )!;
@@ -81,7 +97,7 @@ export function article(): HTMLElement {
         tbody.innerHTML = "";
 
         // Create shift table rows from settings shifts
-        globals.store.obj.get("shifts")!.forEach((shift) => {
+        store.obj.get("shifts")!.forEach((shift) => {
             const tableItem = (
                 template.content.cloneNode(true) as HTMLElement
             ).querySelector<HTMLElement>(`tr.item`)!;
@@ -89,15 +105,18 @@ export function article(): HTMLElement {
             tbody.appendChild(tableItem);
 
             // Set shift name
-            tableItem.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
+            tableItem.querySelector<HTMLElement>(`.name`)!.innerText =
+                shift.name;
 
             // Set shifts short name
-            const shortName = tableItem.querySelector<HTMLElement>(`.short-name`)!;
+            const shortName =
+                tableItem.querySelector<HTMLElement>(`.short-name`)!;
             shortName.style.color = shift.color || "inherit";
             shortName.innerText = shift.visible ? shift.shortName : "";
 
             // Set edit button handler, open edit dialog
-            const editButton = tableItem.querySelector<HTMLElement>(`button.edit`)!;
+            const editButton =
+                tableItem.querySelector<HTMLElement>(`button.edit`)!;
             editButton.onclick = async () => {
                 const data = await dialogs.shift.open(shift);
                 if (!data) {
@@ -105,7 +124,7 @@ export function article(): HTMLElement {
                 }
 
                 // Update store and and table item
-                globals.store.obj.update("shifts", (shifts) => {
+                store.obj.update("shifts", (shifts) => {
                     return shifts.map((shift) => {
                         if (shift.id === data.id) {
                             return data;
@@ -118,10 +137,11 @@ export function article(): HTMLElement {
                 renderShiftsTableSection();
             };
 
-            const deleteButton = tableItem.querySelector<HTMLElement>(`button.delete`)!;
+            const deleteButton =
+                tableItem.querySelector<HTMLElement>(`button.delete`)!;
             deleteButton.onclick = async () => {
                 if (confirm(`Delete shift \"${shift.name}\"?`)) {
-                    globals.store.obj.update("shifts", (shifts) => {
+                    store.obj.update("shifts", (shifts) => {
                         return shifts.filter((s) => s.id !== shift.id);
                     });
                 }
@@ -131,21 +151,22 @@ export function article(): HTMLElement {
         });
 
         // Add "Add Shift" button handler
-        article.querySelector<HTMLButtonElement>(`section.shifts-table button.add-shift`)!.onclick =
-            async () => {
-                const data = await dialogs.shift.open(null);
-                if (!data) {
-                    return;
-                }
+        article.querySelector<HTMLButtonElement>(
+            `section.shifts-table button.add-shift`,
+        )!.onclick = async () => {
+            const data = await dialogs.shift.open(null);
+            if (!data) {
+                return;
+            }
 
-                // Update store and and table item
-                globals.store.obj.update("shifts", (shifts) => {
-                    shifts.push(data);
-                    return shifts;
-                });
+            // Update store and and table item
+            store.obj.update("shifts", (shifts) => {
+                shifts.push(data);
+                return shifts;
+            });
 
-                renderShiftsTableSection();
-            };
+            renderShiftsTableSection();
+        };
     };
 
     renderShiftsTableSection();
@@ -154,14 +175,17 @@ export function article(): HTMLElement {
         `section.start-date input[type="date"]`,
     )!;
 
-    const startDate = globals.store.obj.get("startDate")!;
+    const startDate = store.obj.get("startDate")!;
     if (!!startDate) {
         const date = new Date();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
         const day = date.getDate().toString().padStart(2, "0");
         startDateInput.value = `${date.getFullYear()}-${month}-${day}`;
         startDateInput.onchange = () => {
-            globals.store.obj.set("startDate", new Date(startDateInput.value).getTime());
+            store.obj.set(
+                "startDate",
+                new Date(startDateInput.value).getTime(),
+            );
         };
     }
 
@@ -170,11 +194,11 @@ export function article(): HTMLElement {
     )!;
 
     editRhythmButton.onclick = async () => {
-        globals.store.obj.set(
+        store.obj.set(
             "rhythm",
             await dialogs.rhythm.open(
-                globals.store.obj.get("rhythm")!,
-                globals.store.obj.get("shifts")!,
+                store.obj.get("rhythm")!,
+                store.obj.get("shifts")!,
             ),
         );
     };

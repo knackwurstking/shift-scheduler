@@ -1,4 +1,4 @@
-import * as globals from "@globals";
+import { store } from "@globals";
 import { DBEntry, DialogCreate } from "@types";
 import { html } from "@utils";
 
@@ -84,7 +84,7 @@ export function open(
             while (shiftSelect.children.length > 1) {
                 shiftSelect.removeChild(shiftSelect.lastChild!);
             }
-            globals.store.obj.get("shifts")!.forEach((shift) => {
+            store.obj.get("shifts")!.forEach((shift) => {
                 const option = document.createElement("option");
                 option.value = shift.id.toString();
                 option.innerText = shift.name || shift.shortName;

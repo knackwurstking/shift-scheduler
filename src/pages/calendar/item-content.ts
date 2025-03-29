@@ -1,9 +1,7 @@
-import * as globals from "@globals";
-import * as utils from "@utils";
-import { html } from "@utils";
-
+import { dialogs } from "@components";
+import { constants, db, store } from "@globals";
 import { DBEntry } from "@types";
-import * as dialogs from "./dialogs";
+import { calendar, html } from "@utils";
 
 const template = document.createElement("template");
 template.innerHTML = html`
@@ -24,7 +22,7 @@ template.innerHTML = html`
     </div>
 `;
 
-export function create(year: number, month: number): HTMLElement {
+export function createItemContent(year: number, month: number): HTMLElement {
     const itemContent = (
         template.content.cloneNode(true) as HTMLElement
     ).querySelector<HTMLElement>(`.item-content`)!;
@@ -44,13 +42,13 @@ export function create(year: number, month: number): HTMLElement {
     itemContent.onclick = itemContentClickHandler;
 
     setTimeout(() => {
-        update(itemContent, year, month);
+        updateItemContent(itemContent, year, month);
     });
 
     return itemContent;
 }
 
-export async function update(
+export async function updateItemContent(
     itemContent: HTMLElement,
     year: number,
     month: number,
@@ -60,15 +58,15 @@ export async function update(
         itemContent.querySelectorAll(`.item-content > .days > .day`),
     );
 
-    let dataEntries: DBEntry[] = await utils.calendar.getDataForDays(
+    let dataEntries: DBEntry[] = await calendar.getDataForDays(
         days.length,
         date.getFullYear(),
         date.getMonth(),
     );
 
-    const shifts = globals.store.obj.get("shifts")!;
+    const shifts = store.obj.get("shifts")!;
     dataEntries.forEach(async (entry, index) => {
-        const data = await globals.db.get(entry.year, entry.month, entry.date);
+        const data = await db.get(entry.year, entry.month, entry.date);
         if (data !== null) {
             entry.note = data.note;
 
@@ -120,7 +118,7 @@ async function itemContentClickHandler(e: Event) {
     const day = parseInt(item.getAttribute("data-date")!, 10);
     const shiftID = parseInt(item.getAttribute("data-shift-id") || "0", 10);
 
-    const editMode = globals.store.obj.get("editMode")!;
+    const editMode = store.obj.get("editMode")!;
 
     let data: { shiftID: number; note: string } | null;
 
@@ -129,11 +127,11 @@ async function itemContentClickHandler(e: Event) {
         data = await dialogs.day.open(
             new Date(year, month, day, 6, 0, 0),
             shiftID,
-            await globals.db.get(year, month, day),
+            await db.get(year, month, day),
         );
     } else {
         // Edit Mode
-        const dbEntry = await globals.db.get(year, month, day);
+        const dbEntry = await db.get(year, month, day);
         data = {
             shiftID: !editMode.active ? 0 : editMode.active,
             note: dbEntry?.note || "",
@@ -143,15 +141,13 @@ async function itemContentClickHandler(e: Event) {
     if (!data) return;
 
     // Update database and day item
-    const rhythmShift = utils.calendar.calcShiftForDay(
-        new Date(year, month, day),
-    );
+    const rhythmShift = calendar.calcShiftForDay(new Date(year, month, day));
     const updatedData: DBEntry = {
         year,
         month,
         date: day,
         shift:
-            globals.store.obj.get("shifts")!.find((shift) => {
+            store.obj.get("shifts")!.find((shift) => {
                 return shift.id === data.shiftID;
             }) || null,
         note: data.note || "",
@@ -169,16 +165,14 @@ async function itemContentClickHandler(e: Event) {
     // Handle database add/put/delete
     if (!!updatedData.note || !!updatedData.shift) {
         console.warn("Add data to the database", updatedData);
-        globals.db
-            .put(updatedData)
-            .catch(() =>
-                globals.db
-                    .add(updatedData!)
-                    .catch((err) => alert(`Update database failed: ${err}`)),
+        db.put(updatedData).catch(() => {
+            db.add(updatedData!).catch((err) =>
+                alert(`Update database failed: ${err}`),
             );
+        });
     } else {
         console.warn("Remove data from the database", { year, month, day });
-        globals.db.delete(year, month, day);
+        db.delete(year, month, day);
     }
 
     // Before re-rendering add the rhythm shift (again) if it's not already set
@@ -187,8 +181,8 @@ async function itemContentClickHandler(e: Event) {
 }
 
 function markWeekendItems(weekDays: Element[], days: Element[]): void {
-    const weekStart = globals.store.obj.get("weekStart")!;
-    let order = globals.constants.defaultWeekOrder;
+    const weekStart = store.obj.get("weekStart")!;
+    let order = constants.defaultWeekOrder;
 
     if (weekStart > 0) {
         order = [...order.slice(weekStart), ...order.slice(0, weekStart)];
@@ -198,7 +192,7 @@ function markWeekendItems(weekDays: Element[], days: Element[]): void {
     const sunIndex = order.findIndex((o) => o === 0);
 
     weekDays.forEach((weekDay, i) => {
-        weekDay.innerHTML = `${globals.constants.defaultWeekDaysInOrder[order[i % 7]]}`;
+        weekDay.innerHTML = `${constants.defaultWeekDaysInOrder[order[i % 7]]}`;
     });
 
     [...weekDays, ...days].forEach((c, i) => {

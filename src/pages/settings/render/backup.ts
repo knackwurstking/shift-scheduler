@@ -1,10 +1,17 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import * as globals from "@globals";
+import { store, db } from "@globals";
 import { BackupV1, BackupV2, BackupV3 } from "@types";
 import { html } from "@utils";
-import * as backupUtils from "./backup-utils";
+
+import {
+    isBackupV1,
+    isBackupV2,
+    isBackupV3,
+    convertV1,
+    convertV2,
+} from "./backup-utils";
 
 const articleHTML = html`
     <h4>Backup</h4>
@@ -12,21 +19,30 @@ const articleHTML = html`
     <section class="json ui-flex justify-between align-center">
         <label style="padding: var(--ui-spacing)"> JSON </label>
 
-        <span class="ui-flex gap" style="--justify: flex-end; padding: var(--ui-spacing)">
+        <span
+            class="ui-flex gap"
+            style="--justify: flex-end; padding: var(--ui-spacing)"
+        >
             <button class="import" color="secondary">Import</button>
             <button class="export" color="secondary">Export</button>
         </span>
     </section>
 `;
 
-export function article(reRenderCallback: () => Promise<void> | void): HTMLElement {
+export function article(
+    reRenderCallback: () => Promise<void> | void,
+): HTMLElement {
     const article = document.createElement("article");
     article.className = "backup";
     article.innerHTML = articleHTML;
 
     // JSON
-    const importButton = article.querySelector<HTMLButtonElement>(`section.json button.import`)!;
-    const exportButton = article.querySelector<HTMLButtonElement>(`section.json button.export`)!;
+    const importButton = article.querySelector<HTMLButtonElement>(
+        `section.json button.import`,
+    )!;
+    const exportButton = article.querySelector<HTMLButtonElement>(
+        `section.json button.export`,
+    )!;
 
     importButton.onclick = async () => {
         const input = document.createElement("input");
@@ -41,7 +57,8 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
 
             const reader = new FileReader();
 
-            reader.onload = async () => await parseJSON(reader.result, reRenderCallback);
+            reader.onload = async () =>
+                await parseJSON(reader.result, reRenderCallback);
 
             reader.onerror = () => {
                 alert(`Import data: read file failed: ${reader.error}`);
@@ -56,14 +73,14 @@ export function article(reRenderCallback: () => Promise<void> | void): HTMLEleme
     exportButton.onclick = async () => {
         const data: BackupV3 = {
             // Create the backup object
-            weekStart: globals.store.obj.get("weekStart")!,
-            shifts: globals.store.obj.get("shifts")!,
-            rhythm: globals.store.obj.get("rhythm")!,
-            startDate: globals.store.obj.get("startDate")!,
-            version: globals.store.obj.get("version")!,
+            weekStart: store.obj.get("weekStart")!,
+            shifts: store.obj.get("shifts")!,
+            rhythm: store.obj.get("rhythm")!,
+            startDate: store.obj.get("startDate")!,
+            version: store.obj.get("version")!,
             indexedDB: {
-                version: globals.db.version,
-                data: await globals.db.getAll(),
+                version: db.version,
+                data: await db.getAll(),
             },
         };
 
@@ -123,25 +140,25 @@ async function parseJSON(
 
     // Validate backup version
     let backupV3: BackupV3;
-    if (backupUtils.isBackupV3(data)) {
+    if (isBackupV3(data)) {
         backupV3 = data as BackupV3;
-    } else if (backupUtils.isBackupV2(data)) {
-        backupV3 = backupUtils.convertV2(data as BackupV2);
-    } else if (backupUtils.isBackupV1(data)) {
-        backupV3 = backupUtils.convertV1(data as BackupV1);
+    } else if (isBackupV2(data)) {
+        backupV3 = convertV2(data as BackupV2);
+    } else if (isBackupV1(data)) {
+        backupV3 = convertV1(data as BackupV1);
     } else {
         return alert("Invalid JSON data!");
     }
 
     // Initialize
-    globals.store.obj.set("shifts", backupV3.shifts);
-    globals.store.obj.set("rhythm", backupV3.rhythm);
-    globals.store.obj.set("startDate", backupV3.startDate);
-    globals.store.obj.set("weekStart", backupV3.weekStart);
+    store.obj.set("shifts", backupV3.shifts);
+    store.obj.set("rhythm", backupV3.rhythm);
+    store.obj.set("startDate", backupV3.startDate);
+    store.obj.set("weekStart", backupV3.weekStart);
 
-    await globals.db.deleteAll();
+    await db.deleteAll();
     for (const entry of backupV3.indexedDB.data || []) {
-        globals.db.add(entry).catch(() => globals.db.put(entry));
+        db.add(entry).catch(() => db.put(entry));
     }
 
     setTimeout(reRenderCallback);

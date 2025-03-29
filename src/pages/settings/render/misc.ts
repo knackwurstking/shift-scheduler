@@ -1,11 +1,14 @@
-import * as globals from "@globals";
+import { store } from "@globals";
 import { html } from "@utils";
 
 const articleHTML = html`
     <h4>Miscellaneous</h4>
 
     <section class="week-start">
-        <label class="ui-flex justify-between" style="padding: var(--ui-spacing);">
+        <label
+            class="ui-flex justify-between"
+            style="padding: var(--ui-spacing);"
+        >
             The week starts on Monday
             <input type="checkbox" />
         </label>
@@ -22,11 +25,11 @@ export function article(): HTMLElement {
     )!;
 
     // Read week start from store
-    weekStart.checked = globals.store.obj.get("weekStart") === 1;
+    weekStart.checked = store.obj.get("weekStart") === 1;
 
     // Update store on change
     weekStart.onchange = () => {
-        globals.store.obj.set("weekStart", weekStart.checked ? 1 : 0);
+        store.obj.set("weekStart", weekStart.checked ? 1 : 0);
     };
 
     return article;

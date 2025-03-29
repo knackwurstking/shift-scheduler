@@ -1,4 +1,4 @@
-import * as globals from "@globals";
+import { constants } from "@globals";
 import { BackupV1, BackupV2, BackupV3, DBEntry } from "@types";
 
 export function isBackupV1(data: any): boolean {
@@ -120,7 +120,10 @@ export function isBackupV2(data: any): boolean {
     }
 
     // Check indexedDB
-    if (typeof data.indexedDB.version !== "number" || !Array.isArray(data.indexedDB.data)) {
+    if (
+        typeof data.indexedDB.version !== "number" ||
+        !Array.isArray(data.indexedDB.data)
+    ) {
         return false;
     }
 
@@ -196,12 +199,18 @@ export function isBackupV3(data: any): boolean {
     }
 
     // Check version
-    if (typeof data.version.version !== "string" || typeof data.version.build !== "number") {
+    if (
+        typeof data.version.version !== "string" ||
+        typeof data.version.build !== "number"
+    ) {
         return false;
     }
 
     // Check indexedDB
-    if (typeof data.indexedDB.version !== "number" || !Array.isArray(data.indexedDB.data)) {
+    if (
+        typeof data.indexedDB.version !== "number" ||
+        !Array.isArray(data.indexedDB.data)
+    ) {
         return false;
     }
 
@@ -234,12 +243,14 @@ export function convertV2(data: BackupV2): BackupV3 {
     return {
         weekStart: 0,
         version: {
-            version: globals.constants.version,
-            build: globals.constants.build,
+            version: constants.version,
+            build: constants.build,
         },
         rhythm: data.settings.rhythm,
         shifts: data.settings.shifts,
-        startDate: !!data.settings.startDate ? new Date(data.settings.startDate).getTime() : 0,
+        startDate: !!data.settings.startDate
+            ? new Date(data.settings.startDate).getTime()
+            : 0,
         indexedDB: {
             version: data.indexedDB.version,
             data: data.indexedDB.data.map((entry) => ({
@@ -257,12 +268,14 @@ export function convertV1(data: BackupV1): BackupV3 {
     return {
         weekStart: 0,
         version: {
-            version: globals.constants.version,
-            build: globals.constants.build,
+            version: constants.version,
+            build: constants.build,
         },
         rhythm: data.settings.rhythm,
         shifts: data.settings.shifts,
-        startDate: !!data.settings.startDate ? new Date(data.settings.startDate).getTime() : 0,
+        startDate: !!data.settings.startDate
+            ? new Date(data.settings.startDate).getTime()
+            : 0,
         indexedDB: convertV1StorageToV3IndexedDB(data),
     };
 }

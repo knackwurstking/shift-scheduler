@@ -1,7 +1,8 @@
 import { store } from "@globals";
 import { EditMode } from "@types";
-import * as components from "./components";
-import { Direction } from "./lib/swipe-handler";
+
+import { updateItemContent } from "./item-content";
+import { Direction } from "./swipe-handler";
 
 export async function datePicker(dateString: number): Promise<void> {
     const date = new Date(dateString);
@@ -10,7 +11,7 @@ export async function datePicker(dateString: number): Promise<void> {
     Array.from(document.querySelector(`.item-container`)!.children).forEach(
         // Update item-container > item
         async (item) => {
-            components.itemContent.update(
+            updateItemContent(
                 item.querySelector(`.item-content`)!,
                 date.getFullYear(),
                 date.getMonth(),
@@ -24,7 +25,8 @@ export async function datePicker(dateString: number): Promise<void> {
 export async function editMode(data: EditMode): Promise<void> {
     const routerTarget = document.querySelector("#routerTarget")!;
 
-    const itemContainer = routerTarget.querySelector<HTMLElement>(".item-container");
+    const itemContainer =
+        routerTarget.querySelector<HTMLElement>(".item-container");
     const editModeContainer = document.querySelector<HTMLElement>(".edit-mode");
 
     if (!itemContainer || !editModeContainer) return;
@@ -68,12 +70,14 @@ export async function swipe(direction: Direction): Promise<void> {
 }
 
 function renderShiftCards(container: HTMLElement, active: number): void {
-    const template: HTMLTemplateElement = document.querySelector(`template[name="shift-card"]`)!;
+    const template: HTMLTemplateElement = document.querySelector(
+        `template[name="shift-card"]`,
+    )!;
 
     (store.obj.get("shifts") || []).forEach((shift) => {
-        const card: HTMLElement = (template.content.cloneNode(true) as HTMLElement).querySelector(
-            ".shift-card",
-        )!;
+        const card: HTMLElement = (
+            template.content.cloneNode(true) as HTMLElement
+        ).querySelector(".shift-card")!;
 
         if (active === shift.id) {
             card.setAttribute("active", "");

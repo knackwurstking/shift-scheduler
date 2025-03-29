@@ -1,12 +1,12 @@
 import * as ui from "ui";
 
-import * as globals from "@globals";
-import * as utils from "@utils";
-import { html } from "@utils";
-import * as components from "./components";
-import * as dialogs from "./dialogs";
+import { store } from "@globals";
+import { appBar, html } from "@utils";
+import { dialogs } from "@components";
+
 import * as handlers from "./handlers";
-import { SwipeHandler } from "./lib/swipe-handler";
+import { createItemContent } from "./item-content";
+import { SwipeHandler } from "./swipe-handler";
 
 const template = document.createElement("template");
 template.innerHTML = html`
@@ -206,8 +206,8 @@ let cleanup: ui.CleanUpFunction[] = [];
 
 export async function onMount() {
     // Setup app bar
-    appBarTitleBackup = utils.appBar.get();
-    utils.appBar.set("");
+    appBarTitleBackup = appBar.get();
+    appBar.set("");
 
     const routerTarget = document.querySelector<HTMLElement>(`#routerTarget`)!;
     routerTarget.innerHTML = "";
@@ -225,8 +225,8 @@ export async function onMount() {
 
     // Setup store handlers
     cleanup.push(
-        globals.store.obj.listen("datePicker", handlers.datePicker, true),
-        globals.store.obj.listen("editMode", handlers.editMode, true),
+        store.obj.listen("datePicker", handlers.datePicker, true),
+        store.obj.listen("editMode", handlers.editMode, true),
     );
 
     setTimeout(() => {
@@ -241,7 +241,7 @@ export async function onMount() {
 }
 
 export async function onDestroy() {
-    utils.appBar.set(appBarTitleBackup);
+    appBar.set(appBarTitleBackup);
     cleanup.forEach((fn) => fn());
     cleanup = [];
 }
@@ -254,10 +254,7 @@ function render() {
         (item) => {
             item.innerHTML = "";
             item.appendChild(
-                components.itemContent.create(
-                    date.getFullYear(),
-                    date.getMonth(),
-                ),
+                createItemContent(date.getFullYear(), date.getMonth()),
             );
         },
     );
@@ -293,21 +290,21 @@ function setupAppBarItems() {
     // app-bar: date-picker handler
     datePickerButton.onclick = async () => {
         const data = await dialogs.datePicker.open(
-            globals.store.obj.get("datePicker")!,
+            store.obj.get("datePicker")!,
         );
         if (!data) return;
 
-        globals.store.obj.set("datePicker", data.date);
+        store.obj.set("datePicker", data.date);
     };
 
     // app-bar: today handler
     todayButton.onclick = async () => {
-        globals.store.obj.set("datePicker", new Date().getTime());
+        store.obj.set("datePicker", new Date().getTime());
     };
 
     // app-bar: edit mode button
     editButton.onclick = async () => {
-        globals.store.obj.update("editMode", (data) => {
+        store.obj.update("editMode", (data) => {
             data.open = !data.open;
             return data;
         });
@@ -316,13 +313,13 @@ function setupAppBarItems() {
     // app-bar: printer handler
     printerButton.onclick = async () => {
         await dialogs.calendarPrint.open(
-            new Date(globals.store.obj.get("datePicker")!).getFullYear(),
+            new Date(store.obj.get("datePicker")!).getFullYear(),
         );
     };
 
     // app-bar: handle today [disabled] attribute
     cleanup.push(
-        globals.store.obj.listen(
+        store.obj.listen(
             "datePicker",
             (data) => {
                 const today = new Date();
