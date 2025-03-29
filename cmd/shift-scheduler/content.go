@@ -28,19 +28,23 @@ var months = []string{
 }
 
 func content() fyne.CanvasObject {
+	currentDate := time.Now()
+
 	gotoSettingsButton := widget.NewToolbarAction(theme.SettingsIcon(), func() {
 		// TODO: Open app settings page here
 	})
 	gotoSettingsButton.Disable()
 
-	today := time.Now()
 	top := widget.NewToolbar(
 		NewToolbarButton(
-			fmt.Sprintf("%d / %s", today.Year(), months[today.Month()-1]),
+			fmt.Sprintf("%d / %s",
+				currentDate.Year(), months[currentDate.Month()-1]),
+
 			func() {
 				// TODO: Open date picker dialog here
 			},
 		),
+
 		widget.NewToolbarSpacer(),
 		gotoSettingsButton,
 	)
@@ -61,33 +65,35 @@ func content() fyne.CanvasObject {
 		}),
 	)
 
+	calendarGrid := container.New(layout.NewGridLayout(7))
+	updateCalendarGrid(calendarGrid, currentDate)
+
 	return container.New(
 		layout.NewBorderLayout(top, bottom, nil, nil),
-
 		top,
-
-		container.New(
-			layout.NewGridLayout(7),
-
-			func() []fyne.CanvasObject {
-				items := []fyne.CanvasObject{}
-
-				for n := range 42 {
-					items = append(
-						items,
-						container.New(
-							layout.NewCenterLayout(),
-							widget.NewLabel(fmt.Sprintf("%d", n+1)),
-						),
-					)
-				}
-
-				return items
-			}()...,
-		),
-
+		calendarGrid,
 		bottom,
 	)
+}
+
+func updateCalendarGrid(c *fyne.Container, _ time.Time) {
+	if len(c.Objects) == 0 {
+		for range 42 {
+			c.Add(
+				container.New(
+					layout.NewCenterLayout(),
+					widget.NewLabel(""),
+				),
+			)
+		}
+	}
+
+	for i, o := range c.Objects {
+		o.(*fyne.Container).Objects[0].(*widget.Label).SetText(
+			// TODO: Calculate the current date for this item
+			fmt.Sprintf("%d", i+1),
+		)
+	}
 }
 
 type Theme struct {
