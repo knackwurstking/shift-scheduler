@@ -1,13 +1,16 @@
 package main
 
-import "fyne.io/fyne/v2/app"
+import (
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+)
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Shift Scheduler")
 
-	// TODO: Content here...
-	// w.SetContent()
+	w.Resize(fyne.NewSize(400, 600))
+	w.SetContent(content())
 
 	w.ShowAndRun()
 }
