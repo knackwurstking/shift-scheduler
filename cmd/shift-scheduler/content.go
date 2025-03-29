@@ -9,7 +9,7 @@ import (
 
 func content() fyne.CanvasObject {
 	bottom := container.New(
-		layout.NewAdaptiveGridLayout(3),
+		layout.NewGridLayout(3),
 
 		// TODO: Create 3 buttons here(?)
 		widget.NewLabel("<--"),
@@ -21,7 +21,7 @@ func content() fyne.CanvasObject {
 		layout.NewBorderLayout(nil, bottom, nil, nil),
 
 		container.New(
-			layout.NewAdaptiveGridLayout(7),
+			layout.NewGridLayout(7),
 
 			widget.NewLabel("1"),
 			widget.NewLabel("2"),
