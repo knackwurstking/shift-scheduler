@@ -69,54 +69,21 @@ func content() fyne.CanvasObject {
 		container.New(
 			layout.NewGridLayout(7),
 
-			// TODO: Need some calendar item component here
-			container.New(layout.NewCenterLayout(), widget.NewLabel("1")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("2")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("3")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("4")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("5")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("6")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("7")),
+			func() []fyne.CanvasObject {
+				items := []fyne.CanvasObject{}
 
-			container.New(layout.NewCenterLayout(), widget.NewLabel("1")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("2")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("3")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("4")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("5")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("6")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("7")),
+				for n := range 42 {
+					items = append(
+						items,
+						container.New(
+							layout.NewCenterLayout(),
+							widget.NewLabel(fmt.Sprintf("%d", n+1)),
+						),
+					)
+				}
 
-			container.New(layout.NewCenterLayout(), widget.NewLabel("1")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("2")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("3")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("4")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("5")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("6")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("7")),
-
-			container.New(layout.NewCenterLayout(), widget.NewLabel("1")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("2")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("3")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("4")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("5")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("6")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("7")),
-
-			container.New(layout.NewCenterLayout(), widget.NewLabel("1")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("2")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("3")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("4")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("5")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("6")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("7")),
-
-			container.New(layout.NewCenterLayout(), widget.NewLabel("1")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("2")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("3")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("4")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("5")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("6")),
-			container.New(layout.NewCenterLayout(), widget.NewLabel("7")),
+				return items
+			}()...,
 		),
 
 		bottom,
