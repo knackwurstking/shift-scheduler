@@ -260,6 +260,7 @@ function render() {
     );
 }
 
+// TODO: Move some of this stuff to "@utils/app-bar.ts"
 function setupAppBarItems() {
     const datePickerButton = document.querySelector<HTMLButtonElement>(
         `.ui-app-bar .left button.date-picker`,
