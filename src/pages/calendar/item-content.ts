@@ -35,7 +35,7 @@ export function createItemContent(year: number, month: number): HTMLElement {
         row.style.setProperty("--gap", "0.05rem");
 
         for (let x = 0; x < 7; x++) {
-            row.append(createDayItem(0)); // NOTE: Placeholder "0"
+            row.append(createDayItem("")); // NOTE: Placeholder ""
         }
     }
 
@@ -209,7 +209,7 @@ function markWeekendItems(weekDays: Element[], days: Element[]): void {
     });
 }
 
-function createDayItem(date: number, shift?: string): HTMLDivElement {
+function createDayItem(date: number | string, shift?: string): HTMLDivElement {
     const el = document.createElement("div");
 
     el.className = "day ui-flex-grid-item";
