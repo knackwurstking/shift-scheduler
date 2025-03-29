@@ -7,6 +7,8 @@ import (
 
 func main() {
 	a := app.New()
+	a.Settings().SetTheme(NewTheme())
+
 	w := a.NewWindow("Shift Scheduler")
 
 	w.Resize(fyne.NewSize(400, 600))
