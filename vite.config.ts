@@ -30,9 +30,7 @@ const manifest: Partial<ManifestOptions> = {
     name: "Schift Scheduler",
     short_name: "shift-scheduler",
     icons: icons,
-    screenshots: [
-        // TODO: ...
-    ],
+    screenshots: [],
     theme_color: "#09090b",
     background_color: "#09090b",
     display: "standalone",
@@ -58,7 +56,10 @@ export default defineConfig({
     base: process.env.MODE === "github" ? "/shift-scheduler.github.io/" : "/",
 
     build: {
-        outDir: process.env.MODE === "github" ? "../shift-scheduler.github.io/" : "./dist",
+        outDir:
+            process.env.MODE === "github"
+                ? "../shift-scheduler.github.io/"
+                : "./dist",
     },
 
     define: {
