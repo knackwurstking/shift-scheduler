@@ -14,33 +14,16 @@
             href="/assets/icons/apple-touch-icon-180x180.png"
         />
 
-        <title>Shift Scheduler</title>
-
         <link rel="stylesheet" href="/node_modules/ui/dist/css/main.css" />
+        <link rel="stylesheet" href="/src/styles.css" />
 
-        <style>
-            html,
-            body {
-                overscroll-behavior-y: none !important;
-            }
-
-            html,
-            body,
-            #routerTarget {
-                width: 100%;
-                height: 100%;
-            }
-
-            #routerTarget {
-                padding-top: var(--ui-app-bar-height);
-            }
-        </style>
+        <title>Shift Scheduler</title>
     </head>
 
     <body class="ui-container">
         <div id="routerTarget" class="ui-auto-scroll ui-hide-scrollbar"></div>
 
-        <div class="ui-app-bar" position="top" fixed>
+        <div class="ui-app-bar" position="top">
             <div class="left">
                 <button
                     class="date-picker"
