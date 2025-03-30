@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"github.com/knackwurstking/shift-scheduler/internal/calendar"
 )
 
 var GridSize = 42
@@ -78,7 +79,7 @@ func content() fyne.CanvasObject {
 	)
 }
 
-func updateCalendarGrid(c *fyne.Container, _ time.Time) {
+func updateCalendarGrid(c *fyne.Container, t time.Time) {
 	if len(c.Objects) == 0 {
 		for range GridSize {
 			c.Add(
@@ -90,10 +91,10 @@ func updateCalendarGrid(c *fyne.Container, _ time.Time) {
 		}
 	}
 
+	d := calendar.GetDataForDays(t.Year(), t.Month(), time.Sunday)
 	for i, o := range c.Objects {
 		o.(*fyne.Container).Objects[0].(*widget.Label).SetText(
-			// TODO: Calculate the current date for this item
-			fmt.Sprintf("%d", i+1),
+			fmt.Sprintf("%d", d[i].Day),
 		)
 	}
 }
