@@ -10,9 +10,9 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-
-	"github.com/knackwurstking/shift-scheduler/internal/constants"
 )
+
+var GridSize = 42
 
 var months = []string{
 	"January",
@@ -80,7 +80,7 @@ func content() fyne.CanvasObject {
 
 func updateCalendarGrid(c *fyne.Container, _ time.Time) {
 	if len(c.Objects) == 0 {
-		for range constants.GridSize {
+		for range GridSize {
 			c.Add(
 				container.New(
 					layout.NewCenterLayout(),
