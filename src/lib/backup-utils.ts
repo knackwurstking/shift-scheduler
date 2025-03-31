@@ -1,7 +1,6 @@
 import { constants } from "@lib";
 import { BackupV1, BackupV2, BackupV3, DBEntry } from "@types";
 
-// TODO: Get the test file back and do this test the right way
 export function isBackupV1(data: any): boolean {
     const isShift = (s: any): boolean => {
         if (!s) return false;

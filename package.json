@@ -4,9 +4,10 @@
     "version": "3.0.0",
     "type": "module",
     "scripts": {
+        "test": "vitest run",
         "preview": "export PWA=true; export MODE=github; vite preview --host -c vite.config.js",
         "dev": "export PWA=true; export MODE=github; vite --host -c vite.config.js",
-        "check": "tsc",
+        "check": "tsc && npm run test",
         "build:github": "export PWA=true; export MODE=github; vite build --minify -c vite.config.js --emptyOutDir",
         "build:android": "export PWA=false; export MODE=android; vite build --minify -c vite.config.js --emptyOutDir"
     },
@@ -18,10 +19,12 @@
         "@capacitor/share": "^7.0.0",
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
+        "jsdom": "^26.0.0",
         "typescript": "~5.7.2",
         "vite": "^6.1.0",
         "vite-plugin-pwa": "^0.21.1",
-        "vite-tsconfig-paths": "^5.1.4"
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.1.1"
     },
     "dependencies": {
         "bootstrap-icons": "^1.11.3",
