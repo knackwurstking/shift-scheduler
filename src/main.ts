@@ -10,6 +10,10 @@ import * as pages from "@pages";
 if (process.env.MODE === "android") {
     // FIXME: Block back button if dialog is open?
     App.addListener("backButton", ({ canGoBack }) => {
+        if (!!document.querySelector(`dialog[open]`)) {
+            return;
+        }
+
         if (!canGoBack) {
             App.exitApp();
         } else {
