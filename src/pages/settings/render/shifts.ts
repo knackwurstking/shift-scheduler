@@ -96,6 +96,7 @@ export function article(): HTMLElement {
         tbody.innerHTML = "";
 
         // Create shift table rows from settings shifts
+        // TODO: Enable drag'n'drop for table items
         store.obj.get("shifts")!.forEach((shift) => {
             const tableItem = (
                 template.content.cloneNode(true) as HTMLElement

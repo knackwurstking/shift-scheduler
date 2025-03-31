@@ -119,6 +119,7 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
                 tbody.innerHTML = "";
 
                 // Setup Rhythm items for the table
+                // TODO: Enable drag'n'drop for table items
                 rhythm.forEach((id, index) => {
                     let shift = shifts.find((shift) => shift.id === id);
                     if (!shift) {
