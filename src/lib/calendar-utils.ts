@@ -1,5 +1,6 @@
-import { store } from "@globals";
 import { DBEntry, Shift, WeekStart } from "@types";
+
+import * as store from "./store";
 
 export async function getDataForDays(
     size: number,

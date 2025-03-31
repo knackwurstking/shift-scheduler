@@ -1,4 +1,4 @@
-import { constants } from "@globals";
+import { constants } from "@lib";
 import { BackupV1, BackupV2, BackupV3, DBEntry } from "@types";
 
 // TODO: Get the test file back and do this test the right way

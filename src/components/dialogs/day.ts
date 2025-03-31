@@ -1,6 +1,5 @@
-import { store } from "@globals";
+import { html, store } from "@lib";
 import { DBEntry, DialogCreate } from "@types";
-import { html } from "@utils";
 
 export function create(): DialogCreate {
     const dialog = document.createElement("dialog");

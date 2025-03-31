@@ -1,5 +1,4 @@
-import { store } from "@globals";
-import { html } from "@utils";
+import { html, store } from "@lib";
 
 const articleHTML = html`
     <h4>Miscellaneous</h4>

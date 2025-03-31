@@ -1,10 +1,8 @@
-// TODO: Rename to getTitle
-export function get(): string {
+export function getTitle(): string {
     return queryAppBarTitle().innerText;
 }
 
-// TODO: Rename to setTitle
-export function set(title: string): void {
+export function setTitle(title: string): void {
     queryAppBarTitle().innerText = title;
 }
 

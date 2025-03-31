@@ -1,5 +1,5 @@
-import { Shift, DialogCreate } from "@types";
-import { html } from "@utils";
+import { html } from "@lib";
+import { DialogCreate, Shift } from "@types";
 
 export function create(): DialogCreate {
     const dialog = document.createElement("dialog");

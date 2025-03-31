@@ -1,7 +1,6 @@
 import { dialogs } from "@components";
-import { constants, db, store } from "@globals";
+import { calendarUtils, constants, db, html, store } from "@lib";
 import { DBEntry } from "@types";
-import { calendar, html } from "@utils";
 
 const template = document.createElement("template");
 template.innerHTML = html`
@@ -58,7 +57,7 @@ export async function updateItemContent(
         itemContent.querySelectorAll(`.item-content > .days > .day`),
     );
 
-    let dataEntries: DBEntry[] = await calendar.getDataForDays(
+    let dataEntries: DBEntry[] = await calendarUtils.getDataForDays(
         days.length,
         date.getFullYear(),
         date.getMonth(),
@@ -141,7 +140,9 @@ async function itemContentClickHandler(e: Event) {
     if (!data) return;
 
     // Update database and day item
-    const rhythmShift = calendar.calcShiftForDay(new Date(year, month, day));
+    const rhythmShift = calendarUtils.calcShiftForDay(
+        new Date(year, month, day),
+    );
     const updatedData: DBEntry = {
         year,
         month,

@@ -1,6 +1,6 @@
 import * as ui from "ui";
 
-import { appBar } from "@utils";
+import { appBarUtils } from "@lib";
 
 import * as render from "./render";
 
@@ -11,8 +11,8 @@ let cleanup: ui.CleanUpFunction[] = [];
 
 export async function onMount() {
     // Setup app bar
-    appBarTitleBackup = appBar.get();
-    appBar.set("Settings");
+    appBarTitleBackup = appBarUtils.getTitle();
+    appBarUtils.setTitle("Settings");
 
     const routerTarget = document.querySelector<HTMLElement>(`#routerTarget`)!;
     routerTarget.innerHTML = "";
@@ -32,7 +32,7 @@ export async function onMount() {
 }
 
 export async function onDestroy() {
-    appBar.set(appBarTitleBackup);
+    appBarUtils.setTitle(appBarTitleBackup);
     cleanup.forEach((fn) => fn());
     cleanup = [];
 }

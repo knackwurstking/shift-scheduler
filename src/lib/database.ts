@@ -1,5 +1,4 @@
-import { DBEntry } from "@types";
-import { validateShift } from "./validate";
+import { DBEntry, Shift } from "@types";
 
 export class DB {
     public version: number;
@@ -39,7 +38,11 @@ export class DB {
         }
     }
 
-    public get(year: number, month: number, date: number): Promise<DBEntry | null> {
+    public get(
+        year: number,
+        month: number,
+        date: number,
+    ): Promise<DBEntry | null> {
         return new Promise((resolve) => {
             const r = this.roStore().get([year, month, date]);
 
@@ -166,7 +169,8 @@ export class DB {
     protected onUpgradeNeeded(ev: IDBVersionChangeEvent): void {
         switch (ev.oldVersion) {
             case 0:
-                if (this.request === null) throw `request is null, run open first!`;
+                if (this.request === null)
+                    throw `request is null, run open first!`;
                 this.createStore(this.request.result);
                 break;
         }
@@ -190,6 +194,36 @@ function validateV1(entry: DBEntry) {
         if (!validateShift(entry.shift)) {
             return false;
         }
+    }
+
+    return true;
+}
+
+function validateShift(shift: Shift): boolean {
+    // Check for shift data
+    if (typeof shift.id !== "number") {
+        return false;
+    }
+
+    if (typeof shift.name !== "string" || typeof shift.shortName !== "string") {
+        return false;
+    }
+
+    if (typeof shift.color !== "string" && !!shift.color) {
+        return false;
+    }
+
+    if (shift.color === "transparent") {
+        shift.visible = false;
+        shift.color = null;
+    }
+
+    if (typeof shift.visible !== "boolean") {
+        shift.visible = true;
+    }
+
+    if (!shift.color) {
+        shift.color = null;
     }
 
     return true;

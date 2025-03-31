@@ -1,8 +1,7 @@
 import * as ui from "ui";
 
-import { store } from "@globals";
-import { appBar, html } from "@utils";
 import { dialogs } from "@components";
+import { appBarUtils, html, store } from "@lib";
 
 import * as handlers from "./handlers";
 import { createItemContent } from "./item-content";
@@ -206,8 +205,8 @@ let cleanup: ui.CleanUpFunction[] = [];
 
 export async function onMount() {
     // Setup app bar
-    appBarTitleBackup = appBar.get();
-    appBar.set("");
+    appBarTitleBackup = appBarUtils.getTitle();
+    appBarUtils.setTitle("");
 
     const routerTarget = document.querySelector<HTMLElement>(`#routerTarget`)!;
     routerTarget.innerHTML = "";
@@ -241,7 +240,7 @@ export async function onMount() {
 }
 
 export async function onDestroy() {
-    appBar.set(appBarTitleBackup);
+    appBarUtils.setTitle(appBarTitleBackup);
     cleanup.forEach((fn) => fn());
     cleanup = [];
 }

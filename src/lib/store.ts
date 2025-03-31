@@ -1,7 +1,14 @@
 import * as ui from "ui";
 
-import { EditMode, Rhythm, Shifts, StartDate, Version, WeekStart } from "@types";
-import * as constants from "../constants";
+import {
+    EditMode,
+    Rhythm,
+    Shifts,
+    StartDate,
+    Version,
+    WeekStart,
+} from "@types";
+import * as constants from "./constants";
 
 export type ShiftSchedulerStore = ui.Store<{
     datePicker: number;
@@ -20,10 +27,15 @@ export type ShiftSchedulerStore = ui.Store<{
 export const prefix = "shift-scheduler:";
 
 export const obj: ShiftSchedulerStore = (() => {
+    console.warn("initialize store..."); // TODO: Remove after testing
     const store: ShiftSchedulerStore = new ui.Store(prefix);
 
     const date = new Date();
-    store.set("datePicker", new Date(date.getFullYear(), date.getMonth(), 1).getTime(), false);
+    store.set(
+        "datePicker",
+        new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
+        false,
+    );
 
     store.set("weekStart", 0, true);
 

@@ -1,16 +1,15 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import { store, db } from "@globals";
+import { db, html, store } from "@lib";
 import { BackupV1, BackupV2, BackupV3 } from "@types";
-import { html } from "@utils";
 
 import {
+    convertV1,
+    convertV2,
     isBackupV1,
     isBackupV2,
     isBackupV3,
-    convertV1,
-    convertV2,
 } from "./backup-utils";
 
 const articleHTML = html`

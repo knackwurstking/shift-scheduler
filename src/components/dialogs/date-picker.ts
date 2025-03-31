@@ -1,4 +1,4 @@
-import { html } from "@utils";
+import { html } from "@lib";
 import { DialogCreate } from "@types";
 
 export function create(): DialogCreate {

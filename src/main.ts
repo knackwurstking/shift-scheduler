@@ -3,7 +3,7 @@ import "./bootstrap-icons.css";
 import * as ui from "ui";
 import { registerSW } from "virtual:pwa-register";
 
-import { db } from "@globals";
+import { db } from "@lib";
 import * as pages from "@pages";
 
 console.debug({ PWA: process.env.PWA, MODE: process.env.MODE });

@@ -1,4 +1,4 @@
-import { store } from "@globals";
+import { store } from "@lib";
 import { EditMode } from "@types";
 
 import { updateItemContent } from "./item-content";

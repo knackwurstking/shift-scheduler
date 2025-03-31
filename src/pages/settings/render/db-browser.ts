@@ -1,10 +1,13 @@
-import { html } from "@utils";
+import { html } from "@lib";
 
 const articleHTML = html`
     <h4>IndexedDB</h4>
 
     <section>
-        <label class="ui-flex justify-between align-center" style="padding: var(--ui-spacing)">
+        <label
+            class="ui-flex justify-between align-center"
+            style="padding: var(--ui-spacing)"
+        >
             Edit entries
             <button disabled>Browse</button>
         </label>

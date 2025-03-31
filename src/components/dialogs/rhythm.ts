@@ -1,5 +1,5 @@
+import { html } from "@lib";
 import { DialogCreate, Rhythm, Shift } from "@types";
-import { html } from "@utils";
 
 export function create(): DialogCreate {
     const dialog = document.createElement("dialog");

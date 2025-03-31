@@ -1,6 +1,5 @@
-import { store } from "@globals";
-import { html } from "@utils";
 import { dialogs } from "@components";
+import { html, store } from "@lib";
 
 const articleHTML = html`
     <h4>Shift Settings</h4>

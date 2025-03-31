@@ -3,9 +3,8 @@ import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
 
-import { constants, db, store } from "@globals";
+import { calendarUtils, constants, db, html, store } from "@lib";
 import { DBEntry, DialogCreate } from "@types";
-import { html, calendar } from "@utils";
 
 export function create(year: number): DialogCreate {
     const dialog = document.createElement("dialog");
@@ -102,7 +101,7 @@ async function createPDF(options: {
             pageIndex++;
         }
 
-        let monthDataArray: DBEntry[] = await calendar.getDataForDays(
+        let monthDataArray: DBEntry[] = await calendarUtils.getDataForDays(
             42,
             options.year,
             month,
