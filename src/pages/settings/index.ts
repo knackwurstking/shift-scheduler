@@ -1,6 +1,7 @@
 import * as ui from "ui";
 
 import { appBarUtils } from "@lib";
+import { m } from "@paraglide/messages";
 
 import * as render from "./render";
 
@@ -12,7 +13,7 @@ let cleanup: ui.CleanUpFunction[] = [];
 export async function onMount() {
     // Setup app bar
     appBarTitleBackup = appBarUtils.getTitle();
-    appBarUtils.setTitle("Settings");
+    appBarUtils.setTitle(m.settings());
 
     const routerTarget = document.querySelector<HTMLElement>(`#routerTarget`)!;
     routerTarget.innerHTML = "";
