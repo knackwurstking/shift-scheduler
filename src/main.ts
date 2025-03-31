@@ -6,6 +6,8 @@ import { registerSW } from "virtual:pwa-register";
 import { db } from "@lib";
 import * as pages from "@pages";
 
+// TODO: Add capacitor back button handling
+
 console.debug({ PWA: process.env.PWA, MODE: process.env.MODE });
 if (process.env.PWA) {
     console.debug("PWA updater registered");
