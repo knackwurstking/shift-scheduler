@@ -10,7 +10,13 @@ dev:
 	npm run dev
 
 build:
-	npm run check && npm run build:github && npm run build:android
+	npm run check && npm run build:github && npm run build:android && npm run build:wails
+
+build-wails:
+	cd wails && wails build
+
+build-wails-windows:
+	cd wails && wails build -nsis
 
 generate-assets:
 	npx pwa-assets-generator

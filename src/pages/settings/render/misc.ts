@@ -1,5 +1,5 @@
 import { html, store } from "@lib";
-import { m } from "@paraglide/messages";
+//import { m } from "@paraglide/messages";
 
 // TODO: Use translate here
 const articleHTML = html`
