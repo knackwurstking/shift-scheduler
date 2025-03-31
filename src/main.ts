@@ -2,11 +2,21 @@ import "./bootstrap-icons.css";
 
 import * as ui from "ui";
 import { registerSW } from "virtual:pwa-register";
+import { App } from "@capacitor/app";
 
 import { db } from "@lib";
 import * as pages from "@pages";
 
-// TODO: Add capacitor back button handling
+if (process.env.MODE === "android") {
+    // FIXME: Block back button if dialog is open?
+    App.addListener("backButton", ({ canGoBack }) => {
+        if (!canGoBack) {
+            App.exitApp();
+        } else {
+            window.history.back();
+        }
+    });
+}
 
 console.debug({ PWA: process.env.PWA, MODE: process.env.MODE });
 if (process.env.PWA) {
