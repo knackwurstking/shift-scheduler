@@ -22,7 +22,6 @@ if (process.env.MODE === "android") {
     });
 }
 
-console.debug({ PWA: process.env.PWA, MODE: process.env.MODE });
 if (process.env.PWA) {
     console.debug("PWA updater registered");
     const updateSW = registerSW({
