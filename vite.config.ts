@@ -45,6 +45,7 @@ export default defineConfig({
         paraglideVitePlugin({
             project: "./project.inlang",
             outdir: "./src/paraglide",
+            strategy: ["preferredLanguage", "baseLocale"],
         }),
         tsconfigPaths(),
         VitePWA({
