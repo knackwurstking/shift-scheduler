@@ -3,6 +3,7 @@ import { EditMode } from "@types";
 
 import { updateItemContent } from "./item-content";
 import { Direction } from "./swipe-handler";
+import { shiftCard } from "@components";
 
 export async function datePicker(dateString: number): Promise<void> {
     const date = new Date(dateString);
@@ -70,41 +71,25 @@ export async function swipe(direction: Direction): Promise<void> {
 }
 
 function renderShiftCards(container: HTMLElement, active: number): void {
-    const template: HTMLTemplateElement = document.querySelector(
-        `template[name="shift-card"]`,
-    )!;
-
     (store.obj.get("shifts") || []).forEach((shift) => {
-        const card: HTMLElement = (
-            template.content.cloneNode(true) as HTMLElement
-        ).querySelector(".shift-card")!;
+        const card = shiftCard.create();
 
-        if (active === shift.id) {
-            card.setAttribute("active", "");
-            card.scrollIntoView();
-        } else {
-            card.removeAttribute("active");
-        }
+        card.methods.active(active === shift.id);
+        card.methods.queryName().innerText = shift.name;
 
-        card.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
-
-        const shortName = card.querySelector<HTMLElement>(`.short-name`)!;
+        const shortName = card.methods.queryShortName();
         shortName.style.color = shift.color || "inherit";
         shortName.innerText = shift.visible ? shift.shortName : "";
 
-        card.onclick = () => {
-            if (card.hasAttribute("active")) {
-                card.removeAttribute("active");
-            } else {
-                card.setAttribute("active", "");
-            }
+        card.element.onclick = () => {
+            card.methods.active(!card.methods.isActive());
 
             store.obj.update("editMode", (data) => {
-                data.active = card.hasAttribute("active") ? shift.id : 0;
+                data.active = card.methods.isActive() ? shift.id : 0;
                 return data;
             });
         };
 
-        container.appendChild(card);
+        container.appendChild(card.element);
     });
 }

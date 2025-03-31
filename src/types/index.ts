@@ -9,3 +9,11 @@ export interface DialogCreate {
     dialog: HTMLDialogElement;
     destroy: ui.CleanUpFunction;
 }
+
+export interface Create<
+    T extends HTMLElement = HTMLElement,
+    M extends {} = {},
+> {
+    element: T;
+    methods: M;
+}

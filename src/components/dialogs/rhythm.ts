@@ -1,7 +1,8 @@
+import { shiftCard } from "@components";
 import { html } from "@lib";
 import { DialogCreate, Rhythm, Shift } from "@types";
 
-export function create(): DialogCreate {
+function create(): DialogCreate {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 
@@ -99,10 +100,6 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
             `template[name="table-item"]`,
         )!;
 
-        const templateShiftCard = document.querySelector<HTMLTemplateElement>(
-            `template[name="shift-card"]`,
-        )!;
-
         dialog.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
             dialog.close();
@@ -171,21 +168,16 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
 
                 // Setup Shift Card items for the shifts-container
                 shifts.forEach((shift) => {
-                    const card = (
-                        templateShiftCard.content.cloneNode(true) as HTMLElement
-                    ).querySelector<HTMLElement>(`.shift-card`)!;
+                    const card = shiftCard.create();
+                    shiftsContainer.appendChild(card.element);
 
-                    shiftsContainer.appendChild(card);
+                    card.methods.queryName().innerText = shift.name;
 
-                    const name = card.querySelector<HTMLElement>(".name")!;
-                    name.innerText = shift.name;
-
-                    const shortName =
-                        card.querySelector<HTMLElement>(".short-name")!;
+                    const shortName = card.methods.queryShortName();
                     shortName.style.color = shift.color || "inherit";
                     shortName.innerText = shift.visible ? shift.shortName : "";
 
-                    card.onclick = () => {
+                    card.element.onclick = () => {
                         rhythm.push(shift.id);
                         renderTBody();
                     };

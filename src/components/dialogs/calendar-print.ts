@@ -6,7 +6,7 @@ import autoTable from "jspdf-autotable";
 import { calendarUtils, constants, db, html, store } from "@lib";
 import { DBEntry, DialogCreate } from "@types";
 
-export function create(year: number): DialogCreate {
+function create(year: number): DialogCreate {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 
