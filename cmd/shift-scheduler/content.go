@@ -81,11 +81,20 @@ func content() fyne.CanvasObject {
 
 func updateCalendarGrid(c *fyne.Container, t time.Time) {
 	if len(c.Objects) == 0 {
+		var button *widget.Button
+
 		for range GridSize {
+			button = widget.NewButton("", nil)
+
+			// FIXME: Need a custom theme here to change the button color,
+			//        this is bullshit
+			//
+			// container.NewThemeOverride(button, th fyne.Theme)
+
 			c.Add(
 				container.New(
 					layout.NewStackLayout(),
-					widget.NewButton("", nil),
+					button,
 				),
 			)
 		}
@@ -143,6 +152,7 @@ func (t *Theme) Font(s fyne.TextStyle) fyne.Resource {
 }
 
 func (t *Theme) Color(n fyne.ThemeColorName, v fyne.ThemeVariant) color.Color {
+	fmt.Println(n)
 	return t.Theme.Color(n, v)
 }
 
