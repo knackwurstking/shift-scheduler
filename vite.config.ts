@@ -65,7 +65,9 @@ export default defineConfig({
         outDir:
             process.env.MODE === "github"
                 ? "../shift-scheduler.github.io/"
-                : "./dist",
+                : process.env.MODE === "wails"
+                  ? "./wails/frontend/dist"
+                  : "./dist",
     },
 
     define: {
