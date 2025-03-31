@@ -84,18 +84,27 @@ func updateCalendarGrid(c *fyne.Container, t time.Time) {
 		for range GridSize {
 			c.Add(
 				container.New(
-					layout.NewCenterLayout(),
-					widget.NewLabel(""),
+					layout.NewStackLayout(),
+					widget.NewButton("", nil),
 				),
 			)
 		}
 	}
 
 	d := calendar.GetDataForDays(t.Year(), t.Month(), time.Sunday)
+	var b *widget.Button
 	for i, o := range c.Objects {
-		o.(*fyne.Container).Objects[0].(*widget.Label).SetText(
+		b = o.(*fyne.Container).Objects[0].(*widget.Button)
+
+		b.SetText(
 			fmt.Sprintf("%d", d[i].Day),
 		)
+
+		if d[i].Month != t.Month() {
+			b.Disable()
+		} else {
+			b.Enable()
+		}
 	}
 }
 
