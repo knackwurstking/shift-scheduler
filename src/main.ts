@@ -1,8 +1,8 @@
 import "./bootstrap-icons.css";
 
+import { App } from "@capacitor/app";
 import * as ui from "ui";
 import { registerSW } from "virtual:pwa-register";
-import { App } from "@capacitor/app";
 
 import { db } from "@lib";
 import * as pages from "@pages";
