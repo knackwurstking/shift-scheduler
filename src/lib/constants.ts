@@ -19,16 +19,16 @@ export const defaultWeekDaysInOrder = [
 ];
 
 export const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    m.january,
+    m.february,
+    m.march,
+    m.april,
+    m.may,
+    m.june,
+    m.july,
+    m.august,
+    m.september,
+    m.october,
+    m.november,
+    m.december,
 ];

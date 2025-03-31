@@ -125,7 +125,7 @@ async function createPDF(options: {
             head: [
                 [
                     {
-                        content: constants.months[month],
+                        content: constants.months[month](),
                         colSpan: 7,
                         styles: {
                             fillColor: [0, 0, 0],
