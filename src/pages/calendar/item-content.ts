@@ -193,7 +193,7 @@ function markWeekendItems(weekDays: Element[], days: Element[]): void {
     const sunIndex = order.findIndex((o) => o === 0);
 
     weekDays.forEach((weekDay, i) => {
-        weekDay.innerHTML = `${constants.defaultWeekDaysInOrder[order[i % 7]]}`;
+        weekDay.innerHTML = `${constants.defaultWeekDaysInOrder[order[i % 7]]()}`;
     });
 
     [...weekDays, ...days].forEach((c, i) => {

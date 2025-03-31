@@ -1,4 +1,11 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "example_message": "Hello world {username}"
+    "$schema": "https://inlang.com/schema/inlang-message-format",
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat"
 }
+

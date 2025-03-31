@@ -171,7 +171,9 @@ function getTableHeader(): string[] {
 
     const result: string[] = [];
     for (let i = 0; i < 7; i++) {
-        result.push(constants.defaultWeekDaysInOrder[order[i % 7]].toString());
+        result.push(
+            constants.defaultWeekDaysInOrder[order[i % 7]]().toString(),
+        );
     }
 
     return result;

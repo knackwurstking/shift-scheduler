@@ -1,4 +1,11 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "example_message": "Guten Tag {username}"
+    "$schema": "https://inlang.com/schema/inlang-message-format",
+    "sun": "So",
+    "mon": "Mo",
+    "tue": "Di",
+    "wed": "Mi",
+    "thu": "Do",
+    "fri": "Fr",
+    "sat": "Sa"
 }
+
