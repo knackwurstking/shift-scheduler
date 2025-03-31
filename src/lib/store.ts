@@ -27,7 +27,6 @@ export type ShiftSchedulerStore = ui.Store<{
 export const prefix = "shift-scheduler:";
 
 export const obj: ShiftSchedulerStore = (() => {
-    console.warn("initialize store..."); // TODO: Remove after testing
     const store: ShiftSchedulerStore = new ui.Store(prefix);
 
     const date = new Date();
