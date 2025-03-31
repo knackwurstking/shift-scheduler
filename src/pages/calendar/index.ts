@@ -259,35 +259,11 @@ function render() {
     );
 }
 
-// TODO: Move some of this stuff to "@utils/app-bar.ts"
 function setupAppBarItems() {
-    const datePickerButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .left button.date-picker`,
-    )!;
+    const datePickerButton = appBarUtils.enable("date-picker");
+    const todayButton = appBarUtils.enable("today");
+    appBarUtils.enable("settings");
 
-    const todayButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .right button.today`,
-    )!;
-
-    const editButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .right button.edit`,
-    )!;
-
-    const printerButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .right button.printer`,
-    )!;
-
-    const settingsButton = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .right button.settings`,
-    )!;
-
-    datePickerButton.style.display = "inline-flex";
-    todayButton.style.display = "inline-flex";
-    editButton.style.display = "inline-flex";
-    printerButton.style.display = "inline-flex";
-    settingsButton.style.display = "inline-flex";
-
-    // app-bar: date-picker handler
     datePickerButton.onclick = async () => {
         const data = await dialogs.datePicker.open(
             store.obj.get("datePicker")!,
@@ -297,7 +273,6 @@ function setupAppBarItems() {
         store.obj.set("datePicker", data.date);
     };
 
-    // app-bar: today handler
     todayButton.onclick = async () => {
         const today = new Date();
         store.obj.set(
@@ -306,22 +281,20 @@ function setupAppBarItems() {
         );
     };
 
-    // app-bar: edit mode button
-    editButton.onclick = async () => {
+    appBarUtils.enable("edit").onclick = async () => {
         store.obj.update("editMode", (data) => {
             data.open = !data.open;
             return data;
         });
     };
 
-    // app-bar: printer handler
-    printerButton.onclick = async () => {
+    appBarUtils.enable("printer").onclick = async () => {
         await dialogs.calendarPrint.open(
             new Date(store.obj.get("datePicker")!).getFullYear(),
         );
     };
 
-    // app-bar: handle today [disabled] attribute
+    // Disable or enable today button based on date-picker
     cleanup.push(
         store.obj.listen(
             "datePicker",
@@ -351,10 +324,10 @@ function setupAppBarItems() {
     );
 
     cleanup.push(() => {
-        datePickerButton.style.display = "none";
-        todayButton.style.display = "none";
-        editButton.style.display = "none";
-        printerButton.style.display = "none";
-        settingsButton.style.display = "none";
+        appBarUtils.disable("date-picker");
+        appBarUtils.disable("today");
+        appBarUtils.disable("edit");
+        appBarUtils.disable("printer");
+        appBarUtils.disable("settings");
     });
 }
