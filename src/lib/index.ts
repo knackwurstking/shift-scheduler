@@ -1,8 +1,9 @@
 export * as appBarUtils from "./app-bar-utils";
+export * as backupUtils from "./backup-utils";
 export * as calendarUtils from "./calendar-utils";
 export * as constants from "./constants";
-export * as store from "./store";
 export * as database from "./database";
+export * as store from "./store";
 
 import * as database from "./database";
 

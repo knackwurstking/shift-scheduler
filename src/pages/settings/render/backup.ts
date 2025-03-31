@@ -1,16 +1,8 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import { db, html, store } from "@lib";
+import { db, html, store, backupUtils } from "@lib";
 import { BackupV1, BackupV2, BackupV3 } from "@types";
-
-import {
-    convertV1,
-    convertV2,
-    isBackupV1,
-    isBackupV2,
-    isBackupV3,
-} from "./backup-utils";
 
 const articleHTML = html`
     <h4>Backup</h4>
@@ -139,12 +131,12 @@ async function parseJSON(
 
     // Validate backup version
     let backupV3: BackupV3;
-    if (isBackupV3(data)) {
+    if (backupUtils.isBackupV3(data)) {
         backupV3 = data as BackupV3;
-    } else if (isBackupV2(data)) {
-        backupV3 = convertV2(data as BackupV2);
-    } else if (isBackupV1(data)) {
-        backupV3 = convertV1(data as BackupV1);
+    } else if (backupUtils.isBackupV2(data)) {
+        backupV3 = backupUtils.convertV2(data as BackupV2);
+    } else if (backupUtils.isBackupV1(data)) {
+        backupV3 = backupUtils.convertV1(data as BackupV1);
     } else {
         return alert("Invalid JSON data!");
     }
