@@ -1,4 +1,5 @@
 import "./bootstrap-icons.css";
+import "./styles.css";
 
 import { App } from "@capacitor/app";
 import * as ui from "ui";
