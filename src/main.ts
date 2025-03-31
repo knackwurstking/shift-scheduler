@@ -7,6 +7,8 @@ import { registerSW } from "virtual:pwa-register";
 import { db } from "@lib";
 import * as pages from "@pages";
 
+// TODO: Add Paraglide JS for translations (de, en)
+
 if (process.env.MODE === "android") {
     App.addListener("backButton", ({ canGoBack }) => {
         if (!!document.querySelector(`dialog[open]`)) {
