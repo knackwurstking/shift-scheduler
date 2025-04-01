@@ -73,7 +73,7 @@ function create(): CreateDialog {
                     <button class="cancel" color="secondary">
                         ${m.cancel()}
                     </button>
-                    <input type="submit" />
+                    <input type="submit" value="${m.submit()}" />
                 </div>
             </div>
         </form>

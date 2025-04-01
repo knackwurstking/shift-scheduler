@@ -25,7 +25,7 @@ function create(): CreateDialog {
 
             <div class="ui-flex-grid-row" style="--justify: flex-end">
                 <button class="cancel" color="secondary">${m.cancel()}</button>
-                <input type="submit" />
+                <input type="submit" value="${m.submit()}" />
             </div>
         </form>
     `;
