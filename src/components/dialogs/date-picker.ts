@@ -1,7 +1,6 @@
 import { html } from "@lib";
-import { DialogCreate } from "@types";
 
-function create(): DialogCreate {
+function create(): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 

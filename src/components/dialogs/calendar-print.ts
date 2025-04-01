@@ -4,9 +4,9 @@ import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
 
 import { calendarUtils, constants, db, html, store } from "@lib";
-import { DBEntry, DialogCreate } from "@types";
+import { DBEntry } from "@types";
 
-function create(year: number): DialogCreate {
+function create(year: number): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 

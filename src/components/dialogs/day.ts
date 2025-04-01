@@ -1,7 +1,7 @@
 import { html, store } from "@lib";
-import { DBEntry, DialogCreate } from "@types";
+import { DBEntry } from "@types";
 
-function create(): DialogCreate {
+function create(): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 

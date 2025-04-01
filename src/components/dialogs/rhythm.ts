@@ -1,8 +1,8 @@
 import { shiftCard } from "@components";
 import { html } from "@lib";
-import { DialogCreate, Rhythm, Shift } from "@types";
+import { Rhythm, Shift } from "@types";
 
-function create(): DialogCreate {
+function create(): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 

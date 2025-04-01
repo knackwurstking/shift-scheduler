@@ -5,3 +5,13 @@ namespace NodeJS {
         MODE: "capacitor" | "github" | "wails" | "";
     }
 }
+
+interface Create<T extends HTMLElement = HTMLElement, M extends {} = {}> {
+    element: T;
+    methods: M;
+}
+
+interface CreateDialog {
+    dialog: HTMLDialogElement;
+    destroy: import("ui").CleanUpFunction;
+}

@@ -1,7 +1,7 @@
 import { html } from "@lib";
-import { DialogCreate, Shift } from "@types";
+import { Shift } from "@types";
 
-function create(): DialogCreate {
+function create(): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 
