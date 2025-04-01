@@ -17,7 +17,7 @@ function create(): CreateDialog {
                         <input
                             class="name"
                             type="text"
-                            style="margin-left: var(--ui-spacing); max-width: 15ch"
+                            style="margin-left: var(--ui-spacing); max-width: 20ch"
                         />
                     </label>
                 </div>
