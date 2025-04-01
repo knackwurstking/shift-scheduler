@@ -205,7 +205,7 @@ async function exportDoc(
         fileName = `${year}-${month.toString().padStart(2, "0")}.pdf`;
     }
 
-    if (process.env.MODE === "android") {
+    if (process.env.MODE === "capacitor") {
         await Share.share({
             title: fileName.slice(0, fileName.length - 4),
             dialogTitle: `Share "${fileName}"`,

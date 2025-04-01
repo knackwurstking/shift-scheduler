@@ -80,7 +80,7 @@ export function article(
         const date = today.getDate().toString().padStart(2, "0");
         const fileName = `shift-scheduler-backup_${today.getFullYear()}-${month}-${date}.json`;
 
-        if (process.env.MODE === "android") {
+        if (process.env.MODE === "capacitor") {
             Share.share({
                 title: "Shift Scheduler Backup",
                 dialogTitle: "Backup of your Shift Scheduler data",

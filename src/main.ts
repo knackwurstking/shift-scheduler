@@ -8,7 +8,9 @@ import { registerSW } from "virtual:pwa-register";
 import { db } from "@lib";
 import * as pages from "@pages";
 
-if (process.env.MODE === "android") {
+console.debug("process.env.MODE:", process.env.MODE);
+
+if (process.env.MODE === "capacitor") {
     App.addListener("backButton", ({ canGoBack }) => {
         if (!!document.querySelector(`dialog[open]`)) {
             return;
@@ -22,7 +24,7 @@ if (process.env.MODE === "android") {
     });
 }
 
-if (process.env.PWA) {
+if (!process.env.MODE || process.env.MODE === "github") {
     console.debug("PWA updater registered");
     const updateSW = registerSW({
         async onNeedRefresh() {

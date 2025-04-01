@@ -71,11 +71,8 @@ export default defineConfig({
     },
 
     define: {
-        "process.env.PWA": process.env.PWA || false,
-
         /**
-         * Available modes: "android", "github"
-         * The "android" mode will enable all capacitor stuff
+         * Available modes: "capacitor" | "github" | "wails" | ""
          */
         "process.env.MODE": JSON.stringify(process.env.MODE),
     },

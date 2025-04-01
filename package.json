@@ -3,15 +3,6 @@
     "private": true,
     "version": "3.0.0",
     "type": "module",
-    "scripts": {
-        "test": "vitest run",
-        "preview": "export PWA=true; export MODE=github; vite preview --host -c vite.config.js",
-        "dev": "export PWA=true; export MODE=github; vite --host -c vite.config.js",
-        "check": "tsc && npm run test",
-        "build:github": "export PWA=true; export MODE=github; vite build --minify -c vite.config.js --emptyOutDir",
-        "build:android": "export PWA=false; export MODE=android; vite build --minify -c vite.config.js --emptyOutDir",
-        "build:wails": "export PWA=false; export MODE=wails; vite build --minify -c vite.config.js --emptyOutDir"
-    },
     "devDependencies": {
         "@capacitor/android": "^7.0.1",
         "@capacitor/cli": "^7.0.1",
