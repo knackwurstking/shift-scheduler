@@ -36,29 +36,17 @@ if (!process.env.MODE || process.env.MODE === "github") {
 }
 
 db.open(() => {
-    ui.router.hash.init(null, {
+    ui.router.hash.init({
         "/": {
             title: "Shift Scheduler",
-            template: {
-                onMount() {
-                    pages.calendar.onMount();
-                },
-                onDestroy() {
-                    pages.calendar.onDestroy();
-                },
-            },
+            onMount: () => pages.calendar.onMount(),
+            onDestroy: () => pages.calendar.onDestroy(),
         },
 
         settings: {
             title: "Shift Scheduler | Settings",
-            template: {
-                onMount() {
-                    pages.settings.onMount();
-                },
-                onDestroy() {
-                    pages.settings.onDestroy();
-                },
-            },
+            onMount: () => pages.settings.onMount(),
+            onDestroy: () => pages.settings.onDestroy(),
         },
     });
 });
