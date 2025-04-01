@@ -1,5 +1,6 @@
 import { html, store } from "@lib";
 import { DBEntry } from "@types";
+import { m } from "@paraglide/messages";
 
 function create(): CreateDialog {
     const dialog = document.createElement("dialog");
@@ -10,11 +11,11 @@ function create(): CreateDialog {
             <h4 class="title"></h4>
 
             <select class="shift-select" style="width: 100%">
-                <option value="0">Reset</option>
+                <option value="0">${m.reset()}</option>
             </select>
 
             <div>
-                <label>Note</label>
+                <label>${m.note()}</label>
                 <textarea
                     class="db-note"
                     rows="6"
@@ -23,7 +24,7 @@ function create(): CreateDialog {
             </div>
 
             <div class="ui-flex-grid-row" style="--justify: flex-end">
-                <button class="cancel" color="secondary">Cancel</button>
+                <button class="cancel" color="secondary">${m.cancel()}</button>
                 <input type="submit" />
             </div>
         </form>

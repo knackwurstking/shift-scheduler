@@ -1,15 +1,16 @@
 import { dialogs } from "@components";
 import { html, store } from "@lib";
+import { m } from "@paraglide/messages";
 
 const articleHTML = html`
-    <h4>Shift Settings</h4>
+    <h4>${m.shift_settings()}</h4>
 
     <section class="shifts-table ui-flex-grid">
         <table class="ui-flex-grid-item">
             <thead>
                 <tr>
-                    <th style="text-align: left;">Name</th>
-                    <th style="text-align: left;">Short</th>
+                    <th style="text-align: left;">${m.name()}</th>
+                    <th style="text-align: left;">${m.short()}</th>
                     <th style="text-align: right;"></th>
                 </tr>
             </thead>
@@ -21,7 +22,7 @@ const articleHTML = html`
             class="ui-flex-grid-item ui-flex justify-end"
             style="padding: var(--ui-spacing); width: 100%;"
         >
-            <button class="add-shift">Add a new shift</button>
+            <button class="add-shift">${m.add_shift()}</button>
         </div>
 
         <template name="table-item">
@@ -62,7 +63,7 @@ const articleHTML = html`
             class="ui-flex justify-between align-center"
             style="padding: var(--ui-spacing);"
         >
-            Start Date
+            ${m.start_date()}
             <input type="date" />
         </label>
     </section>
@@ -72,8 +73,8 @@ const articleHTML = html`
             class="ui-flex justify-between align-center"
             style="padding: var(--ui-spacing)"
         >
-            Rhythm
-            <button>Edit</button>
+            ${m.rhythm()}
+            <button>${m.edit()}</button>
         </label>
     </section>
 `;
@@ -85,11 +86,9 @@ export function article(): HTMLElement {
 
     const renderShiftsTableSection = () => {
         // Table Section
-        const tbody = article.querySelector<HTMLElement>(
-            `section.shifts-table tbody`,
-        )!;
+        const tbody = article.querySelector<HTMLElement>(`tbody`)!;
         const template = article.querySelector<HTMLTemplateElement>(
-            `section.shifts-table template[name="table-item"]`,
+            `template[name="table-item"]`,
         )!;
 
         // Reset
@@ -137,36 +136,34 @@ export function article(): HTMLElement {
                 renderShiftsTableSection();
             };
 
-            const deleteButton =
-                tableItem.querySelector<HTMLElement>(`button.delete`)!;
-            deleteButton.onclick = async () => {
-                if (confirm(`Delete shift \"${shift.name}\"?`)) {
-                    store.obj.update("shifts", (shifts) => {
-                        return shifts.filter((s) => s.id !== shift.id);
-                    });
-                }
+            tableItem.querySelector<HTMLElement>(`button.delete`)!.onclick =
+                async () => {
+                    if (confirm(`Delete shift \"${shift.name}\"?`)) {
+                        store.obj.update("shifts", (shifts) => {
+                            return shifts.filter((s) => s.id !== shift.id);
+                        });
+                    }
 
-                renderShiftsTableSection();
-            };
+                    renderShiftsTableSection();
+                };
         });
 
         // Add "Add Shift" button handler
-        article.querySelector<HTMLButtonElement>(
-            `section.shifts-table button.add-shift`,
-        )!.onclick = async () => {
-            const data = await dialogs.shift.open(null);
-            if (!data) {
-                return;
-            }
+        article.querySelector<HTMLButtonElement>(`button.add-shift`)!.onclick =
+            async () => {
+                const data = await dialogs.shift.open(null);
+                if (!data) {
+                    return;
+                }
 
-            // Update store and and table item
-            store.obj.update("shifts", (shifts) => {
-                shifts.push(data);
-                return shifts;
-            });
+                // Update store and and table item
+                store.obj.update("shifts", (shifts) => {
+                    shifts.push(data);
+                    return shifts;
+                });
 
-            renderShiftsTableSection();
-        };
+                renderShiftsTableSection();
+            };
     };
 
     renderShiftsTableSection();
@@ -180,6 +177,7 @@ export function article(): HTMLElement {
         const date = new Date();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
         const day = date.getDate().toString().padStart(2, "0");
+
         startDateInput.value = `${date.getFullYear()}-${month}-${day}`;
         startDateInput.onchange = () => {
             store.obj.set(

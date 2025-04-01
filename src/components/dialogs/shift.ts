@@ -1,6 +1,7 @@
 import { html } from "@lib";
 import { Shift } from "@types";
 
+// TODO: Translate and fix input width for shift name and short name
 function create(): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
@@ -16,7 +17,7 @@ function create(): CreateDialog {
                         <input
                             class="name"
                             type="text"
-                            style="margin-left: var(--ui-spacing)"
+                            style="margin-left: var(--ui-spacing); max-width: 30ch"
                         />
                     </label>
                 </div>
@@ -29,7 +30,7 @@ function create(): CreateDialog {
                         <input
                             class="short-name"
                             type="text"
-                            style="margin-left: var(--ui-spacing)"
+                            style="margin-left: var(--ui-spacing); max-width: 8ch"
                         />
                     </label>
                 </div>

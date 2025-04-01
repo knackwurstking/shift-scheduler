@@ -1,4 +1,5 @@
 import { html } from "@lib";
+import { m } from "@paraglide/messages";
 
 function create(): CreateDialog {
     const dialog = document.createElement("dialog");
@@ -7,12 +8,12 @@ function create(): CreateDialog {
     dialog.innerHTML = html`
         <form method="dialog">
             <label>
-                Pick a Date
+                ${m.pick_a_date()}
                 <input type="month" style="min-width: 12ch" />
             </label>
 
             <div class="ui-flex-grid-row" style="--justify: flex-end">
-                <button class="cancel" color="secondary">Cancel</button>
+                <button class="cancel" color="secondary">${m.cancel()}</button>
                 <input type="submit" />
             </div>
         </form>

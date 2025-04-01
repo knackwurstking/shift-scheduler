@@ -4,6 +4,7 @@ import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
 
 import { calendarUtils, constants, db, html, store } from "@lib";
+import { m } from "@paraglide/messages";
 import { DBEntry } from "@types";
 
 function create(year: number): CreateDialog {
@@ -13,7 +14,7 @@ function create(year: number): CreateDialog {
     dialog.innerHTML = html`
         <form method="dialog">
             <label class="ui-flex justify-between align-center">
-                Pick a Date
+                ${m.pick_a_year()}
                 <input
                     class="year"
                     style="width: 8ch"
@@ -25,7 +26,7 @@ function create(year: number): CreateDialog {
             </label>
 
             <div class="ui-flex-grid-row" style="--justify: flex-end">
-                <button class="cancel" color="secondary">Cancel</button>
+                <button class="cancel" color="secondary">${m.cancel()}</button>
                 <input type="submit" />
             </div>
         </form>
@@ -208,7 +209,7 @@ async function exportDoc(
     if (process.env.MODE === "capacitor") {
         await Share.share({
             title: fileName.slice(0, fileName.length - 4),
-            dialogTitle: `Share "${fileName}"`,
+            dialogTitle: m.share_file({ name: fileName }),
             url: (
                 await Filesystem.writeFile({
                     path: fileName,

@@ -1,5 +1,6 @@
 import { shiftCard } from "@components";
 import { html } from "@lib";
+import { m } from "@paraglide/messages";
 import { Rhythm, Shift } from "@types";
 
 function create(): CreateDialog {
@@ -21,8 +22,8 @@ function create(): CreateDialog {
                     <table>
                         <thead>
                             <tr>
-                                <th class="left">Name</th>
-                                <th class="left">Short</th>
+                                <th class="left">${m.name()}</th>
+                                <th class="left">${m.short()}</th>
                                 <th class="left"></th>
                             </tr>
                         </thead>
@@ -51,7 +52,9 @@ function create(): CreateDialog {
                 </div>
 
                 <div class="ui-flex-grid-row" style="--justify: flex-end">
-                    <button class="cancel" color="secondary">Cancel</button>
+                    <button class="cancel" color="secondary">
+                        ${m.cancel()}
+                    </button>
                     <input type="submit" />
                 </div>
             </div>

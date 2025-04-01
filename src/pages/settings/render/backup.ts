@@ -1,11 +1,12 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import { db, html, store, backupUtils } from "@lib";
+import { backupUtils, db, html, store } from "@lib";
+import { m } from "@paraglide/messages";
 import { BackupV1, BackupV2, BackupV3 } from "@types";
 
 const articleHTML = html`
-    <h4>Backup</h4>
+    <h4>${m.backup()}</h4>
 
     <section class="json ui-flex justify-between align-center">
         <label style="padding: var(--ui-spacing)"> JSON </label>
@@ -14,8 +15,8 @@ const articleHTML = html`
             class="ui-flex gap"
             style="--justify: flex-end; padding: var(--ui-spacing)"
         >
-            <button class="import" color="secondary">Import</button>
-            <button class="export" color="secondary">Export</button>
+            <button class="import" color="secondary">${m.import()}</button>
+            <button class="export" color="secondary">${m.export()}</button>
         </span>
     </section>
 `;
@@ -52,7 +53,11 @@ export function article(
                 await parseJSON(reader.result, reRenderCallback);
 
             reader.onerror = () => {
-                alert(`Import data: read file failed: ${reader.error}`);
+                alert(
+                    m.alert_import_data_failed({
+                        error: `${reader.error}`,
+                    }),
+                );
             };
 
             reader.readAsText(input.files[0]);
@@ -82,8 +87,8 @@ export function article(
 
         if (process.env.MODE === "capacitor") {
             Share.share({
-                title: "Shift Scheduler Backup",
-                dialogTitle: "Backup of your Shift Scheduler data",
+                title: `Shift Scheduler ${m.backup()}`,
+                dialogTitle: m.backup_shift_scheduler_data(),
                 url: (
                     await Filesystem.writeFile({
                         path: fileName,
@@ -100,7 +105,7 @@ export function article(
 
             try {
                 await navigator.share({
-                    title: "Shift Scheduler Backup",
+                    title: `Shift Scheduler ${m.backup()}`,
                     files: [new File([blob], fileName, { type: "plain/text" })],
                 });
             } catch {
@@ -126,7 +131,7 @@ async function parseJSON(
     try {
         data = JSON.parse(result);
     } catch (err) {
-        return alert("Invalid JSON data!");
+        return alert(m.alert_invalid_json());
     }
 
     // Validate backup version
@@ -138,7 +143,7 @@ async function parseJSON(
     } else if (backupUtils.isBackupV1(data)) {
         backupV3 = backupUtils.convertV1(data as BackupV1);
     } else {
-        return alert("Invalid JSON data!");
+        return alert(m.alert_invalid_json());
     }
 
     // Initialize

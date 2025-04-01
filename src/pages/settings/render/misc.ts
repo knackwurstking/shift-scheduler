@@ -1,16 +1,15 @@
 import { html, store } from "@lib";
-//import { m } from "@paraglide/messages";
+import { m } from "@paraglide/messages";
 
-// TODO: Use translate here
 const articleHTML = html`
-    <h4>Miscellaneous</h4>
+    <h4>${m.miscellaneous()}</h4>
 
     <section class="week-start">
         <label
             class="ui-flex justify-between"
             style="padding: var(--ui-spacing);"
         >
-            The week starts on Monday
+            ${m.week_starts_monday()}
             <input type="checkbox" />
         </label>
     </section>
@@ -22,7 +21,7 @@ export function article(): HTMLElement {
     article.innerHTML = articleHTML;
 
     const weekStart = article.querySelector<HTMLInputElement>(
-        `section.week-start input[type="checkbox"]`,
+        `input[type="checkbox"]`,
     )!;
 
     // Read week start from store
