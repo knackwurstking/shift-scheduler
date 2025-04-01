@@ -1,5 +1,6 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
+
     "sun": "So",
     "mon": "Mo",
     "tue": "Di",
@@ -7,6 +8,7 @@
     "thu": "Do",
     "fri": "Fr",
     "sat": "Sa",
+
     "january": "Januar",
     "february": "Februar",
     "march": "März",
@@ -19,6 +21,7 @@
     "october": "Oktober",
     "november": "November",
     "december": "Dezember",
+
     "settings": "Einstellungen",
     "miscellaneous": "Verschiedenes",
     "week_starts_monday": "Die Woche beginnt am Montag",
@@ -35,18 +38,20 @@
     "backup": "Sicherung",
     "import": "Import",
     "export": "Export",
-    "alert_import_data_failed": "Import: Lesen der Datei fehlgeschlagen: {error}",
-    "backup_shift_scheduler_data": "Sicherung Ihrer Schichtplaner Daten",
-    "alert_invalid_json": "Ungültige JSON-Daten!",
     "pick_a_year": "Wähle ein Jahr",
     "pick_a_date": "Wähle ein Datum",
     "cancel": "Abbrechen",
-    "share_file": "Share \"{name}\"",
     "reset": "Zurücksetzen",
     "note": "Note",
-    "input_shift_name": "Name (ex.: Nacht)",
-    "input_shift_short_name": "Kürzel (ex.: N)",
     "pick_color": "Wähle eine Farbe",
     "disable_color": "Farbe deaktivieren",
-    "hide_shift": "Hide shift"
+    "hide_shift": "Hide shift",
+    "share_file": "Share \"{name}\"",
+    "backup_shift_scheduler_data": "Sicherung Ihrer Schichtplaner Daten",
+
+    "alert_invalid_json": "Ungültige JSON-Daten!",
+    "alert_import_data_failed": "Import: Lesen der Datei fehlgeschlagen: {error}",
+
+    "input_shift_name": "Name (ex.: Nacht)",
+    "input_shift_short_name": "Kürzel (ex.: N)"
 }

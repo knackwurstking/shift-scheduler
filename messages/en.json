@@ -1,5 +1,6 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
+
     "sun": "Sun",
     "mon": "Mon",
     "tue": "Tue",
@@ -7,6 +8,7 @@
     "thu": "Thu",
     "fri": "Fri",
     "sat": "Sat",
+
     "january": "January",
     "february": "February",
     "march": "March",
@@ -19,6 +21,7 @@
     "october": "October",
     "november": "November",
     "december": "December",
+
     "settings": "Settings",
     "miscellaneous": "Miscellaneous",
     "week_starts_monday": "The week starts on Monday",
@@ -35,18 +38,20 @@
     "backup": "Backup",
     "import": "Import",
     "export": "Export",
-    "alert_import_data_failed": "Import: read file failed: {error}",
-    "backup_shift_scheduler_data": "Backup your Shift Scheduler data",
-    "alert_invalid_json": "Invalid JSON data!",
     "pick_a_year": "Pick a Year",
     "pick_a_date": "Pick a Date",
     "cancel": "Cancel",
-    "share_file": "Share \"{name}\"",
     "reset": "Reset",
     "note": "Notiz",
-    "input_shift_name": "Name (ex.: Night)",
-    "input_shift_short_name": "Short (ex.: N)",
     "pick_color": "Pick a color",
     "disable_color": "Disable color",
-    "hide_shift": "Hide shift"
+    "hide_shift": "Hide shift",
+    "share_file": "Share \"{name}\"",
+    "backup_shift_scheduler_data": "Backup your Shift Scheduler data",
+
+    "alert_import_data_failed": "Import: read file failed: {error}",
+    "alert_invalid_json": "Invalid JSON data!",
+
+    "input_shift_name": "Name (ex.: Night)",
+    "input_shift_short_name": "Short (ex.: N)"
 }
