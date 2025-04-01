@@ -11,14 +11,20 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
     protected startX: number | null = null;
     protected clientX: number | null = null;
 
-    protected onMouseMove?: (ev: MouseEvent & { currentTarget: Element }) => Promise<void>;
-    protected onTouchMove?: (ev: TouchEvent & { currentTarget: Element }) => Promise<void>;
+    protected onMouseMove?: (
+        ev: MouseEvent & { currentTarget: Element },
+    ) => Promise<void>;
+    protected onTouchMove?: (
+        ev: TouchEvent & { currentTarget: Element },
+    ) => Promise<void>;
 
     protected onMouseOrTouchEnd?: (
         ev: (TouchEvent | MouseEvent) & { currentTarget: Element },
     ) => Promise<void>;
 
-    protected onTouchCancel?: (ev: TouchEvent & { currentTarget: Element }) => Promise<void>;
+    protected onTouchCancel?: (
+        ev: TouchEvent & { currentTarget: Element },
+    ) => Promise<void>;
 
     protected animationFrameHandler?: () => Promise<void>;
 
@@ -35,7 +41,9 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
             if (ev.buttons === 1) {
                 if (this.startX === null) {
                     this.startX = ev.clientX;
-                    this.containerItems().forEach((item) => item.classList.add("moving"));
+                    this.containerItems().forEach((item) =>
+                        item.classList.add("moving"),
+                    );
                 }
 
                 this.clientX = ev.clientX;
@@ -47,14 +55,23 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
 
             if (this.startX === null) {
                 this.startX = ev.touches[0].clientX;
-                this.containerItems().forEach((item) => item.classList.add("moving"));
+                this.containerItems().forEach((item) =>
+                    item.classList.add("moving"),
+                );
             }
 
             this.clientX = ev.touches[0].clientX;
         };
 
         this.onMouseOrTouchEnd = async (ev) => {
-            if (this.startX === null || this.clientX === null || this.finalTransform) return;
+            if (
+                this.startX === null ||
+                this.clientX === null ||
+                this.finalTransform
+            ) {
+                return;
+            }
+
             this.finalTransform = true;
 
             if (!this.isMinSwipe()) {
@@ -66,7 +83,9 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
 
             const r = ev.currentTarget.getBoundingClientRect();
             this.setTransition(`left ${0.3}s ease`);
-            this.moveX(this.clientX > this.startX ? +(r.width + 1) : -r.width + 1);
+            this.moveX(
+                this.clientX > this.startX ? +(r.width + 1) : -r.width + 1,
+            );
             setTimeout(() => this.resetSwipe(), 300);
         };
 
@@ -75,7 +94,11 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
         };
 
         this.animationFrameHandler = async () => {
-            if (this.finalTransform || this.startX === null || this.clientX === null) {
+            if (
+                this.finalTransform ||
+                this.startX === null ||
+                this.clientX === null
+            ) {
                 requestAnimationFrame(this.animationFrameHandler!);
                 return;
             }
@@ -92,12 +115,18 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
 
         this.container.addEventListener(
             "mouseup",
-            this.onMouseOrTouchEnd as (this: HTMLElement, ev: MouseEvent) => any,
+            this.onMouseOrTouchEnd as (
+                this: HTMLElement,
+                ev: MouseEvent,
+            ) => any,
         );
 
         this.container.addEventListener(
             "mouseout",
-            this.onMouseOrTouchEnd as (this: HTMLElement, ev: MouseEvent) => any,
+            this.onMouseOrTouchEnd as (
+                this: HTMLElement,
+                ev: MouseEvent,
+            ) => any,
         );
 
         this.container.addEventListener(
@@ -108,7 +137,10 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
 
         this.container.addEventListener(
             "touchend",
-            this.onMouseOrTouchEnd as (this: HTMLElement, ev: TouchEvent) => any,
+            this.onMouseOrTouchEnd as (
+                this: HTMLElement,
+                ev: TouchEvent,
+            ) => any,
         );
 
         this.container.addEventListener(
@@ -130,17 +162,26 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
         if (!!this.onMouseOrTouchEnd) {
             this.container.removeEventListener(
                 "mouseup",
-                this.onMouseOrTouchEnd as (this: HTMLElement, ev: MouseEvent) => any,
+                this.onMouseOrTouchEnd as (
+                    this: HTMLElement,
+                    ev: MouseEvent,
+                ) => any,
             );
 
             this.container.removeEventListener(
                 "mouseout",
-                this.onMouseOrTouchEnd as (this: HTMLElement, ev: MouseEvent) => any,
+                this.onMouseOrTouchEnd as (
+                    this: HTMLElement,
+                    ev: MouseEvent,
+                ) => any,
             );
 
             this.container.removeEventListener(
                 "touchend",
-                this.onMouseOrTouchEnd as (this: HTMLElement, ev: TouchEvent) => any,
+                this.onMouseOrTouchEnd as (
+                    this: HTMLElement,
+                    ev: TouchEvent,
+                ) => any,
             );
         }
 
@@ -154,7 +195,10 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
         if (!!this.onTouchCancel) {
             this.container.removeEventListener(
                 "touchcancel",
-                this.onTouchCancel as (this: HTMLElement, ev: TouchEvent) => any,
+                this.onTouchCancel as (
+                    this: HTMLElement,
+                    ev: TouchEvent,
+                ) => any,
             );
         }
     }
@@ -165,7 +209,10 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
 
     protected isMinSwipe(): boolean {
         if (this.startX === null || this.clientX === null) return false;
-        return Math.abs(this.startX - this.clientX) > swipeRange * (window.innerWidth / 1080);
+        return (
+            Math.abs(this.startX - this.clientX) >
+            swipeRange * (window.innerWidth / 1080)
+        );
     }
 
     protected moveX(dX: number): void {
@@ -193,7 +240,9 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
         this.startX = null;
         this.clientX = null;
         this.finalTransform = false;
-        this.containerItems().forEach((item) => item.classList.remove("moving"));
+        this.containerItems().forEach((item) =>
+            item.classList.remove("moving"),
+        );
     }
 
     protected reorderItems(): void {
@@ -204,11 +253,16 @@ export class SwipeHandler extends ui.Events<{ swipe: Direction }> {
         switch (direction) {
             case "left":
                 // The first item will be the last
-                this.container.appendChild(this.container.removeChild(items[0]));
+                this.container.appendChild(
+                    this.container.removeChild(items[0]),
+                );
                 break;
             case "right":
                 // The last item will be the first
-                this.container.insertBefore(this.container.removeChild(items[2]), items[0]);
+                this.container.insertBefore(
+                    this.container.removeChild(items[2]),
+                    items[0],
+                );
                 break;
         }
 
