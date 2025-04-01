@@ -112,6 +112,10 @@ async function itemContentClickHandler(e: Event) {
     const item: HTMLElement | null = (e.target as HTMLElement).closest(".day");
     if (!item) return;
 
+    if (!!document.querySelector(`.moving`)) {
+        return;
+    }
+
     const year = parseInt(item.getAttribute("data-year")!, 10);
     const month = parseInt(item.getAttribute("data-month")!, 10);
     const day = parseInt(item.getAttribute("data-date")!, 10);
