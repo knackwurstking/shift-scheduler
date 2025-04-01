@@ -4,6 +4,9 @@ clean:
 init:
 	npm install
 
+generate-pwa-assets:
+	npx pwa-assets-generator
+
 test:
 	npx vitest run
 
@@ -13,23 +16,32 @@ check:
 dev:
 	MODE=github npx vite --host -c vite.config.js
 
-_vite-build:
+vite-build:
 	npx vite build --minify -c vite.config.js --emptyOutDir
 
-build:
+vite-build-all:
 	make check && \
 		MODE=github make _vite-build  && \
 		MODE=capacitor make _vite-build && \
 		MODE=wails make _vite-build
 
+vite-build-github:
+	make check && \
+		MODE=github make _vite-build 
+
+vite-build-capacitor:
+	make check && \
+		MODE=capacitor make _vite-build
+
+vite-build-wails:
+	make check && \
+		MODE=wails make _vite-build 
+
 wails-build:
 	cd wails && wails build
 
-wails-build-windows:
+wails-build-nsis:
 	cd wails && wails build -nsis
-
-generate-pwa-assets:
-	npx pwa-assets-generator
 
 android-sync:
 	npx cap sync android
