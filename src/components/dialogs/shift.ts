@@ -1,7 +1,7 @@
 import { html } from "@lib";
+import { m } from "@paraglide/messages";
 import { Shift } from "@types";
 
-// TODO: Translate
 function create(): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
@@ -13,7 +13,7 @@ function create(): CreateDialog {
                     <label
                         class="ui-flex justify-between align-center ui-padding"
                     >
-                        Name (ex.: Night)
+                        ${m.input_shift_name()}
                         <input
                             class="name"
                             type="text"
@@ -26,7 +26,7 @@ function create(): CreateDialog {
                     <label
                         class="ui-flex justify-between align-center ui-padding"
                     >
-                        Short (ex.: N)
+                        ${m.input_shift_short_name()}
                         <input
                             class="short-name"
                             type="text"
@@ -39,7 +39,7 @@ function create(): CreateDialog {
                     <label
                         class="ui-flex justify-between align-center ui-padding"
                     >
-                        Pick a color
+                        ${m.pick_color()}
                         <input
                             class="color-picker"
                             style="min-width: 4rem"
@@ -52,7 +52,7 @@ function create(): CreateDialog {
                     <label
                         class="ui-flex justify-between align-center ui-padding"
                     >
-                        Disable color
+                        ${m.disable_color()}
                         <input class="default-color" type="checkbox" />
                     </label>
                 </div>
@@ -61,7 +61,7 @@ function create(): CreateDialog {
                     <label
                         class="ui-flex justify-between align-center ui-padding"
                     >
-                        Hide shift
+                        ${m.hide_shift()}
                         <input class="hidden" type="checkbox" />
                     </label>
                 </div>
@@ -70,7 +70,9 @@ function create(): CreateDialog {
                     class="ui-flex-grid-row"
                     style="--justify: flex-end; width: 100%"
                 >
-                    <button class="cancel" color="secondary">Cancel</button>
+                    <button class="cancel" color="secondary">
+                        ${m.cancel()}
+                    </button>
                     <input type="submit" />
                 </div>
             </div>

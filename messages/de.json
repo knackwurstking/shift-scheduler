@@ -43,5 +43,10 @@
     "cancel": "Abbrechen",
     "share_file": "Share \"{name}\"",
     "reset": "Zurücksetzen",
-    "note": "Note"
+    "note": "Note",
+    "input_shift_name": "Name (ex.: Nacht)",
+    "input_shift_short_name": "Kürzel (ex.: N)",
+    "pick_color": "Wähle eine Farbe",
+    "disable_color": "Farbe deaktivieren",
+    "hide_shift": "Hide shift"
 }
