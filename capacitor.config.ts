@@ -1,9 +1,9 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'knackwurstking.shiftscheduler',
-  appName: 'Shift Scheduler',
-  webDir: 'dist'
+    appId: "knackwurstking.shiftscheduler",
+    appName: "Shift Scheduler",
+    webDir: "dist-capacitor",
 };
 
 export default config;

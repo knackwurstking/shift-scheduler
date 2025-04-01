@@ -21,21 +21,22 @@ vite-build:
 
 vite-build-all:
 	make check && \
-		MODE=github make _vite-build  && \
-		MODE=capacitor make _vite-build && \
-		MODE=wails make _vite-build
+		MODE= make vite-build && \
+		MODE=github make vite-build  && \
+		MODE=capacitor make vite-build && \
+		MODE=wails make vite-build
 
 vite-build-github:
 	make check && \
-		MODE=github make _vite-build 
+		MODE=github make vite-build 
 
 vite-build-capacitor:
 	make check && \
-		MODE=capacitor make _vite-build
+		MODE=capacitor make vite-build
 
 vite-build-wails:
 	make check && \
-		MODE=wails make _vite-build 
+		MODE=wails make vite-build 
 
 wails-build:
 	cd wails && wails build

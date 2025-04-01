@@ -67,7 +67,9 @@ export default defineConfig({
                 ? "../shift-scheduler.github.io/"
                 : process.env.MODE === "wails"
                   ? "./wails/frontend/dist"
-                  : "./dist",
+                  : process.env.MODE === "capacitor"
+                    ? "./dist-capacitor"
+                    : "./dist",
     },
 
     define: {
