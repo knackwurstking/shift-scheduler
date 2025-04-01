@@ -7,7 +7,7 @@ function create(): CreateDialog {
     document.body.appendChild(dialog);
 
     dialog.innerHTML = html`
-        <form method="dialog" style="width: 100%; height: 100%">
+        <form method="dialog">
             <h4 class="title"></h4>
 
             <select class="shift-select" style="width: 100%">
