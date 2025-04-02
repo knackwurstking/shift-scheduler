@@ -1,5 +1,5 @@
 {
-    "appId": "com.knackwurstking.shiftscheduler",
+    "appId": "knackwurstking.shiftscheduler",
     "appName": "shift-scheduler-dev",
     "webDir": "dist",
     "server": {
