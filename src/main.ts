@@ -5,7 +5,7 @@ import { App } from "@capacitor/app";
 import * as ui from "ui";
 import { registerSW } from "virtual:pwa-register";
 import { SendIntent } from "send-intent";
-import { Filesystem } from "@capacitor/filesystem";
+import { Encoding, Filesystem } from "@capacitor/filesystem";
 
 import { backupUtils, db } from "@lib";
 import * as pages from "@pages";
@@ -28,12 +28,17 @@ if (process.env.MODE === "capacitor") {
     // Handle share target for backup files
     SendIntent.checkSendIntentReceived()
         .then((result) => {
-            console.debug(result);
+            console.debug("result.url:", result.url);
+            console.debug("result.type:", result.type);
 
             if (result.url) {
-                let resultUrl = decodeURIComponent(result.url);
-                Filesystem.readFile({ path: resultUrl })
+                Filesystem.readFile({
+                    path: result.url,
+                    encoding: Encoding.UTF8,
+                })
                     .then((content) => {
+                        console.debug("content.data:", content.data);
+
                         if (typeof content.data === "string") {
                             backupUtils.parseJSON(content.data);
                         } else {
@@ -44,10 +49,11 @@ if (process.env.MODE === "capacitor") {
                             reader.readAsText(content.data);
                         }
                     })
+                    .then(() => SendIntent.finish())
                     .catch((err) => alert(err));
             }
         })
-        .catch((err) => alert(err));
+        .catch((err) => console.warn(err));
 }
 
 if (!process.env.MODE || process.env.MODE === "github") {
