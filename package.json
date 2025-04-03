@@ -9,6 +9,7 @@
         "@capacitor/core": "^7.0.1",
         "@capacitor/filesystem": "^7.0.0",
         "@capacitor/share": "^7.0.0",
+        "@inlang/paraglide-js": "2.0.8",
         "@types/node": "^22.13.4",
         "@vite-pwa/assets-generator": "^0.2.6",
         "jsdom": "^26.0.0",
@@ -16,14 +17,14 @@
         "vite": "^6.1.0",
         "vite-plugin-pwa": "^0.21.1",
         "vite-tsconfig-paths": "^5.1.4",
-        "vitest": "^3.1.1",
-        "@inlang/paraglide-js": "2.0.8"
+        "vitest": "^3.1.1"
     },
     "dependencies": {
         "@capacitor/app": "^7.0.0",
         "bootstrap-icons": "^1.11.3",
         "jspdf": "^3.0.1",
         "jspdf-autotable": "^5.0.2",
+        "send-intent": "^7.0.0",
         "ui": "file:../ui"
     }
 }

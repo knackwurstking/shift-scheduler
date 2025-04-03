@@ -3,7 +3,7 @@ import { Share } from "@capacitor/share";
 
 import { backupUtils, db, html, store } from "@lib";
 import { m } from "@paraglide/messages";
-import { BackupV1, BackupV2, BackupV3 } from "@types";
+import { BackupV3 } from "@types";
 
 const articleHTML = html`
     <h4>${m.backup()}</h4>
@@ -50,7 +50,7 @@ export function article(
             const reader = new FileReader();
 
             reader.onload = async () =>
-                await parseJSON(reader.result, reRenderCallback);
+                await backupUtils.parseJSON(reader.result, reRenderCallback);
 
             reader.onerror = () => {
                 alert(
@@ -118,44 +118,4 @@ export function article(
     };
 
     return article;
-}
-
-async function parseJSON(
-    result: string | ArrayBuffer | null,
-    reRenderCallback: () => Promise<void> | void,
-): Promise<void> {
-    if (typeof result !== "string") return alert("Invalid data!");
-
-    // Parsing JSON
-    let data: BackupV1 | BackupV2 | BackupV3;
-    try {
-        data = JSON.parse(result);
-    } catch (err) {
-        return alert(m.alert_invalid_json());
-    }
-
-    // Validate backup version
-    let backupV3: BackupV3;
-    if (backupUtils.isBackupV3(data)) {
-        backupV3 = data as BackupV3;
-    } else if (backupUtils.isBackupV2(data)) {
-        backupV3 = backupUtils.convertV2(data as BackupV2);
-    } else if (backupUtils.isBackupV1(data)) {
-        backupV3 = backupUtils.convertV1(data as BackupV1);
-    } else {
-        return alert(m.alert_invalid_json());
-    }
-
-    // Initialize
-    store.obj.set("shifts", backupV3.shifts);
-    store.obj.set("rhythm", backupV3.rhythm);
-    store.obj.set("startDate", backupV3.startDate);
-    store.obj.set("weekStart", backupV3.weekStart);
-
-    await db.deleteAll();
-    for (const entry of backupV3.indexedDB.data || []) {
-        db.add(entry).catch(() => db.put(entry));
-    }
-
-    setTimeout(reRenderCallback);
 }

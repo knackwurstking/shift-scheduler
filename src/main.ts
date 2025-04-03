@@ -4,8 +4,10 @@ import "./styles.css";
 import { App } from "@capacitor/app";
 import * as ui from "ui";
 import { registerSW } from "virtual:pwa-register";
+import { SendIntent } from "send-intent";
+import { Filesystem } from "@capacitor/filesystem";
 
-import { db } from "@lib";
+import { backupUtils, db } from "@lib";
 import * as pages from "@pages";
 
 console.debug("process.env.MODE:", process.env.MODE);
@@ -22,6 +24,30 @@ if (process.env.MODE === "capacitor") {
             window.history.back();
         }
     });
+
+    // Handle share target for backup files
+    SendIntent.checkSendIntentReceived()
+        .then((result) => {
+            console.debug(result);
+
+            if (result.url) {
+                let resultUrl = decodeURIComponent(result.url);
+                Filesystem.readFile({ path: resultUrl })
+                    .then((content) => {
+                        if (typeof content.data === "string") {
+                            backupUtils.parseJSON(content.data);
+                        } else {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                backupUtils.parseJSON(e.target?.result || null);
+                            };
+                            reader.readAsText(content.data);
+                        }
+                    })
+                    .catch((err) => alert(err));
+            }
+        })
+        .catch((err) => alert(err));
 }
 
 if (!process.env.MODE || process.env.MODE === "github") {

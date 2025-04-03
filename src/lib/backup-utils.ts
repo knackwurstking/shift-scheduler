@@ -1,5 +1,46 @@
-import { constants } from "@lib";
+import { constants, store, db } from "@lib";
 import { BackupV1, BackupV2, BackupV3, DBEntry } from "@types";
+import { m } from "@paraglide/messages";
+
+export async function parseJSON(
+    result: string | ArrayBuffer | null,
+    reRenderCallback?: () => Promise<void> | void,
+): Promise<void> {
+    if (typeof result !== "string") return alert("Invalid data!");
+
+    // Parsing JSON
+    let data: BackupV1 | BackupV2 | BackupV3;
+    try {
+        data = JSON.parse(result);
+    } catch (err) {
+        return alert(m.alert_invalid_json());
+    }
+
+    // Validate backup version
+    let backupV3: BackupV3;
+    if (isBackupV3(data)) {
+        backupV3 = data as BackupV3;
+    } else if (isBackupV2(data)) {
+        backupV3 = convertV2(data as BackupV2);
+    } else if (isBackupV1(data)) {
+        backupV3 = convertV1(data as BackupV1);
+    } else {
+        return alert(m.alert_invalid_json());
+    }
+
+    // Initialize
+    store.obj.set("shifts", backupV3.shifts);
+    store.obj.set("rhythm", backupV3.rhythm);
+    store.obj.set("startDate", backupV3.startDate);
+    store.obj.set("weekStart", backupV3.weekStart);
+
+    await db.deleteAll();
+    for (const entry of backupV3.indexedDB.data || []) {
+        db.add(entry).catch(() => db.put(entry));
+    }
+
+    if (!!reRenderCallback) setTimeout(reRenderCallback);
+}
 
 export function isBackupV1(data: any): boolean {
     const isShift = (s: any): boolean => {
