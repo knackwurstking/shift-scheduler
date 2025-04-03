@@ -1,9 +1,10 @@
 import { store, constants } from "@lib";
-import { EditMode } from "@types";
+import { EditMode, Shifts } from "@types";
+import { shiftCard } from "@components";
+import { m } from "@paraglide/messages";
 
 import { updateItemContent } from "./item-content";
 import { Direction } from "./swipe-handler";
-import { shiftCard } from "@components";
 
 export async function datePicker(dateString: number): Promise<void> {
     const date = new Date(dateString);
@@ -71,8 +72,17 @@ export async function swipe(direction: Direction): Promise<void> {
 }
 
 function renderShiftCards(container: HTMLElement, active: number): void {
-    // TODO: Add reset shift, should be the first element in this list
-    (store.obj.get("shifts") || []).forEach((shift) => {
+    const shifts: Shifts = [
+        {
+            id: 0,
+            name: m.reset(),
+            shortName: "",
+            visible: false,
+        },
+        ...(store.obj.get("shifts") || []),
+    ];
+
+    shifts.forEach((shift) => {
         const card = shiftCard.create();
 
         card.methods.active(active === shift.id);
