@@ -42,7 +42,11 @@ export const obj: ShiftSchedulerStore = (() => {
     store.set("rhythm", [], true);
     store.set("startDate", 0, true);
 
-    store.set("editMode", { open: false, active: 0 }, false);
+    store.set(
+        "editMode",
+        { open: false, active: constants.shiftIDNothing },
+        false,
+    );
 
     const newVersion = { version: constants.version, build: constants.build };
 

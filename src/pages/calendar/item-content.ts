@@ -136,7 +136,10 @@ async function itemContentClickHandler(e: Event) {
         // Edit Mode
         const dbEntry = await db.get(year, month, day);
         data = {
-            shiftID: !editMode.active ? 0 : editMode.active,
+            shiftID:
+                editMode.active === constants.shiftIDNothing
+                    ? shiftID
+                    : editMode.active,
             note: dbEntry?.note || "",
         };
     }

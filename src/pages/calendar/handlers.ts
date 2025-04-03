@@ -1,4 +1,4 @@
-import { store } from "@lib";
+import { store, constants } from "@lib";
 import { EditMode } from "@types";
 
 import { updateItemContent } from "./item-content";
@@ -71,6 +71,7 @@ export async function swipe(direction: Direction): Promise<void> {
 }
 
 function renderShiftCards(container: HTMLElement, active: number): void {
+    // TODO: Add reset shift, should be the first element in this list
     (store.obj.get("shifts") || []).forEach((shift) => {
         const card = shiftCard.create();
 
@@ -85,7 +86,9 @@ function renderShiftCards(container: HTMLElement, active: number): void {
             card.methods.active(!card.methods.isActive());
 
             store.obj.update("editMode", (data) => {
-                data.active = card.methods.isActive() ? shift.id : 0;
+                data.active = card.methods.isActive()
+                    ? shift.id
+                    : constants.shiftIDNothing;
                 return data;
             });
         };

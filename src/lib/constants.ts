@@ -32,3 +32,6 @@ export const months = [
     m.november,
     m.december,
 ];
+
+export const shiftIDReset = 0;
+export const shiftIDNothing = -1;
