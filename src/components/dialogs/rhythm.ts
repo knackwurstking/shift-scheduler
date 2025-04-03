@@ -2,6 +2,7 @@ import { shiftCard } from "@components";
 import { html } from "@lib";
 import { m } from "@paraglide/messages";
 import { Rhythm, Shift } from "@types";
+import { draggable } from "ui";
 
 function create(): CreateDialog {
     const dialog = document.createElement("dialog");
@@ -95,10 +96,13 @@ function create(): CreateDialog {
 export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
     return new Promise((resolve) => {
         const { dialog, destroy } = create();
+
         const tbody = dialog.querySelector<HTMLElement>(`tbody`)!;
+
         const shiftsContainer =
             dialog.querySelector<HTMLElement>(`.shifts-container`)!;
 
+        // TODO: Do use a component here instead of this template bullshit
         const templateTableItem = dialog.querySelector<HTMLTemplateElement>(
             `template[name="table-item"]`,
         )!;
@@ -117,80 +121,89 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
             setTimeout(destroy);
         };
 
-        {
-            const renderTBody = () => {
-                tbody.innerHTML = "";
+        const renderTBody = () => {
+            tbody.innerHTML = "";
 
-                // Setup Rhythm items for the table
-                // TODO: Enable drag'n'drop for table items
-                rhythm.forEach((id, index) => {
-                    let shift = shifts.find((shift) => shift.id === id);
-                    if (!shift) {
-                        shift = {
-                            id: id,
-                            name: "",
-                            shortName: "",
-                            color: "var(--destructive)",
-                            visible: false,
-                        };
-                    }
-
-                    const tableItem = (
-                        templateTableItem.content.cloneNode(true) as HTMLElement
-                    ).querySelector<HTMLElement>(`.table-item`)!;
-
-                    // Setup table item
-                    tableItem.querySelector<HTMLElement>(".name")!.innerText =
-                        shift.name;
-
-                    const shortName =
-                        tableItem.querySelector<HTMLElement>(".short-name")!;
-                    shortName.style.color = shift.color || "inherit";
-                    shortName.innerText = !!shift.visible
-                        ? shift.shortName
-                        : "";
-
-                    // Delete button handler
-                    const deleteButton =
-                        tableItem.querySelector<HTMLButtonElement>(
-                            `button.delete`,
-                        )!;
-                    deleteButton.onclick = () => {
-                        // Delete this item from the rhythm
-                        rhythm.splice(index, 1);
-                        // Re-Render the table
-                        renderTBody();
+            // Setup Rhythm items for the table
+            rhythm.forEach((id, index) => {
+                let shift = shifts.find((shift) => shift.id === id);
+                if (!shift) {
+                    shift = {
+                        id: id,
+                        name: "",
+                        shortName: "",
+                        color: "var(--destructive)",
+                        visible: false,
                     };
+                }
 
-                    tbody.appendChild(tableItem);
-                    tableItem.scrollIntoView();
-                });
-            };
+                const tableItem = (
+                    templateTableItem.content.cloneNode(true) as HTMLElement
+                ).querySelector<HTMLElement>(`.table-item`)!;
 
-            const renderShiftsContainer = () => {
-                shiftsContainer.innerHTML = "";
+                tableItem.setAttribute("data-json", JSON.stringify(shift.id));
+                tbody.appendChild(tableItem);
 
-                // Setup Shift Card items for the shifts-container
-                shifts.forEach((shift) => {
-                    const card = shiftCard.create();
-                    shiftsContainer.appendChild(card.element);
+                // Setup table item
+                tableItem.querySelector<HTMLElement>(".name")!.innerText =
+                    shift.name;
 
-                    card.methods.queryName().innerText = shift.name;
+                const shortName =
+                    tableItem.querySelector<HTMLElement>(".short-name")!;
 
-                    const shortName = card.methods.queryShortName();
-                    shortName.style.color = shift.color || "inherit";
-                    shortName.innerText = shift.visible ? shift.shortName : "";
+                shortName.style.color = shift.color || "inherit";
+                shortName.innerText = !!shift.visible ? shift.shortName : "";
 
-                    card.element.onclick = () => {
-                        rhythm.push(shift.id);
-                        renderTBody();
-                    };
-                });
-            };
+                // Delete Button
+                tableItem.querySelector<HTMLButtonElement>(
+                    `button.delete`,
+                )!.onclick = () => {
+                    // Delete this item from the rhythm
+                    rhythm.splice(index, 1);
 
-            renderTBody();
-            renderShiftsContainer();
-        }
+                    // Re-Render
+                    renderTBody();
+                };
+
+                tableItem.scrollIntoView();
+            });
+
+            // Enable drag'n'drop for table items
+            draggable.createMobile(tbody, {
+                onDragEnd: () => {
+                    rhythm = Array.from(tbody.children).map((child) => {
+                        return JSON.parse(child.getAttribute("data-json")!);
+                    });
+
+                    // Re-Render
+                    renderTBody();
+                },
+            });
+        };
+
+        const renderShiftsContainer = () => {
+            shiftsContainer.innerHTML = "";
+
+            // Setup Shift Card items for the shifts-container
+            shifts.forEach((shift) => {
+                const card = shiftCard.create();
+                shiftsContainer.appendChild(card.element);
+
+                card.methods.queryName().innerText = shift.name;
+
+                const shortName = card.methods.queryShortName();
+                shortName.style.color = shift.color || "inherit";
+                shortName.innerText = shift.visible ? shift.shortName : "";
+
+                card.element.onclick = () => {
+                    rhythm.push(shift.id);
+                    renderTBody();
+                };
+            });
+        };
+
+        renderTBody();
+        renderShiftsContainer();
 
         dialog.showModal();
     });

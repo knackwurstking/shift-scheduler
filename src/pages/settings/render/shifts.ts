@@ -1,6 +1,7 @@
 import { dialogs } from "@components";
 import { html, store } from "@lib";
 import { m } from "@paraglide/messages";
+import { draggable } from "ui";
 
 const articleHTML = html`
     <h4>${m.shift_settings()}</h4>
@@ -85,8 +86,9 @@ export function article(): HTMLElement {
     article.innerHTML = articleHTML;
 
     const renderShiftsTableSection = () => {
-        // Table Section
         const tbody = article.querySelector<HTMLElement>(`tbody`)!;
+
+        // TODO: Do use a component here instead of this template bullshit
         const template = article.querySelector<HTMLTemplateElement>(
             `template[name="table-item"]`,
         )!;
@@ -95,47 +97,49 @@ export function article(): HTMLElement {
         tbody.innerHTML = "";
 
         // Create shift table rows from settings shifts
-        // TODO: Enable drag'n'drop for table items
         store.obj.get("shifts")!.forEach((shift) => {
             const tableItem = (
                 template.content.cloneNode(true) as HTMLElement
             ).querySelector<HTMLElement>(`tr.item`)!;
 
+            tableItem.setAttribute("data-json", JSON.stringify(shift));
             tbody.appendChild(tableItem);
 
-            // Set shift name
+            // Shift Name
             tableItem.querySelector<HTMLElement>(`.name`)!.innerText =
                 shift.name;
 
-            // Set shifts short name
+            // Short Name
             const shortName =
                 tableItem.querySelector<HTMLElement>(`.short-name`)!;
+
             shortName.style.color = shift.color || "inherit";
             shortName.innerText = shift.visible ? shift.shortName : "";
 
-            // Set edit button handler, open edit dialog
-            const editButton =
-                tableItem.querySelector<HTMLElement>(`button.edit`)!;
-            editButton.onclick = async () => {
-                const data = await dialogs.shift.open(shift);
-                if (!data) {
-                    return;
-                }
+            // Edit Button
+            tableItem.querySelector<HTMLElement>(`button.edit`)!.onclick =
+                async () => {
+                    const data = await dialogs.shift.open(shift);
+                    if (!data) {
+                        return;
+                    }
 
-                // Update store and and table item
-                store.obj.update("shifts", (shifts) => {
-                    return shifts.map((shift) => {
-                        if (shift.id === data.id) {
-                            return data;
-                        }
+                    // Update store and and table item
+                    store.obj.update("shifts", (shifts) => {
+                        return shifts.map((shift) => {
+                            if (shift.id === data.id) {
+                                return data;
+                            }
 
-                        return shift;
+                            return shift;
+                        });
                     });
-                });
 
-                renderShiftsTableSection();
-            };
+                    // Re-Render
+                    renderShiftsTableSection();
+                };
 
+            // Delete Button
             tableItem.querySelector<HTMLElement>(`button.delete`)!.onclick =
                 async () => {
                     if (confirm(`Delete shift \"${shift.name}\"?`)) {
@@ -144,8 +148,24 @@ export function article(): HTMLElement {
                         });
                     }
 
+                    // Re-Render
                     renderShiftsTableSection();
                 };
+        });
+
+        // Enable drag'n'drop for table items
+        draggable.createMobile(tbody, {
+            onDragEnd: () => {
+                store.obj.set(
+                    "shifts",
+                    Array.from(tbody.children).map((child) => {
+                        return JSON.parse(child.getAttribute("data-json")!);
+                    }),
+                );
+
+                // Re-Render
+                renderShiftsTableSection();
+            },
         });
 
         // Add "Add Shift" button handler
@@ -162,6 +182,7 @@ export function article(): HTMLElement {
                     return shifts;
                 });
 
+                // Re-Render
                 renderShiftsTableSection();
             };
     };
