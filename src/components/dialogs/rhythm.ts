@@ -60,29 +60,6 @@ function create(): CreateDialog {
                 </div>
             </div>
         </form>
-
-        <template name="table-item">
-            <tr class="table-item">
-                <td class="name left"></td>
-
-                <td class="short-name left" style="color: inherit"></td>
-
-                <td class="right">
-                    <div class="ui-flex-grid-row" style="--justify: flex-end">
-                        <div class="ui-flex-grid-item" style="--flex: 0">
-                            <button
-                                class="delete"
-                                variant="ghost"
-                                color="destructive"
-                                icon
-                            >
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </template>
     `;
 
     return {
@@ -101,11 +78,6 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
 
         const shiftsContainer =
             dialog.querySelector<HTMLElement>(`.shifts-container`)!;
-
-        // TODO: Do use a component here instead of this template bullshit
-        const templateTableItem = dialog.querySelector<HTMLTemplateElement>(
-            `template[name="table-item"]`,
-        )!;
 
         dialog.querySelector<HTMLElement>(`button.cancel`)!.onclick = (e) => {
             e.preventDefault();
@@ -137,34 +109,17 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
                     };
                 }
 
-                const tableItem = (
-                    templateTableItem.content.cloneNode(true) as HTMLElement
-                ).querySelector<HTMLElement>(`.table-item`)!;
+                const tableItem = createTableItem(shift, {
+                    onDelete: async () => {
+                        // Delete this item from the rhythm
+                        rhythm.splice(index, 1);
 
-                tableItem.setAttribute("data-json", JSON.stringify(shift.id));
+                        // Re-Render
+                        renderTBody();
+                    },
+                });
+
                 tbody.appendChild(tableItem);
-
-                // Setup table item
-                tableItem.querySelector<HTMLElement>(".name")!.innerText =
-                    shift.name;
-
-                const shortName =
-                    tableItem.querySelector<HTMLElement>(".short-name")!;
-
-                shortName.style.color = shift.color || "inherit";
-                shortName.innerText = !!shift.visible ? shift.shortName : "";
-
-                // Delete Button
-                tableItem.querySelector<HTMLButtonElement>(
-                    `button.delete`,
-                )!.onclick = () => {
-                    // Delete this item from the rhythm
-                    rhythm.splice(index, 1);
-
-                    // Re-Render
-                    renderTBody();
-                };
-
                 tableItem.scrollIntoView();
             });
 
@@ -207,4 +162,48 @@ export function open(rhythm: Rhythm, shifts: Shift[]): Promise<Rhythm> {
 
         dialog.showModal();
     });
+}
+
+function createTableItem(
+    shift: Shift,
+    options: { onDelete: () => Promise<void> | void },
+): HTMLTableRowElement {
+    const tr = document.createElement("tr");
+
+    tr.setAttribute("data-json", JSON.stringify(shift.id));
+
+    // Setup table item
+    tr.querySelector<HTMLElement>(".name")!.innerText = shift.name;
+
+    const shortName = tr.querySelector<HTMLElement>(".short-name")!;
+
+    shortName.style.color = shift.color || "inherit";
+    shortName.innerText = !!shift.visible ? shift.shortName : "";
+
+    // Delete Button
+    tr.querySelector<HTMLButtonElement>(`button.delete`)!.onclick =
+        options.onDelete;
+
+    tr.innerHTML = html`
+        <td class="name left"></td>
+
+        <td class="short-name left" style="color: inherit"></td>
+
+        <td class="right">
+            <div class="ui-flex-grid-row" style="--justify: flex-end">
+                <div class="ui-flex-grid-item" style="--flex: 0">
+                    <button
+                        class="delete"
+                        variant="ghost"
+                        color="destructive"
+                        icon
+                    >
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </td>
+    `;
+
+    return tr;
 }
