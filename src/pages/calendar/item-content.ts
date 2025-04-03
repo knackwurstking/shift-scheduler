@@ -172,14 +172,14 @@ async function itemContentClickHandler(e: Event) {
 
     // Handle database add/put/delete
     if (!!updatedData.note || !!updatedData.shift) {
-        console.warn("Add data to the database", updatedData);
+        console.debug("Add data to the database", updatedData);
         db.put(updatedData).catch(() => {
             db.add(updatedData!).catch((err) =>
                 alert(`Update database failed: ${err}`),
             );
         });
     } else {
-        console.warn("Remove data from the database", { year, month, day });
+        console.debug("Remove data from the database", { year, month, day });
         db.delete(year, month, day);
     }
 
