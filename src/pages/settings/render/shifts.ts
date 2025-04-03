@@ -182,18 +182,6 @@ function createTableItem(
 
     tr.setAttribute("data-json", JSON.stringify(shift));
 
-    // Shift Name
-    tr.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
-
-    // Short Name
-    const shortName = tr.querySelector<HTMLElement>(`.short-name`)!;
-
-    shortName.style.color = shift.color || "inherit";
-    shortName.innerText = shift.visible ? shift.shortName : "";
-
-    tr.querySelector<HTMLElement>(`button.edit`)!.onclick = options.onEdit;
-    tr.querySelector<HTMLElement>(`button.delete`)!.onclick = options.onDelete;
-
     tr.innerHTML = html`
         <td class="name" style="text-align: left;"></td>
 
@@ -220,6 +208,18 @@ function createTableItem(
             </div>
         </td>
     `;
+
+    // Shift Name
+    tr.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
+
+    // Short Name
+    const shortName = tr.querySelector<HTMLElement>(`.short-name`)!;
+
+    shortName.style.color = shift.color || "inherit";
+    shortName.innerText = shift.visible ? shift.shortName : "";
+
+    tr.querySelector<HTMLElement>(`button.edit`)!.onclick = options.onEdit;
+    tr.querySelector<HTMLElement>(`button.delete`)!.onclick = options.onDelete;
 
     return tr;
 }
