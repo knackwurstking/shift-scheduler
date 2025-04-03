@@ -52,6 +52,7 @@
 
     "alert_import_data_failed": "Import: read file failed: {error}",
     "alert_invalid_json": "Invalid JSON data!",
+    "alert_send_intent_finish": "Application backup has been loaded. If the application is currently running, please restart it.",
 
     "input_shift_name": "Name (ex.: Night)",
     "input_shift_short_name": "Short (ex.: N)"

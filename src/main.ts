@@ -9,6 +9,7 @@ import { Encoding, Filesystem } from "@capacitor/filesystem";
 
 import { backupUtils, db } from "@lib";
 import * as pages from "@pages";
+import { m } from "@paraglide/messages";
 
 console.debug("process.env.MODE:", process.env.MODE);
 
@@ -41,6 +42,7 @@ if (process.env.MODE === "capacitor") {
 
                         if (typeof content.data === "string") {
                             await backupUtils.parseJSON(content.data);
+                            alert(m.alert_send_intent_finish());
                             SendIntent.finish();
                         } else {
                             const reader = new FileReader();
@@ -48,6 +50,7 @@ if (process.env.MODE === "capacitor") {
                                 await backupUtils.parseJSON(
                                     e.target?.result || null,
                                 );
+                                alert(m.alert_send_intent_finish());
                                 SendIntent.finish();
                             };
                             reader.readAsText(content.data);

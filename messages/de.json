@@ -52,6 +52,7 @@
 
     "alert_invalid_json": "Ungültige JSON-Daten!",
     "alert_import_data_failed": "Import: Lesen der Datei fehlgeschlagen: {error}",
+    "alert_send_intent_finish": "Das Backup wurde geladen. Falls die Anwendung aktuell ausgeführt wird, bitte neu starten.",
 
     "input_shift_name": "Name (ex.: Nacht)",
     "input_shift_short_name": "Kürzel (ex.: N)"
