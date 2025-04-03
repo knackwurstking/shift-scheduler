@@ -180,6 +180,8 @@ function createTableItem(
 ): HTMLTableRowElement {
     const tr = document.createElement("tr");
 
+    tr.style.userSelect = "none";
+
     tr.setAttribute("data-json", JSON.stringify(shift));
 
     tr.innerHTML = html`
