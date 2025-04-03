@@ -54,7 +54,17 @@ export function open(year: number): Promise<void> {
             setTimeout(destroy);
         };
 
-        dialog.querySelector(`form`)!.onsubmit = async () => {
+        const form = dialog.querySelector(`form`)!;
+
+        form.onkeydown = async (e) => {
+            console.warn("onkeydown:", e.key);
+            if (e.key === "Enter") {
+                form.dispatchEvent(new Event("submit"));
+            }
+        };
+
+        form.onsubmit = async () => {
+            console.warn("onsubmit:");
             year = parseInt(
                 dialog.querySelector<HTMLInputElement>(`input.year`)!.value ||
                     new Date().getFullYear().toString(),

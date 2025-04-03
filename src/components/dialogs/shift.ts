@@ -113,7 +113,16 @@ export function open(data: Shift | null): Promise<Shift | null> {
             setTimeout(destroy);
         };
 
-        dialog.querySelector(`form`)!.onsubmit = (e) => {
+        const form = dialog.querySelector(`form`)!;
+
+        form.onkeydown = async (e) => {
+            console.warn("onkeydown:", e.key);
+            if (e.key === "Enter") {
+                form.dispatchEvent(new Event("submit"));
+            }
+        };
+
+        form.onsubmit = (e) => {
             // Get the data, validate it, and update result
             const newData: Shift = {
                 id: data?.id || new Date().getTime(),

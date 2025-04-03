@@ -67,7 +67,16 @@ export function open(
             setTimeout(destroy);
         };
 
-        dialog.querySelector(`form`)!.onsubmit = () => {
+        const form = dialog.querySelector(`form`)!;
+
+        form.onkeydown = async (e) => {
+            console.warn("onkeydown:", e.key);
+            if (e.key === "Enter") {
+                form.dispatchEvent(new Event("submit"));
+            }
+        };
+
+        form.onsubmit = () => {
             result = {
                 shiftID: parseInt(shiftSelect.value || "0", 10),
                 note: dbNote.value.trim(),
