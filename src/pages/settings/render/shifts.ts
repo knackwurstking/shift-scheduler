@@ -1,6 +1,7 @@
 import { dialogs } from "@components";
 import { html, store } from "@lib";
 import { m } from "@paraglide/messages";
+import { Shift } from "@types";
 import { draggable } from "ui";
 
 const articleHTML = html`
@@ -25,38 +26,6 @@ const articleHTML = html`
         >
             <button class="add-shift">${m.add_shift()}</button>
         </div>
-
-        <template name="table-item">
-            <tr class="item">
-                <td class="name" style="text-align: left;"></td>
-
-                <td
-                    class="short-name"
-                    style="text-align: left; color: inherit"
-                ></td>
-
-                <td class="actions" style="text-align: right;">
-                    <div class="ui-flex-grid-row" style="--justify: flex-end;">
-                        <div class="ui-flex-grid-item" style="--flex: 0;">
-                            <button class="edit" variant="ghost" icon>
-                                <i class="bi bi-pen"></i>
-                            </button>
-                        </div>
-
-                        <div class="ui-flex-grid-item" style="--flex: 0;">
-                            <button
-                                class="delete"
-                                variant="ghost"
-                                color="destructive"
-                                icon
-                            >
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </template>
     </section>
 
     <section class="start-date">
@@ -88,37 +57,13 @@ export function article(): HTMLElement {
     const renderShiftsTableSection = () => {
         const tbody = article.querySelector<HTMLElement>(`tbody`)!;
 
-        // TODO: Do use a component here instead of this template bullshit
-        const template = article.querySelector<HTMLTemplateElement>(
-            `template[name="table-item"]`,
-        )!;
-
         // Reset
         tbody.innerHTML = "";
 
         // Create shift table rows from settings shifts
         store.obj.get("shifts")!.forEach((shift) => {
-            const tableItem = (
-                template.content.cloneNode(true) as HTMLElement
-            ).querySelector<HTMLElement>(`tr.item`)!;
-
-            tableItem.setAttribute("data-json", JSON.stringify(shift));
-            tbody.appendChild(tableItem);
-
-            // Shift Name
-            tableItem.querySelector<HTMLElement>(`.name`)!.innerText =
-                shift.name;
-
-            // Short Name
-            const shortName =
-                tableItem.querySelector<HTMLElement>(`.short-name`)!;
-
-            shortName.style.color = shift.color || "inherit";
-            shortName.innerText = shift.visible ? shift.shortName : "";
-
-            // Edit Button
-            tableItem.querySelector<HTMLElement>(`button.edit`)!.onclick =
-                async () => {
+            const tableItem = createTableItem(shift, {
+                onEdit: async () => {
                     const data = await dialogs.shift.open(shift);
                     if (!data) {
                         return;
@@ -137,11 +82,9 @@ export function article(): HTMLElement {
 
                     // Re-Render
                     renderShiftsTableSection();
-                };
+                },
 
-            // Delete Button
-            tableItem.querySelector<HTMLElement>(`button.delete`)!.onclick =
-                async () => {
+                onDelete: async () => {
                     if (confirm(`Delete shift \"${shift.name}\"?`)) {
                         store.obj.update("shifts", (shifts) => {
                             return shifts.filter((s) => s.id !== shift.id);
@@ -150,7 +93,10 @@ export function article(): HTMLElement {
 
                     // Re-Render
                     renderShiftsTableSection();
-                };
+                },
+            });
+
+            tbody.appendChild(tableItem);
         });
 
         // Enable drag'n'drop for table items
@@ -223,4 +169,57 @@ export function article(): HTMLElement {
     };
 
     return article;
+}
+
+function createTableItem(
+    shift: Shift,
+    options: {
+        onEdit: () => Promise<void> | void;
+        onDelete: () => Promise<void> | void;
+    },
+): HTMLTableRowElement {
+    const tr = document.createElement("tr");
+
+    tr.setAttribute("data-json", JSON.stringify(shift));
+
+    // Shift Name
+    tr.querySelector<HTMLElement>(`.name`)!.innerText = shift.name;
+
+    // Short Name
+    const shortName = tr.querySelector<HTMLElement>(`.short-name`)!;
+
+    shortName.style.color = shift.color || "inherit";
+    shortName.innerText = shift.visible ? shift.shortName : "";
+
+    tr.querySelector<HTMLElement>(`button.edit`)!.onclick = options.onEdit;
+    tr.querySelector<HTMLElement>(`button.delete`)!.onclick = options.onDelete;
+
+    tr.innerHTML = html`
+        <td class="name" style="text-align: left;"></td>
+
+        <td class="short-name" style="text-align: left; color: inherit"></td>
+
+        <td class="actions" style="text-align: right;">
+            <div class="ui-flex-grid-row" style="--justify: flex-end;">
+                <div class="ui-flex-grid-item" style="--flex: 0;">
+                    <button class="edit" variant="ghost" icon>
+                        <i class="bi bi-pen"></i>
+                    </button>
+                </div>
+
+                <div class="ui-flex-grid-item" style="--flex: 0;">
+                    <button
+                        class="delete"
+                        variant="ghost"
+                        color="destructive"
+                        icon
+                    >
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </td>
+    `;
+
+    return tr;
 }
