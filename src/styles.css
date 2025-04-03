@@ -13,3 +13,7 @@ body,
 #routerTarget {
     padding-top: var(--ui-app-bar-height);
 }
+
+.day[disabled] {
+    opacity: 0.2 !important;
+}
