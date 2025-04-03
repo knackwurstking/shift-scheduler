@@ -36,7 +36,11 @@ export async function parseJSON(
 
     await db.deleteAll();
     for (const entry of backupV3.indexedDB.data || []) {
-        db.add(entry).catch(() => db.put(entry));
+        try {
+            await db.add(entry);
+        } catch {
+            await db.put(entry);
+        }
     }
 
     if (!!reRenderCallback) setTimeout(reRenderCallback);

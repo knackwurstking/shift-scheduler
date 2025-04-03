@@ -36,21 +36,27 @@ if (process.env.MODE === "capacitor") {
                     path: result.url,
                     encoding: Encoding.UTF8,
                 })
-                    .then((content) => {
+                    .then(async (content) => {
                         console.debug("content.data:", content.data);
 
                         if (typeof content.data === "string") {
-                            backupUtils.parseJSON(content.data);
+                            await backupUtils.parseJSON(content.data);
+                            SendIntent.finish();
                         } else {
                             const reader = new FileReader();
-                            reader.onload = (e) => {
-                                backupUtils.parseJSON(e.target?.result || null);
+                            reader.onload = async (e) => {
+                                await backupUtils.parseJSON(
+                                    e.target?.result || null,
+                                );
+                                SendIntent.finish();
                             };
                             reader.readAsText(content.data);
                         }
                     })
-                    .then(() => SendIntent.finish())
-                    .catch((err) => alert(err));
+                    .catch((err) => {
+                        alert(err);
+                        SendIntent.finish();
+                    });
             }
         })
         .catch((err) => console.warn(err));
