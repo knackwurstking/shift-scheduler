@@ -76,7 +76,7 @@ if (process.env.MODE === "capacitor") {
         });
 }
 
-if (!process.env.MODE || process.env.MODE === "github") {
+if (!process.env.MODE) {
     console.debug("PWA updater registered");
     const updateSW = registerSW({
         async onNeedRefresh() {

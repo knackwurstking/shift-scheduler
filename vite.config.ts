@@ -37,7 +37,7 @@ const manifest: Partial<ManifestOptions> = {
     display: "standalone",
     scope: ".",
     start_url: "./",
-    publicPath: "/shift-scheduler.github.io",
+    //publicPath: "/shift-scheduler.github.io",
 };
 
 export default defineConfig({
@@ -59,22 +59,29 @@ export default defineConfig({
         }),
     ],
     clearScreen: false,
-    base: process.env.MODE === "github" ? "/shift-scheduler.github.io/" : "/",
+    //base: process.env.MODE === "github" ? "/shift-scheduler.github.io/" : "/",
+    base: "/",
 
     build: {
+        //outDir:
+        //    process.env.MODE === "github"
+        //        ? "../shift-scheduler.github.io/"
+        //        : process.env.MODE === "wails"
+        //          ? "./wails/frontend/dist"
+        //          : process.env.MODE === "capacitor"
+        //            ? "./dist-capacitor"
+        //            : "./dist",
         outDir:
-            process.env.MODE === "github"
-                ? "../shift-scheduler.github.io/"
-                : process.env.MODE === "wails"
-                  ? "./wails/frontend/dist"
-                  : process.env.MODE === "capacitor"
-                    ? "./dist-capacitor"
-                    : "./dist",
+            process.env.MODE === "wails"
+                ? "./wails/frontend/dist"
+                : process.env.MODE === "capacitor"
+                  ? "./dist-capacitor"
+                  : "./dist",
     },
 
     define: {
         /**
-         * Available modes: "capacitor" | "github" | "wails" | ""
+         * Available modes: "capacitor" | "wails" | ""
          */
         "process.env.MODE": JSON.stringify(process.env.MODE),
     },
