@@ -67,12 +67,12 @@ if (process.env.MODE === "capacitor") {
                     .catch((err) => {
                         s.methods.stop();
                         alert(err);
+                        SendIntent.finish();
                     });
             }
         })
         .catch((err) => {
             console.warn(err);
-            SendIntent.finish();
         });
 }
 
