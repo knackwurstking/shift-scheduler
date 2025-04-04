@@ -146,13 +146,11 @@ export function article(): HTMLElement {
         const day = date.getDate().toString().padStart(2, "0");
 
         startDateInput.value = `${date.getFullYear()}-${month}-${day}`;
-        startDateInput.onchange = () => {
-            store.obj.set(
-                "startDate",
-                new Date(startDateInput.value).getTime(),
-            );
-        };
     }
+
+    startDateInput.onchange = () => {
+        store.obj.set("startDate", new Date(startDateInput.value).getTime());
+    };
 
     const editRhythmButton = article.querySelector<HTMLButtonElement>(
         `section.edit-rhythm button`,
