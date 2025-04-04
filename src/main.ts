@@ -46,6 +46,8 @@ if (process.env.MODE === "capacitor") {
 
                         if (typeof content.data === "string") {
                             await backupUtils.parseJSON(content.data);
+
+                            s.methods.stop();
                             alert(m.alert_send_intent_finish());
                             SendIntent.finish();
                         } else {
@@ -54,6 +56,8 @@ if (process.env.MODE === "capacitor") {
                                 await backupUtils.parseJSON(
                                     e.target?.result || null,
                                 );
+
+                                s.methods.stop();
                                 alert(m.alert_send_intent_finish());
                                 SendIntent.finish();
                             };
@@ -61,8 +65,8 @@ if (process.env.MODE === "capacitor") {
                         }
                     })
                     .catch((err) => {
+                        s.methods.stop();
                         alert(err);
-                        SendIntent.finish();
                     });
             }
         })
