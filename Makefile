@@ -14,14 +14,10 @@ check:
 	npx tsc && make test
 
 dev:
-	MODE=github npx vite --host -c vite.config.js
+	MODE= npx vite --host -c vite.config.js
 
 vite-build:
 	npx vite build --minify -c vite.config.js --emptyOutDir
-
-vite-build-github:
-	make check && \
-		MODE=github make vite-build 
 
 vite-build-capacitor:
 	make check && \
@@ -34,7 +30,6 @@ vite-build-wails:
 vite-build-all:
 	make check && \
 		MODE= make vite-build && \
-		MODE=github make vite-build  && \
 		MODE=capacitor make vite-build && \
 		MODE=wails make vite-build
 
