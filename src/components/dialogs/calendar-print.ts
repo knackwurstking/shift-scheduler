@@ -187,6 +187,8 @@ function indexPage(doc: jspdf.jsPDF) {
     let y = 20;
 
     store.obj.get("shifts")!.forEach((shift) => {
+        if (!shift.visible) return;
+
         const shortName = doc.splitTextToSize(shift.shortName, 30);
         const name = doc.splitTextToSize(shift.name, maxWidth - 50);
 
