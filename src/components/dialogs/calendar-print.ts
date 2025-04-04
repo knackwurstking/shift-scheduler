@@ -104,7 +104,8 @@ async function createPDF(options: {
     const doc = new jspdf.jsPDF();
     doc.setFont("Courier");
 
-    // Add pages
+    indexPage(doc);
+
     const months =
         options.month !== null
             ? [options.month]
@@ -177,6 +178,32 @@ async function createPDF(options: {
     }
 
     await exportDoc(doc, options.year, options.month);
+}
+
+function indexPage(doc: jspdf.jsPDF) {
+    const maxWidth = 180;
+    const maxHeight = 280;
+    const spacing = 5;
+    let y = 20;
+
+    store.obj.get("shifts")!.forEach((shift) => {
+        const shortName = doc.splitTextToSize(shift.shortName, 30);
+        const name = doc.splitTextToSize(shift.name, maxWidth - 50);
+
+        doc.text(shortName, 20, y, { maxWidth: 50 });
+        doc.text(name, 50, y, { maxWidth: maxWidth - 50 });
+
+        y += Math.max(
+            doc.getTextDimensions(shift.shortName).h + spacing,
+            doc.getTextDimensions(shift.name).h + spacing,
+        );
+        if (y >= maxHeight) {
+            doc.addPage();
+            y = 20;
+        }
+    });
+
+    doc.addPage();
 }
 
 function getTableHeader(): string[] {
