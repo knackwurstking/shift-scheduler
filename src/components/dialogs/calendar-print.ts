@@ -27,6 +27,13 @@ function create(year: number): CreateDialog {
                 />
             </label>
 
+            <div class="ui-flex justify-between align-center">
+                <label for="enable-index-page">
+                    ${m.checkbox_enable_index_page()}
+                </label>
+                <input id="enable-index-page" type="checkbox" checked />
+            </div>
+
             <div class="ui-flex-grid-row" style="--justify: flex-end">
                 <button class="cancel" color="secondary">${m.cancel()}</button>
                 <input type="submit" value="${m.submit()}" />
@@ -69,13 +76,17 @@ export function open(year: number): Promise<void> {
             s.methods.start();
 
             try {
-                year = parseInt(
-                    dialog.querySelector<HTMLInputElement>(`input.year`)!
-                        .value || new Date().getFullYear().toString(),
-                    10,
-                );
+                await createPDF({
+                    year: parseInt(
+                        dialog.querySelector<HTMLInputElement>(`input.year`)!
+                            .value || new Date().getFullYear().toString(),
+                        10,
+                    ),
 
-                await createPDF({ year: year, month: null });
+                    enableIndexPage: dialog.querySelector<HTMLInputElement>(
+                        `input[type="checkbox"]#enable-index-page`,
+                    )!.checked,
+                });
             } finally {
                 s.methods.stop();
             }
@@ -87,14 +98,10 @@ export function open(year: number): Promise<void> {
 
 async function createPDF(options: {
     year: number | null;
-    month: number | null;
+    enableIndexPage: boolean;
 }) {
     // Check params for year and month
     const today = new Date();
-
-    if (options.month === null && options.year === null) {
-        options.month = today.getMonth();
-    }
 
     if (options.year === null) {
         options.year = today.getFullYear();
@@ -104,15 +111,10 @@ async function createPDF(options: {
     const doc = new jspdf.jsPDF();
     doc.setFont("Courier");
 
-    indexPage(doc);
-
-    const months =
-        options.month !== null
-            ? [options.month]
-            : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    if (options.enableIndexPage) indexPage(doc);
 
     let pageIndex = 0;
-    for (const month of months) {
+    for (const month of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
         if (pageIndex === 2) {
             doc.addPage();
             pageIndex = 1;
@@ -177,7 +179,7 @@ async function createPDF(options: {
         });
     }
 
-    await exportDoc(doc, options.year, options.month);
+    await exportDoc(doc, options.year);
 }
 
 function indexPage(doc: jspdf.jsPDF) {
@@ -238,15 +240,8 @@ function getTableBodyEntries(month: number, entries: DBEntry[]): string[] {
     });
 }
 
-async function exportDoc(
-    doc: jspdf.jsPDF,
-    year: number,
-    month: number | null = null,
-) {
+async function exportDoc(doc: jspdf.jsPDF, year: number) {
     let fileName = `${year}.pdf`;
-    if (month !== null) {
-        fileName = `${year}-${month.toString().padStart(2, "0")}.pdf`;
-    }
 
     if (process.env.MODE === "capacitor") {
         await Share.share({

@@ -55,5 +55,7 @@
     "alert_send_intent_finish": "Application backup has been loaded. If the application is currently running, please restart it.",
 
     "input_shift_name": "Name (ex.: Night)",
-    "input_shift_short_name": "Short (ex.: N)"
+    "input_shift_short_name": "Short (ex.: N)",
+
+    "checkbox_enable_index_page": "Include a start page with a list of shifts."
 }

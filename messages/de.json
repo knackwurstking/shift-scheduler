@@ -55,5 +55,7 @@
     "alert_send_intent_finish": "Das Backup wurde geladen. Falls die Anwendung aktuell ausgeführt wird, bitte neu starten.",
 
     "input_shift_name": "Name (ex.: Nacht)",
-    "input_shift_short_name": "Kürzel (ex.: N)"
+    "input_shift_short_name": "Kürzel (ex.: N)",
+
+    "checkbox_enable_index_page": "Startseite mit einer Liste der Schichten hinzufügen."
 }
