@@ -30,6 +30,7 @@ function create(): CreateDialog {
                         <input
                             class="short-name"
                             type="text"
+                            maxlength="4"
                             style="margin-left: var(--ui-spacing); max-width: 6ch"
                         />
                     </label>
