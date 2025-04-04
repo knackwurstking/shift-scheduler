@@ -1,10 +1,3 @@
-import { html } from "@lib";
-
-const innerHTML = html`
-    <div class="name" style="text-wrap: nowrap"></div>
-    <div class="short-name"></div>
-`;
-
 export function create(): Create<
     HTMLElement,
     {
