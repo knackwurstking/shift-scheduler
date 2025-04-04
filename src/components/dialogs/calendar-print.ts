@@ -7,6 +7,8 @@ import { calendarUtils, constants, db, html, store } from "@lib";
 import { m } from "@paraglide/messages";
 import { DBEntry } from "@types";
 
+import * as spinner from "../spinner";
+
 function create(year: number): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
@@ -57,21 +59,26 @@ export function open(year: number): Promise<void> {
         const form = dialog.querySelector(`form`)!;
 
         form.onkeydown = async (e) => {
-            console.warn("onkeydown:", e.key);
             if (e.key === "Enter") {
                 form.dispatchEvent(new Event("submit"));
             }
         };
 
         form.onsubmit = async () => {
-            console.warn("onsubmit:");
-            year = parseInt(
-                dialog.querySelector<HTMLInputElement>(`input.year`)!.value ||
-                    new Date().getFullYear().toString(),
-                10,
-            );
+            const s = spinner.create();
+            s.methods.start();
 
-            await createPDF({ year: year, month: null });
+            try {
+                year = parseInt(
+                    dialog.querySelector<HTMLInputElement>(`input.year`)!
+                        .value || new Date().getFullYear().toString(),
+                    10,
+                );
+
+                await createPDF({ year: year, month: null });
+            } finally {
+                s.methods.stop();
+            }
         };
 
         dialog.showModal();
