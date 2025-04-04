@@ -10,6 +10,7 @@ import { Encoding, Filesystem } from "@capacitor/filesystem";
 import { backupUtils, db } from "@lib";
 import * as pages from "@pages";
 import { m } from "@paraglide/messages";
+import { spinner } from "@components";
 
 console.debug("process.env.MODE:", process.env.MODE);
 
@@ -31,6 +32,9 @@ if (process.env.MODE === "capacitor") {
         .then((result) => {
             console.debug("result.url:", result.url);
             console.debug("result.type:", result.type);
+
+            const s = spinner.create();
+            s.methods.start();
 
             if (result.url) {
                 Filesystem.readFile({
@@ -62,7 +66,10 @@ if (process.env.MODE === "capacitor") {
                     });
             }
         })
-        .catch((err) => console.warn(err));
+        .catch((err) => {
+            console.warn(err);
+            SendIntent.finish();
+        });
 }
 
 if (!process.env.MODE || process.env.MODE === "github") {
