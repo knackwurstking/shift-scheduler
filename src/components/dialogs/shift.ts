@@ -116,7 +116,6 @@ export function open(data: Shift | null): Promise<Shift | null> {
         const form = dialog.querySelector(`form`)!;
 
         form.onkeydown = async (e) => {
-            console.warn("onkeydown:", e.key);
             if (e.key === "Enter") {
                 form.dispatchEvent(new Event("submit"));
             }
