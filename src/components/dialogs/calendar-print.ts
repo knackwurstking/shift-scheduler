@@ -159,7 +159,7 @@ async function createPDF(options: {
                 valign: "middle",
                 halign: "center",
                 font: "Courier",
-                fontStyle: "bold",
+                fontStyle: "normal",
                 fontSize: 12,
             },
             headStyles: {
@@ -195,11 +195,7 @@ function getTableBodyEntries(month: number, entries: DBEntry[]): string[] {
         const name = entry.shift?.visible ? entry.shift?.shortName || "" : "";
 
         if (entry.month === month) {
-            if (!name) {
-                return `\n${entry.date}\n`;
-            }
-
-            return `${entry.date}\n--\n${name}`;
+            return `${entry.date}\n--\n${name || ""}`;
         }
 
         return "\n\n";
