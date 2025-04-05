@@ -1,3 +1,5 @@
+import * as ui from "ui";
+
 import { html } from "@lib";
 import { m } from "@paraglide/messages";
 
@@ -6,7 +8,16 @@ export function create(): HTMLElement {
 
     article.className = "db-browser";
 
-    article.innerHTML = html`
+    article.innerHTML = getHTML();
+
+    article.querySelector<HTMLButtonElement>(`button.browse`)!.onclick =
+        gotoBrowserPage;
+
+    return article;
+}
+
+function getHTML(): string {
+    return html`
         <h4>${m.indexeddb()}</h4>
 
         <section>
@@ -19,11 +30,8 @@ export function create(): HTMLElement {
             </label>
         </section>
     `;
+}
 
-    article.querySelector<HTMLButtonElement>(`button.browse`)!.onclick =
-        async () => {
-            // TODO: Goto DB Browser page via hash router
-        };
-
-    return article;
+async function gotoBrowserPage() {
+    ui.router.hash.goTo(null, "dbbrowser");
 }
