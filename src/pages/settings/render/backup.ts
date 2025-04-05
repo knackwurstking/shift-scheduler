@@ -5,28 +5,28 @@ import { backupUtils, db, html, store } from "@lib";
 import { m } from "@paraglide/messages";
 import { BackupV3 } from "@types";
 
-const articleHTML = html`
-    <h4>${m.backup()}</h4>
-
-    <section class="json ui-flex justify-between align-center">
-        <label style="padding: var(--ui-spacing)"> JSON </label>
-
-        <span
-            class="ui-flex gap"
-            style="--justify: flex-end; padding: var(--ui-spacing)"
-        >
-            <button class="import" color="secondary">${m.import()}</button>
-            <button class="export" color="secondary">${m.export()}</button>
-        </span>
-    </section>
-`;
-
-export function article(
+export function create(
     reRenderCallback: () => Promise<void> | void,
 ): HTMLElement {
     const article = document.createElement("article");
+
     article.className = "backup";
-    article.innerHTML = articleHTML;
+
+    article.innerHTML = html`
+        <h4>${m.backup()}</h4>
+
+        <section class="json ui-flex justify-between align-center">
+            <label style="padding: var(--ui-spacing)"> JSON </label>
+
+            <span
+                class="ui-flex gap"
+                style="--justify: flex-end; padding: var(--ui-spacing)"
+            >
+                <button class="import" color="secondary">${m.import()}</button>
+                <button class="export" color="secondary">${m.export()}</button>
+            </span>
+        </section>
+    `;
 
     // JSON
     const importButton = article.querySelector<HTMLButtonElement>(

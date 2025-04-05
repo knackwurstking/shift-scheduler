@@ -20,16 +20,16 @@ export async function onMount() {
 
     setupAppBarItems();
 
-    routerTarget.appendChild(render.misc.article());
+    routerTarget.appendChild(render.misc.create());
     routerTarget.appendChild(document.createElement("br"));
 
-    routerTarget.appendChild(render.shifts.article());
+    routerTarget.appendChild(render.shifts.create());
     routerTarget.appendChild(document.createElement("br"));
 
-    routerTarget.appendChild(render.backup.article(reload));
+    routerTarget.appendChild(render.backup.create(reload));
     routerTarget.appendChild(document.createElement("br"));
 
-    routerTarget.appendChild(render.dbBrowser.article());
+    routerTarget.appendChild(render.dbBrowser.create());
 }
 
 export async function onDestroy() {

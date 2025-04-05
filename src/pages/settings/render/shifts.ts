@@ -4,55 +4,55 @@ import { m } from "@paraglide/messages";
 import { Shift } from "@types";
 import { draggable } from "ui";
 
-const articleHTML = html`
-    <h4>${m.shift_settings()}</h4>
-
-    <section class="shifts-table ui-flex-grid">
-        <table class="ui-flex-grid-item">
-            <thead>
-                <tr>
-                    <th style="text-align: left;">${m.name()}</th>
-                    <th style="text-align: left;">${m.short()}</th>
-                    <th style="text-align: right;"></th>
-                </tr>
-            </thead>
-
-            <tbody></tbody>
-        </table>
-
-        <div
-            class="ui-flex-grid-item ui-flex justify-end"
-            style="padding: var(--ui-spacing); width: 100%;"
-        >
-            <button class="add-shift">${m.add_shift()}</button>
-        </div>
-    </section>
-
-    <section class="start-date">
-        <label
-            class="ui-flex justify-between align-center"
-            style="padding: var(--ui-spacing);"
-        >
-            ${m.start_date()}
-            <input type="date" />
-        </label>
-    </section>
-
-    <section class="edit-rhythm">
-        <label
-            class="ui-flex justify-between align-center"
-            style="padding: var(--ui-spacing)"
-        >
-            ${m.rhythm()}
-            <button>${m.edit()}</button>
-        </label>
-    </section>
-`;
-
-export function article(): HTMLElement {
+export function create(): HTMLElement {
     const article = document.createElement("article");
+
     article.className = "shifts";
-    article.innerHTML = articleHTML;
+
+    article.innerHTML = html`
+        <h4>${m.shift_settings()}</h4>
+
+        <section class="shifts-table ui-flex-grid">
+            <table class="ui-flex-grid-item">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">${m.name()}</th>
+                        <th style="text-align: left;">${m.short()}</th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                </thead>
+
+                <tbody></tbody>
+            </table>
+
+            <div
+                class="ui-flex-grid-item ui-flex justify-end"
+                style="padding: var(--ui-spacing); width: 100%;"
+            >
+                <button class="add-shift">${m.add_shift()}</button>
+            </div>
+        </section>
+
+        <section class="start-date">
+            <label
+                class="ui-flex justify-between align-center"
+                style="padding: var(--ui-spacing);"
+            >
+                ${m.start_date()}
+                <input type="date" />
+            </label>
+        </section>
+
+        <section class="edit-rhythm">
+            <label
+                class="ui-flex justify-between align-center"
+                style="padding: var(--ui-spacing)"
+            >
+                ${m.rhythm()}
+                <button>${m.edit()}</button>
+            </label>
+        </section>
+    `;
 
     const renderShiftsTableSection = () => {
         const tbody = article.querySelector<HTMLElement>(`tbody`)!;
