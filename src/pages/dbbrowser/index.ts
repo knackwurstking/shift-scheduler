@@ -1,14 +1,26 @@
-import { html } from "@lib";
+// TODO: Continue here...
+import * as ui from "ui";
 
-// TODO: Continue here
+import { appBarUtils, html } from "@lib";
+
+let appBarTitleBackup = "";
+let cleanup: ui.CleanUpFunction[] = [];
+
 export async function onMount() {
+    appBarTitleBackup = appBarUtils.getTitle();
+    appBarUtils.setTitle("DB-Browser");
+
     document.querySelector("#routerTarget")!.innerHTML = getHTML();
+
+    // ...
 }
 
 export async function onDestroy() {
-    // TODO: ...
+    appBarUtils.setTitle(appBarTitleBackup);
+    cleanup.forEach((fn) => fn());
+    cleanup = [];
 }
 
 function getHTML(): string {
-    return html``;
+    return html``; // ...
 }
