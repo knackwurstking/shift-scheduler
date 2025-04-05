@@ -102,7 +102,7 @@ db.open(() => {
         },
 
         dbbrowser: {
-            title: "Shift Scheduler | DB Browser",
+            title: "Shift Scheduler | DB-Browser",
             onMount: () => pages.dbbrowser.onMount(),
             onDestroy: () => pages.dbbrowser.onDestroy(),
         },
