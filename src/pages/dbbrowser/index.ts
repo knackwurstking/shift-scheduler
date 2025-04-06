@@ -31,7 +31,7 @@ async function getHTML(): Promise<string> {
 
         let note: string = "";
         if (entry.note) {
-            note = html`<pre class="ui-flex-grid-item">${entry.note}</pre>`;
+            note = html`<p class="ui-flex-grid-item">${entry.note}</p>`;
         }
 
         let borderBottom = "none";
@@ -52,7 +52,11 @@ async function getHTML(): Promise<string> {
 
                     <span
                         class="ui-flex-grid-item"
-                        style="--flex: 0; white-space: nowrap"
+                        style="
+                            --flex: 0;
+                            white-space: nowrap;
+                            color: ${entry.shift?.color || "inherit"};
+                        "
                     >
                         ${entry.shift?.name || ""}
                     </span>
