@@ -26,16 +26,18 @@ async function getHTML(): Promise<string> {
     const dbEntries = await db.getAll();
     const lastIndex = dbEntries.length - 1;
 
-    const entryItems: string[] = dbEntries.map((entry, i) => {
-        const m = (entry.month + 1).toString().padStart(2, "0");
-        const d = entry.date.toString().padStart(2, "0");
+    let m: string, d: string, note: string, borderBottom: string;
 
-        let note: string = "";
+    const entryItems: string[] = dbEntries.map((entry, i) => {
+        m = (entry.month + 1).toString().padStart(2, "0");
+        d = entry.date.toString().padStart(2, "0");
+
+        note = "";
         if (entry.note) {
             note = html`<p class="ui-flex-grid-item">${entry.note}</p>`;
         }
 
-        let borderBottom = "none";
+        borderBottom = "none";
         if (i !== lastIndex) {
             borderBottom =
                 "var(--ui-border-width) var(--ui-border-style) var(--ui-border-color)";
