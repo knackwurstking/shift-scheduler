@@ -10,8 +10,6 @@ export async function onMount() {
     appBarUtils.setTitle("DB-Browser");
 
     document.querySelector("#routerTarget")!.innerHTML = await getHTML();
-
-    // ...
 }
 
 export async function onDestroy() {
@@ -21,30 +19,42 @@ export async function onDestroy() {
 }
 
 async function getHTML(): Promise<string> {
-    // TODO: Generate a list with all indexed db entries for each day and a
-    //       search bar to the bottom (or top?)
-    const entryItems: string[] = (await db.getAll()).map((entry) => {
+    const dbEntries = await db.getAll();
+    const lastIndex = dbEntries.length - 1;
+
+    const entryItems: string[] = dbEntries.map((entry, i) => {
+        const m = (entry.month + 1).toString().padStart(2, "0");
+        const d = entry.date.toString().padStart(2, "0");
+
+        let note: string = "";
+        if (entry.note) {
+            note = html`<pre class="ui-flex-grid-item">${entry.note}</pre>`;
+        }
+
+        let borderBottom = "none";
+        if (i !== lastIndex) {
+            borderBottom =
+                "var(--ui-border-width) var(--ui-border-style) var(--ui-border-color)";
+        }
+
         return html`
-            <div class="ui-flex-grid ui-debug">
+            <div class="ui-flex-grid" style="border-bottom: ${borderBottom};">
                 <span class="ui-flex-grid-row">
-                    <span class="ui-flex-grid-item" style="text-align: center;">
-                        ${entry.year}
+                    <span class="ui-flex-grid-item" style="--flex: 0;">
+                        ${entry.year}/${m}/${d}
                     </span>
 
-                    <span class="ui-flex-grid-item" style="text-align: center;">
-                        ${(entry.month + 1).toString().padStart(2, "0")}
-                    </span>
-
-                    <span class="ui-flex-grid-item" style="text-align: center;">
-                        ${entry.date.toString().padStart(2, "0")}
+                    <span
+                        class="ui-flex-grid-item"
+                        style="--flex: 0; white-space: nowrap"
+                    >
+                        ${entry.shift?.name || ""}
                     </span>
                 </span>
 
-                <!-- TODO: The shift (short name) if changed (not null) -->
-
-                <!-- TODO: Note if any -->
+                ${note}
             </div>
-        `; // TODO: ...
+        `; // TODO: Add a delete button for each entry(?)
     });
 
     return html`
