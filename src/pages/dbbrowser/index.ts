@@ -24,6 +24,7 @@ async function getHTML(): Promise<string> {
     const dbEntries = await db.getAll();
     const lastIndex = dbEntries.length - 1;
 
+    // TODO: Add a delete button for each entry(?)
     const entryItems: string[] = dbEntries.map((entry, i) => {
         const m = (entry.month + 1).toString().padStart(2, "0");
         const d = entry.date.toString().padStart(2, "0");
@@ -56,9 +57,10 @@ async function getHTML(): Promise<string> {
 
                 ${note}
             </div>
-        `; // TODO: Add a delete button for each entry(?)
+        `;
     });
 
+    // TODO: Add filter bar to the bottom
     return html`
         <ul>
             ${entryItems.join("")}
