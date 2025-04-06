@@ -9,6 +9,8 @@ export async function onMount() {
     appBarTitleBackup = appBarUtils.getTitle();
     appBarUtils.setTitle("DB-Browser");
 
+    // TODO: Maybe enable a global delete button where all showd entries can be deleted
+
     document.querySelector("#routerTarget")!.innerHTML = await getHTML();
 }
 
