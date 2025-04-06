@@ -9,7 +9,8 @@ export async function onMount() {
     appBarTitleBackup = appBarUtils.getTitle();
     appBarUtils.setTitle("DB-Browser");
 
-    // TODO: Maybe enable a global delete button where all showd entries can be deleted
+    // TODO: Enable delete all selected items button (app-bar)
+    // TODO: Enable select all button (app-bar)
 
     document.querySelector("#routerTarget")!.innerHTML = await getHTML();
 }
@@ -24,7 +25,6 @@ async function getHTML(): Promise<string> {
     const dbEntries = await db.getAll();
     const lastIndex = dbEntries.length - 1;
 
-    // TODO: Add a delete button for each entry(?)
     const entryItems: string[] = dbEntries.map((entry, i) => {
         const m = (entry.month + 1).toString().padStart(2, "0");
         const d = entry.date.toString().padStart(2, "0");
@@ -41,7 +41,10 @@ async function getHTML(): Promise<string> {
         }
 
         return html`
-            <div class="ui-flex-grid" style="border-bottom: ${borderBottom};">
+            <div
+                class="db-entry-item ui-flex-grid"
+                style="border-bottom: ${borderBottom};"
+            >
                 <span class="ui-flex-grid-row">
                     <span class="ui-flex-grid-item" style="--flex: 0;">
                         ${entry.year}/${m}/${d}
@@ -59,6 +62,9 @@ async function getHTML(): Promise<string> {
             </div>
         `;
     });
+
+    // TODO: Add click listener for touch hold => select item and enter the
+    //       fast selection mode until nothing is selected anymore
 
     // TODO: Add filter bar to the bottom
     return html`
