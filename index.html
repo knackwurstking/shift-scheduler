@@ -1,53 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="auto">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=contain"
+        />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=contain">
-  <link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
-  <link rel="icon" href="/assets/icons/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180x180.png">
-  <link rel="stylesheet" href="/node_modules/ui/dist/css/main.css">
-  <title>Shift Scheduler</title>
-  <style>
-    .ui-app-bar .left button.date-picker {
-      display: none;
-      margin: 0.25rem;
-      height: calc(100% - 0.5rem);
-      text-wrap: nowrap;
-      white-space: nowrap;
-    }
-  </style>
-</head>
+        <link rel="icon" href="/assets/icons/favicon.ico" sizes="any" />
+        <link rel="icon" href="/assets/icons/icon.svg" type="image/svg+xml" />
+        <link
+            rel="apple-touch-icon"
+            href="/assets/icons/apple-touch-icon-180x180.png"
+        />
+        <link rel="stylesheet" href="/node_modules/ui/dist/css/main.css" />
 
-<body class="ui-container">
-  <div id="routerTarget" class="ui-auto-scroll ui-hide-scrollbar"></div>
-  <div class="ui-app-bar" position="top">
-    <div class="left">
-      <button class="date-picker" variant="full"></button>
-      <button class="back" style="display: none" variant="ghost" color="primary" icon onclick="history.back()">
-        <div class="bi bi-chevron-left"></div>
-      </button>
-    </div>
-    <div class="center">
-      <h4 class="title ui-ellipsis">Shift Scheduler</h4>
-    </div>
-    <div class="right">
-      <button class="edit" style="display: none" variant="ghost" icon>
-        <i class="bi bi-pen"></i>
-      </button>
-      <button class="today" style="display: none" variant="ghost" icon>
-        <i class="bi bi-calendar-event"></i>
-      </button>
-      <button class="printer" style="display: none" variant="ghost" icon>
-        <i class="bi bi-printer"></i>
-      </button>
-      <button class="settings" style="display: none" variant="ghost" icon onclick="location.hash = '#settings'">
-        <i class="bi bi-gear"></i>
-      </button>
-    </div>
-  </div>
-  <script type="module" src="/src/main.ts"></script>
-</body>
+        <title>Shift Scheduler</title>
 
+        <style>
+            .ui-app-bar .left button.date-picker {
+                display: none;
+                margin: 0.25rem;
+                height: calc(100% - 0.5rem);
+                text-wrap: nowrap;
+                white-space: nowrap;
+            }
+        </style>
+    </head>
+
+    <body class="ui-container">
+        <div id="routerTarget" class="ui-auto-scroll ui-hide-scrollbar"></div>
+
+        <div class="ui-app-bar" position="top">
+            <div class="left">
+                <button class="date-picker" variant="full"></button>
+
+                <button
+                    class="back"
+                    style="display: none"
+                    variant="ghost"
+                    color="primary"
+                    icon
+                    onclick="history.back()"
+                >
+                    <div class="bi bi-chevron-left"></div>
+                </button>
+            </div>
+
+            <div class="center">
+                <h4 class="title ui-ellipsis">Shift Scheduler</h4>
+            </div>
+
+            <div class="right">
+                <button class="edit" style="display: none" variant="ghost" icon>
+                    <i class="bi bi-pen"></i>
+                </button>
+
+                <button
+                    class="today"
+                    style="display: none"
+                    variant="ghost"
+                    icon
+                >
+                    <i class="bi bi-calendar-event"></i>
+                </button>
+
+                <button
+                    class="printer"
+                    style="display: none"
+                    variant="ghost"
+                    icon
+                >
+                    <i class="bi bi-printer"></i>
+                </button>
+
+                <button
+                    class="settings"
+                    style="display: none"
+                    variant="ghost"
+                    icon
+                    onclick="location.hash = '#settings'"
+                >
+                    <i class="bi bi-gear"></i>
+                </button>
+            </div>
+        </div>
+
+        <script type="module" src="/src/main.ts"></script>
+    </body>
 </html>
