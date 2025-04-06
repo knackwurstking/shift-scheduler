@@ -9,8 +9,9 @@ export async function onMount() {
     appBarTitleBackup = appBarUtils.getTitle();
     appBarUtils.setTitle("DB-Browser");
 
-    // TODO: Enable delete all selected items button (app-bar)
+    // TODO: Enable the back button (app-bar)
     // TODO: Enable select all button (app-bar)
+    // TODO: Enable delete button (app-bar)
 
     document.querySelector("#routerTarget")!.innerHTML = await getHTML();
 }
