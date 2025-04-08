@@ -14,7 +14,26 @@ import { spinner } from "@components";
 
 console.debug("process.env.MODE:", process.env.MODE);
 
-if (process.env.MODE === "capacitor") {
+if (!process.env.MODE) {
+    console.debug("PWA updater registered");
+    const updateSW = registerSW({
+        async onNeedRefresh() {
+            if (confirm(`Update verfügbar. Zum Aktualisieren bestätigen.`)) {
+                await updateSW();
+            }
+        },
+    });
+}
+
+db.open(() => {
+    if (process.env.MODE === "capacitor") {
+        initCapacitor();
+    }
+
+    initRouter();
+});
+
+function initCapacitor() {
     App.addListener("backButton", ({ canGoBack }) => {
         if (!!document.querySelector(`dialog[open]`)) {
             return;
@@ -76,18 +95,7 @@ if (process.env.MODE === "capacitor") {
         });
 }
 
-if (!process.env.MODE) {
-    console.debug("PWA updater registered");
-    const updateSW = registerSW({
-        async onNeedRefresh() {
-            if (confirm(`Update verfügbar. Zum Aktualisieren bestätigen.`)) {
-                await updateSW();
-            }
-        },
-    });
-}
-
-db.open(() => {
+function initRouter() {
     ui.router.hash.init({
         "/": {
             title: "Shift Scheduler",
@@ -107,4 +115,4 @@ db.open(() => {
             onDestroy: () => pages.dbbrowser.onDestroy(),
         },
     });
-});
+}
