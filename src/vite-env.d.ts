@@ -2,7 +2,7 @@
 /// <reference types="vite-plugin-pwa/client" />
 namespace NodeJS {
     interface ProcessEnv {
-        MODE: "capacitor" | "wails" | "";
+        MODE: "capacitor" | "";
     }
 }
 

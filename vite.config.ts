@@ -66,22 +66,16 @@ export default defineConfig({
         //outDir:
         //    process.env.MODE === "github"
         //        ? "../shift-scheduler.github.io/"
-        //        : process.env.MODE === "wails"
-        //          ? "./wails/frontend/dist"
-        //          : process.env.MODE === "capacitor"
-        //            ? "./dist-capacitor"
-        //            : "./dist",
+        //        : process.env.MODE === "capacitor"
+        //          ? "./dist-capacitor"
+        //          : "./dist",
         outDir:
-            process.env.MODE === "wails"
-                ? "./wails/frontend/dist"
-                : process.env.MODE === "capacitor"
-                  ? "./dist-capacitor"
-                  : "./dist",
+            process.env.MODE === "capacitor" ? "./dist-capacitor" : "./dist",
     },
 
     define: {
         /**
-         * Available modes: "capacitor" | "wails" | ""
+         * Available modes: "capacitor" | ""
          */
         "process.env.MODE": JSON.stringify(process.env.MODE),
     },
