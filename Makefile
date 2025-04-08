@@ -25,7 +25,7 @@ vite-build-capacitor:
 
 vite-build-wails:
 	make check && \
-		MODE=wails make vite-build 
+		MODE=wails make vite-build
 
 vite-build-all:
 	make check && \
@@ -34,10 +34,10 @@ vite-build-all:
 		MODE=wails make vite-build
 
 wails-build:
-	cd wails && wails build
+	cd wails && wails build -debug
 
 wails-build-nsis:
-	cd wails && wails build -nsis
+	cd wails && wails build -debug -nsis
 
 android-sync:
 	npx cap sync android
