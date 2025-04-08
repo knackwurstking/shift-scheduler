@@ -104,11 +104,21 @@ export function create(
             });
 
             try {
-                await navigator.share({
+                const shareData = {
                     title: `Shift Scheduler ${m.backup()}`,
-                    files: [new File([blob], fileName, { type: "plain/text" })],
-                });
-            } catch {
+                    files: [new File([blob], fileName, { type: blob.type })],
+                };
+
+                if (!navigator.canShare(shareData)) {
+                    throw new Error(
+                        "Cannot share data here... Fallback to download!",
+                    );
+                }
+
+                await navigator.share(shareData);
+            } catch (err) {
+                console.error(err);
+
                 const anchor = document.createElement("a");
                 anchor.setAttribute("href", window.URL.createObjectURL(blob));
                 anchor.setAttribute("download", fileName);
