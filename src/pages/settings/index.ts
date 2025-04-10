@@ -6,7 +6,6 @@ import { m } from "@paraglide/messages";
 import * as render from "./render";
 
 let appBarTitleBackup = "";
-let appBarBackButtonBackup: any = null;
 
 let cleanup: ui.CleanUpFunction[] = [];
 
@@ -39,10 +38,12 @@ export async function onDestroy() {
 }
 
 function setupAppBarItems() {
-    appBarUtils.enable("back").onclick = () => ui.router.hash.goTo(null, "");
+    const back = appBarUtils.enable("back");
+    const backupBackButtonCB = back.onclick;
+    back.onclick = () => ui.router.hash.goTo(null, "");
 
     cleanup.push(() => {
-        appBarUtils.disable("back").onclick = appBarBackButtonBackup;
+        appBarUtils.disable("back").onclick = backupBackButtonCB;
     });
 }
 
