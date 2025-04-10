@@ -39,18 +39,10 @@ export async function onDestroy() {
 }
 
 function setupAppBarItems() {
-    const back = document.querySelector<HTMLButtonElement>(
-        `.ui-app-bar .left .back`,
-    )!;
-
-    back.style.display = "inline-flex";
-
-    appBarBackButtonBackup = back.onclick;
-    back.onclick = () => ui.router.hash.goTo(null, "");
+    appBarUtils.enable("back").onclick = () => ui.router.hash.goTo(null, "");
 
     cleanup.push(() => {
-        back.style.display = "none";
-        back.onclick = appBarBackButtonBackup;
+        appBarUtils.disable("back").onclick = appBarBackButtonBackup;
     });
 }
 
