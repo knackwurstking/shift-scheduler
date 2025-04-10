@@ -3,7 +3,8 @@ export type AppBarItems =
     | "today"
     | "edit"
     | "printer"
-    | "settings";
+    | "settings"
+    | "back";
 
 export function enable(item: AppBarItems): HTMLElement {
     const el = document.querySelector<HTMLElement>(`.ui-app-bar .${item}`)!;
