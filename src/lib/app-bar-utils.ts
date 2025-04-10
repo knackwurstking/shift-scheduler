@@ -1,21 +1,40 @@
 export type AppBarItems =
+    | "back"
     | "date-picker"
+    | "uncheck"
+    | "check"
+    | "delete"
     | "today"
     | "edit"
     | "printer"
-    | "settings"
-    | "back";
+    | "settings";
 
-export function enable(item: AppBarItems): HTMLElement {
-    const el = document.querySelector<HTMLElement>(`.ui-app-bar .${item}`)!;
+export function get(item: AppBarItems): HTMLElement {
+    return document.querySelector<HTMLElement>(`.ui-app-bar .${item}`)!;
+}
+
+export function enable(item: AppBarItems | HTMLElement): HTMLElement {
+    let el: HTMLElement;
+
+    if (item instanceof Element) {
+        el = item;
+    } else {
+        el = document.querySelector<HTMLElement>(`.ui-app-bar .${item}`)!;
+    }
 
     el.style.display = "inline-flex";
 
     return el;
 }
 
-export function disable(item: AppBarItems) {
-    const el = document.querySelector<HTMLElement>(`.ui-app-bar .${item}`)!;
+export function disable(item: AppBarItems | HTMLElement): HTMLElement {
+    let el: HTMLElement;
+
+    if (item instanceof Element) {
+        el = item;
+    } else {
+        el = document.querySelector<HTMLElement>(`.ui-app-bar .${item}`)!;
+    }
 
     el.style.display = "none";
 

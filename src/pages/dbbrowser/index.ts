@@ -3,7 +3,6 @@ import * as ui from "ui";
 import { appBarUtils, db, html } from "@lib";
 
 let appBarTitleBackup = "";
-let appBarBackButtonBackup: any = null;
 let cleanup: ui.CleanUpFunction[] = [];
 
 export async function onMount() {
@@ -12,7 +11,9 @@ export async function onMount() {
 
     setupAppBarButtons();
 
-    document.querySelector("#routerTarget")!.innerHTML = await getHTML();
+    const target = document.querySelector<HTMLElement>("#routerTarget")!;
+    target.innerHTML = await getHTML();
+    setHTMLHandlers(target);
 }
 
 export async function onDestroy() {
@@ -69,9 +70,6 @@ async function getHTML(): Promise<string> {
         `;
     });
 
-    // TODO: Add click listener for touch hold => select item and enter the
-    //       fast selection mode until nothing is selected anymore
-
     // TODO: Add filter bar to the bottom
     return html`
         <ul>
@@ -80,18 +78,51 @@ async function getHTML(): Promise<string> {
     `;
 }
 
+async function setHTMLHandlers(el: HTMLElement) {
+    const ul = el.querySelector("ul")!;
+
+    ul.onpointerdown = () => {
+        // TODO: Add click listener for touch hold => select item and enter the
+        //       fast selection mode until nothing is selected anymore.
+        //       Allow select/deselect all and delete
+    };
+
+    ul.onpointerleave =
+        ul.onpointercancel =
+        ul.onpointerup =
+            () => {
+                // TODO: Cancel the pointerdown event handler here
+            };
+
+    // TODO: Handler the filter bar
+}
+
 function setupAppBarButtons() {
     // Enable the back button (app-bar)
-    appBarUtils.enable("back");
+    const backButton = appBarUtils.enable("back");
+    const backupBackButtonCB = backButton.onclick;
+    backButton.onclick = () => ui.router.hash.goTo(null, "settings");
 
-    const back = appBarUtils.enable("back");
-    const backupBackButtonCB = back.onclick;
-    back.onclick = () => ui.router.hash.goTo(null, "settings");
+    // Enable select all button (app-bar)
+    const checkButton = appBarUtils.get("check");
+    checkButton.onclick = () => {
+        appBarUtils.disable("uncheck");
+    };
 
-    // TODO: Enable select all button (app-bar)
-    // TODO: Enable delete button (app-bar)
+    const uncheckButton = appBarUtils.enable("uncheck");
+    uncheckButton.setAttribute("disabled", "");
+    uncheckButton.onclick = () => {
+        appBarUtils.disable("check");
+    };
+
+    // Enable delete button (app-bar)
+    const deleteButton = appBarUtils.enable("delete");
+    deleteButton.setAttribute("disabled", "");
 
     cleanup.push(() => {
-        appBarUtils.disable("back").onclick = backupBackButtonCB;
+        appBarUtils.disable(backButton).onclick = backupBackButtonCB;
+        appBarUtils.disable(checkButton);
+        appBarUtils.disable(uncheckButton);
+        appBarUtils.disable(deleteButton);
     });
 }
