@@ -3,15 +3,14 @@ import * as ui from "ui";
 import { appBarUtils, db, html } from "@lib";
 
 let appBarTitleBackup = "";
+let appBarBackButtonBackup: any = null;
 let cleanup: ui.CleanUpFunction[] = [];
 
 export async function onMount() {
     appBarTitleBackup = appBarUtils.getTitle();
     appBarUtils.setTitle("DB-Browser");
 
-    // TODO: Enable the back button (app-bar)
-    // TODO: Enable select all button (app-bar)
-    // TODO: Enable delete button (app-bar)
+    setupAppBarButtons();
 
     document.querySelector("#routerTarget")!.innerHTML = await getHTML();
 }
@@ -79,4 +78,20 @@ async function getHTML(): Promise<string> {
             ${entryItems.join("")}
         </ul>
     `;
+}
+
+function setupAppBarButtons() {
+    // Enable the back button (app-bar)
+    appBarUtils.enable("back");
+
+    const back = appBarUtils.enable("back");
+    const backupBackButtonCB = back.onclick;
+    back.onclick = () => ui.router.hash.goTo(null, "settings");
+
+    // TODO: Enable select all button (app-bar)
+    // TODO: Enable delete button (app-bar)
+
+    cleanup.push(() => {
+        appBarUtils.disable("back").onclick = backupBackButtonCB;
+    });
 }
