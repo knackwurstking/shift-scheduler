@@ -13,7 +13,7 @@ export async function onMount() {
 
     const target = document.querySelector<HTMLElement>("#routerTarget")!;
     target.innerHTML = await getHTML();
-    setHTMLHandlers(target);
+    setupHTMLHandlers(target);
 }
 
 export async function onDestroy() {
@@ -78,23 +78,108 @@ async function getHTML(): Promise<string> {
     `;
 }
 
-async function setHTMLHandlers(el: HTMLElement) {
-    const ul = el.querySelector("ul")!;
+function setupHTMLHandlers(container: HTMLElement) {
+    const ul = container.querySelector("ul")!;
+    let timeout: NodeJS.Timeout | null = null;
+    let fastSelectionMode = false;
+    let timeoutHandler: () => void;
 
     ul.onpointerdown = () => {
-        // TODO: Add click listener for touch hold => select item and enter the
-        //       fast selection mode until nothing is selected anymore.
-        //       Allow select/deselect all and delete
+        const entryItem = ul.closest<HTMLElement>(`.db-entry-item`);
+        if (entryItem === null) {
+            return;
+        }
+
+        timeoutHandler = () => {
+            if (!fastSelectionMode) {
+                fastSelectionMode = true;
+                enableFastSelectionMode(container, () => {
+                    fastSelectionMode = false;
+                    disableFastSelectionMode();
+                });
+            }
+
+            entryItem.classList.toggle("selected");
+
+            if (checkForFastSelectionModeExit(container)) {
+                fastSelectionMode = false;
+                disableFastSelectionMode();
+            }
+        };
+
+        if (fastSelectionMode) {
+            timeoutHandler();
+        } else {
+            timeout = setTimeout(timeoutHandler, 500);
+        }
+    };
+
+    ul.onpointermove = (e) => {
+        ul.onpointercancel!(e);
     };
 
     ul.onpointerleave =
         ul.onpointercancel =
         ul.onpointerup =
             () => {
-                // TODO: Cancel the pointerdown event handler here
+                if (timeout !== null) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
             };
 
-    // TODO: Handler the filter bar
+    // TODO: Handler for the filter bar
+}
+
+function checkForFastSelectionModeExit(container: HTMLElement): boolean {
+    for (const item of container.querySelectorAll(`.db-entry-item`)) {
+        if (item.classList.contains("selected")) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function enableFastSelectionMode(container: HTMLElement, cb: () => void) {
+    const deleteButton = appBarUtils.get("delete");
+    deleteButton.removeAttribute("disabled");
+    deleteButton.onclick = () => {
+        container.querySelectorAll(`.db-entry-item`).forEach((item) => {
+            if (item.classList.contains("selected")) item.remove();
+        });
+
+        if (!!cb) cb();
+    };
+
+    const checkButton = appBarUtils.get("check");
+    checkButton.removeAttribute("disabled");
+    checkButton.onclick = () => {
+        container.querySelectorAll(`.db-entry-item`).forEach((item) => {
+            item.classList.add("selected");
+        });
+    };
+
+    const uncheckButton = appBarUtils.get("uncheck");
+    uncheckButton.removeAttribute("disabled");
+    uncheckButton.onclick = () => {
+        container.querySelectorAll(`.db-entry-item`).forEach((item) => {
+            item.classList.remove("selected");
+        });
+
+        if (!!cb) cb();
+    };
+}
+
+function disableFastSelectionMode() {
+    const deleteButton = appBarUtils.get("delete");
+    deleteButton.setAttribute("disabled", "");
+
+    const checkButton = appBarUtils.get("check");
+    checkButton.setAttribute("disabled", "");
+
+    const uncheckButton = appBarUtils.get("uncheck");
+    uncheckButton.setAttribute("disabled", "");
 }
 
 function setupAppBarButtons() {
