@@ -36,8 +36,7 @@ const manifest: Partial<ManifestOptions> = {
     background_color: "#09090b",
     display: "standalone",
     scope: ".",
-    start_url: "./",
-    //publicPath: "/shift-scheduler.github.io",
+    publicPath: process.env.SHIFTSCHEDULER_SERVER_PATH,
 };
 
 export default defineConfig({
@@ -54,21 +53,17 @@ export default defineConfig({
             includeAssets: [
                 "assets/fonts/bootstrap-icons.woff",
                 "assets/fonts/bootstrap-icons.woff2",
+                "assets/icons/apple-touch-icon-180x180.png",
+                "assets/icons/favicon.ico",
+                "assets/icons/icon.svg",
             ],
             manifest,
         }),
     ],
     clearScreen: false,
-    //base: process.env.MODE === "github" ? "/shift-scheduler.github.io/" : "/",
-    base: "/",
+    base: process.env.SHIFTSCHEDULER_SERVER_PATH,
 
     build: {
-        //outDir:
-        //    process.env.MODE === "github"
-        //        ? "../shift-scheduler.github.io/"
-        //        : process.env.MODE === "capacitor"
-        //          ? "./dist-capacitor"
-        //          : "./dist",
         outDir:
             process.env.MODE === "capacitor" ? "./dist-capacitor" : "./dist",
     },
