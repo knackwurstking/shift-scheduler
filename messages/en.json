@@ -59,6 +59,7 @@
 
     "dbbrowser_search_bar_input_placeholder": "Search...",
     "dbbrowser_search_bar_title": "Search for entries:",
+    "dbbrowser_delete_confirm": "Sure to delete {count} items?",
 
     "checkbox_enable_index_page": "Include a start page with a list of shifts."
 }

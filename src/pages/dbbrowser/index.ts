@@ -225,6 +225,7 @@ function enableFastSelectionMode(
         let year: number, month: number, date: number;
         const promisesRunning: Promise<void>[] = [];
 
+        let itemsToRemove: HTMLElement[] = [];
         itemContainer
             .querySelectorAll<HTMLElement>(`.db-entry-item`)
             .forEach((item) => {
@@ -232,14 +233,26 @@ function enableFastSelectionMode(
                     item.classList.contains("selected") &&
                     item.style.display !== "none"
                 ) {
-                    item.remove();
-
-                    year = parseInt(item.getAttribute("data-year")!, 10);
-                    month = parseInt(item.getAttribute("data-month")!, 10);
-                    date = parseInt(item.getAttribute("data-date")!, 10);
-                    promisesRunning.push(db.delete(year, month, date));
+                    itemsToRemove.push(item);
                 }
             });
+
+        if (
+            !confirm(
+                m.dbbrowser_delete_confirm({ count: itemsToRemove.length }),
+            )
+        ) {
+            return;
+        }
+
+        itemsToRemove.forEach((item) => {
+            item.remove();
+
+            year = parseInt(item.getAttribute("data-year")!, 10);
+            month = parseInt(item.getAttribute("data-month")!, 10);
+            date = parseInt(item.getAttribute("data-date")!, 10);
+            promisesRunning.push(db.delete(year, month, date));
+        });
 
         for (const promise of promisesRunning) {
             await promise;
