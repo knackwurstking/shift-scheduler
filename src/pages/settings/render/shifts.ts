@@ -188,7 +188,10 @@ function createTableItem(
         <td class="short-name" style="text-align: left; color: inherit"></td>
 
         <td class="actions" style="text-align: right;">
-            <div class="ui-flex-grid-row" style="--justify: flex-end;">
+            <div
+                class="ui-flex-grid-row"
+                style="--justify: flex-end; --align: center;"
+            >
                 <div class="ui-flex-grid-item" style="--flex: 0;">
                     <button class="edit" variant="ghost" icon>
                         <i class="bi bi-pen"></i>

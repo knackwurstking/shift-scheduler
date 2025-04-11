@@ -61,5 +61,7 @@
     "dbbrowser_search_bar_title": "Suche nach Einträgen:",
     "dbbrowser_delete_confirm": "Möchten Sie wirklich {count} Einträge löschen?",
 
+    "dialog_shift_label_time": "Zeit",
+
     "checkbox_enable_index_page": "Startseite mit einer Liste der Schichten hinzufügen."
 }

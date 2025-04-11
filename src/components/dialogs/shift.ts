@@ -36,6 +36,23 @@ function create(): CreateDialog {
                     </label>
                 </div>
 
+                <div class="ui-flex-grid-item" style="width: 100%;">
+                    <label
+                        class="ui-flex justify-between align-center ui-padding"
+                    >
+                        ${m.dialog_shift_label_time()}
+
+                        <div
+                            class="ui-flex-grid-row"
+                            style="--justify: flex-end;"
+                        >
+                            <input class="time-from" type="time" />
+                            <p><i class="bi bi-arrow-right"></i></p>
+                            <input class="time-to" type="time" />
+                        </div>
+                    </label>
+                </div>
+
                 <div class="ui-flex-grid-item" style="width: 100%">
                     <label
                         class="ui-flex justify-between align-center ui-padding"
@@ -93,12 +110,22 @@ export function open(data: Shift | null): Promise<Shift | null> {
         const { dialog, destroy } = create();
 
         const inputName = dialog.querySelector<HTMLInputElement>(`input.name`)!;
+
         const inputShortName =
             dialog.querySelector<HTMLInputElement>(`input.short-name`)!;
+
+        const inputTimeFrom =
+            dialog.querySelector<HTMLInputElement>(`input.time-from`)!;
+
+        const inputTimeTo =
+            dialog.querySelector<HTMLInputElement>(`input.time-to`)!;
+
         const inputColorPicker =
             dialog.querySelector<HTMLInputElement>(`input.color-picker`)!;
+
         const checkboxDefaultColor =
             dialog.querySelector<HTMLInputElement>(`input.default-color`)!;
+
         const checkboxHidden =
             dialog.querySelector<HTMLInputElement>(`input.hidden`)!;
 
@@ -132,6 +159,11 @@ export function open(data: Shift | null): Promise<Shift | null> {
                 color: checkboxDefaultColor.checked
                     ? null
                     : inputColorPicker.value || null,
+
+                times: {
+                    from: inputTimeFrom.value || "",
+                    to: inputTimeTo.value || "",
+                },
             };
 
             if (!newData.name) {
@@ -151,36 +183,36 @@ export function open(data: Shift | null): Promise<Shift | null> {
             result = newData;
         };
 
-        {
-            // Initialize the form with shift data
-            inputName.value = data?.name || "";
-            inputShortName.value = data?.shortName || "";
-            inputColorPicker.value = data?.color || "#66FF00";
-            checkboxDefaultColor.checked = !data?.color;
-            checkboxHidden.checked =
-                typeof data?.visible !== "boolean" ? false : !data.visible;
+        // Initialize the form with shift data
+        inputName.value = data?.name || "";
+        inputShortName.value = data?.shortName || "";
+        inputTimeFrom.value = data?.times?.from || "";
+        inputTimeTo.value = data?.times?.to || "";
+        inputColorPicker.value = data?.color || "#66FF00";
+        checkboxDefaultColor.checked = !data?.color;
+        checkboxHidden.checked =
+            typeof data?.visible !== "boolean" ? false : !data.visible;
 
-            // Initialize input handler for disabling or enabling stuff
-            // Default Color:
-            checkboxDefaultColor.onchange = () => {
-                inputColorPicker.disabled = checkboxDefaultColor.checked;
-                inputShortName.style.color = checkboxDefaultColor.checked
-                    ? "inherit"
-                    : inputColorPicker.value || "inherit";
-            };
+        // Initialize input handler for disabling or enabling stuff
+        // Default Color:
+        checkboxDefaultColor.onchange = () => {
+            inputColorPicker.disabled = checkboxDefaultColor.checked;
+            inputShortName.style.color = checkboxDefaultColor.checked
+                ? "inherit"
+                : inputColorPicker.value || "inherit";
+        };
 
-            // Hidden:
-            checkboxHidden.onchange = (e) => {
-                inputShortName.disabled = checkboxHidden.checked;
-                inputColorPicker.disabled = checkboxHidden.checked;
-                checkboxDefaultColor.disabled = checkboxHidden.checked;
+        // Hidden:
+        checkboxHidden.onchange = (e) => {
+            inputShortName.disabled = checkboxHidden.checked;
+            inputColorPicker.disabled = checkboxHidden.checked;
+            checkboxDefaultColor.disabled = checkboxHidden.checked;
 
-                checkboxDefaultColor.onchange!(e);
-            };
+            checkboxDefaultColor.onchange!(e);
+        };
 
-            checkboxDefaultColor.onchange!(new Event("change"));
-            checkboxHidden.onchange!(new Event("change"));
-        }
+        checkboxDefaultColor.onchange!(new Event("change"));
+        checkboxHidden.onchange!(new Event("change"));
 
         dialog.showModal();
     });

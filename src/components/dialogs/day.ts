@@ -14,6 +14,8 @@ function create(): CreateDialog {
                 <option value="0">${m.reset()}</option>
             </select>
 
+            <!-- TODO: Add start and end time if set, hide this field if not set -->
+
             <div>
                 <label>${m.note()}</label>
                 <textarea

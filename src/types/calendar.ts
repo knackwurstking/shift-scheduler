@@ -8,6 +8,17 @@ export interface Shift {
     shortName: string;
     visible: boolean;
     color?: string | null;
+
+    times?: {
+        /**
+         * @example "14:00"
+         */
+        from: string;
+        /**
+         * @example "22:00"
+         */
+        to: string;
+    } | null;
 }
 
 export type Shifts = Shift[];

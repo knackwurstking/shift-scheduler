@@ -61,5 +61,7 @@
     "dbbrowser_search_bar_title": "Search for entries:",
     "dbbrowser_delete_confirm": "Sure to delete {count} items?",
 
+    "dialog_shift_label_time": "Time",
+
     "checkbox_enable_index_page": "Include a start page with a list of shifts."
 }
