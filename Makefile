@@ -62,8 +62,8 @@ export SYSTEMD_SERVICE_FILE
 go-linux-install:
 	echo "$$SYSTEMD_SERVICE_FILE" > ${HOME}/.config/systemd/user/shift-scheduler.service || exit $?
 	systemctl --user daemon-reload || exit $?
-	echo "--> Created a service file @ ${HOME}/.config/systemd/user/pg-vis-pwa.service"
-	sudo cp ./bin/pg-vis-pwa /usr/local/bin/
+	echo "--> Created a service file @ ${HOME}/.config/systemd/user/shift-scheduler.service"
+	sudo cp ./bin/shift-scheduler /usr/local/bin/
 
 go-linux-start:
 	systemctl --user restart shift-scheduler
