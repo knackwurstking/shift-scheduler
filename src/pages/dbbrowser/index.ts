@@ -91,25 +91,33 @@ async function getHTML(): Promise<string> {
             }
         </style>
 
-        <!-- TODO: Set filter bar to absolute, always visible on the bottom -->
-
-        <div class="db-entry-item-container ui-flex-grid">
-            ${entryItems.join("")}
-        </div>
-
-        <section>
-            <fieldset>
-                <legend>${m.dbbrowser_search_bar_title()}</legend>
-                <div class="search-bar">
-                    <input
-                        id="dbbrowserSearchBar"
-                        style="width: 100%"
-                        type="search"
-                        placeholder="${m.dbbrowser_search_bar_input_placeholder()}"
-                    />
+        <div class="ui-flex-grid" style="width: 100%; height: 100%">
+            <div
+                class="ui-flex-grid-item"
+                style="--flex: 1; width: 100%; height: 100%; overflow: hidden;"
+            >
+                <div
+                    class="db-entry-item-container ui-flex-grid ui-hide-scrollbar ui-auto-scroll-y"
+                    style="width: 100%; min-height: 100%; max-height: 100%;"
+                >
+                    ${entryItems.join("")}
                 </div>
-            </fieldset>
-        </section>
+            </div>
+
+            <section class="search-bar" style="width: 100%;">
+                <fieldset>
+                    <legend>${m.dbbrowser_search_bar_title()}</legend>
+                    <div class="search-bar">
+                        <input
+                            id="dbbrowserSearchBar"
+                            style="width: 100%"
+                            type="search"
+                            placeholder="${m.dbbrowser_search_bar_input_placeholder()}"
+                        />
+                    </div>
+                </fieldset>
+            </section>
+        </div>
     `;
 }
 
