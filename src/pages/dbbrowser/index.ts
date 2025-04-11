@@ -1,6 +1,6 @@
 import * as ui from "ui";
 
-import { appBarUtils, db, html } from "@lib";
+import { appBarUtils, db, html, searchUtils } from "@lib";
 import { m } from "@paraglide/messages";
 
 let appBarTitleBackup = "";
@@ -14,7 +14,10 @@ export async function onMount() {
 
     const target = document.querySelector<HTMLElement>("#routerTarget")!;
     target.innerHTML = await getHTML();
-    setupHTMLHandlers(target.querySelector(`.db-entry-item-container`)!);
+    setupHTMLHandlers(
+        target.querySelector(`.db-entry-item-container`)!,
+        target.querySelector(`#dbbrowserSearchBar`)!,
+    );
 }
 
 export async function onDestroy() {
@@ -121,12 +124,15 @@ async function getHTML(): Promise<string> {
     `;
 }
 
-function setupHTMLHandlers(container: HTMLElement) {
+function setupHTMLHandlers(
+    itemContainer: HTMLElement,
+    searchBar: HTMLInputElement,
+) {
     let timeout: NodeJS.Timeout | null = null;
     let fastSelectionMode = false;
     let timeoutHandler: () => void;
 
-    container.onpointerdown = (ev) => {
+    itemContainer.onpointerdown = (ev) => {
         const entryItem = (ev.target! as HTMLElement).closest<HTMLElement>(
             `.db-entry-item`,
         );
@@ -137,7 +143,7 @@ function setupHTMLHandlers(container: HTMLElement) {
         timeoutHandler = () => {
             if (!fastSelectionMode) {
                 fastSelectionMode = true;
-                enableFastSelectionMode(container, (mode) => {
+                enableFastSelectionMode(itemContainer, (mode) => {
                     fastSelectionMode = false;
                     disableFastSelectionMode();
 
@@ -149,7 +155,7 @@ function setupHTMLHandlers(container: HTMLElement) {
 
             entryItem.classList.toggle("selected");
 
-            if (checkForFastSelectionModeExit(container)) {
+            if (checkForFastSelectionModeExit(itemContainer)) {
                 fastSelectionMode = false;
                 disableFastSelectionMode();
             }
@@ -162,25 +168,51 @@ function setupHTMLHandlers(container: HTMLElement) {
         }
     };
 
-    container.onpointermove = (e) => {
-        container.onpointercancel!(e);
+    itemContainer.onpointermove = (e) => {
+        itemContainer.onpointercancel!(e);
     };
 
-    container.onpointerup = () => {
+    itemContainer.onpointerup = () => {
         if (timeout !== null) {
             clearTimeout(timeout);
             timeout = null;
         }
     };
 
-    container.onpointerleave = container.onpointerup;
-    container.onpointercancel = container.onpointerup;
+    itemContainer.onpointerleave = itemContainer.onpointerup;
+    itemContainer.onpointercancel = itemContainer.onpointerup;
 
-    // TODO: Handler for the filter bar
+    searchBar.oninput = () => {
+        if (!searchBar.value) {
+            itemContainer
+                .querySelectorAll<HTMLElement>(`.db-entry-item`)
+                .forEach((item) => {
+                    item.style.display = "flex";
+                });
+
+            return;
+        }
+
+        const regex = searchUtils.generateRegExp(searchBar.value);
+
+        itemContainer
+            .querySelectorAll<HTMLElement>(`.db-entry-item`)
+            .forEach((item) => {
+                if (
+                    !!item
+                        .textContent!.replace(/(\n|\r|\s+)/g, " ")
+                        .match(regex)
+                ) {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+    };
 }
 
-function checkForFastSelectionModeExit(container: HTMLElement): boolean {
-    for (const item of container.querySelectorAll(`.db-entry-item`)) {
+function checkForFastSelectionModeExit(itemContainer: HTMLElement): boolean {
+    for (const item of itemContainer.querySelectorAll(`.db-entry-item`)) {
         if (item.classList.contains("selected")) {
             return false;
         }
@@ -190,7 +222,7 @@ function checkForFastSelectionModeExit(container: HTMLElement): boolean {
 }
 
 function enableFastSelectionMode(
-    container: HTMLElement,
+    itemContainer: HTMLElement,
     cb: (mode: "delete" | "uncheck") => void,
 ) {
     const deleteButton = appBarUtils.get("delete");
@@ -199,7 +231,7 @@ function enableFastSelectionMode(
         let year: number, month: number, date: number;
         const promisesRunning: Promise<void>[] = [];
 
-        container.querySelectorAll(`.db-entry-item`).forEach((item) => {
+        itemContainer.querySelectorAll(`.db-entry-item`).forEach((item) => {
             if (item.classList.contains("selected")) {
                 item.remove();
 
@@ -220,7 +252,7 @@ function enableFastSelectionMode(
     const checkButton = appBarUtils.get("check");
     checkButton.removeAttribute("disabled");
     checkButton.onclick = () => {
-        container.querySelectorAll(`.db-entry-item`).forEach((item) => {
+        itemContainer.querySelectorAll(`.db-entry-item`).forEach((item) => {
             item.classList.add("selected");
         });
 
@@ -231,7 +263,7 @@ function enableFastSelectionMode(
     const uncheckButton = appBarUtils.get("uncheck");
     uncheckButton.removeAttribute("disabled");
     uncheckButton.onclick = () => {
-        container.querySelectorAll(`.db-entry-item`).forEach((item) => {
+        itemContainer.querySelectorAll(`.db-entry-item`).forEach((item) => {
             item.classList.remove("selected");
         });
 
