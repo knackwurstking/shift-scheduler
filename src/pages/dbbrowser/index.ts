@@ -33,23 +33,16 @@ async function pageReRender() {
 
 async function getHTML(): Promise<string> {
     const dbEntries = await db.getAll();
-    const lastIndex = dbEntries.length - 1;
 
-    let month: string, date: string, note: string, borderBottom: string;
+    let month: string, date: string, note: string;
 
-    const entryItems: string[] = dbEntries.map((entry, i) => {
+    const entryItems: string[] = dbEntries.map((entry) => {
         month = (entry.month + 1).toString().padStart(2, "0");
         date = entry.date.toString().padStart(2, "0");
 
         note = "";
         if (entry.note) {
             note = html`<p class="ui-flex-grid-item">${entry.note}</p>`;
-        }
-
-        borderBottom = "none";
-        if (i !== lastIndex) {
-            borderBottom =
-                "var(--ui-border-width) var(--ui-border-style) var(--ui-border-color)";
         }
 
         return html`
