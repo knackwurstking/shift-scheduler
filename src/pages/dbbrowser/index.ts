@@ -43,12 +43,8 @@ async function getHTML(): Promise<string> {
                 "var(--ui-border-width) var(--ui-border-style) var(--ui-border-color)";
         }
 
-        // TODO: Add styles for .selected
         return html`
-            <div
-                class="db-entry-item ui-flex-grid"
-                style="border-bottom: ${borderBottom};"
-            >
+            <div class="db-entry-item ui-flex-grid ui-border">
                 <span class="ui-flex-grid-row">
                     <span class="ui-flex-grid-item" style="--flex: 0;">
                         ${entry.year}/${m}/${d}
@@ -72,11 +68,21 @@ async function getHTML(): Promise<string> {
     });
 
     return html`
+        <style>
+            .db-entry-item {
+                padding: var(--ui-spacing);
+            }
+
+            .db-entry-item.selected {
+                background-color: var(--ui-secondary);
+                color: var(--ui-secondary-text);
+                border-radius: var(--ui-radius);
+            }
+        </style>
+
         <!-- TODO: Add filter bar to the bottom -->
 
-        <ul>
-            ${entryItems.join("")}
-        </ul>
+        <div class="ui-flex-grid">${entryItems.join("")}</div>
     `;
 }
 
@@ -114,7 +120,7 @@ function setupHTMLHandlers(container: HTMLElement) {
         if (fastSelectionMode) {
             timeoutHandler();
         } else {
-            timeout = setTimeout(timeoutHandler, 500);
+            timeout = setTimeout(timeoutHandler, 250);
         }
     };
 
@@ -162,6 +168,9 @@ function enableFastSelectionMode(container: HTMLElement, cb: () => void) {
         container.querySelectorAll(`.db-entry-item`).forEach((item) => {
             item.classList.add("selected");
         });
+
+        appBarUtils.disable(checkButton);
+        appBarUtils.enable(uncheckButton);
     };
 
     const uncheckButton = appBarUtils.get("uncheck");
@@ -170,6 +179,9 @@ function enableFastSelectionMode(container: HTMLElement, cb: () => void) {
         container.querySelectorAll(`.db-entry-item`).forEach((item) => {
             item.classList.remove("selected");
         });
+
+        appBarUtils.disable(uncheckButton);
+        appBarUtils.enable(checkButton);
 
         if (!!cb) cb();
     };
@@ -193,12 +205,13 @@ function setupAppBarButtons() {
     backButton.onclick = () => ui.router.hash.goTo(null, "settings");
 
     // Enable select all button (app-bar)
-    const checkButton = appBarUtils.get("check");
+    const checkButton = appBarUtils.enable("check");
+    checkButton.setAttribute("disabled", "");
     checkButton.onclick = () => {
         appBarUtils.disable("uncheck");
     };
 
-    const uncheckButton = appBarUtils.enable("uncheck");
+    const uncheckButton = appBarUtils.get("uncheck");
     uncheckButton.setAttribute("disabled", "");
     uncheckButton.onclick = () => {
         appBarUtils.disable("check");
