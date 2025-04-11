@@ -43,6 +43,7 @@ async function getHTML(): Promise<string> {
                 "var(--ui-border-width) var(--ui-border-style) var(--ui-border-color)";
         }
 
+        // TODO: Add styles for .selected
         return html`
             <div
                 class="db-entry-item ui-flex-grid"
@@ -70,8 +71,9 @@ async function getHTML(): Promise<string> {
         `;
     });
 
-    // TODO: Add filter bar to the bottom
     return html`
+        <!-- TODO: Add filter bar to the bottom -->
+
         <ul>
             ${entryItems.join("")}
         </ul>
@@ -79,13 +81,15 @@ async function getHTML(): Promise<string> {
 }
 
 function setupHTMLHandlers(container: HTMLElement) {
-    const ul = container.querySelector("ul")!;
     let timeout: NodeJS.Timeout | null = null;
     let fastSelectionMode = false;
     let timeoutHandler: () => void;
 
-    ul.onpointerdown = () => {
-        const entryItem = ul.closest<HTMLElement>(`.db-entry-item`);
+    container.onpointerdown = (ev) => {
+        const entryItem = (ev.target! as HTMLElement).closest<HTMLElement>(
+            `.db-entry-item`,
+        );
+        console.debug("entryItem:", entryItem);
         if (entryItem === null) {
             return;
         }
@@ -114,13 +118,13 @@ function setupHTMLHandlers(container: HTMLElement) {
         }
     };
 
-    ul.onpointermove = (e) => {
-        ul.onpointercancel!(e);
+    container.onpointermove = (e) => {
+        container.onpointercancel!(e);
     };
 
-    ul.onpointerleave =
-        ul.onpointercancel =
-        ul.onpointerup =
+    container.onpointerleave =
+        container.onpointercancel =
+        container.onpointerup =
             () => {
                 if (timeout !== null) {
                     clearTimeout(timeout);
