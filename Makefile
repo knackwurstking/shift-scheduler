@@ -20,13 +20,12 @@ ui-dev:
 ui-build:
 	cd ui && npx vite build --minify -c vite.config.js --emptyOutDir
 
+ui-build-web:
+	make ui-test && \
+		MODE= make ui-build
+
 ui-build-capacitor:
 	make ui-test && \
-		MODE=capacitor make ui-build
-
-ui-build-all:
-	make ui-test && \
-		MODE= make ui-build && \
 		MODE=capacitor make ui-build
 
 ui-android-sync:
