@@ -37,14 +37,12 @@ function create(): CreateDialog {
                 </div>
 
                 <div class="ui-flex-grid-item" style="width: 100%;">
-                    <label
-                        class="ui-flex justify-between align-center ui-padding"
-                    >
+                    <label class="ui-flex column justify-between ui-padding">
                         ${m.dialog_shift_label_time()}
 
                         <div
                             class="ui-flex-grid-row"
-                            style="--justify: flex-end;"
+                            style="--justify: space-between;"
                         >
                             <input class="time-from" type="time" />
                             <p><i class="bi bi-arrow-right"></i></p>
