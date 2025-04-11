@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	ServerAddr = os.Getenv("PGVISPWA_SERVER_ADDR")
-	ServerPath = os.Getenv("PGVISPWA_SERVER_PATH")
+	ServerAddr = os.Getenv("SHIFTSCHEDULER_SERVER_ADDR")
+	ServerPath = os.Getenv("SHIFTSCHEDULER_SERVER_PATH")
 )
 
 func init() {
