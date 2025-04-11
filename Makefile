@@ -1,38 +1,38 @@
 clean:
 	@git clean -fxd
 
-init:
+ui-init:
 	@cd ui && npm install && \
 		npx paraglide-js compile \
 			--project ./project.inlang \
 			--outdir ./src/paraglide \
 			--strategy preferredLanguage baseLocale
 
-generate-pwa-assets:
+ui-generate-pwa-assets:
 	@cd ui && npx pwa-assets-generator
 
-test:
+ui-test:
 	@cd ui && npx tsc && npx vitest run
 
-dev:
+ui-dev:
 	@cd ui && MODE= npx vite --host -c vite.config.js
 
-vite-build:
+ui-vite-build:
 	@cd ui && npx vite build --minify -c vite.config.js --emptyOutDir
 
-vite-build-capacitor:
+ui-build-capacitor:
 	@make test && \
 		MODE=capacitor make vite-build
 
-vite-build-all:
+ui-build-all:
 	@make test && \
 		MODE= make vite-build && \
 		MODE=capacitor make vite-build
 
-android-sync:
+ui-android-sync:
 	@cd ui && npx cap sync android
 
-android-open:
+ui-android-open:
 	@cd ui && npx cap open android
 
 # NOTE: The following section cntaining commands for my "rpi-server-project"
