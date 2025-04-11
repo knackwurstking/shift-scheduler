@@ -2,16 +2,17 @@ clean:
 	@git clean -fxd
 
 init:
-	@cd ui && npm install
+	@cd ui && npm install && \
+		npx paraglide-js compile \
+			--project ./project.inlang \
+			--outdir ./src/paraglide \
+			--strategy preferredLanguage baseLocale
 
 generate-pwa-assets:
 	@cd ui && npx pwa-assets-generator
 
 test:
-	@cd ui && npx vitest run
-
-check:
-	@cd ui && npx tsc && cd .. && make test
+	@cd ui && npx tsc && npx vitest run
 
 dev:
 	@cd ui && MODE= npx vite --host -c vite.config.js
@@ -20,11 +21,11 @@ vite-build:
 	@cd ui && npx vite build --minify -c vite.config.js --emptyOutDir
 
 vite-build-capacitor:
-	@make check && \
+	@make test && \
 		MODE=capacitor make vite-build
 
 vite-build-all:
-	@make check && \
+	@make test && \
 		MODE= make vite-build && \
 		MODE=capacitor make vite-build
 
@@ -49,27 +50,27 @@ ExecStart=shift-scheduler
 WantedBy=default.target
 endef
 
-rpi-init:
+go-init:
 	@make init || exit $?
 	@go mod tidy -v
 
-rpi-build:
+go-build:
 	@MODE= make vite-build || exit $?
 	@go mod tidy -v || exit $?
 	@go build -v -o ./bin/shift-scheduler ./cmd/shift-scheduler
 
 export SYSTEMD_SERVICE_FILE
-rpi-linux-install:
+go-linux-install:
 	@echo "$$SYSTEMD_SERVICE_FILE" > ${HOME}/.config/systemd/user/shift-scheduler.service || exit $?
 	@systemctl --user daemon-reload || exit $?
 	@echo "--> Created a service file @ ${HOME}/.config/systemd/user/pg-vis-pwa.service"
 	@sudo cp ./bin/pg-vis-pwa /usr/local/bin/
 
-rpi-linux-start:
+go-linux-start:
 	@systemctl --user restart shift-scheduler
 
-rpi-linux-stop:
+go-linux-stop:
 	@systemctl --user stop shift-scheduler
 
-rpi-linux-log:
+go-linux-log:
 	@journalctl --user -u shift-scheduler --follow --output cat
