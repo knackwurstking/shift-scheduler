@@ -41,6 +41,15 @@ describe("pages -> settings -> backup-utils", () => {
         data.shifts[0].color = null;
         expect(backupUtils.isBackupV3(data)).toBe(true);
 
+        data.shifts[0].times = null;
+        expect(backupUtils.isBackupV3(data)).toBe(true);
+
+        data.shifts[0].times = {
+            from: "6:00",
+            to: "14:00",
+        };
+        expect(backupUtils.isBackupV3(data)).toBe(true);
+
         data.rhythm.push(0, 1, 2);
         expect(backupUtils.isBackupV3(data)).toBe(true);
 

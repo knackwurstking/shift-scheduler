@@ -209,7 +209,8 @@ export function isBackupV3(data: any): boolean {
             typeof s.visible !== "boolean" ||
             (!!s.color && typeof s.color !== "string") ||
             (!!s.times &&
-                typeof (s.times.from !== "string" || s.times.to !== "string"))
+                (typeof s.times.from !== "string" ||
+                    typeof s.times.to !== "string"))
         );
     };
 
