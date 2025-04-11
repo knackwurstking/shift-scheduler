@@ -199,6 +199,7 @@ function setupHTMLHandlers(
                     item.style.display = "flex";
                 } else {
                     item.style.display = "none";
+                    item.classList.remove("selected");
                 }
             });
     };
@@ -224,16 +225,21 @@ function enableFastSelectionMode(
         let year: number, month: number, date: number;
         const promisesRunning: Promise<void>[] = [];
 
-        itemContainer.querySelectorAll(`.db-entry-item`).forEach((item) => {
-            if (item.classList.contains("selected")) {
-                item.remove();
+        itemContainer
+            .querySelectorAll<HTMLElement>(`.db-entry-item`)
+            .forEach((item) => {
+                if (
+                    item.classList.contains("selected") &&
+                    item.style.display !== "none"
+                ) {
+                    item.remove();
 
-                year = parseInt(item.getAttribute("data-year")!, 10);
-                month = parseInt(item.getAttribute("data-month")!, 10);
-                date = parseInt(item.getAttribute("data-date")!, 10);
-                promisesRunning.push(db.delete(year, month, date));
-            }
-        });
+                    year = parseInt(item.getAttribute("data-year")!, 10);
+                    month = parseInt(item.getAttribute("data-month")!, 10);
+                    date = parseInt(item.getAttribute("data-date")!, 10);
+                    promisesRunning.push(db.delete(year, month, date));
+                }
+            });
 
         for (const promise of promisesRunning) {
             await promise;
@@ -245,9 +251,13 @@ function enableFastSelectionMode(
     const checkButton = appBarUtils.get("check");
     checkButton.removeAttribute("disabled");
     checkButton.onclick = () => {
-        itemContainer.querySelectorAll(`.db-entry-item`).forEach((item) => {
-            item.classList.add("selected");
-        });
+        itemContainer
+            .querySelectorAll<HTMLElement>(`.db-entry-item`)
+            .forEach((item) => {
+                if (item.style.display !== "none") {
+                    item.classList.add("selected");
+                }
+            });
 
         appBarUtils.disable(checkButton);
         appBarUtils.enable(uncheckButton);
