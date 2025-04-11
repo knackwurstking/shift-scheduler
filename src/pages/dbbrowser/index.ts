@@ -1,6 +1,7 @@
 import * as ui from "ui";
 
 import { appBarUtils, db, html } from "@lib";
+import { m } from "@paraglide/messages";
 
 let appBarTitleBackup = "";
 let cleanup: ui.CleanUpFunction[] = [];
@@ -31,11 +32,11 @@ async function getHTML(): Promise<string> {
     const dbEntries = await db.getAll();
     const lastIndex = dbEntries.length - 1;
 
-    let m: string, d: string, note: string, borderBottom: string;
+    let month: string, date: string, note: string, borderBottom: string;
 
     const entryItems: string[] = dbEntries.map((entry, i) => {
-        m = (entry.month + 1).toString().padStart(2, "0");
-        d = entry.date.toString().padStart(2, "0");
+        month = (entry.month + 1).toString().padStart(2, "0");
+        date = entry.date.toString().padStart(2, "0");
 
         note = "";
         if (entry.note) {
@@ -57,7 +58,7 @@ async function getHTML(): Promise<string> {
             >
                 <span class="ui-flex-grid-row">
                     <span class="ui-flex-grid-item" style="--flex: 0;">
-                        ${entry.year}/${m}/${d}
+                        ${entry.year}/${month}/${date}
                     </span>
 
                     <span
@@ -90,11 +91,25 @@ async function getHTML(): Promise<string> {
             }
         </style>
 
-        <!-- TODO: Add filter bar to the bottom -->
+        <!-- TODO: Set filter bar to absolute, always visible on the bottom -->
 
         <div class="db-entry-item-container ui-flex-grid">
             ${entryItems.join("")}
         </div>
+
+        <section>
+            <fieldset>
+                <legend>${m.dbbrowser_search_bar_title()}</legend>
+                <div class="search-bar">
+                    <input
+                        id="dbbrowserSearchBar"
+                        style="width: 100%"
+                        type="search"
+                        placeholder="${m.dbbrowser_search_bar_input_placeholder()}"
+                    />
+                </div>
+            </fieldset>
+        </section>
     `;
 }
 
