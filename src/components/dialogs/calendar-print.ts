@@ -27,7 +27,7 @@ function create(year: number): CreateDialog {
                 />
             </label>
 
-            <div class="ui-flex justify-between align-center">
+            <div class="ui-flex justify-between align-center gap">
                 <label for="enable-index-page">
                     ${m.checkbox_enable_index_page()}
                 </label>
@@ -191,15 +191,32 @@ function indexPage(doc: jspdf.jsPDF) {
     store.obj.get("shifts")!.forEach((shift) => {
         if (!shift.visible) return;
 
-        const shortName = doc.splitTextToSize(shift.shortName, 30);
-        const name = doc.splitTextToSize(shift.name, maxWidth - 50);
+        const shortName = doc.splitTextToSize(shift.shortName, 20);
+        let name: string;
+        let times: string = "";
+        if (!!shift.times) {
+            name = doc.splitTextToSize(shift.name, maxWidth - 80);
+            times = doc.splitTextToSize(
+                `${shift.times.from} -> ${shift.times.to}`,
+                50,
+            );
+        } else {
+            name = doc.splitTextToSize(shift.name, maxWidth - 50);
+        }
 
-        doc.text(shortName, 20, y, { maxWidth: 50 });
-        doc.text(name, 50, y, { maxWidth: maxWidth - 50 });
+        doc.text(shortName, 20, y, { maxWidth: 20 });
+
+        if (!!times) {
+            doc.text(name, 40, y, { maxWidth: maxWidth - 80 });
+            doc.text(times, maxWidth - 35, y, { maxWidth: 50 });
+        } else {
+            doc.text(name, 40, y, { maxWidth: maxWidth - 50 });
+        }
 
         y += Math.max(
-            doc.getTextDimensions(shift.shortName).h + spacing,
-            doc.getTextDimensions(shift.name).h + spacing,
+            doc.getTextDimensions(shortName).h + spacing,
+            doc.getTextDimensions(name).h + spacing,
+            doc.getTextDimensions(times).h + spacing,
         );
         if (y >= maxHeight) {
             doc.addPage();
