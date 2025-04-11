@@ -2,10 +2,11 @@ package main
 
 import (
 	"os"
-	"shift-scheduler/ui"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"github.com/knackwurstking/ui"
 )
 
 var (
@@ -15,7 +16,7 @@ var (
 
 func init() {
 	if ServerAddr == "" {
-		panic("Environment variable missing: PGVISPWA_SERVER_ADDR")
+		panic("Environment variable missing: SHIFTSCHEDULER_SERVER_ADDR")
 	}
 }
 
