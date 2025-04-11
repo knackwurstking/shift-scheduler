@@ -13,13 +13,18 @@ export async function onMount() {
 
     const target = document.querySelector<HTMLElement>("#routerTarget")!;
     target.innerHTML = await getHTML();
-    setupHTMLHandlers(target);
+    setupHTMLHandlers(target.querySelector(`.db-entry-item-container`)!);
 }
 
 export async function onDestroy() {
     appBarUtils.setTitle(appBarTitleBackup);
     cleanup.forEach((fn) => fn());
     cleanup = [];
+}
+
+async function pageReRender() {
+    await onDestroy();
+    await onMount();
 }
 
 async function getHTML(): Promise<string> {
@@ -44,7 +49,12 @@ async function getHTML(): Promise<string> {
         }
 
         return html`
-            <div class="db-entry-item ui-flex-grid ui-border">
+            <div
+                class="db-entry-item ui-flex-grid ui-border"
+                data-year="${entry.year}"
+                data-month="${entry.month}"
+                data-date="${entry.date}"
+            >
                 <span class="ui-flex-grid-row">
                     <span class="ui-flex-grid-item" style="--flex: 0;">
                         ${entry.year}/${m}/${d}
@@ -82,7 +92,9 @@ async function getHTML(): Promise<string> {
 
         <!-- TODO: Add filter bar to the bottom -->
 
-        <div class="ui-flex-grid">${entryItems.join("")}</div>
+        <div class="db-entry-item-container ui-flex-grid">
+            ${entryItems.join("")}
+        </div>
     `;
 }
 
@@ -95,7 +107,6 @@ function setupHTMLHandlers(container: HTMLElement) {
         const entryItem = (ev.target! as HTMLElement).closest<HTMLElement>(
             `.db-entry-item`,
         );
-        console.debug("entryItem:", entryItem);
         if (entryItem === null) {
             return;
         }
@@ -103,9 +114,13 @@ function setupHTMLHandlers(container: HTMLElement) {
         timeoutHandler = () => {
             if (!fastSelectionMode) {
                 fastSelectionMode = true;
-                enableFastSelectionMode(container, () => {
+                enableFastSelectionMode(container, (mode) => {
                     fastSelectionMode = false;
                     disableFastSelectionMode();
+
+                    if (mode === "delete") {
+                        pageReRender();
+                    }
                 });
             }
 
@@ -128,15 +143,15 @@ function setupHTMLHandlers(container: HTMLElement) {
         container.onpointercancel!(e);
     };
 
-    container.onpointerleave =
-        container.onpointercancel =
-        container.onpointerup =
-            () => {
-                if (timeout !== null) {
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-            };
+    container.onpointerup = () => {
+        if (timeout !== null) {
+            clearTimeout(timeout);
+            timeout = null;
+        }
+    };
+
+    container.onpointerleave = container.onpointerup;
+    container.onpointercancel = container.onpointerup;
 
     // TODO: Handler for the filter bar
 }
@@ -151,15 +166,32 @@ function checkForFastSelectionModeExit(container: HTMLElement): boolean {
     return true;
 }
 
-function enableFastSelectionMode(container: HTMLElement, cb: () => void) {
+function enableFastSelectionMode(
+    container: HTMLElement,
+    cb: (mode: "delete" | "uncheck") => void,
+) {
     const deleteButton = appBarUtils.get("delete");
     deleteButton.removeAttribute("disabled");
-    deleteButton.onclick = () => {
+    deleteButton.onclick = async () => {
+        let year: number, month: number, date: number;
+        const promisesRunning: Promise<void>[] = [];
+
         container.querySelectorAll(`.db-entry-item`).forEach((item) => {
-            if (item.classList.contains("selected")) item.remove();
+            if (item.classList.contains("selected")) {
+                item.remove();
+
+                year = parseInt(item.getAttribute("data-year")!, 10);
+                month = parseInt(item.getAttribute("data-month")!, 10);
+                date = parseInt(item.getAttribute("data-date")!, 10);
+                promisesRunning.push(db.delete(year, month, date));
+            }
         });
 
-        if (!!cb) cb();
+        for (const promise of promisesRunning) {
+            await promise;
+        }
+
+        if (!!cb) cb("delete");
     };
 
     const checkButton = appBarUtils.get("check");
@@ -183,7 +215,7 @@ function enableFastSelectionMode(container: HTMLElement, cb: () => void) {
         appBarUtils.disable(uncheckButton);
         appBarUtils.enable(checkButton);
 
-        if (!!cb) cb();
+        if (!!cb) cb("uncheck");
     };
 }
 
