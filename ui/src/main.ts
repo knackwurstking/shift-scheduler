@@ -18,8 +18,19 @@ if (!process.env.MODE) {
     console.debug("PWA updater registered");
     const updateSW = registerSW({
         async onNeedRefresh() {
-            const updateButton = appBarUtils.enable("update");
+            // NOTE: I need to separate this button from the capacitor `process.env.MODE`
+            const updateButton =
+                document.querySelector<HTMLElement>(
+                    `.ui-app-bar .left .update`,
+                ) || document.createElement("button");
+
+            updateButton.className = "udpate";
+            updateButton.setAttribute("variant", "ghost");
+            updateButton.setAttribute("color", "destructive");
             updateButton.innerText = m.update();
+
+            document.querySelector(".ui-app-bar .left")!.append(updateButton);
+
             updateButton.onclick = async () => {
                 if (confirm(m.update_alert_message())) {
                     const s = spinner.create();
