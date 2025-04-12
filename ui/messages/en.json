@@ -63,5 +63,8 @@
 
     "dialog_shift_label_time": "Time",
 
-    "checkbox_enable_index_page": "Include a start page with a list of shifts."
+    "checkbox_enable_index_page": "Include a start page with a list of shifts.",
+
+    "update": "Update",
+    "update_alert_message": "Perform the update?"
 }

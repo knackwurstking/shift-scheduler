@@ -7,7 +7,8 @@ export type AppBarItems =
     | "today"
     | "edit"
     | "printer"
-    | "settings";
+    | "settings"
+    | "update";
 
 export function get(item: AppBarItems): HTMLElement {
     return document.querySelector<HTMLElement>(`.ui-app-bar .${item}`)!;

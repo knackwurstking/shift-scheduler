@@ -63,5 +63,8 @@
 
     "dialog_shift_label_time": "Zeit",
 
-    "checkbox_enable_index_page": "Startseite mit einer Liste der Schichten hinzufügen."
+    "checkbox_enable_index_page": "Startseite mit einer Liste der Schichten hinzufügen.",
+
+    "update": "Update",
+    "update_alert_message": "Update durchführen?"
 }

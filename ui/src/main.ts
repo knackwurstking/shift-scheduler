@@ -7,7 +7,7 @@ import { registerSW } from "virtual:pwa-register";
 import { SendIntent } from "send-intent";
 import { Encoding, Filesystem } from "@capacitor/filesystem";
 
-import { backupUtils, db } from "@lib";
+import { appBarUtils, backupUtils, db } from "@lib";
 import * as pages from "@pages";
 import { m } from "@paraglide/messages";
 import { spinner } from "@components";
@@ -18,9 +18,15 @@ if (!process.env.MODE) {
     console.debug("PWA updater registered");
     const updateSW = registerSW({
         async onNeedRefresh() {
-            if (confirm(`Update verfügbar. Zum Aktualisieren bestätigen.`)) {
-                await updateSW();
-            }
+            const updateButton = appBarUtils.enable("update");
+            updateButton.innerText = m.update();
+            updateButton.onclick = async () => {
+                if (confirm(m.update_alert_message())) {
+                    const s = spinner.create();
+                    s.methods.start();
+                    await updateSW();
+                }
+            };
         },
     });
 }
