@@ -22,7 +22,7 @@ function getHTML(): string {
 
         <section>
             <label
-                class="ui-flex justify-between align-center"
+                class="ui-flex justify-between align-center gap"
                 style="padding: var(--ui-spacing)"
             >
                 ${m.edit_entries()}
