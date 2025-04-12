@@ -17,6 +17,9 @@ ui-test:
 ui-dev:
 	cd ui && MODE= npx vite --host -c vite.config.js
 
+ui-preview:
+	cd ui && npx vite preview --host
+
 ui-build:
 	cd ui && npx vite build --minify -c vite.config.js --emptyOutDir
 
