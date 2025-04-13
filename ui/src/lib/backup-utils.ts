@@ -13,7 +13,7 @@ export async function updateViaJSON(
     try {
         data = JSON.parse(result);
     } catch (err) {
-        return alert(m.alert_invalid_json());
+        throw new Error(m.alert_invalid_json());
     }
 
     // Validate backup version

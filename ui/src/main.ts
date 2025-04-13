@@ -65,12 +65,12 @@ function initCapacitor() {
                         if (typeof content.data === "string") {
                             try {
                                 await backupUtils.updateViaJSON(content.data);
+                                alert(m.alert_send_intent_finish());
                             } catch (err) {
-                                return alert(err);
+                                alert(err);
                             }
 
                             s.methods.stop();
-                            alert(m.alert_send_intent_finish());
                             SendIntent.finish();
                         } else {
                             const reader = new FileReader();
@@ -79,12 +79,12 @@ function initCapacitor() {
                                     await backupUtils.updateViaJSON(
                                         e.target?.result || null,
                                     );
+                                    alert(m.alert_send_intent_finish());
                                 } catch (err) {
-                                    return alert(err);
+                                    alert(err);
                                 }
 
                                 s.methods.stop();
-                                alert(m.alert_send_intent_finish());
                                 SendIntent.finish();
                             };
                             reader.readAsText(content.data);
