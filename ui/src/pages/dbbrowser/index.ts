@@ -93,7 +93,7 @@ async function getHTML(): Promise<string> {
                 style="--flex: 1; width: 100%; height: 100%; overflow: hidden;"
             >
                 <div
-                    class="db-entry-item-container ui-flex-grid ui-hide-scrollbar ui-auto-scroll-y"
+                    class="db-entry-item-container ui-flex-grid ui-hide-scrollbar ui-auto-scroll-y ui-disable-touch"
                     style="width: 100%; min-height: 100%; max-height: 100%;"
                 >
                     ${entryItems.join("")}
