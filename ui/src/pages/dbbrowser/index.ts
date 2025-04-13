@@ -93,7 +93,7 @@ async function getHTML(): Promise<string> {
                 style="--flex: 1; width: 100%; height: 100%; overflow: hidden;"
             >
                 <div
-                    class="db-entry-item-container ui-flex-grid ui-hide-scrollbar ui-auto-scroll-y ui-disable-touch"
+                    class="db-entry-item-container ui-flex-grid ui-hide-scrollbar ui-auto-scroll-y"
                     style="width: 100%; min-height: 100%; max-height: 100%;"
                 >
                     ${entryItems.join("")}
@@ -121,17 +121,27 @@ function setupHTMLHandlers(
     itemContainer: HTMLElement,
     searchBar: HTMLInputElement,
 ) {
+    const deadzone = parseFloat(
+        getComputedStyle(document.documentElement).fontSize,
+    );
+
     let timeout: NodeJS.Timeout | null = null;
     let fastSelectionMode = false;
     let timeoutHandler: () => void;
+    let entryItem: HTMLElement | null = null;
+    let startX: number | null;
+    let startY: number | null;
 
     itemContainer.onpointerdown = (ev) => {
-        const entryItem = (ev.target! as HTMLElement).closest<HTMLElement>(
+        entryItem = (ev.target! as HTMLElement).closest<HTMLElement>(
             `.db-entry-item`,
         );
         if (entryItem === null) {
             return;
         }
+
+        startX = ev.clientX;
+        startY = ev.clientY;
 
         timeoutHandler = () => {
             if (!fastSelectionMode) {
@@ -146,7 +156,7 @@ function setupHTMLHandlers(
                 });
             }
 
-            entryItem.classList.toggle("selected");
+            if (entryItem !== null) entryItem.classList.toggle("selected");
 
             if (checkForFastSelectionModeExit(itemContainer)) {
                 fastSelectionMode = false;
@@ -162,7 +172,16 @@ function setupHTMLHandlers(
     };
 
     itemContainer.onpointermove = (e) => {
-        itemContainer.onpointercancel!(e);
+        if (startX === null || startY === null) return;
+
+        if (
+            !!entryItem &&
+            Math.abs(
+                Math.max(e.clientX - startX, Math.abs(e.clientY - startY)),
+            ) > deadzone
+        ) {
+            itemContainer.onpointerup!(e);
+        }
     };
 
     itemContainer.onpointerup = () => {
@@ -170,10 +189,14 @@ function setupHTMLHandlers(
             clearTimeout(timeout);
             timeout = null;
         }
+
+        if (startX !== null || startY !== null) {
+            startX = null;
+            startY = null;
+        }
     };
 
     itemContainer.onpointerleave = itemContainer.onpointerup;
-    itemContainer.onpointercancel = itemContainer.onpointerup;
 
     searchBar.oninput = () => {
         if (!searchBar.value) {
