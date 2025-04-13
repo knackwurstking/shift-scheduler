@@ -47,18 +47,6 @@ export async function updateViaJSON(
 }
 
 export function isBackupV1(data: any): boolean {
-    const isShift = (s: any): boolean => {
-        if (!s) return false;
-
-        return !(
-            typeof s.id !== "number" ||
-            typeof s.name !== "string" ||
-            typeof s.shortName !== "string" ||
-            typeof s.visible !== "boolean" ||
-            (!!s.color && typeof s.color !== "string")
-        );
-    };
-
     if (data?.constructor !== Object) {
         return false;
     }
@@ -84,7 +72,7 @@ export function isBackupV1(data: any): boolean {
         return false;
     }
 
-    if (!!data.settings.shifts.find((s: any) => !isShift(s))) {
+    if (!!data.settings.shifts.find((s: any) => !isShiftForBackupV1orV2(s))) {
         return false;
     }
 
@@ -109,7 +97,7 @@ export function isBackupV1(data: any): boolean {
                 return false;
             }
 
-            if (!isShift(e.shift) && e.shift !== null) {
+            if (!isShiftForBackupV1orV2(e.shift) && e.shift !== null) {
                 return false;
             }
 
@@ -123,18 +111,6 @@ export function isBackupV1(data: any): boolean {
 }
 
 export function isBackupV2(data: any): boolean {
-    const isShift = (s: any): boolean => {
-        if (!s) return false;
-
-        return !(
-            typeof s.id !== "number" ||
-            typeof s.name !== "string" ||
-            typeof s.shortName !== "string" ||
-            typeof s.visible !== "boolean" ||
-            (!!s.color && typeof s.color !== "string")
-        );
-    };
-
     if (data?.constructor !== Object) {
         return false;
     }
@@ -160,7 +136,7 @@ export function isBackupV2(data: any): boolean {
         return false;
     }
 
-    if (!!data.settings.shifts.find((s: any) => !isShift(s))) {
+    if (!!data.settings.shifts.find((s: any) => !isShiftForBackupV1orV2(s))) {
         return false;
     }
 
@@ -184,7 +160,7 @@ export function isBackupV2(data: any): boolean {
                 return true;
             }
 
-            if (!isShift(entry.shift) && entry.shift !== null) {
+            if (!isShiftForBackupV1orV2(entry.shift) && entry.shift !== null) {
                 return true;
             }
 
@@ -195,6 +171,18 @@ export function isBackupV2(data: any): boolean {
     }
 
     return true;
+}
+
+export function isShiftForBackupV1orV2(shift: any): boolean {
+    if (!shift) return false;
+
+    return !(
+        typeof shift.id !== "number" ||
+        typeof shift.name !== "string" ||
+        typeof shift.shortName !== "string" ||
+        typeof shift.visible !== "boolean" ||
+        (!!shift.color && typeof shift.color !== "string")
+    );
 }
 
 // Ok, this really is ugly, butt it works for now
