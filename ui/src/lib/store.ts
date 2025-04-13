@@ -22,6 +22,10 @@ export type ShiftSchedulerStore = ui.Store<{
     version: Version;
 
     editMode: EditMode;
+
+    update: {
+        updateSW: (reloadPage?: boolean) => Promise<void>;
+    };
 }>;
 
 export const prefix = "shift-scheduler:";

@@ -7,7 +7,7 @@ import { registerSW } from "virtual:pwa-register";
 import { SendIntent } from "send-intent";
 import { Encoding, Filesystem } from "@capacitor/filesystem";
 
-import { backupUtils, db } from "@lib";
+import { appBarUtils, backupUtils, db, store } from "@lib";
 import * as pages from "@pages";
 import { m } from "@paraglide/messages";
 import { spinner } from "@components";
@@ -18,26 +18,8 @@ if (!process.env.MODE) {
     console.debug("PWA updater registered");
     const updateSW = registerSW({
         async onNeedRefresh() {
-            // NOTE: I need to separate this button from the capacitor `process.env.MODE`
-            const updateButton =
-                document.querySelector<HTMLElement>(
-                    `.ui-app-bar .left .update`,
-                ) || document.createElement("button");
-
-            updateButton.className = "udpate";
-            updateButton.setAttribute("variant", "ghost");
-            updateButton.setAttribute("color", "destructive");
-            updateButton.innerText = m.update();
-
-            document.querySelector(".ui-app-bar .left")!.append(updateButton);
-
-            updateButton.onclick = async () => {
-                if (confirm(m.update_alert_message())) {
-                    const s = spinner.create();
-                    s.methods.start();
-                    await updateSW();
-                }
-            };
+            store.obj.set("update", { updateSW }, false, { skipStore: true });
+            appBarUtils.get("settings").setAttribute("color", "destructive");
         },
     });
 }

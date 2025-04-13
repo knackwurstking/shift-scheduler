@@ -66,5 +66,7 @@
     "checkbox_enable_index_page": "Startseite mit einer Liste der Schichten hinzufügen.",
 
     "update": "Update",
-    "update_alert_message": "Update durchführen?"
+    "update_alert_message": "Update durchführen?",
+    "update_available": "Es gibt ein neues Update.",
+    "update_uptodate_info": "Hier gibt es nichts zu tun, alles ist aktuell!"
 }

@@ -19,6 +19,11 @@ export async function onMount() {
 
     setupAppBarItems();
 
+    if (!process.env.MODE) {
+        routerTarget.appendChild(render.update.create());
+        routerTarget.appendChild(document.createElement("br"));
+    }
+
     routerTarget.appendChild(render.misc.create());
     routerTarget.appendChild(document.createElement("br"));
 
