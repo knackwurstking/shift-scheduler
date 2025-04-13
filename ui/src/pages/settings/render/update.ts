@@ -34,7 +34,7 @@ export function create(): HTMLElement {
                 await updateSW();
             };
         },
-        false,
+        true,
         { skipStore: true },
     );
 
