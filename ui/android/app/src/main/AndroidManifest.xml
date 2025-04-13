@@ -35,9 +35,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
 
-                <data android:mimeType="text/plain" />
-                <data android:mimeType="text/json" />
-                <data android:mimeType="application/json" />
+                <data android:mimeType="*/*" />
             </intent-filter>
 
         </activity>
