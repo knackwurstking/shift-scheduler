@@ -2,7 +2,7 @@ import { constants, store, db } from "@lib";
 import { BackupV1, BackupV2, BackupV3, DBEntry } from "@types";
 import { m } from "@paraglide/messages";
 
-export async function parseJSON(
+export async function updateViaJSON(
     result: string | ArrayBuffer | null,
     reRenderCallback?: () => Promise<void> | void,
 ): Promise<void> {
@@ -25,7 +25,7 @@ export async function parseJSON(
     } else if (isBackupV1(data)) {
         backupV3 = convertV1(data as BackupV1);
     } else {
-        return alert(m.alert_invalid_json());
+        throw new Error(m.alert_invalid_json());
     }
 
     // Initialize

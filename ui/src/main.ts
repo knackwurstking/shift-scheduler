@@ -63,7 +63,11 @@ function initCapacitor() {
                         console.debug("content.data:", content.data);
 
                         if (typeof content.data === "string") {
-                            await backupUtils.parseJSON(content.data);
+                            try {
+                                await backupUtils.updateViaJSON(content.data);
+                            } catch (err) {
+                                return alert(err);
+                            }
 
                             s.methods.stop();
                             alert(m.alert_send_intent_finish());
@@ -71,9 +75,13 @@ function initCapacitor() {
                         } else {
                             const reader = new FileReader();
                             reader.onload = async (e) => {
-                                await backupUtils.parseJSON(
-                                    e.target?.result || null,
-                                );
+                                try {
+                                    await backupUtils.updateViaJSON(
+                                        e.target?.result || null,
+                                    );
+                                } catch (err) {
+                                    return alert(err);
+                                }
 
                                 s.methods.stop();
                                 alert(m.alert_send_intent_finish());

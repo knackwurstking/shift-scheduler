@@ -49,8 +49,16 @@ export function create(
 
             const reader = new FileReader();
 
-            reader.onload = async () =>
-                await backupUtils.parseJSON(reader.result, reRenderCallback);
+            reader.onload = async () => {
+                try {
+                    await backupUtils.updateViaJSON(
+                        reader.result,
+                        reRenderCallback,
+                    );
+                } catch (err) {
+                    return alert(err);
+                }
+            };
 
             reader.onerror = () => {
                 alert(
