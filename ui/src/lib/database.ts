@@ -1,4 +1,4 @@
-import { DBEntry, Shift } from "@types";
+import { DBEntry } from "@types";
 
 export class DB {
     public version: number;
@@ -26,16 +26,6 @@ export class DB {
 
     public close() {
         if (this.request !== null) this.request.result.close();
-    }
-
-    public validate(version: number, entry: DBEntry): boolean {
-        switch (version) {
-            case 0:
-            case 1:
-                return validateV1(entry);
-            default:
-                return false;
-        }
     }
 
     public get(
@@ -175,56 +165,4 @@ export class DB {
                 break;
         }
     }
-}
-
-function validateV1(entry: DBEntry) {
-    if (
-        typeof entry.year !== "number" ||
-        typeof entry.month !== "number" ||
-        typeof entry.date !== "number"
-    ) {
-        return false;
-    }
-
-    if (typeof entry.note !== "string") {
-        entry.note = "";
-    }
-
-    if (entry.shift !== null) {
-        if (!validateShift(entry.shift)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function validateShift(shift: Shift): boolean {
-    // Check for shift data
-    if (typeof shift.id !== "number") {
-        return false;
-    }
-
-    if (typeof shift.name !== "string" || typeof shift.shortName !== "string") {
-        return false;
-    }
-
-    if (typeof shift.color !== "string" && !!shift.color) {
-        return false;
-    }
-
-    if (shift.color === "transparent") {
-        shift.visible = false;
-        shift.color = null;
-    }
-
-    if (typeof shift.visible !== "boolean") {
-        shift.visible = true;
-    }
-
-    if (!shift.color) {
-        shift.color = null;
-    }
-
-    return true;
 }
