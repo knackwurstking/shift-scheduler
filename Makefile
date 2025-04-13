@@ -1,4 +1,4 @@
-.PHONY: init build
+all: init build
 
 # NOTE: The following section cntaining commands for my "rpi-server-project"
 
