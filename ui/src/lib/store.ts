@@ -9,6 +9,7 @@ import {
     WeekStart,
 } from "@types";
 import * as constants from "./constants";
+import { backupUtils } from "@lib";
 
 export type ShiftSchedulerStore = ui.Store<{
     datePicker: number;
@@ -54,13 +55,12 @@ export const obj: ShiftSchedulerStore = (() => {
 
     const newVersion = { version: constants.version, build: constants.build };
 
+    // There is more to fix here after updating from v2 to v3
     switch (store.get("version")?.build) {
+        // If build is undefined: old version detected, do migrade to v2
         case undefined:
-            const oldStartDate = store.get("startDate");
-            if (!!oldStartDate) {
-                // NOTE: Start date in settings changed from string to number in version v3.0.0
-                store.set("startDate", new Date(oldStartDate).getTime());
-            }
+            // Check backup utils and migrate all data to v3
+            migrateStorageToV3(store);
             break;
     }
 
@@ -68,3 +68,66 @@ export const obj: ShiftSchedulerStore = (() => {
 
     return store;
 })();
+
+function migrateStorageToV3(store: ShiftSchedulerStore) {
+    const settingsStore = localStorage.getItem("settings");
+    if (settingsStore) {
+        const settings = JSON.parse(settingsStore);
+
+        if (Array.isArray(settings.shifts)) {
+            if (
+                settings.shifts.find(
+                    (s: any) => !backupUtils.isShiftForBackupV1orV2(s),
+                )
+            ) {
+                store.set("shifts", settings.shifts);
+            }
+        } else {
+            console.warn(
+                "Old `settings.shifts` storage data are incompatible with v3!",
+                settings.shifts,
+            );
+        }
+
+        if (Array.isArray(settings.rhythm)) {
+            if (
+                settings.rhythm.find((s: any) =>
+                    backupUtils.isShiftForBackupV1orV2(s),
+                )
+            ) {
+                store.set("rhythm", settings.rhythm);
+            }
+        } else {
+            console.warn(
+                "Old `settings.rhythm` storage data are incompatible with v3!",
+                settings.rhythm,
+            );
+        }
+
+        if (typeof settings.startDate === "string") {
+            store.set("datePicker", new Date(settings.startDate).getTime());
+        } else {
+            console.warn(
+                "Old `settings.dataPicker` storage data are incompatible with v3!",
+                settings.rhythm,
+            );
+        }
+    }
+
+    const weekStartStore = localStorage.getItem("week-start");
+    if (weekStartStore) {
+        const weekStart = parseInt(weekStartStore, 10);
+        if (weekStart === 0 || weekStart === 1) {
+            store.set("weekStart", weekStart);
+        }
+    }
+
+    const datePickerStore = localStorage.getItem("date-picker");
+    if (datePickerStore) {
+        const datePicker = new Date(datePickerStore);
+        store.set(
+            "datePicker",
+            datePicker.getTime() || store.get("weekStart")!,
+        );
+    }
+}
