@@ -3,7 +3,6 @@ import { Share } from "@capacitor/share";
 
 import { backupUtils, db, html, store } from "@lib";
 import { m } from "@paraglide/messages";
-import { BackupV3 } from "@types";
 
 export function create(
     reRenderCallback: () => Promise<void> | void,
@@ -75,7 +74,7 @@ export function create(
     };
 
     exportButton.onclick = async () => {
-        const data: BackupV3 = {
+        const data: backupUtils.BackupV3 = {
             // Create the backup object
             weekStart: store.obj.get("weekStart")!,
             shifts: store.obj.get("shifts")!,
