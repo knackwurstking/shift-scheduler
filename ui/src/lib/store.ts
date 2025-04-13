@@ -70,18 +70,18 @@ export const obj: ShiftSchedulerStore = (() => {
 })();
 
 function migrateStorageToV3(store: ShiftSchedulerStore) {
-    const settingsStore = localStorage.getItem("settings");
+    const storePrefix = "shift-scheduler:";
+    const settingsStore = localStorage.getItem(storePrefix + "settings");
     if (settingsStore) {
         const settings = JSON.parse(settingsStore);
 
-        if (Array.isArray(settings.shifts)) {
-            if (
-                settings.shifts.find(
-                    (s: any) => !backupUtils.isShiftForBackupV1orV2(s),
-                )
-            ) {
-                store.set("shifts", settings.shifts);
-            }
+        if (
+            Array.isArray(settings.shifts) &&
+            settings.shifts.find((s: any) =>
+                backupUtils.isShiftForBackupV1orV2(s),
+            )
+        ) {
+            store.set("shifts", settings.shifts);
         } else {
             console.warn(
                 "Old `settings.shifts` storage data are incompatible with v3!",
@@ -89,14 +89,11 @@ function migrateStorageToV3(store: ShiftSchedulerStore) {
             );
         }
 
-        if (Array.isArray(settings.rhythm)) {
-            if (
-                settings.rhythm.find((s: any) =>
-                    backupUtils.isShiftForBackupV1orV2(s),
-                )
-            ) {
-                store.set("rhythm", settings.rhythm);
-            }
+        if (
+            Array.isArray(settings.rhythm) &&
+            settings.rhythm.find((n: any) => typeof n === "number")
+        ) {
+            store.set("rhythm", settings.rhythm);
         } else {
             console.warn(
                 "Old `settings.rhythm` storage data are incompatible with v3!",
@@ -105,7 +102,7 @@ function migrateStorageToV3(store: ShiftSchedulerStore) {
         }
 
         if (typeof settings.startDate === "string") {
-            store.set("datePicker", new Date(settings.startDate).getTime());
+            store.set("startDate", new Date(settings.startDate).getTime());
         } else {
             console.warn(
                 "Old `settings.dataPicker` storage data are incompatible with v3!",
@@ -114,7 +111,7 @@ function migrateStorageToV3(store: ShiftSchedulerStore) {
         }
     }
 
-    const weekStartStore = localStorage.getItem("week-start");
+    const weekStartStore = localStorage.getItem(storePrefix + "week-start");
     if (weekStartStore) {
         const weekStart = parseInt(weekStartStore, 10);
         if (weekStart === 0 || weekStart === 1) {
@@ -122,7 +119,7 @@ function migrateStorageToV3(store: ShiftSchedulerStore) {
         }
     }
 
-    const datePickerStore = localStorage.getItem("date-picker");
+    const datePickerStore = localStorage.getItem(storePrefix + "date-picker");
     if (datePickerStore) {
         const datePicker = new Date(datePickerStore);
         store.set(
