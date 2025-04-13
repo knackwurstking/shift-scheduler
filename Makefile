@@ -15,6 +15,9 @@ ExecStart=shift-scheduler
 WantedBy=default.target
 endef
 
+clean:
+	git clean -fxd
+
 init:
 	cd ui && make init || exit $?
 	go mod tidy -v
