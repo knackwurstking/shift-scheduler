@@ -1,7 +1,5 @@
 .PHONY: init build
 
-UNAME := $(shell uname)
-
 # NOTE: The following section cntaining commands for my "rpi-server-project"
 
 define SYSTEMD_SERVICE_FILE
@@ -26,6 +24,7 @@ build:
 	go mod tidy -v || exit $?
 	go build -v -o ./bin/shift-scheduler ./cmd/shift-scheduler
 
+UNAME := $(shell uname)
 check-linux:
 ifneq ($(UNAME), Linux)
 	@echo 'This won’t work here since you’re not on Linux.'
