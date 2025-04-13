@@ -7,7 +7,7 @@ import { registerSW } from "virtual:pwa-register";
 import { SendIntent } from "send-intent";
 import { Encoding, Filesystem } from "@capacitor/filesystem";
 
-import { appBarUtils, backupUtils, db } from "@lib";
+import { backupUtils, db } from "@lib";
 import * as pages from "@pages";
 import { m } from "@paraglide/messages";
 import { spinner } from "@components";
