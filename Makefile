@@ -19,12 +19,12 @@ clean:
 	git clean -fxd
 
 init:
-	cd ui && make init || exit $?
+	cd ui && make init 
 	go mod tidy -v
 
 build:
-	cd ui && MODE= make build || exit $?
-	go mod tidy -v || exit $?
+	cd ui && MODE= make build 
+	go mod tidy -v 
 	go build -v -o ./bin/shift-scheduler ./cmd/shift-scheduler
 
 UNAME := $(shell uname)
@@ -36,8 +36,8 @@ endif
 
 export SYSTEMD_SERVICE_FILE
 install: check-linux
-	echo "$$SYSTEMD_SERVICE_FILE" > ${HOME}/.config/systemd/user/shift-scheduler.service || exit $?
-	systemctl --user daemon-reload || exit $?
+	echo "$$SYSTEMD_SERVICE_FILE" > ${HOME}/.config/systemd/user/shift-scheduler.service 
+	systemctl --user daemon-reload 
 	echo "--> Created a service file @ ${HOME}/.config/systemd/user/shift-scheduler.service"
 	sudo cp ./bin/shift-scheduler /usr/local/bin/
 
