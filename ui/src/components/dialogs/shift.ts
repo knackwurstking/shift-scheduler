@@ -1,4 +1,5 @@
-import { html, Shift } from "@lib";
+import { html } from "@lib";
+import { CreateDialog, Shift } from "@types";
 import { m } from "@paraglide/messages";
 
 function create(): CreateDialog {

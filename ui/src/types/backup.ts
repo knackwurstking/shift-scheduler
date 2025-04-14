@@ -1,5 +1,5 @@
-import { DBEntry } from "./types.database";
-import { Rhythm, Shifts, StartDate, Version, WeekStart } from "./types.store";
+import { DBEntry } from "./database";
+import { Rhythm, Shifts, StartDate, Version, WeekStart } from "./store";
 
 // NOTE: >= v1.4.0 && <= v1.5.3
 export interface BackupV1 {

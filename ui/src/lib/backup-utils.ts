@@ -1,6 +1,6 @@
 import { m } from "@paraglide/messages";
-import { BackupV1, BackupV2, BackupV3 } from "./types.backup";
-import { constants, db, DBEntry, store } from "@lib";
+import { constants, db, store } from "@lib";
+import { BackupV1, BackupV2, BackupV3, DBEntry } from "@types";
 
 export async function updateViaJSON(
     result: string | ArrayBuffer | null,

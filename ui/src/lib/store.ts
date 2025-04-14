@@ -8,7 +8,7 @@ import {
     StartDate,
     Version,
     WeekStart,
-} from "./types.store";
+} from "@types";
 import { backupUtils } from "@lib";
 
 export type ShiftSchedulerStore = ui.Store<{

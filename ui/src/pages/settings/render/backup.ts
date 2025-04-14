@@ -1,7 +1,8 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import { backupUtils, db, html, store, BackupV3 } from "@lib";
+import { backupUtils, db, html, store } from "@lib";
+import { BackupV3 } from "@types";
 import { m } from "@paraglide/messages";
 
 export function create(

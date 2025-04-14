@@ -1,3 +1,5 @@
+import { Create } from "@types";
+
 export function create(): Create<
     HTMLElement,
     {

@@ -1,4 +1,5 @@
 import { html } from "@lib";
+import { Create } from "@types";
 
 const innerHTML = html`
     <div class="name" style="text-wrap: nowrap"></div>

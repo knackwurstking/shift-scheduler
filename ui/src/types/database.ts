@@ -1,4 +1,4 @@
-import { Shift } from "./types.store";
+import { Shift } from "./store";
 
 export interface DBEntry {
     year: number;

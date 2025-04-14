@@ -1,7 +1,8 @@
 import { draggable } from "ui";
 
 import { shiftCard } from "@components";
-import { html, Rhythm, Shift } from "@lib";
+import { html } from "@lib";
+import { CreateDialog, Rhythm, Shift } from "@types";
 import { m } from "@paraglide/messages";
 
 function create(): CreateDialog {

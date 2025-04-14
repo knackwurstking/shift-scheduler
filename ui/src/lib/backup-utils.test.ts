@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 
-import { backupUtils, BackupV1, BackupV2, BackupV3, constants } from "@lib";
+import { backupUtils, constants } from "@lib";
+import { BackupV1, BackupV2, BackupV3 } from "@types";
 import { describe, expect, test } from "vitest";
 
 describe("pages -> settings -> backup-utils", () => {

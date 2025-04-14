@@ -1,6 +1,5 @@
 import * as store from "./store";
-import { DBEntry } from "./types.database";
-import { Shift, WeekStart } from "./types.store";
+import { DBEntry, Shift, WeekStart } from "@types";
 
 export async function getDataForDays(
     size: number,

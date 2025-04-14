@@ -3,7 +3,8 @@ import { Share } from "@capacitor/share";
 import * as jspdf from "jspdf";
 import autoTable from "jspdf-autotable";
 
-import { calendarUtils, constants, db, html, store, DBEntry } from "@lib";
+import { calendarUtils, constants, db, html, store } from "@lib";
+import { CreateDialog, DBEntry } from "@types";
 import { m } from "@paraglide/messages";
 
 import * as spinner from "../spinner";

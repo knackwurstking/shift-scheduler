@@ -1,4 +1,4 @@
-import { DBEntry } from "./types.database";
+import { DBEntry } from "@types";
 
 export class DB {
     public version: number;
