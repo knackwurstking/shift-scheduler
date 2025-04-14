@@ -1,6 +1,6 @@
 import { spinner } from "@components";
 
-import { html, store } from "@lib";
+import { constants, html, store } from "@lib";
 import { m } from "@paraglide/messages";
 
 export function create(): HTMLElement {
@@ -10,6 +10,14 @@ export function create(): HTMLElement {
 
     article.innerHTML = html`
         <h4>${m.update()}</h4>
+
+        <section class="current-version ui-flex justify-between gap" style="font-size: 0.85rem;">
+            <span>Current Version:</span>
+            <span style="--mono: 1;">
+                <span class="version">v${constants.version}</span>
+                <span class="build">[Build: ${constants.build}]</span>
+            </span>
+        </section
 
         <section class="info">
             <p>${m.update_uptodate_info()}</p>
