@@ -11,13 +11,16 @@ export function create(): HTMLElement {
     article.innerHTML = html`
         <h4>${m.update()}</h4>
 
-        <section class="current-version ui-flex justify-between gap" style="font-size: 0.85rem;">
+        <section
+            class="current-version ui-flex justify-between gap"
+            style="font-size: 0.85rem;"
+        >
             <span>Current Version:</span>
             <span style="--mono: 1;">
                 <span class="version">v${constants.version}</span>
                 <span class="build">[Build: ${constants.build}]</span>
             </span>
-        </section
+        </section>
 
         <section class="info">
             <p>${m.update_uptodate_info()}</p>
