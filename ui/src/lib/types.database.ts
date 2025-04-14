@@ -1,4 +1,4 @@
-import { Shift } from "./calendar";
+import { Shift } from "./types.store";
 
 export interface DBEntry {
     year: number;

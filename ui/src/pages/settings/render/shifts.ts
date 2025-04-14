@@ -1,7 +1,6 @@
 import { dialogs } from "@components";
-import { html, store } from "@lib";
+import { html, store, Shift } from "@lib";
 import { m } from "@paraglide/messages";
-import { Shift } from "@types";
 import { draggable } from "ui";
 
 export function create(): HTMLElement {

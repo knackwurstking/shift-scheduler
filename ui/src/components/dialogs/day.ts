@@ -1,5 +1,4 @@
-import { html, store } from "@lib";
-import { DBEntry } from "@types";
+import { html, store, DBEntry } from "@lib";
 import { m } from "@paraglide/messages";
 
 function create(): CreateDialog {

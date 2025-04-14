@@ -1,6 +1,5 @@
-import { html } from "@lib";
+import { html, Shift } from "@lib";
 import { m } from "@paraglide/messages";
-import { Shift } from "@types";
 
 function create(): CreateDialog {
     const dialog = document.createElement("dialog");

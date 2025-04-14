@@ -1,5 +1,4 @@
-import { store, constants } from "@lib";
-import { EditMode, Shifts } from "@types";
+import { store, constants, EditMode, Shifts } from "@lib";
 import { shiftCard } from "@components";
 import { m } from "@paraglide/messages";
 

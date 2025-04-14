@@ -1,6 +1,5 @@
 import { dialogs } from "@components";
-import { calendarUtils, constants, db, html, store } from "@lib";
-import { DBEntry } from "@types";
+import { calendarUtils, constants, db, html, store, DBEntry } from "@lib";
 
 const template = document.createElement("template");
 template.innerHTML = html`

@@ -29,3 +29,8 @@ export interface EditMode {
     open: boolean;
     active: number;
 }
+
+export interface Version {
+    version: string;
+    build: number;
+}

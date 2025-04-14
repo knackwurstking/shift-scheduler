@@ -1,16 +1,16 @@
 import "./bootstrap-icons.css";
 import "./styles.css";
 
-import { App } from "@capacitor/app";
-import * as ui from "ui";
 import { registerSW } from "virtual:pwa-register";
 import { SendIntent } from "send-intent";
+import { App } from "@capacitor/app";
 import { Encoding, Filesystem } from "@capacitor/filesystem";
+import * as ui from "ui";
 
+import { spinner } from "@components";
 import { appBarUtils, backupUtils, db, store } from "@lib";
 import * as pages from "@pages";
 import { m } from "@paraglide/messages";
-import { spinner } from "@components";
 
 console.debug("process.env.MODE:", process.env.MODE);
 

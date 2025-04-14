@@ -1,5 +1,6 @@
 import * as ui from "ui";
 
+import { build, shiftIDNothing, version } from "./constants";
 import {
     EditMode,
     Rhythm,
@@ -7,8 +8,7 @@ import {
     StartDate,
     Version,
     WeekStart,
-} from "@types";
-import * as constants from "./constants";
+} from "./types.store";
 import { backupUtils } from "@lib";
 
 export type ShiftSchedulerStore = ui.Store<{
@@ -47,13 +47,9 @@ export const obj: ShiftSchedulerStore = (() => {
     store.set("rhythm", [], true);
     store.set("startDate", 0, true);
 
-    store.set(
-        "editMode",
-        { open: false, active: constants.shiftIDNothing },
-        false,
-    );
+    store.set("editMode", { open: false, active: shiftIDNothing }, false);
 
-    const newVersion = { version: constants.version, build: constants.build };
+    const newVersion = { version: version, build: build };
 
     // There is more to fix here after updating from v2 to v3
     switch (store.get("version")?.build) {

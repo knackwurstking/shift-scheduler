@@ -1,7 +1,7 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 
-import { backupUtils, db, html, store } from "@lib";
+import { backupUtils, db, html, store, BackupV3 } from "@lib";
 import { m } from "@paraglide/messages";
 
 export function create(
@@ -74,7 +74,7 @@ export function create(
     };
 
     exportButton.onclick = async () => {
-        const data: backupUtils.BackupV3 = {
+        const data: BackupV3 = {
             // Create the backup object
             weekStart: store.obj.get("weekStart")!,
             shifts: store.obj.get("shifts")!,
