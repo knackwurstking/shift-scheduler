@@ -35,7 +35,9 @@ function create(year: number): CreateDialog {
             </div>
 
             <div class="ui-flex gap justify-end">
-                <button class="cancel" color="secondary">${m.cancel()}</button>
+                <button class="cancel" data-ui-color="secondary">
+                    ${m.cancel()}
+                </button>
                 <input type="submit" value="${m.submit()}" />
             </div>
         </form>

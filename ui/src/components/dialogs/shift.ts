@@ -80,7 +80,7 @@ function create(): CreateDialog {
                 </div>
 
                 <div class="ui-flex gap justify-end" style="width: 100%">
-                    <button class="cancel" color="secondary">
+                    <button class="cancel" data-ui-color="secondary">
                         ${m.cancel()}
                     </button>
                     <input type="submit" value="${m.submit()}" />

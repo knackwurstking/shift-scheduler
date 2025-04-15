@@ -22,8 +22,13 @@ export function create(
                 class="ui-flex gap justify-end"
                 style="padding: var(--ui-spacing)"
             >
-                <button class="import" color="secondary">${m.import()}</button>
-                <button class="export" color="secondary">${m.export()}</button>
+                <button class="import" data-ui-color="secondary">
+                    ${m.import()}
+                </button>
+
+                <button class="export" data-ui-color="secondary">
+                    ${m.export()}
+                </button>
             </span>
         </section>
     `;

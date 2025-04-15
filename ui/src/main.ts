@@ -20,7 +20,9 @@ if (!process.env.MODE) {
     const updateSW = registerSW({
         async onNeedRefresh() {
             store.obj.set("update", { updateSW }, false, { skipStore: true });
-            appBarUtils.get("settings").setAttribute("color", "destructive");
+            appBarUtils
+                .get("settings")
+                .setAttribute("data-ui-color", "destructive");
         },
     });
 }

@@ -54,7 +54,7 @@ function create(): CreateDialog {
                 </div>
 
                 <div class="ui-flex gap justify-end">
-                    <button class="cancel" color="secondary">
+                    <button class="cancel" data-ui-color="secondary">
                         ${m.cancel()}
                     </button>
                     <input type="submit" value="${m.submit()}" />
@@ -193,9 +193,9 @@ function createTableItem(
                 <div class="ui-flex-item" style="flex: 0">
                     <button
                         class="delete"
-                        variant="ghost"
-                        color="destructive"
-                        icon
+                        data-ui-variant="ghost"
+                        data-ui-color="destructive"
+                        data-ui-icon
                     >
                         <i class="bi bi-trash"></i>
                     </button>

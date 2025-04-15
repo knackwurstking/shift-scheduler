@@ -33,7 +33,10 @@ export function create(): HTMLElement {
             article.querySelector(`.info`)!.innerHTML = html`
                 <label class="ui-flex justify-between gap">
                     <span>${m.update_available()}</span>
-                    <button variant="outline" color="destructive">
+                    <button
+                        data-ui-variant="outline"
+                        data-ui-color="destructive"
+                    >
                         ${m.update()}
                     </button>
                 </label>

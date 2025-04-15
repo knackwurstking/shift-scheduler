@@ -190,7 +190,7 @@ function createTableItem(
         <td class="actions" style="text-align: right;">
             <div class="ui-flex gap justify-end align-center">
                 <div class="ui-flex-item" style="flex: 0;">
-                    <button class="edit" variant="ghost" icon>
+                    <button class="edit" data-ui-variant="ghost" data-ui-icon>
                         <i class="bi bi-pen"></i>
                     </button>
                 </div>
@@ -198,9 +198,9 @@ function createTableItem(
                 <div class="ui-flex-item" style="flex: 0;">
                     <button
                         class="delete"
-                        variant="ghost"
-                        color="destructive"
-                        icon
+                        data-ui-variant="ghost"
+                        data-ui-color="destructive"
+                        data-ui-icon
                     >
                         <i class="bi bi-trash"></i>
                     </button>
