@@ -51,5 +51,5 @@ export function setTitle(title: string): void {
 }
 
 function queryAppBarTitle(): HTMLElement {
-    return document.querySelector<HTMLElement>(`.ui-app-bar .center .title`)!;
+    return document.querySelector<HTMLElement>(`.ui-app-bar-center .title`)!;
 }
