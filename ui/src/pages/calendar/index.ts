@@ -186,7 +186,7 @@ template.innerHTML = html`
         }
     </style>
 
-    <div class="item-container ui-flex-grid-row ui-none-select">
+    <div class="item-container ui-flex gap ui-none-select">
         <div class="item item1" style="left: -100%"></div>
 
         <div class="item item2" style="left: 0"></div>
@@ -195,7 +195,7 @@ template.innerHTML = html`
     </div>
 
     <div
-        class="edit-mode ui-flex-grid-row ui-auto-scroll-x ui-hide-scrollbar"
+        class="edit-mode ui-flex gap ui-auto-scroll-x ui-hide-scrollbar"
         style="--gap: 0.5rem"
     ></div>
 `;
