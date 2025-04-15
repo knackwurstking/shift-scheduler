@@ -23,7 +23,7 @@ function create(): CreateDialog {
                 ></textarea>
             </div>
 
-            <div class="ui-flex-grid-row" style="--justify: flex-end">
+            <div class="ui-flex gap justify-end">
                 <button class="cancel" color="secondary">${m.cancel()}</button>
                 <input type="submit" value="${m.submit()}" />
             </div>

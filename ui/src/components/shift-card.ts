@@ -18,9 +18,9 @@ export function create(): Create<
     const el = document.createElement("div");
 
     el.className =
-        "shift-card ui-flex-grid-item ui-none-select ui-border ui-padding";
+        "shift-card ui-flex-item ui-none-select ui-border ui-padding";
 
-    el.style.setProperty("--flex", "0");
+    el.style.flex = "0";
     el.style.width = "fit-content";
     el.style.minHeight = "calc(1.6rem * 2 + var(--ui-spacing) * 2)";
     el.style.cursor = "pointer";

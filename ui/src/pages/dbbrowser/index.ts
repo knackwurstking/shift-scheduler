@@ -42,25 +42,25 @@ async function getHTML(): Promise<string> {
 
         note = "";
         if (entry.note) {
-            note = html`<p class="ui-flex-grid-item">${entry.note}</p>`;
+            note = html`<p class="ui-flex-item">${entry.note}</p>`;
         }
 
         return html`
             <div
-                class="db-entry-item ui-flex-grid ui-border"
+                class="db-entry-item ui-flex column gap ui-border"
                 data-year="${entry.year}"
                 data-month="${entry.month}"
                 data-date="${entry.date}"
             >
-                <span class="ui-flex-grid-row">
-                    <span class="ui-flex-grid-item" style="--flex: 0;">
+                <span class="ui-flex gap">
+                    <span class="ui-flex-item" style="flex: 0;">
                         ${entry.year}/${month}/${date}
                     </span>
 
                     <span
-                        class="ui-flex-grid-item"
+                        class="ui-flex-item"
                         style="
-                            --flex: 0;
+                            flex: 0;
                             white-space: nowrap;
                             color: ${entry.shift?.color || "inherit"};
                         "
@@ -87,13 +87,13 @@ async function getHTML(): Promise<string> {
             }
         </style>
 
-        <div class="ui-flex-grid" style="width: 100%; height: 100%">
+        <div class="ui-flex column gap" style="width: 100%; height: 100%">
             <div
-                class="ui-flex-grid-item"
-                style="--flex: 1; width: 100%; height: 100%; overflow: hidden;"
+                class="ui-flex-item"
+                style="flex: 1; width: 100%; height: 100%; overflow: hidden;"
             >
                 <div
-                    class="db-entry-item-container ui-flex-grid ui-hide-scrollbar ui-auto-scroll-y"
+                    class="db-entry-item-container ui-flex column gap ui-hide-scrollbar ui-auto-scroll-y"
                     style="width: 100%; min-height: 100%; max-height: 100%;"
                 >
                     ${entryItems.join("")}

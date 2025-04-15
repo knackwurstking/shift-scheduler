@@ -19,8 +19,8 @@ export function create(
             <label style="padding: var(--ui-spacing)"> JSON </label>
 
             <span
-                class="ui-flex gap"
-                style="--justify: flex-end; padding: var(--ui-spacing)"
+                class="ui-flex gap justify-end"
+                style="padding: var(--ui-spacing)"
             >
                 <button class="import" color="secondary">${m.import()}</button>
                 <button class="export" color="secondary">${m.export()}</button>

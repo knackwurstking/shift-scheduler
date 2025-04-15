@@ -12,8 +12,8 @@ export function create(): HTMLElement {
     article.innerHTML = html`
         <h4>${m.shift_settings()}</h4>
 
-        <section class="shifts-table ui-flex-grid">
-            <table class="ui-flex-grid-item">
+        <section class="shifts-table ui-flex column gap">
+            <table class="ui-flex-item">
                 <thead>
                     <tr>
                         <th style="text-align: left;">${m.name()}</th>
@@ -26,7 +26,7 @@ export function create(): HTMLElement {
             </table>
 
             <div
-                class="ui-flex-grid-item ui-flex justify-end"
+                class="ui-flex-item ui-flex justify-end"
                 style="padding: var(--ui-spacing); width: 100%;"
             >
                 <button class="add-shift">${m.add_shift()}</button>
@@ -188,17 +188,14 @@ function createTableItem(
         <td class="short-name" style="text-align: left; color: inherit"></td>
 
         <td class="actions" style="text-align: right;">
-            <div
-                class="ui-flex-grid-row"
-                style="--justify: flex-end; --align: center;"
-            >
-                <div class="ui-flex-grid-item" style="--flex: 0;">
+            <div class="ui-flex gap justify-end align-center">
+                <div class="ui-flex-item" style="flex: 0;">
                     <button class="edit" variant="ghost" icon>
                         <i class="bi bi-pen"></i>
                     </button>
                 </div>
 
-                <div class="ui-flex-grid-item" style="--flex: 0;">
+                <div class="ui-flex-item" style="flex: 0;">
                     <button
                         class="delete"
                         variant="ghost"

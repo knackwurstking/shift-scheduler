@@ -4,19 +4,15 @@ import { DBEntry } from "@types";
 
 const template = document.createElement("template");
 template.innerHTML = html`
-    <div class="item-content ui-flex-grid" style="--gap: 0.05rem">
-        <div
-            class="week-days ui-flex-grid-row"
-            class="week-days-row"
-            gap="0.05rem"
-        >
-            <div class="week-day ui-flex-grid-item"></div>
-            <div class="week-day ui-flex-grid-item"></div>
-            <div class="week-day ui-flex-grid-item"></div>
-            <div class="week-day ui-flex-grid-item"></div>
-            <div class="week-day ui-flex-grid-item"></div>
-            <div class="week-day ui-flex-grid-item"></div>
-            <div class="week-day ui-flex-grid-item"></div>
+    <div class="item-content ui-flex column gap" style="--gap: 0.05rem">
+        <div class="week-days ui-flex gap" class="week-days-row" gap="0.05rem">
+            <div class="week-day ui-flex-item"></div>
+            <div class="week-day ui-flex-item"></div>
+            <div class="week-day ui-flex-item"></div>
+            <div class="week-day ui-flex-item"></div>
+            <div class="week-day ui-flex-item"></div>
+            <div class="week-day ui-flex-item"></div>
+            <div class="week-day ui-flex-item"></div>
         </div>
     </div>
 `;
@@ -30,7 +26,7 @@ export function createItemContent(year: number, month: number): HTMLElement {
         const row = document.createElement("div");
         itemContent.appendChild(row);
 
-        row.className = "days ui-flex-grid-item ui-flex-grid-row";
+        row.className = "days ui-flex-item ui-flex gap";
         row.style.setProperty("--gap", "0.05rem");
 
         for (let x = 0; x < 7; x++) {
@@ -220,7 +216,7 @@ function markWeekendItems(weekDays: Element[], days: Element[]): void {
 function createDayItem(date: number | string, shift?: string): HTMLDivElement {
     const el = document.createElement("div");
 
-    el.className = "day ui-flex-grid-item";
+    el.className = "day ui-flex-item";
 
     el.innerHTML = html`
         <div class="date">${date}</div>

@@ -13,7 +13,7 @@ function create(): CreateDialog {
                 <input type="month" style="min-width: 12ch" />
             </label>
 
-            <div class="ui-flex-grid-row" style="--justify: flex-end">
+            <div class="ui-flex gap justify-end">
                 <button class="cancel" color="secondary">${m.cancel()}</button>
                 <input type="submit" value="${m.submit()}" />
             </div>

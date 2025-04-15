@@ -14,11 +14,11 @@ function create(): CreateDialog {
     dialog.innerHTML = html`
         <form method="dialog" style="width: 100%; height: 100%">
             <div
-                class="ui-flex-grid"
+                class="ui-flex column gap"
                 style="width: 100%; height: 100%; margin: 0"
             >
                 <div
-                    class="ui-flex-grid-item ui-auto-scroll-y ui-hide-scrollbar"
+                    class="ui-flex-item ui-auto-scroll-y ui-hide-scrollbar"
                     style="width: 100%"
                 >
                     <table>
@@ -35,7 +35,7 @@ function create(): CreateDialog {
                 </div>
 
                 <div
-                    class="ui-flex-grid-item"
+                    class="ui-flex-item"
                     style="position: relative; max-height: 1.6rem; width: 100%"
                 >
                     <hr
@@ -44,16 +44,16 @@ function create(): CreateDialog {
                 </div>
 
                 <div
-                    class="picker ui-flex-grid-item"
-                    style="--flex: 0; position: relative; max-height: fit-content; width: 100%"
+                    class="picker ui-flex-item"
+                    style="flex: 0; position: relative; max-height: fit-content; width: 100%"
                 >
                     <div
-                        class="shifts-container ui-flex-grid-row ui-auto-scroll-x ui-hide-scrollbar"
+                        class="shifts-container ui-flex gap ui-auto-scroll-x ui-hide-scrollbar"
                         style="width: 100%; height: 100%"
                     ></div>
                 </div>
 
-                <div class="ui-flex-grid-row" style="--justify: flex-end">
+                <div class="ui-flex gap justify-end">
                     <button class="cancel" color="secondary">
                         ${m.cancel()}
                     </button>
@@ -189,8 +189,8 @@ function createTableItem(
         <td class="short-name left" style="color: inherit"></td>
 
         <td class="right">
-            <div class="ui-flex-grid-row" style="--justify: flex-end">
-                <div class="ui-flex-grid-item" style="--flex: 0">
+            <div class="ui-flex gap justify-end">
+                <div class="ui-flex-item" style="flex: 0">
                     <button
                         class="delete"
                         variant="ghost"
