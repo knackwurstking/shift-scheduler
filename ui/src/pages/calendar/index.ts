@@ -156,7 +156,7 @@ template.innerHTML = html`
             align-items: center;
             font-size: 5vmin;
             font-weight: bold;
-            color: var(--shift-color, var(--ui-text));
+            color: var(--shift-color, inherit);
             border-radius: inherit;
         }
 
