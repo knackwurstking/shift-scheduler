@@ -5,7 +5,11 @@ import { DBEntry } from "@types";
 const template = document.createElement("template");
 template.innerHTML = html`
     <div class="item-content ui-flex column" style="gap: 0.05rem">
-        <div class="week-days ui-flex gap" class="week-days-row" gap="0.05rem">
+        <div
+            class="week-days ui-flex"
+            class="week-days-row"
+            style="gap: 0.05rem;"
+        >
             <div class="week-day ui-flex-item"></div>
             <div class="week-day ui-flex-item"></div>
             <div class="week-day ui-flex-item"></div>
