@@ -4,7 +4,7 @@ import { DBEntry } from "@types";
 
 const template = document.createElement("template");
 template.innerHTML = html`
-    <div class="item-content ui-flex column gap" style="--gap: 0.05rem">
+    <div class="item-content ui-flex column" style="gap: 0.05rem">
         <div class="week-days ui-flex gap" class="week-days-row" gap="0.05rem">
             <div class="week-day ui-flex-item"></div>
             <div class="week-day ui-flex-item"></div>
@@ -26,8 +26,8 @@ export function createItemContent(year: number, month: number): HTMLElement {
         const row = document.createElement("div");
         itemContent.appendChild(row);
 
-        row.className = "days ui-flex-item ui-flex gap";
-        row.style.setProperty("--gap", "0.05rem");
+        row.className = "days ui-flex-item ui-flex";
+        row.style.setProperty("gap", "0.05rem");
 
         for (let x = 0; x < 7; x++) {
             row.append(createDayItem("")); // NOTE: Placeholder ""

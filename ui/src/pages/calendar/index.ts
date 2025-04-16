@@ -194,10 +194,7 @@ template.innerHTML = html`
         <div class="item item3" style="left: 100%"></div>
     </div>
 
-    <div
-        class="edit-mode ui-flex gap ui-auto-scroll-x ui-hide-scrollbar"
-        style="--gap: 0.5rem"
-    ></div>
+    <div class="edit-mode ui-flex gap ui-auto-scroll-x ui-hide-scrollbar"></div>
 `;
 
 let appBarTitleBackup = "";
