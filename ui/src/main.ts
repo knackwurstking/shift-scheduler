@@ -1,5 +1,4 @@
-//import "../node_modules/ui/css/main.css";
-import "../node_modules/ui/dist/css/ui.css";
+import "../node_modules/ui/dist/ui.css";
 import "./bootstrap-icons.css";
 import "./styles.css";
 
