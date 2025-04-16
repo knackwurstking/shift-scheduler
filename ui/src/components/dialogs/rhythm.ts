@@ -9,7 +9,7 @@ function create(): CreateDialog {
     const dialog = document.createElement("dialog");
     document.body.appendChild(dialog);
 
-    dialog.setAttribute("fullscreen", "");
+    dialog.setAttribute("data-ui-fullscreen", "");
 
     dialog.innerHTML = html`
         <form method="dialog" style="width: 100%; height: 100%">
