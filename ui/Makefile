@@ -20,6 +20,7 @@ dev:
 	MODE= npx vite --host -c vite.config.js
 
 preview:
+	make build-web
 	npx vite preview --host
 
 build:
