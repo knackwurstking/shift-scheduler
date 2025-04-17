@@ -63,6 +63,10 @@ export default defineConfig({
     clearScreen: false,
     base: process.env.SHIFTSCHEDULER_SERVER_PATH,
 
+    preview: {
+        port: 9030, // NOTE: This is the port i use in my rpi-server-project
+    },
+
     build: {
         outDir:
             process.env.MODE === "capacitor" ? "./dist-capacitor" : "./dist",
