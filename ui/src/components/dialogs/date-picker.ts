@@ -10,7 +10,7 @@ function create(): CreateDialog {
         <form method="dialog">
             <label>
                 ${m.pick_a_date()}
-                <input type="month" style="min-width: 12ch" />
+                <input type="month" style="width: fit-content" />
             </label>
 
             <div class="ui-flex gap justify-end">
