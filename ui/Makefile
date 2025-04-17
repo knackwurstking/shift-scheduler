@@ -21,7 +21,7 @@ dev:
 
 preview:
 	make build-web
-	npx vite preview --host
+	MODE= npx vite preview --host
 
 build:
 	npx vite build --minify -c vite.config.js --emptyOutDir
