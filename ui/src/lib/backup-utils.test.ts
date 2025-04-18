@@ -19,6 +19,7 @@ describe("pages -> settings -> backup-utils", () => {
                 version: constants.version,
                 build: constants.build,
             },
+            theme: { hue: 120 },
             indexedDB: {
                 version: 0,
                 data: [],
@@ -51,6 +52,13 @@ describe("pages -> settings -> backup-utils", () => {
 
         data.rhythm.push(0, 1, 2);
         expect(backupUtils.isBackupV3(data)).toBe(true);
+
+        data.theme = undefined;
+        expect(backupUtils.isBackupV3(data)).toBe(true);
+
+        // @ts-ignore
+        data.theme = 250;
+        expect(backupUtils.isBackupV3(data)).toBe(false);
 
         data.indexedDB.data.push({
             year: 2025,

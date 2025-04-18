@@ -6,6 +6,7 @@ import {
     Rhythm,
     Shifts,
     StartDate,
+    Theme,
     Version,
     WeekStart,
 } from "@types";
@@ -27,6 +28,8 @@ export type ShiftSchedulerStore = ui.Store<{
     update: {
         updateSW: (reloadPage?: boolean) => Promise<void>;
     };
+
+    theme: Theme;
 }>;
 
 export const prefix = "shift-scheduler:";
@@ -46,6 +49,18 @@ export const obj: ShiftSchedulerStore = (() => {
     store.set("shifts", [], true);
     store.set("rhythm", [], true);
     store.set("startDate", 0, true);
+
+    store.set("theme", { hue: 250 }, true);
+    store.listen(
+        "theme",
+        (theme) => {
+            document.documentElement.style.setProperty(
+                "--ui-hue",
+                theme.hue.toString(),
+            );
+        },
+        true,
+    );
 
     store.set("editMode", { open: false, active: shiftIDNothing }, false);
 

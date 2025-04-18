@@ -33,6 +33,7 @@ export async function updateViaJSON(
     store.obj.set("rhythm", backupV3.rhythm);
     store.obj.set("startDate", backupV3.startDate);
     store.obj.set("weekStart", backupV3.weekStart);
+    if (backupV3.theme) store.obj.set("theme", backupV3.theme);
 
     await db.deleteAll();
     for (const entry of backupV3.indexedDB.data || []) {
@@ -185,6 +186,8 @@ export function isShiftForBackupV1orV2(shift: any): boolean {
     );
 }
 
+// TODO: Check "theme" here
+//
 // Ok, this really is ugly, butt it works for now
 export function isBackupV3(data: any): boolean {
     const isShift = (s: any): boolean => {
@@ -210,10 +213,6 @@ export function isBackupV3(data: any): boolean {
         return false;
     }
 
-    if (data.version?.constructor !== Object) {
-        return false;
-    }
-
     if (data.indexedDB?.constructor !== Object) {
         return false;
     }
@@ -236,9 +235,14 @@ export function isBackupV3(data: any): boolean {
 
     // Check version
     if (
-        typeof data.version.version !== "string" ||
-        typeof data.version.build !== "number"
+        typeof data.version?.version !== "string" ||
+        typeof data.version?.build !== "number"
     ) {
+        return false;
+    }
+
+    // Check theme
+    if (typeof data.theme?.hue !== "number") {
         return false;
     }
 

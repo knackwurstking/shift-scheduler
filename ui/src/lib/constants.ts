@@ -35,3 +35,5 @@ export const months = [
 
 export const shiftIDReset = 0;
 export const shiftIDNothing = -1;
+
+export const defaultHue = 250;

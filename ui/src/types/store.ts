@@ -19,6 +19,8 @@ export interface Shift {
          */
         to: string;
     } | null;
+
+    theme?: Theme;
 }
 
 export type Shifts = Shift[];
@@ -33,4 +35,8 @@ export interface EditMode {
 export interface Version {
     version: string;
     build: number;
+}
+
+export interface Theme {
+    hue: number;
 }

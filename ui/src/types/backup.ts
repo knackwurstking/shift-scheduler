@@ -1,5 +1,5 @@
 import { DBEntry } from "./database";
-import { Rhythm, Shifts, StartDate, Version, WeekStart } from "./store";
+import { Rhythm, Shifts, StartDate, Theme, Version, WeekStart } from "./store";
 
 // NOTE: >= v1.4.0 && <= v1.5.3
 export interface BackupV1 {
@@ -68,6 +68,7 @@ export interface BackupV3 {
     rhythm: Rhythm;
     startDate: StartDate;
     version: Version;
+    theme?: Theme;
     indexedDB: {
         version: number;
         data: DBEntry[];

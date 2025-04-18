@@ -87,6 +87,7 @@ export function create(
             rhythm: store.obj.get("rhythm")!,
             startDate: store.obj.get("startDate")!,
             version: store.obj.get("version")!,
+            theme: store.obj.get("theme"),
             indexedDB: {
                 version: db.version,
                 data: await db.getAll(),

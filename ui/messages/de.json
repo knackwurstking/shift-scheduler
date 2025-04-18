@@ -68,5 +68,8 @@
     "update": "Update",
     "update_alert_message": "Update durchführen?",
     "update_available": "Es gibt ein neues Update.",
-    "update_uptodate_info": "Hier gibt es nichts zu tun, alles ist aktuell!"
+    "update_uptodate_info": "Hier gibt es nichts zu tun, alles ist aktuell!",
+
+    "settings_theme_title": "Theme",
+    "settings_theme_hue_range_label": "Probier es einfach aus :) (Default: 250)"
 }
