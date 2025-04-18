@@ -59,6 +59,7 @@ describe("pages -> settings -> backup-utils", () => {
         // @ts-ignore
         data.theme = 250;
         expect(backupUtils.isBackupV3(data)).toBe(false);
+        data.theme = undefined;
 
         data.indexedDB.data.push({
             year: 2025,

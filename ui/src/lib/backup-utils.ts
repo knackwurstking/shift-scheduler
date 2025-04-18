@@ -242,7 +242,7 @@ export function isBackupV3(data: any): boolean {
     }
 
     // Check theme
-    if (typeof data.theme?.hue !== "number") {
+    if (typeof data.theme?.hue !== "number" && data.theme !== undefined) {
         return false;
     }
 
