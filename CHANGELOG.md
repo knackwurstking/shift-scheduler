@@ -4,6 +4,7 @@
 
 **Added**:
 
+- Settings theme section to modify the hue (hsl)
 - Allow to share the JSON data to the app
 - Shift time settings (optional), currently only useful for exporting to PDF
 
