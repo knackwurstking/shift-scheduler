@@ -90,14 +90,16 @@ template.innerHTML = html`
 
         #routerTarget .saturday,
         #routerTarget .sunday {
-            font-weight: bold;
+            --wght: 650;
         }
 
+        /*
         #routerTarget .saturday,
         #routerTarget .sunday {
             background-color: var(--ui-muted);
             color: var(--ui-muted-text);
         }
+        */
 
         #routerTarget .day {
             height: 100%;
@@ -106,6 +108,7 @@ template.innerHTML = html`
         }
 
         /* TODO: Remove this highlighting and think about something new mayba some background on ".today .date" or whatever */
+        /*
         #routerTarget .day.today::after {
             content: "";
             position: absolute;
@@ -114,25 +117,26 @@ template.innerHTML = html`
             left: 0.5vmin;
             width: 3vmin;
             height: 3vmin;
-            /*border-radius: var(--ui-radius);*/
-            /*border-bottom-right-radius: 50%;*/
+            border-radius: var(--ui-radius);
+            border-bottom-right-radius: 50%;
             background-color: orange;
             filter: blur(0vmin);
             animation: fade-in 0.5s;
         }
+        */
 
         #routerTarget .day.note::before {
             content: "";
             position: absolute;
             z-index: 0;
-            bottom: -1.5vmin;
-            right: -1.5vmin;
-            width: 5vmin;
+            bottom: -2vmin;
+            right: -2vmin;
+            width: 4vmin;
             height: 4vmin;
             border-radius: var(--ui-radius);
             border-top-left-radius: 50%;
             background-color: red;
-            filter: blur(1.5vmin);
+            filter: blur(1.25vmin);
             animation: fade-in 0.5s;
         }
 
@@ -148,6 +152,7 @@ template.innerHTML = html`
         }
 
         #routerTarget .day.today .date {
+            --wght: 750;
             text-decoration: underline;
         }
 
@@ -170,32 +175,36 @@ template.innerHTML = html`
             background-color: var(--shift-color, inherit);
         }
 
+        /*
         #routerTarget .day.saturday.color-switch,
         #routerTarget .day.sunday.color-switch {
             background-color: var(--shift-color, var(--ui-muted));
         }
+        */
 
-        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
+        /*
         #routerTarget .day.color-switch.today::after {
             background-color: var(--ui-bg);
         }
+        */
 
-        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
+        /*
         #routerTarget .day.saturday.color-switch.today::after,
         #routerTarget .day.sunday.color-switch.today::after {
             background-color: var(--ui-muted);
         }
+        */
 
-        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
         #routerTarget .day.color-switch.note::before {
             background-color: var(--ui-bg);
         }
 
-        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
+        /*
         #routerTarget .day.saturday.color-switch.note::before,
         #routerTarget .day.sunday.color-switch.note::before {
             background-color: var(--ui-muted);
         }
+        */
 
         #routerTarget .day.color-switch .shift {
             color: inherit;
