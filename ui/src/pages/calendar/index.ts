@@ -131,12 +131,12 @@ template.innerHTML = html`
             z-index: 0;
             bottom: -2vmin;
             right: -2vmin;
-            width: 4vmin;
-            height: 4vmin;
+            width: 5vmin;
+            height: 5vmin;
             border-radius: var(--ui-radius);
             border-top-left-radius: 50%;
             background-color: red;
-            filter: blur(1.25vmin);
+            filter: blur(1.5vmin);
             animation: fade-in 0.5s;
         }
 
@@ -196,7 +196,7 @@ template.innerHTML = html`
         */
 
         #routerTarget .day.color-switch.note::before {
-            background-color: var(--ui-bg);
+            background-color: currentColor;
         }
 
         /*
