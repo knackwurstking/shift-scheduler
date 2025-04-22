@@ -88,9 +88,9 @@ template.innerHTML = html`
             justify-content: center;
         }
 
-        #routerTarget .saturday,
-        #routerTarget .sunday {
-            --wght: 650;
+        #routerTarget .week-day.saturday,
+        #routerTarget .week-day.sunday {
+            --wght: 800;
         }
 
         /*
@@ -152,7 +152,7 @@ template.innerHTML = html`
         }
 
         #routerTarget .day.today .date {
-            --wght: 750;
+            --wght: 950;
             text-decoration: underline;
         }
 
