@@ -105,37 +105,39 @@ template.innerHTML = html`
             cursor: pointer;
         }
 
+        /* TODO: Remove this highlighting and think about something new mayba some background on ".today .date" or whatever */
         #routerTarget .day.today::after {
             content: "";
             position: absolute;
-            z-index: 9;
-            top: -1rem;
-            left: -1rem;
-            width: 2rem;
-            height: 2rem;
-            border-radius: var(--ui-radius);
-            border-bottom-right-radius: 50%;
+            z-index: 0;
+            top: 1vmin;
+            left: 0.5vmin;
+            width: 3vmin;
+            height: 3vmin;
+            /*border-radius: var(--ui-radius);*/
+            /*border-bottom-right-radius: 50%;*/
             background-color: orange;
-            filter: blur(1rem);
+            filter: blur(0vmin);
             animation: fade-in 0.5s;
         }
 
         #routerTarget .day.note::before {
             content: "";
             position: absolute;
-            z-index: 8;
-            bottom: -1rem;
-            right: -1rem;
-            width: 2rem;
-            height: 2rem;
+            z-index: 0;
+            bottom: -1.5vmin;
+            right: -1.5vmin;
+            width: 5vmin;
+            height: 4vmin;
             border-radius: var(--ui-radius);
             border-top-left-radius: 50%;
             background-color: red;
-            filter: blur(1rem);
+            filter: blur(1.5vmin);
             animation: fade-in 0.5s;
         }
 
         #routerTarget .day .date {
+            z-index: 1;
             position: absolute;
             top: 0;
             left: 0;
@@ -143,6 +145,10 @@ template.innerHTML = html`
             font-size: 3vmin;
             font-size: clamp(0rem, 3vmin, 1rem);
             border-radius: inherit;
+        }
+
+        #routerTarget .day.today .date {
+            text-decoration: underline;
         }
 
         #routerTarget .day .shift {
@@ -158,6 +164,41 @@ template.innerHTML = html`
             font-weight: bold;
             color: var(--shift-color, inherit);
             border-radius: inherit;
+        }
+
+        #routerTarget .day.color-switch {
+            background-color: var(--shift-color, inherit);
+        }
+
+        #routerTarget .day.saturday.color-switch,
+        #routerTarget .day.sunday.color-switch {
+            background-color: var(--shift-color, var(--ui-muted));
+        }
+
+        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
+        #routerTarget .day.color-switch.today::after {
+            background-color: var(--ui-bg);
+        }
+
+        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
+        #routerTarget .day.saturday.color-switch.today::after,
+        #routerTarget .day.sunday.color-switch.today::after {
+            background-color: var(--ui-muted);
+        }
+
+        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
+        #routerTarget .day.color-switch.note::before {
+            background-color: var(--ui-bg);
+        }
+
+        /* FIXME: Overrides for shift-color-switch here: today and note highlighting */
+        #routerTarget .day.saturday.color-switch.note::before,
+        #routerTarget .day.sunday.color-switch.note::before {
+            background-color: var(--ui-muted);
+        }
+
+        #routerTarget .day.color-switch .shift {
+            color: inherit;
         }
 
         @media (orientation: landscape) {

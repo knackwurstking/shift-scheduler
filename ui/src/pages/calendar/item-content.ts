@@ -220,7 +220,7 @@ function markWeekendItems(weekDays: Element[], days: Element[]): void {
 function createDayItem(date: number | string, shift?: string): HTMLDivElement {
     const el = document.createElement("div");
 
-    el.className = "day ui-flex-item";
+    el.className = "day ui-flex-item color-switch"; // TODO: Just testing things here, class "" can be removed
 
     el.innerHTML = html`
         <div class="date">${date}</div>
@@ -260,15 +260,13 @@ function updateDayItem(dayItem: HTMLElement, entry: DBEntry): void {
 
     const shiftItem = dayItem.querySelector<HTMLElement>(`.shift`)!;
 
-    if (!entry.shift) {
-        shiftItem.style.removeProperty("--shift-color");
+    if (!entry.shift || !entry.shift.visible) {
+        dayItem.style.removeProperty("--shift-color");
         shiftItem.innerHTML = "";
     } else {
-        shiftItem.style.setProperty(
+        dayItem.style.setProperty(
             "--shift-color",
-            entry.shift.visible
-                ? entry.shift.color || "inherit"
-                : "transparent",
+            entry.shift.color || "inherit",
         );
 
         shiftItem.innerHTML = entry.shift.shortName || "";
