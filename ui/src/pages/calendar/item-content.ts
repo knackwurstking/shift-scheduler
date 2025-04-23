@@ -220,9 +220,10 @@ function markWeekendItems(weekDays: Element[], days: Element[]): void {
 function createDayItem(date: number | string, shift?: string): HTMLDivElement {
     const el = document.createElement("div");
 
-    el.className = "day ui-flex-item color-switch"; // TODO: Just testing things here, class "" can be removed
+    el.className = "day ui-flex-item";
 
     el.innerHTML = html`
+        <i class="bi bi-info"></i>
         <div class="date">${date}</div>
         <div class="shift">${shift || ""}</div>
     `;

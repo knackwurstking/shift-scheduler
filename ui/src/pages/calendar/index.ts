@@ -82,7 +82,7 @@ template.innerHTML = html`
             width: calc(100% / 7);
             overflow: hidden;
             height: 100%;
-            font-size: 115%;
+            font-size: 4vmin;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -93,51 +93,22 @@ template.innerHTML = html`
             --wght: 800;
         }
 
-        /*
-        #routerTarget .saturday,
-        #routerTarget .sunday {
-            background-color: var(--ui-muted);
-            color: var(--ui-muted-text);
-        }
-        */
-
         #routerTarget .day {
             height: 100%;
             overflow: hidden;
             cursor: pointer;
         }
 
-        /* TODO: Remove this highlighting and think about something new mayba some background on ".today .date" or whatever */
-        /*
-        #routerTarget .day.today::after {
-            content: "";
+        #routerTarget .day .bi {
+            display: none;
             position: absolute;
-            z-index: 0;
-            top: 1vmin;
-            left: 0.5vmin;
-            width: 3vmin;
-            height: 3vmin;
-            border-radius: var(--ui-radius);
-            border-bottom-right-radius: 50%;
-            background-color: orange;
-            filter: blur(0vmin);
-            animation: fade-in 0.5s;
+            bottom: 0;
+            right: 0;
+            font-size: 3.5vmin;
         }
-        */
 
-        #routerTarget .day.note::before {
-            content: "";
-            position: absolute;
-            z-index: 0;
-            bottom: -2vmin;
-            right: -2vmin;
-            width: 5vmin;
-            height: 5vmin;
-            border-radius: var(--ui-radius);
-            border-top-left-radius: 50%;
-            background-color: red;
-            filter: blur(1.5vmin);
-            animation: fade-in 0.5s;
+        #routerTarget .day.note .bi {
+            display: inline-block;
         }
 
         #routerTarget .day .date {
@@ -174,37 +145,6 @@ template.innerHTML = html`
         #routerTarget .day.color-switch {
             background-color: var(--shift-color, inherit);
         }
-
-        /*
-        #routerTarget .day.saturday.color-switch,
-        #routerTarget .day.sunday.color-switch {
-            background-color: var(--shift-color, var(--ui-muted));
-        }
-        */
-
-        /*
-        #routerTarget .day.color-switch.today::after {
-            background-color: var(--ui-bg);
-        }
-        */
-
-        /*
-        #routerTarget .day.saturday.color-switch.today::after,
-        #routerTarget .day.sunday.color-switch.today::after {
-            background-color: var(--ui-muted);
-        }
-        */
-
-        #routerTarget .day.color-switch.note::before {
-            background-color: currentColor;
-        }
-
-        /*
-        #routerTarget .day.saturday.color-switch.note::before,
-        #routerTarget .day.sunday.color-switch.note::before {
-            background-color: var(--ui-muted);
-        }
-        */
 
         #routerTarget .day.color-switch .shift {
             color: inherit;
