@@ -2,6 +2,13 @@
 
 ## v3.0.0 - 2025-04-23
 
+**Fixed**:
+
+- Drag'n'Drop for desktop Safari and Firefox
+- [UI version updated from v4.0.0 => v4.0.1](https://github.com/knackwurstking/ui/tree/v4.0.1)
+
+## v3.0.0 - 2025-04-23
+
 **Added**:
 
 - Settings theme section
