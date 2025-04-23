@@ -1,4 +1,4 @@
-all: init build-web build-capacitor android-sync
+all: init build-capacitor android-sync
 
 clean:
 	git clean -fxd
