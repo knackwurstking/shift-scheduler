@@ -23,7 +23,7 @@ init:
 	go mod tidy -v
 
 build:
-	cd ui && MODE= make build 
+	cd ui && make build-web
 	go mod tidy -v 
 	go build -v -o ./bin/shift-scheduler ./cmd/shift-scheduler
 
