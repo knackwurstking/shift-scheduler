@@ -62,7 +62,7 @@
     "dbbrowser_delete_confirm": "Sure to delete {count} items?",
 
     "dialog_shift_label_time": "Time",
-    "dialog_shift_toggle_color_switch": "Toggle Color Switch",
+    "dialog_shift_toggle_color_switch": "Use background for color",
 
     "checkbox_enable_index_page": "Include a start page with a list of shifts.",
 
