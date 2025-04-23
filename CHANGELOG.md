@@ -13,8 +13,8 @@
 **Changed**:
 
 - Rewrite to TypeScript, kicked all web components
-- [UI version updated from v0.2.17 => v4.0.0](https://github.com/knackwurstking/ui/tree/74a1ff63e5563efaa7765c2617cf616a334b921f)
-- Usining [paraglide](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) for translations
+- [UI version updated from v0.2.17 => v4.0.0](https://github.com/knackwurstking/ui/tree/v4.0.0)
+- Using [paraglide](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) for translations
 - Change the app icon for PWA
 
 ## v2.0.0 - 2024-08-19
