@@ -24,13 +24,13 @@ export async function onMount() {
         routerTarget.appendChild(document.createElement("br"));
     }
 
-    routerTarget.appendChild(render.theme.create());
-    routerTarget.appendChild(document.createElement("br"));
-
     routerTarget.appendChild(render.misc.create());
     routerTarget.appendChild(document.createElement("br"));
 
     routerTarget.appendChild(render.shifts.create());
+    routerTarget.appendChild(document.createElement("br"));
+
+    routerTarget.appendChild(render.theme.create());
     routerTarget.appendChild(document.createElement("br"));
 
     routerTarget.appendChild(render.backup.create(reload));
