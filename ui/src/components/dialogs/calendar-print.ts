@@ -196,7 +196,7 @@ function indexPage(doc: jspdf.jsPDF) {
         const shortName = doc.splitTextToSize(shift.shortName, 20);
         let name: string;
         let times: string = "";
-        if (!!shift.times) {
+        if (!!shift.times && !!shift.times.from && !!shift.times.to) {
             name = doc.splitTextToSize(shift.name, maxWidth - 80);
             times = doc.splitTextToSize(
                 `${shift.times.from} -> ${shift.times.to}`,
