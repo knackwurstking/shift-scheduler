@@ -226,6 +226,33 @@ export async function onMount() {
         store.obj.listen("editMode", handlers.editMode, true),
     );
 
+    const onFocus = () => {
+        const todayItem = routerTarget.querySelector(`.day.today`);
+        if (todayItem) {
+            const y = parseInt(todayItem.getAttribute("data-year")!, 10);
+            const m = parseInt(todayItem.getAttribute("data-month")!, 10);
+            const d = parseInt(todayItem.getAttribute("data-date")!, 10);
+            const nD = new Date();
+            if (
+                y !== nD.getFullYear() ||
+                m !== nD.getMonth() ||
+                d !== nD.getDate()
+            ) {
+                const newTodayItem = routerTarget.querySelector(
+                    `[data-year="${nD.getFullYear()}"][data-month="${nD.getMonth()}"][data-date="${nD.getDate()}"]`,
+                );
+                if (newTodayItem) {
+                    todayItem.classList.remove("today");
+                    newTodayItem.classList.add("today");
+                }
+            }
+        }
+    };
+    window.addEventListener("focus", onFocus);
+    cleanup.push(() => {
+        window.removeEventListener("focus", onFocus);
+    });
+
     setTimeout(() => {
         swipeHandler.start();
     });
