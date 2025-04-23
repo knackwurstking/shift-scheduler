@@ -242,6 +242,13 @@ function updateDayItem(dayItem: HTMLElement, entry: DBEntry): void {
         );
     };
 
+    // Enable/Disable the color switch
+    if (!!entry.shift?.colorSwitch) {
+        dayItem.classList.add("color-switch");
+    } else {
+        dayItem.classList.remove("color-switch");
+    }
+
     // Today Item
     if (isToday(entry.year, entry.month, entry.date)) {
         dayItem.classList.add("today");

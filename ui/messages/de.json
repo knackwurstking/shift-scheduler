@@ -62,6 +62,7 @@
     "dbbrowser_delete_confirm": "Möchten Sie wirklich {count} Einträge löschen?",
 
     "dialog_shift_label_time": "Zeit",
+    "dialog_shift_toggle_color_switch": "Toggle Color Switch",
 
     "checkbox_enable_index_page": "Startseite mit einer Liste der Schichten hinzufügen.",
 

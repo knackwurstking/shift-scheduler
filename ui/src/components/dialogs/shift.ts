@@ -65,6 +65,15 @@ function create(): CreateDialog {
                     <label
                         class="ui-flex justify-between align-center ui-padding"
                     >
+                        ${m.dialog_shift_toggle_color_switch()}
+                        <input class="color-switch" type="checkbox" />
+                    </label>
+                </div>
+
+                <div class="ui-flex-item" style="width: 100%">
+                    <label
+                        class="ui-flex justify-between align-center ui-padding"
+                    >
                         ${m.disable_color()}
                         <input class="default-color" type="checkbox" />
                     </label>
@@ -115,6 +124,9 @@ export function open(data: Shift | null): Promise<Shift | null> {
         const inputColorPicker =
             dialog.querySelector<HTMLInputElement>(`input.color-picker`)!;
 
+        const checkboxColorSwitch =
+            dialog.querySelector<HTMLInputElement>(`input.color-switch`)!;
+
         const checkboxDefaultColor =
             dialog.querySelector<HTMLInputElement>(`input.default-color`)!;
 
@@ -148,6 +160,8 @@ export function open(data: Shift | null): Promise<Shift | null> {
                 name: inputName.value,
                 shortName: inputShortName.value,
                 visible: !checkboxHidden.checked,
+                colorSwitch: checkboxColorSwitch.checked,
+
                 color: checkboxDefaultColor.checked
                     ? null
                     : inputColorPicker.value || null,
@@ -181,28 +195,51 @@ export function open(data: Shift | null): Promise<Shift | null> {
         inputTimeFrom.value = data?.times?.from || "";
         inputTimeTo.value = data?.times?.to || "";
         inputColorPicker.value = data?.color || "#66FF00";
+        checkboxColorSwitch.checked = !!data?.colorSwitch;
         checkboxDefaultColor.checked = !data?.color;
         checkboxHidden.checked =
             typeof data?.visible !== "boolean" ? false : !data.visible;
 
         // Initialize input handler for disabling or enabling stuff
-        // Default Color:
-        checkboxDefaultColor.onchange = () => {
-            inputColorPicker.disabled = checkboxDefaultColor.checked;
-            inputShortName.style.color = checkboxDefaultColor.checked
-                ? "inherit"
-                : inputColorPicker.value || "inherit";
+        // Color Switch:
+        checkboxColorSwitch.onchange = () => {
+            if (checkboxColorSwitch.checked && !checkboxDefaultColor.checked) {
+                inputShortName.style.backgroundColor =
+                    inputColorPicker.value || "transparent";
+                inputShortName.style.color = "var(--ui-text)";
+            } else {
+                inputShortName.style.backgroundColor = "";
+                inputShortName.style.color = checkboxDefaultColor.checked
+                    ? "var(--ui-text)"
+                    : inputColorPicker.value || "var(--ui-text)";
+            }
         };
 
-        // Hidden:
+        // Color Picker: (triggers color switch)
+        inputColorPicker.oninput = (ev) => {
+            checkboxColorSwitch.onchange!(ev);
+        };
+
+        // Default Color: (triggers color switch)
+        checkboxDefaultColor.onchange = (ev) => {
+            inputColorPicker.disabled = checkboxDefaultColor.checked;
+            inputShortName.style.color = checkboxDefaultColor.checked
+                ? "var(--ui-text)"
+                : inputColorPicker.value || "var(--ui-text)";
+            checkboxColorSwitch.onchange!(ev);
+        };
+
+        // Hidden: (triggers default color)
         checkboxHidden.onchange = (e) => {
             inputShortName.disabled = checkboxHidden.checked;
             inputColorPicker.disabled = checkboxHidden.checked;
+            checkboxColorSwitch.disabled = checkboxHidden.checked;
             checkboxDefaultColor.disabled = checkboxHidden.checked;
 
             checkboxDefaultColor.onchange!(e);
         };
 
+        checkboxColorSwitch.onchange!(new Event("change"));
         checkboxDefaultColor.onchange!(new Event("change"));
         checkboxHidden.onchange!(new Event("change"));
 

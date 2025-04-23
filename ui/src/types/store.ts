@@ -8,6 +8,7 @@ export interface Shift {
     shortName: string;
     visible: boolean;
     color?: string | null;
+    colorSwitch?: boolean;
 
     times?: {
         /**
