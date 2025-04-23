@@ -206,7 +206,9 @@ export function open(data: Shift | null): Promise<Shift | null> {
             if (checkboxColorSwitch.checked && !checkboxDefaultColor.checked) {
                 inputShortName.style.backgroundColor =
                     inputColorPicker.value || "transparent";
-                inputShortName.style.color = "var(--ui-text)";
+                inputShortName.style.color = inputColorPicker.value
+                    ? "var(--ui-bg)"
+                    : "var(--ui-text)";
             } else {
                 inputShortName.style.backgroundColor = "";
                 inputShortName.style.color = checkboxDefaultColor.checked

@@ -243,7 +243,7 @@ function updateDayItem(dayItem: HTMLElement, entry: DBEntry): void {
     };
 
     // Enable/Disable the color switch
-    if (!!entry.shift?.colorSwitch) {
+    if (!!entry.shift?.colorSwitch && !!entry.shift?.color) {
         dayItem.classList.add("color-switch");
     } else {
         dayItem.classList.remove("color-switch");
