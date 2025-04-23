@@ -61,8 +61,8 @@
     "dbbrowser_search_bar_title": "Search for entries:",
     "dbbrowser_delete_confirm": "Sure to delete {count} items?",
 
-    "dialog_shift_label_time": "Time",
-    "dialog_shift_toggle_color_switch": "Use background for color",
+    "dialog_shift_time": "Time",
+    "dialog_shift_color_switch": "Use background for color",
 
     "checkbox_enable_index_page": "Include a start page with a list of shifts.",
 

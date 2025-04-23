@@ -38,7 +38,7 @@ function create(): CreateDialog {
 
                 <div class="ui-flex-item" style="width: 100%;">
                     <label class="ui-flex column justify-between ui-padding">
-                        ${m.dialog_shift_label_time()}
+                        ${m.dialog_shift_time()}
 
                         <div class="ui-flex gap justify-between">
                             <input class="time-from" type="time" />
@@ -65,7 +65,7 @@ function create(): CreateDialog {
                     <label
                         class="ui-flex justify-between align-center ui-padding"
                     >
-                        ${m.dialog_shift_toggle_color_switch()}
+                        ${m.dialog_shift_color_switch()}
                         <input class="color-switch" type="checkbox" />
                     </label>
                 </div>
