@@ -144,17 +144,7 @@ template.innerHTML = html`
 
         #routerTarget .day.color-switch {
             background-color: var(--shift-color, inherit);
-            color: var(--ui-bg);
-        }
-
-        [data-theme="light"] #routerTarget .day.color-switch {
-            color: var(--ui-fg);
-        }
-
-        [data-theme="auto"] #routerTarget .day.color-switch {
-            @media only screen and (prefers-color-scheme: light) {
-                color: var(--ui-fg);
-            }
+            color: black;
         }
 
         #routerTarget .day.color-switch .shift {

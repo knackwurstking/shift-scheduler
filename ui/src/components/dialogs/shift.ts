@@ -207,7 +207,7 @@ export function open(data: Shift | null): Promise<Shift | null> {
                 inputShortName.style.backgroundColor =
                     inputColorPicker.value || "transparent";
                 inputShortName.style.color = inputColorPicker.value
-                    ? "var(--ui-bg)"
+                    ? "black"
                     : "var(--ui-text)";
             } else {
                 inputShortName.style.backgroundColor = "";

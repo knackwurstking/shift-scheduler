@@ -89,7 +89,13 @@ function renderShiftCards(container: HTMLElement, active: number): void {
         card.methods.queryName().innerText = shift.name;
 
         const shortName = card.methods.queryShortName();
-        shortName.style.color = shift.color || "inherit";
+        if (shift?.colorSwitch && shift?.color) {
+            card.element.style.backgroundColor = shift.color;
+            card.element.style.color = "black";
+            shortName.style.color = "black";
+        } else {
+            shortName.style.color = shift.color || "inherit";
+        }
         shortName.innerText = shift.visible ? shift.shortName : "";
 
         card.element.onclick = () => {
