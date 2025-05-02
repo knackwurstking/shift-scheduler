@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+        />
+
+        <link rel="icon" href="/shift-scheduler/assets/icons/favicon.ico" sizes="any" />
+        <link
+            rel="apple-touch-icon"
+            href="/shift-scheduler/assets/icons/apple-touch-icon-180x180.png"
+        />
+
+        <title>Shift Scheduler</title>
+
+        <style>
+            .ui-app-bar .ui-app-bar-left button.date-picker {
+                display: none;
+                margin: 0.25rem;
+                height: calc(100% - 0.5rem);
+                text-wrap: nowrap;
+                white-space: nowrap;
+            }
+        </style>
+      <script type="module" crossorigin src="/shift-scheduler/assets/index-qj7OVsJp.js"></script>
+      <link rel="stylesheet" crossorigin href="/shift-scheduler/assets/index-WMlKVpXa.css">
+    <link rel="manifest" href="/shift-scheduler/manifest.webmanifest"></head>
+
+    <body class="ui-container">
+        <div id="routerTarget" class="ui-auto-scroll ui-hide-scrollbar"></div>
+
+        <div class="ui-app-bar" data-ui-position="top">
+            <div class="ui-app-bar-left">
+                <button class="date-picker" data-ui-variant="full"></button>
+
+                <button
+                    class="back"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-color="primary"
+                    data-ui-icon
+                    onclick="history.back()"
+                >
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+            </div>
+
+            <div class="ui-app-bar-center">
+                <h4 class="title ui-ellipsis">Shift Scheduler</h4>
+            </div>
+
+            <div class="ui-app-bar-right">
+                <button
+                    class="uncheck"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-icon
+                >
+                    <i class="bi bi-square"></i>
+                </button>
+
+                <button
+                    class="check"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-icon
+                >
+                    <i class="bi bi-check-square"></i>
+                </button>
+
+                <button
+                    class="delete"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-icon
+                >
+                    <i class="bi bi-trash"></i>
+                </button>
+
+                <button
+                    class="edit"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-icon
+                >
+                    <i class="bi bi-pen"></i>
+                </button>
+
+                <button
+                    class="today"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-icon
+                >
+                    <i class="bi bi-calendar-event"></i>
+                </button>
+
+                <button
+                    class="printer"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-icon
+                >
+                    <i class="bi bi-printer"></i>
+                </button>
+
+                <button
+                    class="settings"
+                    style="display: none"
+                    data-ui-variant="ghost"
+                    data-ui-icon
+                    onclick="location.hash = '#settings'"
+                >
+                    <i class="bi bi-gear"></i>
+                </button>
+            </div>
+        </div>
+
+    </body>
+</html>
