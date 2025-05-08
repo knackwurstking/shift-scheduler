@@ -16,7 +16,7 @@ function getHTML(hue: number): string {
     return html`
         <h4>${m.settings_theme_title()}</h4>
 
-        <section class="ui-flex column">
+        <section class="ui-flex column gap">
             <label
                 for="settingsThemeHueSlider"
                 class="ui-flex gap justify-between align-center"
@@ -30,8 +30,6 @@ function getHTML(hue: number): string {
                     ${m.reset()}
                 </button>
             </label>
-
-            <br />
 
             <span class="ui-flex row nowrap gap">
                 <input
