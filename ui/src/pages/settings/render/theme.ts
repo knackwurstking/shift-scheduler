@@ -33,14 +33,24 @@ function getHTML(hue: number): string {
 
             <br />
 
-            <input
-                id="settingsThemeHueSlider"
-                type="range"
-                min="0"
-                max="360"
-                step="1"
-                value="${hue}"
-            />
+            <span class="ui-flex row nowrap gap">
+                <input
+                    id="settingsThemeHueSlider"
+                    type="range"
+                    min="0"
+                    max="360"
+                    step="1"
+                    value="${hue}"
+                />
+
+                <input
+                    type="number"
+                    min="0"
+                    max="360"
+                    step="1"
+                    value="${hue}"
+                />
+            </span>
         </section>
     `;
 }
@@ -49,8 +59,11 @@ function initHandler(container: HTMLElement) {
     const hueSlider = container.querySelector<HTMLInputElement>(
         `input#settingsThemeHueSlider`,
     )!;
+    const hueInput =
+        container.querySelector<HTMLInputElement>(`input[type="number"]`)!;
 
     hueSlider.oninput = () => {
+        hueInput.value = hueSlider.value;
         store.obj.set("theme", { hue: parseInt(hueSlider.value, 10) }, false, {
             skipStore: true,
         });
@@ -58,6 +71,12 @@ function initHandler(container: HTMLElement) {
 
     hueSlider.onchange = () => {
         store.obj.set("theme", { hue: parseInt(hueSlider.value, 10) });
+    };
+
+    hueInput.onchange = () => {
+        hueSlider.value = hueInput.value;
+        // @ts-expect-error
+        hueSlider.onchange();
     };
 
     const resetHueButton =
