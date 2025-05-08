@@ -141,7 +141,7 @@ export function create(): HTMLElement {
 
     const startDate = store.obj.get("startDate")!;
     if (!!startDate) {
-        const date = new Date();
+        const date = new Date(startDate);
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
         const day = date.getDate().toString().padStart(2, "0");
 
