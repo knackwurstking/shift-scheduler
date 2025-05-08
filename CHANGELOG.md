@@ -8,6 +8,10 @@
 
 - Theme slider number input to the right
 
+**Changed**:
+
+- Update info (web only)
+
 **Fixed**:
 
 - The Start date is not correctly initialized
