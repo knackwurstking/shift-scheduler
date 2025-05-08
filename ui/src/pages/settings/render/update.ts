@@ -34,6 +34,7 @@ export function create(): HTMLElement {
                 <label class="ui-flex justify-between gap">
                     <span>${m.update_available()}</span>
                     <button
+                        style="min-width: fit-content;"
                         data-ui-variant="outline"
                         data-ui-color="destructive"
                     >

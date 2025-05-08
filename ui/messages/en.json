@@ -68,7 +68,7 @@
 
     "update": "Update",
     "update_alert_message": "Perform the update?",
-    "update_available": "There is a new update.",
+    "update_available": "Currently, the update is still performed automatically the next time the app is launched. It's a problem with the service worker.",
     "update_uptodate_info": "Nothing to do here, everything is up to date!",
 
     "settings_theme_title": "Theme",
