@@ -4,6 +4,10 @@
 
 - [UI version updated from v4.0.1 => v4.1.2](https://github.com/knackwurstking/ui/tree/v4.1.2)
 
+**Added**:
+
+- Theme slider number input to the right
+
 **Fixed**:
 
 - Start data input initialization, forgot to pass the "startData" to the date object
