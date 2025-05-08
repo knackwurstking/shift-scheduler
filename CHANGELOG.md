@@ -1,6 +1,6 @@
 # Shift Scheduler
 
-## v3.0.2 - 2025-05-08
+## v3.1.0 - 2025-05-08
 
 - [UI version updated from v4.0.1 => v4.1.2](https://github.com/knackwurstking/ui/tree/v4.1.2)
 

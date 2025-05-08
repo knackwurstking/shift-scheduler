@@ -1,12 +1,12 @@
 import { m } from "@paraglide/messages";
 
-export const version = "3.0.2";
+export const version = "3.1.0";
 
 /**
  * - Build 13: v2.0.0
  * - Build 14: v3.0.0
  * - Build 15: v3.0.1
- * - Build 16: v3.0.2
+ * - Build 16: v3.1.0
  */
 export const build = 16;
 
