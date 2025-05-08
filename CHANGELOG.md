@@ -10,8 +10,8 @@
 
 **Fixed**:
 
-- Start data input initialization, forgot to pass the "startData" to the date object
-- Shift edit invalid highlighting
+- The Start date is not correctly initialized
+- Shift edit invalid highlightings issue
 
 ## v3.0.1 - 2025-04-23
 
