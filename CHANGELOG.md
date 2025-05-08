@@ -1,5 +1,14 @@
 # Shift Scheduler
 
+## v3.0.2 - 2025-05-08
+
+- [UI version updated from v4.0.1 => v4.1.2](https://github.com/knackwurstking/ui/tree/v4.1.2)
+
+**Fixed**:
+
+- Start data input initialization, forgot to pass the "startData" to the date object
+- Shift edit invalid highlighting
+
 ## v3.0.1 - 2025-04-23
 
 **Fixed**:

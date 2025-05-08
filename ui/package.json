@@ -1,7 +1,7 @@
 {
     "name": "shift-scheduler",
     "private": true,
-    "version": "3.0.1",
+    "version": "3.0.2",
     "type": "module",
     "devDependencies": {
         "@capacitor/android": "^7.0.1",
@@ -25,6 +25,6 @@
         "jspdf": "^3.0.1",
         "jspdf-autotable": "^5.0.2",
         "send-intent": "^7.0.0",
-        "ui": "knackwurstking/ui#v4.0.1"
+        "ui": "knackwurstking/ui#v4.1.2"
     }
 }
