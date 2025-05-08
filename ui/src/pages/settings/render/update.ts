@@ -22,15 +22,15 @@ export function create(): HTMLElement {
             </span>
         </section>
 
-        <section class="info">
-            <p>${m.update_uptodate_info()}</p>
-        </section>
+        <section class="info" style="display: none;"></section>
     `;
 
     store.obj.listen(
         "update",
         ({ updateSW }) => {
-            article.querySelector(`.info`)!.innerHTML = html`
+            const infoContainer = article.querySelector<HTMLElement>(`.info`)!;
+            infoContainer.style.display = "block";
+            infoContainer.innerHTML = html`
                 <label class="ui-flex justify-between gap">
                     <span>${m.update_available()}</span>
                     <button

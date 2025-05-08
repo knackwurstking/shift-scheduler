@@ -68,8 +68,7 @@
 
     "update": "Update",
     "update_alert_message": "Perform the update?",
-    "update_available": "Currently, the update is still performed automatically the next time the app is launched. It's a problem with the service worker.",
-    "update_uptodate_info": "Nothing to do here, everything is up to date!",
+    "update_available": "There's a new update. It will be installed automatically the next time you start the app.",
 
     "settings_theme_title": "Theme",
     "settings_theme_hue_range_label": "Just try it out :) (default: 250)"
