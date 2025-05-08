@@ -179,7 +179,7 @@ export function open(data: Shift | null): Promise<Shift | null> {
             }
             inputName.ariaInvalid = null;
 
-            if (!newData.shortName) {
+            if (!newData.shortName && !checkboxHidden.checked) {
                 e.preventDefault();
                 inputShortName.ariaInvalid = "";
                 return;
