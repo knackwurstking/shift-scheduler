@@ -35,9 +35,9 @@ build:
 
 build-docs:
 	export SERVER_PATH_PREFIX=/shift-scheduler; \
-		cd ui && make build-web && \
-		rm -rf ./docs && \
-		cp -r ./ui/dist ./docs
+		cd ui && make build-web
+	rm -rf ./docs && \
+	cp -r ./ui/dist ./docs
 
 UNAME := $(shell uname)
 check-linux:
