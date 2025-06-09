@@ -29,7 +29,7 @@ const icons: IconResource[] = [
 
 const manifest: Partial<ManifestOptions> = {
     name: "Schift Scheduler",
-    short_name: "shift-scheduler",
+    short_name: "Shift Scheduler",
     icons: icons,
     screenshots: [],
     theme_color: "#09090b",
