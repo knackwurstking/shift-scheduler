@@ -1,6 +1,9 @@
 all: init build
 
-# NOTE: The following section cntaining commands for my "rpi-server-project"
+BINARY_NAME := shift-scheduler
+
+SERVER_ADDR := :9030
+SERVER_PATH_PREFIX := /web-apps/shift-scheduler
 
 define SYSTEMD_SERVICE_FILE
 [Unit]
@@ -8,8 +11,9 @@ Description=A simple Shift Schedule application
 After=network.target
 
 [Service]
-EnvironmentFile=%h/.config/rpi-server-project/.env
-ExecStart=shift-scheduler
+Environment="SERVER_ADDR=${SERVER_ADDR}"
+Environment="SERVER_PATH_PREFIX=${SERVER_PATH_PREFIX}"
+ExecStart=${BINARY_NAME}
 
 [Install]
 WantedBy=default.target
@@ -19,13 +23,15 @@ clean:
 	git clean -fxd
 
 init:
-	cd ui && make init 
+	export SERVER_PATH_PREFIX=${SERVER_PATH_PREFIX}; \
+		cd ui && make init 
 	go mod tidy -v
 
 build:
-	cd ui && make build-web
+	export SERVER_PATH_PREFIX=${SERVER_PATH_PREFIX}; \
+		cd ui && make build-web
 	go mod tidy -v 
-	go build -v -o ./bin/shift-scheduler ./cmd/shift-scheduler
+	go build -v -o ./bin/${BINARY_NAME} ./cmd/${BINARY_NAME}
 
 UNAME := $(shell uname)
 check-linux:
@@ -36,16 +42,16 @@ endif
 
 export SYSTEMD_SERVICE_FILE
 install: check-linux
-	echo "$$SYSTEMD_SERVICE_FILE" > ${HOME}/.config/systemd/user/shift-scheduler.service 
+	echo "$$SYSTEMD_SERVICE_FILE" > ${HOME}/.config/systemd/user/${BINARY_NAME}.service 
 	systemctl --user daemon-reload 
-	echo "--> Created a service file @ ${HOME}/.config/systemd/user/shift-scheduler.service"
-	sudo cp ./bin/shift-scheduler /usr/local/bin/
+	echo "--> Created a service file @ ${HOME}/.config/systemd/user/${BINARY_NAME}.service"
+	sudo cp ./bin/${BINARY_NAME} /usr/local/bin/
 
 start: check-linux
-	systemctl --user restart shift-scheduler
+	systemctl --user restart ${BINARY_NAME}
 
 stop: check-linux
-	systemctl --user stop shift-scheduler
+	systemctl --user stop ${BINARY_NAME}
 
 log: check-linux
-	journalctl --user -u shift-scheduler --follow --output cat
+	journalctl --user -u ${BINARY_NAME} --follow --output cat

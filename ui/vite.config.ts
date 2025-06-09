@@ -36,7 +36,7 @@ const manifest: Partial<ManifestOptions> = {
     background_color: "#09090b",
     display: "standalone",
     scope: ".",
-    publicPath: process.env.SHIFTSCHEDULER_SERVER_PATH,
+    publicPath: process.env.SERVER_PATH_PREFIX,
 };
 
 export default defineConfig({
@@ -61,7 +61,7 @@ export default defineConfig({
         }),
     ],
     clearScreen: false,
-    base: process.env.SHIFTSCHEDULER_SERVER_PATH,
+    base: process.env.SERVER_PATH_PREFIX,
 
     preview: {
         port: 9030, // NOTE: This is the port i use in my rpi-server-project
