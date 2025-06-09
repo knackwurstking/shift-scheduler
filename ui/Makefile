@@ -4,7 +4,7 @@ clean:
 	git clean -fxd
 
 init:
-	npm install && \
+	npm ci && \
 		npx paraglide-js compile \
 			--project ./project.inlang \
 			--outdir ./src/paraglide \
