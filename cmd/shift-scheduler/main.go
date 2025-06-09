@@ -10,13 +10,13 @@ import (
 )
 
 var (
-	ServerAddr = os.Getenv("SHIFTSCHEDULER_SERVER_ADDR")
-	ServerPath = os.Getenv("SHIFTSCHEDULER_SERVER_PATH")
+	ServerAddr = os.Getenv("SERVER_ADDR")
+	ServerPath = os.Getenv("SERVER_PATH_PREFIX")
 )
 
 func init() {
 	if ServerAddr == "" {
-		panic("Environment variable missing: SHIFTSCHEDULER_SERVER_ADDR")
+		panic("Environment variable missing: SERVER_ADDR")
 	}
 }
 
