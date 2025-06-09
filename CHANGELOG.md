@@ -1,5 +1,10 @@
 # Shift Scheduler
 
+## v3.1.1 - 2025-06-09
+
+- Updated [ui from version v4.1.2 => 4.3.0](https://github.com/knackwurstking/ui/tree/v4.3.0) (web only) 
+- Changed the manifests (PWA) "short_name" (web only)
+
 ## v3.1.0 - 2025-05-08
 
 - [UI version updated from v4.0.1 => v4.1.2](https://github.com/knackwurstking/ui/tree/v4.1.2)
