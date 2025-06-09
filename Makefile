@@ -33,6 +33,12 @@ build:
 	go mod tidy -v 
 	go build -v -o ./bin/${BINARY_NAME} ./cmd/${BINARY_NAME}
 
+build-docs:
+	export SERVER_PATH_PREFIX=/shift-scheduler; \
+		cd ui && make build-web && \
+		rm -rf ./docs && \
+		cp -r ./ui/dist ./docs
+
 UNAME := $(shell uname)
 check-linux:
 ifneq ($(UNAME), Linux)
