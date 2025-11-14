@@ -5,21 +5,6 @@ BINARY_NAME := shift-scheduler
 SERVER_ADDR := :9030
 SERVER_PATH_PREFIX := /web-apps/shift-scheduler
 
-define SYSTEMD_SERVICE_FILE
-[Unit]
-Description=A simple Shift Schedule application
-After=network.target
-
-[Service]
-Environment="SERVER_ADDR=${SERVER_ADDR}"
-Environment="SERVER_PATH_PREFIX=${SERVER_PATH_PREFIX}"
-ExecStart=${BINARY_NAME}
-
-[Install]
-WantedBy=default.target
-endef
-
-# TODO: Create a launchd service file (.plist) for macos
 
 clean:
 	git clean -fxd
@@ -41,29 +26,36 @@ build-docs:
 	rm -rf ./docs && \
 	cp -r ./ui/dist ./docs
 
-# TODO: Rename commands to linux-install, linux-start-service, ...
+define SYSTEMD_SERVICE_FILE
+[Unit]
+Description=A simple Shift Schedule application
+After=network.target
 
-UNAME := $(shell uname)
-check-linux:
-ifneq ($(UNAME), Linux)
-	@echo 'This won’t work here since you’re not on Linux.'
-	@exit 1
-endif
+[Service]
+Environment="SERVER_ADDR=${SERVER_ADDR}"
+Environment="SERVER_PATH_PREFIX=${SERVER_PATH_PREFIX}"
+ExecStart=${BINARY_NAME}
+
+[Install]
+WantedBy=default.target
+endef
 
 export SYSTEMD_SERVICE_FILE
-install: check-linux
+linux-install:
 	echo "$$SYSTEMD_SERVICE_FILE" > ${HOME}/.config/systemd/user/${BINARY_NAME}.service
 	systemctl --user daemon-reload
 	echo "--> Created a service file @ ${HOME}/.config/systemd/user/${BINARY_NAME}.service"
 	sudo cp ./bin/${BINARY_NAME} /usr/local/bin/
 
-start: check-linux
+linux-start:
 	systemctl --user restart ${BINARY_NAME}
 
-stop: check-linux
+linux-stop:
 	systemctl --user stop ${BINARY_NAME}
 
-log: check-linux
+linux-log:
 	journalctl --user -u ${BINARY_NAME} --follow --output cat
+
+# TODO: Create a launchd service file (.plist) for macos
 
 # TODO: Create macos commands: macos-install, macos-start-service, ...
