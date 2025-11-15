@@ -47,13 +47,13 @@ linux-install:
 	echo "--> Created a service file @ ${HOME}/.config/systemd/user/${BINARY_NAME}.service"
 	sudo cp ./bin/${BINARY_NAME} /usr/local/bin/
 
-linux-start:
+linux-start-service:
 	systemctl --user restart ${BINARY_NAME}
 
-linux-stop:
+linux-stop-service:
 	systemctl --user stop ${BINARY_NAME}
 
-linux-log:
+linux-watch-service:
 	journalctl --user -u ${BINARY_NAME} --follow --output cat
 
 # TODO: Create a launchd service file (.plist) for macos
