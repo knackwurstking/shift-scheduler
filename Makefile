@@ -4,7 +4,6 @@ BINARY_NAME := shift-scheduler
 ADDR := :9030
 PREFIX := /web-apps/$(BINARY_NAME)
 
-
 clean:
 	git clean -fxd
 
@@ -31,8 +30,8 @@ Description=A simple Shift Schedule application
 After=network.target
 
 [Service]
-Environment="SERVER_ADDR=$(ADDR)"
-Environment="SERVER_PATH_PREFIX=${PREFIX}"
+Environment=SERVER_ADDR=$(ADDR)
+Environment=SERVER_PATH_PREFIX=$(PREFIX)
 ExecStart=${BINARY_NAME}
 
 [Install]
@@ -40,6 +39,7 @@ WantedBy=default.target
 endef
 
 export SYSTEMD_SERVICE_FILE
+
 linux-install:
 	echo "$$SYSTEMD_SERVICE_FILE" > $(HOME)/.config/systemd/user/$(BINARY_NAME).service
 	systemctl --user daemon-reload
@@ -60,38 +60,39 @@ define LAUNCHD_SERVICE_FILE
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-		<key>Label</key>
-		<string>com.$(BINARY_NAME)</string>
+	<key>Label</key>
+	<string>com.$(BINARY_NAME)</string>
 
-		<key>ProgramArguments</key>
-		<array>
-			<string>/usr/local/bin/$(BINARY_NAME)</string>
-		</array>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/local/bin/$(BINARY_NAME)</string>
+	</array>
 
-		<key>RunAtLoad</key>
-		<true/>
+	<key>RunAtLoad</key>
+	<true/>
 
-		<key>KeepAlive</key>
-		<true/>
+	<key>KeepAlive</key>
+	<true/>
 
-		<key>StandardOutPath</key>
-		<string>$(HOME)/Library/Application Support/$(BINARY_NAME).log</string>
+	<key>StandardOutPath</key>
+	<string>$(HOME)/Library/Application Support/$(BINARY_NAME).log</string>
 
-		<key>StandardErrorPath</key>
-		<string>$(HOME)/Library/Application Support/$(BINARY_NAME).log</string>
+	<key>StandardErrorPath</key>
+	<string>$(HOME)/Library/Application Support/$(BINARY_NAME).log</string>
 
-		<key>EnvironmentVariables</key>
-		<dict>
-			<key>SERVER_ADDR</key>
-			<string>$(ADDR)</string>
-			<key>SERVER_PATH_PREFIX</key>
-			<string>$(PREFIX)</string>
-		</dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>SERVER_ADDR</key>
+		<string>$(ADDR)</string>
+		<key>SERVER_PATH_PREFIX</key>
+		<string>$(PREFIX)</string>
+	</dict>
 </dict>
 </plist>
 endef
 
 export LAUNCHD_SERVICE_FILE
+
 macos-install:
 	@echo "Installing $(BINARY_NAME) for macOS..."
 	mkdir -p /usr/local/bin
