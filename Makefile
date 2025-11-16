@@ -1,30 +1,53 @@
-all: init build
-
+# Project configuration
 BINARY_NAME := shift-scheduler
 ADDR := :9030
 PREFIX := /web-apps/$(BINARY_NAME)
 
+# Directories and paths
+BIN_DIR := ./bin
+UI_DIR := ./ui
+DOCS_DIR := ./docs
+
+# Service configuration
+SYSTEMD_SERVICE_FILE := $(HOME)/.config/systemd/user/$(BINARY_NAME).service
+LAUNCHD_SERVICE_FILE := ~/Library/LaunchAgents/com.$(BINARY_NAME).plist
+
+# Build targets
+.PHONY: all clean init build build-docs linux-install linux-start-service \
+	linux-stop-service linux-watch-service macos-install macos-start-service \
+	macos-stop-service macos-restart-service macos-print-service macos-watch-service
+
+all: init build
+
+# Clean up the project directory
 clean:
 	git clean -fxd
 
+# Initialize the project (including UI)
 init:
+	@echo "Initializing project..."
 	export SERVER_PATH_PREFIX=$(PREFIX); \
-		cd ui && make init
+		cd $(UI_DIR) && make init
 	go mod tidy -v
 
+# Build the application
 build:
+	@echo "Building $(BINARY_NAME)..."
 	export SERVER_PATH_PREFIX=$(PREFIX); \
-		cd ui && make build-web
+		cd $(UI_DIR) && make build-web
 	go mod tidy -v
-	go build -v -o ./bin/$(BINARY_NAME) ./cmd/$(BINARY_NAME)
+	go build -v -o $(BIN_DIR)/$(BINARY_NAME) ./cmd/$(BINARY_NAME)
 
+# Build documentation
 build-docs:
+	@echo "Building documentation..."
 	export SERVER_PATH_PREFIX=/shift-scheduler; \
-		cd ui && make build-web
-	rm -rf ./docs && \
-	cp -r ./ui/dist ./docs
+		cd $(UI_DIR) && make build-web
+	rm -rf $(DOCS_DIR) && \
+	cp -r $(UI_DIR)/dist $(DOCS_DIR)
 
-define SYSTEMD_SERVICE_FILE
+# Create systemd service file for Linux
+define SYSTEMD_SERVICE_FILE_CONTENT
 [Unit]
 Description=A simple Shift Schedule application
 After=network.target
@@ -38,24 +61,30 @@ ExecStart=${BINARY_NAME}
 WantedBy=default.target
 endef
 
-export SYSTEMD_SERVICE_FILE
+export SYSTEMD_SERVICE_FILE_CONTENT
 
 linux-install:
-	echo "$$SYSTEMD_SERVICE_FILE" > $(HOME)/.config/systemd/user/$(BINARY_NAME).service
+	@echo "Installing $(BINARY_NAME) for Linux..."
+	@mkdir -p $(dir $(SYSTEMD_SERVICE_FILE))
+	echo "$$SYSTEMD_SERVICE_FILE_CONTENT" > $(SYSTEMD_SERVICE_FILE)
 	systemctl --user daemon-reload
-	echo "--> Created a service file @ $(HOME)/.config/systemd/user/$(BINARY_NAME).service"
-	sudo cp ./bin/$(BINARY_NAME) /usr/local/bin/
+	@echo "--> Created a service file @ $(SYSTEMD_SERVICE_FILE)"
+	sudo cp $(BIN_DIR)/$(BINARY_NAME) /usr/local/bin/
 
 linux-start-service:
+	@echo "Starting $(BINARY_NAME) service..."
 	systemctl --user restart $(BINARY_NAME)
 
 linux-stop-service:
+	@echo "Stopping $(BINARY_NAME) service..."
 	systemctl --user stop $(BINARY_NAME)
 
 linux-watch-service:
+	@echo "Watching $(BINARY_NAME) service logs..."
 	journalctl --user -u $(BINARY_NAME) --follow --output cat
 
-define LAUNCHD_SERVICE_FILE
+# Create launchd service file for macOS
+define LAUNCHD_SERVICE_FILE_CONTENT
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -91,25 +120,25 @@ define LAUNCHD_SERVICE_FILE
 </plist>
 endef
 
-export LAUNCHD_SERVICE_FILE
+export LAUNCHD_SERVICE_FILE_CONTENT
 
 macos-install:
 	@echo "Installing $(BINARY_NAME) for macOS..."
 	mkdir -p /usr/local/bin
-	sudo cp ./bin/$(BINARY_NAME) /usr/local/bin/$(BINARY_NAME)
+	sudo cp $(BIN_DIR)/$(BINARY_NAME) /usr/local/bin/$(BINARY_NAME)
 	sudo chmod +x /usr/local/bin/$(BINARY_NAME)
-	@echo "$$LAUNCHD_SERVICE_FILE" > ~/Library/LaunchAgents/com.$(BINARY_NAME).plist
+	@echo "$$LAUNCHD_SERVICE_FILE_CONTENT" > $(LAUNCHD_SERVICE_FILE)
 	@echo "$(BINARY_NAME) installed successfully"
 
 macos-start-service:
 	@echo "Starting $(BINARY_NAME) service..."
-	launchctl load -w ~/Library/LaunchAgents/com.$(BINARY_NAME).plist
+	launchctl load -w $(LAUNCHD_SERVICE_FILE)
 	launchctl start com.$(BINARY_NAME)
 
 macos-stop-service:
 	@echo "Stopping $(BINARY_NAME) service..."
 	launchctl stop com.$(BINARY_NAME)
-	launchctl unload -w ~/Library/LaunchAgents/com.$(BINARY_NAME).plist
+	launchctl unload -w $(LAUNCHD_SERVICE_FILE)
 
 macos-restart-service:
 	@echo "Restarting $(BINARY_NAME) service..."
