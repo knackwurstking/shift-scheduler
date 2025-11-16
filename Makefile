@@ -12,6 +12,9 @@ DOCS_DIR := ./docs
 SYSTEMD_SERVICE_FILE := $(HOME)/.config/systemd/user/$(BINARY_NAME).service
 LAUNCHD_SERVICE_FILE := ~/Library/LaunchAgents/com.$(BINARY_NAME).plist
 
+# Logs
+SERVICE_LOG := $(HOME)/Library/Application Support/$(BINARY_NAME).log
+
 # Build targets
 .PHONY: all clean init build build-docs linux-install linux-start-service \
 	linux-stop-service linux-watch-service macos-install macos-start-service \
@@ -104,10 +107,10 @@ define LAUNCHD_SERVICE_FILE_CONTENT
 	<true/>
 
 	<key>StandardOutPath</key>
-	<string>$(HOME)/Library/Application Support/$(BINARY_NAME).log</string>
+	<string>$(SERVICE_LOG)</string>
 
 	<key>StandardErrorPath</key>
-	<string>$(HOME)/Library/Application Support/$(BINARY_NAME).log</string>
+	<string>$(SERVICE_LOG)</string>
 
 	<key>EnvironmentVariables</key>
 	<dict>
@@ -150,11 +153,11 @@ macos-print-service:
 	@launchctl print gui/$$(id -u)/com.$(BINARY_NAME) || echo "Service not loaded or running"
 
 macos-watch-service:
-	@echo "$(BINARY_NAME) watch server logs @ \"/usr/local/var/log/$(BINARY_NAME).log\":"
-	@if [ -f "/usr/local/var/log/$(BINARY_NAME).log" ]; then \
+	@echo "$(BINARY_NAME) watch server logs @ \"$(SERVICE_LOG)\":"
+	@if [ -f "$(SERVICE_LOG)" ]; then \
 		echo "Watching logs... Press Ctrl+C to stop"; \
-		tail -f "/usr/local/var/log/$(BINARY_NAME).log"; \
+		tail -f "$(SERVICE_LOG)"; \
 	else \
 		echo "Log file not found. Make sure the service is running or has been started."; \
-		echo "Log file path: /usr/local/var/log/$(BINARY_NAME).log"; \
+		echo "Log file path: \"$(SERVICE_LOG)\""; \
 	fi
