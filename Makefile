@@ -13,7 +13,7 @@ SYSTEMD_SERVICE_FILE := $(HOME)/.config/systemd/user/$(BINARY_NAME).service
 LAUNCHD_SERVICE_FILE := ~/Library/LaunchAgents/com.$(BINARY_NAME).plist
 
 # Logs
-SERVICE_LOG := $(HOME)/Library/Application Support/$(BINARY_NAME).log
+SERVICE_LOG := $(HOME)/Library/Application Support/$(BINARY_NAME)/$(BINARY_NAME).log
 
 # Build targets
 .PHONY: all clean init build build-docs linux-install linux-start-service \
