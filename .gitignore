@@ -1,1 +1,6 @@
+bin/
 *.vim
+wasm_exec.js
+main.wasm
+node_modules/
+output.css
