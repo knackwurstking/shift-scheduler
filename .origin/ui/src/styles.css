@@ -1,0 +1,19 @@
+html,
+body {
+    overscroll-behavior-y: none !important;
+}
+
+html,
+body,
+#routerTarget {
+    width: 100%;
+    height: 100%;
+}
+
+#routerTarget {
+    padding-top: var(--ui-app-bar-height);
+}
+
+.day[disabled] {
+    opacity: 0.2 !important;
+}
