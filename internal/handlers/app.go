@@ -10,7 +10,7 @@ import (
 )
 
 func App(c echo.Context) error {
-	// TODO: Get language from the request c.Request()
+	// Get language from the request
 	language := c.Request().Header.Get("Accept-Language")
 	if strings.Contains(language, "de") {
 		language = "de"
