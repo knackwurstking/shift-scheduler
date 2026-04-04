@@ -4,3 +4,4 @@ wasm_exec.js
 main.wasm
 node_modules/
 output.css
+*_templ.go
