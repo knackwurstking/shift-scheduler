@@ -14,12 +14,17 @@ import (
 )
 
 const (
-	IDAppBar           = "app-bar"
-	IDAppBarLeft       = "app-bar-left"
-	IDAppBarCenter     = "app-bar-center"
-	IDAppBarRight      = "app-bar-right"
-	IDAppBarDatePicker = "app-bar-date-picker"
-	IDAppBarBackButton = "app-bar-back-button"
+	IDAppBar       = "app-bar"
+	IDAppBarLeft   = "app-bar-left"
+	IDAppBarCenter = "app-bar-center"
+	IDAppBarRight  = "app-bar-right"
+
+	// Left
+	IDDatePickerButton = "app-bar-date-picker"
+	IDBackButton       = "app-bar-back-button"
+
+	// Right
+	IDSettingsButton = "app-bar-settings-button"
 )
 
 func AppBar() templ.Component {
@@ -50,7 +55,7 @@ func AppBar() templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(IDAppBar)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 19, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 24, Col: 15}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -108,7 +113,7 @@ func AppBarLeft() templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(IDAppBarLeft)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 30, Col: 19}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 35, Col: 19}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -119,7 +124,7 @@ func AppBarLeft() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = button.Button(button.Props{
-			ID:      IDAppBarDatePicker,
+			ID:      IDDatePickerButton,
 			Variant: button.VariantDefault,
 			Attributes: templ.Attributes{
 				"style": "display: none",
@@ -147,10 +152,10 @@ func AppBarLeft() templ.Component {
 			return nil
 		})
 		templ_7745c5c3_Err = button.Button(button.Props{
-			ID:      IDAppBarBackButton,
+			ID:      IDBackButton,
 			Variant: button.VariantIcon,
 			Attributes: templ.Attributes{
-				"onclick": "history.back()",
+				"onclick": `history.back()`,
 				"style":   "display: none",
 			},
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
@@ -193,13 +198,13 @@ func AppBarCenter() templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(IDAppBarCenter)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 54, Col: 25}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 61, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"flex flex-row flex-nowrap gap-4 justify-center items-center h-full\"><span class=\"text-xl text-gray-800\">Shift Scheduler</span></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"flex flex-row flex-nowrap gap-4 justify-center items-center h-full\"><!--span class=\"text-xl text-gray-800\">Shift Scheduler</span--></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -235,13 +240,49 @@ func AppBarRight() templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(IDAppBarRight)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 60, Col: 24}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/appbar/appbar.templ`, Line: 68, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"><button class=\"uncheck\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-square\"></i></button> <button class=\"check\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-check-square\"></i></button> <button class=\"delete\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-trash\"></i></button> <button class=\"edit\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-pen\"></i></button> <button class=\"today\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-calendar-event\"></i></button> <button class=\"printer\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-printer\"></i></button> <button class=\"settings\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon onclick=\"location.hash = '#settings'\"><i class=\"bi bi-gear\"></i></button></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" class=\"flex flex-nowrap flex-row gap-4 justify-end items-center\"><button class=\"edit\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-pen\"></i></button> <button class=\"today\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-calendar-event\"></i></button> <button class=\"printer\" style=\"display: none\" data-ui-variant=\"ghost\" data-ui-icon><i class=\"bi bi-printer\"></i></button>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var10 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<i class=\"bi bi-gear\"></i>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.Settings().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = button.Button(button.Props{
+			ID:      IDSettingsButton,
+			Variant: button.VariantIcon,
+			Attributes: templ.Attributes{
+				"onclick": `location.hash = '#settings'`,
+			},
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

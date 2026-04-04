@@ -69,30 +69,6 @@ templ AppBarRight() {
 		class="flex flex-nowrap flex-row gap-4 justify-end items-center"
 	>
 		<button
-			class="uncheck"
-			style="display: none"
-			data-ui-variant="ghost"
-			data-ui-icon
-		>
-			<i class="bi bi-square"></i>
-		</button>
-		<button
-			class="check"
-			style="display: none"
-			data-ui-variant="ghost"
-			data-ui-icon
-		>
-			<i class="bi bi-check-square"></i>
-		</button>
-		<button
-			class="delete"
-			style="display: none"
-			data-ui-variant="ghost"
-			data-ui-icon
-		>
-			<i class="bi bi-trash"></i>
-		</button>
-		<button
 			class="edit"
 			style="display: none"
 			data-ui-variant="ghost"
@@ -116,15 +92,16 @@ templ AppBarRight() {
 		>
 			<i class="bi bi-printer"></i>
 		</button>
+		// Settings button, only show on the calendar page, route to the settings page
 		@button.Button(button.Props{
 			ID:      IDSettingsButton,
 			Variant: button.VariantIcon,
 			Attributes: templ.Attributes{
-				"style":   "display: none",
 				"onclick": `location.hash = '#settings'`,
 			},
 		}) {
 			<i class="bi bi-gear"></i>
+			@icons.Settings()
 		}
 	</div>
 }

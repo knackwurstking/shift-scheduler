@@ -32,39 +32,36 @@ func (p *Props) classes() string {
 	switch p.Variant {
 	case VariantDefault:
 		classes = append(classes,
-			"px-4 py-2 rounded",
-			"text-white bg-gray-800",
-			"hover:bg-gray-700",
-			"focus:ring-4 focus:ring-gray-300",
-			"active:bg-gray-600",
-			"disabled:bg-gray-400 disabled:text-gray-200 disabled:hover:bg-gray-400 disabled:focus:ring-0 disabled:active:bg-gray-400",
+			"px-4 py-2 rounded-lg",
+			"text-white bg-gray-800 hover:bg-gray-700",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500",
+			"transition-all duration-200 ease-in-out",
+			"shadow-sm hover:shadow-md",
+			"disabled:bg-gray-400 disabled:text-gray-200 disabled:hover:bg-gray-400 disabled:shadow-none",
 		)
 	case VariantGhost:
 		classes = append(classes,
-			"px-4 py-2 rounded",
-			"text-gray-800 bg-transparent",
-			"hover:bg-gray-100",
-			"focus:ring-4 focus:ring-gray-300",
-			"active:bg-gray-200",
-			"disabled:text-gray-400 disabled:hover:bg-transparent disabled:focus:ring-0 disabled:active:bg-transparent",
+			"px-4 py-2 rounded-lg",
+			"text-gray-700 bg-transparent hover:bg-gray-100",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400",
+			"transition-all duration-200 ease-in-out",
+			"disabled:text-gray-400 disabled:hover:bg-transparent disabled:shadow-none",
 		)
 	case VariantOutline:
 		classes = append(classes,
-			"px-4 py-2 rounded border",
-			"border-gray-800 text-gray-800 bg-transparent",
-			"hover:bg-gray-100",
-			"focus:ring-4 focus:ring-gray-300",
-			"active:bg-gray-200",
-			"disabled:border-gray-400 disabled:text-gray-400 disabled:hover:bg-transparent disabled:focus:ring-0 disabled:active:bg-transparent",
+			"px-4 py-2 rounded-lg border-2",
+			"border-gray-800 text-gray-800 bg-transparent hover:bg-gray-50",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500",
+			"transition-all duration-200 ease-in-out",
+			"disabled:border-gray-400 disabled:text-gray-400 disabled:hover:bg-transparent disabled:shadow-none",
 		)
 	case VariantIcon:
 		classes = append(classes,
-			"p-2 rounded",
-			"text-gray-800 bg-transparent",
-			"hover:bg-gray-100",
-			"focus:ring-4 focus:ring-gray-300",
-			"active:bg-gray-200",
-			"disabled:text-gray-400 disabled:hover:bg-transparent disabled:focus:ring-0 disabled:active:bg-transparent",
+			"p-2.5 rounded-lg",
+			"text-gray-700 bg-transparent hover:bg-gray-100",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400",
+			"transition-all duration-200 ease-in-out",
+			"disabled:text-gray-400 disabled:hover:bg-transparent disabled:shadow-none",
 		)
 	}
 
@@ -108,7 +105,7 @@ func Button(props ...Props) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(p.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/button/button.templ`, Line: 74, Col: 11}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/button/button.templ`, Line: 71, Col: 11}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
