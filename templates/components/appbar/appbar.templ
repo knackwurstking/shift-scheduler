@@ -1,5 +1,7 @@
 package appbar
 
+import "time"
+
 const (
 	IDAppBar       = "app-bar"
 	IDAppBarLeft   = "app-bar-left"
@@ -26,7 +28,17 @@ templ AppBar() {
 }
 
 templ AppBarLeft() {
-	<div id={ IDAppBarLeft }></div>
+	<div id={ IDAppBarLeft }>
+		{{ d := time.Now() }}
+		// Date picker button
+		<button
+			id={ IDDatePickerButton }
+			onclick={ onDatePickerButtonClick(IDDatePickerButton) }
+		>
+			<input type="data" style="display: none;"/>
+			{ d.Format("January 2, 2006") }
+		</button>
+	</div>
 }
 
 templ AppBarCenter() {
@@ -35,4 +47,16 @@ templ AppBarCenter() {
 
 templ AppBarRight() {
 	<div id={ IDAppBarRight }></div>
+}
+
+script onDatePickerButtonClick(datePickerButtonID string) {
+	// Show date picker and update the button text with the selected date
+	var input = document.querySelector("#" + datePickerButtonID + " input");
+	input.click();
+
+	// Handle date selection and update button text
+	input.addEventListener("change", function() {
+		var selectedDate = input.value;
+		document.querySelector("#" + datePickerButtonID).textContent = selectedDate;
+	});
 }
