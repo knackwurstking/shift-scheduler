@@ -17,8 +17,14 @@ templ Swipe(gridPrev, gridCurrent, gridNext templ.Component) {
 		onpointerup="onPointerUp"
 		onpointercancel="onPointerCancel"
 	>
-		<div id={ IDCalendarPrev }>{ gridPrev }</div>
-		<div id={ IDCalendarCurrent }>{ gridCurrent }</div>
-		<div id={ IDCalendarNext }>{ gridNext }</div>
+		<div id={ IDCalendarPrev }>
+			@gridPrev
+		</div>
+		<div id={ IDCalendarCurrent }>
+			@gridCurrent
+		</div>
+		<div id={ IDCalendarNext }>
+			@gridNext
+		</div>
 	</div>
 }
