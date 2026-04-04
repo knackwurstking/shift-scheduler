@@ -1,0 +1,121 @@
+package appbar
+
+import (
+	"github.com/knackwurstking/shift-scheduler/templates/components/button"
+	"github.com/knackwurstking/shift-scheduler/templates/components/icons"
+)
+
+const (
+	IDAppBar           = "app-bar"
+	IDAppBarLeft       = "app-bar-left"
+	IDAppBarCenter     = "app-bar-center"
+	IDAppBarRight      = "app-bar-right"
+	IDAppBarDatePicker = "app-bar-date-picker"
+	IDAppBarBackButton = "app-bar-back-button"
+)
+
+templ AppBar() {
+	<div
+		id={ IDAppBar }
+		class="fixed top-0 left-0 right-0 h-16 bg-gray-200 shadow flex items-center justify-between px-4 z-10"
+	>
+		@AppBarLeft()
+		@AppBarCenter()
+		@AppBarRight()
+	</div>
+}
+
+templ AppBarLeft() {
+	<div
+		id={ IDAppBarLeft }
+		class="flex flex-row flex-nowrap gap-4 items-center h-full"
+	>
+		// Only show this button on the calendar page
+		@button.Button(button.Props{
+			ID:      IDAppBarDatePicker,
+			Variant: button.VariantDefault,
+			Attributes: templ.Attributes{
+				"style": "display: none",
+			},
+		})
+		// Only show this button on the settings page, route back to the calendar page
+		@button.Button(button.Props{
+			ID:      IDAppBarBackButton,
+			Variant: button.VariantIcon,
+			Attributes: templ.Attributes{
+				"onclick": "history.back()",
+				"style":   "display: none",
+			},
+		}) {
+			@icons.ChevronLeft()
+		}
+	</div>
+}
+
+templ AppBarCenter() {
+	<div id={ IDAppBarCenter } class="flex flex-row flex-nowrap gap-4 justify-center items-center h-full">
+		<!--span class="text-xl text-gray-800">Shift Scheduler</span-->
+	</div>
+}
+
+templ AppBarRight() {
+	<div id={ IDAppBarRight }>
+		<button
+			class="uncheck"
+			style="display: none"
+			data-ui-variant="ghost"
+			data-ui-icon
+		>
+			<i class="bi bi-square"></i>
+		</button>
+		<button
+			class="check"
+			style="display: none"
+			data-ui-variant="ghost"
+			data-ui-icon
+		>
+			<i class="bi bi-check-square"></i>
+		</button>
+		<button
+			class="delete"
+			style="display: none"
+			data-ui-variant="ghost"
+			data-ui-icon
+		>
+			<i class="bi bi-trash"></i>
+		</button>
+		<button
+			class="edit"
+			style="display: none"
+			data-ui-variant="ghost"
+			data-ui-icon
+		>
+			<i class="bi bi-pen"></i>
+		</button>
+		<button
+			class="today"
+			style="display: none"
+			data-ui-variant="ghost"
+			data-ui-icon
+		>
+			<i class="bi bi-calendar-event"></i>
+		</button>
+		<button
+			class="printer"
+			style="display: none"
+			data-ui-variant="ghost"
+			data-ui-icon
+		>
+			<i class="bi bi-printer"></i>
+		</button>
+		<button
+			class="settings"
+			style="display: none"
+			data-ui-variant="ghost"
+			data-ui-icon
+			onclick="location.hash = '#settings'"
+		>
+			<i class="bi bi-gear"></i>
+		</button>
+	</div>
+}

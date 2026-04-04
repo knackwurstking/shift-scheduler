@@ -1,4 +1,4 @@
-.PHONY: all install-tailwind init generate build
+.PHONY: all install-tailwind init generate build run
 
 GOROOT := `go env GOROOT`
 
@@ -25,3 +25,5 @@ build:
 	@GOOS=js GOARCH=wasm go build -o $(ASSETS)/main.wasm ./main.go
 	@go build -o $(BIN)/$(BINARY) ./cmd/$(BINARY)
 
+run: init build
+	@./$(BIN)/$(BINARY)

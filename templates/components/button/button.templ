@@ -1,0 +1,80 @@
+package button
+
+import "strings"
+
+type Variant string
+
+const (
+	VariantDefault Variant = "default"
+	VariantGhost   Variant = "ghost"
+	VariantOutline Variant = "outline"
+	VariantIcon    Variant = "icon"
+)
+
+type Props struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+	Variant    Variant
+}
+
+func (p *Props) classes() string {
+	classes := []string{}
+
+	switch p.Variant {
+	case VariantDefault:
+		classes = append(classes,
+			"px-4 py-2 rounded",
+			"text-white bg-gray-800",
+			"hover:bg-gray-700",
+			"focus:ring-4 focus:ring-gray-300",
+			"active:bg-gray-600",
+			"disabled:bg-gray-400 disabled:text-gray-200 disabled:hover:bg-gray-400 disabled:focus:ring-0 disabled:active:bg-gray-400",
+		)
+	case VariantGhost:
+		classes = append(classes,
+			"px-4 py-2 rounded",
+			"text-gray-800 bg-transparent",
+			"hover:bg-gray-100",
+			"focus:ring-4 focus:ring-gray-300",
+			"active:bg-gray-200",
+			"disabled:text-gray-400 disabled:hover:bg-transparent disabled:focus:ring-0 disabled:active:bg-transparent",
+		)
+	case VariantOutline:
+		classes = append(classes,
+			"px-4 py-2 rounded border",
+			"border-gray-800 text-gray-800 bg-transparent",
+			"hover:bg-gray-100",
+			"focus:ring-4 focus:ring-gray-300",
+			"active:bg-gray-200",
+			"disabled:border-gray-400 disabled:text-gray-400 disabled:hover:bg-transparent disabled:focus:ring-0 disabled:active:bg-transparent",
+		)
+	case VariantIcon:
+		classes = append(classes,
+			"p-2 rounded",
+			"text-gray-800 bg-transparent",
+			"hover:bg-gray-100",
+			"focus:ring-4 focus:ring-gray-300",
+			"active:bg-gray-200",
+			"disabled:text-gray-400 disabled:hover:bg-transparent disabled:focus:ring-0 disabled:active:bg-transparent",
+		)
+	}
+
+	return strings.Join(classes, " ") + p.Class
+}
+
+templ Button(props ...Props) {
+	{{
+		p := Props{}
+		if len(props) > 0 {
+			p = props[0]
+		}
+	}}
+	<button
+		id={ p.ID }
+		class={ p.classes() }
+		{ p.Attributes... }
+	>
+		{ children... }
+	</button>
+}

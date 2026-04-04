@@ -1,7 +1,8 @@
-package layout
+package pages
 
 type Props struct {
 	Title string
+	Lang  string
 }
 
 templ Layout(props ...Props) {
@@ -12,9 +13,18 @@ templ Layout(props ...Props) {
 		}
 	}}
 	<!DOCTYPE html>
-	<html>
+	<html
+		if p.Lang != "" {
+			lang={ p.Lang }
+		} else {
+			lang="en"
+		}
+	>
 		<head>
 			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="icon" href="/assets/icons/favicon.ico" sizes="any"/>
+			<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180x180.png"/>
 			<link rel="stylesheet" href="css/output.css"/>
 			<title>{ p.Title }</title>
 		</head>

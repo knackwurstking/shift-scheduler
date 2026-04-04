@@ -8,7 +8,11 @@ package pages
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/knackwurstking/shift-scheduler/templates/layout"
+import "github.com/knackwurstking/shift-scheduler/templates/components/appbar"
+
+const (
+	IDAppBar = "app-bar"
+)
 
 // TODO: Render the whole a single page application here, localization tagen from props
 func App() templ.Component {
@@ -44,14 +48,19 @@ func App() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<h1>Go WebAssembly Demo</h1><button class=\"px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300\" disabled>Click Me!</button><div id=\"output\"></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = appbar.AppBar().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layout.Layout(layout.Props{
-			Title: "Go WebAssembly Example",
+		templ_7745c5c3_Err = Layout(Props{
+			Title: "Shift Scheduler",
+			Lang:  "en",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
