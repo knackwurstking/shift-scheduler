@@ -5,13 +5,7 @@ type Props struct {
 	Lang  string
 }
 
-templ Layout(props ...Props) {
-	{{
-		p := Props{}
-		if len(props) > 0 {
-			p = props[0]
-		}
-	}}
+templ Layout(p Props) {
 	<!DOCTYPE html>
 	<html
 		if p.Lang != "" {
