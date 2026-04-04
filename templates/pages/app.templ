@@ -14,14 +14,12 @@ type AppProps struct {
 	Localization *localization.Localization
 }
 
-// TODO: Render the whole a single page application here, localization taken from props
 templ App(p AppProps) {
 	@Layout(Props{
 		Title: "Shift Scheduler",
 		Lang:  "en",
 	}) {
 		@appbar.AppBar()
-		// TODO: Calendar grid, swipable left/right, infinite swipe, 3 container side by side
 		{{
 			startWithMonday := false
 			if p.Localization.Language() == "de" {
