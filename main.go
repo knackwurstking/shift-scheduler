@@ -9,6 +9,7 @@ func main() {
 	c := make(chan struct{})
 
 	// Register a function to be called from JavaScript
+	// TODO: Register swipe handlers
 
 	fmt.Println("Go WebAssembly initialized")
 
@@ -21,3 +22,9 @@ func main() {
 func initDOM() {
 	// ...
 }
+
+// TODO: Swipe handlers
+//  - onPointerMove
+//  - onPointerDown
+//  - onPointerUp
+//  - onPointerCancel
