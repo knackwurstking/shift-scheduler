@@ -2,15 +2,25 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
+	"github.com/knackwurstking/shift-scheduler/internal/localization"
 	"github.com/knackwurstking/shift-scheduler/templates/pages"
 	"github.com/labstack/echo/v4"
 )
 
 func App(c echo.Context) error {
-	// TODO: Get language from request, load the localization file and pass it to the template.
+	// TODO: Get language from the request c.Request()
+	language := c.Request().Header.Get("Accept-Language")
+	if strings.Contains(language, "de") {
+		language = "de"
+	} else {
+		language = "en"
+	}
 
-	t := pages.App()
+	t := pages.App(pages.AppProps{
+		Localization: localization.New(language),
+	})
 
 	if err := t.Render(c.Request().Context(), c.Response()); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to render template: "+err.Error())

@@ -10,8 +10,12 @@ const (
 	IDAppBar = "app-bar"
 )
 
+type AppProps struct {
+	Localization *localization.Localization
+}
+
 // TODO: Render the whole a single page application here, localization taken from props
-templ App() {
+templ App(p AppProps) {
 	@Layout(Props{
 		Title: "Shift Scheduler",
 		Lang:  "en",
@@ -19,11 +23,13 @@ templ App() {
 		@appbar.AppBar()
 		// TODO: Calendar grid, swipable left/right, infinite swipe, 3 container side by side
 		{{
-			startWithMonday := false                  // TODO: Get from localization or local storage (?)
-			localization := localization.NewEnglish() // TODO: Get from props
+			startWithMonday := false
+			if p.Localization.Language() == "de" {
+				startWithMonday = true
+			}
 			gridProps := calendar.GridProps{
 				StartWithMonday: startWithMonday,
-				Localization:    localization,
+				Localization:    p.Localization,
 			}
 		}}
 		@calendar.Swipe(
