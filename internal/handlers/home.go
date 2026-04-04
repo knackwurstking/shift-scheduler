@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"base-ah-templ/templates/pages/home"
 	"net/http"
 
+	"github.com/knackwurstking/shift-scheduler/templates/pages/home"
 	"github.com/labstack/echo/v4"
 )
 

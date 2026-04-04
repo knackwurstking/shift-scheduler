@@ -1,8 +1,7 @@
 package main
 
 import (
-	"base-ah-templ/internal/handlers"
-
+	"github.com/knackwurstking/shift-scheduler/internal/handlers"
 	"github.com/labstack/echo/v4"
 )
 

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"base-ah-templ/assets"
 	"log/slog"
 	"os"
 	"time"
 
+	"github.com/knackwurstking/shift-scheduler/assets"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/lmittmann/tint"
@@ -37,6 +37,7 @@ func init() {
 func main() {
 	e := echo.New()
 
+	// TODO: Cache middleware for caching everything, lets see if this can replace the service worker in the future.
 	e.Use(middleware.AddTrailingSlash())
 	e.Use(middleware.RequestLogger())
 	e.Use(middleware.CORS())
