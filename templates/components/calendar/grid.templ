@@ -1,8 +1,10 @@
 package calendar
 
+import "github.com/knackwurstking/shift-scheduler/internal/localization"
+
 type Props struct {
 	StartWithMonday bool
-	Localization    any // TODO: Currently not available
+	Localization    *localization.Localization
 }
 
 templ Grid(p Props) {
@@ -10,14 +12,13 @@ templ Grid(p Props) {
 	<table>
 		<thead>
 			<tr>
-				// TODO: Take this strings from the localization object
-				<th>Sun</th>
-				<th>Mon</th>
-				<th>Tue</th>
-				<th>Wed</th>
-				<th>Thu</th>
-				<th>Fri</th>
-				<th>Sat</th>
+				<th>{ p.Localization.Sunday }</th>
+				<th>{ p.Localization.Monday }</th>
+				<th>{ p.Localization.Tuesday }</th>
+				<th>{ p.Localization.Wednesday }</th>
+				<th>{ p.Localization.Thursday }</th>
+				<th>{ p.Localization.Friday }</th>
+				<th>{ p.Localization.Saturday }</th>
 			</tr>
 		</thead>
 		<tbody>
