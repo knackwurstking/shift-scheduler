@@ -1,6 +1,10 @@
 package pages
 
-import "github.com/knackwurstking/shift-scheduler/templates/components/appbar"
+import (
+	"github.com/knackwurstking/shift-scheduler/internal/localization"
+	"github.com/knackwurstking/shift-scheduler/templates/components/appbar"
+	"github.com/knackwurstking/shift-scheduler/templates/components/calendar"
+)
 
 const (
 	IDAppBar = "app-bar"
@@ -14,5 +18,18 @@ templ App() {
 	}) {
 		@appbar.AppBar()
 		// TODO: Calendar grid, swipable left/right, infinite swipe, 3 container side by side
+		{{
+			startWithMonday := false                  // TODO: Get from localization or local storage (?)
+			localization := localization.NewEnglish() // TODO: Get from props
+			gridProps := calendar.GridProps{
+				StartWithMonday: startWithMonday,
+				Localization:    localization,
+			}
+		}}
+		@calendar.Swipe(
+			calendar.Grid(gridProps),
+			calendar.Grid(gridProps),
+			calendar.Grid(gridProps),
+		)
 	}
 }
