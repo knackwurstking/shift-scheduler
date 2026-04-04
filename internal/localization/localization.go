@@ -11,13 +11,13 @@ func New(language string) *Localization {
 
 func NewGerman() *Localization {
 	return &Localization{
-		Sunday:    "Son",
-		Monday:    "Mon",
-		Tuesday:   "Die",
-		Wednesday: "Mit",
-		Thursday:  "Don",
-		Friday:    "Fre",
-		Saturday:  "Sam",
+		Sunday:    "So",
+		Monday:    "Mo",
+		Tuesday:   "Di",
+		Wednesday: "Mi",
+		Thursday:  "Do",
+		Friday:    "Fr",
+		Saturday:  "Sa",
 
 		language: "de",
 	}
