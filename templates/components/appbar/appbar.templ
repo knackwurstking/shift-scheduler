@@ -1,29 +1,24 @@
 package appbar
 
-import (
-	"github.com/knackwurstking/shift-scheduler/templates/components/button"
-	"github.com/knackwurstking/shift-scheduler/templates/components/icons"
-)
-
 const (
 	IDAppBar       = "app-bar"
 	IDAppBarLeft   = "app-bar-left"
 	IDAppBarCenter = "app-bar-center"
 	IDAppBarRight  = "app-bar-right"
 
-	// Left
-	IDDatePickerButton = "app-bar-date-picker"
+	// TODO: Left
+	IDDatePickerButton = "app-bar-date-picker-button"
 	IDBackButton       = "app-bar-back-button"
 
-	// Right
+	// TODO: Right
+	IDEditButton     = "app-bar-edit-button"
+	IDToadayButton   = "app-bar-today-button"
+	IDPrinterButton  = "app-bar-printer-button"
 	IDSettingsButton = "app-bar-settings-button"
 )
 
 templ AppBar() {
-	<div
-		id={ IDAppBar }
-		class="fixed top-0 left-0 right-0 h-16 bg-gray-200 shadow flex items-center justify-between px-4 z-10 dark:bg-gray-800"
-	>
+	<div id={ IDAppBar }>
 		@AppBarLeft()
 		@AppBarCenter()
 		@AppBarRight()
@@ -31,77 +26,13 @@ templ AppBar() {
 }
 
 templ AppBarLeft() {
-	<div
-		id={ IDAppBarLeft }
-		class="flex flex-row flex-nowrap gap-4 items-center h-full"
-	>
-		// Only show this button on the calendar page
-		@button.Button(button.Props{
-			ID:      IDDatePickerButton,
-			Variant: button.VariantDefault,
-			Attributes: templ.Attributes{
-				"style": "display: none",
-			},
-		})
-		// Only show this button on the settings page, route back to the calendar page
-		@button.Button(button.Props{
-			ID:      IDBackButton,
-			Variant: button.VariantIcon,
-			Attributes: templ.Attributes{
-				"onclick": `history.back()`,
-				"style":   "display: none",
-			},
-		}) {
-			@icons.ChevronLeft()
-		}
-	</div>
+	<div id={ IDAppBarLeft }></div>
 }
 
 templ AppBarCenter() {
-	<div id={ IDAppBarCenter } class="flex flex-row flex-nowrap gap-4 justify-center items-center h-full">
-		<!--span class="text-xl text-gray-800">Shift Scheduler</span-->
-	</div>
+	<div id={ IDAppBarCenter }></div>
 }
 
 templ AppBarRight() {
-	<div
-		id={ IDAppBarRight }
-		class="flex flex-nowrap flex-row gap-4 justify-end items-center"
-	>
-		<button
-			class="edit"
-			style="display: none"
-			data-ui-variant="ghost"
-			data-ui-icon
-		>
-			<i class="bi bi-pen"></i>
-		</button>
-		<button
-			class="today"
-			style="display: none"
-			data-ui-variant="ghost"
-			data-ui-icon
-		>
-			<i class="bi bi-calendar-event"></i>
-		</button>
-		<button
-			class="printer"
-			style="display: none"
-			data-ui-variant="ghost"
-			data-ui-icon
-		>
-			<i class="bi bi-printer"></i>
-		</button>
-		// Settings button, only show on the calendar page, route to the settings page
-		@button.Button(button.Props{
-			ID:      IDSettingsButton,
-			Variant: button.VariantIcon,
-			Attributes: templ.Attributes{
-				"onclick": `location.hash = '#settings'`,
-			},
-		}) {
-			<i class="bi bi-gear"></i>
-			@icons.Settings()
-		}
-	</div>
+	<div id={ IDAppBarRight }></div>
 }
