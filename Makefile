@@ -2,7 +2,7 @@
 
 GOROOT := `go env GOROOT`
 
-BINARY := base-ah-templ
+BINARY := shift-scheduler
 BIN := ./bin
 ASSETS := ./assets/public
 

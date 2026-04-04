@@ -7,5 +7,5 @@ import (
 
 func initRoutes(e *echo.Echo) {
 	// Home page
-	e.GET("/", handlers.Home)
+	e.GET("/", handlers.App)
 }

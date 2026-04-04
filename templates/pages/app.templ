@@ -1,8 +1,9 @@
-package home
+package pages
 
 import "github.com/knackwurstking/shift-scheduler/templates/layout"
 
-templ Page() {
+// TODO: Render the whole a single page application here, localization tagen from props
+templ App() {
 	@layout.Layout(layout.Props{
 		Title: "Go WebAssembly Example",
 	}) {
