@@ -1,19 +1,5 @@
 package localization
 
-type Localization struct {
-	// Short weekday names
-	Sunday    string `json:"sunday"`
-	Monday    string `json:"monday"`
-	Tuesday   string `json:"tuesday"`
-	Wednesday string `json:"wednesday"`
-	Thursday  string `json:"thursday"`
-	Friday    string `json:"friday"`
-	Saturday  string `json:"saturday"`
-
-	// Language code (e.g. "en", "de")
-	language string
-}
-
 func New(language string) *Localization {
 	switch language {
 	case "de":
@@ -49,4 +35,22 @@ func NewEnglish() *Localization {
 
 		language: "en",
 	}
+}
+
+type Localization struct {
+	// Short weekday names
+	Sunday    string `json:"sunday"`
+	Monday    string `json:"monday"`
+	Tuesday   string `json:"tuesday"`
+	Wednesday string `json:"wednesday"`
+	Thursday  string `json:"thursday"`
+	Friday    string `json:"friday"`
+	Saturday  string `json:"saturday"`
+
+	// Language code (e.g. "en", "de")
+	language string
+}
+
+func (l *Localization) Language() string {
+	return l.language
 }
