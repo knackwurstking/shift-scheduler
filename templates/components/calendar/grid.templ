@@ -1,0 +1,27 @@
+package calendar
+
+type Props struct {
+	StartWithMonday bool
+	Localization    any // TODO: Currently not available
+}
+
+templ Grid(p Props) {
+	// TODO: A 7x6 grid per month with a additional header row for the week days, starting from sunday based on props. If StartWithMonday is true, the week days should start from monday.
+	<table>
+		<thead>
+			<tr>
+				// TODO: Take this strings from the localization object
+				<th>Sun</th>
+				<th>Mon</th>
+				<th>Tue</th>
+				<th>Wed</th>
+				<th>Thu</th>
+				<th>Fri</th>
+				<th>Sat</th>
+			</tr>
+		</thead>
+		<tbody>
+			// TODO: Here should be the 7x6 grid
+		</tbody>
+	</table>
+}
