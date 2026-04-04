@@ -33,11 +33,11 @@ func (p *Props) classes() string {
 	case VariantDefault:
 		classes = append(classes,
 			"px-4 py-2 rounded-lg",
-			"text-white bg-gray-800 hover:bg-gray-700",
-			"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500",
+			"text-white bg-gray-800 hover:bg-gray-700 dark:text-gray-200 dark:bg-gray-600 dark:hover:bg-gray-500",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:focus:ring-gray-400",
 			"transition-all duration-200 ease-in-out",
 			"shadow-sm hover:shadow-md",
-			"disabled:bg-gray-400 disabled:text-gray-200 disabled:hover:bg-gray-400 disabled:shadow-none",
+			"disabled:bg-gray-400 disabled:text-gray-200 disabled:hover:bg-gray-400 disabled:shadow-none dark:disabled:bg-gray-500 dark:disabled:text-gray-300",
 		)
 	case VariantGhost:
 		classes = append(classes,

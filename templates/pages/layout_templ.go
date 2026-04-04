@@ -79,7 +79,7 @@ func Layout(props ...Props) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</title></head><body class=\"prose-base flex justify-center items-center flex-col gap-6 h-screen\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</title></head><body class=\"prose-base flex justify-center items-center flex-col gap-6 h-screen dark:bg-gray-900 dark:text-gray-100\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -87,7 +87,7 @@ func Layout(props ...Props) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<script src=\"wasm_exec.js\"></script><script>\n\t\t\t\tconst go = new Go();\n\t\t\t\tWebAssembly.instantiateStreaming(fetch(\"main.wasm\"), go.importObject)\n\t\t\t\t\t.then(result => {\n\t\t\t\t\t\tgo.run(result.instance);\n\t\t\t\t\t});\n\t\t\t</script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<script src=\"wasm_exec.js\"></script><script>\n\t\t\t\tconst go = new Go();\n\t\t\t\tWebAssembly.instantiateStreaming(fetch(\"main.wasm\"), go.importObject)\n\t\t\t\t\t.then(result => {\n\t\t\t\t\t\tgo.run(result.instance);\n\t\t\t\t\t});\n\t\t\t</script><script name=\"theme-toggle\">\n\t\t\t\t// Detect system preference for dark mode\n\t\t\t\tif (localStorage.getItem('theme') === null) {\n\t\t\t\t\tif (window.matchMedia('(prefers-color-scheme: dark)').matches) {\n\t\t\t\t\t\tdocument.documentElement.classList.add('dark');\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t</script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

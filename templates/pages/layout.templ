@@ -38,14 +38,14 @@ templ Layout(props ...Props) {
 						go.run(result.instance);
 					});
 			</script>
-		<script>
-			// Detect system preference for dark mode
-			if (localStorage.getItem('theme') === null) {
-				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-					document.documentElement.classList.add('dark');
+			<script name="theme-toggle">
+				// Detect system preference for dark mode
+				if (localStorage.getItem('theme') === null) {
+					if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+						document.documentElement.classList.add('dark');
+					}
 				}
-			}
-		</script>
+			</script>
 		</body>
 	</html>
 }
