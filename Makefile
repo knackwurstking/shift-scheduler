@@ -8,7 +8,7 @@ ASSETS := ./assets/public
 
 all: init build
 
-init:
+init: generate
 	@cp "$(GOROOT)/lib/wasm/wasm_exec.js" $(ASSETS)/
 	@go mod tidy
 

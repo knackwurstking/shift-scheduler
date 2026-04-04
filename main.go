@@ -11,6 +11,10 @@ func main() {
 
 	// Register a function to be called from JavaScript
 	// TODO: Register swipe handlers
+	js.Global().Set("onPointerDown", js.FuncOf(onPointerDown))
+	//js.Global().Set("onPointerMove", js.FuncOf(onPointerMove))
+	//js.Global().Set("onPointerUp", js.FuncOf(onPointerUp))
+	//js.Global().Set("onPointerCancel", js.FuncOf(onPointerCancel))
 
 	fmt.Println("Go WebAssembly initialized")
 
