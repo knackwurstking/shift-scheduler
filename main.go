@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"syscall/js"
 )
 
 func main() {
@@ -28,3 +29,15 @@ func initDOM() {
 //  - onPointerDown
 //  - onPointerUp
 //  - onPointerCancel
+
+func onPointerDown(this js.Value, args []js.Value) any {
+	event := args[0]
+	target := event.Get("target")
+
+	// TODO: Console log target
+	js.Global().Get("console").Call("log", "onPointerDown:", target)
+
+	// TODO: Set pointer down state, this will enable the swipe handler (onPointerMove)
+
+	return nil
+}
