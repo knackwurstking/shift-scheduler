@@ -16,15 +16,15 @@ const (
 	IDAppBarCenter = "app-bar-center"
 	IDAppBarRight  = "app-bar-right"
 
-	// TODO: Left
+	// Left
 	IDDatePickerButton = "app-bar-date-picker-button"
-	IDBackButton       = "app-bar-back-button"
+	IDBackButton       = "app-bar-back-button" // TODO: ...
 
-	// TODO: Right
-	IDEditButton     = "app-bar-edit-button"
-	IDToadayButton   = "app-bar-today-button"
-	IDPrinterButton  = "app-bar-printer-button"
-	IDSettingsButton = "app-bar-settings-button"
+	// Right
+	IDEditButton     = "app-bar-edit-button"     // TODO: ...
+	IDToadayButton   = "app-bar-today-button"    // TODO: ...
+	IDPrinterButton  = "app-bar-printer-button"  // TODO: ...
+	IDSettingsButton = "app-bar-settings-button" // TODO: ...
 )
 
 func AppBar() templ.Component {
