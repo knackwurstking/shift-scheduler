@@ -28,7 +28,7 @@ templ Layout(props ...Props) {
 			<link rel="stylesheet" href="css/output.css"/>
 			<title>{ p.Title }</title>
 		</head>
-		<body class="prose-base flex justify-center items-center flex-col gap-6 h-screen">
+		<body class="prose-base flex justify-center items-center flex-col gap-6 h-screen dark:bg-gray-900 dark:text-gray-100">
 			{ children... }
 			<script src="wasm_exec.js"></script>
 			<script>
@@ -38,6 +38,14 @@ templ Layout(props ...Props) {
 						go.run(result.instance);
 					});
 			</script>
+		<script>
+			// Detect system preference for dark mode
+			if (localStorage.getItem('theme') === null) {
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					document.documentElement.classList.add('dark');
+				}
+			}
+		</script>
 		</body>
 	</html>
 }
