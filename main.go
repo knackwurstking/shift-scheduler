@@ -26,6 +26,7 @@ func main() {
 	js.Global().Set("onPointerMove", js.FuncOf(onPointerMove))
 	js.Global().Set("onPointerUp", js.FuncOf(onPointerUp))
 	js.Global().Set("onPointerCancel", js.FuncOf(onPointerUp))
+	js.Global().Set("onPointerOut", js.FuncOf(onPointerUp))
 	js.Global().Set("onPointerLeave", js.FuncOf(onPointerUp))
 
 	fmt.Println("Go WebAssembly initialized")
@@ -64,10 +65,10 @@ func onPointerMove(this js.Value, args []js.Value) any {
 
 	event := args[0]
 
-	// TODO: Check swipe direction and distance, i need to define a threshold
-	// for what constitutes a swipe, also move the swipe container `calendar.IDCalendarSwipe`
 	stop.X = event.Get("clientX").Float()
 	stop.Y = event.Get("clientY").Float()
+
+	// TODO: Move ".grid-containers" by modifying `translate: -100vw 0;`
 
 	return nil
 }
