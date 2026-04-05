@@ -46,6 +46,12 @@ func onPointerDown(this js.Value, args []js.Value) any {
 	// TODO: Console log target
 	js.Global().Get("console").Call("log", "onPointerDown:", target)
 
+	// Store the current start position
+	start.X = target.Get("clientX").Float()
+	start.Y = target.Get("clientY").Float()
+	stop.X = start.X
+	stop.Y = start.Y
+
 	pointerDown = true
 
 	return nil
@@ -62,7 +68,8 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	// TODO: Console log target
 	js.Global().Get("console").Call("log", "onPointerDown:", target)
 
-	// TODO: Handle swipe movement
+	// TODO: Check swipe direction and distance, i need to define a threshold
+	// for what constitutes a swipe, also move the swipe container `calendar.IDCalendarSwipe`
 
 	return nil
 }
@@ -70,7 +77,7 @@ func onPointerMove(this js.Value, args []js.Value) any {
 func onPointerUp(this js.Value, args []js.Value) any {
 	pointerDown = false
 
-	finishSwipe()
+	finishSwipe(start, stop)
 
 	return nil
 }
@@ -78,7 +85,7 @@ func onPointerUp(this js.Value, args []js.Value) any {
 func onPointerCancel(this js.Value, args []js.Value) any {
 	pointerDown = false
 
-	finishSwipe()
+	finishSwipe(start, stop)
 
 	return nil
 }
