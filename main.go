@@ -105,8 +105,6 @@ func onPointerUp(this js.Value, args []js.Value) any {
  */
 
 // moveGridContainers by modifying the `translate: -100vw 0;`
-//
-// TODO: Need to reset this after finishing the swipe, use `finishSwipe` for this
 func moveGridContainers() {
 	diff := stop.X - start.X
 	translate := fmt.Sprintf("calc(100vw - %fpx) 0px", diff)
