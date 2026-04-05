@@ -43,12 +43,12 @@ func onPointerDown(this js.Value, args []js.Value) any {
 	event := args[0]
 	target := event.Get("target")
 
-	// TODO: Console log target
-	js.Global().Get("console").Call("log", "onPointerDown:", target)
+	// TODO: Console log target, remove later...
+	js.Global().Get("console").Call("log", "onPointerDown:", event, target)
 
 	// Store the current start position
-	start.X = target.Get("clientX").Float()
-	start.Y = target.Get("clientY").Float()
+	start.X = event.Get("clientX").Float()
+	start.Y = event.Get("clientY").Float()
 	stop.X = start.X
 	stop.Y = start.Y
 
@@ -65,8 +65,8 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	event := args[0]
 	target := event.Get("target")
 
-	// TODO: Console log target
-	js.Global().Get("console").Call("log", "onPointerDown:", target)
+	// TODO: Console log target, remove later...
+	js.Global().Get("console").Call("log", "onPointerMove:", event, target)
 
 	// TODO: Check swipe direction and distance, i need to define a threshold
 	// for what constitutes a swipe, also move the swipe container `calendar.IDCalendarSwipe`
@@ -92,5 +92,7 @@ func onPointerCancel(this js.Value, args []js.Value) any {
 
 // TODO: Need to pass start -> end positions to finishSwipe
 func finishSwipe(start, stop Coordinates) {
+	js.Global().Get("console").Call("log", "finishSwipe:", start, stop)
+
 	// TODO: Move containers based on swipe direction
 }
