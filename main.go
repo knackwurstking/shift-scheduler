@@ -115,8 +115,16 @@ func moveGridContainers() {
 	gridContainers[2].Get("style").Set("translate", translate)
 }
 
+func resetGridContainers() {
+	translate := ""
+	gridContainers[0].Get("style").Set("translate", translate)
+	gridContainers[1].Get("style").Set("translate", translate)
+	gridContainers[2].Get("style").Set("translate", translate)
+}
+
 func finishSwipe(start, stop Coordinates) {
 	js.Global().Get("console").Call("log", fmt.Sprintf("finishSwipe: start=%#v stop=%#v", start, stop))
 
 	// TODO: Move containers based on swipe direction
+	resetGridContainers()
 }
