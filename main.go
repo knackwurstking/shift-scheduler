@@ -107,7 +107,10 @@ func onPointerUp(this js.Value, args []js.Value) any {
 // moveGridContainers by modifying the `translate: -100vw 0;`
 func moveGridContainers() {
 	diff := stop.X - start.X
-	translate := fmt.Sprintf("calc(100vw - %fpx) 0px", diff)
+	if start.X > stop.X {
+		diff = 0 - (start.X - stop.X)
+	}
+	translate := fmt.Sprintf("calc(-100vw + %fpx) 0", diff)
 	gridContainers[0].Get("style").Set("translate", translate)
 	gridContainers[1].Get("style").Set("translate", translate)
 	gridContainers[2].Get("style").Set("translate", translate)
