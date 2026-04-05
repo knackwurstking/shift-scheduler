@@ -25,7 +25,8 @@ func main() {
 	js.Global().Set("onPointerDown", js.FuncOf(onPointerDown))
 	js.Global().Set("onPointerMove", js.FuncOf(onPointerMove))
 	js.Global().Set("onPointerUp", js.FuncOf(onPointerUp))
-	js.Global().Set("onPointerCancel", js.FuncOf(onPointerCancel))
+	js.Global().Set("onPointerCancel", js.FuncOf(onPointerUp))
+	js.Global().Set("onPointerLeave", js.FuncOf(onPointerUp))
 
 	fmt.Println("Go WebAssembly initialized")
 
@@ -72,16 +73,11 @@ func onPointerMove(this js.Value, args []js.Value) any {
 }
 
 func onPointerUp(this js.Value, args []js.Value) any {
+	if !pointerDown {
+		return nil
+	}
+
 	pointerDown = false
-
-	finishSwipe(start, stop)
-
-	return nil
-}
-
-func onPointerCancel(this js.Value, args []js.Value) any {
-	pointerDown = false
-
 	finishSwipe(start, stop)
 
 	return nil
