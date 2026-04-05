@@ -2,7 +2,12 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"syscall/js"
+)
+
+const (
+	SwipeThreshold = 350
 )
 
 var (
@@ -84,7 +89,11 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	stop.X = event.Get("clientX").Float()
 	stop.Y = event.Get("clientY").Float()
 
-	moveGridContainers()
+	diff := moveGridContainers()
+	if math.Abs(diff) > SwipeThreshold {
+		// TODO: Finish swipe and disable pointer movement
+		pointerDown = false
+	}
 
 	return nil
 }
@@ -105,8 +114,8 @@ func onPointerUp(this js.Value, args []js.Value) any {
  */
 
 // moveGridContainers by modifying the `translate: -100vw 0;`
-func moveGridContainers() {
-	diff := stop.X - start.X
+func moveGridContainers() (diff float64) {
+	diff = stop.X - start.X
 	if start.X > stop.X {
 		diff = 0 - (start.X - stop.X)
 	}
@@ -114,6 +123,7 @@ func moveGridContainers() {
 	gridContainers[0].Get("style").Set("translate", translate)
 	gridContainers[1].Get("style").Set("translate", translate)
 	gridContainers[2].Get("style").Set("translate", translate)
+	return
 }
 
 func resetGridContainers() {
