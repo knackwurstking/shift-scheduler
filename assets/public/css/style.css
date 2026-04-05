@@ -1,6 +1,6 @@
-/*****************
+/**
  * Global Styles *
- *****************/
+ */
 
 * {
 	box-sizing: border-box;
@@ -12,9 +12,37 @@
 	border: 0.5px solid red;
 }
 
-/*******************
+/**
+ * Swipe container holds three grids side by side and will simulate an infinite
+ * swipe, Jan to Dec, next Jear starting from Jan again.
+ *
+ * TODO: Align grids properly, (CSS) current grid is visible, prev grid is
+ * offscreen (left) and next grid is offscreen (right)
+ */
+
+#calendar-swipe {
+}
+
+#calendar-swipe .grid-container {
+}
+
+#calendar-swipe .grid {
+}
+
+/*
+#calendar-prev {
+}
+
+#calendar-current {
+}
+
+#calendar-next {
+}
+*/
+
+/**
  * Utility classes *
- ******************/
+ */
 
 .hidden {
 	display: none;

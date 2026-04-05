@@ -9,7 +9,7 @@ type GridProps struct {
 
 templ Grid(p GridProps) {
 	// TODO: A 7x6 grid per month with a additional header row for the week days, starting from sunday based on props. If StartWithMonday is true, the week days should start from monday.
-	<table>
+	<table class="grid">
 		<thead>
 			<tr>
 				<th>{ p.Localization.Sunday }</th>

@@ -10,6 +10,7 @@ const (
 // Swipe container holds three grids side by side and will simulate an infinite
 // swipe, Jan to Dec, next Jear starting from Jan again.
 templ Swipe(gridPrev, gridCurrent, gridNext templ.Component) {
+	// TODO: Align grids properly, (CSS) current grid is visible, prev grid is offscreen (left) and next grid is offscreen (right)
 	<div
 		id={ IDCalendarSwipe }
 		onpointermove="onPointerMove(event)"
@@ -17,13 +18,13 @@ templ Swipe(gridPrev, gridCurrent, gridNext templ.Component) {
 		onpointerup="onPointerUp(event)"
 		onpointercancel="onPointerCancel(event)"
 	>
-		<div id={ IDCalendarPrev }>
+		<div id={ IDCalendarPrev } class="grid-container">
 			@gridPrev
 		</div>
-		<div id={ IDCalendarCurrent }>
+		<div id={ IDCalendarCurrent } class="grid-container">
 			@gridCurrent
 		</div>
-		<div id={ IDCalendarNext }>
+		<div id={ IDCalendarNext } class="grid-container">
 			@gridNext
 		</div>
 	</div>
