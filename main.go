@@ -41,6 +41,10 @@ func main() {
 func initDOM() {
 }
 
+/**
+ * JS Callbacks
+ */
+
 func initGridContainers() {
 	// Get all .grid-container elements
 	containers := js.Global().Get("document").Call("querySelectorAll", ".grid-container")
@@ -96,9 +100,13 @@ func onPointerUp(this js.Value, args []js.Value) any {
 	return nil
 }
 
+/**
+ * Golang helper functions
+ */
+
 // moveGridContainers by modifying the `translate: -100vw 0;`
 //
-// TODO: Need to reset this after finishing the swipe
+// TODO: Need to reset this after finishing the swipe, use `finishSwipe` for this
 func moveGridContainers() {
 	diff := stop.X - start.X
 	translate := fmt.Sprintf("calc(100vw - %fpx) 0px", diff)
@@ -107,7 +115,6 @@ func moveGridContainers() {
 	gridContainers[2].Get("style").Set("translate", translate)
 }
 
-// TODO: Need to pass start -> end positions to finishSwipe
 func finishSwipe(start, stop Coordinates) {
 	js.Global().Get("console").Call("log", fmt.Sprintf("finishSwipe: start=%#v stop=%#v", start, stop))
 
