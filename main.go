@@ -139,7 +139,11 @@ func finishSwipe(start, stop Coordinates) {
 			start.X, start.Y, stop.X, stop.Y,
 		))
 
-	// TODO: Move containers based on swipe direction
+	// TODO: Move container, change classes, update the content for the moved container
+	//  - The container which needs to move is the first container after a left swipe,
+	//    or the last container after a right swipe
+	//  - So move the container (replace it with a dummy container), update its content,
+	//    and reset the grid containers (remove the dummy container)
 
 	resetGridContainers()
 }
