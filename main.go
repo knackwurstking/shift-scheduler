@@ -6,9 +6,10 @@ import (
 )
 
 var (
-	pointerDown bool
-	start       Coordinates
-	stop        Coordinates
+	gridContainers [3]js.Value
+	pointerDown    bool
+	start          Coordinates
+	stop           Coordinates
 )
 
 type Coordinates struct {
@@ -38,7 +39,17 @@ func main() {
 }
 
 func initDOM() {
-	// ...
+}
+
+func initGridContainers() {
+	// Get all .grid-container elements
+	containers := js.Global().Get("document").Call("querySelectorAll", ".grid-container")
+	if containers.Length() != 3 {
+		panic("Expected 3 grid containers")
+	}
+	for i := range containers.Length() {
+		gridContainers[i] = containers.Index(i)
+	}
 }
 
 func onPointerDown(this js.Value, args []js.Value) any {
@@ -53,6 +64,7 @@ func onPointerDown(this js.Value, args []js.Value) any {
 	stop.X = start.X
 	stop.Y = start.Y
 
+	initGridContainers()
 	pointerDown = true
 
 	return nil
@@ -68,7 +80,7 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	stop.X = event.Get("clientX").Float()
 	stop.Y = event.Get("clientY").Float()
 
-	// TODO: Move ".grid-containers" by modifying `translate: -100vw 0;`
+	moveGridContainers()
 
 	return nil
 }
@@ -82,6 +94,17 @@ func onPointerUp(this js.Value, args []js.Value) any {
 	finishSwipe(start, stop)
 
 	return nil
+}
+
+// moveGridContainers by modifying the `translate: -100vw 0;`
+//
+// TODO: Need to reset this after finishing the swipe
+func moveGridContainers() {
+	diff := stop.X - start.X
+	translate := fmt.Sprintf("calc(100vw - %fpx) 0px", diff)
+	gridContainers[0].Get("style").Set("translate", translate)
+	gridContainers[1].Get("style").Set("translate", translate)
+	gridContainers[2].Get("style").Set("translate", translate)
 }
 
 // TODO: Need to pass start -> end positions to finishSwipe
