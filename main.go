@@ -23,9 +23,9 @@ func main() {
 	// Register a function to be called from JavaScript
 	// TODO: Register swipe handlers
 	js.Global().Set("onPointerDown", js.FuncOf(onPointerDown))
-	//js.Global().Set("onPointerMove", js.FuncOf(onPointerMove))
-	//js.Global().Set("onPointerUp", js.FuncOf(onPointerUp))
-	//js.Global().Set("onPointerCancel", js.FuncOf(onPointerCancel))
+	js.Global().Set("onPointerMove", js.FuncOf(onPointerMove))
+	js.Global().Set("onPointerUp", js.FuncOf(onPointerUp))
+	js.Global().Set("onPointerCancel", js.FuncOf(onPointerCancel))
 
 	fmt.Println("Go WebAssembly initialized")
 
@@ -41,10 +41,9 @@ func initDOM() {
 
 func onPointerDown(this js.Value, args []js.Value) any {
 	event := args[0]
-	target := event.Get("target")
 
 	// TODO: Console log target, remove later...
-	js.Global().Get("console").Call("log", "onPointerDown:", event, target)
+	js.Global().Get("console").Call("log", "onPointerDown:", event)
 
 	// Store the current start position
 	start.X = event.Get("clientX").Float()
@@ -63,13 +62,11 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	}
 
 	event := args[0]
-	target := event.Get("target")
-
-	// TODO: Console log target, remove later...
-	js.Global().Get("console").Call("log", "onPointerMove:", event, target)
 
 	// TODO: Check swipe direction and distance, i need to define a threshold
 	// for what constitutes a swipe, also move the swipe container `calendar.IDCalendarSwipe`
+	stop.X = event.Get("clientX").Float()
+	stop.Y = event.Get("clientY").Float()
 
 	return nil
 }
@@ -92,7 +89,7 @@ func onPointerCancel(this js.Value, args []js.Value) any {
 
 // TODO: Need to pass start -> end positions to finishSwipe
 func finishSwipe(start, stop Coordinates) {
-	js.Global().Get("console").Call("log", "finishSwipe:", start, stop)
+	js.Global().Get("console").Call("log", fmt.Sprintf("finishSwipe: start=%#v stop=%#v", start, stop))
 
 	// TODO: Move containers based on swipe direction
 }

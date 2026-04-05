@@ -12,10 +12,10 @@ const (
 templ Swipe(gridPrev, gridCurrent, gridNext templ.Component) {
 	<div
 		id={ IDCalendarSwipe }
-		onpointermove="onPointerMove"
+		onpointermove="onPointerMove(event)"
 		onpointerdown="onPointerDown(event)"
-		onpointerup="onPointerUp"
-		onpointercancel="onPointerCancel"
+		onpointerup="onPointerUp(event)"
+		onpointercancel="onPointerCancel(event)"
 	>
 		<div id={ IDCalendarPrev }>
 			@gridPrev
