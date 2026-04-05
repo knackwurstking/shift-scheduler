@@ -91,8 +91,7 @@ func onPointerMove(this js.Value, args []js.Value) any {
 
 	diff := moveGridContainers()
 	if math.Abs(diff) > SwipeThreshold {
-		// TODO: Finish swipe and disable pointer movement
-		pointerDown = false
+		return onPointerUp
 	}
 
 	return nil
@@ -137,5 +136,6 @@ func finishSwipe(start, stop Coordinates) {
 	js.Global().Get("console").Call("log", fmt.Sprintf("finishSwipe: start=%#v stop=%#v", start, stop))
 
 	// TODO: Move containers based on swipe direction
+
 	resetGridContainers()
 }
