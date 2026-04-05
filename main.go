@@ -5,6 +5,17 @@ import (
 	"syscall/js"
 )
 
+var (
+	pointerDown bool
+	start       Coordinates
+	stop        Coordinates
+)
+
+type Coordinates struct {
+	X float64
+	Y float64
+}
+
 func main() {
 	// Create a channel to keep the program running
 	c := make(chan struct{})
@@ -28,12 +39,6 @@ func initDOM() {
 	// ...
 }
 
-// TODO: Swipe handlers
-//  - onPointerMove
-//  - onPointerDown
-//  - onPointerUp
-//  - onPointerCancel
-
 func onPointerDown(this js.Value, args []js.Value) any {
 	event := args[0]
 	target := event.Get("target")
@@ -41,7 +46,44 @@ func onPointerDown(this js.Value, args []js.Value) any {
 	// TODO: Console log target
 	js.Global().Get("console").Call("log", "onPointerDown:", target)
 
-	// TODO: Set pointer down state, this will enable the swipe handler (onPointerMove)
+	pointerDown = true
 
 	return nil
+}
+
+func onPointerMove(this js.Value, args []js.Value) any {
+	if !pointerDown {
+		return nil
+	}
+
+	event := args[0]
+	target := event.Get("target")
+
+	// TODO: Console log target
+	js.Global().Get("console").Call("log", "onPointerDown:", target)
+
+	// TODO: Handle swipe movement
+
+	return nil
+}
+
+func onPointerUp(this js.Value, args []js.Value) any {
+	pointerDown = false
+
+	finishSwipe()
+
+	return nil
+}
+
+func onPointerCancel(this js.Value, args []js.Value) any {
+	pointerDown = false
+
+	finishSwipe()
+
+	return nil
+}
+
+// TODO: Need to pass start -> end positions to finishSwipe
+func finishSwipe(start, stop Coordinates) {
+	// TODO: Move containers based on swipe direction
 }
