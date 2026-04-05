@@ -133,7 +133,11 @@ func resetGridContainers() {
 }
 
 func finishSwipe(start, stop Coordinates) {
-	js.Global().Get("console").Call("log", fmt.Sprintf("finishSwipe: start=%#v stop=%#v", start, stop))
+	js.Global().Get("console").Call("log",
+		fmt.Sprintf(
+			"finishSwipe: start=(%.02f,%.02f) stop=(%.02f,%.02f)",
+			start.X, start.Y, stop.X, stop.Y,
+		))
 
 	// TODO: Move containers based on swipe direction
 
