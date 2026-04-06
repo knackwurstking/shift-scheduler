@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	SwipeThreshold    = 400
-	SwipeMinThreshold = 25
+	SwipeThreshold    = 150
+	SwipeMinThreshold = 5
 )
 
 var (
