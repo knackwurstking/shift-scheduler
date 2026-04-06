@@ -16,7 +16,7 @@ generate:
 	@templ generate
 
 build:
-	@GOOS=js GOARCH=wasm go build -o $(ASSETS)/main.wasm ./main.go
+	@GOOS=js GOARCH=wasm go build -o $(ASSETS)/main.wasm ./cmd/wasm
 	@go build -o $(BIN)/$(BINARY) ./cmd/$(BINARY)
 
 run: init build

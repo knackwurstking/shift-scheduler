@@ -14,43 +14,12 @@ const (
 var (
 	gridContainers [3]js.Value
 	pointerDown    bool
+	isSwiping      bool
 	start          Coordinates
 	stop           Coordinates
 )
 
-type Coordinates struct {
-	X float64
-	Y float64
-}
-
-func main() {
-	// Create a channel to keep the program running
-	c := make(chan struct{})
-
-	// Register a function to be called from JavaScript
-	// TODO: Register swipe handlers
-	js.Global().Set("onPointerDown", js.FuncOf(onPointerDown))
-	js.Global().Set("onPointerMove", js.FuncOf(onPointerMove))
-	js.Global().Set("onPointerUp", js.FuncOf(onPointerUp))
-	js.Global().Set("onPointerCancel", js.FuncOf(onPointerUp))
-	js.Global().Set("onPointerOut", js.FuncOf(onPointerUp))
-	js.Global().Set("onPointerLeave", js.FuncOf(onPointerUp))
-
-	fmt.Println("Go WebAssembly initialized")
-
-	initDOM()
-
-	// Keep the program alive
-	<-c
-}
-
-func initDOM() {
-}
-
-/**
- * JS Callbacks
- */
-
+// initGridContainers initializes the grid containers by getting all .grid-container elements
 func initGridContainers() {
 	// Get all .grid-container elements
 	containers := js.Global().Get("document").Call("querySelectorAll", ".grid-container")
@@ -62,6 +31,7 @@ func initGridContainers() {
 	}
 }
 
+// onPointerDown handles the pointer down event by storing the start position and initializing the grid containers
 func onPointerDown(this js.Value, args []js.Value) any {
 	event := args[0]
 
@@ -80,6 +50,7 @@ func onPointerDown(this js.Value, args []js.Value) any {
 	return nil
 }
 
+// onPointerMove handles the pointer move event by updating the stop position and moving the grid containers
 func onPointerMove(this js.Value, args []js.Value) any {
 	if !pointerDown {
 		return nil
@@ -90,42 +61,8 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	stop.X = event.Get("clientX").Float()
 	stop.Y = event.Get("clientY").Float()
 
-	diff := moveGridContainers()
-	abs := math.Abs(diff)
-	if abs > SwipeMinThreshold {
-		for i := range 3 {
-			gridContainers[i].Get("style").Get("classList").Call("add", "no-user-select")
-		}
-	}
-	if abs > SwipeThreshold {
-		return onPointerUp
-	}
-
-	return nil
-}
-
-func onPointerUp(this js.Value, args []js.Value) any {
-	if !pointerDown {
-		return nil
-	}
-
-	pointerDown = false
-	finishSwipe(start, stop)
-
-	for i := range 3 {
-		gridContainers[i].Get("style").Get("classList").Call("remove", "no-user-select")
-	}
-
-	return nil
-}
-
-/**
- * Golang helper functions
- */
-
-// moveGridContainers by modifying the `translate: -100vw 0;`
-func moveGridContainers() (diff float64) {
-	diff = stop.X - start.X
+	// Move the grid containers based on the swipe distance
+	diff := stop.X - start.X
 	if start.X > stop.X {
 		diff = 0 - (start.X - stop.X)
 	}
@@ -133,17 +70,40 @@ func moveGridContainers() (diff float64) {
 	gridContainers[0].Get("style").Set("translate", translate)
 	gridContainers[1].Get("style").Set("translate", translate)
 	gridContainers[2].Get("style").Set("translate", translate)
-	return
+
+	abs := math.Abs(diff)
+
+	// Apply no-user-select class to grid containers
+	if !isSwiping && abs > SwipeMinThreshold {
+		for i := range 3 {
+			gridContainers[i].Get("classList").Call("add", "no-user-select")
+		}
+		isSwiping = true
+	}
+
+	// Finish the swipe
+	if abs > SwipeThreshold {
+		return onPointerUp(this, args)
+	}
+
+	return nil
 }
 
-func resetGridContainers() {
-	translate := ""
-	gridContainers[0].Get("style").Set("translate", translate)
-	gridContainers[1].Get("style").Set("translate", translate)
-	gridContainers[2].Get("style").Set("translate", translate)
-}
+// onPointerUp handles the pointer up event by finishing the swipe and resetting the grid containers
+func onPointerUp(this js.Value, args []js.Value) any {
+	if !pointerDown {
+		return nil
+	}
 
-func finishSwipe(start, stop Coordinates) {
+	// Remove no-user-select class from grid containers
+	if isSwiping {
+		for i := range 3 {
+			gridContainers[i].Get("classList").Call("remove", "no-user-select")
+		}
+		isSwiping = false
+	}
+
+	// Finish swipe
 	js.Global().Get("console").Call("log",
 		fmt.Sprintf(
 			"finishSwipe: start=(%.02f,%.02f) stop=(%.02f,%.02f)",
@@ -155,6 +115,16 @@ func finishSwipe(start, stop Coordinates) {
 	//    or the last container after a right swipe
 	//  - So move the container (replace it with a dummy container), update its content,
 	//    and reset the grid containers (remove the dummy container)
+	//
+	// TODO: Also add some transition timings while the swipe is finishing to the already ongoing direction
 
-	resetGridContainers()
+	// Reset translate style for grid containers
+	translate := ""
+	gridContainers[0].Get("style").Set("translate", translate)
+	gridContainers[1].Get("style").Set("translate", translate)
+	gridContainers[2].Get("style").Set("translate", translate)
+
+	pointerDown = false
+
+	return nil
 }
