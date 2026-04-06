@@ -62,10 +62,7 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	stop.Y = event.Get("clientY").Float()
 
 	// Move the grid containers based on the swipe distance
-	diff := stop.X - start.X
-	if start.X > stop.X {
-		diff = 0 - (start.X - stop.X)
-	}
+	diff := getSwipeDiff()
 	translate := fmt.Sprintf("calc(-100vw + %fpx) 0", diff)
 	gridContainers[0].Get("style").Set("translate", translate)
 	gridContainers[1].Get("style").Set("translate", translate)
@@ -110,6 +107,13 @@ func onPointerUp(this js.Value, args []js.Value) any {
 			start.X, start.Y, stop.X, stop.Y,
 		))
 
+	// First we need to get the swipe direction, negative for left swipe,
+	if getSwipeDiff() < 0 { // left swipe
+		moveGridContainers(-1)
+	} else { // right swipe
+		moveGridContainers(1)
+	}
+
 	// TODO: Move container, change classes, update the content for the moved container
 	//  - The container which needs to move is the first container after a left swipe,
 	//    or the last container after a right swipe
@@ -127,4 +131,21 @@ func onPointerUp(this js.Value, args []js.Value) any {
 	pointerDown = false
 
 	return nil
+}
+
+// getSwipeDiff returns the difference between the stop and start coordinates
+func getSwipeDiff() float64 {
+	diff := stop.X - start.X
+	if start.X > stop.X {
+		diff = 0 - (start.X - stop.X)
+	}
+	return diff
+}
+
+func moveGridContainers(direction int) {
+	if direction > 0 {
+		// TODO: right swipe
+	} else {
+		// TODO: left swipe
+	}
 }
