@@ -108,19 +108,14 @@ func onPointerUp(this js.Value, args []js.Value) any {
 		))
 
 	// First we need to get the swipe direction, negative for left swipe,
-	if getSwipeDiff() < 0 { // left swipe
-		moveGridContainers(-1)
-	} else { // right swipe
-		moveGridContainers(1)
+	diff := getSwipeDiff()
+	if math.Abs(diff) > SwipeThreshold {
+		if diff < 0 { // left swipe
+			moveGridContainers(-1)
+		} else if diff > 0 { // right swipe
+			moveGridContainers(1)
+		}
 	}
-
-	// TODO: Move container, change classes, update the content for the moved container
-	//  - The container which needs to move is the first container after a left swipe,
-	//    or the last container after a right swipe
-	//  - So move the container (replace it with a dummy container), update its content,
-	//    and reset the grid containers (remove the dummy container)
-	//
-	// TODO: Also add some transition timings while the swipe is finishing to the already ongoing direction
 
 	// Reset translate style for grid containers
 	translate := ""
@@ -142,6 +137,13 @@ func getSwipeDiff() float64 {
 	return diff
 }
 
+// TODO: Move container, change classes, update the content for the moved container
+//   - The container which needs to move is the first container after a left swipe,
+//     or the last container after a right swipe
+//   - So move the container (replace it with a dummy container), update its content,
+//     and reset the grid containers (remove the dummy container)
+//
+// TODO: Also add some transition timings while the swipe is finishing to the already ongoing direction
 func moveGridContainers(direction int) {
 	if direction > 0 {
 		// TODO: right swipe
