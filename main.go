@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	SwipeThreshold = 350
+	SwipeThreshold    = 400
+	SwipeMinThreshold = 25
 )
 
 var (
@@ -90,7 +91,13 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	stop.Y = event.Get("clientY").Float()
 
 	diff := moveGridContainers()
-	if math.Abs(diff) > SwipeThreshold {
+	abs := math.Abs(diff)
+	if abs > SwipeMinThreshold {
+		for i := range 3 {
+			gridContainers[i].Get("style").Get("classList").Call("add", "no-user-select")
+		}
+	}
+	if abs > SwipeThreshold {
 		return onPointerUp
 	}
 
@@ -104,6 +111,10 @@ func onPointerUp(this js.Value, args []js.Value) any {
 
 	pointerDown = false
 	finishSwipe(start, stop)
+
+	for i := range 3 {
+		gridContainers[i].Get("style").Get("classList").Call("remove", "no-user-select")
+	}
 
 	return nil
 }
