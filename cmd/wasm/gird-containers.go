@@ -1,6 +1,11 @@
 package main
 
-import "syscall/js"
+import (
+	"syscall/js"
+
+	"github.com/knackwurstking/shift-scheduler/internal/localization"
+	"github.com/knackwurstking/shift-scheduler/templates/components/calendar"
+)
 
 var gridContainers GridContainers
 
@@ -58,4 +63,33 @@ func (gc *GridContainers) Move(direction Direction) {
 	// to the end after a left swipe
 
 	// TODO: Remove old container after the transition has finished
+}
+
+func (gc *GridContainers) querySwipeContainer() js.Value {
+	return js.Global().Get("document").Call("querySelector", calendar.IDCalendarSwipe)
+}
+
+func (gc *GridContainers) queryHTML() js.Value {
+	return js.Global().Get("document").Call("querySelector", "html").Get("lang")
+}
+
+func (gc *GridContainers) appendGrid() {
+	swipeContainer := gc.querySwipeContainer()
+	
+	// TODO: Creating the grid to render
+	gridContainer := calendar.GridContainer()
+
+	l := localization.New(gc.queryHTML().Get("lang").String())
+	grid := calendar.Grid(calendar.GridProps{
+		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
+		Localization: l,
+	})
+
+	// TODO: ...
+}
+
+func (gc *GridContainers) insertGrid() {
+	swipeContainer := gc.querySwipeContainer()
+
+	// TODO: ...
 }
