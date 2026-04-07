@@ -58,15 +58,12 @@ func (gc *GridContainers) Move(direction Direction) {
 	var translate string
 	if direction > 0 {
 		translate = "calc(0vw)"
+		defer gc.insertGrid()
 	} else {
 		translate = "calc(-200vw)"
+		defer gc.appendGrid()
 	}
 	gc.SetTranslate(translate)
-
-	// TODO: Add new grid container to the beginning after a right swipe,
-	// to the end after a left swipe
-
-	// TODO: Remove old container after the transition has finished
 }
 
 func (gc *GridContainers) querySwipeContainer() js.Value {
