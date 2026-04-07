@@ -31,7 +31,7 @@ func onPointerDown(this js.Value, args []js.Value) any {
 	stop.X = start.X
 	stop.Y = start.Y
 
-	gridContainers.Init()
+	gridContainers.QueryAll()
 
 	// This class should remove the transition timings
 	gridContainers.RemoveClass("swipe-transition")

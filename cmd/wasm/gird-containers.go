@@ -5,10 +5,10 @@ import "syscall/js"
 var gridContainers GridContainers
 
 type GridContainers struct {
-	containers [3]js.Value
+	containers []js.Value
 }
 
-func (gc *GridContainers) Init() {
+func (gc *GridContainers) QueryAll() {
 	// Get all .grid-container elements
 	containers := js.Global().Get("document").Call("querySelectorAll", ".grid-container")
 	if containers.Length() != 3 {
@@ -20,26 +20,26 @@ func (gc *GridContainers) Init() {
 	}
 }
 
-func (gc *GridContainers) List() [3]js.Value {
+func (gc *GridContainers) List() []js.Value {
 	return gc.containers
 }
 
 func (gc *GridContainers) AddClass(v string) {
-	gc.containers[0].Get("classList").Call("add", v)
-	gc.containers[1].Get("classList").Call("add", v)
-	gc.containers[2].Get("classList").Call("add", v)
+	for _, c := range gc.containers {
+		c.Get("classList").Call("add", v)
+	}
 }
 
 func (gc *GridContainers) RemoveClass(v string) {
-	gc.containers[0].Get("classList").Call("remove", v)
-	gc.containers[1].Get("classList").Call("remove", v)
-	gc.containers[2].Get("classList").Call("remove", v)
+	for _, c := range gc.containers {
+		c.Get("classList").Call("remove", v)
+	}
 }
 
 func (gc *GridContainers) SetTranslate(v string) {
-	gc.containers[0].Get("style").Set("translate", v)
-	gc.containers[1].Get("style").Set("translate", v)
-	gc.containers[2].Get("style").Set("translate", v)
+	for _, c := range gc.containers {
+		c.Get("style").Set("translate", v)
+	}
 }
 
 func (gc *GridContainers) Move(direction Direction) {
