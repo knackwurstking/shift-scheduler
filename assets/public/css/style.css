@@ -48,6 +48,10 @@
 	padding: 0.5rem;
 }
 
+#calendar-swipe .grid-container.finish-swipe {
+	/* TODO: transition timings for the swipe (translate) */
+}
+
 #calendar-swipe .grid-container .grid {
 	width: 100%;
 	height: 100%;
