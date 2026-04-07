@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"html/template"
 	"syscall/js"
 
 	"github.com/a-h/templ"
@@ -80,32 +81,32 @@ func (gc *GridContainers) appendGrid() {
 	swipeContainer := gc.querySwipeContainer()
 
 	// Append the new grid container to the swipe container
-	swipeContainer.Call("appendChild", gc.createGridContainer())
+	htmlContent := gc.createGridContainer()
+	swipeContainer.Call("insertAdjacentHTML", "beforeend", htmlContent)
 }
 
 func (gc *GridContainers) insertGrid() {
 	swipeContainer := gc.querySwipeContainer()
 
-	// Insert the new grid container to the swipe container, using `insertAdjacentHTML(position, input)`
+	// Insert the new grid container at the beginning of the swipe container using insertAdjacentHTML
+	htmlContent := gc.createGridContainer()
+	swipeContainer.Call("insertAdjacentHTML", "afterbegin", htmlContent)
 }
 
-func (gc *GridContainers) createGridContainer() js.Value {
+func (gc *GridContainers) createGridContainer() template.HTML {
 	l := localization.New(gc.queryHTML().Get("lang").String())
 	grid := calendar.Grid(calendar.GridProps{
 		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
 		Localization:    l,
 	})
 
+	ctx := templ.WithChildren(context.Background(), grid)
+
 	// Convert the grid container to HTML and append it to the swipe container
-	htmlContent, err := templ.ToGoHTML(context.Background(), grid)
+	htmlContent, err := templ.ToGoHTML(ctx, calendar.GridContainer())
 	if err != nil {
-		panic(fmt.Errorf("failed to render grid container: " + err.Error()))
+		panic(fmt.Errorf("failed to render grid container: %w", err))
 	}
 
-	// Create a new div element and set its innerHTML
-	div := js.Global().Get("document").Call("createElement", "div")
-	div.Call("setAttribute", "class", "grid-container")
-	div.Get("innerHTML").Set("innerHTML", string(htmlContent))
-
-	return div
+	return htmlContent
 }
