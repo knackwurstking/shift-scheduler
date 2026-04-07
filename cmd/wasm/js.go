@@ -12,10 +12,10 @@ const (
 )
 
 var (
-	pointerDown    bool
-	isSwiping      bool
-	start          Coordinates
-	stop           Coordinates
+	pointerDown bool
+	isSwiping   bool
+	start       Coordinates
+	stop        Coordinates
 )
 
 // onPointerDown handles the pointer down event by storing the start position and initializing the grid containers
@@ -115,6 +115,3 @@ func getSwipeDiff() float64 {
 	}
 	return diff
 }
-
-
-
