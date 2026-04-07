@@ -15,18 +15,15 @@ type AppProps struct {
 }
 
 templ App(p AppProps) {
+	{{ lang := p.Localization.Language() }}
 	@Layout(Props{
 		Title: "Shift Scheduler",
-		Lang:  "en",
+		Lang:  lang,
 	}) {
 		@appbar.AppBar()
 		{{
-			startWithMonday := false
-			if p.Localization.Language() == "de" {
-				startWithMonday = true
-			}
 			gridProps := calendar.GridProps{
-				StartWithMonday: startWithMonday,
+				StartWithMonday: calendar.WeekStartAtMonday(p.Localization.Language()),
 				Localization:    p.Localization,
 			}
 		}}

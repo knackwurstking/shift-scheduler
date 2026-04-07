@@ -1,10 +1,7 @@
 package calendar
 
 const (
-	IDCalendarSwipe   = "calendar-swipe"
-	IDCalendarPrev    = "calendar-prev"
-	IDCalendarCurrent = "calendar-current"
-	IDCalendarNext    = "calendar-next"
+	IDCalendarSwipe = "calendar-swipe"
 )
 
 // Swipe container holds three grids side by side and will simulate an infinite
@@ -18,14 +15,14 @@ templ Swipe(gridPrev, gridCurrent, gridNext templ.Component) {
 		onpointercancel="onPointerCancel(event)"
 		onpointerleave="onPointerLeave(event)"
 	>
-		<div id={ IDCalendarPrev } class="grid-container">
+		@GridContainer() {
 			@gridPrev
-		</div>
-		<div id={ IDCalendarCurrent } class="grid-container">
+		}
+		@GridContainer() {
 			@gridCurrent
-		</div>
-		<div id={ IDCalendarNext } class="grid-container">
+		}
+		@GridContainer() {
 			@gridNext
-		</div>
+		}
 	</div>
 }
