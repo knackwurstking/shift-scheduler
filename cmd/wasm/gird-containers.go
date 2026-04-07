@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"syscall/js"
 
+	"github.com/a-h/templ"
 	"github.com/knackwurstking/shift-scheduler/internal/localization"
 	"github.com/knackwurstking/shift-scheduler/templates/components/calendar"
 )
@@ -75,21 +78,34 @@ func (gc *GridContainers) queryHTML() js.Value {
 
 func (gc *GridContainers) appendGrid() {
 	swipeContainer := gc.querySwipeContainer()
-	
-	// TODO: Creating the grid to render
-	gridContainer := calendar.GridContainer()
 
-	l := localization.New(gc.queryHTML().Get("lang").String())
-	grid := calendar.Grid(calendar.GridProps{
-		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
-		Localization: l,
-	})
-
-	// TODO: ...
+	// Append the new grid container to the swipe container
+	swipeContainer.Call("appendChild", gc.createGridContainer())
 }
 
 func (gc *GridContainers) insertGrid() {
 	swipeContainer := gc.querySwipeContainer()
 
-	// TODO: ...
+	// Insert the new grid container to the swipe container, using `insertAdjacentHTML(position, input)`
+}
+
+func (gc *GridContainers) createGridContainer() js.Value {
+	l := localization.New(gc.queryHTML().Get("lang").String())
+	grid := calendar.Grid(calendar.GridProps{
+		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
+		Localization:    l,
+	})
+
+	// Convert the grid container to HTML and append it to the swipe container
+	htmlContent, err := templ.ToGoHTML(context.Background(), grid)
+	if err != nil {
+		panic(fmt.Errorf("failed to render grid container: " + err.Error()))
+	}
+
+	// Create a new div element and set its innerHTML
+	div := js.Global().Get("document").Call("createElement", "div")
+	div.Call("setAttribute", "class", "grid-container")
+	div.Get("innerHTML").Set("innerHTML", string(htmlContent))
+
+	return div
 }
