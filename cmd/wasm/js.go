@@ -12,24 +12,11 @@ const (
 )
 
 var (
-	gridContainers [3]js.Value
 	pointerDown    bool
 	isSwiping      bool
 	start          Coordinates
 	stop           Coordinates
 )
-
-// initGridContainers initializes the grid containers by getting all .grid-container elements
-func initGridContainers() {
-	// Get all .grid-container elements
-	containers := js.Global().Get("document").Call("querySelectorAll", ".grid-container")
-	if containers.Length() != 3 {
-		panic("Expected 3 grid containers")
-	}
-	for i := range containers.Length() {
-		gridContainers[i] = containers.Index(i)
-	}
-}
 
 // onPointerDown handles the pointer down event by storing the start position and initializing the grid containers
 func onPointerDown(this js.Value, args []js.Value) any {
@@ -44,7 +31,11 @@ func onPointerDown(this js.Value, args []js.Value) any {
 	stop.X = start.X
 	stop.Y = start.Y
 
-	initGridContainers()
+	gridContainers.Init()
+
+	// This class should remove the transition timings
+	gridContainers.RemoveClass("swipe-transition")
+
 	pointerDown = true
 
 	return nil
@@ -63,18 +54,12 @@ func onPointerMove(this js.Value, args []js.Value) any {
 
 	// Move the grid containers based on the swipe distance
 	diff := getSwipeDiff()
-	translate := fmt.Sprintf("calc(-100vw + %fpx) 0", diff)
-	gridContainers[0].Get("style").Set("translate", translate)
-	gridContainers[1].Get("style").Set("translate", translate)
-	gridContainers[2].Get("style").Set("translate", translate)
-
 	abs := math.Abs(diff)
+	gridContainers.SetTranslate(fmt.Sprintf("calc(-100vw + %fpx) 0", diff))
 
 	// Apply no-user-select class to grid containers
 	if !isSwiping && abs > SwipeMinThreshold {
-		for i := range 3 {
-			gridContainers[i].Get("classList").Call("add", "no-user-select")
-		}
+		gridContainers.AddClass("no-user-select")
 		isSwiping = true
 	}
 
@@ -94,9 +79,7 @@ func onPointerUp(this js.Value, args []js.Value) any {
 
 	// Remove no-user-select class from grid containers
 	if isSwiping {
-		for i := range 3 {
-			gridContainers[i].Get("classList").Call("remove", "no-user-select")
-		}
+		gridContainers.RemoveClass("no-user-select")
 		isSwiping = false
 	}
 
@@ -107,22 +90,21 @@ func onPointerUp(this js.Value, args []js.Value) any {
 			start.X, start.Y, stop.X, stop.Y,
 		))
 
+	// This class will add a class which adds transition timings
+	gridContainers.AddClass("swipe-transition")
+
 	// First we need to get the swipe direction, negative for left swipe,
 	diff := getSwipeDiff()
 	if math.Abs(diff) > SwipeThreshold {
-		if diff < 0 { // left swipe
-			moveGridContainers(-1)
-		} else if diff > 0 { // right swipe
-			moveGridContainers(1)
+		if diff < 0 {
+			gridContainers.Move(DirectionLeft)
+		} else if diff > 0 {
+			gridContainers.Move(DirectionRight)
 		}
 	}
 
 	// Reset translate style for grid containers
-	translate := ""
-	gridContainers[0].Get("style").Set("translate", translate)
-	gridContainers[1].Get("style").Set("translate", translate)
-	gridContainers[2].Get("style").Set("translate", translate)
-
+	gridContainers.RemoveClass("")
 	pointerDown = false
 
 	return nil
@@ -137,17 +119,5 @@ func getSwipeDiff() float64 {
 	return diff
 }
 
-// TODO: Move container, change classes, update the content for the moved container
-//   - The container which needs to move is the first container after a left swipe,
-//     or the last container after a right swipe
-//   - So move the container (replace it with a dummy container), update its content,
-//     and reset the grid containers (remove the dummy container)
-//
-// TODO: Also add some transition timings while the swipe is finishing to the already ongoing direction
-func moveGridContainers(direction int) {
-	if direction > 0 {
-		// TODO: right swipe
-	} else {
-		// TODO: left swipe
-	}
-}
+
+
