@@ -42,14 +42,9 @@ func (gc *GridContainers) SetTranslate(v string) {
 	gc.containers[2].Get("style").Set("translate", v)
 }
 
-// TODO: Move container, change classes, update the content for the moved container
-//   - The container which needs to move is the first container after a left swipe,
-//     or the last container after a right swipe
-//   - So move the container (replace it with a dummy container), update its content,
-//     and reset the grid containers (remove the dummy container)
-//
-// TODO: Also add some transition timings while the swipe is finishing to the already ongoing direction
 func (gc *GridContainers) Move(direction Direction) {
+	gridContainers.AddClass("swipe-transition")
+
 	// First we need to finish the swipe
 	var translate string
 	if direction > 0 {
@@ -58,4 +53,9 @@ func (gc *GridContainers) Move(direction Direction) {
 		translate = "calc(-200vw)"
 	}
 	gc.SetTranslate(translate)
+
+	// TODO: Add new grid container to the beginning after a right swipe,
+	// to the end after a left swipe
+
+	// TODO: Remove old container after the transition has finished
 }

@@ -90,9 +90,6 @@ func onPointerUp(this js.Value, args []js.Value) any {
 			start.X, start.Y, stop.X, stop.Y,
 		))
 
-	// This class will add a class which adds transition timings
-	gridContainers.AddClass("swipe-transition")
-
 	// First we need to get the swipe direction, negative for left swipe,
 	diff := getSwipeDiff()
 	if math.Abs(diff) > SwipeThreshold {
