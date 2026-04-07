@@ -79,6 +79,9 @@ func (gc *GridContainers) queryHTML() js.Value {
 
 func (gc *GridContainers) appendGrid() {
 	swipeContainer := gc.querySwipeContainer()
+	if swipeContainer.IsUndefined() || swipeContainer.IsNull() {
+		panic("swipe container not found")
+	}
 
 	// Append the new grid container to the swipe container
 	htmlContent := gc.createGridContainer()
@@ -87,6 +90,9 @@ func (gc *GridContainers) appendGrid() {
 
 func (gc *GridContainers) insertGrid() {
 	swipeContainer := gc.querySwipeContainer()
+	if swipeContainer.IsUndefined() || swipeContainer.IsNull() {
+		panic("swipe container not found")
+	}
 
 	// Insert the new grid container at the beginning of the swipe container using insertAdjacentHTML
 	htmlContent := gc.createGridContainer()
