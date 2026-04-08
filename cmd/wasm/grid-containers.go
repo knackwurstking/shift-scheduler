@@ -61,7 +61,6 @@ func (gc *GridContainers) Move(direction Direction) {
 
 	// First we need to finish the swipe
 	if direction > 0 {
-		// FIXME: This right swipe mechanism is broken
 		gc.currentVW += 100
 		defer gc.insertGrid()
 	} else {
