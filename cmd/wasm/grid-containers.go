@@ -55,10 +55,11 @@ func (gc *GridContainers) Move(direction Direction) {
 	// First we need to finish the swipe
 	var translate string
 	if direction > 0 {
-		translate = "calc(0vw)"
+		// FIXME: This right swipe mechanism is broken
+		translate = "0 0"
 		defer gc.insertGrid()
 	} else {
-		translate = "calc(-200vw)"
+		translate = "calc(-200vw) 0"
 		defer gc.appendGrid()
 	}
 	gc.SetTranslate(translate)
@@ -75,11 +76,16 @@ func (gc *GridContainers) queryHTML() js.Value {
 func (gc *GridContainers) appendGrid() {
 	swipeContainer := gc.querySwipeContainer()
 	if swipeContainer.IsUndefined() || swipeContainer.IsNull() {
-		panic("swipe container not found")
+		fmt.Println("warning: swipe container not found, skipping append")
+		return
 	}
 
 	// Append the new grid container to the swipe container
 	htmlContent := gc.createGridContainer()
+	if htmlContent == "" {
+		fmt.Println("warning: failed to create grid container HTML")
+		return
+	}
 	swipeContainer.Call("insertAdjacentHTML", "beforeend", string(htmlContent))
 }
 

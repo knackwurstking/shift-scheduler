@@ -7,13 +7,13 @@ import (
 
 func main() {
 	// Create a channel to keep the program running
-	c := make(chan struct{})
+	closeCh := make(chan struct{}) // NOTE: Currently there are no closing mechanism
 
 	fmt.Println("Go WebAssembly initialized")
 	initDOM()
 
 	// Keep the program alive
-	<-c
+	<-closeCh
 }
 
 func initDOM() {
@@ -21,7 +21,6 @@ func initDOM() {
 }
 
 func register() {
-	// Register swipe handlers
 	js.Global().Set("onPointerDown", js.FuncOf(onPointerDown))
 	js.Global().Set("onPointerMove", js.FuncOf(onPointerMove))
 	js.Global().Set("onPointerUp", js.FuncOf(onPointerUp))

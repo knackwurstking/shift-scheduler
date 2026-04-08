@@ -95,9 +95,10 @@ func onPointerUp(this js.Value, args []js.Value) any {
 	if math.Abs(diff) > SwipeThreshold {
 		if diff < 0 {
 			gridContainers.Move(DirectionLeft)
-		} else if diff > 0 {
-			gridContainers.Move(DirectionRight)
 		}
+		gridContainers.Move(DirectionRight)
+	} else {
+		// TODO: Reset the to the original translate value
 	}
 
 	// Reset translate style for grid containers
