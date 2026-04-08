@@ -2,6 +2,10 @@ package calendar
 
 import "github.com/knackwurstking/shift-scheduler/internal/localization"
 
+const (
+	ClassGridContainer = "grid-container"
+)
+
 type GridProps struct {
 	StartWithMonday bool
 	Localization    *localization.Localization
@@ -28,7 +32,7 @@ templ Grid(p GridProps) {
 }
 
 templ GridContainer() {
-	<div class="grid-container">
+	<div class={ ClassGridContainer }>
 		{ children... }
 	</div>
 }

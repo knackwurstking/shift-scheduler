@@ -19,13 +19,14 @@ type GridContainers struct {
 
 func (gc *GridContainers) QueryAll() {
 	// Get all .grid-container elements
-	containers := js.Global().Get("document").Call("querySelectorAll", ".grid-container")
+	containers := js.Global().Get("document").Call("querySelectorAll", "."+calendar.ClassGridContainer)
 	if containers.Length() != 3 {
 		panic("Expected 3 grid containers")
 	}
 
+	gc.containers = make([]js.Value, 0)
 	for i := range containers.Length() {
-		gc.containers[i] = containers.Index(i)
+		gc.containers = append(gc.containers, containers.Index(i))
 	}
 }
 
@@ -67,7 +68,7 @@ func (gc *GridContainers) Move(direction Direction) {
 }
 
 func (gc *GridContainers) querySwipeContainer() js.Value {
-	return js.Global().Get("document").Call("querySelector", calendar.IDCalendarSwipe)
+	return js.Global().Get("document").Call("querySelector", "#"+calendar.IDCalendarSwipe)
 }
 
 func (gc *GridContainers) queryHTML() js.Value {
@@ -97,7 +98,7 @@ func (gc *GridContainers) insertGrid() {
 }
 
 func (gc *GridContainers) createGridContainer() template.HTML {
-	l := localization.New(gc.queryHTML().Get("lang").String())
+	l := localization.New(gc.queryHTML().Get("lang").String()) // FIXME: syscall/js: call of Value.Get on string
 	grid := calendar.Grid(calendar.GridProps{
 		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
 		Localization:    l,
