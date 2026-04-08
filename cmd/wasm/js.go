@@ -22,9 +22,6 @@ var (
 func onPointerDown(this js.Value, args []js.Value) any {
 	event := args[0]
 
-	// TODO: Console log target, remove later...
-	js.Global().Get("console").Call("log", "onPointerDown:", event)
-
 	// Store the current start position
 	start.X = event.Get("clientX").Float()
 	start.Y = event.Get("clientY").Float()
@@ -82,13 +79,6 @@ func onPointerUp(this js.Value, args []js.Value) any {
 		gridContainers.RemoveClass("no-user-select")
 		isSwiping = false
 	}
-
-	// Finish swipe
-	js.Global().Get("console").Call("log",
-		fmt.Sprintf(
-			"finishSwipe: start=(%.02f,%.02f) stop=(%.02f,%.02f)",
-			start.X, start.Y, stop.X, stop.Y,
-		))
 
 	// First we need to get the swipe direction, negative for left swipe,
 	diff := getSwipeDiff()
