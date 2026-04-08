@@ -88,7 +88,7 @@ func onPointerUp(this js.Value, args []js.Value) any {
 		}
 		gridContainers.Move(DirectionRight)
 	} else {
-		// TODO: Reset the to the original translate value
+		// TODO: Reset to the original translate value
 	}
 
 	// Reset translate style for grid containers
