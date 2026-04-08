@@ -72,7 +72,7 @@ func (gc *GridContainers) querySwipeContainer() js.Value {
 }
 
 func (gc *GridContainers) queryHTML() js.Value {
-	return js.Global().Get("document").Call("querySelector", "html").Get("lang")
+	return js.Global().Get("document").Call("querySelector", "html")
 }
 
 func (gc *GridContainers) appendGrid() {
@@ -98,7 +98,7 @@ func (gc *GridContainers) insertGrid() {
 }
 
 func (gc *GridContainers) createGridContainer() template.HTML {
-	l := localization.New(gc.queryHTML().Get("lang").String()) // FIXME: syscall/js: call of Value.Get on string
+	l := localization.New(gc.queryHTML().Get("lang").String())
 	grid := calendar.Grid(calendar.GridProps{
 		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
 		Localization:    l,
