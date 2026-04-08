@@ -20,9 +20,6 @@ type GridContainers struct {
 func (gc *GridContainers) QueryAll() {
 	// Get all .grid-container elements
 	containers := js.Global().Get("document").Call("querySelectorAll", "."+calendar.ClassGridContainer)
-	if containers.Length() != 3 {
-		panic("Expected 3 grid containers")
-	}
 
 	gc.containers = make([]js.Value, 0)
 	for i := range containers.Length() {
@@ -83,7 +80,7 @@ func (gc *GridContainers) appendGrid() {
 
 	// Append the new grid container to the swipe container
 	htmlContent := gc.createGridContainer()
-	swipeContainer.Call("insertAdjacentHTML", "beforeend", htmlContent)
+	swipeContainer.Call("insertAdjacentHTML", "beforeend", string(htmlContent))
 }
 
 func (gc *GridContainers) insertGrid() {
@@ -94,7 +91,7 @@ func (gc *GridContainers) insertGrid() {
 
 	// Insert the new grid container at the beginning of the swipe container using insertAdjacentHTML
 	htmlContent := gc.createGridContainer()
-	swipeContainer.Call("insertAdjacentHTML", "afterbegin", htmlContent)
+	swipeContainer.Call("insertAdjacentHTML", "afterbegin", string(htmlContent))
 }
 
 func (gc *GridContainers) createGridContainer() template.HTML {

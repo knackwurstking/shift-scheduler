@@ -101,7 +101,6 @@ func onPointerUp(this js.Value, args []js.Value) any {
 	}
 
 	// Reset translate style for grid containers
-	gridContainers.RemoveClass("")
 	pointerDown = false
 
 	return nil
