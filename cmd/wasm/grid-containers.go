@@ -15,6 +15,8 @@ var gridContainers GridContainers
 
 type GridContainers struct {
 	containers []js.Value
+
+	currentVW int
 }
 
 func (gc *GridContainers) QueryAll() {
@@ -52,17 +54,22 @@ func (gc *GridContainers) SetTranslate(v string) {
 func (gc *GridContainers) Move(direction Direction) {
 	gridContainers.AddClass("swipe-transition")
 
+	if gc.currentVW == 0 {
+		// Set to the initial vw from the "style.css"
+		gc.currentVW = -100
+	}
+
 	// First we need to finish the swipe
-	var translate string
 	if direction > 0 {
 		// FIXME: This right swipe mechanism is broken
-		translate = "0 0"
+		gc.currentVW += 100
 		defer gc.insertGrid()
 	} else {
-		translate = "calc(-200vw) 0"
+		gc.currentVW -= 100
 		defer gc.appendGrid()
 	}
-	gc.SetTranslate(translate)
+
+	gc.SetTranslate(fmt.Sprintf("%s 0", gc.currentVW))
 }
 
 func (gc *GridContainers) querySwipeContainer() js.Value {

@@ -87,11 +87,10 @@ func onPointerUp(this js.Value, args []js.Value) any {
 			gridContainers.Move(DirectionLeft)
 		}
 		gridContainers.Move(DirectionRight)
-	} else {
-		// TODO: Reset to the original translate value
 	}
 
 	// Reset translate style for grid containers
+	gridContainers.SetTranslate("")
 	pointerDown = false
 
 	return nil
