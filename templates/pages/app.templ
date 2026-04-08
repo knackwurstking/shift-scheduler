@@ -15,10 +15,8 @@ type AppProps struct {
 }
 
 templ App(p AppProps) {
-	{{ lang := p.Localization.Language() }}
 	@Layout(Props{
-		Title: "Shift Scheduler",
-		Lang:  lang,
+		Localization: p.Localization,
 	}) {
 		@appbar.AppBar()
 		{{

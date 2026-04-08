@@ -11,6 +11,8 @@ func New(language string) *Localization {
 
 func NewGerman() *Localization {
 	return &Localization{
+		Title: "Schicht Planer",
+
 		Sunday:    "So",
 		Monday:    "Mo",
 		Tuesday:   "Di",
@@ -25,6 +27,8 @@ func NewGerman() *Localization {
 
 func NewEnglish() *Localization {
 	return &Localization{
+		Title: "Shift Scheduler",
+
 		Sunday:    "Sun",
 		Monday:    "Mon",
 		Tuesday:   "Tue",
@@ -38,6 +42,8 @@ func NewEnglish() *Localization {
 }
 
 type Localization struct {
+	Title string `json:"title"`
+
 	// Short weekday names
 	Sunday    string `json:"sunday"`
 	Monday    string `json:"monday"`
