@@ -21,6 +21,7 @@ templ App(p AppProps) {
 		Localization: p.Localization,
 	}) {
 		@appbar.AppBar()
+		// TODO: GridProps month needs to be changed, currently every grid has the same month
 		{{
 			now := time.Now()
 			gridProps := calendar.GridProps{
