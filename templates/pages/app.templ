@@ -1,6 +1,8 @@
 package pages
 
 import (
+	"time"
+
 	"github.com/knackwurstking/shift-scheduler/internal/localization"
 	"github.com/knackwurstking/shift-scheduler/templates/components/appbar"
 	"github.com/knackwurstking/shift-scheduler/templates/components/calendar"
@@ -20,9 +22,12 @@ templ App(p AppProps) {
 	}) {
 		@appbar.AppBar()
 		{{
+			now := time.Now()
 			gridProps := calendar.GridProps{
 				StartWithMonday: calendar.WeekStartAtMonday(p.Localization.Language()),
 				Localization:    p.Localization,
+				Year:            now.Year(),
+				Month:           now.Month(),
 			}
 		}}
 		@calendar.Swipe(

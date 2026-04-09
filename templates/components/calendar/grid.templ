@@ -1,38 +1,113 @@
 package calendar
 
-import "github.com/knackwurstking/shift-scheduler/internal/localization"
+import (
+	"time"
+
+	"github.com/knackwurstking/shift-scheduler/internal/localization"
+)
 
 const (
 	ClassGridContainer = "grid-container"
+	ClassGridCell      = "grid-cell"
 )
-
-type GridProps struct {
-	StartWithMonday bool
-	Localization    *localization.Localization
-}
-
-templ Grid(p GridProps) {
-	// TODO: A 7x6 grid per month with a additional header row for the week days, starting from sunday based on props. If StartWithMonday is true, the week days should start from monday.
-	<table class="grid">
-		<thead>
-			<tr>
-				<th>{ p.Localization.Sunday }</th>
-				<th>{ p.Localization.Monday }</th>
-				<th>{ p.Localization.Tuesday }</th>
-				<th>{ p.Localization.Wednesday }</th>
-				<th>{ p.Localization.Thursday }</th>
-				<th>{ p.Localization.Friday }</th>
-				<th>{ p.Localization.Saturday }</th>
-			</tr>
-		</thead>
-		<tbody>
-			// TODO: Here should be the 7x6 grid
-		</tbody>
-	</table>
-}
 
 templ GridContainer() {
 	<div class={ ClassGridContainer }>
 		{ children... }
 	</div>
+}
+
+type GridProps struct {
+	StartWithMonday bool
+	Localization    *localization.Localization
+	Year            int
+	Month           time.Month
+}
+
+templ Grid(p GridProps) {
+	<table class="grid">
+		<thead>
+			<tr>
+				for _, day := range getWeekDays(p.Localization, p.StartWithMonday) {
+					<th>{ day }</th>
+				}
+			</tr>
+		</thead>
+		<tbody>
+			for _, row := range generateGridCells(p.Year, p.Month, p.StartWithMonday) {
+				@GridRow(row)
+			}
+		</tbody>
+	</table>
+}
+
+templ GridRow(cells [7]CellProps) {
+	<tr>
+		for _, cell := range cells {
+			@GridCell(cell)
+		}
+	</tr>
+}
+
+type CellProps struct {
+	Date    int
+	Current bool // TODO: Apply class to the container for some special styles
+}
+
+templ GridCell(p CellProps) {
+	<td class={ ClassGridCell }>
+		<span class="date">{ p.Date }</span>
+	</td>
+}
+
+func getWeekDays(localization *localization.Localization, startWithMonday bool) []string {
+	if startWithMonday {
+		return []string{
+			localization.Monday,
+			localization.Tuesday,
+			localization.Wednesday,
+			localization.Thursday,
+			localization.Friday,
+			localization.Saturday,
+			localization.Sunday,
+		}
+	}
+	return []string{
+		localization.Sunday,
+		localization.Monday,
+		localization.Tuesday,
+		localization.Wednesday,
+		localization.Thursday,
+		localization.Friday,
+		localization.Saturday,
+	}
+}
+
+func generateGridCells(year int, month time.Month, startWithMonday bool) [6][7]CellProps {
+	offset := getStartDay(year, month, startWithMonday)
+	now := time.Now()
+	isCurrentMonth := now.Year() == year && now.Month() == month
+
+	var cells [6][7]CellProps
+	for row := range 6 {
+		for col := range 7 {
+			day := row*7 + col - offset + 1
+			isCurrent := isCurrentMonth && day == now.Day()
+			cells[row][col] = CellProps{Date: day, Current: isCurrent}
+		}
+	}
+	return cells
+}
+
+func getStartDay(year int, month time.Month, startWithMonday bool) int {
+	date := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
+	weekDay := int(date.Weekday())
+
+	if startWithMonday {
+		if weekDay == 0 {
+			return 6
+		}
+		return weekDay - 1
+	}
+	return weekDay
 }

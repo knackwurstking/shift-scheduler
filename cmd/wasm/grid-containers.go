@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"syscall/js"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/knackwurstking/shift-scheduler/internal/localization"
@@ -108,9 +109,12 @@ func (gc *GridContainers) insertGrid() {
 
 func (gc *GridContainers) createGridContainer() template.HTML {
 	l := localization.New(gc.queryHTML().Get("lang").String())
+	now := time.Now()
 	grid := calendar.Grid(calendar.GridProps{
 		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
 		Localization:    l,
+		Year:            now.Year(),
+		Month:           now.Month(),
 	})
 
 	ctx := templ.WithChildren(context.Background(), grid)
