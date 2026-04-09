@@ -7,8 +7,9 @@ import (
 )
 
 const (
-	ClassGridContainer = "grid-container"
-	ClassGridCell      = "grid-cell"
+	ClassGridContainer   = "grid-container"
+	ClassGridCell        = "grid-cell"
+	ClassGridCellCurrent = "grid-cell-current"
 )
 
 templ GridContainer() {
@@ -51,11 +52,16 @@ templ GridRow(cells [7]CellProps) {
 
 type CellProps struct {
 	Date    int
-	Current bool // TODO: Apply class to the container for some special styles
+	Current bool
 }
 
 templ GridCell(p CellProps) {
-	<td class={ ClassGridCell }>
+	<td
+		class={
+			ClassGridCell,
+			templ.KV(ClassGridCellCurrent, p.Current),
+		}
+	>
 		<span class="date">{ p.Date }</span>
 	</td>
 }
