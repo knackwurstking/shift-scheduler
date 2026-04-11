@@ -21,20 +21,32 @@ templ App(p AppProps) {
 		Localization: p.Localization,
 	}) {
 		@appbar.AppBar()
-		// TODO: GridProps month needs to be changed, currently every grid has the same month
 		{{
-			now := time.Now()
-			gridProps := calendar.GridProps{
-				StartWithMonday: calendar.WeekStartAtMonday(p.Localization.Language()),
-				Localization:    p.Localization,
-				Year:            now.Year(),
-				Month:           now.Month(),
-			}
+			startWithMonday := calendar.WeekStartAtMonday(p.Localization.Language())
+
+			current := time.Now()
+			prev := current.AddDate(0, -1, 0)
+			next := current.AddDate(0, 1, 0)
 		}}
 		@calendar.Swipe(
-			calendar.Grid(gridProps),
-			calendar.Grid(gridProps),
-			calendar.Grid(gridProps),
+			calendar.Grid(calendar.GridProps{
+				StartWithMonday: startWithMonday,
+				Localization:    p.Localization,
+				Year:            prev.Year(),
+				Month:           prev.Month(),
+			}),
+			calendar.Grid(calendar.GridProps{
+				StartWithMonday: startWithMonday,
+				Localization:    p.Localization,
+				Year:            current.Year(),
+				Month:           current.Month(),
+			}),
+			calendar.Grid(calendar.GridProps{
+				StartWithMonday: startWithMonday,
+				Localization:    p.Localization,
+				Year:            next.Year(),
+				Month:           next.Month() + 1,
+			}),
 		)
 	}
 }
