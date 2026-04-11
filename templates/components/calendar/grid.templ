@@ -26,7 +26,7 @@ type GridProps struct {
 }
 
 templ Grid(p GridProps) {
-	<table class="grid">
+	<table class="grid" data-year={ p.Year } data-month={ p.Month }>
 		<thead>
 			<tr>
 				for _, day := range getWeekDays(p.Localization, p.StartWithMonday) {
