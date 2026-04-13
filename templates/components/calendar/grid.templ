@@ -7,9 +7,10 @@ import (
 )
 
 const (
-	ClassGridContainer   = "grid-container"
-	ClassGridCell        = "grid-cell"
-	ClassGridCellCurrent = "grid-cell-current"
+	ClassGridContainer        = "grid-container"
+	ClassGridCell             = "grid-cell"
+	ClassGridCellCurrent      = "grid-cell-current"
+	ClassGridCellCurrentMonth = "grid-cell-current-month"
 )
 
 templ GridContainer() {
@@ -51,16 +52,16 @@ templ GridRow(cells [7]CellProps) {
 }
 
 type CellProps struct {
-	Date    int
-	Current bool
+	Date         int
+	Current      bool
+	CurrentMonth bool
 }
 
 templ GridCell(p CellProps) {
 	<td
-		class={
-			ClassGridCell,
+		class={ ClassGridCell,
 			templ.KV(ClassGridCellCurrent, p.Current),
-		}
+			templ.KV(ClassGridCellCurrentMonth, p.Current) }
 	>
 		<span class="date">{ p.Date }</span>
 	</td>
@@ -99,7 +100,7 @@ func generateGridCells(year int, month time.Month, startWithMonday bool) [6][7]C
 		for col := range 7 {
 			day := row*7 + col - offset + 1
 			isCurrent := isCurrentMonth && day == now.Day()
-			cells[row][col] = CellProps{Date: day, Current: isCurrent}
+			cells[row][col] = CellProps{Date: day, Current: isCurrent, CurrentMonth: isCurrentMonth}
 		}
 	}
 	return cells
