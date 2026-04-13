@@ -42,11 +42,16 @@
 	box-sizing: border-box;
 }
 
-/* Debug */
+/**
+ * Debug 
+ */
+
+/*
 *,
 *:not(svg) {
 	border: 0.5px solid var(--color-error);
 }
+*/
 
 /**
  * Swipe container holds three grids side by side and will simulate an infinite
