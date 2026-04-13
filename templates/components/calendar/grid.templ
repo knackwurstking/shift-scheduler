@@ -63,7 +63,9 @@ templ GridCell(p CellProps) {
 			templ.KV(ClassGridCellCurrent, p.Current),
 			templ.KV(ClassGridCellCurrentMonth, p.Current) }
 	>
-		<span class="date">{ p.Date }</span>
+		if p.CurrentMonth {
+			<span class="date">{ p.Date }</span>
+		}
 	</td>
 }
 
