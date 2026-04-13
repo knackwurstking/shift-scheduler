@@ -93,7 +93,8 @@ func getWeekDays(localization *localization.Localization, startWithMonday bool) 
 }
 
 func generateGridCells(year int, month time.Month, startWithMonday bool) [6][7]CellProps {
-	offset := getStartDay(year, month, startWithMonday)
+	offset, date := getStartDay(year, month, startWithMonday)
+
 	now := time.Now()
 	isCurrentMonth := now.Year() == year && now.Month() == month
 
@@ -101,22 +102,34 @@ func generateGridCells(year int, month time.Month, startWithMonday bool) [6][7]C
 	for row := range 6 {
 		for col := range 7 {
 			day := row*7 + col - offset + 1
-			isCurrent := isCurrentMonth && day == now.Day()
-			cells[row][col] = CellProps{Date: day, Current: isCurrent, CurrentMonth: isCurrentMonth}
+			if date.Month() != month {
+				day = -1
+				continue
+			}
+
+			cells[row][col] = CellProps{
+				Date:         day,
+				Current:      isCurrentMonth && day == now.Day(),
+				CurrentMonth: date.Month() == month,
+			}
+
+			if day > 0 {
+				date = date.Add(time.Hour * 24) // Add one day
+			}
 		}
 	}
 	return cells
 }
 
-func getStartDay(year int, month time.Month, startWithMonday bool) int {
-	date := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
+func getStartDay(year int, month time.Month, startWithMonday bool) (offset int, date time.Time) {
+	date = time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
 	weekDay := int(date.Weekday())
 
 	if startWithMonday {
 		if weekDay == 0 {
-			return 6
+			return 6, date
 		}
-		return weekDay - 1
+		return weekDay - 1, date
 	}
-	return weekDay
+	return weekDay, date
 }
