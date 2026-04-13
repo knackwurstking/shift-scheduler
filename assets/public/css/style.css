@@ -2,6 +2,42 @@
  * Global Styles *
  */
 
+:root {
+	/* Color: black */
+	--color-black: oklch(0% 0 0);
+	/* Color: dark gray */
+	--color-gray-900: oklch(25% 0 0);
+	/* Color: medium gray */
+	--color-gray-200: oklch(92% 0 0);
+	/* Color: light gray */
+	--color-gray-100: oklch(97% 0 0);
+	/* Color: white */
+	--color-white: oklch(100% 0 0);
+
+	/* Color: primary blue */
+	--color-primary: oklch(55% 0.2 250);
+	/* Color: primary light blue */
+	--color-primary-light: oklch(75% 0.15 250);
+	/* Color: success green */
+	--color-success: oklch(65% 0.15 150);
+	/* Color: warning amber */
+	--color-warning: oklch(75% 0.15 85);
+	/* Color: error red */
+	--color-error: oklch(55% 0.2 25);
+
+	/* Color: text primary */
+	--color-text-primary: oklch(20% 0 0);
+	/* Color: text secondary */
+	--color-text-secondary: oklch(50% 0 0);
+	/* Color: text muted */
+	--color-text-muted: oklch(70% 0 0);
+
+	/* Color: background primary */
+	--color-bg-primary: oklch(99% 0 0);
+	/* Color: background secondary */
+	--color-bg-secondary: oklch(97% 0 0);
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -9,7 +45,7 @@
 /* Debug */
 *,
 *:not(svg) {
-	border: 0.5px solid red;
+	border: 0.5px solid var(--color-error);
 }
 
 /**
@@ -70,7 +106,7 @@
  */
 
 #calendar-swipe .grid-cell {
-	border: 1px solid #000;
+	border: 1px solid var(--color-black);
 }
 
 #calendar-swipe .grid-cell:not(.grid-cell-current-month) {
@@ -78,8 +114,8 @@
 }
 
 #calendar-swipe .grid-cell.grid-cell-current {
-	background-color: #f8f9fa;
-	border: 1px solid #dee2e6;
+	background-color: var(--color-gray-100);
+	border: 1px solid var(--color-gray-200);
 }
 
 /**
