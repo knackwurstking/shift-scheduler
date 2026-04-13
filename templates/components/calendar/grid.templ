@@ -110,7 +110,7 @@ func generateGridCells(year int, month time.Month, startWithMonday bool) [6][7]C
 			cells[row][col] = CellProps{
 				Date:         day,
 				Current:      isCurrentMonth && day == now.Day(),
-				CurrentMonth: date.Month() == month,
+				CurrentMonth: day > 0,
 			}
 
 			if day > 0 {
