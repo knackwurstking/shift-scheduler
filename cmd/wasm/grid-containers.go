@@ -103,6 +103,7 @@ func (gc *GridContainers) insertGrid() {
 	}
 
 	// Insert the new grid container at the beginning of the swipe container using insertAdjacentHTML
+	// TODO: Get the first container and grep the "data-month" and "data-year" attributes, pass it to the grid creation method
 	htmlContent := gc.createGridContainer()
 	swipeContainer.Call("insertAdjacentHTML", "afterbegin", string(htmlContent))
 }
@@ -110,6 +111,7 @@ func (gc *GridContainers) insertGrid() {
 func (gc *GridContainers) createGridContainer() template.HTML {
 	l := localization.New(gc.queryHTML().Get("lang").String())
 	now := time.Now()
+	// FIXME: Get the correct month based on the swipe direction
 	grid := calendar.Grid(calendar.GridProps{
 		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
 		Localization:    l,
