@@ -87,8 +87,10 @@ func (gc *GridContainers) appendGrid() {
 		return
 	}
 
-	// Append the new grid container to the swipe container
-	htmlContent := gc.createGridContainer()
+	year, month := gc.getLastContainerYearMonth()
+	year, month = addMonth(year, month, 1)
+
+	htmlContent := gc.createGridContainer(year, month)
 	if htmlContent == "" {
 		fmt.Println("warning: failed to create grid container HTML")
 		return
@@ -102,30 +104,81 @@ func (gc *GridContainers) insertGrid() {
 		panic("swipe container not found")
 	}
 
-	// Insert the new grid container at the beginning of the swipe container using insertAdjacentHTML
-	// TODO: Get the first container and grep the "data-month" and "data-year" attributes, pass it to the grid creation method
-	htmlContent := gc.createGridContainer()
+	year, month := gc.getFirstContainerYearMonth()
+	year, month = addMonth(year, month, -1)
+
+	htmlContent := gc.createGridContainer(year, month)
 	swipeContainer.Call("insertAdjacentHTML", "afterbegin", string(htmlContent))
 }
 
-func (gc *GridContainers) createGridContainer() template.HTML {
+func (gc *GridContainers) createGridContainer(year int, month time.Month) template.HTML {
 	l := localization.New(gc.queryHTML().Get("lang").String())
-	now := time.Now()
-	// FIXME: Get the correct month based on the swipe direction
+
 	grid := calendar.Grid(calendar.GridProps{
 		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
 		Localization:    l,
-		Year:            now.Year(),
-		Month:           now.Month(),
+		Year:            year,
+		Month:           month,
 	})
 
 	ctx := templ.WithChildren(context.Background(), grid)
 
-	// Convert the grid container to HTML and append it to the swipe container
 	htmlContent, err := templ.ToGoHTML(ctx, calendar.GridContainer())
 	if err != nil {
 		panic(fmt.Errorf("failed to render grid container: %w", err))
 	}
 
 	return htmlContent
+}
+
+func (gc *GridContainers) getFirstContainerYearMonth() (int, time.Month) {
+	swipeContainer := gc.querySwipeContainer()
+	if swipeContainer.IsUndefined() || swipeContainer.IsNull() {
+		now := time.Now()
+		return now.Year(), now.Month()
+	}
+
+	firstChild := swipeContainer.Call("querySelector", "."+calendar.ClassGridContainer)
+	if firstChild.IsUndefined() || firstChild.IsNull() {
+		now := time.Now()
+		return now.Year(), now.Month()
+	}
+
+	return extractYearMonth(firstChild)
+}
+
+func (gc *GridContainers) getLastContainerYearMonth() (int, time.Month) {
+	swipeContainer := gc.querySwipeContainer()
+	if swipeContainer.IsUndefined() || swipeContainer.IsNull() {
+		now := time.Now()
+		return now.Year(), now.Month()
+	}
+
+	lastChild := swipeContainer.Call("querySelector", "."+calendar.ClassGridContainer+":last-child")
+	if lastChild.IsUndefined() || lastChild.IsNull() {
+		now := time.Now()
+		return now.Year(), now.Month()
+	}
+
+	return extractYearMonth(lastChild)
+}
+
+func extractYearMonth(container js.Value) (int, time.Month) {
+	year := container.Get("dataset").Get("year").Get("value").Int()
+	month := container.Get("dataset").Get("month").Get("value").Int()
+	return year, time.Month(month)
+}
+
+func addMonth(year int, month time.Month, delta int) (int, time.Month) {
+	totalMonths := int(month) + delta
+	year += (totalMonths - 1) / 12
+	newMonth := time.Month((totalMonths-1)%12 + 1)
+	if totalMonths <= 0 {
+		year--
+		newMonth = time.Month((totalMonths%12 + 12) % 12)
+		if newMonth == 0 {
+			newMonth = 12
+		}
+	}
+	return year, newMonth
 }
