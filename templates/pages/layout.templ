@@ -16,6 +16,14 @@ templ Layout(p Props) {
 			<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180x180.png"/>
 			<link rel="stylesheet" href="css/style.css"/>
 			<title>{ p.Localization.Title }</title>
+			<script>
+				(function() {
+					const theme = localStorage.getItem('theme') || 'light';
+					if (theme === 'dark') {
+						document.documentElement.classList.add('dark');
+					}
+				})();
+			</script>
 		</head>
 		<body>
 			{ children... }

@@ -3,43 +3,44 @@
  */
 
 :root {
-	/* Color: black */
+	/* Palette */
 	--color-black: oklch(0% 0 0);
-	/* Color: dark gray */
 	--color-gray-900: oklch(25% 0 0);
-	/* Color: medium gray */
 	--color-gray-200: oklch(92% 0 0);
-	/* Color: light gray */
 	--color-gray-100: oklch(97% 0 0);
-	/* Color: white */
 	--color-white: oklch(100% 0 0);
 
-	/* Color: primary blue */
 	--color-primary: oklch(55% 0.2 250);
-	/* Color: primary light blue */
 	--color-primary-light: oklch(75% 0.15 250);
-	/* Color: success green */
 	--color-success: oklch(65% 0.15 150);
-	/* Color: warning amber */
 	--color-warning: oklch(75% 0.15 85);
-	/* Color: error red */
 	--color-error: oklch(55% 0.2 25);
 
-	/* Color: text primary */
-	--color-text-primary: oklch(20% 0 0);
-	/* Color: text secondary */
-	--color-text-secondary: oklch(50% 0 0);
-	/* Color: text muted */
-	--color-text-muted: oklch(70% 0 0);
+	/* Semantic - Light Mode (Default) */
+	--bg-primary: var(--color-white);
+	--bg-secondary: var(--color-gray-100);
+	--text-primary: var(--color-black);
+	--text-secondary: var(--color-gray-900);
+	--text-muted: var(--color-gray-200);
+	--border-primary: var(--color-gray-200);
+	--border-secondary: var(--color-gray-100);
 
-	/* Color: background primary */
-	--color-bg-primary: oklch(99% 0 0);
-	/* Color: background secondary */
-	--color-bg-secondary: oklch(97% 0 0);
+	/* Semantic - Dark Mode */
 }
 
-* {
-	box-sizing: border-box;
+.dark {
+	--bg-primary: var(--color-gray-900);
+	--bg-secondary: var(--color-black);
+	--text-primary: var(--color-white);
+	--text-secondary: var(--color-gray-200);
+	--text-muted: var(--color-gray-100);
+	--border-primary: var(--color-gray-200);
+	--border-secondary: var(--color-gray-900);
+}
+
+body {
+	background-color: var(--bg-primary);
+	color: var(--text-primary);
 }
 
 /**
@@ -55,9 +56,9 @@
 
 /**
  * Swipe container holds three grids side by side and will simulate an infinite
- * swipe, Jan to Dec, next Jear starting from Jan again.
+ * swipe, Jan to Dec, next Year starting from Jan again.
  *
- * TODO: Align grids properly, (CSS) current grid is visible, prev grid is
+ * NOTE: Align grids properly, (CSS) current grid is visible, prev grid is
  * offscreen (left) and next grid is offscreen (right)
  */
 
@@ -111,7 +112,7 @@
  */
 
 #calendar-swipe .grid-cell {
-	border: 1px solid var(--color-black);
+	border: 1px solid var(--border-primary);
 }
 
 #calendar-swipe .grid-cell:not(.grid-cell-current-month) {
@@ -119,12 +120,67 @@
 }
 
 #calendar-swipe .grid-cell.grid-cell-current {
-	background-color: var(--color-gray-100);
-	border: 1px solid var(--color-gray-200);
+	background-color: var(--bg-secondary);
+	border: 1px solid var(--border-primary);
 }
 
 /**
- * Utility classes *
+ * App Bar Styles
+ */
+#app-bar {
+	height: 3.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 1rem;
+	background-color: var(--bg-secondary);
+	border-bottom: 1px solid var(--border-primary);
+}
+
+#app-bar-left, #app-bar-center, #app-bar-right {
+	display: flex;
+	align-items: center;
+}
+
+#app-bar-left, #app-bar-right {
+	flex: 1;
+}
+
+#app-bar-center {
+	flex: 0;
+}
+
+#app-bar-right {
+	justify-content: flex-end;
+}
+
+#app-bar button {
+	background: none;
+	border: none;
+	color: var(--text-primary);
+	cursor: pointer;
+	font-size: 1.2rem;
+	padding: 0.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#app-bar button:hover {
+	background-color: var(--bg-primary);
+	border-radius: 0.25rem;
+}
+
+.theme-icon::before {
+	content: '☀️';
+}
+
+.dark .theme-icon::before {
+	content: '🌙';
+}
+
+/**
+ * Utility classes
  */
 
 .hidden {

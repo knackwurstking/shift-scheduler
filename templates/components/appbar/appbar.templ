@@ -17,6 +17,7 @@ const (
 	IDToadayButton   = "app-bar-today-button"    // TODO: ...
 	IDPrinterButton  = "app-bar-printer-button"  // TODO: ...
 	IDSettingsButton = "app-bar-settings-button" // TODO: ...
+	IDThemeToggleButton = "app-bar-theme-toggle-button"
 )
 
 templ AppBar() {
@@ -46,7 +47,11 @@ templ AppBarCenter() {
 }
 
 templ AppBarRight() {
-	<div id={ IDAppBarRight }></div>
+	<div id={ IDAppBarRight }>
+		<button id={ IDThemeToggleButton } onclick={ onThemeToggleClick()}>
+			<span class="theme-icon"></span>
+		</button>
+	</div>
 }
 
 script onDatePickerButtonClick(datePickerButtonID string) {
@@ -60,3 +65,14 @@ script onDatePickerButtonClick(datePickerButtonID string) {
 		document.querySelector("#" + datePickerButtonID).textContent = selectedDate;
 	});
 }
+
+script onThemeToggleClick() {
+	var html = document.documentElement;
+	if (html.classList.contains("dark")) {
+		html.classList.remove("dark");
+		localStorage.setItem("theme", "light");
+	} else {
+		html.classList.add("dark");
+		localStorage.setItem("theme", "dark");
+}
+
