@@ -69,7 +69,7 @@ func (gc *GridContainers) Move(direction Direction) {
 		defer gc.appendGrid()
 	}
 
-	gc.SetTranslate(fmt.Sprintf("%s 0", gc.currentVW))
+	gc.SetTranslate(fmt.Sprintf("%d 0", gc.currentVW))
 }
 
 func (gc *GridContainers) querySwipeContainer() js.Value {
@@ -132,35 +132,21 @@ func (gc *GridContainers) createGridContainer(year int, month time.Month) templa
 }
 
 func (gc *GridContainers) getFirstContainerYearMonth() (int, time.Month) {
-	swipeContainer := gc.querySwipeContainer()
-	if swipeContainer.IsUndefined() || swipeContainer.IsNull() {
+	if len(gc.containers) == 0 {
 		now := time.Now()
 		return now.Year(), now.Month()
 	}
 
-	firstChild := swipeContainer.Call("querySelector", "."+calendar.ClassGridContainer)
-	if firstChild.IsUndefined() || firstChild.IsNull() {
-		now := time.Now()
-		return now.Year(), now.Month()
-	}
-
-	return extractYearMonth(firstChild)
+	return extractYearMonth(gc.containers[0])
 }
 
 func (gc *GridContainers) getLastContainerYearMonth() (int, time.Month) {
-	swipeContainer := gc.querySwipeContainer()
-	if swipeContainer.IsUndefined() || swipeContainer.IsNull() {
+	if len(gc.containers) == 0 {
 		now := time.Now()
 		return now.Year(), now.Month()
 	}
 
-	lastChild := swipeContainer.Call("querySelector", "."+calendar.ClassGridContainer+":last-child")
-	if lastChild.IsUndefined() || lastChild.IsNull() {
-		now := time.Now()
-		return now.Year(), now.Month()
-	}
-
-	return extractYearMonth(lastChild)
+	return extractYearMonth(gc.containers[len(gc.containers)-1])
 }
 
 func extractYearMonth(container js.Value) (int, time.Month) {
