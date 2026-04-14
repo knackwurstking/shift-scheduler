@@ -13,10 +13,10 @@ const (
 	IDBackButton       = "app-bar-back-button" // TODO: ...
 
 	// Right
-	IDEditButton     = "app-bar-edit-button"     // TODO: ...
-	IDToadayButton   = "app-bar-today-button"    // TODO: ...
-	IDPrinterButton  = "app-bar-printer-button"  // TODO: ...
-	IDSettingsButton = "app-bar-settings-button" // TODO: ...
+	IDEditButton        = "app-bar-edit-button"     // TODO: ...
+	IDToadayButton      = "app-bar-today-button"    // TODO: ...
+	IDPrinterButton     = "app-bar-printer-button"  // TODO: ...
+	IDSettingsButton    = "app-bar-settings-button" // TODO: ...
 	IDThemeToggleButton = "app-bar-theme-toggle-button"
 )
 
@@ -48,7 +48,10 @@ templ AppBarCenter() {
 
 templ AppBarRight() {
 	<div id={ IDAppBarRight }>
-		<button id={ IDThemeToggleButton } onclick={ onThemeToggleClick()}>
+		<button
+			id={ IDThemeToggleButton }
+			onclick={ onThemeToggleClick() }
+		>
 			<span class="theme-icon"></span>
 		</button>
 	</div>
@@ -74,5 +77,5 @@ script onThemeToggleClick() {
 	} else {
 		html.classList.add("dark");
 		localStorage.setItem("theme", "dark");
+	}
 }
-
