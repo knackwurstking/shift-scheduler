@@ -2,6 +2,10 @@
  * Global Styles *
  */
 
+* {
+	box-sizing: border-box;
+}
+
 :root {
 	/* Palette */
 	--color-black: oklch(0% 0 0);
@@ -137,12 +141,15 @@ body {
 	border-bottom: 1px solid var(--border-primary);
 }
 
-#app-bar-left, #app-bar-center, #app-bar-right {
+#app-bar-left,
+#app-bar-center,
+#app-bar-right {
 	display: flex;
 	align-items: center;
 }
 
-#app-bar-left, #app-bar-right {
+#app-bar-left,
+#app-bar-right {
 	flex: 1;
 }
 
