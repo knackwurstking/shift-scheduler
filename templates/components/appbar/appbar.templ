@@ -18,6 +18,8 @@ const (
 	IDPrinterButton     = "app-bar-printer-button"  // TODO: ...
 	IDSettingsButton    = "app-bar-settings-button" // TODO: ...
 	IDThemeToggleButton = "app-bar-theme-toggle-button"
+
+	DatePickerFormat = "January, 2006"
 )
 
 templ AppBar() {
@@ -39,7 +41,7 @@ templ AppBarLeft() {
 			data-month={d.Month()}
 		>
 			<input type="data" style="display: none;"/>
-			{ d.Format("January, 2006") }
+			{ d.Format(DatePickerFormat) }
 		</button>
 	</div>
 }

@@ -64,9 +64,11 @@ func (gc *GridContainers) Move(direction Direction) {
 	if direction > 0 {
 		gc.currentVW += 100
 		defer gc.insertGrid()
+		// TODO: Update date picker button content
 	} else {
 		gc.currentVW -= 100
 		defer gc.appendGrid()
+		// TODO: Update date picker button content
 	}
 
 	gc.SetTranslate(fmt.Sprintf("%d 0", gc.currentVW))
