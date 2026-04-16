@@ -35,6 +35,8 @@ templ AppBarLeft() {
 		<button
 			id={ IDDatePickerButton }
 			onclick={ onDatePickerButtonClick(IDDatePickerButton) }
+			data-year={d.Year()}
+			data-month={d.Month()}
 		>
 			<input type="data" style="display: none;"/>
 			{ d.Format("January, 2006") }
