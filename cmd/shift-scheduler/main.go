@@ -29,7 +29,7 @@ func init() {
 	slog.SetDefault(slog.New(
 		tint.NewHandler(os.Stderr, &tint.Options{
 			Level:      level,
-			TimeFormat: time.Kitchen,
+			TimeFormat: time.DateTime,
 		}),
 	))
 }

@@ -23,4 +23,4 @@ run: init build
 	@./$(BIN)/$(BINARY)
 
 docker: init build
-	@docker build --platform linux/arm64 -t file-server .
+	@docker build --platform linux/arm64 -t shift-scheduler .
