@@ -5,7 +5,6 @@ bin/
 .session.vim
 AGENTS.md
 README.md
-cmd/
 internal/
 templates/
 *.wasm
