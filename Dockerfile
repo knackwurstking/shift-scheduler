@@ -4,6 +4,7 @@ WORKDIR /app
 COPY . .
 
 RUN apk add --no-cache nodejs npm git
+RUN git config --global --add safe.directory /app
 RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN templ generate
 RUN GOOS=js GOARCH=wasm go build -o assets/public/main.wasm ./cmd/wasm
