@@ -6,6 +6,7 @@ COPY . .
 RUN apk add --no-cache nodejs npm
 RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN templ generate
+RUN go mod tidy
 RUN GOOS=js GOARCH=wasm go build -o assets/public/main.wasm ./cmd/wasm
 RUN go build -o shift-scheduler ./cmd/shift-scheduler
 
