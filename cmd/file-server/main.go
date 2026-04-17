@@ -1,18 +1,14 @@
 package main
 
 import (
-	"embed"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/knackwurstking/shift-scheduler/assets"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
-
-//go:embed assets/public/*
-var assets embed.FS
 
 func main() {
 	e := echo.New()
@@ -25,12 +21,8 @@ func main() {
 		port = "3000"
 	}
 
-	subFS, err := fs.Sub(assets, "assets/public")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	e.GET("/*", echo.WrapHandler(http.FileServer(http.FS(subFS))))
+	publicFS := assets.PublicFS()
+	e.GET("/*", echo.WrapHandler(http.FileServer(http.FS(publicFS))))
 
 	log.Printf("Server started on :%s", port)
 	e.Start(":" + port)
