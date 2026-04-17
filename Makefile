@@ -1,4 +1,4 @@
-.PHONY: all init generate build run
+.PHONY: all init generate build run docker
 
 GOROOT := `go env GOROOT`
 
@@ -21,3 +21,6 @@ build:
 
 run: init build
 	@./$(BIN)/$(BINARY)
+
+docker: init build
+	@docker build --platform linux/arm64 -t file-server .

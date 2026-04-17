@@ -1,0 +1,11 @@
+bin/
+.env.sh
+.git/
+.origin/
+.session.vim
+AGENTS.md
+README.md
+cmd/
+internal/
+templates/
+*.wasm
