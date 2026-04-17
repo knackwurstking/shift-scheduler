@@ -17,7 +17,6 @@ USER app
 WORKDIR /home/app
 
 COPY --from=builder /app/shift-scheduler .
-COPY --from=builder /app/assets ./assets
 
 EXPOSE 3000
 
