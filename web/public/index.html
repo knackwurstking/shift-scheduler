@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="{{ .Localization.Language }}">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" href="/assets/icons/favicon.ico" sizes="any" />
+	<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180x180.png" />
+	<link rel="stylesheet" href="css/style.css" />
+	<title>{{ .Localization.Title }}</title>
+	<script>
+		(function () {
+			const theme = localStorage.getItem('theme') || 'light';
+			if (theme === 'dark') {
+				document.documentElement.classList.add('dark');
+			}
+		})();
+	</script>
+</head>
+
+<body>
+	<!-- TODO: Continue migrating here -->
+	{ children... }
+	<script src="wasm_exec.js"></script>
+	<script>
+		const go = new Go();
+		WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
+			.then(result => {
+				go.run(result.instance);
+		});
+	</script>
+</body>
+
+</html>

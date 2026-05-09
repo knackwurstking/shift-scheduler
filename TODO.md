@@ -45,3 +45,11 @@ Refactor this project, kick a-h templ and use golang html templates
     <!-- Item 1, 2, 3, 4, 5 -->
     {{ end }}
     ```
+
+## index.html
+
+```go
+type Index struct {
+    Localization *localization.Localization
+}
+```
