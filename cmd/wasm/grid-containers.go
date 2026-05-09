@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"strconv"
 	"syscall/js"
 	"time"
 
@@ -152,8 +153,9 @@ func (gc *GridContainers) getLastContainerYearMonth() (int, time.Month) {
 }
 
 func extractYearMonth(container js.Value) (int, time.Month) {
-	year := container.Get("dataset").Get("year").Get("value").Int()
-	month := container.Get("dataset").Get("month").Get("value").Int()
+	table := container.Call("querySelector", "table")
+	year, _ := strconv.Atoi(table.Get("dataset").Get("year").String())
+	month, _ := strconv.Atoi(table.Get("dataset").Get("month").String())
 	return year, time.Month(month)
 }
 
