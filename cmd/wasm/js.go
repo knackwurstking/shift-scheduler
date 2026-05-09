@@ -22,6 +22,9 @@ var (
 func onPointerDown(this js.Value, args []js.Value) any {
 	event := args[0]
 
+	// Prevent default touch behavior (e.g., scrolling, rubber-banding)
+	event.Call("preventDefault")
+
 	// Store the current start position
 	start.X = event.Get("clientX").Float()
 	start.Y = event.Get("clientY").Float()
@@ -45,6 +48,9 @@ func onPointerMove(this js.Value, args []js.Value) any {
 	}
 
 	event := args[0]
+
+	// Prevent default touch behavior during the swipe
+	event.Call("preventDefault")
 
 	stop.X = event.Get("clientX").Float()
 	stop.Y = event.Get("clientY").Float()
@@ -85,8 +91,9 @@ func onPointerUp(this js.Value, args []js.Value) any {
 	if math.Abs(diff) > SwipeThreshold {
 		if diff < 0 {
 			gridContainers.Move(DirectionLeft)
+		} else {
+			gridContainers.Move(DirectionRight)
 		}
-		gridContainers.Move(DirectionRight)
 	}
 
 	// Reset translate style for grid containers

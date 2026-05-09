@@ -82,6 +82,12 @@ body {
 	display: flex;
 	flex-wrap: nowrap;
 	flex-direction: row;
+
+	touch-action: none;
+}
+
+#calendar-swipe * {
+	touch-action: none;
 }
 
 /**
