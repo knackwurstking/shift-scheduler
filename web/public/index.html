@@ -19,8 +19,33 @@
 </head>
 
 <body>
-	<!-- TODO: Continue migrating here -->
-	{ children... }
+	<div id={ IDAppBar }>
+		<!-- TODO: App Bar Left -->
+		<div id={ IDAppBarLeft }>
+			{{ d := time.Now() }}
+			// Date picker button
+			<button
+				id={ IDDatePickerButton }
+				onclick={ onDatePickerButtonClick(IDDatePickerButton) }
+				data-year={d.Year()}
+				data-month={d.Month()}
+			>
+				<input type="data" style="display: none;"/>
+				{ d.Format(DatePickerFormat) }
+			</button>
+		</div>
+		<!-- TODO: App Bar Center -->
+		<div id={ IDAppBarCenter }></div>
+		<!-- TODO: App Bar Right -->
+		<div id={ IDAppBarRight }>
+			<button
+				id={ IDThemeToggleButton }
+				onclick={ onThemeToggleClick() }
+			>
+				<span class="theme-icon"></span>
+			</button>
+		</div>
+	</div>
 	<script src="wasm_exec.js"></script>
 	<script>
 		const go = new Go();
