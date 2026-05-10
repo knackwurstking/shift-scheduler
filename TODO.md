@@ -8,9 +8,9 @@ Refactor this project, kick a-h templ and use golang html templates
 
 - [x] Migrate the index page from ./templates/pages/app.templ (with the layout.templ) to ./web/templates/index.html
 
-- [-] Migrate the ./templates/pages/app.templ to ./web/templates/index.html
+- [x] Migrate the ./templates/pages/app.templ to ./web/templates/index.html
 
-- [ ] While migrating to the index.html (using html/templates), fix the wasm code if needed (./cmd/wasm)
+- [ ] While migrating to the templates, fix/improve the WASM code if needed (./cmd/wasm)
 
 - [ ] Rendering engine for all the html templates
 
@@ -54,7 +54,9 @@ Refactor this project, kick a-h templ and use golang html templates
 
 ```go
 type Index struct {
-    Localization *localization.Localization
-    DatePickerContent string
+    Localization        *localization.Localization
+    DatePickerYear      int
+    DatePickerMonth     time.Month
+    DatePickerContent   string
 }
 ```

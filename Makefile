@@ -4,19 +4,19 @@ GOROOT := `go env GOROOT`
 
 BINARY := shift-scheduler
 BIN := ./bin
-ASSETS := ./assets/public
+PUBLIC := ./web/public
 
 all: init build
 
 init: generate
-	@cp "$(GOROOT)/lib/wasm/wasm_exec.js" $(ASSETS)/
+	@cp "$(GOROOT)/lib/wasm/wasm_exec.js" $(PUBLIC)/
 	@go mod tidy
 
 generate:
 	@templ generate
 
 build:
-	@GOOS=js GOARCH=wasm go build -o $(ASSETS)/main.wasm ./cmd/wasm
+	@GOOS=js GOARCH=wasm go build -o $(PUBLIC)/main.wasm ./cmd/wasm
 	@go build -o $(BIN)/$(BINARY) ./cmd/$(BINARY)
 
 run: init build

@@ -4,9 +4,9 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="icon" href="/assets/icons/favicon.ico" sizes="any" />
-	<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180x180.png" />
-	<link rel="stylesheet" href="css/style.css" />
+	<link rel="icon" href="./assets/icons/favicon.ico" sizes="any" />
+	<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon-180x180.png" />
+	<link rel="stylesheet" href="./css/style.css" />
 	<title>{{ .Localization.Title }}</title>
 	<script>
 		(function () {
@@ -24,7 +24,7 @@
 		<div id="app-bar-left">
 			<button
 				id="date-picker-button"
-				onclick="onDatePickerClick()"
+				onclick="openDatePicker()"
 				data-year="{{ DatePickerYear }}"
 				data-month="{{ DatePickerMonth }}"
 			>
@@ -32,19 +32,19 @@
 				{{ .DatePickerContent }}
 			</button>
 		</div>
-		<!-- TODO: App Bar Center -->
-		<div id={ IDAppBarCenter }></div>
-		<!-- TODO: App Bar Right -->
-		<div id={ IDAppBarRight }>
+		<!-- App Bar Center -->
+		<div id="app-bar-center"></div>
+		<!-- App Bar Right -->
+		<div id="app-bar-right">
 			<button
-				id={ IDThemeToggleButton }
-				onclick={ onThemeToggleClick() }
+				id="theme-toggle-button"
+				onclick="toggleTheme()"
 			>
 				<span class="theme-icon"></span>
 			</button>
 		</div>
 	</div>
-	<script src="wasm_exec.js"></script>
+	<script src="./wasm_exec.js"></script>
 	<script>
 		const go = new Go();
 		WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
@@ -52,7 +52,7 @@
 				go.run(result.instance);
 		});
 
-		function onDatePickerClick() {
+		function openDatePicker() {
 			// Show date picker and update the button text with the selected date
 			var input = document.querySelector("#date-picker-button input");
 			input.click();
@@ -63,6 +63,17 @@
 		input.addEventListener("change", function(event) {
 			document.querySelector("#date-picker-button").textContent = event.currentTarget.value;
 		});
+
+		function toggleTheme() {
+			var html = document.documentElement;
+			if (html.classList.contains("dark")) {
+				html.classList.remove("dark");
+				localStorage.setItem("theme", "light");
+			} else {
+				html.classList.add("dark");
+				localStorage.setItem("theme", "dark");
+			}
+		}
 	</script>
 </body>
 
