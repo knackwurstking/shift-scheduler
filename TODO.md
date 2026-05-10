@@ -2,7 +2,7 @@
 
 Refactor this project, kick a-h templ and use golang html templates
 
-- [x] Rename ./assets/ to ./web/ & Changed the package name from assets to go
+- [x] Rename ./assets/ to ./web/ and change the package name from assets to go
 
 - [x] Update the web.go handler to embed the templates directory
 
@@ -10,9 +10,11 @@ Refactor this project, kick a-h templ and use golang html templates
 
 - [x] Migrate the ./templates/pages/app.templ to ./web/templates/index.html
 
+- [ ] Migrate the calendar swipe and grid system
+
 - [ ] While migrating to the templates, fix/improve the WASM code if needed (./cmd/wasm)
 
-- [ ] Rendering engine for all the html templates
+- [ ] Rendering engine for all the HTML templates
 
     ```go
     // Go: register functions
