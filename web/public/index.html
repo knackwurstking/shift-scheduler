@@ -19,19 +19,17 @@
 </head>
 
 <body>
-	<div id={ IDAppBar }>
-		<!-- TODO: App Bar Left -->
-		<div id={ IDAppBarLeft }>
-			{{ d := time.Now() }}
-			// Date picker button
+	<div id="app-bar">
+		<!-- App Bar Left -->
+		<div id="app-bar-left">
 			<button
-				id={ IDDatePickerButton }
-				onclick={ onDatePickerButtonClick(IDDatePickerButton) }
-				data-year={d.Year()}
-				data-month={d.Month()}
+				id="date-picker-button"
+				onclick="onDatePickerClick()"
+				data-year="{{ DatePickerYear }}"
+				data-month="{{ DatePickerMonth }}"
 			>
-				<input type="data" style="display: none;"/>
-				{ d.Format(DatePickerFormat) }
+				<input type="date" style="display: none;"/>
+				{{ .DatePickerContent }}
 			</button>
 		</div>
 		<!-- TODO: App Bar Center -->
@@ -52,6 +50,18 @@
 		WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
 			.then(result => {
 				go.run(result.instance);
+		});
+
+		function onDatePickerClick() {
+			// Show date picker and update the button text with the selected date
+			var input = document.querySelector("#date-picker-button input");
+			input.click();
+		}
+
+		// Handle date selection and update button text
+		var input = document.querySelector("#date-picker-button input");
+		input.addEventListener("change", function(event) {
+			document.querySelector("#date-picker-button").textContent = event.currentTarget.value;
 		});
 	</script>
 </body>

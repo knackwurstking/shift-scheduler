@@ -53,5 +53,6 @@ Refactor this project, kick a-h templ and use golang html templates
 ```go
 type Index struct {
     Localization *localization.Localization
+    DatePickerContent string
 }
 ```
