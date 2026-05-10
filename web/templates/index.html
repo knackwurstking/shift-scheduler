@@ -44,7 +44,46 @@
 			</button>
 		</div>
 	</div>
+
+	<!-- TODO: Migrate the calendar swipe and grid system -->
+	<div
+		id={ IDCalendarSwipe }
+		onpointermove="onPointerMove(event)"
+		onpointerdown="onPointerDown(event)"
+		onpointerup="onPointerUp(event)"
+		onpointercancel="onPointerCancel(event)"
+		onpointerleave="onPointerLeave(event)"
+	>
+		@GridContainer() {
+			calendar.Grid(calendar.GridProps{
+				StartWithMonday: startWithMonday,
+				Localization:    p.Localization,
+				Year:            prev.Year(),
+				Month:           prev.Month(),
+			}),
+		}
+
+		@GridContainer() {
+			calendar.Grid(calendar.GridProps{
+				StartWithMonday: startWithMonday,
+				Localization:    p.Localization,
+				Year:            current.Year(),
+				Month:           current.Month(),
+			}),
+		}
+
+		@GridContainer() {
+			calendar.Grid(calendar.GridProps{
+				StartWithMonday: startWithMonday,
+				Localization:    p.Localization,
+				Year:            next.Year(),
+				Month:           next.Month(),
+			}),
+		}
+	</div>
+
 	<script src="./wasm_exec.js"></script>
+
 	<script>
 		const go = new Go();
 		WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)

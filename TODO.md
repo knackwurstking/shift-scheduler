@@ -10,7 +10,7 @@ Refactor this project, kick a-h templ and use golang html templates
 
 - [x] Migrate the ./templates/pages/app.templ to ./web/templates/index.html
 
-- [ ] Migrate the calendar swipe and grid system
+- [-] Migrate the calendar swipe and grid system
 
 - [ ] While migrating to the templates, fix/improve the WASM code if needed (./cmd/wasm)
 
