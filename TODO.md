@@ -4,9 +4,11 @@ Refactor this project, kick a-h templ and use golang html templates
 
 - [x] Rename ./assets/ to ./web/ & Changed the package name from assets to go
 
-- [x] Migrate the index page from ./templates/pages/app.templ (with the layout.templ) to ./web/public/index.html
+- [x] Update the web.go handler to embed the templates directory
 
-- [-] Migrate the ./templates/pages/app.templ to ./web/public/index.html
+- [x] Migrate the index page from ./templates/pages/app.templ (with the layout.templ) to ./web/templates/index.html
+
+- [-] Migrate the ./templates/pages/app.templ to ./web/templates/index.html
 
 - [ ] While migrating to the index.html (using html/templates), fix the wasm code if needed (./cmd/wasm)
 
