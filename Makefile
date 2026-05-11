@@ -4,7 +4,7 @@ GOROOT := `go env GOROOT`
 
 BINARY := shift-scheduler
 BIN := ./bin
-PUBLIC := ./web/public
+PUBLIC := ./public
 
 all: init build
 

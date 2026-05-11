@@ -5,25 +5,24 @@ import (
 	"os"
 	"time"
 
-	"github.com/knackwurstking/shift-scheduler/assets"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/lmittmann/tint"
 )
 
 var (
-	ADDRESS = os.Getenv("ADDRESS")
-	VERBOSE = os.Getenv("VERBOSE") == "true"
+	Address = os.Getenv("ADDRESS")
+	Verbose = os.Getenv("VERBOSE") == "true"
 )
 
 func init() {
-	if ADDRESS == "" {
-		ADDRESS = ":3000"
+	if Address == "" {
+		Address = ":3000"
 	}
 
 	// Initialize the logger with the appropriate level based on the Verbose flag.
 	level := slog.LevelInfo
-	if VERBOSE {
+	if Verbose {
 		level = slog.LevelDebug
 	}
 	slog.SetDefault(slog.New(
@@ -42,12 +41,10 @@ func main() {
 	e.Use(middleware.RequestLogger())
 	e.Use(middleware.CORS())
 
-	publicFS := assets.PublicFS()
-	e.StaticFS("/", publicFS)
+	router(e)
 
-	initRoutes(e)
-
-	if err := e.Start(":3000"); err != nil {
-		panic("failed to start server: " + err.Error())
+	if err := e.Start(Address); err != nil {
+		slog.Error("failed to start the server", "address", Address, "error", err)
+		os.Exit(1)
 	}
 }
