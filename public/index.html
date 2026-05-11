@@ -67,11 +67,11 @@
 				<tbody>
 					{{ range .Rows }}
 					<tr class=".row">
-						{{ range .Cell }}
+						{{ range .Cells }}
 						<td
 							class="grid-cell {{ .IsToday }}grid-cell-is-today{{ end }} {{ .IsCurrentMonth }}grid-cell-is-current-month{{ end }}"
 						>
-							<span class="date">{ p.Date }</span>
+							<span class="date">{{ .Date }}</span>
 						</td>
 						{{ end }}
 					</tr>

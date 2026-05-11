@@ -2,7 +2,8 @@
 
 Refactor this project, kick a-h templ and use golang html templates
 
-- [x] Rename ./assets/ to ./web/ and change the package name from assets to go
+- [x] Rename ./assets/ to ./web/ and remove the go file from the web directory and move files from the public/ directory into the assets directory
+- [-] The assets directory will no longer be embedded into the binary
 
 - [x] Update the web.go handler to embed the templates directory
 
@@ -12,9 +13,9 @@ Refactor this project, kick a-h templ and use golang html templates
 
 - [x] Migrate the calendar swipe and grid system
 
-- [ ] While migrating to the templates, fix/improve the WASM code if needed (./cmd/wasm)
+- [-] Rendering engine for all the HTML templates
 
-- [ ] Rendering engine for all the HTML templates
+- [ ] Fix and improve the already existing WASM code (./cmd/wasm)
 
     ```go
     // Go: register functions
@@ -74,11 +75,20 @@ type IndexTD struct {
     Grids []GridTD
 }
 
-// TODO: Add data needed for each grid...
 type GridTD struct {
     Year  int
     Month time.Month
-    WeekDays []string // NOTE: Based on configuration (So - Sa or Mo - So, see `WeekStartAtMonday`)
-    // ...
+    WeekDays [7]string // NOTE: Based on configuration (So - Sa or Mo - So, see `WeekStartAtMonday`)
+    Rows [5]GridRowTD
+}
+
+type GridRowTD struct {
+    Cells [7]GridCellTD // NOTE: One week == one Row
+}
+
+type GridCellTD struct {
+    IsToday         bool
+    IsCurrentMonth  bool
+    Date            int
 }
 ```
