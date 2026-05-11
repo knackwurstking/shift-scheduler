@@ -41,10 +41,14 @@ func main() {
 	e.Use(middleware.RequestLogger())
 	e.Use(middleware.CORS())
 
-	router(e)
+	err := initRouter(e)
+	if err != nil  {
+		slog.Error("Initialize the router failed.", "error", err)
+		os.Exit(1)
+	}
 
 	if err := e.Start(Address); err != nil {
-		slog.Error("failed to start the server", "address", Address, "error", err)
+		slog.Error("Failed to start the server.", "address", Address, "error", err)
 		os.Exit(1)
 	}
 }
