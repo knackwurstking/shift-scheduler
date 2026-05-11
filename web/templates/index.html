@@ -45,15 +45,16 @@
 		</div>
 	</div>
 
-	<!-- TODO: Migrate the calendar swipe and grid system -->
 	<div
-		id={ IDCalendarSwipe }
+		id="calendar-swipe"
 		onpointermove="onPointerMove(event)"
 		onpointerdown="onPointerDown(event)"
 		onpointerup="onPointerUp(event)"
 		onpointercancel="onPointerCancel(event)"
 		onpointerleave="onPointerLeave(event)"
 	>
+		<!-- TODO: Migrate the grid containers -->
+		<!-- Previous Month -->
 		@GridContainer() {
 			calendar.Grid(calendar.GridProps{
 				StartWithMonday: startWithMonday,
@@ -63,6 +64,7 @@
 			}),
 		}
 
+		<!-- Current Month -->
 		@GridContainer() {
 			calendar.Grid(calendar.GridProps{
 				StartWithMonday: startWithMonday,
@@ -72,6 +74,7 @@
 			}),
 		}
 
+		<!-- Next Month -->
 		@GridContainer() {
 			calendar.Grid(calendar.GridProps{
 				StartWithMonday: startWithMonday,
