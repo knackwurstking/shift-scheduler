@@ -10,7 +10,7 @@ Refactor this project, kick a-h templ and use golang html templates
 
 - [x] Migrate the ./templates/pages/app.templ to ./web/templates/index.html
 
-- [-] Migrate the calendar swipe and grid system
+- [x] Migrate the calendar swipe and grid system
 
 - [ ] While migrating to the templates, fix/improve the WASM code if needed (./cmd/wasm)
 
@@ -55,10 +55,30 @@ Refactor this project, kick a-h templ and use golang html templates
 ## index.html
 
 ```go
-type Index struct {
+func WeekStartAtMonday(lang string) bool {
+	switch lang {
+	case "de":
+		return true
+	default:
+		return false
+	}
+}
+
+// [T]emplate [D]ata
+
+type IndexTD struct {
     Localization        *localization.Localization
     DatePickerYear      int
     DatePickerMonth     time.Month
     DatePickerContent   string
+    Grids []GridTD
+}
+
+// TODO: Add data needed for each grid...
+type GridTD struct {
+    Year  int
+    Month time.Month
+    WeekDays []string // NOTE: Based on configuration (So - Sa or Mo - So, see `WeekStartAtMonday`)
+    // ...
 }
 ```

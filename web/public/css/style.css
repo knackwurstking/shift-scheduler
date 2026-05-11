@@ -125,11 +125,11 @@ body {
 	border: 1px solid var(--border-primary);
 }
 
-#calendar-swipe .grid-cell:not(.grid-cell-current-month) {
+#calendar-swipe .grid-cell:not(.grid-cell-is-current-month) {
 	opacity: 0.5;
 }
 
-#calendar-swipe .grid-cell.grid-cell-current {
+#calendar-swipe .grid-cell.grid-cell-is-today {
 	background-color: var(--bg-secondary);
 	border: 1px solid var(--border-primary);
 }

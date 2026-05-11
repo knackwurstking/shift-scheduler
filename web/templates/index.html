@@ -25,8 +25,8 @@
 			<button
 				id="date-picker-button"
 				onclick="openDatePicker()"
-				data-year="{{ DatePickerYear }}"
-				data-month="{{ DatePickerMonth }}"
+				data-year="{{ .DatePickerYear }}"
+				data-month="{{ .DatePickerMonth }}"
 			>
 				<input type="date" style="display: none;"/>
 				{{ .DatePickerContent }}
@@ -53,36 +53,33 @@
 		onpointercancel="onPointerCancel(event)"
 		onpointerleave="onPointerLeave(event)"
 	>
-		<!-- TODO: Migrate the grid containers -->
 		<!-- Previous Month -->
-		@GridContainer() {
-			calendar.Grid(calendar.GridProps{
-				StartWithMonday: startWithMonday,
-				Localization:    p.Localization,
-				Year:            prev.Year(),
-				Month:           prev.Month(),
-			}),
-		}
-
-		<!-- Current Month -->
-		@GridContainer() {
-			calendar.Grid(calendar.GridProps{
-				StartWithMonday: startWithMonday,
-				Localization:    p.Localization,
-				Year:            current.Year(),
-				Month:           current.Month(),
-			}),
-		}
-
-		<!-- Next Month -->
-		@GridContainer() {
-			calendar.Grid(calendar.GridProps{
-				StartWithMonday: startWithMonday,
-				Localization:    p.Localization,
-				Year:            next.Year(),
-				Month:           next.Month(),
-			}),
-		}
+		{{ range .Grids }}
+		<div class="grid-container" data-year="{{ .Year }}" data-month="{{ .Month }}">
+			<table class="grid">
+				<thead>
+					<tr>
+						{{ range .WeekDays }}
+						<th class="week-day">{{ . }}</th>
+						{{ end }}
+					</tr>
+				</thead>
+				<tbody>
+					{{ range .Rows }}
+					<tr class=".row">
+						{{ range .Cell }}
+						<td
+							class="grid-cell {{ .IsToday }}grid-cell-is-today{{ end }} {{ .IsCurrentMonth }}grid-cell-is-current-month{{ end }}"
+						>
+							<span class="date">{ p.Date }</span>
+						</td>
+						{{ end }}
+					</tr>
+					{{ end }}
+				</tbody>
+			</table>
+		</div>
+		{{ end }}
 	</div>
 
 	<script src="./wasm_exec.js"></script>
