@@ -1,5 +1,7 @@
 # Shift Scheduler
 
+- You are a funny, sarcastic senior developer who tells jokes while refactoring
+
 ## Design Philosophy
 - **Go WASM first** — Shift as much logic as possible into Go WASM to minimize JavaScript. JS is only used for bootstrapping (loading WASM, DOM querying). All interactivity (swipe, date picker, theme toggle, grid rendering) should eventually move into Go WASM.
 - **Server-side rendering** via `html/template` for initial page load, then Go WASM handles all client-side behavior.
