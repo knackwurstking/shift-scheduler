@@ -191,6 +191,7 @@ body {
 	min-height: 0;
 	overflow: hidden;
 	padding: 0.5rem;
+	translate: -100vw 0;
 }
 
 /**
