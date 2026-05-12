@@ -69,7 +69,7 @@
 					<tr class="row">
 						{{ range . }}
 						<td class="grid-cell{{ if .IsToday }} grid-cell-is-today{{ end }}{{ if .IsCurrentMonth }} grid-cell-is-current-month{{ end }}">
-							<span class="date">{{ .Date }}</span>
+							{{ if .IsCurrentMonth }}<span class="date">{{ .Date }}</span>{{ end }}
 						</td>
 						{{ end }}
 					</tr>
