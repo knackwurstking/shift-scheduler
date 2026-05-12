@@ -245,7 +245,7 @@ body {
 }
 
 #calendar-swipe .grid-cell.grid-cell-is-today {
-	background-color: var(--accent);
+	background-color: var(--accent-light);
 }
 
 #calendar-swipe .grid-cell.grid-cell-is-today .date {
@@ -255,8 +255,8 @@ body {
 	width: 1.8rem;
 	height: 1.8rem;
 	border-radius: 50%;
-	background-color: var(--accent);
-	color: var(--header-text);
+	border: 2px solid var(--accent);
+	color: var(--text);
 	font-weight: 700;
 }
 
