@@ -37,11 +37,11 @@ The WASM binary (`cmd/wasm/`) currently depends on old templ packages to dynamic
 
 ## CSS / Design
 
-- [ ] `public/css/style.css` — currently exists, verify it matches `DESIGN.md` color palette, typography, dark/light mode rules
-- [ ] Implement theme toggle CSS variables per `DESIGN.md` section 3
-- [ ] Responsive styles per `DESIGN.md` section 10
-- [ ] Print styles per `DESIGN.md` section 9
-- [ ] Create `DESIGN_OVERRIDES.md` entries for any intentional deviations from `DESIGN.md`
+- [x] `public/css/style.css` — rewritten to match `DESIGN.md` color palette, typography, dark/light mode, responsive, and print styles
+- [x] Implement theme toggle CSS variables per `DESIGN.md` section 3 (`data-theme` attribute approach)
+- [x] Responsive styles per `DESIGN.md` section 10
+- [x] Print styles per `DESIGN.md` section 9
+- [x] Added `DESIGN_OVERRIDES.md` entries for calendar grid layout and theme toggle icon
 
 ## Cleanup
 

@@ -8,14 +8,14 @@
 	<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon-180x180.png" />
 	<link rel="stylesheet" href="./css/style.css" />
 	<title>{{ .Localization.Title }}</title>
-	<script>
-		(function () {
-			const theme = localStorage.getItem('theme') || 'light';
-			if (theme === 'dark') {
-				document.documentElement.classList.add('dark');
-			}
-		})();
-	</script>
+<script>
+	(function () {
+		const theme = localStorage.getItem('theme') || 'light';
+		if (theme === 'dark') {
+			document.documentElement.setAttribute('data-theme', 'dark');
+		}
+	})();
+</script>
 </head>
 
 <body>
@@ -101,16 +101,16 @@
 			document.querySelector("#date-picker-button").textContent = event.currentTarget.value;
 		});
 
-		function toggleTheme() {
-			var html = document.documentElement;
-			if (html.classList.contains("dark")) {
-				html.classList.remove("dark");
-				localStorage.setItem("theme", "light");
-			} else {
-				html.classList.add("dark");
-				localStorage.setItem("theme", "dark");
-			}
-		}
+function toggleTheme() {
+	var html = document.documentElement;
+	if (html.getAttribute('data-theme') === 'dark') {
+		html.removeAttribute('data-theme');
+		localStorage.setItem('theme', 'light');
+	} else {
+		html.setAttribute('data-theme', 'dark');
+		localStorage.setItem('theme', 'dark');
+	}
+}
 	</script>
 </body>
 
