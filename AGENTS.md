@@ -21,7 +21,7 @@ Note: `make generate` still runs `templ generate` on old `.templ` files — this
 ## Migration Status
 - [x] Created `templates/index.html` using `html/template` syntax
 - [x] `cmd/shift-scheduler/templates.go` — sets up `template.Template` via `Parse("templates/*.html")`
-- [-] Router (`router.go:18`) has a TODO to wire up `tmpls` for the `/` route
+- [x] Router wires up `tmpls` for the `/` route via `handleIndex`
 - [-] `internal/handlers/app.go` still imports old templ package (needs rewrite for `html/template`)
 - [-] `go.mod` still depends on `github.com/a-h/templ`
 - [-] `Makefile` still calls `templ generate`

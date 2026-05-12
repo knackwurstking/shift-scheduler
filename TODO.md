@@ -1,94 +1,49 @@
 # TODO
 
-Refactor this project, kick a-h templ and use golang html templates
+Refactor this project: kick a-h templ, move all frontend logic to Go WASM.
 
-- [x] Rename ./assets/ to ./web/ and remove the go file from the web directory and move files from the public/ directory into the assets directory
-- [-] The assets directory will no longer be embedded into the binary
+## Templ Migration (html/template)
 
-- [x] Update the web.go handler to embed the templates directory
+- [x] Create `templates/index.html` using `html/template` syntax
+- [x] `cmd/shift-scheduler/templates.go` — `template.Template` via `Parse("templates/*.html")`
+- [x] Router wires `tmpls` for `/` route via `handleIndex`
+- [x] `cmd/shift-scheduler/handlers.go` — template data types (`IndexTD`, `GridTD`, `GridCellTD`) and handler logic
+- [x] Migrate calendar grid and swipe containers from old `.templ` to `index.html`
+- [ ] `internal/handlers/app.go` — still imports old templ (`templates/pages`), rewrite or remove (no longer wired)
+- [ ] `go.mod` — remove `github.com/a-h/templ` dependency
+- [ ] `Makefile` — remove `templ generate` from `init`/`generate` targets
+- [ ] Delete old `.templ` backup files in `templates/.pages/` and `templates/.components/`
+- [ ] Clean up gitignore — remove `*_templ.go` once old files are deleted
 
-- [x] Migrate the index page from ./templates/pages/app.templ (with the layout.templ) to ./web/templates/index.html
+## WASM Rework
 
-- [x] Migrate the ./templates/pages/app.templ to ./web/templates/index.html
+The WASM binary (`cmd/wasm/`) currently depends on old templ packages to dynamically render grid HTML on swipe. This must be migrated to `html/template` and then extended.
 
-- [x] Migrate the calendar swipe and grid system
+### Critical: Remove templ dependency from WASM
 
-- [-] Rendering engine for all the HTML templates
+- [ ] `cmd/wasm/grid-containers.go` — `createGridContainer` uses `templ.ToGoHTML`, `calendar.Grid`, `calendar.GridProps`, `calendar.GridContainer`, `calendar.WeekStartAtMonday`. Must use `html/template` instead.
+- [ ] `cmd/wasm/grid-containers.go` — `QueryAll` uses `calendar.ClassGridContainer` (hardcode or extract constant)
+- [ ] `cmd/wasm/grid-containers.go` — `querySwipeContainer` uses `calendar.IDCalendarSwipe` (hardcode or extract constant)
+- [ ] `cmd/wasm/date-picker.go` — uses `appbar.IDDatePickerButton`, `appbar.DatePickerFormat` (hardcode or extract constants)
 
-- [ ] Fix and improve the already existing WASM code (./cmd/wasm)
+### WASM features to implement
 
-    ```go
-    // Go: register functions
-    func tmplUpper(s string) string { return strings.ToUpper(s) }
-    func tmplAdd(a, b int) int      { return a + b }
-    func tmplSeq(n int) []int {
-        s := make([]int, n)
-        for i := range s { s[i] = i + 1 }
-        return s
-    }
+- [ ] Date picker — Go WASM should handle opening/handling the date picker, not inline JS
+- [ ] Theme toggle — Go WASM should handle the dark/light toggle instead of inline JS
+- [ ] WASM swipe animation — improve smoothness, consider `requestAnimationFrame`
+- [ ] Update date picker button content on swipe (`grid-containers.go:68`, `:71`)
+- [ ] Clean up JS in `templates/index.html` — move `openDatePicker()`, `toggleTheme()`, date input listener into Go WASM
+- [ ] Register WASM functions via `js.Global().Set(...)` consistently
 
-    func initTemplates() error {
-        funcMap := template.FuncMap{
-            "upper": tmplUpper,
-            "add":   tmplAdd,
-            "seq":   tmplSeq,
-        }
-        var err error
-        tmpls, err = template.New("").
-            Funcs(funcMap).
-            ParseFS(templateFiles, "templates/*.html")
-        return err
-    }
-    ```
+## CSS / Design
 
-    ```html
-    <p>{{ upper "hello" }}</p>
-    <!-- HELLO -->
-    <p>{{ add 5 3 }}</p>
-    <!-- 8 -->
+- [ ] `public/css/style.css` — currently exists, verify it matches `DESIGN.md` color palette, typography, dark/light mode rules
+- [ ] Implement theme toggle CSS variables per `DESIGN.md` section 3
+- [ ] Responsive styles per `DESIGN.md` section 10
+- [ ] Print styles per `DESIGN.md` section 9
+- [ ] Create `DESIGN_OVERRIDES.md` entries for any intentional deviations from `DESIGN.md`
 
-    {{ range $i := seq 5 }}
-    <div>Item {{ $i }}</div>
-    <!-- Item 1, 2, 3, 4, 5 -->
-    {{ end }}
-    ```
+## Cleanup
 
-## index.html
-
-```go
-func WeekStartAtMonday(lang string) bool {
-	switch lang {
-	case "de":
-		return true
-	default:
-		return false
-	}
-}
-
-// [T]emplate [D]ata
-
-type IndexTD struct {
-    Localization        *localization.Localization
-    DatePickerYear      int
-    DatePickerMonth     time.Month
-    DatePickerContent   string
-    Grids []GridTD
-}
-
-type GridTD struct {
-    Year  int
-    Month time.Month
-    WeekDays [7]string // NOTE: Based on configuration (So - Sa or Mo - So, see `WeekStartAtMonday`)
-    Rows [5]GridRowTD
-}
-
-type GridRowTD struct {
-    Cells [7]GridCellTD // NOTE: One week == one Row
-}
-
-type GridCellTD struct {
-    IsToday         bool
-    IsCurrentMonth  bool
-    Date            int
-}
-```
+- [ ] Remove unused `internal/handlers/app.go` (its logic moved to `cmd/shift-scheduler/handlers.go`)
+- [ ] Remove old templ-generated `*_templ.go` files from `.pages/` and `.components/`

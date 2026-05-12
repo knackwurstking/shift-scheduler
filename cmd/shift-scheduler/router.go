@@ -14,7 +14,7 @@ func initRouter(e *echo.Echo) error {
 		return fmt.Errorf("init templates: %w", err)
 	}
 
-	// TODO: "/" - Start page ../../templates/index.html using the global `tmpls`
+	e.GET("/", handleIndex)
 
 	return nil
 }
