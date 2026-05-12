@@ -11,7 +11,7 @@ var (
 func initTemplates() error {
 	var err error
 	tmpls, err = template.New("").
-		Parse("templates/*.html")
+		ParseGlob("templates/*.html")
 
 	return err
 }
