@@ -10,9 +10,9 @@
 	<title>{{ .Localization.Title }}</title>
 	<script>
 		(function () {
-			const theme = localStorage.getItem('theme') || 'light';
-			if (theme === 'dark') {
-				document.documentElement.setAttribute('data-theme', 'dark');
+			const theme = localStorage.getItem('theme');
+			if (theme) {
+				document.documentElement.setAttribute('data-theme', theme);
 			}
 		})();
 	</script>
@@ -104,7 +104,7 @@
 		function toggleTheme() {
 			var html = document.documentElement;
 			if (html.getAttribute('data-theme') === 'dark') {
-				html.removeAttribute('data-theme');
+				html.setAttribute('data-theme', 'light');
 				localStorage.setItem('theme', 'light');
 			} else {
 				html.setAttribute('data-theme', 'dark');

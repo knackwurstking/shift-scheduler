@@ -7,7 +7,7 @@
 }
 
 :root {
-	/* Palette — Light Mode (Default) */
+	/* Light mode (default) */
 	--bg: #ffffff;
 	--bg-secondary: #f9f9f9;
 	--text: #1a1a1a;
@@ -27,8 +27,9 @@
 	--color-info: #00d4ff;
 }
 
+/* System dark preference — only when no explicit data-theme */
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
+	:root:not([data-theme]) {
 		--bg: #0a0a0a;
 		--bg-secondary: #111111;
 		--text: #e0e0e0;
@@ -44,6 +45,7 @@
 	}
 }
 
+/* Explicit dark */
 [data-theme='dark'] {
 	--bg: #0a0a0a;
 	--bg-secondary: #111111;
@@ -57,6 +59,22 @@
 	--row-hover: #1a2a3a;
 	--zebra: #111111;
 	--border: #2a2a2a;
+}
+
+/* Explicit light (override system preference) */
+[data-theme='light'] {
+	--bg: #ffffff;
+	--bg-secondary: #f9f9f9;
+	--text: #1a1a1a;
+	--text-secondary: #2c3e50;
+	--text-muted: #e0e0e0;
+	--header-bg: #2c3e50;
+	--header-text: #ffffff;
+	--accent: #3498db;
+	--accent-light: #ebf5fb;
+	--row-hover: #ebf5fb;
+	--zebra: #f9f9f9;
+	--border: #e0e0e0;
 }
 
 body {
@@ -124,13 +142,17 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) .theme-icon::before {
+	:root:not([data-theme]) .theme-icon::before {
 		content: '\1F319';
 	}
 }
 
 [data-theme='dark'] .theme-icon::before {
 	content: '\1F319';
+}
+
+[data-theme='light'] .theme-icon::before {
+	content: '\2600\FE0F';
 }
 
 /**
