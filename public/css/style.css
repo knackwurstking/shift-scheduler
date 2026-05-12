@@ -191,13 +191,7 @@ body {
 	min-width: 100vw;
 	width: 100vw;
 	max-width: 100vw;
-	height: calc(100dvh - 3.5rem);
-	height: calc(100vh - 3.5rem);
-
-	padding: 0.5rem;
-	overflow-y: auto;
-	touch-action: pan-y;
-	-webkit-overflow-scrolling: touch;
+	position: relative;
 }
 
 /**
@@ -205,8 +199,15 @@ body {
  */
 
 #calendar-swipe .grid {
-	width: 100%;
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	right: 0.5rem;
+	bottom: 0.5rem;
+	width: auto;
+	height: auto;
 	border-collapse: collapse;
+	table-layout: fixed;
 }
 
 #calendar-swipe .grid thead th {
