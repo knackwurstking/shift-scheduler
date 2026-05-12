@@ -11,7 +11,7 @@ Refactor this project: kick a-h templ, move all frontend logic to Go WASM.
 - [x] Migrate calendar grid and swipe containers from old `.templ` to `index.html`
 - [ ] `internal/handlers/app.go` — still imports old templ (`templates/pages`), rewrite or remove (no longer wired)
 - [ ] `go.mod` — remove `github.com/a-h/templ` dependency
-- [ ] `Makefile` — remove `templ generate` from `init`/`generate` targets
+- [x] `Makefile` — remove `templ generate` from `init`/`generate` targets, add `dev` target
 - [ ] Delete old `.templ` backup files in `templates/.pages/` and `templates/.components/`
 - [ ] Clean up gitignore — remove `*_templ.go` once old files are deleted
 

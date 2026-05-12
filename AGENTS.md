@@ -12,11 +12,11 @@
 
 ## Build Commands
 ```bash
-make init    # Run templ generate (legacy), copy wasm_exec.js, go mod tidy
+make init    # Copy wasm_exec.js from GOROOT, go mod tidy
 make build   # Compile WASM + server binary
-make run     # init + build + start server on :3000
+make run     # build + start server on :3000
+make dev     # build + start server with VERBOSE=true on :3000
 ```
-Note: `make generate` still runs `templ generate` on old `.templ` files — this will be removed once migration is complete.
 
 ## Migration Status
 - [x] Created `templates/index.html` using `html/template` syntax
@@ -24,7 +24,7 @@ Note: `make generate` still runs `templ generate` on old `.templ` files — this
 - [x] Router wires up `tmpls` for the `/` route via `handleIndex`
 - [-] `internal/handlers/app.go` still imports old templ package (needs rewrite for `html/template`)
 - [-] `go.mod` still depends on `github.com/a-h/templ`
-- [-] `Makefile` still calls `templ generate`
+- [x] `Makefile` — removed `templ generate`, added `dev` target
 
 ## Architecture
 - `cmd/shift-scheduler/` — Echo web server (serves `public/` as static)
