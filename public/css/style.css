@@ -194,10 +194,10 @@ body {
 	height: calc(100dvh - 3.5rem);
 	height: calc(100vh - 3.5rem);
 
-	translate: -100vw 0;
-
 	padding: 0.5rem;
 	overflow-y: auto;
+	touch-action: pan-y;
+	-webkit-overflow-scrolling: touch;
 }
 
 /**
@@ -206,7 +206,6 @@ body {
 
 #calendar-swipe .grid {
 	width: 100%;
-	height: 100%;
 	border-collapse: collapse;
 }
 
