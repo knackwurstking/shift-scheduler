@@ -123,6 +123,12 @@ body {
 	content: '\2600\FE0F';
 }
 
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) .theme-icon::before {
+		content: '\1F319';
+	}
+}
+
 [data-theme='dark'] .theme-icon::before {
 	content: '\1F319';
 }
