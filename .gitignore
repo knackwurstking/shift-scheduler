@@ -7,3 +7,4 @@ output.css
 *_templ.go
 file-server
 .DS_Store
+/shift-scheduler
