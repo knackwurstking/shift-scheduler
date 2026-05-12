@@ -244,8 +244,19 @@ body {
 }
 
 #calendar-swipe .grid-cell.grid-cell-is-today {
-	background-color: var(--accent-light);
-	border: 1px solid var(--accent);
+	background-color: var(--accent);
+}
+
+#calendar-swipe .grid-cell.grid-cell-is-today .date {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.8rem;
+	height: 1.8rem;
+	border-radius: 50%;
+	background-color: var(--accent);
+	color: var(--header-text);
+	font-weight: 700;
 }
 
 /**
