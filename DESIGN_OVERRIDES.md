@@ -1,6 +1,6 @@
 # DESIGN_OVERRIDES.md
 
-Override rules that deviate from `DESIGN.md`. Always prefer `DESIGN.md` unless an override is explicitly listed here.
+Override rules that deviate from the global `~/.config/opencode/DESIGN.md`. Always prefer the global `DESIGN.md` unless an override is explicitly listed here.
 
 ## 1. Calendar Grid Layout
 
