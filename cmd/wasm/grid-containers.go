@@ -1,29 +1,23 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"html/template"
 	"strconv"
 	"syscall/js"
 	"time"
 
-	"github.com/a-h/templ"
 	"github.com/knackwurstking/shift-scheduler/internal/localization"
-	"github.com/knackwurstking/shift-scheduler/templates/components/calendar"
 )
 
 var gridContainers GridContainers
 
 type GridContainers struct {
 	containers []js.Value
-
-	currentVW int
 }
 
 func (gc *GridContainers) QueryAll() {
 	// Get all .grid-container elements
-	containers := js.Global().Get("document").Call("querySelectorAll", "."+calendar.ClassGridContainer)
+	containers := js.Global().Get("document").Call("querySelectorAll", "."+classGridContainer)
 
 	gc.containers = make([]js.Value, 0)
 	for i := range containers.Length() {
@@ -54,29 +48,17 @@ func (gc *GridContainers) SetTranslate(v string) {
 }
 
 func (gc *GridContainers) Move(direction Direction) {
-	gridContainers.AddClass("swipe-transition")
-
-	if gc.currentVW == 0 {
-		// Set to the initial vw from the "style.css"
-		gc.currentVW = -100
-	}
-
-	// First we need to finish the swipe
 	if direction > 0 {
-		gc.currentVW += 100
-		defer gc.insertGrid()
+		gc.insertGrid()
 		// TODO: Update date picker button content
 	} else {
-		gc.currentVW -= 100
-		defer gc.appendGrid()
+		gc.appendGrid()
 		// TODO: Update date picker button content
 	}
-
-	gc.SetTranslate(fmt.Sprintf("%d 0", gc.currentVW))
 }
 
 func (gc *GridContainers) querySwipeContainer() js.Value {
-	return js.Global().Get("document").Call("querySelector", "#"+calendar.IDCalendarSwipe)
+	return js.Global().Get("document").Call("querySelector", "#"+idCalendarSwipe)
 }
 
 func (gc *GridContainers) queryHTML() js.Value {
@@ -98,7 +80,12 @@ func (gc *GridContainers) appendGrid() {
 		fmt.Println("warning: failed to create grid container HTML")
 		return
 	}
-	swipeContainer.Call("insertAdjacentHTML", "beforeend", string(htmlContent))
+	swipeContainer.Call("insertAdjacentHTML", "beforeend", htmlContent)
+
+	// Remove the old first container so the next month becomes visible
+	if swipeContainer.Get("children").Length() > 3 {
+		swipeContainer.Get("firstElementChild").Call("remove")
+	}
 }
 
 func (gc *GridContainers) insertGrid() {
@@ -111,27 +98,20 @@ func (gc *GridContainers) insertGrid() {
 	year, month = addMonth(year, month, -1)
 
 	htmlContent := gc.createGridContainer(year, month)
-	swipeContainer.Call("insertAdjacentHTML", "afterbegin", string(htmlContent))
+	swipeContainer.Call("insertAdjacentHTML", "afterbegin", htmlContent)
+
+	// Remove the old last container so the previous month becomes visible
+	if swipeContainer.Get("children").Length() > 3 {
+		lastChild := swipeContainer.Get("lastElementChild")
+		if !lastChild.IsUndefined() && !lastChild.IsNull() {
+			lastChild.Call("remove")
+		}
+	}
 }
 
-func (gc *GridContainers) createGridContainer(year int, month time.Month) template.HTML {
+func (gc *GridContainers) createGridContainer(year int, month time.Month) string {
 	l := localization.New(gc.queryHTML().Get("lang").String())
-
-	grid := calendar.Grid(calendar.GridProps{
-		StartWithMonday: calendar.WeekStartAtMonday(l.Language()),
-		Localization:    l,
-		Year:            year,
-		Month:           month,
-	})
-
-	ctx := templ.WithChildren(context.Background(), grid)
-
-	htmlContent, err := templ.ToGoHTML(ctx, calendar.GridContainer())
-	if err != nil {
-		panic(fmt.Errorf("failed to render grid container: %w", err))
-	}
-
-	return htmlContent
+	return createGridHTML(year, month, l)
 }
 
 func (gc *GridContainers) getFirstContainerYearMonth() (int, time.Month) {

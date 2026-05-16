@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"syscall/js"
 	"time"
-
-	"github.com/knackwurstking/shift-scheduler/templates/components/appbar"
 )
 
 var datePicker DatePicker
@@ -13,7 +11,7 @@ var datePicker DatePicker
 type DatePicker struct{}
 
 func (dp *DatePicker) Query() js.Value {
-	return js.Global().Get("document").Call("querySelector", "#"+appbar.IDDatePickerButton)
+	return js.Global().Get("document").Call("querySelector", "#"+idDatePickerButton)
 }
 
 func (dp *DatePicker) Get() (year int, month time.Month) {
@@ -33,5 +31,5 @@ func (dp *DatePicker) Set(year int, month time.Month) {
 	e.Get("dataset").Set("year", fmt.Sprintf("%d", d.Year()))
 	e.Get("dataset").Set("month", fmt.Sprintf("%d", d.Month()))
 
-	e.Set("textContent", d.Format(appbar.DatePickerFormat))
+	e.Set("textContent", d.Format(datePickerFormat))
 }

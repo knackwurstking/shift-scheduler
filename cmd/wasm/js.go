@@ -33,7 +33,7 @@ func onPointerDown(this js.Value, args []js.Value) any {
 
 	gridContainers.QueryAll()
 
-	// This class should remove the transition timings
+	// Remove transition so dragging is instant
 	gridContainers.RemoveClass("swipe-transition")
 
 	pointerDown = true
@@ -86,9 +86,11 @@ func onPointerUp(this js.Value, args []js.Value) any {
 		isSwiping = false
 	}
 
-	// First we need to get the swipe direction, negative for left swipe,
 	diff := getSwipeDiff()
 	if math.Abs(diff) > SwipeThreshold {
+		// Enable smooth snap-back animation
+		gridContainers.AddClass("swipe-transition")
+
 		if diff < 0 {
 			gridContainers.Move(DirectionLeft)
 		} else {

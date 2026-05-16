@@ -17,6 +17,7 @@ func main() {
 }
 
 func initDOM() {
+	initGridTemplate()
 	register()
 }
 
