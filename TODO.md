@@ -9,12 +9,12 @@ Refactor this project: kick a-h templ, move all frontend logic to Go WASM.
 - [x] Router wires `tmpls` for `/` route via `handleIndex`
 - [x] `cmd/shift-scheduler/handlers.go` — template data types (`IndexTD`, `GridTD`, `GridCellTD`) and handler logic
 - [x] Migrate calendar grid and swipe containers from old `.templ` to `index.html`
-- [x] WASM grid rendering rewritten to `strings.Builder` — no more templ dependency in WASM
-- [ ] `internal/handlers/app.go` — still imports old templ (`templates/pages`), rewrite or remove (no longer wired)
-- [ ] `go.mod` — remove `github.com/a-h/templ` dependency
+- [x] WASM grid rendering rewritten — no more templ dependency in WASM
+- [x] `internal/handlers/app.go` — removed (no longer wired)
+- [x] `go.mod` — removed `github.com/a-h/templ` dependency
 - [x] `Makefile` — remove `templ generate` from `init`/`generate` targets, add `dev` target
-- [ ] Delete old `.templ` backup files in `templates/.pages/` and `templates/.components/`
-- [ ] Clean up gitignore — remove `*_templ.go` once old files are deleted
+- [x] Delete old `.templ` backup files in `templates/.pages/` and `templates/.components/`
+- [x] Clean up gitignore — remove `*_templ.go` once old files are deleted
 
 ## WASM Rework
 
@@ -35,12 +35,13 @@ The WASM binary (`cmd/wasm/`) previously depended on old templ packages. Now use
 
 ### WASM features to implement
 
-- [ ] Date picker — Go WASM should handle opening/handling the date picker, not inline JS
-- [ ] Theme toggle — Go WASM should handle the dark/light toggle instead of inline JS
+- [x] Date picker — Go WASM handles opening/handling the date picker, not inline JS
+- [x] Theme toggle — Go WASM handles the dark/light toggle instead of inline JS
+- [ ] **Rework date picker** — replace `input[type=date]` with a modal dialog for month/year selection built in Go WASM
 - [ ] WASM swipe animation — improve smoothness, consider `requestAnimationFrame`
 - [ ] Update date picker button content on swipe
-- [ ] Clean up JS in `templates/index.html` — move `openDatePicker()`, `toggleTheme()`, date input listener into Go WASM
-- [ ] Register WASM functions via `js.Global().Set(...)` consistently
+- [x] Clean up JS in `templates/index.html` — moved `openDatePicker()`, `toggleTheme()`, date input listener into Go WASM
+- [x] Register WASM functions via `js.Global().Set(...)` consistently
 
 ## CSS / Design
 
@@ -52,5 +53,7 @@ The WASM binary (`cmd/wasm/`) previously depended on old templ packages. Now use
 
 ## Cleanup
 
-- [ ] Remove unused `internal/handlers/app.go` (its logic moved to `cmd/shift-scheduler/handlers.go`)
-- [ ] Remove old templ-generated `*_templ.go` files from `.pages/` and `.components/`
+- [x] Remove unused `internal/handlers/app.go` (its logic moved to `cmd/shift-scheduler/handlers.go`)
+- [x] Remove old templ-generated `*_templ.go` files from `.pages/` and `.components/`
+- [x] `go.mod` cleaned up — no more `a-h/templ`
+- [x] `templates/components/` — old templ source files removed
