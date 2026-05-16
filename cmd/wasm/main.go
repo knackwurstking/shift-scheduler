@@ -19,6 +19,7 @@ func main() {
 func initDOM() {
 	initGridTemplate()
 	register()
+	initDatePickerListener()
 }
 
 func register() {
@@ -28,4 +29,6 @@ func register() {
 	js.Global().Set("onPointerCancel", js.FuncOf(onPointerUp))
 	js.Global().Set("onPointerOut", js.FuncOf(onPointerUp))
 	js.Global().Set("onPointerLeave", js.FuncOf(onPointerUp))
+	js.Global().Set("openDatePicker", js.FuncOf(openDatePicker))
+	js.Global().Set("toggleTheme", js.FuncOf(toggleTheme))
 }

@@ -88,26 +88,6 @@
 			.then(result => {
 				go.run(result.instance);
 		});
-
-		function openDatePicker() {
-			// Show date picker and update the button text with the selected date
-			var input = document.querySelector("#date-picker-button input");
-			input.click();
-		}
-
-		// Handle date selection and update button text
-		var input = document.querySelector("#date-picker-button input");
-		input.addEventListener("change", function(event) {
-			document.querySelector("#date-picker-button").textContent = event.currentTarget.value;
-		});
-
-		function toggleTheme() {
-			var html = document.documentElement;
-			var attr = html.getAttribute('data-theme');
-			var isDark = attr === 'dark' || (!attr && window.matchMedia('(prefers-color-scheme: dark)').matches);
-			html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-			localStorage.setItem('theme', isDark ? 'light' : 'dark');
-		}
 	</script>
 </body>
 
