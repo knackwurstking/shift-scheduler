@@ -26,6 +26,10 @@ The WASM binary (`cmd/wasm/`) currently depends on old templ packages to dynamic
 - [ ] `cmd/wasm/grid-containers.go` — `querySwipeContainer` uses `calendar.IDCalendarSwipe` (hardcode or extract constant)
 - [ ] `cmd/wasm/date-picker.go` — uses `appbar.IDDatePickerButton`, `appbar.DatePickerFormat` (hardcode or extract constants)
 
+### WASM Bugs
+
+- [ ] **Left swipe broken** — swiping left keeps the grid on the same month; only right swipe works correctly
+
 ### WASM features to implement
 
 - [ ] Date picker — Go WASM should handle opening/handling the date picker, not inline JS
